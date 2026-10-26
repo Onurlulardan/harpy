@@ -1,0 +1,2 @@
+SELECT * FROM forms_publication_complete_schema_job_v1(
+'catalog_a'::name,$3::uuid,$1::uuid,$2::text)

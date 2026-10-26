@@ -1,0 +1,4 @@
+interface:
+  display_name: "Notifications"
+  short_description: "Build durable notification delivery safely"
+  default_prompt: "Use $notifications for this backend-v2 notification capability."

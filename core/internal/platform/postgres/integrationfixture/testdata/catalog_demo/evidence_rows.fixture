@@ -1,0 +1,6 @@
+SELECT row_entry.legacy_record_id::text,row_entry.record_id::text,
+row_entry.row_version,pg_catalog.convert_from(receipt.after_document,'UTF8')
+FROM catalog_a.forms_catalog_demo_rows AS row_entry
+JOIN catalog_a.forms_record_change_receipts AS receipt
+  ON receipt.receipt_id=row_entry.final_receipt_id
+ORDER BY row_entry.legacy_record_id

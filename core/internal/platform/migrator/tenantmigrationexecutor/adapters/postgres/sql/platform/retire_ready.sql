@@ -1,0 +1,1 @@
+SELECT platform.tenancy_tenant_migration_ready_retire_v1($1)

@@ -1,0 +1,2 @@
+SELECT environment_id,tenant_id,tenant_slug,schema_name,tenant_set_sha256
+FROM platform.tenancy_get_recovery_target_v1($1)

@@ -1,0 +1,9 @@
+SELECT reference_id::text,source_id::text,source_version_id::text,
+       target_definition_id::text,target_version_id::text,
+       target_reference_epoch,
+       pg_catalog.octet_length(register_result_sha256),
+       claimed_at=registered_at,
+       release_operation_id IS NULL AND release_claimed_at IS NULL
+         AND release_result_sha256 IS NULL AND released_at IS NULL
+FROM catalog_a.analytics_forms_reference_bindings
+WHERE component_id=$1::uuid;

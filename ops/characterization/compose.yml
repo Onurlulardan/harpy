@@ -1,0 +1,9 @@
+include:
+  - path: compose.preflight.yml
+  - path: compose.license.yml
+  - path: compose.init.yml
+  - path: compose.infra.yml
+  - path: compose.services-platform.yml
+  - path: compose.services-engines.yml
+  - path: compose.gateway.yml
+  - path: compose.runner.yml

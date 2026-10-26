@@ -1,0 +1,11 @@
+INSERT INTO platform.bootstrap_receipts
+SELECT kind,run_id,'78000000-0000-4700-8700-000000000001',
+'78000000-0000-4700-8700-000000000002',$1,
+system_identifier::text,database.oid
+FROM pg_catalog.pg_control_system(),pg_catalog.pg_database AS database,
+(VALUES
+ ('cluster_bootstrap'::text,'78100000-0000-4710-8710-000000000001'::uuid),
+ ('extension_admin','78100000-0000-4710-8710-000000000002'::uuid),
+ ('credential_cleanup','78100000-0000-4710-8710-000000000003'::uuid)
+) AS receipt(kind,run_id)
+WHERE database.datname=pg_catalog.current_database()

@@ -1,0 +1,5 @@
+INSERT INTO platform.migration_runs VALUES(
+'78000000-0000-4700-8700-000000000003',
+'78000000-0000-4700-8700-000000000002',
+'78000000-0000-4700-8700-000000000001',$1,'succeeded',$2,'up',
+'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')

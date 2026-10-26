@@ -1,0 +1,4 @@
+interface:
+  display_name: "API Contract"
+  short_description: "Design stable secure HTTP API contracts"
+  default_prompt: "Use $api-contract to design this backend-v2 endpoint."

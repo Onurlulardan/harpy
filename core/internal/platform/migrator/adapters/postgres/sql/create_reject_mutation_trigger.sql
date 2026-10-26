@@ -1,0 +1,4 @@
+CREATE TRIGGER platform_migration_history_reject_mutation
+BEFORE UPDATE OR DELETE ON platform.platform_migration_history
+FOR EACH ROW
+EXECUTE FUNCTION platform.platform_migration_history_reject_mutation();

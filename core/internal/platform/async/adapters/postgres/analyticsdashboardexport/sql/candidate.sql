@@ -1,0 +1,2 @@
+SELECT tenant_id,tenant_schema::text,export_id,job_id,attempt_generation
+FROM platform.platform_async_analytics_dashboard_export_candidate_v1();

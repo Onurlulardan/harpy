@@ -1,0 +1,169 @@
+x-engine-env: &engine-env
+  DB_HOST: pgbouncer
+  DB_PORT: "6432"
+  DB_USER: oracle
+  DB_NAME: harpy_oracle
+  DB_SSLMODE: disable
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_USER: oracle
+  RABBITMQ_VHOST: oracle
+  MINIO_SERVER_URL: http://minio:9000
+  MINIO_ROOT_USER: oracleadmin
+  MINIO_USE_SSL: "false"
+  API_GATEWAY_URL: http://api-gateway:8000
+  AUTH_SERVICE_URL: http://auth-service:8001
+  PERMISSION_SERVICE_URL: http://permission-service:8002
+  NOTIFICATION_SERVICE_URL: http://notification-service:8004
+  DOCUMENT_SERVICE_URL: http://document-service:8005
+  LOG_SERVICE_URL: http://log-service:8006
+  FORM_ENGINE_SERVICE_URL: http://form-engine-service:8010
+  WORKFLOW_SERVICE_URL: http://workflow-service:8011
+  OPENAPI_SERVICE_URL: http://openapi-service:8012
+  AI_CHAT_SERVICE_URL: http://ai-chat-service:8013
+  MCP_SERVICE_URL: http://mcp-service:8014
+  MCP_API_GATEWAY_URL: http://api-gateway:8000
+  MCP_PUBLIC_BASE_URL: http://mcp-service:8014/mcp
+  DEPLOYMENT_MODE: saas
+  DEFAULT_TENANT_ID: 10000000-0000-4000-8000-000000000001
+  DEFAULT_TENANT_NAME: Oracle Tenant A
+  DEFAULT_TENANT_SLUG: oracle_a
+  SUPER_ADMIN_EMAIL: oracle-admin@example.invalid
+  APP_URL: http://api-gateway:8000
+  FRONTEND_URL: http://frontend.invalid
+  CORS_ALLOWED_ORIGINS: http://frontend.invalid
+  OLLAMA_URL: http://ollama.invalid:11434
+  AI_KNOWLEDGE_ROOT: ai-chat-service/ai-knowledge
+  GIN_MODE: release
+  LOG_LEVEL: warn
+  BE_IMAGE_TAG: ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+
+x-engine-health: &engine-health
+  interval: 3s
+  timeout: 5s
+  retries: 40
+  start_period: 20s
+
+services:
+  form-engine-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *engine-env
+    command: ["/opt/harpy/bin/form-engine-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      permission-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      document-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8010"]
+      <<: *engine-health
+    networks: [oracle]
+    restart: "no"
+
+  workflow-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *engine-env
+    command: ["/opt/harpy/bin/workflow-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      form-engine-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8011"]
+      <<: *engine-health
+    networks: [oracle]
+    restart: "no"
+
+  openapi-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *engine-env
+    command: ["/opt/harpy/bin/openapi-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      form-engine-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8012"]
+      <<: *engine-health
+    networks: [oracle]
+    restart: "no"
+
+  ai-chat-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *engine-env
+    command: ["/opt/harpy/bin/ai-chat-service"]
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      permission-service:
+        condition: service_healthy
+      form-engine-service:
+        condition: service_healthy
+      workflow-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8013"]
+      <<: *engine-health
+    networks: [oracle]
+    restart: "no"
+
+  mcp-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *engine-env
+    command: ["/opt/harpy/bin/mcp-service"]
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8014"]
+      <<: *engine-health
+    networks: [oracle]
+    restart: "no"

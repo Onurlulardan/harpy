@@ -1,0 +1,26 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetBucketObjectLockConfiguration",
+        "s3:GetBucketVersioning",
+        "s3:ListBucket",
+        "s3:ListBucketVersions"
+      ],
+      "Resource": ["arn:aws:s3:::harpy-recovery"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectRetention",
+        "s3:GetObjectVersion",
+        "s3:PutObject"
+      ],
+      "Resource": ["arn:aws:s3:::harpy-recovery/*"]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+services:
+  pg15-backup:
+    image: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      PG_BACKUP_USER: oracle
+    entrypoint: ["/bin/bash", "/oracle/pg-basebackup.sh"]
+    depends_on:
+      database-ready:
+        condition: service_completed_successfully
+    volumes:
+      - pg15-backup:/var/lib/postgresql/15/backup
+      - pg18-evidence:/evidence
+      - type: bind
+        source: ./pg-basebackup.sh
+        target: /oracle/pg-basebackup.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks: [oracle]
+    restart: "no"
+
+  pg18-upgrade:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-pg-upgrade:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    build:
+      context: ../integration
+      dockerfile: Dockerfile.pg-upgrade
+      args:
+        SOURCE_IMAGE: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+        TARGET_IMAGE: ${PG18_GATE_POSTGRES_IMAGE:?PG18_GATE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      PG_UPGRADE_USER: oracle
+      PG_UPGRADE_EVIDENCE_PATH: /evidence/upgrade.json
+      PG_UPGRADE_EXPECTED_MANIFEST_SHA256_FILE: /evidence/backup-manifest.sha256
+    volumes:
+      - pg15-backup:/var/lib/postgresql/15/source
+      - pg18-target:/var/lib/postgresql/18/docker
+      - pg18-evidence:/evidence
+    network_mode: none
+    restart: "no"
+
+  gate-evidence:
+    image: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    entrypoint: ["/bin/cat"]
+    volumes:
+      - pg18-evidence:/evidence:ro
+    network_mode: none
+    restart: "no"

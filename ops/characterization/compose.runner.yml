@@ -1,0 +1,67 @@
+services:
+  characterizer:
+    profiles: [characterize]
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-characterizer:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    build:
+      context: ../..
+      dockerfile: ops/characterization/Dockerfile.runner
+      args:
+        CHARACTERIZER_GO_IMAGE: ${CHARACTERIZER_GO_IMAGE:?CHARACTERIZER_GO_IMAGE is required}
+        V1_DISTROLESS_IMAGE: ${V1_ORACLE_DISTROLESS_IMAGE:?V1_ORACLE_DISTROLESS_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      CHARACTERIZATION_GATEWAY_URL: http://127.0.0.1:8000
+      CHARACTERIZATION_DB_HOST: postgres
+      CHARACTERIZATION_DB_PORT: "5432"
+      CHARACTERIZATION_DB_USER: oracle
+      CHARACTERIZATION_DB_NAME: harpy_oracle
+      CHARACTERIZATION_RABBITMQ_HOST: rabbitmq
+      CHARACTERIZATION_RABBITMQ_PORT: "5672"
+      CHARACTERIZATION_RABBITMQ_MANAGEMENT_URL: http://rabbitmq:15672
+      CHARACTERIZATION_RABBITMQ_USER: oracle
+      CHARACTERIZATION_RABBITMQ_VHOST: oracle
+      CHARACTERIZATION_FORMS_QUERY_PROBE_RECORD_NAME: Phase Zero Searchable
+      CHARACTERIZATION_FORMS_QUERY_PROBE_SLUG: phase-zero-query-probe
+      CHARACTERIZATION_FORMS_QUERY_PROBE_VERSION: 1.0.0
+      CHARACTERIZATION_IAM_ORGANIZATION_SLUG: phase-zero-operations
+      CHARACTERIZATION_IAM_ROLE_NAME: Phase Zero Auditor
+      CHARACTERIZATION_IAM_USER_EMAIL: phase-zero-user@example.invalid
+      CHARACTERIZATION_IAM_USER_FIRST_NAME: Phase
+      CHARACTERIZATION_IAM_USER_LAST_NAME: Zero
+      CHARACTERIZATION_IAM_USER_PASSWORD: ${CHARACTERIZATION_IAM_USER_PASSWORD:?CHARACTERIZATION_IAM_USER_PASSWORD is required}
+      CHARACTERIZATION_PUBLIC_SCHEMA: public
+      CHARACTERIZATION_SYSTEM_USERS_SLUG: users
+      CHARACTERIZATION_TENANT_A_ID: 10000000-0000-4000-8000-000000000001
+      CHARACTERIZATION_TENANT_A_SCHEMA: tenant_oracle_a
+      CHARACTERIZATION_TENANT_A_SLUG: oracle_a
+      CHARACTERIZATION_TENANT_B_ADMIN_EMAIL: oracle-b-admin@example.invalid
+      CHARACTERIZATION_TENANT_B_ADMIN_FIRST_NAME: Oracle
+      CHARACTERIZATION_TENANT_B_ADMIN_LAST_NAME: Admin-B
+      CHARACTERIZATION_TENANT_B_ADMIN_PASSWORD: ${CHARACTERIZATION_TENANT_B_ADMIN_PASSWORD:?CHARACTERIZATION_TENANT_B_ADMIN_PASSWORD is required}
+      CHARACTERIZATION_TENANT_B_NAME: Oracle Tenant B
+      CHARACTERIZATION_TENANT_B_SCHEMA: tenant_oracle_b
+      CHARACTERIZATION_TENANT_B_SLUG: oracle_b
+      CHARACTERIZATION_ADMIN_EMAIL: oracle-admin@example.invalid
+      CHARACTERIZATION_SUITE_DIR: /contracts/characterization/v1
+      CHARACTERIZATION_ARTIFACT_DIR: /artifacts
+      CHARACTERIZATION_BACKEND_V2_SOURCE_ROOT: /attestation/backend-v2
+      CHARACTERIZATION_V1_SOURCE_ROOT: /attestation/v1
+      CHARACTERIZATION_GATEWAY_VERSION: ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+      CHARACTERIZATION_GATEWAY_IMAGE_DIGEST: ${V1_ORACLE_GATEWAY_IMAGE_DIGEST:?V1_ORACLE_GATEWAY_IMAGE_DIGEST is required}
+      CHARACTERIZATION_POSTGRES_IMAGE: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    volumes:
+      - type: bind
+        source: ${V1_ORACLE_ARTIFACT_HOST_DIR:?V1_ORACLE_ARTIFACT_HOST_DIR is required}
+        target: /artifacts
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../../../backend
+        target: /attestation/v1
+        read_only: true
+        bind:
+          create_host_path: false
+    network_mode: "service:api-gateway"
+    command: ["record"]
+    restart: "no"

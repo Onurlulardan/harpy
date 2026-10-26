@@ -1,0 +1,165 @@
+x-platform-env: &platform-env
+  DB_HOST: pgbouncer
+  DB_PORT: "6432"
+  DB_USER: oracle
+  DB_NAME: harpy_oracle
+  DB_SSLMODE: disable
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_USER: oracle
+  RABBITMQ_VHOST: oracle
+  MINIO_SERVER_URL: http://minio:9000
+  MINIO_ROOT_USER: oracleadmin
+  MINIO_USE_SSL: "false"
+  API_GATEWAY_URL: http://api-gateway:8000
+  AUTH_SERVICE_URL: http://auth-service:8001
+  PERMISSION_SERVICE_URL: http://permission-service:8002
+  NOTIFICATION_SERVICE_URL: http://notification-service:8004
+  DOCUMENT_SERVICE_URL: http://document-service:8005
+  LOG_SERVICE_URL: http://log-service:8006
+  FORM_ENGINE_SERVICE_URL: http://form-engine-service:8010
+  WORKFLOW_SERVICE_URL: http://workflow-service:8011
+  OPENAPI_SERVICE_URL: http://openapi-service:8012
+  AI_CHAT_SERVICE_URL: http://ai-chat-service:8013
+  MCP_SERVICE_URL: http://mcp-service:8014
+  MCP_API_GATEWAY_URL: http://api-gateway:8000
+  MCP_PUBLIC_BASE_URL: http://mcp-service:8014/mcp
+  DEPLOYMENT_MODE: saas
+  DEFAULT_TENANT_ID: 10000000-0000-4000-8000-000000000001
+  DEFAULT_TENANT_NAME: Oracle Tenant A
+  DEFAULT_TENANT_SLUG: oracle_a
+  SUPER_ADMIN_EMAIL: oracle-admin@example.invalid
+  APP_URL: http://api-gateway:8000
+  FRONTEND_URL: http://frontend.invalid
+  CORS_ALLOWED_ORIGINS: http://frontend.invalid
+  RATE_LIMIT_MAX_REQUESTS: "10000"
+  LOGIN_RATE_LIMIT_MAX_ATTEMPTS: "1000"
+  SMTP_HOST: mail.invalid
+  SMTP_PORT: "1"
+  SMTP_USE_TLS: "false"
+  BACKUP_DIR: /backups
+  GIN_MODE: release
+  LOG_LEVEL: warn
+  BE_IMAGE_TAG: ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+
+x-platform-health: &platform-health
+  interval: 3s
+  timeout: 5s
+  retries: 40
+  start_period: 20s
+
+services:
+  auth-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-auth:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    build:
+      context: ../../../backend
+      dockerfile: ../backend-v2/ops/characterization/Dockerfile.v1-runtime
+      target: auth-runtime
+      args:
+        V1_GO_IMAGE: ${V1_ORACLE_GO_IMAGE:?V1_ORACLE_GO_IMAGE is required}
+        V1_DISTROLESS_IMAGE: ${V1_ORACLE_DISTROLESS_IMAGE:?V1_ORACLE_DISTROLESS_IMAGE is required}
+        V1_POSTGRES_IMAGE: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+        V1_SOURCE_VERSION: ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *platform-env
+    command: ["/opt/harpy/bin/auth-service"]
+    depends_on:
+      database-ready:
+        condition: service_completed_successfully
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8001"]
+      <<: *platform-health
+    tmpfs: [/backups]
+    networks: [oracle]
+    restart: "no"
+
+  permission-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *platform-env
+    command: ["/opt/harpy/bin/permission-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8002"]
+      <<: *platform-health
+    networks: [oracle]
+    restart: "no"
+
+  notification-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *platform-env
+    command: ["/opt/harpy/bin/notification-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8004"]
+      <<: *platform-health
+    networks: [oracle]
+    restart: "no"
+
+  document-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *platform-env
+    command: ["/opt/harpy/bin/document-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8005"]
+      <<: *platform-health
+    networks: [oracle]
+    restart: "no"
+
+  log-service:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *platform-env
+    command: ["/opt/harpy/bin/log-service"]
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/harpy/bin/healthcheck", "8006"]
+      <<: *platform-health
+    networks: [oracle]
+    restart: "no"

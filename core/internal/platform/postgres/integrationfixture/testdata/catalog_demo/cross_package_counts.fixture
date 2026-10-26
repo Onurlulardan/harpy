@@ -1,0 +1,15 @@
+SELECT
+(SELECT count(*) FROM catalog_a.catalog_demo_provisions),
+(SELECT count(*) FROM catalog_a.catalog_demo_handoffs),
+(SELECT count(*) FROM catalog_a.forms_catalog_demo_runs),
+(SELECT count(*) FROM catalog_a.forms_catalog_demo_rows),
+(SELECT count(*) FROM catalog_a.forms_record_change_receipts),
+(SELECT count(*) FROM catalog_a.forms_record_audit),
+(SELECT count(*) FROM platform.outbox
+ WHERE event_type IN ('forms.record.created','forms.record.updated')),
+(SELECT count(*) FROM catalog_a.forms_record_change_receipts
+ WHERE operation='create'),
+(SELECT count(*) FROM catalog_a.forms_record_change_receipts
+ WHERE operation='update'),
+(SELECT count(*) FROM catalog_a.forms_catalog_demo_rows WHERE row_version=2),
+(SELECT count(*) FROM catalog_a.forms_catalog_demo_rows WHERE row_version=1)

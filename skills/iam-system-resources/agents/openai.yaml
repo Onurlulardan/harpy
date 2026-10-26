@@ -1,0 +1,4 @@
+interface:
+  display_name: "IAM System Resources"
+  short_description: "Preserve IAM-owned system-form invariants"
+  default_prompt: "Use $iam-system-resources for this backend-v2 identity change."

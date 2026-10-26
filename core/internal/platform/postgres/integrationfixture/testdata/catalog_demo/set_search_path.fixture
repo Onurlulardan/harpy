@@ -1,0 +1,1 @@
+SELECT set_config('search_path','catalog_a,platform,pg_catalog',true)

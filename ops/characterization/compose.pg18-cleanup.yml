@@ -1,0 +1,20 @@
+services:
+  gate-volume-owner:
+    image: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    command: ["true"]
+    volumes:
+      - pg15-source:/gate-volumes/pg15-source
+      - pg15-backup:/gate-volumes/pg15-backup
+      - pg18-target:/gate-volumes/pg18-target
+      - pg18-evidence:/gate-volumes/pg18-evidence
+    networks: [oracle]
+    restart: "no"
+
+volumes:
+  pg15-source:
+  pg15-backup:
+  pg18-target:
+  pg18-evidence:
+
+networks:
+  oracle:

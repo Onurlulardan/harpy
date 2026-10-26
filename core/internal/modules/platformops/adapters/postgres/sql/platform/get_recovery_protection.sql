@@ -1,0 +1,2 @@
+SELECT environment_id,state,generation,kit_acknowledged,updated_at
+FROM platform.platformops_get_recovery_protection_v1($1)

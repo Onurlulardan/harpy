@@ -1,0 +1,32 @@
+package postgres
+
+import "errors"
+
+var (
+	ErrWorkerStoreUnavailable      = errors.New("async worker store is unavailable")
+	ErrWorkerContextInvalid        = errors.New("async worker context is invalid")
+	ErrJobAuthorityPageLimit       = errors.New("job authority page limit must be between 1 and 256")
+	ErrJobAuthorityPageInvalid     = errors.New("job authority page is invalid")
+	ErrJobAuthorityToken           = errors.New("job authority token is invalid")
+	ErrJobAuthorityInvalid         = errors.New("job authority is invalid")
+	ErrJobAuthorityStale           = errors.New("job authority is no longer current")
+	ErrJobClaimLimit               = errors.New("job claim limit must be between 1 and 50")
+	ErrJobClaimInvalid             = errors.New("job claim is invalid")
+	ErrJobCatalogIncompatible      = errors.New("live jobs are not supported by the processor catalog")
+	ErrJobLeaseLost                = errors.New("job lease is no longer owned")
+	ErrJobControlInvalid           = errors.New("job control token is invalid")
+	ErrJobNotControllable          = errors.New("job cannot accept cancellation")
+	ErrJobFailureInvalid           = errors.New("job failure evidence is invalid")
+	ErrExternalEffectInvalid       = errors.New("external effect request is invalid")
+	ErrExternalEffectPermit        = errors.New("external effect permit is invalid")
+	ErrExternalEffectReceipt       = errors.New("external effect receipt is invalid")
+	ErrJobRecoveryLimit            = errors.New("job recovery limit must be between 1 and 50")
+	ErrStaleJobLimit               = errors.New("stale job limit must be between 1 and 50")
+	ErrStaleJobInvalid             = errors.New("stale job identity is invalid")
+	ErrStaleJobDispositionInvalid  = errors.New("stale job disposition is invalid")
+	ErrStaleJobDispositionConflict = errors.New("stale job disposition conflicts")
+	ErrEventGapNotReady            = errors.New("event gap predecessor is not ready")
+	ErrEventGapSourceMissing       = errors.New("event gap source outbox is unavailable")
+	ErrEventGapEvidenceMissing     = errors.New("event gap evidence is unavailable")
+	ErrEventGapInvariant           = errors.New("event gap reconciliation invariant failed")
+)

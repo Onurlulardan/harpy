@@ -1,0 +1,4 @@
+interface:
+  display_name: "Events and Jobs"
+  short_description: "Design reliable outbox jobs and integrations"
+  default_prompt: "Use $events-jobs for this backend-v2 asynchronous flow."

@@ -1,0 +1,133 @@
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  tenant-migration-executor:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/core-migrator", "tenant-migration-executor"]
+    env_file: ./state/secrets/tenant-migration-executor.env
+    environment:
+      HARPY_MANAGEMENT_LISTEN_ADDR: 0.0.0.0:9000
+    ports:
+      - "127.0.0.1:${LOCAL_TENANT_MIGRATION_MANAGEMENT_PORT}:9000"
+    volumes:
+      - local-secret-migrator:/run/secrets:ro
+      - release-state:/run/release:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/readyz", "-timeout", "2s"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+    networks: [local]
+
+  schema-executor:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/core-migrator", "schema-executor"]
+    env_file: ./state/secrets/schema-executor.env
+    ports:
+      - "127.0.0.1:${LOCAL_SCHEMA_MANAGEMENT_PORT}:9000"
+    volumes:
+      - local-secret-schema:/run/secrets:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/readyz", "-timeout", "2s"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+    networks: [local]
+
+  core-api:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/core-api"]
+    env_file: ./state/secrets/api.env
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-wif.json
+      SSL_CERT_FILE: /run/secrets/local-ca.crt
+      HARPY_IAM_ACCESS_TOKEN_ISSUER: http://localhost:${LOCAL_API_PORT}
+      HARPY_IAM_ACCESS_TOKEN_AUDIENCE: http://localhost:${LOCAL_API_PORT}/api
+    ports:
+      - "127.0.0.1:${LOCAL_API_PORT}:8000"
+      - "127.0.0.1:${LOCAL_API_MANAGEMENT_PORT}:9000"
+    volumes:
+      - local-secret-api:/run/secrets:ro
+      - local-dev-authority:/run/dev-authority:ro
+      - local-recovery-signing:/run/recovery-signing:ro
+      - forms-import-staging:/var/lib/harpy/forms-import-staging
+      - ai-system-knowledge:/var/lib/harpy/ai-system-knowledge:ro
+      - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
+    depends_on:
+      postgres:
+        condition: service_healthy
+      schema-executor:
+        condition: service_healthy
+      s3-owner:
+        condition: service_healthy
+      local-kms:
+        condition: service_started
+      clamav:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/readyz", "-timeout", "2s"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+    networks: [local]
+
+  core-worker:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/core-worker"]
+    env_file: ./state/secrets/worker.env
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-wif.json
+      SSL_CERT_FILE: /run/secrets/local-ca.crt
+      HARPY_IAM_INVITATION_PUBLIC_BASE_URL: ${LOCAL_PUBLIC_BASE_URL}
+    ports:
+      - "127.0.0.1:${LOCAL_WORKER_MANAGEMENT_PORT}:9000"
+    volumes:
+      - local-secret-worker:/run/secrets:ro
+      - local-dev-authority:/run/dev-authority
+      - forms-export-spool:/var/lib/harpy/forms-export-spool
+      - analytics-dashboard-export-spool:/var/lib/harpy/analytics-dashboard-export-spool
+      - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
+    depends_on:
+      postgres:
+        condition: service_healthy
+      schema-executor:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      s3-owner:
+        condition: service_healthy
+      local-kms:
+        condition: service_started
+      clamav:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/readyz", "-timeout", "2s"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+    networks: [local]

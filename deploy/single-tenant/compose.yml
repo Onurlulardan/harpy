@@ -1,0 +1,25 @@
+include:
+  - path: ../third-party.yml
+    env_file:
+      - .env
+
+services:
+  postgres:
+    environment:
+      TENANCY_MODE: single
+  rabbitmq:
+    environment:
+      TENANCY_MODE: single
+  rustfs:
+    environment:
+      TENANCY_MODE: single
+
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password
+  rabbitmq_conf:
+    file: ./secrets/rabbitmq.conf
+  rustfs_access_key:
+    file: ./secrets/rustfs_access_key
+  rustfs_secret_key:
+    file: ./secrets/rustfs_secret_key

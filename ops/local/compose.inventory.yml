@@ -1,0 +1,44 @@
+services:
+  installation-secret-inventory:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/plaintext-inventory"]
+    command:
+      - exact
+      - -needle-file
+      - /run/installation/initial-admin-password
+      - -allow-file
+      - /run/installation/initial-admin-password
+      - -allow-absent
+      - -path
+      - /run/installation
+      - -path
+      - /scan/operator
+      - -path
+      - /scan/api
+      - -path
+      - /scan/worker
+      - -path
+      - /scan/release
+      - -path
+      - /scan/dev-authority
+      - -path
+      - /scan/recovery-signing
+      - -path
+      - /run/database
+      - -postgres-dsn-file
+      - /run/database/postgres-bootstrap-dsn.txt
+      - -stdin-label
+      - pre-display-compose-logs
+    volumes:
+      - local-installation-state:/run/installation:ro
+      - local-secret-operator:/scan/operator:ro
+      - local-secret-api:/scan/api:ro
+      - local-secret-worker:/scan/worker:ro
+      - release-state:/scan/release:ro
+      - local-dev-authority:/scan/dev-authority:ro
+      - local-recovery-signing:/scan/recovery-signing:ro
+      - local-secret-local-release:/run/database:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]

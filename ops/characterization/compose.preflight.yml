@@ -1,0 +1,17 @@
+services:
+  oracle-preflight:
+    image: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      ORACLE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}
+      PG18_GATE_POSTGRES_IMAGE: ${PG18_GATE_POSTGRES_IMAGE:-}
+    entrypoint: ["/bin/sh", "/oracle/preflight.sh"]
+    volumes:
+      - type: bind
+        source: ./preflight.sh
+        target: /oracle/preflight.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    network_mode: none
+    restart: "no"

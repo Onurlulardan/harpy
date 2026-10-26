@@ -1,0 +1,4 @@
+interface:
+  display_name: "Billing"
+  short_description: "Build authoritative billing and entitlement flows"
+  default_prompt: "Use $billing for this backend-v2 billing capability."

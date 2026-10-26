@@ -1,0 +1,115 @@
+CREATE TABLE platform.catalog_demo_schema_jobs(
+ job_id uuid PRIMARY KEY,tenant_id uuid NOT NULL,scope_schema name NOT NULL,
+ resource_id uuid NOT NULL,resource_revision bigint NOT NULL,
+ plan_sha256 text NOT NULL,generation bigint NOT NULL,status text NOT NULL,
+ receipt_sha256 bytea,failure_sha256 bytea,
+ UNIQUE(tenant_id,resource_id,resource_revision,plan_sha256),
+ CHECK(status IN ('pending','succeeded','failed','cancelled')));
+CREATE FUNCTION platform.billing_resolve_current_tenant_authority_v1(p_tenant_id uuid)
+RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog
+AS $function$
+BEGIN
+ IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+    CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR NOT EXISTS(
+      SELECT 1 FROM platform.tenants AS tenant
+      WHERE tenant.id=p_tenant_id AND tenant.status='ACTIVE') THEN
+   RAISE EXCEPTION USING ERRCODE='42501',
+    MESSAGE='Catalog demo Forms authority is invalid';
+ END IF;
+ RETURN p_tenant_id;
+END;
+$function$;
+CREATE FUNCTION platform.platform_migrator_submit_schema_plan_v1(
+ p_scope_schema name,p_tenant_id uuid,p_job_id uuid,p_resource_kind text,
+ p_resource_id uuid,p_resource_revision bigint,p_plan_contract text,
+ p_compiler_version text,p_postgresql_major integer,p_plan bytea,
+ p_plan_sha256 text,p_steps jsonb)
+RETURNS TABLE(job_id uuid,generation bigint,plan_sha256 text,replay boolean)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $function$
+DECLARE v_job uuid;v_generation bigint;
+BEGIN
+ IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+    CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+    p_resource_kind IS DISTINCT FROM 'form_storage' OR
+    p_plan_contract IS DISTINCT FROM 'forms-schema-plan.v2' OR
+    p_compiler_version IS DISTINCT FROM '2.0.0' OR p_postgresql_major<>18 OR
+    pg_catalog.encode(pg_catalog.sha256(p_plan),'hex')<>p_plan_sha256 OR
+    pg_catalog.jsonb_typeof(p_steps)<>'array' OR NOT EXISTS(
+      SELECT 1 FROM platform.tenants AS tenant
+      WHERE tenant.id=p_tenant_id AND tenant.schema_name=p_scope_schema) THEN
+   RAISE EXCEPTION USING ERRCODE='42501',
+    MESSAGE='Catalog demo schema submission is invalid';
+ END IF;
+ SELECT stored.job_id,stored.generation INTO v_job,v_generation
+ FROM platform.catalog_demo_schema_jobs AS stored
+ WHERE stored.tenant_id=p_tenant_id AND stored.resource_id=p_resource_id
+   AND stored.resource_revision=p_resource_revision
+   AND stored.plan_sha256=p_plan_sha256;
+ IF FOUND THEN
+   job_id:=v_job;generation:=v_generation;plan_sha256:=p_plan_sha256;
+   replay:=true;RETURN NEXT;RETURN;
+ END IF;
+ INSERT INTO platform.catalog_demo_schema_jobs VALUES(
+   p_job_id,p_tenant_id,p_scope_schema,p_resource_id,p_resource_revision,
+   p_plan_sha256,1,'pending',NULL,NULL);
+ job_id:=p_job_id;generation:=1;plan_sha256:=p_plan_sha256;
+ replay:=false;RETURN NEXT;
+END;
+$function$;
+CREATE FUNCTION platform.platform_migrator_submit_schema_plan_v2(
+ p_scope_schema name,p_tenant_id uuid,p_job_id uuid,p_resource_kind text,
+ p_resource_id uuid,p_resource_revision bigint,p_plan_contract text,
+ p_compiler_version text,p_postgresql_major integer,p_plan bytea,
+ p_plan_sha256 text,p_steps jsonb)
+RETURNS TABLE(job_id uuid,generation bigint,plan_sha256 text,replay boolean,
+ job_state text,terminal boolean)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $function$
+BEGIN
+ RETURN QUERY SELECT submitted.job_id,submitted.generation,
+ submitted.plan_sha256,submitted.replay,'queued'::text,false
+ FROM platform.platform_migrator_submit_schema_plan_v1(
+ p_scope_schema,p_tenant_id,p_job_id,p_resource_kind,p_resource_id,
+ p_resource_revision,p_plan_contract,p_compiler_version,p_postgresql_major,
+ p_plan,p_plan_sha256,p_steps) AS submitted;
+END;
+$function$;
+CREATE FUNCTION platform.platform_migrator_resolve_schema_result_v1(
+ p_tenant_id uuid,p_job_id uuid,p_plan_sha256 text,p_minimum_generation bigint)
+RETURNS TABLE(job_id uuid,result_generation bigint,succeeded boolean,
+ receipt_sha256 bytea,failure_code text,failure_sha256 bytea)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $function$
+DECLARE v_status text;v_generation bigint;v_receipt bytea;v_failure bytea;
+BEGIN
+ IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+    CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
+   RAISE EXCEPTION USING ERRCODE='42501',
+    MESSAGE='Catalog demo schema resolver role is invalid';
+ END IF;
+ SELECT schema_job.status,schema_job.generation,
+        schema_job.receipt_sha256,schema_job.failure_sha256
+ INTO v_status,v_generation,v_receipt,v_failure
+ FROM platform.catalog_demo_schema_jobs AS schema_job
+ WHERE schema_job.tenant_id=p_tenant_id
+   AND schema_job.job_id=p_job_id
+   AND schema_job.plan_sha256=p_plan_sha256
+   AND schema_job.generation>=p_minimum_generation;
+ IF NOT FOUND OR v_status='pending' THEN
+   RAISE EXCEPTION USING ERRCODE='55000',
+    MESSAGE='Catalog demo schema result is nonterminal';
+ END IF;
+ job_id:=p_job_id;result_generation:=v_generation;succeeded:=v_status='succeeded';
+ receipt_sha256:=v_receipt;
+ failure_code:=CASE v_status WHEN 'failed' THEN 'SCHEMA_JOB_FAILED'
+  WHEN 'cancelled' THEN 'SCHEMA_JOB_CANCELLED' ELSE NULL END;
+ failure_sha256:=CASE WHEN succeeded THEN NULL ELSE v_failure END;
+ RETURN NEXT;
+END;
+$function$;
+REVOKE ALL ON FUNCTION platform.billing_resolve_current_tenant_authority_v1(uuid)
+ FROM PUBLIC;
+REVOKE ALL ON FUNCTION platform.platform_migrator_submit_schema_plan_v1(
+ name,uuid,uuid,text,uuid,bigint,text,text,integer,bytea,text,jsonb) FROM PUBLIC;
+REVOKE ALL ON FUNCTION platform.platform_migrator_submit_schema_plan_v2(
+ name,uuid,uuid,text,uuid,bigint,text,text,integer,bytea,text,jsonb) FROM PUBLIC;
+REVOKE ALL ON FUNCTION platform.platform_migrator_resolve_schema_result_v1(
+ uuid,uuid,text,bigint) FROM PUBLIC;

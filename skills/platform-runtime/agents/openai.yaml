@@ -1,0 +1,4 @@
+interface:
+  display_name: "Platform Runtime"
+  short_description: "Build the final backend-v2 runtime foundation"
+  default_prompt: "Use $platform-runtime for this backend-v2 platform change."

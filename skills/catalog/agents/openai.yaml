@@ -1,0 +1,4 @@
+interface:
+  display_name: "Catalog"
+  short_description: "Govern package, module, menu, and lifecycle safety"
+  default_prompt: "Use $catalog to implement this backend-v2 catalog lifecycle change."

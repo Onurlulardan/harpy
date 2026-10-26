@@ -1,0 +1,4 @@
+interface:
+  display_name: "Work"
+  short_description: "Build secure boards, tasks, comments, and calendars"
+  default_prompt: "Use $work to implement this backend-v2 work domain change."

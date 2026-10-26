@@ -1,0 +1,2 @@
+INSERT INTO platform.extension_registry VALUES(
+'vector','0.8.3',$2,$3,$1,'78100000-0000-4710-8710-000000000002')
