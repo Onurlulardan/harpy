@@ -1,0 +1,39 @@
+{
+  "pathItems": {
+    "subscriptions": {"get": {
+      "operationId": "billingListSubscriptions", "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "GET v1",
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}}
+    }},
+    "subscriptionQuery": {"post": {
+      "operationId": "billingQuerySubscriptions", "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "POST v1",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
+    }},
+    "subscriptionTransition": {"post": {
+      "operationId": "billingTransitionSubscription", "security": [{"bearerAuth": []}],
+      "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/SubscriptionID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
+      "x-harpy-permission": "platform.billing.manage",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-subscription-v2.schemas.json#/schemas/TransitionSubscription"}}}},
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/Conflict"}, "422": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
+    }},
+    "events": {"get": {
+      "operationId": "billingListAuditEvents", "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.audit.read", "x-harpy-rest-query": "GET v1",
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}}
+    }},
+    "eventQuery": {"post": {
+      "operationId": "billingQueryAuditEvents", "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.audit.read", "x-harpy-rest-query": "POST v1",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
+    }},
+    "revenueQuery": {"post": {
+      "operationId": "billingQueryRevenue", "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.revenue.read", "x-harpy-rest-query": "POST aggregate v1",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}}
+    }}
+  }
+}

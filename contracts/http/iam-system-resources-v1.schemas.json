@@ -1,0 +1,88 @@
+{
+  "parameters": {
+    "TenantID": {"name": "X-Tenant-ID", "in": "header", "required": false, "description": "Compatibility assertion only; verified access-token tenant remains authoritative.", "schema": {"type": "string", "format": "uuid"}},
+    "ResourceID": {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "IfMatch": {"name": "If-Match", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}}
+  },
+  "schemas": {
+    "RecordEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {"$ref": "iam-system-resources-v1.records.json#/schemas/ResourceRecord"},
+        "message": {"type": "string"}
+      }
+    },
+    "QueryData": {
+      "type": "object", "additionalProperties": false,
+      "required": ["items", "pagination"],
+      "properties": {
+        "items": {"type": "array", "maxItems": 500, "items": {"$ref": "iam-system-resources-v1.records.json#/schemas/QueryRecord"}},
+        "pagination": {
+          "type": "object", "additionalProperties": false,
+          "required": ["has_more", "next_transport"],
+          "properties": {
+            "limit": {"type": "integer", "minimum": 1, "maximum": 500},
+            "has_more": {"type": "boolean"},
+            "next_cursor": {"type": "string"},
+            "next_transport": {"enum": ["GET", "POST"]},
+            "exact_count": {"type": "integer", "format": "int64", "minimum": 0}
+          }
+        }
+      }
+    },
+    "CanonicalQueryData": {
+      "type": "object", "additionalProperties": false,
+      "required": ["items", "pagination"],
+      "properties": {
+        "items": {"type": "array", "maxItems": 500, "items": {"$ref": "iam-system-resources-v1.records.json#/schemas/CanonicalListRecord"}},
+        "pagination": {
+          "type": "object", "additionalProperties": false,
+          "required": ["has_more"],
+          "properties": {
+            "has_more": {"type": "boolean"},
+            "next_cursor": {"type": "string"},
+            "exact_count": {"type": "integer", "format": "int64", "minimum": 0}
+          }
+        }
+      }
+    },
+    "QueryEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/QueryData"}}
+    },
+    "CanonicalQueryEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/CanonicalQueryData"}}
+    },
+    "DeleteEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "deleted_count"],
+      "properties": {"success": {"const": true}, "deleted_count": {"type": "integer", "minimum": 1, "maximum": 100}, "message": {"type": "string"}}
+    }
+  },
+  "responses": {
+    "Record": {"description": "Secret-free IAM resource record.", "headers": {"ETag": {"schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/RecordEnvelope"}}}},
+    "Mutation": {"description": "Committed idempotent IAM mutation.", "headers": {"ETag": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/RecordEnvelope"}}}},
+    "MutationCreated": {"description": "Committed idempotent IAM creation.", "headers": {"ETag": {"schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}}, "Location": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/RecordEnvelope"}}}},
+    "Delete": {"description": "Committed resource deletion.", "content": {"application/json": {"schema": {"$ref": "#/schemas/DeleteEnvelope"}}}},
+    "QueryResult": {"description": "Authorized canonical REST Query result.", "content": {"application/json": {"schema": {"$ref": "#/schemas/QueryEnvelope"}}}},
+    "CanonicalQueryResult": {"description": "Authorized canonical collection result with mandatory id and revision in each item.", "content": {"application/json": {"schema": {"$ref": "#/schemas/CanonicalQueryEnvelope"}}}},
+    "RequestInvalid": {"description": "Strict request decoding failed.", "x-harpy-error-code": "REQUEST_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "InputInvalid": {"description": "The submitted public-name fields do not satisfy the published editable catalog or canonical IAM mutation contract.", "x-harpy-error-code": "SYSTEM_RESOURCE_INPUT_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "BodyTooLarge": {"description": "The request body exceeds the one MiB edge limit.", "x-harpy-error-code": "REQUEST_BODY_TOO_LARGE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "MediaTypeUnsupported": {"description": "The request media type is unsupported.", "x-harpy-error-code": "MEDIA_TYPE_UNSUPPORTED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "QueryInvalid": {"description": "Canonical REST Query decoding, authorization or budget validation failed.", "x-harpy-error-code": "QUERY_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthenticationFailed": {"description": "Bearer token is missing, invalid or stale.", "x-harpy-error-code": "AUTHENTICATION_FAILED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Forbidden": {"description": "Current IAM authority denied the operation.", "x-harpy-error-code": "AUTHORIZATION_DENIED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "NotFound": {"description": "The authorized resource does not exist.", "x-harpy-error-code": "RESOURCE_NOT_FOUND", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Conflict": {"description": "Revision, uniqueness, dependency or idempotency conflict.", "x-harpy-error-code": "RESOURCE_CONFLICT", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "ProfileWriteConflict": {"description": "Resource conflict, or a fenced profile lineage that requires recovery before profile writes continue.", "x-harpy-error-codes": ["RESOURCE_CONFLICT", "PROFILE_RECOVERY_REQUIRED"], "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "PreconditionRequired": {"description": "If-Match is required for revisioned mutation.", "x-harpy-error-code": "PRECONDITION_REQUIRED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Unavailable": {"description": "The paired IAM and system-resource-layout authority is unavailable.", "x-harpy-error-codes": ["IAM_AUTHORITY_UNAVAILABLE", "IAM_UNAVAILABLE"], "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

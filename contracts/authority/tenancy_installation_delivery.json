@@ -1,0 +1,7 @@
+{"version":2,"authorities":[
+  {"id":"tenancy.installation_delivery.claim","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.installation_delivery.complete","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.installation_delivery.delete","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.installation_delivery.read","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.installation_delivery.record","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
+]}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/schema-contract.schema.json",
+  "title": "Harpy Persisted Database Schema Contract v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "component", "database_generation", "minimum_runtime_generation",
+    "migration_manifest_sha256", "extension_manifest_sha256", "status",
+    "verified_run_id", "revision", "verified_at"
+  ],
+  "properties": {
+    "component": {"const": "core"},
+    "database_generation": {"type": "integer", "minimum": 1},
+    "minimum_runtime_generation": {"type": "integer", "minimum": 1},
+    "migration_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "extension_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "status": {"enum": ["fenced", "ready"]},
+    "verified_run_id": {"type": "string", "format": "uuid"},
+    "revision": {"type": "integer", "minimum": 1},
+    "verified_at": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"}
+  }
+}

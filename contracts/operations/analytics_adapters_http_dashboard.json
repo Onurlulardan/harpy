@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/create.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/create_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "delete",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/delete.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/delete_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/get.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/get_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "grant",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/grant.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/grant_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/grant_acl.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/list.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/list_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "publish",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/publish.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/publish_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/publish.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "read",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/read_default.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/read_default_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/read_default.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "revoke",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/revoke.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/revoke_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/revoke_acl.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "set",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/set.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/set_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/set_default.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard",
+      "layer": "adapters/http",
+      "resource": "dashboard",
+      "operation": "update",
+      "source": "core/internal/modules/analytics/adapters/http/dashboard/update.go",
+      "test": "core/internal/modules/analytics/adapters/http/dashboard/update_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/update.go"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{"version":2,"authorities":[
+  {"id":"billing.catalogquery.get","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalogquery.legacy.materialize","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalogquery.list","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+	{"id":"billing.catalogquery.platform.resolve","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalogquery.read","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]}
+]}

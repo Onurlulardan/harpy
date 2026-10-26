@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/phase14-operator-profile-defs.schema.json",
+  "$defs": {
+    "initializeVariables": {
+      "allOf": [
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/runtime"},
+        {"$ref": "#/$defs/initializeSpecialized"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "initializeSpecialized": {
+      "type": "object",
+      "required": ["HARPY_INSTALLATION_MANIFEST_PATH", "HARPY_INITIAL_ADMIN_PASSWORD_FILE"],
+      "properties": {
+        "DEPLOYMENT_MODE": {"enum": ["onpremise", "saas"], "default": "onpremise"},
+        "HARPY_INSTALLATION_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_INITIAL_ADMIN_PASSWORD_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_IAM_LOGIN_DIRECTORY_KEYRING": {"$ref": "iam-api-config-fragment.schema.json#/$defs/hmacKeyring"},
+        "HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_RECOVERY_SIGNING_DIRECTORY": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_LICENSE_CREDENTIAL_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_LICENSE_ISSUER_URL": {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/serviceURL"},
+        "HARPY_LICENSE_SNAPSHOT_FILE": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_LICENSE_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_SAAS_AUTHORITY_PROPOSER_KMS_KEY_ID": {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/proposerKMSKeyID"},
+        "HARPY_SAAS_AUTHORITY_REGISTRY_URL": {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/serviceURL"},
+        "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RELEASE_TRUST_ROOT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_SAAS_AUTHORITY_WORKLOAD_IDENTITY_CONFIG_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+      },
+      "allOf": [
+      {"oneOf": [
+        {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING"], "not": {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"]}},
+        {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING"]}}
+      ]},
+      {
+        "if": {"required": ["DEPLOYMENT_MODE"], "properties": {"DEPLOYMENT_MODE": {"const": "saas"}}},
+        "then": {
+          "required": ["HARPY_SAAS_AUTHORITY_PROPOSER_KMS_KEY_ID", "HARPY_SAAS_AUTHORITY_REGISTRY_URL", "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH", "HARPY_RELEASE_TRUST_ROOT_PATH"],
+          "not": {"anyOf": [
+            {"required": ["HARPY_RECOVERY_SIGNING_DIRECTORY"]}, {"required": ["HARPY_LICENSE_CREDENTIAL_FILE"]},
+            {"required": ["HARPY_LICENSE_ISSUER_URL"]}, {"required": ["HARPY_LICENSE_SNAPSHOT_FILE"]},
+            {"required": ["HARPY_LICENSE_TRUST_BUNDLE_PATH"]}
+          ]}
+        },
+        "else": {
+          "required": ["HARPY_RECOVERY_SIGNING_DIRECTORY", "HARPY_LICENSE_TRUST_BUNDLE_PATH"],
+          "allOf": [
+            {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/licenseSourceXor"},
+            {"not": {"anyOf": [
+              {"required": ["HARPY_SAAS_AUTHORITY_PROPOSER_KMS_KEY_ID"]},
+              {"required": ["HARPY_SAAS_AUTHORITY_REGISTRY_URL"]},
+              {"required": ["HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"]},
+              {"required": ["HARPY_RELEASE_TRUST_ROOT_PATH"]},
+              {"required": ["HARPY_SAAS_AUTHORITY_WORKLOAD_IDENTITY_CONFIG_PATH"]}
+            ]}}
+          ]
+        }
+      }]
+    },
+    "identityReconcileVariables": {
+      "allOf": [
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/runtime"},
+        {
+          "type": "object",
+          "required": [
+            "HARPY_RESTORE_RECEIPT_PATH", "HARPY_RESTORE_SECURITY_EVIDENCE_PATH",
+            "HARPY_IAM_KEY_CUSTODY_MANIFEST_PATH", "HARPY_RECOVERY_TRUST_BUNDLE_PATH",
+            "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"
+          ],
+          "properties": {
+            "HARPY_RESTORE_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_SECURITY_EVIDENCE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_IAM_KEY_CUSTODY_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RECOVERY_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "licenseReconcileVariables": {
+      "allOf": [
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/runtime"},
+        {
+          "type": "object",
+          "required": ["HARPY_RESTORE_RECEIPT_PATH", "HARPY_RECOVERY_TRUST_BUNDLE_PATH", "HARPY_LICENSE_TRUST_BUNDLE_PATH"],
+          "properties": {
+            "DEPLOYMENT_MODE": {"enum": ["onpremise"], "default": "onpremise"},
+            "HARPY_RESTORE_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RECOVERY_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_LICENSE_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_LICENSE_CREDENTIAL_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_LICENSE_ISSUER_URL": {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/serviceURL"},
+            "HARPY_LICENSE_SNAPSHOT_FILE": {"$ref": "config.schema.json#/$defs/absolutePath"}
+          },
+          "allOf": [{"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/licenseSourceXor"}]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "postRestoreObserverVariables": {
+      "allOf": [
+        {"$ref": "phase14-executor-profile-defs.schema.json#/$defs/dedicatedCommon"},
+        {"$ref": "phase14-executor-profile-defs.schema.json#/$defs/releaseInputs"},
+        {
+          "type": "object",
+          "required": [
+            "HARPY_POST_RESTORE_REACTIVATION_POSTGRES_DSN_FILE",
+            "HARPY_POST_RESTORE_REACTIVATION_INPUT_FILE"
+          ],
+          "properties": {
+            "HARPY_POST_RESTORE_REACTIVATION_POSTGRES_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_POST_RESTORE_REACTIVATION_INPUT_FILE": {"$ref": "config.schema.json#/$defs/absolutePath"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/installation/v1/installation-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "environment_id", "deployment_mode", "primary_tenant", "first_admin", "request_sha256"],
+  "properties": {
+    "contract_version": {"const": "installation-manifest.v1"},
+    "environment_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "deployment_mode": {"enum": ["onpremise", "saas"]},
+    "primary_tenant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "slug"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "slug": {"type": "string", "pattern": "^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$"}
+      }
+    },
+    "first_admin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "email"],
+      "properties": {
+        "display_name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "email": {"type": "string", "minLength": 3, "maxLength": 254}
+      }
+    },
+    "request_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

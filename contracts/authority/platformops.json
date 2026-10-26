@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "authorities": [
+    {"id":"platformops.alert_events.get","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_events.list","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_rules.create","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_rules.delete","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_rules.get","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_rules.list","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_rules.record_test","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.alert_rules.update","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.database.diagnostics.read","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_control.get","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_kit.claim","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_protection.get","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_sets.delete","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_sets.read","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_signing.export","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.recovery_signing.record","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.restored_license.reconcile","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.system_health.read","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.traces.get","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.trace_spans.get","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.traces.list","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.traces.read_stats","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+    {"id":"platformops.traces.record","owner":"platformops","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
+  ]
+}

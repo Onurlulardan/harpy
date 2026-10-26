@@ -1,0 +1,6 @@
+{"version":2,"authorities":[
+  {"id":"iam.totp.activate","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.totp.reserve","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.webauthn.enable","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.webauthn.finalize","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]}
+]}

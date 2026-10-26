@@ -1,0 +1,7 @@
+{"version":2,"authorities":[
+  {"id":"iam.profile.backfill","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.profile.patch","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.profile.publish","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.profile.read","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.profile.retire","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]}
+]}

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/iam-api-config-fragment.schema.json",
+  "title": "Harpy IAM API Environment Fragment v1",
+  "type": "object",
+  "required": [
+    "HARPY_IAM_TOTP_KMS_KEY_ID",
+    "HARPY_IAM_DELIVERY_KMS_KEY_ID",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_SIGNING_KEY_ID",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_SIGNING_SEED_FILE",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_PUBLIC_KEYS_FILE",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_TARGETS_FILE",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_CLIENT_CERT_FILE",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_CLIENT_KEY_FILE",
+    "HARPY_IAM_V1_ACTOR_BRIDGE_SERVER_CA_FILE"
+  ],
+  "x-harpy-distinct-kms-key-ids": true,
+  "properties": {
+    "HARPY_IAM_ACCESS_TOKEN_KEYRING": {
+      "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
+      "contentSchema": {"$ref": "iam-access-token-keyring.schema.json"}
+    },
+    "HARPY_IAM_ACCESS_TOKEN_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_REFRESH_TOKEN_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_REFRESH_TOKEN_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_CSRF_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_CSRF_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_LOGIN_DIRECTORY_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_AUTH_THROTTLE_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_AUTH_THROTTLE_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SESSION_NETWORK_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_SESSION_NETWORK_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_ONE_TIME_TOKEN_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_RECOVERY_CODE_KEYRING": {"$ref": "#/$defs/hmacKeyring"},
+    "HARPY_IAM_RECOVERY_CODE_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_PASSWORD_BLOCKLISTS": {
+      "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
+      "contentSchema": {"$ref": "iam-password-blocklists.schema.json"}
+    },
+    "HARPY_IAM_PASSWORD_BLOCKLISTS_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_TOTP_KMS_KEY_ID": {"$ref": "config.schema.json#/$defs/kmsKeyID"},
+    "HARPY_IAM_DELIVERY_KMS_KEY_ID": {"$ref": "config.schema.json#/$defs/kmsKeyID"},
+    "HARPY_IAM_V1_ACTOR_BRIDGE_SIGNING_KEY_ID": {
+      "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,62}$"
+    },
+    "HARPY_IAM_V1_ACTOR_BRIDGE_SIGNING_SEED_FILE": {
+      "$ref": "config.schema.json#/$defs/secretFile"
+    },
+    "HARPY_IAM_V1_ACTOR_BRIDGE_PUBLIC_KEYS_FILE": {
+      "$ref": "config.schema.json#/$defs/absolutePath"
+    },
+    "HARPY_IAM_V1_ACTOR_BRIDGE_TARGETS_FILE": {
+      "$ref": "config.schema.json#/$defs/absolutePath"
+    },
+    "HARPY_IAM_V1_ACTOR_BRIDGE_CLIENT_CERT_FILE": {
+      "$ref": "config.schema.json#/$defs/absolutePath"
+    },
+    "HARPY_IAM_V1_ACTOR_BRIDGE_CLIENT_KEY_FILE": {
+      "$ref": "config.schema.json#/$defs/secretFile"
+    },
+    "HARPY_IAM_V1_ACTOR_BRIDGE_SERVER_CA_FILE": {
+      "$ref": "config.schema.json#/$defs/absolutePath"
+    }
+  },
+  "allOf": [
+    {"$ref": "#/$defs/accessXor"},
+    {"$ref": "#/$defs/refreshXor"},
+    {"$ref": "#/$defs/csrfXor"},
+    {"$ref": "#/$defs/directoryXor"},
+    {"$ref": "#/$defs/throttleXor"},
+    {"$ref": "#/$defs/sessionXor"},
+    {"$ref": "#/$defs/oneTimeXor"},
+    {"$ref": "#/$defs/recoveryXor"},
+    {"$ref": "#/$defs/passwordBlocklistsXor"}
+  ],
+  "$defs": {
+    "hmacKeyring": {
+      "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
+      "contentSchema": {"$ref": "iam-hmac-keyring.schema.json"}
+    },
+    "accessXor": {"oneOf": [
+      {"required": ["HARPY_IAM_ACCESS_TOKEN_KEYRING"], "not": {"required": ["HARPY_IAM_ACCESS_TOKEN_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_ACCESS_TOKEN_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_ACCESS_TOKEN_KEYRING"]}}
+    ]},
+    "refreshXor": {"oneOf": [
+      {"required": ["HARPY_IAM_REFRESH_TOKEN_KEYRING"], "not": {"required": ["HARPY_IAM_REFRESH_TOKEN_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_REFRESH_TOKEN_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_REFRESH_TOKEN_KEYRING"]}}
+    ]},
+    "csrfXor": {"oneOf": [
+      {"required": ["HARPY_IAM_CSRF_KEYRING"], "not": {"required": ["HARPY_IAM_CSRF_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_CSRF_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_CSRF_KEYRING"]}}
+    ]},
+    "directoryXor": {"oneOf": [
+      {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING"], "not": {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING"]}}
+    ]},
+    "throttleXor": {"oneOf": [
+      {"required": ["HARPY_IAM_AUTH_THROTTLE_KEYRING"], "not": {"required": ["HARPY_IAM_AUTH_THROTTLE_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_AUTH_THROTTLE_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_AUTH_THROTTLE_KEYRING"]}}
+    ]},
+    "sessionXor": {"oneOf": [
+      {"required": ["HARPY_IAM_SESSION_NETWORK_KEYRING"], "not": {"required": ["HARPY_IAM_SESSION_NETWORK_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_SESSION_NETWORK_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_SESSION_NETWORK_KEYRING"]}}
+    ]},
+    "oneTimeXor": {"oneOf": [
+      {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING"], "not": {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING"]}}
+    ]},
+    "recoveryXor": {"oneOf": [
+      {"required": ["HARPY_IAM_RECOVERY_CODE_KEYRING"], "not": {"required": ["HARPY_IAM_RECOVERY_CODE_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_RECOVERY_CODE_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_RECOVERY_CODE_KEYRING"]}}
+    ]},
+    "passwordBlocklistsXor": {"oneOf": [
+      {"required": ["HARPY_IAM_PASSWORD_BLOCKLISTS"], "not": {"required": ["HARPY_IAM_PASSWORD_BLOCKLISTS_FILE"]}},
+      {"required": ["HARPY_IAM_PASSWORD_BLOCKLISTS_FILE"], "not": {"required": ["HARPY_IAM_PASSWORD_BLOCKLISTS"]}}
+    ]}
+  }
+}

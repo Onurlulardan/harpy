@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "authorities": [
+    {"id":"catalog.package.get","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.package.list","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.package_version.get","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.package_version.list","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]}
+  ]
+}

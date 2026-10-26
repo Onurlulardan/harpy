@@ -1,0 +1,2 @@
+SELECT offering_version_id,revision,offering_sha256,effective_at
+FROM platform.billing_saas_free_base_read_v1()

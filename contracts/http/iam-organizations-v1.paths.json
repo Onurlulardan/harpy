@@ -1,0 +1,139 @@
+{
+  "pathItems": {
+    "collection": {
+      "get": {
+        "operationId": "iamListOrganizations", "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/CanonicalQueryResult"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "422": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryInvalid"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "post": {
+        "operationId": "iamCreateOrganization", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/OrganizationCreate"}}}},
+        "responses": {
+          "201": {"$ref": "iam-system-resources-v1.schemas.json#/responses/MutationCreated"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
+          "413": {"$ref": "iam-system-resources-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-system-resources-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "422": {"$ref": "iam-system-resources-v1.schemas.json#/responses/InputInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "409": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Conflict"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "delete": {
+        "operationId": "iamDeleteOrganizations", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/BulkDelete"}}}},
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Delete"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "409": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-system-resources-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-system-resources-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "query": {
+      "post": {
+        "operationId": "iamQueryOrganizations", "security": [{"bearerAuth": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryResult"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryInvalid"},
+          "413": {"$ref": "iam-system-resources-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-system-resources-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "422": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryInvalid"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "item": {
+      "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/ResourceID"}],
+      "get": {
+        "operationId": "iamGetOrganization", "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Record"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-system-resources-v1.schemas.json#/responses/NotFound"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "put": {
+        "operationId": "iamUpdateOrganization", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/OrganizationUpdate"}}}},
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Mutation"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
+          "413": {"$ref": "iam-system-resources-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-system-resources-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "422": {"$ref": "iam-system-resources-v1.schemas.json#/responses/InputInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-system-resources-v1.schemas.json#/responses/NotFound"},
+          "409": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Conflict"},
+          "428": {"$ref": "iam-system-resources-v1.schemas.json#/responses/PreconditionRequired"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "delete": {
+        "operationId": "iamDeleteOrganization", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
+        ],
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Delete"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-system-resources-v1.schemas.json#/responses/NotFound"},
+          "409": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Conflict"},
+          "428": {"$ref": "iam-system-resources-v1.schemas.json#/responses/PreconditionRequired"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "state": {
+      "patch": {
+        "operationId": "iamChangeOrganizationState", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/ResourceID"},
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
+          {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/OrganizationState"}}}},
+        "responses": {
+          "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Mutation"},
+          "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-system-resources-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-system-resources-v1.schemas.json#/responses/NotFound"},
+          "409": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-system-resources-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-system-resources-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "428": {"$ref": "iam-system-resources-v1.schemas.json#/responses/PreconditionRequired"},
+          "503": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    }
+  }
+}

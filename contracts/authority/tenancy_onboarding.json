@@ -1,0 +1,8 @@
+{"version":2,"authorities":[
+  {"id":"tenancy.onboarding.accept","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.onboarding.activate","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.onboarding.authority_ack.record","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.onboarding.claim","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.onboarding.reconcile","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.onboarding.record","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
+]}

@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "cancel",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/cancel.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/cancel_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/cancel.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "complete",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/complete.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/complete_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/complete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "create",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/create_source.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/create_source_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/create_source.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "delete",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/delete_source.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/delete_source_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/delete_source.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "get",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/get.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/get_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "list",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/list_errors.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/list_errors_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/list_errors.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "record",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/record_batch.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/record_batch_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/record_batch.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres", "resource": "recordimport", "operation": "submit",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/submit.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/submit_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/submit.go"
+    }
+  ]
+}

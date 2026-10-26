@@ -1,0 +1,5 @@
+{
+  "/api/platform/database/stats": {"$ref":"platform-database-v1.paths.json#/pathItems/stats"},
+  "/api/platform/database/schema": {"$ref":"platform-database-v1.paths.json#/pathItems/schema"},
+  "/api/platform/database/diagnostics/recovery-readiness": {"$ref":"platform-database-v1.paths.json#/pathItems/recoveryReadiness"}
+}

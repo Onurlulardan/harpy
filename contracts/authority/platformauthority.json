@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "platformauthority.acknowledgement.import",
+      "owner": "platformauthority",
+      "scope_source": "environment_global",
+      "required_groups": ["tenancy"],
+      "ordered_domains": ["tenancy"],
+      "participants": ["tenancy"]
+    },
+    {
+      "id": "platformauthority.delivery.process",
+      "owner": "platformauthority",
+      "scope_source": "environment_global",
+      "required_groups": ["tenancy"],
+      "ordered_domains": ["tenancy"],
+      "participants": ["tenancy"]
+    },
+    {
+      "id": "platformauthority.recovery_evidence.read",
+      "owner": "platformauthority",
+      "scope_source": "environment_global",
+      "required_groups": ["tenancy"],
+      "ordered_domains": ["tenancy"],
+      "participants": ["tenancy"]
+    }
+  ]
+}

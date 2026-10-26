@@ -1,0 +1,193 @@
+{
+  "pathItems": {
+    "collection": {
+      "get": {
+        "operationId": "notificationsListInbox",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "notifications-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/TenantSlug"}
+        ],
+        "x-harpy-rest-query": {
+          "filters": {"unread": ["eq"], "category": ["eq"]},
+          "sort": ["inbox_revision:desc"],
+          "page": {"style": "cursor", "maximum_size": 100},
+          "select": false, "include": false, "search": false, "count": false, "aggregate": false
+        },
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/MessagePage"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "item": {
+      "parameters": [{"$ref": "notifications-v1.schemas.json#/parameters/NotificationID"}],
+      "get": {
+        "operationId": "notificationsGetInboxMessage",
+        "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/Message"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "404": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      },
+      "delete": {
+        "operationId": "notificationsDismissInboxMessage",
+        "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/Message"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "404": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "409": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "read": {
+      "put": {
+        "operationId": "notificationsMarkInboxMessageRead",
+        "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "notifications-v1.schemas.json#/parameters/NotificationID"}],
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/Message"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "404": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "409": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "readAll": {
+      "put": {
+        "operationId": "notificationsMarkAllInboxRead",
+        "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/MarkAll"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "preferences": {
+      "get": {
+        "operationId": "notificationsGetPreferences",
+        "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/Preferences"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      },
+      "put": {
+        "operationId": "notificationsUpdatePreferences",
+        "security": [{"bearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "notifications-v1.schemas.json#/schemas/PreferencesRequest"}}}
+        },
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/Preferences"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "409": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "413": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "415": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "422": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "intents": {
+      "post": {
+        "operationId": "notificationsCreateIntent",
+        "security": [{"bearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "notifications-v1.schemas.json#/schemas/IntentRequest"}}}
+        },
+        "responses": {
+          "200": {"$ref": "notifications-v1.schemas.json#/responses/Intent"},
+          "201": {"$ref": "notifications-v1.schemas.json#/responses/Intent"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "409": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "413": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "415": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "422": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "realtimeTickets": {
+      "post": {
+        "operationId": "notificationsCreateRealtimeTicket",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "notifications-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/CSRF"}
+        ],
+        "responses": {
+          "201": {"$ref": "notifications-v1.schemas.json#/responses/RealtimeTicket"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "realtime": {
+      "get": {
+        "operationId": "notificationsConnectRealtime",
+        "security": [],
+        "parameters": [
+          {"$ref": "notifications-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/SocketProtocols"}
+        ],
+        "responses": {
+          "101": {"$ref": "notifications-v1.schemas.json#/responses/SocketUpgrade"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "422": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    },
+    "legacyRealtime": {
+      "get": {
+        "deprecated": true,
+        "operationId": "notificationsConnectLegacyRealtime",
+        "security": [],
+        "parameters": [
+          {"$ref": "notifications-v1.schemas.json#/parameters/UserID"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/SocketProtocols"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/ConsumerManifest"},
+          {"$ref": "notifications-v1.schemas.json#/parameters/ConsumerSignature"}
+        ],
+        "responses": {
+          "101": {"$ref": "notifications-v1.schemas.json#/responses/SocketUpgrade"},
+          "400": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "401": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "403": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "410": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "422": {"$ref": "notifications-v1.schemas.json#/responses/Error"},
+          "503": {"$ref": "notifications-v1.schemas.json#/responses/Error"}
+        }
+      }
+    }
+  }
+}

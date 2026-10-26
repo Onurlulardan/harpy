@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/legalhold",
+      "layer": "adapters/postgres",
+      "resource": "legalhold",
+      "operation": "create",
+      "source": "core/internal/modules/billing/adapters/postgres/legalhold/create.go",
+      "test": "core/internal/modules/billing/adapters/postgres/legalhold/create_test.go",
+      "application_operation": "core/internal/modules/billing/application/legalhold/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/legalhold",
+      "layer": "adapters/postgres",
+      "resource": "legalhold",
+      "operation": "release",
+      "source": "core/internal/modules/billing/adapters/postgres/legalhold/release.go",
+      "test": "core/internal/modules/billing/adapters/postgres/legalhold/release_test.go",
+      "application_operation": "core/internal/modules/billing/application/legalhold/release.go"
+    }
+  ]
+}

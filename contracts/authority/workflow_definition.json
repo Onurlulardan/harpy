@@ -1,0 +1,8 @@
+{"version":2,"authorities":[
+  {"id":"workflow.definition.create","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.definition.get","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.definition.list","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.definition.rename","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.definition.retire","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.definition.update_draft","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]}
+]}

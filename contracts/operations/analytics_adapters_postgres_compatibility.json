@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/compatibility",
+      "layer": "adapters/postgres",
+      "resource": "compatibility",
+      "operation": "accept",
+      "source": "core/internal/modules/analytics/adapters/postgres/compatibility/accept.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/compatibility/accept_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/accept.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/compatibility",
+      "layer": "adapters/postgres",
+      "resource": "compatibility",
+      "operation": "backfill",
+      "source": "core/internal/modules/analytics/adapters/postgres/compatibility/backfill_item.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/compatibility/backfill_item_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/backfill_item.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/compatibility",
+      "layer": "adapters/postgres",
+      "resource": "compatibility",
+      "operation": "finalize",
+      "source": "core/internal/modules/analytics/adapters/postgres/compatibility/finalize_consumers.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/compatibility/finalize_consumers_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/finalize_consumers.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/compatibility",
+      "layer": "adapters/postgres",
+      "resource": "compatibility",
+      "operation": "record",
+      "source": "core/internal/modules/analytics/adapters/postgres/compatibility/record_hit.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/compatibility/record_hit_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/record_hit.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/compatibility",
+      "layer": "adapters/postgres",
+      "resource": "compatibility",
+      "operation": "resolve",
+      "source": "core/internal/modules/analytics/adapters/postgres/compatibility/resolve.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/compatibility/resolve_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/resolve.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/compatibility",
+      "layer": "adapters/postgres",
+      "resource": "compatibility",
+      "operation": "retire",
+      "source": "core/internal/modules/analytics/adapters/postgres/compatibility/retire.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/compatibility/retire_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/retire_edge.go"
+    }
+  ]
+}

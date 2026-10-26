@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "resolve",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/resolve_portal_setup.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/resolve_portal_setup_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/resolve_portal_setup.go"
+    }
+  ]
+}

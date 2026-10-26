@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "consumer": "frontend-v3-legacy-workflow-client",
+  "compatibility_contract": "contracts/http/workflow-v1-compat.paths.json",
+  "resolution_contract": "workflow-v1-http-resolution.v1",
+  "production_admission": "exact-resolver-evidence-required",
+  "operations": [
+    "listLegacyWorkflows",
+    "validateLegacyWorkflow",
+    "createLegacyWorkflow",
+    "getLegacyWorkflow",
+    "updateLegacyWorkflow",
+    "deleteLegacyWorkflow",
+    "getLegacyWorkflowHistory",
+    "listLegacyPendingWorkflowTasks",
+    "decideLegacyWorkflowTask"
+  ],
+  "client_upgrade_required": [
+    "validateLegacyWorkflow",
+    "getLegacyWorkflowHistory",
+    "decideLegacyWorkflowTask:REVISION",
+    "decideLegacyWorkflowTask:implicit-claim",
+    "decideLegacyWorkflowTask:action-note"
+  ]
+}

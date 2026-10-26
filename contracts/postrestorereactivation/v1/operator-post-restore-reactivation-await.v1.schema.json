@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "operator-post-restore-reactivation-await.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "environment_id", "restore_operation_id"],
+  "properties": {
+    "schema": {"const": "operator-post-restore-reactivation-await.v1"},
+    "environment_id": {"type": "string", "format": "uuid"},
+    "restore_operation_id": {"type": "string", "format": "uuid"}
+  }
+}

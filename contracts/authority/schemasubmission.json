@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "schemasubmission.submit",
+      "owner": "schemasubmission",
+      "scope_source": "actor_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    }
+  ]
+}

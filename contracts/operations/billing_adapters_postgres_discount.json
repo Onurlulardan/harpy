@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/discount","layer":"adapters/postgres","resource":"discount","operation":"redeem","source":"core/internal/modules/billing/adapters/postgres/discount/redeem.go","test":"core/internal/modules/billing/adapters/postgres/discount/redeem_test.go","application_operation":"core/internal/modules/billing/application/discount/redeem.go"}
+]}

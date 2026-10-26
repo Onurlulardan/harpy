@@ -1,0 +1,19 @@
+{
+  "parameters": {
+    "slug": {"name":"slug","in":"path","required":true,"schema":{"type":"string","minLength":1,"maxLength":127}},
+    "runID": {"name":"run_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"}}
+  },
+  "responses": {
+    "retired": {
+      "description": "Standalone V1 module migration is permanently retired; use Catalog upgrade operations",
+      "headers": {"Link":{"schema":{"type":"string"}}},
+      "content": {"application/json":{"schema":{"$ref":"../runtime/v1/error-envelope.schema.json"}}}
+    }
+  },
+  "pathItems": {
+    "plan": {"parameters":[{"$ref":"#/parameters/slug"}],"get":{"operationId":"retireStandaloneModuleMigrationPlan","deprecated":true,"security":[],"x-harpy-successor":"/api/catalog/installations/{installation_id}/upgrades","responses":{"410":{"$ref":"#/responses/retired"}}}},
+    "apply": {"parameters":[{"$ref":"#/parameters/slug"}],"post":{"operationId":"retireStandaloneModuleMigrationApply","deprecated":true,"security":[],"x-harpy-successor":"/api/catalog/installations/{installation_id}/upgrades","responses":{"410":{"$ref":"#/responses/retired"}}}},
+    "runs": {"parameters":[{"$ref":"#/parameters/slug"}],"get":{"operationId":"retireStandaloneModuleMigrationRuns","deprecated":true,"security":[],"x-harpy-successor":"/api/catalog/operations/{operation_id}","responses":{"410":{"$ref":"#/responses/retired"}}}},
+    "fieldBackups": {"parameters":[{"$ref":"#/parameters/slug"},{"$ref":"#/parameters/runID"}],"get":{"operationId":"retireStandaloneModuleMigrationFieldBackups","deprecated":true,"security":[],"x-harpy-successor":"/api/catalog/operations/{operation_id}","responses":{"410":{"$ref":"#/responses/retired"}}}}
+  }
+}

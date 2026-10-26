@@ -1,0 +1,135 @@
+{
+  "pathItems": {
+    "self": {
+      "get": {
+        "operationId": "iamGetSelfProfile", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"}],
+        "responses": {
+          "200": {"$ref": "iam-profile-v1.schemas.json#/responses/Self"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-profile-v1.schemas.json#/responses/NotFound"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "put": {
+        "operationId": "iamUpdateSelfProfile", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/SelfIdempotencyKey"}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-profile-v1.requests.json#/schemas/SelfUpdate"}}}},
+        "responses": {
+          "200": {"$ref": "iam-profile-v1.schemas.json#/responses/Self"},
+          "400": {"$ref": "iam-profile-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-profile-v1.schemas.json#/responses/NotFound"},
+          "409": {"$ref": "iam-profile-v1.schemas.json#/responses/ProfileWriteConflict"},
+          "413": {"$ref": "iam-profile-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-profile-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "422": {"$ref": "iam-profile-v1.schemas.json#/responses/FieldForbidden"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "active": {
+      "get": {
+        "operationId": "iamGetActiveProfileSchema", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"}
+        ],
+        "responses": {
+          "200": {"$ref": "iam-profile-v1.schemas.json#/responses/Schema"},
+          "400": {"$ref": "iam-profile-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-profile-v1.schemas.json#/responses/NotFound"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "historical": {
+      "get": {
+        "operationId": "iamGetProfileSchema", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/SchemaID"}
+        ],
+        "responses": {
+          "200": {"$ref": "iam-profile-v1.schemas.json#/responses/Schema"},
+          "400": {"$ref": "iam-profile-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-profile-v1.schemas.json#/responses/NotFound"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "publish": {
+      "post": {
+        "operationId": "iamPublishProfileSchema", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/IdempotencyKey"}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-profile-v1.requests.json#/schemas/SchemaPublish"}}}},
+        "responses": {
+          "201": {"$ref": "iam-profile-v1.schemas.json#/responses/MutationCreated"},
+          "400": {"$ref": "iam-profile-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "409": {"$ref": "iam-profile-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-profile-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-profile-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "recovery": {
+      "post": {
+        "operationId": "iamRecoverProfileBackfill", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/PlanID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/IdempotencyKey"}
+        ],
+        "responses": {
+          "201": {"$ref": "iam-profile-v1.schemas.json#/responses/RecoveryCreated"},
+          "400": {"$ref": "iam-profile-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "409": {"$ref": "iam-profile-v1.schemas.json#/responses/RecoveryConflict"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "retire": {
+      "post": {
+        "operationId": "iamRetireProfileField", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/FieldID"},
+          {"$ref": "iam-profile-v1.schemas.json#/parameters/IdempotencyKey"}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-profile-v1.requests.json#/schemas/FieldRetire"}}}},
+        "responses": {
+          "200": {"$ref": "iam-profile-v1.schemas.json#/responses/Mutation"},
+          "400": {"$ref": "iam-profile-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-profile-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-profile-v1.schemas.json#/responses/Forbidden"},
+          "404": {"$ref": "iam-profile-v1.schemas.json#/responses/NotFound"},
+          "409": {"$ref": "iam-profile-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-profile-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-profile-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-profile-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    }
+  }
+}

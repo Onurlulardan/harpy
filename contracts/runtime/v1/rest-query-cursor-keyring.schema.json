@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/rest-query-cursor-keyring.schema.json",
+  "title": "Harpy REST Query Cursor Keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "current", "previous"],
+  "properties": {
+    "version": {"const": 1},
+    "current": {"$ref": "#/$defs/key"},
+    "previous": {"$ref": "#/$defs/key"}
+  },
+  "x-harpy-distinct-kids": true,
+  "x-harpy-reject-duplicate-members": true,
+  "$defs": {
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kid", "key"],
+      "properties": {
+        "kid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$"
+        },
+        "key": {
+          "type": "string",
+          "minLength": 43,
+          "maxLength": 43,
+          "pattern": "^[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$",
+          "contentEncoding": "base64url-no-pad",
+          "x-harpy-decoded-bytes": 32
+        }
+      }
+    }
+  }
+}

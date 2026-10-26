@@ -1,0 +1,38 @@
+
+{
+  "version": 2,
+  "owner": {
+    "name": "platform_async",
+    "prefix": "platform_async_",
+    "scopes": ["platform"],
+    "migration_dirs": [
+      {"path": "core/internal/platform/async/migrations", "scope": "platform"}
+    ],
+    "static_sql_dirs": [
+      {"path": "core/internal/platform/async/adapters/postgres/installationactivation/sql/platform", "scope": "platform"},
+      {"path": "core/internal/platform/async/adapters/postgres/sql", "scope": "platform"}
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [],
+    "platform_routines": [],
+    "routine_execute_grants": [],
+    "platform_tables": [],
+    "external_accesses": [],
+    "foreign_keys": [],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  },
+  "includes": [
+    "contracts/storage/fragments/platform_async/01_schema_usage_grants.json",
+    "contracts/storage/fragments/platform_async/02_platform_routines.json",
+    "contracts/storage/fragments/platform_async/03_routine_execute_grants_01.json",
+    "contracts/storage/fragments/platform_async/04_routine_execute_grants_02.json",
+    "contracts/storage/fragments/platform_async/05_routine_execute_grants_03.json",
+    "contracts/storage/fragments/platform_async/06_platform_tables.json",
+    "contracts/storage/fragments/platform_async/07_foreign_keys_01.json",
+    "contracts/storage/fragments/platform_async/08_foreign_keys_02.json",
+    "contracts/storage/fragments/platform_async/09_foreign_keys_03.json",
+    "contracts/storage/fragments/platform_async/10_foreign_keys_04.json",
+    "contracts/storage/fragments/platform_async/11_external_accesses.json"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schemas": {
+    "UUID": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "State": {"enum": ["PENDING", "ACCEPTED", "REVOKED", "EXPIRED"]},
+    "Invitation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "email", "role", "invited_by", "status", "expires_at", "created_at", "revision"],
+      "properties": {
+        "id": {"$ref": "#/schemas/UUID"},
+        "email": {"type": "string", "format": "email", "minLength": 3, "maxLength": 1024},
+        "role": {"type": "string", "minLength": 1, "maxLength": 128},
+        "invited_by": {"$ref": "#/schemas/UUID"},
+        "status": {"$ref": "#/schemas/State"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "CreateRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["email", "role"],
+      "properties": {
+        "email": {"type": "string", "format": "email", "minLength": 3, "maxLength": 1024},
+        "role": {"type": "string", "minLength": 1, "maxLength": 128}
+      }
+    },
+    "ListResponse": {
+      "type": "object", "additionalProperties": false,
+      "required": ["data", "total"],
+      "properties": {
+        "data": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Invitation"}},
+        "total": {"type": "integer", "minimum": 0, "maximum": 100},
+        "next_cursor": {"$ref": "#/schemas/UUID"}
+      }
+    },
+    "VerifyResponse": {
+      "type": "object", "additionalProperties": false,
+      "required": ["email", "role", "tenant_name", "tenant_slug", "expires_at"],
+      "properties": {
+        "email": {"type": "string", "format": "email", "minLength": 3, "maxLength": 1024},
+        "role": {"type": "string", "minLength": 1, "maxLength": 128},
+        "tenant_name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
+        "expires_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "AcceptRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["token", "first_name", "last_name", "password", "tenant_slug"],
+      "properties": {
+        "token": {"type": "string", "writeOnly": true, "minLength": 1, "maxLength": 1024, "x-harpy-sensitive": true},
+        "first_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "last_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "password": {"type": "string", "writeOnly": true, "minLength": 1, "maxLength": 128, "x-harpy-sensitive": true},
+        "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
+        "custom_attributes": {"type": "object", "maxProperties": 128}
+      }
+    },
+    "AcceptResponse": {
+      "type": "object", "additionalProperties": false,
+      "required": ["user_id", "tenant_slug", "requires_login"],
+      "properties": {
+        "user_id": {"$ref": "#/schemas/UUID"},
+        "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
+        "requires_login": {"const": true}
+      }
+    },
+    "Message": {
+      "type": "object", "additionalProperties": false,
+      "required": ["message"],
+      "properties": {"message": {"const": "Invitation cancelled"}}
+    }
+  },
+  "parameters": {
+    "ID": {"name": "id", "in": "path", "required": true, "schema": {"$ref": "#/schemas/UUID"}},
+    "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "Revision": {"name": "If-Match", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^\\\"revision-[1-9][0-9]*\\\"$"}},
+    "Token": {"name": "token", "in": "query", "required": true, "x-harpy-sensitive": true, "schema": {"type": "string", "minLength": 1, "maxLength": 1024}},
+    "Tenant": {"name": "tenant", "in": "query", "required": true, "schema": {"type": "string", "minLength": 1, "maxLength": 128}}
+  },
+  "responses": {
+    "Invitation": {"description": "Invitation state without credential material.", "headers": {"ETag": {"required": true, "schema": {"type": "string", "pattern": "^\\\"revision-[1-9][0-9]*\\\"$"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/Invitation"}}}},
+    "List": {"description": "Visible invitations without credential material.", "content": {"application/json": {"schema": {"$ref": "#/schemas/ListResponse"}}}},
+    "Verify": {"description": "Invitation registration preview. Responses are never cacheable.", "content": {"application/json": {"schema": {"$ref": "#/schemas/VerifyResponse"}}}},
+    "Accept": {"description": "Registration completed; a separate login is required.", "content": {"application/json": {"schema": {"$ref": "#/schemas/AcceptResponse"}}}},
+    "Revoked": {"description": "Invitation revoked.", "content": {"application/json": {"schema": {"$ref": "#/schemas/Message"}}}},
+    "Error": {"description": "Stable error envelope with no credential or identity oracle detail.", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AcceptanceConflict": {"description": "Invitation acceptance conflict, including a fenced profile lineage.", "x-harpy-error-codes": ["INVITATION_CONFLICT", "PROFILE_RECOVERY_REQUIRED"], "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

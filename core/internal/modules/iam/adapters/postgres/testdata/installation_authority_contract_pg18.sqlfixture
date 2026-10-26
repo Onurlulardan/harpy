@@ -1,0 +1,40 @@
+-- PostgreSQL 18 IAM Gen71 authority contract fixture.
+CREATE TABLE platform.iam_security_epochs (
+    environment_id uuid PRIMARY KEY,
+    security_epoch bytea NOT NULL,
+    generation bigint NOT NULL,
+    created_at timestamptz NOT NULL,
+    rotated_at timestamptz NOT NULL
+);
+CREATE TABLE platform.test_legacy_epoch_writes (
+    environment_id uuid PRIMARY KEY
+);
+
+CREATE FUNCTION platform.iam_security_epoch_initialize_v1(
+    p_environment_id uuid,p_now timestamptz
+) RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
+AS $$
+BEGIN
+    INSERT INTO platform.test_legacy_epoch_writes VALUES (p_environment_id)
+    ON CONFLICT DO NOTHING;
+    RETURN true;
+END
+$$;
+CREATE FUNCTION platform.iam_installation_instance_owner_input_v1(
+    p_environment_id uuid
+) RETURNS TABLE (
+    operation_id uuid,tenant_id uuid,schema_name name,user_id uuid,
+    owner_binding_id uuid,request_sha256 text
+) LANGUAGE sql SECURITY DEFINER SET search_path TO pg_catalog
+AS 'SELECT NULL::uuid,NULL::uuid,NULL::name,NULL::uuid,NULL::uuid,NULL::text WHERE false';
+
+REVOKE ALL ON FUNCTION platform.iam_security_epoch_initialize_v1(
+    uuid,timestamptz
+) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform.iam_security_epoch_initialize_v1(
+    uuid,timestamptz
+) TO harpy_runtime;
+REVOKE ALL ON FUNCTION platform.iam_installation_instance_owner_input_v1(uuid)
+FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform.iam_installation_instance_owner_input_v1(uuid)
+TO harpy_runtime;

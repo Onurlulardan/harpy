@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "owner": "platform_migrator",
+  "streams": [
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260713010000,"version_to":20260713015200,"phase":"foundation","target_database_generation":1,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260713040000,"version_to":20260713042300,"phase":"foundation","target_database_generation":1,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260714005900,"version_to":20260714010300,"phase":"foundation","target_database_generation":1,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260714010400,"version_to":20260714010400,"phase":"expand","target_database_generation":2,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260714010500,"version_to":20260714010900,"phase":"expand","target_database_generation":2,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260714012910,"version_to":20260714012930,"phase":"expand","target_database_generation":2,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260718020000,"version_to":20260718020005,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260718020010,"version_to":20260718020016,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260718020023,"version_to":20260718020024,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260718020033,"version_to":20260718020034,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260718020100,"version_to":20260718020109,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260718020115,"version_to":20260718020116,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260722030000,"version_to":20260722030001,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260725123900,"version_to":20260725123900,"phase":"expand","target_database_generation":33,"next_minimum_runtime_generation":16},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260730113100,"version_to":20260730113100,"phase":"expand","target_database_generation":74,"next_minimum_runtime_generation":24},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260730113300,"version_to":20260730113300,"phase":"expand","target_database_generation":76,"next_minimum_runtime_generation":24},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260730113500,"version_to":20260730113500,"phase":"expand","target_database_generation":78,"next_minimum_runtime_generation":24},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260730120200,"version_to":20260730120200,"phase":"expand","target_database_generation":80,"next_minimum_runtime_generation":24},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260730120300,"version_to":20260730120304,"phase":"expand","target_database_generation":81,"next_minimum_runtime_generation":24},
+    {"owner":"platform_migrator","directory":"core/internal/platform/migrator/migrations","scope":"platform","version_from":20260730120305,"version_to":20260730120314,"phase":"expand","target_database_generation":82,"next_minimum_runtime_generation":24}
+  ]
+}

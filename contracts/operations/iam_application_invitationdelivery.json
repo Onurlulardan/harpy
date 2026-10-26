@@ -1,0 +1,30 @@
+{"version":1,"operations":[
+  {
+    "package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/invitationdelivery",
+    "layer":"application","resource":"invitationdelivery","operation":"claim",
+    "source":"core/internal/modules/iam/application/invitationdelivery/claim.go",
+    "test":"core/internal/modules/iam/application/invitationdelivery/claim_test.go",
+    "authority_id":"iam.invitationdelivery.claim"
+  },
+  {
+    "package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/invitationdelivery",
+    "layer":"application","resource":"invitationdelivery","operation":"finalize",
+    "source":"core/internal/modules/iam/application/invitationdelivery/finalize.go",
+    "test":"core/internal/modules/iam/application/invitationdelivery/finalize_test.go",
+    "authority_id":"iam.invitationdelivery.finalize"
+  },
+  {
+    "package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/invitationdelivery",
+    "layer":"application","resource":"invitationdelivery","operation":"mark",
+    "source":"core/internal/modules/iam/application/invitationdelivery/mark_unknown.go",
+    "test":"core/internal/modules/iam/application/invitationdelivery/mark_unknown_test.go",
+    "authority_id":"iam.invitationdelivery.mark"
+  },
+  {
+    "package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/invitationdelivery",
+    "layer":"application","resource":"invitationdelivery","operation":"release",
+    "source":"core/internal/modules/iam/application/invitationdelivery/release.go",
+    "test":"core/internal/modules/iam/application/invitationdelivery/release_test.go",
+    "authority_id":"iam.invitationdelivery.release"
+  }
+]}

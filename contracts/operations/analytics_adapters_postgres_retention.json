@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/retention",
+      "layer": "adapters/postgres",
+      "resource": "retention",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/adapters/postgres/retention/execute.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/retention/execute_test.go",
+      "application_operation": "core/internal/modules/analytics/application/retention/execute.go"
+    }
+  ]
+}

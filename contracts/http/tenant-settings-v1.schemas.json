@@ -1,0 +1,66 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "SMTPRequest": {
+      "type":"object","additionalProperties":false,
+      "required":["smtp_host","smtp_port","smtp_username","smtp_password","email_from"],
+      "properties": {
+        "smtp_host":{"type":"string","minLength":1,"maxLength":253},
+        "smtp_port":{"type":"string","pattern":"^[1-9][0-9]{0,4}$"},
+        "smtp_username":{"type":"string","maxLength":320},
+        "smtp_password":{"type":"string","maxLength":4096,"writeOnly":true},
+        "email_from":{"type":"string","minLength":1,"maxLength":512}
+      }
+    },
+    "SMTPView": {
+      "type":"object","additionalProperties":false,
+      "required":["smtp_host","smtp_port","smtp_username","smtp_password","email_from","smtp_password_configured"],
+      "properties": {
+        "smtp_host":{"type":"string"},"smtp_port":{"type":"string"},
+        "smtp_username":{"type":"string"},"smtp_password":{"const":"","readOnly":true},
+        "email_from":{"type":"string"},"smtp_password_configured":{"type":"boolean"}
+      }
+    },
+    "Subscription": {
+      "type":"object","additionalProperties":false,
+      "required":["plan_name","plan_slug","status","max_users","max_forms","max_storage_mb","submissions_per_month"],
+      "properties": {
+        "plan_name":{"type":"string"},"plan_slug":{"type":"string"},"status":{"type":"string"},
+        "max_users":{"type":"integer","minimum":0},"max_forms":{"type":"integer","minimum":0},
+        "max_storage_mb":{"type":"integer","minimum":0},"submissions_per_month":{"type":"integer","minimum":0}
+      }
+    },
+    "Settings": {
+      "type":"object","additionalProperties":false,
+      "required":["id","name","slug","status","revision","created_at","updated_at","user_count","form_count","pending_invitation_count"],
+      "properties": {
+        "id":{"type":"string","format":"uuid"},"name":{"type":"string","minLength":1,"maxLength":255},
+        "slug":{"type":"string"},"status":{"enum":["ACTIVE","TRIAL","SUSPENDED"]},
+        "revision":{"type":"integer","minimum":1},"created_at":{"type":"string","format":"date-time"},
+        "updated_at":{"type":"string","format":"date-time"},"user_count":{"type":"integer","minimum":0},
+        "form_count":{"type":"integer","minimum":0},"pending_invitation_count":{"type":"integer","minimum":0},
+        "smtp":{"$ref":"#/$defs/SMTPView"},"subscription":{"$ref":"#/$defs/Subscription"}
+      }
+    },
+    "UpdateRequest": {
+      "type":"object","additionalProperties":false,"minProperties":1,
+      "properties":{"name":{"type":"string","minLength":1,"maxLength":255},"smtp":{"$ref":"#/$defs/SMTPRequest"}}
+    },
+    "TestEmailRequest": {
+      "type":"object","additionalProperties":false,"required":["to"],
+      "properties":{"to":{"type":"string","format":"email","maxLength":512}}
+    },
+    "SettingsEnvelope": {
+      "type":"object","additionalProperties":false,"required":["success","data"],
+      "properties":{"success":{"const":true},"data":{"$ref":"#/$defs/Settings"}}
+    },
+    "MutationEnvelope": {
+      "type":"object","additionalProperties":false,"required":["success","message","data"],
+      "properties":{"success":{"const":true},"message":{"type":"string"},"data":{"type":"object","additionalProperties":false,"required":["revision","replay"],"properties":{"revision":{"type":"integer","minimum":1},"replay":{"type":"boolean"}}}}
+    },
+    "TestEmailEnvelope": {
+      "type":"object","additionalProperties":false,"required":["success","message","data"],
+      "properties":{"success":{"const":true},"message":{"type":"string"},"data":{"type":"object","additionalProperties":false,"required":["operation_id","replay"],"properties":{"operation_id":{"type":"string","format":"uuid"},"replay":{"type":"boolean"}}}}
+    }
+  }
+}

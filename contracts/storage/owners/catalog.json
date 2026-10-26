@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "catalog",
+    "prefix": "catalog_",
+    "scopes": ["platform", "tenant"],
+    "migration_dirs": [
+      {"path":"core/internal/modules/catalog/migrations/platform","scope":"platform"},
+      {"path":"core/internal/modules/catalog/migrations/tenant","scope":"tenant"}
+    ],
+    "static_sql_dirs": [
+      {"path":"core/internal/modules/catalog/adapters/postgres/adoption/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/catalog/adapters/postgres/backup/sql/platform","scope":"platform"},
+      {"path":"core/internal/modules/catalog/adapters/postgres/catalogowner/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/catalog/adapters/postgres/lifecycle/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/catalog/adapters/postgres/menu/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/catalog/adapters/postgres/registry/sql/platform","scope":"platform"}
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [],
+    "platform_routines": [
+      "platform.catalog_adoption_registry_blocker_v1",
+      "platform.catalog_assert_tenant_authority_v1",
+      "platform.catalog_reject_registry_mutation_v1"
+    ],
+    "routine_execute_grants": [
+      {"routine":"platform.catalog_assert_tenant_authority_v1","identity_arguments":"uuid,bigint","role":"harpy_runtime","contract":"ADR-0015"}
+    ],
+    "platform_tables": [
+      "platform.catalog_package_owner_payloads",
+      "platform.catalog_package_versions",
+      "platform.catalog_packages"
+    ],
+    "foreign_keys": [],
+    "external_accesses": [
+      {"access":"write","target_owner":"platform_cutover","target":"platform.applied_change_receipts","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_backupreceipt","target":"platform.backup_receipts","contract":"ADR-0032"},
+      {"access":"read","target_owner":"catalog","target":"platform.catalog_adoption_registry_blocker_v1","contract":"ADR-0015"},
+      {"access":"read","target_owner":"catalog","target":"platform.catalog_assert_tenant_authority_v1","contract":"ADR-0015"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_copy_checkpoints","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_group_members","contract":"ADR-0022"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_groups","contract":"ADR-0022"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operation_checkpoint_keys","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operations","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_prepare_batch_v1","contract":"ADR-0022"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_record_batch_v1","contract":"ADR-0022"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.domain_cutovers","contract":"ADR-0022"},
+      {"access":"read","target_owner":"tenancy","target":"tenancy_schema_identity","contract":"ADR-0034"}
+    ],
+    "legacy_tables": [
+      {"name":"menu_configs","owner":"catalog","adapter":"core/internal/modules/catalog/adapters/postgres/adoption/validate_inventory.go","cutover_gate":"catalog.v1-storage-retired"},
+      {"name":"module_dependencies","owner":"catalog","adapter":"core/internal/modules/catalog/adapters/postgres/adoption/validate_inventory.go","cutover_gate":"catalog.v1-storage-retired"},
+      {"name":"module_forms","owner":"catalog","adapter":"core/internal/modules/catalog/adapters/postgres/adoption/validate_inventory.go","cutover_gate":"catalog.v1-storage-retired"},
+      {"name":"module_migration_runs","owner":"catalog","adapter":"core/internal/modules/catalog/adapters/postgres/adoption/validate_inventory.go","cutover_gate":"catalog.v1-storage-retired"},
+      {"name":"module_schema_versions","owner":"catalog","adapter":"core/internal/modules/catalog/adapters/postgres/adoption/validate_inventory.go","cutover_gate":"catalog.v1-storage-retired"},
+      {"name":"modules","owner":"catalog","adapter":"core/internal/modules/catalog/adapters/postgres/adoption/validate_inventory.go","cutover_gate":"catalog.v1-storage-retired"}
+    ],
+    "dynamic_namespaces": []
+  }
+}

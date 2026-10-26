@@ -1,0 +1,12 @@
+{
+  "parameters":{
+    "idempotency":{"name":"Idempotency-Key","in":"header","required":true,"schema":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "operation":{"name":"operation_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"}}
+  },
+  "responses":{"error":{"description":"License request rejected","content":{"application/json":{"schema":{"$ref":"../runtime/v1/error-envelope.schema.json"}}}}},
+  "pathItems":{
+    "license":{"get":{"operationId":"readPlatformLicense","security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.license.read","responses":{"200":{"description":"Current verified license projection","content":{"application/json":{"schema":{"$ref":"platform-license-v1.schemas.json#/$defs/LicenseEnvelope"}}}},"default":{"$ref":"#/responses/error"}}}},
+    "refresh":{"post":{"operationId":"refreshPlatformLicense","security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.license.refresh","parameters":[{"$ref":"#/parameters/idempotency"}],"responses":{"202":{"description":"Durable source-bound refresh accepted","headers":{"Location":{"required":true,"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"platform-license-v1.schemas.json#/$defs/RefreshAcceptedEnvelope"}}}},"default":{"$ref":"#/responses/error"}}}},
+    "refreshOperation":{"parameters":[{"$ref":"#/parameters/operation"}],"get":{"operationId":"readPlatformLicenseRefreshOperation","security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.license.read","responses":{"200":{"description":"License refresh terminal progress","content":{"application/json":{"schema":{"$ref":"platform-license-v1.schemas.json#/$defs/RefreshOperationEnvelope"}}}},"default":{"$ref":"#/responses/error"}}}}
+  }
+}

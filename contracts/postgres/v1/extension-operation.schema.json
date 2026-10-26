@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/extension-operation.schema.json",
+  "title": "Harpy PostgreSQL Extension Operation v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "database_origin", "database_name", "input_hashes", "steps"
+  ],
+  "properties": {
+    "contract_version": {"const": "postgres-extension-operation.v1"},
+    "database_origin": {
+      "$ref": "postgres-artifact-defs.schema.json#/$defs/databaseOrigin"
+    },
+    "database_name": {"$ref": "postgres-artifact-defs.schema.json#/$defs/databaseName"},
+    "input_hashes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["extension_manifest_sha256", "ownership_manifest_sha256"],
+      "properties": {
+        "extension_manifest_sha256": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/sha256"
+        },
+        "ownership_manifest_sha256": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/sha256"
+        }
+      }
+    },
+    "steps": {
+      "type": "array", "minItems": 8, "maxItems": 8, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/verifyArtifacts"}, {"$ref": "#/$defs/verifyLease"},
+        {"$ref": "#/$defs/verifyBootstrapReceipt"},
+        {"$ref": "#/$defs/resolveControlFiles"},
+        {"$ref": "#/$defs/reconcileExtensions"},
+        {"$ref": "#/$defs/verifyExtensions"},
+        {"$ref": "#/$defs/verifyOwnership"}, {"$ref": "#/$defs/publishReceipt"}
+      ]
+    }
+  },
+  "$defs": {
+    "verifyArtifacts": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_artifact_hashes"}
+    }},
+    "verifyLease": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_credential_lease"}
+    }},
+    "verifyBootstrapReceipt": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_bootstrap_receipt"}
+    }},
+    "resolveControlFiles": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "resolve_control_files"}
+    }},
+    "reconcileExtensions": {"$ref": "#/$defs/ddlStep", "properties": {
+      "step_id": {"const": "reconcile_extensions"}
+    }},
+    "verifyExtensions": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_extension_catalog"}
+    }},
+    "verifyOwnership": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_ownership_inventory"}
+    }},
+    "publishReceipt": {"$ref": "#/$defs/receiptStep", "properties": {
+      "step_id": {"const": "publish_extension_receipt"}
+    }},
+    "readStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "read_only_preflight"}}},
+    "ddlStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "transactional_ddl"}}},
+    "receiptStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "receipt_publication"}}}
+  }
+}

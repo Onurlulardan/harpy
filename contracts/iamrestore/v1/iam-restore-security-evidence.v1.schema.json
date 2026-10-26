@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.local/contracts/iam-restore-security-evidence.v1.schema.json",
+  "title": "Harpy IAM restore security evidence payload v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "environment_id", "restore_operation_id", "recovery_set_id",
+    "tenant_id", "owner_user_id", "owner_binding_id", "owner_binding_generation",
+    "anchor_id", "new_database_system_id", "restore_receipt_sha256",
+    "recovery_trust_bundle_sha256", "ack_trust_bundle_sha256",
+    "iam_custody_manifest_sha256", "protected_head_sha256",
+    "protected_ack_sha256", "protected_checkpoint_sha256",
+    "protected_ack", "protected_checkpoint"
+  ],
+  "properties": {
+    "schema": {"const": "iam-restore-security-evidence.v1"},
+    "environment_id": {"$ref": "#/$defs/uuid"},
+    "restore_operation_id": {"$ref": "#/$defs/uuid"},
+    "recovery_set_id": {"$ref": "#/$defs/uuid"},
+    "tenant_id": {"$ref": "#/$defs/uuid"},
+    "owner_user_id": {"$ref": "#/$defs/uuid"},
+    "owner_binding_id": {"$ref": "#/$defs/uuid"},
+    "owner_binding_generation": {"type": "integer", "minimum": 1},
+    "anchor_id": {"$ref": "#/$defs/uuid"},
+    "new_database_system_id": {"$ref": "#/$defs/uuid"},
+    "restore_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "recovery_trust_bundle_sha256": {"$ref": "#/$defs/sha256"},
+    "ack_trust_bundle_sha256": {"$ref": "#/$defs/sha256"},
+    "iam_custody_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "protected_head_sha256": {"$ref": "#/$defs/sha256"},
+    "protected_ack_sha256": {"$ref": "#/$defs/sha256"},
+    "protected_checkpoint_sha256": {"$ref": "#/$defs/sha256"},
+    "protected_ack": {"type": "object"},
+    "protected_checkpoint": {"type": "object"}
+  },
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

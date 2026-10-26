@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "includes": [
+    "contracts/storage/migration-streams/ai.json",
+    "contracts/storage/migration-streams/analytics.json",
+    "contracts/storage/migration-streams/billing.json",
+    "contracts/storage/migration-streams/catalog.json",
+    "contracts/storage/migration-streams/documents.json",
+    "contracts/storage/migration-streams/forms.json",
+    "contracts/storage/migration-streams/iam.json",
+    "contracts/storage/migration-streams/mcp.json",
+    "contracts/storage/migration-streams/notifications.json",
+    "contracts/storage/migration-streams/platform_async.json",
+    "contracts/storage/migration-streams/platform_backupreceipt.json",
+    "contracts/storage/migration-streams/platform_cutover.json",
+    "contracts/storage/migration-streams/platform_migrator.json",
+    "contracts/storage/migration-streams/platformauthority.json",
+    "contracts/storage/migration-streams/platformops.json",
+    "contracts/storage/migration-streams/system_resource_layout.json",
+    "contracts/storage/migration-streams/tenancy.json",
+    "contracts/storage/migration-streams/work.json",
+    "contracts/storage/migration-streams/workflow.json"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/catalogprojection",
+      "layer": "application",
+      "resource": "catalogprojection",
+      "operation": "activate",
+      "source": "core/internal/modules/forms/application/catalogprojection/activate.go",
+      "test": "core/internal/modules/forms/application/catalogprojection/activate_test.go",
+      "authority_id": "forms.catalog_projection.activate"
+    }
+  ]
+}

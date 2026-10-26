@@ -1,0 +1,52 @@
+{
+  "pathItems": {
+    "coupons": {
+      "get": {"operationId": "billingV1AdminListCoupons", "deprecated": true, "security": [{"bearerAuth": []}], "x-harpy-permission": "platform.billing.read", "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}},
+      "post": {
+        "operationId": "billingV1AdminCreateCoupon", "deprecated": true, "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "create immutable discount policy",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/CouponMutation"}}}},
+        "responses": {"201": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-v1-compat.schemas.json#/responses/Conflict"}}
+      }
+    },
+    "coupon": {
+      "put": {
+        "operationId": "billingV1AdminUpdateCoupon", "deprecated": true, "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "resolver loads exact snapshot revision; create immutable version",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/CouponMutation"}}}},
+        "responses": {"201": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+      },
+      "delete": {
+        "operationId": "billingV1AdminDeleteCoupon", "deprecated": true, "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "resolver loads exact snapshot revision; retire root",
+        "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+      }
+    },
+    "campaigns": {
+      "get": {"operationId": "billingV1AdminListCampaigns", "deprecated": true, "security": [{"bearerAuth": []}], "x-harpy-permission": "platform.billing.read", "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}},
+      "post": {
+        "operationId": "billingV1AdminCreateCampaign", "deprecated": true, "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "create immutable campaign version",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/CampaignMutation"}}}},
+        "responses": {"201": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-v1-compat.schemas.json#/responses/Conflict"}}
+      }
+    },
+    "campaign": {
+      "put": {
+        "operationId": "billingV1AdminUpdateCampaign", "deprecated": true, "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "resolver loads exact snapshot revision; create immutable version",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/CampaignMutation"}}}},
+        "responses": {"201": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+      },
+      "delete": {
+        "operationId": "billingV1AdminDeleteCampaign", "deprecated": true, "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "resolver loads exact snapshot revision; retire root",
+        "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/core-operator-config.schema.json",
+  "title": "Harpy Core Operator Environment Snapshot v1",
+  "oneOf": [
+    {"$ref": "#/$defs/initialize"},
+    {"$ref": "#/$defs/identityReconcile"},
+    {"$ref": "#/$defs/licenseReconcile"},
+    {"$ref": "#/$defs/postRestoreObserver"}
+  ],
+  "$defs": {
+    "initialize": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "operator_initialize"}, "variables": {"$ref": "phase14-operator-profile-defs.schema.json#/$defs/initializeVariables"}}
+    },
+    "identityReconcile": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "operator_identity_reconcile"}, "variables": {"$ref": "phase14-operator-profile-defs.schema.json#/$defs/identityReconcileVariables"}}
+    },
+    "licenseReconcile": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "operator_license_reconcile"}, "variables": {"$ref": "phase14-operator-profile-defs.schema.json#/$defs/licenseReconcileVariables"}}
+    },
+    "postRestoreObserver": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "operator_post_restore_reactivation_observer"}, "variables": {"$ref": "phase14-operator-profile-defs.schema.json#/$defs/postRestoreObserverVariables"}}
+    }
+  }
+}

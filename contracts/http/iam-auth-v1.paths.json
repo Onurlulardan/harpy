@@ -1,0 +1,194 @@
+{
+  "pathItems": {
+    "operatorLogin": {
+      "post": {
+        "operationId": "iamOperatorLogin",
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/OperatorLoginRequest"}}}
+        },
+        "responses": {
+          "200": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthGrant"},
+          "400": {"$ref": "iam-auth-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "413": {"$ref": "iam-auth-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-auth-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "portalLogin": {
+      "post": {
+        "operationId": "iamPortalLogin",
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/PortalLoginRequest"}}}
+        },
+        "responses": {
+          "200": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthGrant"},
+          "400": {"$ref": "iam-auth-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "413": {"$ref": "iam-auth-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-auth-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "refresh": {
+      "post": {
+        "operationId": "iamRefreshBrowserSession",
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/CSRFHeader"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/RefreshCookie"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/CSRFCookie"}
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/EmptyObject"}}}
+        },
+        "responses": {
+          "200": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthGrant"},
+          "400": {"$ref": "iam-auth-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "413": {"$ref": "iam-auth-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-auth-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "logout": {
+      "post": {
+        "operationId": "iamLogoutBrowserSession",
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/CSRFHeader"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/RefreshCookie"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/CSRFCookie"}
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/EmptyObject"}}}
+        },
+        "responses": {
+          "204": {"$ref": "iam-auth-v1.schemas.json#/responses/NoContent"},
+          "400": {"$ref": "iam-auth-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "413": {"$ref": "iam-auth-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-auth-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "csrf": {
+      "get": {
+        "operationId": "iamIssueBrowserCSRF",
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/RefreshCookie"}
+        ],
+        "responses": {
+          "204": {"$ref": "iam-auth-v1.schemas.json#/responses/NoContent"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      },
+      "post": {
+        "operationId": "iamRenewBrowserCSRF",
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/RefreshCookie"}
+        ],
+        "responses": {
+          "204": {"$ref": "iam-auth-v1.schemas.json#/responses/NoContent"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "currentSession": {
+      "get": {
+        "operationId": "iamReadCurrentSession",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantSlug"}
+        ],
+        "responses": {
+          "200": {"$ref": "iam-auth-v1.schemas.json#/responses/CurrentSession"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "reauthenticationStart": {
+      "post": {
+        "operationId": "iamStartReauthentication",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantSlug"}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/ReauthenticationStartRequest"}}}
+        },
+        "responses": {
+          "201": {"$ref": "iam-auth-v1.schemas.json#/responses/ReauthenticationChallenge"},
+          "400": {"$ref": "iam-auth-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "413": {"$ref": "iam-auth-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-auth-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "reauthenticationComplete": {
+      "post": {
+        "operationId": "iamCompleteReauthentication",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantID"},
+          {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantSlug"}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/ReauthenticationCompleteRequest"}}}
+        },
+        "responses": {
+          "200": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthGrant"},
+          "400": {"$ref": "iam-auth-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-auth-v1.schemas.json#/responses/CSRFInvalid"},
+          "405": {"$ref": "iam-auth-v1.schemas.json#/responses/MethodNotAllowed"},
+          "413": {"$ref": "iam-auth-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-auth-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-auth-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    }
+  }
+}

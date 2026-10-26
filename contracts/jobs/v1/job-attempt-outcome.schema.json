@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/job-attempt-outcome.schema.json",
+  "title": "Harpy Job Attempt Outcome v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "attempt_id", "job_id", "kind", "payload_revision", "attempt_number",
+    "lease_owner", "lease_generation", "started_at", "effect_started_at", "completed_at", "result_state",
+    "error_class", "error_code", "redacted_error_sha256", "effect_receipt_id", "retry_run_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "job-attempt-outcome.v1"},
+    "attempt_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "kind": {"$ref": "job-defs.schema.json#/$defs/kind"},
+    "payload_revision": {"type": "integer", "minimum": 1},
+    "attempt_number": {"type": "integer", "minimum": 1, "maximum": 25},
+    "lease_owner": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "lease_generation": {"type": "integer", "minimum": 1},
+    "started_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+    "effect_started_at": {"anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/timestamp"}]},
+    "completed_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+    "result_state": {"enum": ["queued", "succeeded", "cancelled", "dead"]},
+    "error_class": {"type": ["string", "null"], "enum": ["transient", "permanent", "conflict", "cancelled", null]},
+    "error_code": {"anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/code"}]},
+    "redacted_error_sha256": {"anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/sha256"}]},
+    "effect_receipt_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "retry_run_at": {"anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/timestamp"}]}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "result_state": {"const": "succeeded"},
+        "error_class": {"type": "null"}, "error_code": {"type": "null"},
+        "redacted_error_sha256": {"type": "null"},
+        "retry_run_at": {"type": "null"}
+      },
+      "$ref": "#/$defs/knownEffectBoundary"
+    },
+    {
+      "properties": {
+        "result_state": {"const": "queued"},
+        "error_class": {"enum": ["transient", "conflict"]},
+        "error_code": {"$ref": "job-defs.schema.json#/$defs/code"},
+        "redacted_error_sha256": {"$ref": "job-defs.schema.json#/$defs/sha256"},
+        "retry_run_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"}
+      },
+      "$ref": "#/$defs/knownEffectBoundary"
+    },
+    {
+      "properties": {
+        "result_state": {"const": "dead"}, "error_class": {"type": "null"},
+        "error_code": {"const": "JOB_OUTCOME_UNKNOWN"},
+        "redacted_error_sha256": {"type": "null"},
+        "effect_started_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+        "effect_receipt_id": {"type": "null"}, "retry_run_at": {"type": "null"}
+      }
+    },
+    {
+      "properties": {
+        "result_state": {"const": "dead"},
+        "error_class": {"enum": ["transient", "permanent", "conflict", "cancelled"]},
+        "error_code": {"$ref": "job-defs.schema.json#/$defs/code"},
+        "redacted_error_sha256": {"$ref": "job-defs.schema.json#/$defs/sha256"},
+        "retry_run_at": {"type": "null"}
+      },
+      "$ref": "#/$defs/knownEffectBoundary"
+    },
+    {
+      "properties": {
+        "result_state": {"const": "cancelled"}, "error_class": {"const": "cancelled"},
+        "error_code": {"$ref": "job-defs.schema.json#/$defs/code"},
+        "redacted_error_sha256": {"$ref": "job-defs.schema.json#/$defs/sha256"},
+        "retry_run_at": {"type": "null"}
+      },
+      "$ref": "#/$defs/knownEffectBoundary"
+    }
+  ],
+  "$defs": {
+    "knownEffectBoundary": {
+      "oneOf": [
+        {"properties": {"effect_started_at": {"type": "null"}, "effect_receipt_id": {"type": "null"}}},
+        {"properties": {
+          "effect_started_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+          "effect_receipt_id": {"$ref": "job-defs.schema.json#/$defs/uuid"}
+        }}
+      ]
+    }
+  }
+}

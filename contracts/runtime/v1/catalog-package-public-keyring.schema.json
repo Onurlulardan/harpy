@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/catalog-package-public-keyring.schema.json",
+  "title": "Harpy Catalog Package Public Keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "keys"],
+  "properties": {
+    "version": {"const": 1},
+    "keys": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key_id", "public_key"],
+        "properties": {
+          "key_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"},
+          "public_key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"}
+        }
+      }
+    }
+  }
+}

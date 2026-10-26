@@ -1,0 +1,4 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/deploymentpolicy","layer":"application","resource":"deploymentpolicy","operation":"create","source":"core/internal/modules/tenancy/application/deploymentpolicy/create.go","test":"core/internal/modules/tenancy/application/deploymentpolicy/create_test.go","authority_id":"tenancy.deployment_policy.create"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/deploymentpolicy","layer":"application","resource":"deploymentpolicy","operation":"get","source":"core/internal/modules/tenancy/application/deploymentpolicy/get.go","test":"core/internal/modules/tenancy/application/deploymentpolicy/get_test.go","authority_id":"tenancy.deployment_policy.get"}
+]}

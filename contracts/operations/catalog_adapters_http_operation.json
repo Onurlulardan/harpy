@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/http/lifecycle","layer":"adapters/http","resource":"lifecycle","operation":"cancel","source":"core/internal/modules/catalog/adapters/http/lifecycle/cancel_operation.go","test":"core/internal/modules/catalog/adapters/http/lifecycle/cancel_operation_test.go","application_operation":"core/internal/modules/catalog/application/lifecycle/cancel.go"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/http/lifecycle","layer":"adapters/http","resource":"lifecycle","operation":"read","source":"core/internal/modules/catalog/adapters/http/lifecycle/read_operation.go","test":"core/internal/modules/catalog/adapters/http/lifecycle/read_operation_test.go","application_operation":"core/internal/modules/catalog/application/lifecycle/read_operation.go"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/http/lifecycle","layer":"adapters/http","resource":"lifecycle","operation":"retry","source":"core/internal/modules/catalog/adapters/http/lifecycle/retry_operation.go","test":"core/internal/modules/catalog/adapters/http/lifecycle/retry_operation_test.go","application_operation":"core/internal/modules/catalog/application/lifecycle/retry.go"}
+  ]
+}

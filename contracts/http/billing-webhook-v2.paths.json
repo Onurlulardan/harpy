@@ -1,0 +1,17 @@
+{
+  "pathItems": {
+    "ingress": {"post": {
+      "operationId": "billingReceiveProviderWebhook", "security": [],
+      "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/Provider"}],
+      "x-harpy-authentication": "provider-specific signature over exact body; no actor or tenant headers",
+      "requestBody": {"required": true, "content": {"application/octet-stream": {"schema": {"type": "string", "format": "binary", "maxLength": 1048576}}}},
+      "responses": {
+        "200": {"description": "Duplicate durable receipt acknowledged.", "content": {"application/json": {"schema": {"$ref": "billing-common-v2.schemas.json#/schemas/SuccessEnvelope"}}}},
+        "202": {"description": "Durable receipt accepted and processor work enqueued.", "content": {"application/json": {"schema": {"$ref": "billing-common-v2.schemas.json#/schemas/SuccessEnvelope"}}}},
+        "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"},
+        "413": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"},
+        "503": {"$ref": "billing-common-v2.schemas.json#/responses/Unavailable"}
+      }
+    }}
+  }
+}

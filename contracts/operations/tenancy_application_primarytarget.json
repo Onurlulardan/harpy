@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/primarytarget","layer":"application","resource":"primarytarget","operation":"get","source":"core/internal/modules/tenancy/application/primarytarget/get.go","test":"core/internal/modules/tenancy/application/primarytarget/get_test.go","authority_id":"tenancy.primary_tenant_target.get"}
+]}

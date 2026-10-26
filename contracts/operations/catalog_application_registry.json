@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/application/registry","layer":"application","resource":"registry","operation":"compile","source":"core/internal/modules/catalog/application/registry/compile_candidates.go","test":"core/internal/modules/catalog/application/registry/compile_candidates_test.go","authority_id":"catalog.package_version.list"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/application/registry","layer":"application","resource":"registry","operation":"get","source":"core/internal/modules/catalog/application/registry/get_package.go","test":"core/internal/modules/catalog/application/registry/get_package_test.go","authority_id":"catalog.package.get"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/application/registry","layer":"application","resource":"registry","operation":"list","source":"core/internal/modules/catalog/application/registry/list_packages.go","test":"core/internal/modules/catalog/application/registry/list_packages_test.go","authority_id":"catalog.package.list"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/application/registry","layer":"application","resource":"registry","operation":"read","source":"core/internal/modules/catalog/application/registry/read_package_by_slug.go","test":"core/internal/modules/catalog/application/registry/read_package_by_slug_test.go","authority_id":"catalog.package.get"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/application/registry","layer":"application","resource":"registry","operation":"resolve","source":"core/internal/modules/catalog/application/registry/resolve_version.go","test":"core/internal/modules/catalog/application/registry/resolve_version_test.go","authority_id":"catalog.package_version.get"}
+  ]
+}

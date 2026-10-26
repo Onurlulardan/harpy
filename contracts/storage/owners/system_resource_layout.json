@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "system_resource_layout",
+    "prefix": "system_resource_layout_",
+    "scopes": ["tenant"],
+    "migration_dirs": [
+      {
+        "path": "core/internal/modules/system_resource_layout/migrations/tenant",
+        "scope": "tenant"
+      }
+    ],
+    "static_sql_dirs": [
+      {
+        "path": "core/internal/modules/system_resource_layout/adapters/postgres/sql/tenant",
+        "scope": "tenant"
+      }
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [
+      {"schema":"platform","role":"harpy_runtime","contract":"ADR-0118"}
+    ],
+    "platform_routines": [],
+    "routine_execute_grants": [],
+    "platform_tables": [],
+    "foreign_keys": [],
+    "external_accesses": [
+      {
+        "access": "read",
+        "target_owner": "iam",
+        "target": "iam_profile_active_catalog_read_v1",
+        "contract": "ADR-0057"
+      },
+      {
+        "access": "read",
+        "target_owner": "tenancy",
+        "target": "platform.tenancy_activation_assert_v2",
+        "contract": "ADR-0119"
+      },
+      {
+        "access": "read",
+        "target_owner": "tenancy",
+        "target": "platform.tenancy_activation_facts",
+        "contract": "ADR-0119"
+      },
+      {
+        "access": "read",
+        "target_owner": "tenancy",
+        "target": "platform.tenancy_activation_step_consume_v1",
+        "contract": "ADR-0119"
+      },
+      {
+        "access": "read",
+        "target_owner": "tenancy",
+        "target": "platform.tenancy_activation_step_context_assert_v1",
+        "contract": "ADR-0119"
+      },
+      {
+        "access": "read",
+        "target_owner": "tenancy",
+        "target": "platform.tenancy_onboarding_operations",
+        "contract": "ADR-0119"
+      },
+      {
+        "access": "read",
+        "target_owner": "tenancy",
+        "target": "platform.tenants",
+        "contract": "ADR-0119"
+      }
+    ],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  }
+}

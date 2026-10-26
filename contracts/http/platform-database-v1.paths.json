@@ -1,0 +1,57 @@
+{
+  "responses": {
+    "snapshot": {
+      "description": "Bounded registered database diagnostic snapshot",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "platform-database-v1.schemas.json#/$defs/DiagnosticEnvelope"
+          }
+        }
+      }
+    },
+    "error": {
+      "description": "Database diagnostic request rejected",
+      "content": {
+        "application/json": {
+          "schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}
+        }
+      }
+    }
+  },
+  "pathItems": {
+    "stats": {
+      "get": {
+        "operationId": "readPlatformDatabaseStats",
+        "security": [{"bearerAuth": []}],
+        "x-harpy-capability": "platform.database.stats.read",
+        "responses": {
+          "200": {"$ref": "#/responses/snapshot"},
+          "default": {"$ref": "#/responses/error"}
+        }
+      }
+    },
+    "schema": {
+      "get": {
+        "operationId": "readPlatformDatabaseSchema",
+        "security": [{"bearerAuth": []}],
+        "x-harpy-capability": "platform.database.schema.read",
+        "responses": {
+          "200": {"$ref": "#/responses/snapshot"},
+          "default": {"$ref": "#/responses/error"}
+        }
+      }
+    },
+    "recoveryReadiness": {
+      "get": {
+        "operationId": "readPlatformRecoveryReadiness",
+        "security": [{"bearerAuth": []}],
+        "x-harpy-capability": "platform.database.diagnostics.read",
+        "responses": {
+          "200": {"$ref": "#/responses/snapshot"},
+          "default": {"$ref": "#/responses/error"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "owner": "platformops",
+  "streams": [
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260722093000,
+      "version_to": 20260722093001,
+      "phase": "expand",
+      "target_database_generation": 15,
+      "next_minimum_runtime_generation": 13
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260723050000,
+      "version_to": 20260723050013,
+      "phase": "expand",
+      "target_database_generation": 16,
+      "next_minimum_runtime_generation": 14
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260723050020,
+      "version_to": 20260723050024,
+      "phase": "expand",
+      "target_database_generation": 16,
+      "next_minimum_runtime_generation": 14
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260723050030,
+      "version_to": 20260723050059,
+      "phase": "expand",
+      "target_database_generation": 16,
+      "next_minimum_runtime_generation": 14
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260725124201,
+      "version_to": 20260725124201,
+      "phase": "expand",
+      "target_database_generation": 36,
+      "next_minimum_runtime_generation": 19
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260729100028,
+      "version_to": 20260729100028,
+      "phase": "expand",
+      "target_database_generation": 70,
+      "next_minimum_runtime_generation": 23
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260729100042,
+      "version_to": 20260729100042,
+      "phase": "contract",
+      "target_database_generation": 71,
+      "next_minimum_runtime_generation": 24
+    },
+    {
+      "owner": "platformops",
+      "directory": "core/internal/modules/platformops/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260801012000,
+      "version_to": 20260801012000,
+      "phase": "expand",
+      "target_database_generation": 93,
+      "next_minimum_runtime_generation": 24
+    }
+  ]
+}

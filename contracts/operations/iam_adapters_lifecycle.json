@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "accept",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/accept_initial_admin_setup.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/accept_initial_admin_setup_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/accept_initial_admin_setup.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "activate",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/activate_totp.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/activate_totp_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/activate_totp.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "add",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/add_identifier.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/add_identifier_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/add_identifier.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "archive",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/archive_identifier.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/archive_identifier_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/archive_identifier.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "change",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/change_password.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/change_password_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/change_password.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "complete",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/complete_password_reset.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/complete_password_reset_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/complete_password_reset.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "create",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/create_portal_setup.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/create_portal_setup_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/create_portal_setup.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "decide",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/decide_portal_approval.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/decide_portal_approval_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/decide_portal_approval.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "enable",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/enable_webauthn.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/enable_webauthn_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/enable_webauthn.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "finalize",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/finalize_webauthn.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/finalize_webauthn_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/finalize_webauthn.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "get",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/get_sessions.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/get_sessions_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/get_sessions.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "issue",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/issue_email_verification.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/issue_email_verification_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/issue_email_verification.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "list",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/list_authenticators.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/list_authenticators_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/list_authenticators.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "purge",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/purge_sessions.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/purge_sessions_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/purge_sessions.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "read",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/read_recovery_codes.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/read_recovery_codes_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/read_recovery_codes.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "redeem",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/redeem_portal_setup.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/redeem_portal_setup_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/redeem_portal_setup.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "reserve",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/reserve_totp.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/reserve_totp_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/reserve_totp.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "retire",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/retire_authenticator.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/retire_authenticator_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/retire_authenticator.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "revoke",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/revoke_session.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/revoke_session_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/revoke_session.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "rotate",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/rotate_recovery_codes.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/rotate_recovery_codes_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/rotate_recovery_codes.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycle",
+      "layer": "adapters/postgres",
+      "resource": "lifecycle",
+      "operation": "start",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycle/start_password_reset.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycle/start_password_reset_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycle/start_password_reset.go"
+    }
+  ]
+}

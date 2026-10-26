@@ -1,0 +1,18 @@
+{
+  "/api/platform/recovery-protection": {"$ref":"platform-recovery-v1.paths.json#/pathItems/protection"},
+  "/api/platform/recovery-protection/anchors": {"$ref":"platform-recovery-v1.paths.json#/pathItems/anchors"},
+  "/api/platform/recovery-protection/anchors/registration-options": {"$ref":"platform-recovery-v1.paths.json#/pathItems/anchorRegistrationOptions"},
+  "/api/platform/recovery-protection/anchors/{anchor_id}": {"$ref":"platform-recovery-v1.paths.json#/pathItems/anchor"},
+  "/api/platform/recovery-protection/enable": {"$ref":"platform-recovery-v1.paths.json#/pathItems/enable"},
+  "/api/platform/recovery-protection/rotate": {"$ref":"platform-recovery-v1.paths.json#/pathItems/rotate"},
+  "/api/platform/recovery-protection/disable": {"$ref":"platform-recovery-v1.paths.json#/pathItems/disable"},
+  "/api/platform/recovery-operations/{operation_id}": {"$ref":"platform-recovery-v1.paths.json#/pathItems/recoveryOperation"},
+  "/api/platform/recovery-operations/{operation_id}/kit-download": {"$ref":"platform-recovery-v1.paths.json#/pathItems/kitDownload"},
+  "/api/platform/recovery-operations/{operation_id}/kit-ack": {"$ref":"platform-recovery-v1.paths.json#/pathItems/kitAck"},
+  "/api/platform/recovery-sets": {"$ref":"platform-recovery-v1.paths.json#/pathItems/recoverySets"},
+  "/api/platform/recovery-sets/{recovery_set_id}": {"$ref":"platform-recovery-v1.paths.json#/pathItems/recoverySet"},
+  "/api/platform/recovery-sets/{recovery_set_id}/manifest-download": {"$ref":"platform-recovery-v1.paths.json#/pathItems/manifestDownload"},
+  "/api/platform/recovery-sets/{recovery_set_id}/restore": {"$ref":"platform-recovery-v1.paths.json#/pathItems/restore"},
+  "/api/platform/restore-operations/{operation_id}": {"$ref":"platform-recovery-v1.paths.json#/pathItems/restoreOperation"},
+  "/api/platform/restore-operations/{operation_id}/plan-download": {"$ref":"platform-recovery-v1.paths.json#/pathItems/planDownload"}
+}

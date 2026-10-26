@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "CreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resource_kind", "resource_version_id", "audience", "cache_policy"],
+      "properties": {
+        "resource_kind": {"enum": ["query", "dashboard"]},
+        "resource_version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "audience": {"enum": ["tenant", "public", "capability"]},
+        "cache_policy": {"enum": ["none", "revision_bound"]}
+      }
+    },
+    "TransitionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_revision"],
+      "properties": {"expected_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}}
+    },
+    "ActivateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_revision", "capability_ttl_seconds"],
+      "properties": {
+        "expected_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "capability_ttl_seconds": {"type": "integer", "minimum": 0, "maximum": 2592000}
+      }
+    },
+    "Publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_id", "resource_kind", "resource_version_id", "audience", "state", "cache_policy", "manifest_sha256", "requester_id", "revision", "generation", "public_id", "capability_expires_at", "created_at", "updated_at"],
+      "properties": {
+        "release_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "resource_kind": {"enum": ["query", "dashboard"]},
+        "resource_version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "audience": {"enum": ["tenant", "public", "capability"]},
+        "state": {"enum": ["draft", "pending_approval", "active", "revoked", "retired"]},
+        "cache_policy": {"enum": ["none", "revision_bound"]},
+        "manifest_sha256": {"$ref": "analytics-common-v2.schemas.json#/$defs/SHA256"},
+        "requester_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUID"},
+        "approver_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUID"},
+        "revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "generation": {"type": "integer", "minimum": 0},
+        "public_id": {"anyOf": [{"type": "string", "pattern": "^[A-Za-z0-9_-]{22}$"}, {"type": "null"}]},
+        "capability_expires_at": {"anyOf": [{"type": "string", "format": "date-time"}, {"type": "null"}]},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Envelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/$defs/Publication"}}},
+    "PageEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "after"], "properties": {"items": {"type": "array", "items": {"$ref": "#/$defs/Publication"}}, "after": {"anyOf": [{"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"}, {"type": "null"}]}}}}},
+    "ActivationEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["publication", "replay"],
+          "properties": {
+            "publication": {"$ref": "#/$defs/Publication"},
+            "replay": {"type": "boolean"},
+            "capability_token": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$", "readOnly": true, "x-harpy-one-time-secret": true}
+          }
+        }
+      }
+    },
+    "PublicPOSTRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["params"],
+      "properties": {"params": {"type": "object", "maxProperties": 100}, "page": {"type": "object", "additionalProperties": false, "properties": {"size": {"type": "integer", "minimum": 1, "maximum": 100}, "after": {"type": "string", "minLength": 1, "maxLength": 512}}}}
+    },
+    "PublicResult": {}
+  }
+}

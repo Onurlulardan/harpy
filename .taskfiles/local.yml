@@ -1,0 +1,182 @@
+version: "3"
+vars:
+  COMPOSE: >-
+    docker compose --env-file .env.local
+    -f ops/local/compose.infra.yml -f ops/local/compose.tools.yml
+    -f ops/local/compose.runtime.yml -f ops/local/compose.recovery.yml
+    -f ops/local/compose.inventory.yml -f ops/local/compose.lifecycle.yml
+  LIFECYCLE: >-
+    docker compose --env-file .env.local --profile local-volume-catalog
+    -f ops/local/compose.infra.yml -f ops/local/compose.tools.yml
+    -f ops/local/compose.runtime.yml -f ops/local/compose.recovery.yml
+    -f ops/local/compose.inventory.yml -f ops/local/compose.lifecycle.yml
+includes:
+  operations:
+    taskfile: local-operations.yml
+    flatten: true
+tasks:
+  init:
+    desc: Generate or refresh ignored local secrets and certificates
+    cmds:
+      - go run ./tools/localconfig -output ops/local/state/secrets
+  reset-config:
+    desc: Reset only local secrets; Docker volumes and database data are preserved
+    cmds:
+      - go run ./tools/localconfig -output ops/local/state/secrets -reset
+  config:
+    desc: Validate the fully merged local Compose model
+    deps: [init]
+    cmds:
+      - "{{.COMPOSE}} config --quiet"
+  build:
+    desc: Build pinned images from the local Docker and Go caches
+    cmds:
+      - "{{.COMPOSE}} build foundation-local-release local-release"
+  project:
+    desc: Project least-authority secrets and initialize non-root state volumes
+    cmds:
+      - "{{.COMPOSE}} run --rm --no-deps secret-projector"
+  prepare:
+    desc: Generate config, build the image and project local service volumes
+    cmds:
+      - task: init
+      - task: build
+      - task: project
+  infra:
+    desc: Start and verify PostgreSQL, RabbitMQ, S3, KMS, SMTP and ClamAV
+    cmds:
+      - >-
+        {{.COMPOSE}} up -d --wait --wait-timeout 300
+        postgres rabbitmq minio s3-owner recovery-minio recovery-s3-owner
+        local-kms mailpit
+      - "{{.COMPOSE}} run --rm --no-deps clamav-update"
+      - >-
+        {{.COMPOSE}} up -d --wait --wait-timeout 300
+        --no-deps --force-recreate clamav
+      - "{{.COMPOSE}} run --rm --no-deps infra-check"
+      - "{{.COMPOSE}} run --rm --no-deps recovery-infra-check"
+      - "{{.COMPOSE}} run --rm s3-init"
+      - "{{.COMPOSE}} run --rm recovery-s3-init"
+  bootstrap:
+    desc: Provision and finalize the pinned bootstrap baseline
+    status:
+      - >-
+        {{.COMPOSE}} run --rm foundation-local-release foundation-applied
+        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+    cmds:
+      - >-
+        {{.COMPOSE}} run --rm foundation-local-release prepare
+        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+        -runtime-password-file /run/secrets/postgres-runtime-password.txt
+        -migrator-password-file /run/secrets/postgres-migrator-password.txt
+        -backup-password-file /run/secrets/postgres-backup-password.txt
+        -restore-password-file /run/secrets/postgres-restore-password.txt
+        -reactivation-observer-password-file
+        /run/secrets/postgres-reactivation-observer-password.txt
+        -catalog-package-signing-seed-file
+        /run/secrets/catalog-package-signing-seed
+        -catalog-package-keyring-file
+        /run/secrets/catalog-package-public-keyring.json
+        -migration-manifest /app/migration-manifest.json
+        -replace-owned-output
+        -output /run/release/current
+      - "{{.COMPOSE}} run --rm foundation-core-migrator deploy up"
+      - >-
+        {{.COMPOSE}} run --rm foundation-local-release grant-runtime
+        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+      - "{{.COMPOSE}} run --rm foundation-core-migrator deploy verify"
+  migrate:
+    desc: Prepare, apply, authorize and verify the current migration release
+    status:
+      - >-
+        {{.COMPOSE}} run --rm local-release release-applied
+        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+    cmds:
+      - >-
+        {{.COMPOSE}} run --rm local-release prepare
+        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+        -runtime-password-file /run/secrets/postgres-runtime-password.txt
+        -migrator-password-file /run/secrets/postgres-migrator-password.txt
+        -backup-password-file /run/secrets/postgres-backup-password.txt
+        -restore-password-file /run/secrets/postgres-restore-password.txt
+        -reactivation-observer-password-file
+        /run/secrets/postgres-reactivation-observer-password.txt
+        -catalog-package-signing-seed-file
+        /run/secrets/catalog-package-signing-seed
+        -catalog-package-keyring-file
+        /run/secrets/catalog-package-public-keyring.json
+        -migration-manifest /app/migration-manifest.json
+        -replace-owned-output
+        -output /run/release/current
+      - "{{.COMPOSE}} run --rm core-migrator deploy up"
+      - >-
+        {{.COMPOSE}} run --rm local-release grant-runtime
+        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+      - "{{.COMPOSE}} run --rm core-migrator deploy verify"
+      - go run ./tools/migrationmanifest -mark-applied
+  installation:artifacts:
+    desc: Reconcile the immutable local manifest and signed development license
+    cmds:
+      - "{{.COMPOSE}} run --rm installation-artifacts"
+  license:
+    desc: Verify and publish the environment-bound development license offering
+    cmds:
+      - "{{.COMPOSE}} run --rm dev-license"
+  tenant-executor:
+    desc: Start the new-tenant migration executor and wait for claim readiness
+    cmds:
+      - >-
+        {{.COMPOSE}} up -d --wait --wait-timeout 180
+        tenant-migration-executor
+  initialize:
+    desc: Atomically initialize the tenant and complete one-time credential delivery
+    cmds:
+      - "{{.COMPOSE}} run --rm installation-delivery prepare"
+      - "{{.COMPOSE}} run --rm core-operator"
+      - "{{.COMPOSE}} run --rm core-operator publish-local-authority"
+      - task: :local:inventory:verify
+      - "{{.COMPOSE}} run --rm installation-delivery deliver"
+      - "{{.COMPOSE}} run --rm installation-delivery verify"
+  services:
+    desc: Start schema executor, API and worker after login readiness
+    cmds:
+      - "{{.COMPOSE}} up -d --wait --wait-timeout 180 schema-executor"
+      - >-
+        {{.COMPOSE}} up -d --wait --wait-timeout 180
+        core-api core-worker database-backup-executor
+  verify:
+    desc: Verify schema executor, API and worker readiness from the local network
+    cmds:
+      - "{{.COMPOSE}} run --rm --no-deps runtime-check"
+  frontend:
+    desc: Start and verify the managed frontend-v3 development server
+    cmds:
+      - go run ./ops/local/cmd/frontend-manager start
+  frontend:stop:
+    desc: Stop only the frontend-v3 process owned by this local stack
+    cmds:
+      - go run ./ops/local/cmd/frontend-manager stop
+  frontend:status:
+    desc: Verify the managed frontend-v3 process and HTTP readiness
+    cmds:
+      - go run ./ops/local/cmd/frontend-manager status
+  up:
+    desc: Build and start Backend V2 with the frontend-v3 development server
+    cmds:
+      - task: prepare
+      - task: infra
+      - task: bootstrap
+      - task: migrate
+      - task: installation:artifacts
+      - task: license
+      - task: tenant-executor
+      - task: initialize
+      - task: services
+      - task: verify
+      - task: frontend
+      - task: status
+  status:
+    desc: Show backend containers and managed frontend-v3 health
+    cmds:
+      - "{{.COMPOSE}} ps"
+      - task: frontend:status

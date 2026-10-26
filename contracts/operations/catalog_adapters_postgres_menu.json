@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/postgres/menu","layer":"adapters/postgres","resource":"menu","operation":"get","source":"core/internal/modules/catalog/adapters/postgres/menu/get.go","test":"core/internal/modules/catalog/adapters/postgres/menu/get_test.go","application_operation":"core/internal/modules/catalog/application/menu/get.go"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/postgres/menu","layer":"adapters/postgres","resource":"menu","operation":"update","source":"core/internal/modules/catalog/adapters/postgres/menu/update.go","test":"core/internal/modules/catalog/adapters/postgres/menu/update_test.go","application_operation":"core/internal/modules/catalog/application/menu/update_override.go"}
+  ]
+}

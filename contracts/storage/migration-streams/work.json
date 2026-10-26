@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "owner": "work",
+  "streams": [
+    {"owner":"work","directory":"core/internal/modules/work/migrations/tenant","scope":"tenant","version_from":20260718190100,"version_to":20260718190121,"phase":"expand","target_database_generation":10,"next_minimum_runtime_generation":1},
+    {"owner":"work","directory":"core/internal/modules/work/migrations/tenant","scope":"tenant","version_from":20260718230120,"version_to":20260718230135,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"work","directory":"core/internal/modules/work/migrations/tenant","scope":"tenant","version_from":20260801013000,"version_to":20260801013000,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"work","directory":"core/internal/modules/work/migrations/tenant","scope":"tenant","version_from":20260802232500,"version_to":20260802232500,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24},
+    {"owner":"work","directory":"core/internal/modules/work/migrations/tenant","scope":"tenant","version_from":20260802232710,"version_to":20260802232710,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24}
+  ]
+}

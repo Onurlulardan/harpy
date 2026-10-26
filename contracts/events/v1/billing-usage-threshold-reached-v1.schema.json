@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/billing-usage-threshold-reached-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meter_period_id", "usage_revision"],
+  "properties": {
+    "meter_period_id": {"type": "string", "format": "uuid"},
+    "usage_revision": {"type": "integer", "minimum": 1}
+  }
+}

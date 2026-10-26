@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/events/v1/event-operator-receipt.schema.json",
+  "title": "Harpy Successful Event Operator Action Receipt v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "receipt_id", "action", "consumer", "consumer_version", "tenant_id",
+    "producer_authority", "consumer_authority", "source_event_id", "result_event_id",
+    "source_business_effect_idempotency_key", "result_business_effect_idempotency_key",
+    "reason", "ticket_reference", "actor_id",
+    "causation_id", "occurred_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "event-operator-receipt.v1"},
+    "receipt_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "action": {"enum": ["retry", "repair_reissue"]},
+    "consumer": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "consumer_version": {"type": "integer", "minimum": 1},
+    "tenant_id": {"$ref": "event-defs.schema.json#/$defs/nullableUuid"},
+    "producer_authority": {"$ref": "event-defs.schema.json#/$defs/authority"},
+    "consumer_authority": {
+      "$ref": "event-defs.schema.json#/$defs/authority",
+      "properties": {"writer_origin": {"const": "v2"}}
+    },
+    "source_event_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "result_event_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "source_business_effect_idempotency_key": {"$ref": "event-defs.schema.json#/$defs/key"},
+    "result_business_effect_idempotency_key": {
+      "x-equals": "source_business_effect_idempotency_key",
+      "$ref": "event-defs.schema.json#/$defs/key"
+    },
+    "reason": {"$ref": "event-defs.schema.json#/$defs/reason"},
+    "ticket_reference": {"$ref": "event-defs.schema.json#/$defs/ticket"},
+    "actor_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "causation_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "occurred_at": {"$ref": "event-defs.schema.json#/$defs/timestamp"}
+  },
+  "oneOf": [
+    {"properties": {
+      "tenant_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+      "producer_authority": {"properties": {"scope_kind": {"const": "tenant"}}},
+      "consumer_authority": {"properties": {"scope_kind": {"const": "tenant"}}}
+    }},
+    {"properties": {
+      "tenant_id": {"type": "null"},
+      "producer_authority": {"properties": {"scope_kind": {"const": "global"}}},
+      "consumer_authority": {"properties": {"scope_kind": {"const": "global"}}}
+    }}
+  ]
+}

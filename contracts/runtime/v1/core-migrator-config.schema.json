@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/core-migrator-config.schema.json",
+  "title": "Harpy Core Migrator Environment Snapshot v1",
+  "oneOf": [
+    {"$ref": "#/$defs/migratorDeploy"},
+    {"$ref": "#/$defs/schemaExecutor"},
+    {"$ref": "#/$defs/clusterBootstrap"},
+    {"$ref": "#/$defs/extensionAdmin"},
+    {"$ref": "#/$defs/tenantMigrationExecutor"},
+    {"$ref": "#/$defs/databaseBackupExecutor"},
+    {"$ref": "#/$defs/databaseRestore"},
+    {"$ref": "#/$defs/cutoverAdoption"},
+    {"$ref": "#/$defs/cutoverFinalization"}
+  ],
+  "$defs": {
+    "migratorDeploy": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "migrator_deploy"}, "variables": {"$ref": "runtime-profile-defs.schema.json#/$defs/deployVariables"}}
+    },
+    "schemaExecutor": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "schema_executor"}, "variables": {"$ref": "runtime-profile-defs.schema.json#/$defs/executorVariables"}}
+    },
+    "clusterBootstrap": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "cluster_bootstrap"}, "variables": {"$ref": "privileged-profile-defs.schema.json#/$defs/clusterBootstrapVariables"}}
+    },
+    "extensionAdmin": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "extension_admin"}, "variables": {"$ref": "privileged-profile-defs.schema.json#/$defs/extensionAdminVariables"}}
+    },
+    "tenantMigrationExecutor": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "tenant_migration_executor"}, "variables": {"$ref": "phase14-executor-profile-defs.schema.json#/$defs/tenantMigrationVariables"}}
+    },
+    "databaseBackupExecutor": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "database_backup_executor"}, "variables": {"$ref": "phase14-executor-profile-defs.schema.json#/$defs/databaseBackupVariables"}}
+    },
+    "databaseRestore": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "database_restore"}, "variables": {"$ref": "phase14-executor-profile-defs.schema.json#/$defs/databaseRestoreVariables"}}
+    },
+    "cutoverAdoption": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "cutover_adoption"}, "variables": {"$ref": "privileged-profile-defs.schema.json#/$defs/cutoverAdoptionVariables"}}
+    },
+    "cutoverFinalization": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
+      "properties": {"profile": {"const": "cutover_finalization"}, "variables": {"$ref": "privileged-profile-defs.schema.json#/$defs/cutoverFinalizationVariables"}}
+    }
+  }
+}

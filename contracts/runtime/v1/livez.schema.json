@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/livez.schema.json",
+  "title": "Harpy Liveness v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "service"],
+  "properties": {
+    "status": {"const": "alive"},
+    "service": {"enum": ["core-api", "core-migrator", "core-worker"]}
+  }
+}

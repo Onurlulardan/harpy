@@ -1,0 +1,19 @@
+{"version":2,"authorities":[
+  {"id":"work.label.change","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.membership.change","owner":"work","scope_source":"actor_tenant","required_groups":["iam_system_resources","work"],"ordered_domains":["iam","system_resource_layout","work"],"participants":["iam","system_resource_layout","work"]},
+  {"id":"work.projection.apply","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.projection.repair","owner":"work","scope_source":"job_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.purge.execute","owner":"work","scope_source":"job_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.recurrence.change","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.recurrence.materialize","owner":"work","scope_source":"job_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.reminder.dispatch","owner":"work","scope_source":"job_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.archive","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.assign","owner":"work","scope_source":"actor_tenant","required_groups":["iam_system_resources","work"],"ordered_domains":["iam","system_resource_layout","work"],"participants":["iam","system_resource_layout","work"]},
+  {"id":"work.task.create","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.get","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.list","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.move","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.restore","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.transition","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.task.update","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]}
+]}

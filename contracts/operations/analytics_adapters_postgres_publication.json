@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "activate",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/activate.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/activate_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/activate.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "approve",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/approve.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/approve_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/approve.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/create.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/create_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/get.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/get_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/list.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/list_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "revoke",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/revoke.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/revoke_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/revoke.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/publication",
+      "layer": "adapters/postgres",
+      "resource": "publication",
+      "operation": "submit",
+      "source": "core/internal/modules/analytics/adapters/postgres/publication/submit.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/publication/submit_test.go",
+      "application_operation": "core/internal/modules/analytics/application/publication/submit.go"
+    }
+  ]
+}

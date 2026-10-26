@@ -1,0 +1,59 @@
+{
+  "schemas": {
+    "PortalSetupView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id",
+        "user_id",
+        "setup_state",
+        "approval_state",
+        "revision",
+        "updated_at"
+      ],
+      "properties": {
+        "binding_id": {"type": "string", "format": "uuid"},
+        "user_id": {"type": "string", "format": "uuid"},
+        "setup_state": {
+          "type": "string",
+          "enum": ["not_required", "required", "completed"]
+        },
+        "approval_state": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "not_submitted",
+            "pending",
+            "revision_required",
+            "approved",
+            "rejected"
+          ]
+        },
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "setup_completed_at": {"type": "string", "format": "date-time"},
+        "submitted_at": {"type": "string", "format": "date-time"},
+        "decision_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  },
+  "responses": {
+    "PortalSetup": {
+      "description": "Secret-free portal setup lifecycle state.",
+      "headers": {
+        "ETag": {
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^\"revision-[1-9][0-9]*\"$"
+          }
+        }
+      },
+      "content": {
+        "application/json": {
+          "schema": {"$ref": "#/schemas/PortalSetupView"}
+        }
+      }
+    }
+  }
+}

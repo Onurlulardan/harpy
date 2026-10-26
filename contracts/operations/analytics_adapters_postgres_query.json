@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query",
+      "layer": "adapters/postgres",
+      "resource": "query",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/adapters/postgres/query/create.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/query/create_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query",
+      "layer": "adapters/postgres",
+      "resource": "query",
+      "operation": "delete",
+      "source": "core/internal/modules/analytics/adapters/postgres/query/delete.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/query/delete_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query",
+      "layer": "adapters/postgres",
+      "resource": "query",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/adapters/postgres/query/get.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/query/get_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query",
+      "layer": "adapters/postgres",
+      "resource": "query",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/adapters/postgres/query/list.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/query/list_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query",
+      "layer": "adapters/postgres",
+      "resource": "query",
+      "operation": "publish",
+      "source": "core/internal/modules/analytics/adapters/postgres/query/publish.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/query/publish_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/publish.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query",
+      "layer": "adapters/postgres",
+      "resource": "query",
+      "operation": "update",
+      "source": "core/internal/modules/analytics/adapters/postgres/query/update.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/query/update_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/update.go"
+    }
+  ]
+}

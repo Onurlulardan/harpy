@@ -1,0 +1,29 @@
+{
+  "/api/notifications": {
+    "$ref": "notifications-v1.paths.json#/pathItems/collection"
+  },
+  "/api/notifications/{notification_id}": {
+    "$ref": "notifications-v1.paths.json#/pathItems/item"
+  },
+  "/api/notifications/{notification_id}/read": {
+    "$ref": "notifications-v1.paths.json#/pathItems/read"
+  },
+  "/api/notifications/mark-all-as-read": {
+    "$ref": "notifications-v1.paths.json#/pathItems/readAll"
+  },
+  "/api/notification-preferences": {
+    "$ref": "notifications-v1.paths.json#/pathItems/preferences"
+  },
+  "/api/notification-intents": {
+    "$ref": "notifications-v1.paths.json#/pathItems/intents"
+  },
+  "/api/notification-realtime-tickets": {
+    "$ref": "notifications-v1.paths.json#/pathItems/realtimeTickets"
+  },
+  "/ws/notifications": {
+    "$ref": "notifications-v1.paths.json#/pathItems/realtime"
+  },
+  "/ws/notifications/{user_id}": {
+    "$ref": "notifications-v1.paths.json#/pathItems/legacyRealtime"
+  }
+}

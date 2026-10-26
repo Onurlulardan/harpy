@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/error-envelope.schema.json",
+  "title": "Harpy Runtime Error Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["success", "error"],
+  "properties": {
+    "success": {"const": false},
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "issues", "correlation_id"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$"},
+        "message": {"type": "string", "minLength": 1, "maxLength": 128},
+        "issues": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "code"],
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 256,
+                "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+              },
+              "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$"}
+            }
+          }
+        },
+        "correlation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        }
+      }
+    }
+  }
+}

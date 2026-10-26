@@ -1,0 +1,56 @@
+{
+  "/api/catalog/installations": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations"
+  },
+  "/api/catalog/installations/{installation_id}": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}"
+  },
+  "/api/catalog/installations/{installation_id}/disables": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1disables"
+  },
+  "/api/catalog/installations/{installation_id}/enables": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1enables"
+  },
+  "/api/catalog/installations/{installation_id}/purge-approvals": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1purge-approvals"
+  },
+  "/api/catalog/installations/{installation_id}/purges": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1purges"
+  },
+  "/api/catalog/installations/{installation_id}/restorations": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1restorations"
+  },
+  "/api/catalog/installations/{installation_id}/retirements": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1retirements"
+  },
+  "/api/catalog/installations/{installation_id}/upgrades": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1installations~1{installation_id}~1upgrades"
+  },
+  "/api/catalog/menu": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1menu"
+  },
+  "/api/catalog/menu/items/{item_id}/override": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1menu~1items~1{item_id}~1override"
+  },
+  "/api/catalog/operations/{operation_id}": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1operations~1{operation_id}"
+  },
+  "/api/catalog/operations/{operation_id}/cancellations": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1operations~1{operation_id}~1cancellations"
+  },
+  "/api/catalog/operations/{operation_id}/retries": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1operations~1{operation_id}~1retries"
+  },
+  "/api/catalog/packages": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1packages"
+  },
+  "/api/catalog/packages/{package_id}": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1packages~1{package_id}"
+  },
+  "/api/catalog/packages/{package_id}/versions": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1packages~1{package_id}~1versions"
+  },
+  "/api/catalog/packages/{package_id}/versions/{version}": {
+    "$ref": "catalog-v2.paths.json#/paths/~1api~1catalog~1packages~1{package_id}~1versions~1{version}"
+  }
+}

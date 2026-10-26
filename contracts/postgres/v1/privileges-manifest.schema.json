@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/privileges-manifest.schema.json",
+  "title": "Harpy PostgreSQL Privileges Manifest v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "database_origin", "database_name", "public_database_privileges",
+    "public_schema_create", "memberships", "grants", "default_privileges",
+    "executor_decisions"
+  ],
+  "properties": {
+    "contract_version": {"const": "postgres-privileges-manifest.v1"},
+    "database_origin": {
+      "$ref": "postgres-artifact-defs.schema.json#/$defs/databaseOrigin"
+    },
+    "database_name": {"$ref": "postgres-artifact-defs.schema.json#/$defs/databaseName"},
+    "public_database_privileges": {"type": "array", "maxItems": 0},
+    "public_schema_create": {"const": false},
+    "memberships": {"type": "array"},
+    "grants": {
+      "type": "array", "maxItems": 100000, "uniqueItems": true,
+      "items": {"$ref": "postgres-artifact-defs.schema.json#/$defs/aclEntry"},
+      "allOf": [
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_cluster_admin"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_extension_admin"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_migrator"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_runtime"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_v2_runtime"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_backup"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_restore"}}}
+        ]}},
+        {"contains": {"allOf": [
+          {"$ref": "#/$defs/directDatabaseConnectGrant"},
+          {"properties": {"grantee": {"const": "harpy_reactivation_observer"}}}
+        ]}}
+      ]
+    },
+    "default_privileges": {
+      "type": "array", "maxItems": 10000, "uniqueItems": true,
+      "items": {"$ref": "postgres-artifact-defs.schema.json#/$defs/defaultPrivilege"}
+    },
+    "executor_decisions": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "bootstrap_role", "extension_role", "runtime_session_role",
+        "runtime_current_role", "migrator_session_role", "migrator_current_role",
+        "ownership_executor"
+      ],
+      "properties": {
+        "bootstrap_role": {"const": "harpy_cluster_admin"},
+        "extension_role": {"const": "harpy_extension_admin"},
+        "runtime_session_role": {"const": "harpy_v2_runtime"},
+        "runtime_current_role": {"const": "harpy_runtime"},
+        "migrator_session_role": {"const": "harpy_migrator"},
+        "migrator_current_role": {"const": "harpy_owner"},
+        "ownership_executor": {
+          "enum": ["cluster_bootstrap", "external_root_provisioner"]
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "database_origin": {"const": "fresh"},
+        "memberships": {"$ref": "#/$defs/freshMemberships"},
+        "executor_decisions": {
+          "properties": {"ownership_executor": {"const": "cluster_bootstrap"}}
+        }
+      }
+    },
+    {
+      "properties": {
+        "database_origin": {"const": "v1_adopted"},
+        "memberships": {"$ref": "#/$defs/adoptedMemberships"},
+        "executor_decisions": {
+          "properties": {"ownership_executor": {"const": "external_root_provisioner"}}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "directDatabaseConnectGrant": {
+      "type": "object",
+      "required": ["object", "grantor", "grantee", "privileges", "grant_option"],
+      "properties": {
+        "object": {
+          "type": "object", "required": ["kind"],
+          "properties": {"kind": {"const": "database"}}
+        },
+        "grantor": {"const": "harpy_owner"},
+        "privileges": {"const": ["CONNECT"]},
+        "grant_option": {"const": false}
+      }
+    },
+    "v2RuntimeMembership": {"const": {
+      "member": "harpy_v2_runtime", "role": "harpy_runtime",
+      "admin_option": false, "inherit_option": false, "set_option": true
+    }},
+    "formsRecordReaderMembership": {"const": {
+      "member": "harpy_v2_runtime", "role": "harpy_forms_record_reader",
+      "admin_option": false, "inherit_option": false, "set_option": true
+    }},
+    "formsRecordWriterMembership": {"const": {
+      "member": "harpy_v2_runtime", "role": "harpy_forms_record_writer",
+      "admin_option": false, "inherit_option": false, "set_option": true
+    }},
+    "migratorMembership": {"const": {
+      "member": "harpy_migrator", "role": "harpy_owner",
+      "admin_option": false, "inherit_option": false, "set_option": true
+    }},
+    "backupMembership": {"const": {
+      "member": "harpy_backup", "role": "harpy_backup_reader",
+      "admin_option": false, "inherit_option": false, "set_option": true
+    }},
+    "restoreMembership": {"const": {
+      "member": "harpy_restore", "role": "harpy_owner",
+      "admin_option": false, "inherit_option": false, "set_option": true
+    }},
+    "v1RuntimeMembership": {"const": {
+      "member": "harpy_v1_runtime", "role": "harpy_runtime",
+      "admin_option": false, "inherit_option": true, "set_option": false
+    }},
+    "freshMemberships": {
+      "type": "array", "minItems": 6, "maxItems": 6, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/v2RuntimeMembership"},
+        {"$ref": "#/$defs/formsRecordReaderMembership"},
+        {"$ref": "#/$defs/formsRecordWriterMembership"},
+        {"$ref": "#/$defs/migratorMembership"},
+        {"$ref": "#/$defs/backupMembership"},
+        {"$ref": "#/$defs/restoreMembership"}
+      ]
+    },
+    "adoptedMemberships": {
+      "type": "array", "minItems": 7, "maxItems": 7, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/v2RuntimeMembership"},
+        {"$ref": "#/$defs/formsRecordReaderMembership"},
+        {"$ref": "#/$defs/formsRecordWriterMembership"},
+        {"$ref": "#/$defs/migratorMembership"},
+        {"$ref": "#/$defs/backupMembership"},
+        {"$ref": "#/$defs/restoreMembership"},
+        {"$ref": "#/$defs/v1RuntimeMembership"}
+      ]
+    }
+  }
+}

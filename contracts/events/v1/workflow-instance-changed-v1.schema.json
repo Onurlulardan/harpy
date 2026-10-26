@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/workflow-instance-changed-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "instance_id",
+    "state",
+    "revision",
+    "transition_count",
+    "decision",
+    "error_code"
+  ],
+  "properties": {
+    "instance_id": {"type": "string", "format": "uuid"},
+    "state": {
+      "enum": [
+        "running",
+        "waiting",
+        "cancellation_requested",
+        "cancelled",
+        "completed",
+        "failed",
+        "blocked"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "transition_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "decision": {
+      "enum": ["started", "transition", "budget_failure", "human_resume"]
+    },
+    "error_code": {
+      "type": ["string", "null"],
+      "pattern": "^WORKFLOW_[A-Z0-9_]{2,55}$"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/purge",
+      "layer": "adapters/postgres", "resource": "purge", "operation": "cancel",
+      "source": "core/internal/modules/forms/adapters/postgres/purge/cancel.go",
+      "test": "core/internal/modules/forms/adapters/postgres/purge/cancel_test.go",
+      "application_operation": "core/internal/modules/forms/application/purge/cancel.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/purge",
+      "layer": "adapters/postgres", "resource": "purge", "operation": "create",
+      "source": "core/internal/modules/forms/adapters/postgres/purge/create.go",
+      "test": "core/internal/modules/forms/adapters/postgres/purge/create_test.go",
+      "application_operation": "core/internal/modules/forms/application/purge/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/purge",
+      "layer": "adapters/postgres", "resource": "purge", "operation": "finalize",
+      "source": "core/internal/modules/forms/adapters/postgres/purge/finalize.go",
+      "test": "core/internal/modules/forms/adapters/postgres/purge/finalize_test.go",
+      "application_operation": "core/internal/modules/forms/application/purge/finalize.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/purge",
+      "layer": "adapters/postgres", "resource": "purge", "operation": "get",
+      "source": "core/internal/modules/forms/adapters/postgres/purge/get.go",
+      "test": "core/internal/modules/forms/adapters/postgres/purge/get_test.go",
+      "application_operation": "core/internal/modules/forms/application/purge/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/purge",
+      "layer": "adapters/postgres", "resource": "purge", "operation": "record",
+      "source": "core/internal/modules/forms/adapters/postgres/purge/record.go",
+      "test": "core/internal/modules/forms/adapters/postgres/purge/record_test.go",
+      "application_operation": "core/internal/modules/forms/application/purge/record.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/purge",
+      "layer": "adapters/postgres", "resource": "purge", "operation": "retire",
+      "source": "core/internal/modules/forms/adapters/postgres/purge/retire.go",
+      "test": "core/internal/modules/forms/adapters/postgres/purge/retire_test.go",
+      "application_operation": "core/internal/modules/forms/application/purge/retire.go"
+    }
+  ]
+}

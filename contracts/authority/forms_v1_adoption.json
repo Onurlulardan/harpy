@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "forms.v1adoption.compile",
+      "owner": "forms",
+      "scope_source": "credential_target",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "forms.v1adoption.copy",
+      "owner": "forms",
+      "scope_source": "credential_target",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "forms.v1adoption.execute",
+      "owner": "forms",
+      "scope_source": "credential_target",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "forms.v1adoption.reconcile",
+      "owner": "forms",
+      "scope_source": "credential_target",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    }
+  ]
+}

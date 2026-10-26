@@ -1,0 +1,4 @@
+{"version":2,"authorities":[
+  {"id":"tenancy.deployment_policy.create","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.deployment_policy.get","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
+]}

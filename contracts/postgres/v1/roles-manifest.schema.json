@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/roles-manifest.schema.json",
+  "title": "Harpy PostgreSQL Roles Manifest v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "database_origin", "roles"],
+  "properties": {
+    "contract_version": {"const": "postgres-roles-manifest.v1"},
+    "database_origin": {
+      "$ref": "postgres-artifact-defs.schema.json#/$defs/databaseOrigin"
+    },
+    "roles": {"type": "array"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "database_origin": {"const": "fresh"},
+        "roles": {"$ref": "#/$defs/freshRoles"}
+      }
+    },
+    {
+      "properties": {
+        "database_origin": {"const": "v1_adopted"},
+        "roles": {"$ref": "#/$defs/adoptedRoles"}
+      }
+    }
+  ],
+  "$defs": {
+    "owner": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_owner"}}}
+    ]},
+    "cutoverAuthorityOwner": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_cutover_authority_owner"}}}
+    ]},
+    "runtime": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_runtime"}}}
+    ]},
+    "runtimeCompatibility": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "forge_runtime"}}}
+    ]},
+    "formsRecordReader": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_forms_record_reader"}}}
+    ]},
+    "formsRecordWriter": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_forms_record_writer"}}}
+    ]},
+    "v2Runtime": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_v2_runtime"}}}
+    ]},
+    "migrator": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_migrator"}}}
+    ]},
+    "clusterAdmin": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_cluster_admin"}}}
+    ]},
+    "extensionAdmin": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_extension_admin"}}}
+    ]},
+    "adopter": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_adopter"}}}
+    ]},
+    "decoder": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_cutover_decoder"}}}
+    ]},
+    "finalizer": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_cutover_finalizer"}}}
+    ]},
+    "backupReader": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_backup_reader"}}}
+    ]},
+    "backup": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_backup"}}}
+    ]},
+    "restore": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_restore"}}}
+    ]},
+    "reactivationObserver": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_reactivation_observer"}}}
+    ]},
+    "tenantMigrationExecutor": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_tenant_migration_executor"}}}
+    ]},
+    "v1Runtime": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_v1_runtime"}}}
+    ]},
+    "legacyExtensionOwner": {"allOf": [
+      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
+      {"properties": {"name": {"const": "harpy_legacy_extension_owner"}}}
+    ]},
+    "freshRoles": {
+      "type": "array", "minItems": 18, "maxItems": 18, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/owner"}, {"$ref": "#/$defs/cutoverAuthorityOwner"},
+        {"$ref": "#/$defs/runtime"}, {"$ref": "#/$defs/runtimeCompatibility"},
+        {"$ref": "#/$defs/formsRecordReader"}, {"$ref": "#/$defs/formsRecordWriter"},
+        {"$ref": "#/$defs/v2Runtime"}, {"$ref": "#/$defs/migrator"},
+        {"$ref": "#/$defs/clusterAdmin"}, {"$ref": "#/$defs/extensionAdmin"},
+        {"$ref": "#/$defs/adopter"}, {"$ref": "#/$defs/decoder"},
+        {"$ref": "#/$defs/finalizer"}, {"$ref": "#/$defs/backupReader"},
+        {"$ref": "#/$defs/backup"}, {"$ref": "#/$defs/restore"},
+        {"$ref": "#/$defs/reactivationObserver"},
+        {"$ref": "#/$defs/tenantMigrationExecutor"}
+      ]
+    },
+    "adoptedRoles": {
+      "type": "array", "minItems": 20, "maxItems": 20, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/owner"}, {"$ref": "#/$defs/cutoverAuthorityOwner"},
+        {"$ref": "#/$defs/runtime"}, {"$ref": "#/$defs/runtimeCompatibility"},
+        {"$ref": "#/$defs/formsRecordReader"}, {"$ref": "#/$defs/formsRecordWriter"},
+        {"$ref": "#/$defs/v2Runtime"}, {"$ref": "#/$defs/migrator"},
+        {"$ref": "#/$defs/clusterAdmin"}, {"$ref": "#/$defs/extensionAdmin"},
+        {"$ref": "#/$defs/adopter"}, {"$ref": "#/$defs/decoder"},
+        {"$ref": "#/$defs/finalizer"}, {"$ref": "#/$defs/backupReader"},
+        {"$ref": "#/$defs/backup"}, {"$ref": "#/$defs/restore"},
+        {"$ref": "#/$defs/reactivationObserver"},
+        {"$ref": "#/$defs/tenantMigrationExecutor"},
+        {"$ref": "#/$defs/v1Runtime"}, {"$ref": "#/$defs/legacyExtensionOwner"}
+      ]
+    }
+  }
+}

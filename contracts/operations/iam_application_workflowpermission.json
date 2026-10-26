@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/workflowpermission",
+      "layer": "application",
+      "resource": "workflowpermission",
+      "operation": "execute",
+      "source": "core/internal/modules/iam/application/workflowpermission/execute.go",
+      "test": "core/internal/modules/iam/application/workflowpermission/execute_test.go",
+      "authority_id": "iam.permissionrequest.workflow_decide"
+    }
+  ]
+}

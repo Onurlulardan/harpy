@@ -1,0 +1,47 @@
+{
+  "pathItems": {
+    "collection": {
+      "get": {
+        "operationId": "iamListInvitations", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 100}},
+          {"name": "after", "in": "query", "schema": {"$ref": "iam-invitations-v1.schemas.json#/schemas/UUID"}},
+          {"name": "status", "in": "query", "schema": {"type": "string", "minLength": 1, "maxLength": 128}}
+        ],
+        "responses": {"200": {"$ref": "iam-invitations-v1.schemas.json#/responses/List"}, "400": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "401": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "503": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}}
+      },
+      "post": {
+        "operationId": "iamCreateInvitation", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "iam-invitations-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-invitations-v1.schemas.json#/schemas/CreateRequest"}}}},
+        "responses": {"201": {"$ref": "iam-invitations-v1.schemas.json#/responses/Invitation"}, "400": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "401": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "403": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "409": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "503": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}}
+      }
+    },
+    "item": {
+      "get": {
+        "operationId": "iamReadInvitation", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "iam-invitations-v1.schemas.json#/parameters/ID"}],
+        "responses": {"200": {"$ref": "iam-invitations-v1.schemas.json#/responses/Invitation"}, "400": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "401": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "404": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "503": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}}
+      },
+      "delete": {
+        "operationId": "iamRevokeInvitation", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "iam-invitations-v1.schemas.json#/parameters/ID"}, {"$ref": "iam-invitations-v1.schemas.json#/parameters/Revision"}, {"$ref": "iam-invitations-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "responses": {"200": {"$ref": "iam-invitations-v1.schemas.json#/responses/Revoked"}, "400": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "401": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "403": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "404": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "409": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "503": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}}
+      }
+    },
+    "verify": {
+      "get": {
+        "operationId": "iamVerifyInvitation", "security": [], "x-harpy-cache-control": "no-store",
+        "parameters": [{"$ref": "iam-invitations-v1.schemas.json#/parameters/Token"}, {"$ref": "iam-invitations-v1.schemas.json#/parameters/Tenant"}],
+        "responses": {"200": {"$ref": "iam-invitations-v1.schemas.json#/responses/Verify"}, "400": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "404": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "503": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}}
+      }
+    },
+    "accept": {
+      "post": {
+        "operationId": "iamAcceptInvitation", "security": [], "x-harpy-cache-control": "no-store",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-invitations-v1.schemas.json#/schemas/AcceptRequest"}}}},
+        "responses": {"201": {"$ref": "iam-invitations-v1.schemas.json#/responses/Accept"}, "400": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "404": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "409": {"$ref": "iam-invitations-v1.schemas.json#/responses/AcceptanceConflict"}, "413": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "415": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}, "503": {"$ref": "iam-invitations-v1.schemas.json#/responses/Error"}}
+      }
+    }
+  }
+}

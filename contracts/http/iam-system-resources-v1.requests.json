@@ -1,0 +1,203 @@
+{
+  "schemas": {
+    "BulkDelete": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ids", "expected_revisions"],
+      "properties": {
+        "ids": {
+          "type": "array", "minItems": 1, "maxItems": 100,
+          "uniqueItems": true,
+          "items": {"type": "string", "format": "uuid"}
+        },
+        "expected_revisions": {
+          "type": "object", "minProperties": 1, "maxProperties": 100,
+          "additionalProperties": {"type": "integer", "format": "int64", "minimum": 1},
+          "description": "Exact UUID-to-revision map; its keys must equal ids."
+        }
+      }
+    },
+    "UserCreate": {
+      "type": "object",
+      "additionalProperties": true,
+      "maxProperties": 500,
+      "required": ["email", "password", "first_name", "last_name"],
+      "propertyNames": {
+        "not": {
+          "enum": [
+            "id", "portal_identifier", "identity_kind",
+            "profile_schema_version_id", "revision", "created_at", "updated_at",
+            "password_hash", "email_normalized", "token_version",
+            "authorization_version", "identifier_id"
+          ]
+        }
+      },
+      "oneOf": [
+        {"required": ["organization_ids"], "not": {"required": ["organization_id"]}},
+        {"required": ["organization_id"], "not": {"required": ["organization_ids"]}}
+      ],
+      "description": "Canonical catalog-shaped user creation. Additional members are published editable user-profile field public names. organization_id is a deprecated compatibility alias for a one-item organization_ids array.",
+      "properties": {
+        "email": {"type": "string", "format": "email", "maxLength": 254},
+        "password": {"type": "string", "minLength": 15, "maxLength": 128, "writeOnly": true},
+        "first_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "last_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "phone": {"type": "string", "maxLength": 32},
+        "organization_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "maxItems": 100,
+          "items": {"type": "string", "format": "uuid"}
+        },
+        "organization_id": {"type": "string", "format": "uuid", "deprecated": true},
+        "role_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 100,
+          "items": {"type": "string", "format": "uuid"}
+        },
+        "status": {"const": "active", "deprecated": true}
+      }
+    },
+    "UserUpdate": {
+      "type": "object",
+      "additionalProperties": true,
+      "minProperties": 1,
+      "maxProperties": 500,
+      "propertyNames": {
+        "not": {
+          "enum": [
+            "id", "email", "password", "status",
+            "portal_identifier", "identity_kind", "profile_schema_version_id",
+            "revision", "created_at", "updated_at", "password_hash",
+            "email_normalized", "token_version", "authorization_version",
+            "identifier_id"
+          ]
+        }
+      },
+      "description": "Canonical catalog-shaped user update. Additional members are published editable user-profile field public names; email and password are create-only. organization_id is a deprecated V1 compatibility alias for exact one-item membership replacement.",
+      "properties": {
+        "first_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "last_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "phone": {"type": "string", "maxLength": 32},
+        "organization_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 100,
+          "items": {"type": "string", "format": "uuid"}
+        },
+        "organization_id": {"type": "string", "format": "uuid", "deprecated": true},
+        "role_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 100,
+          "items": {"type": "string", "format": "uuid"}
+        }
+      }
+    },
+    "UserState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state"], "properties": {"state": {"const": "INACTIVE"}}
+    },
+    "RoleCreate": {
+      "type": "object",
+      "additionalProperties": true,
+      "maxProperties": 500,
+      "required": ["name"],
+      "propertyNames": {
+        "not": {
+          "enum": [
+            "id", "status", "is_protected", "user_ids",
+            "profile_schema_version_id", "revision", "created_at", "updated_at",
+            "password", "password_hash", "email_normalized", "token_version",
+            "authorization_version", "identifier_id"
+          ]
+        }
+      },
+      "description": "Canonical catalog-shaped role creation. Additional members are published editable role-profile field public names. Tenant scope_id is inferred from verified admission; organization scope_id is inferred from organization_id.",
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "description": {"type": "string", "maxLength": 2000},
+        "scope_kind": {"enum": ["tenant", "organization"]},
+        "scope_id": {"type": ["string", "null"], "format": "uuid"},
+        "organization_id": {"type": ["string", "null"], "format": "uuid"},
+        "is_default": {"type": "boolean", "default": false}
+      }
+    },
+    "RoleUpdate": {
+      "type": "object",
+      "additionalProperties": true,
+      "minProperties": 1,
+      "maxProperties": 500,
+      "propertyNames": {
+        "not": {
+          "enum": [
+            "id", "scope_kind", "scope_id", "organization_id", "status",
+            "is_protected", "user_ids", "profile_schema_version_id",
+            "revision", "created_at", "updated_at", "password",
+            "password_hash", "email_normalized", "token_version",
+            "authorization_version", "identifier_id"
+          ]
+        }
+      },
+      "description": "Canonical catalog-shaped role update. Scope fields are create-only; additional members are published editable role-profile field public names.",
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "description": {"type": "string", "maxLength": 2000},
+        "is_default": {"type": "boolean"}
+      }
+    },
+    "RoleState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state"], "properties": {"state": {"const": "RETIRED"}}
+    },
+    "OrganizationCreate": {
+      "type": "object",
+      "additionalProperties": true,
+      "maxProperties": 500,
+      "required": ["name", "slug"],
+      "propertyNames": {
+        "not": {
+          "enum": [
+            "id", "status", "user_ids", "role_ids",
+            "profile_schema_version_id", "revision", "created_at", "updated_at",
+            "password", "password_hash", "email_normalized", "token_version",
+            "authorization_version", "identifier_id"
+          ]
+        }
+      },
+      "description": "Canonical catalog-shaped organization creation. Additional members are published editable organization-profile field public names.",
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 100},
+        "parent_id": {"type": ["string", "null"], "format": "uuid"}
+      }
+    },
+    "OrganizationUpdate": {
+      "type": "object",
+      "additionalProperties": true,
+      "minProperties": 1,
+      "maxProperties": 500,
+      "propertyNames": {
+        "not": {
+          "enum": [
+            "id", "status", "user_ids", "role_ids",
+            "profile_schema_version_id", "revision", "created_at", "updated_at",
+            "password", "password_hash", "email_normalized", "token_version",
+            "authorization_version", "identifier_id"
+          ]
+        }
+      },
+      "description": "Canonical catalog-shaped organization update. Additional members are published editable organization-profile field public names.",
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 100},
+        "parent_id": {"type": ["string", "null"], "format": "uuid"}
+      }
+    },
+    "OrganizationState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state"], "properties": {"state": {"const": "SUSPENDED"}}
+    }
+  }
+}

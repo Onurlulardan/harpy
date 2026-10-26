@@ -1,0 +1,171 @@
+{
+  "openapi": "3.1.1",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "Harpy Private Management API",
+    "version": "platform-runtime.v1"
+  },
+  "security": [],
+  "paths": {
+    "/livez": {
+      "get": {
+        "operationId": "getLivez",
+        "responses": {"200": {"$ref": "#/components/responses/Livez"}}
+      },
+      "head": {
+        "operationId": "headLivez",
+        "responses": {"200": {"$ref": "#/components/responses/LivezHead"}}
+      }
+    },
+    "/readyz": {
+      "get": {
+        "operationId": "getReadyz",
+        "responses": {
+          "200": {"$ref": "#/components/responses/Readyz"},
+          "503": {"$ref": "#/components/responses/NotReadyz"}
+        }
+      },
+      "head": {
+        "operationId": "headReadyz",
+        "responses": {
+          "200": {"$ref": "#/components/responses/ReadyzHead"},
+          "503": {"$ref": "#/components/responses/NotReadyzHead"}
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "operationId": "getVersion",
+        "responses": {"200": {"$ref": "#/components/responses/Version"}}
+      },
+      "head": {
+        "operationId": "headVersion",
+        "responses": {"200": {"$ref": "#/components/responses/VersionHead"}}
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorEnvelope": {"$ref": "../runtime/v1/error-envelope.schema.json"},
+      "Livez": {"$ref": "../runtime/v1/livez.schema.json"},
+      "Readyz": {"$ref": "../runtime/v1/readyz.schema.json"},
+      "Version": {"$ref": "../runtime/v1/version.schema.json"}
+    },
+    "headers": {
+      "ContentType": {"schema": {"type": "string", "const": "application/json; charset=utf-8"}},
+      "CacheControl": {"schema": {"type": "string", "const": "no-store"}},
+      "ContentTypeOptions": {"schema": {"type": "string", "const": "nosniff"}},
+      "CorrelationID": {"schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"}},
+      "RetryAfter": {"schema": {"type": "string", "const": "1"}},
+      "Allow": {"schema": {"type": "string", "const": "GET, HEAD"}}
+    },
+    "responses": {
+      "Livez": {
+        "description": "Process event loop is alive; no dependency query is performed.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        },
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Livez"}}}
+      },
+      "LivezHead": {
+        "description": "Liveness headers without a response body.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        }
+      },
+      "Readyz": {
+        "description": "The service and all three ordered checks are ready.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        },
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Readyz"}}}
+      },
+      "NotReadyz": {
+        "description": "The service is starting, dependency-failed, stale, or draining.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"},
+          "Retry-After": {"$ref": "#/components/headers/RetryAfter"}
+        },
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Readyz"}}}
+      },
+      "ReadyzHead": {
+        "description": "Readiness headers without a response body.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        }
+      },
+      "NotReadyzHead": {
+        "description": "Not-ready headers without a response body.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"},
+          "Retry-After": {"$ref": "#/components/headers/RetryAfter"}
+        }
+      },
+      "Version": {
+        "description": "Immutable release provenance.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        },
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Version"}}}
+      },
+      "VersionHead": {
+        "description": "Version headers without a response body.",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        }
+      },
+      "NotFound": {
+        "description": "Unknown management path.",
+        "x-harpy-error-code": "ROUTE_NOT_FOUND",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"}
+        },
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorEnvelope"}}}
+      },
+      "MethodNotAllowed": {
+        "description": "Only GET and HEAD are accepted.",
+        "x-harpy-error-code": "METHOD_NOT_ALLOWED",
+        "headers": {
+          "Content-Type": {"$ref": "#/components/headers/ContentType"},
+          "Cache-Control": {"$ref": "#/components/headers/CacheControl"},
+          "X-Content-Type-Options": {"$ref": "#/components/headers/ContentTypeOptions"},
+          "X-Correlation-ID": {"$ref": "#/components/headers/CorrelationID"},
+          "Allow": {"$ref": "#/components/headers/Allow"}
+        },
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorEnvelope"}}}
+      }
+    }
+  },
+  "x-harpy-private-management": true,
+  "x-harpy-unmatched": {
+    "path": {"status": 404, "$ref": "#/components/responses/NotFound"},
+    "method": {"status": 405, "$ref": "#/components/responses/MethodNotAllowed"}
+  }
+}

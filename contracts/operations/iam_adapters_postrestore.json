@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/postrestore",
+      "layer": "adapters/postgres",
+      "resource": "postrestore",
+      "operation": "reconcile",
+      "source": "core/internal/modules/iam/adapters/postgres/postrestore/reconcile.go",
+      "test": "core/internal/modules/iam/adapters/postgres/postrestore/reconcile_test.go",
+      "application_operation": "core/internal/modules/iam/application/postrestore/reconcile.go"
+    }
+  ]
+}

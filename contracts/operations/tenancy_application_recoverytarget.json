@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/recoverytarget","layer":"application","resource":"recoverytarget","operation":"get","source":"core/internal/modules/tenancy/application/recoverytarget/get.go","test":"core/internal/modules/tenancy/application/recoverytarget/get_test.go","authority_id":"tenancy.recovery_target.get"}
+]}

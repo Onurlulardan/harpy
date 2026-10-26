@@ -1,0 +1,87 @@
+{
+  "openapi": "3.1.1",
+  "info": {"title": "Harpy Analytics dashboard API", "version": "2.0.0"},
+  "paths": {
+    "/api/analytics/dashboards": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}],
+      "get": {
+        "security": [{"bearerAuth": []}], "operationId": "listAnalyticsDashboards",
+        "x-harpy-permission": "analytics.dashboard.read", "x-harpy-authority": "analytics.dashboard.list",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/LimitParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/AfterParameter"}],
+        "responses": {"200": {"description": "Dashboard page", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/PageEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "createAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.create", "x-harpy-authority": "analytics.dashboard.create",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/CreateRequest"}}}},
+        "responses": {"201": {"description": "Dashboard created", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/dashboards/{dashboard_id}": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/DashboardIDParameter"}],
+      "get": {
+        "security": [{"bearerAuth": []}], "operationId": "getAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.read", "x-harpy-authority": "analytics.dashboard.get",
+        "responses": {"200": {"description": "Exact dashboard", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "patch": {
+        "security": [{"bearerAuth": []}], "operationId": "updateAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.update", "x-harpy-authority": "analytics.dashboard.update",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/UpdateRequest"}}}},
+        "responses": {"200": {"description": "Dashboard draft updated", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "delete": {
+        "security": [{"bearerAuth": []}], "operationId": "deleteAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.delete", "x-harpy-authority": "analytics.dashboard.delete",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/DeleteRequest"}}}},
+        "responses": {"200": {"description": "Dashboard retired", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/dashboard-defaults/{surface}": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/SurfaceParameter"}],
+      "get": {
+        "security": [{"bearerAuth": []}], "operationId": "getDefaultAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.read", "x-harpy-authority": "analytics.dashboard.read",
+        "responses": {"200": {"description": "Principal surface default dashboard", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/Envelope"}}}}, "204": {"description": "No default dashboard is configured for the principal surface"}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/dashboards/{dashboard_id}/publications": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/DashboardIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "publishAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.publish", "x-harpy-authority": "analytics.dashboard.publish",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/PublishRequest"}}}},
+        "responses": {"201": {"description": "Immutable dashboard version published", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/dashboards/{dashboard_id}/acl-grants": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/DashboardIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "grantAnalyticsDashboardACL",
+        "x-harpy-permission": "analytics.dashboard.update", "x-harpy-authority": "analytics.dashboard.grant_acl",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/GrantRequest"}}}},
+        "responses": {"201": {"description": "Dashboard ACL granted without expanding base IAM", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/ACLEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/dashboards/{dashboard_id}/acl-revocations": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/DashboardIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "revokeAnalyticsDashboardACL",
+        "x-harpy-permission": "analytics.dashboard.update", "x-harpy-authority": "analytics.dashboard.revoke_acl",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/RevokeRequest"}}}},
+        "responses": {"200": {"description": "Dashboard ACL revoked", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/RevokedEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/dashboards/{dashboard_id}/defaults/{surface}": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/DashboardIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/SurfaceParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "put": {
+        "security": [{"bearerAuth": []}], "operationId": "setDefaultAnalyticsDashboard",
+        "x-harpy-permission": "analytics.dashboard.read", "x-harpy-authority": "analytics.dashboard.set_default",
+        "responses": {"200": {"description": "Principal surface preference updated", "content": {"application/json": {"schema": {"$ref": "analytics-dashboard-v2.schemas.json#/$defs/DefaultEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    }
+  }
+}

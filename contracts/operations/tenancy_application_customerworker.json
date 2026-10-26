@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/customerworker","layer":"application","resource":"customerworker","operation":"claim","source":"core/internal/modules/tenancy/application/customerworker/claim.go","test":"core/internal/modules/tenancy/application/customerworker/claim_test.go","authority_id":"tenancy.customer_worker.claim"}
+]}

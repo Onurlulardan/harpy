@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/entitlement","layer":"application","resource":"entitlement","operation":"resolve","source":"core/internal/modules/billing/application/entitlement/resolve.go","test":"core/internal/modules/billing/application/entitlement/resolve_test.go","authority_id":"billing.entitlement.resolve"}
+]}

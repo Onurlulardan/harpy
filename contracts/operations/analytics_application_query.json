@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/application/query/create.go",
+      "test": "core/internal/modules/analytics/application/query/create_test.go",
+      "authority_id": "analytics.query.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "delete",
+      "source": "core/internal/modules/analytics/application/query/delete.go",
+      "test": "core/internal/modules/analytics/application/query/delete_test.go",
+      "authority_id": "analytics.query.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/application/query/execute.go",
+      "test": "core/internal/modules/analytics/application/query/execute_test.go",
+      "authority_id": "analytics.query.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/application/query/get.go",
+      "test": "core/internal/modules/analytics/application/query/get_test.go",
+      "authority_id": "analytics.query.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/application/query/list.go",
+      "test": "core/internal/modules/analytics/application/query/list_test.go",
+      "authority_id": "analytics.query.list"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "publish",
+      "source": "core/internal/modules/analytics/application/query/publish.go",
+      "test": "core/internal/modules/analytics/application/query/publish_test.go",
+      "authority_id": "analytics.query.publish"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "read",
+      "source": "core/internal/modules/analytics/application/query/read_published.go",
+      "test": "core/internal/modules/analytics/application/query/read_published_test.go",
+      "authority_id": "analytics.query.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "revalidate",
+      "source": "core/internal/modules/analytics/application/query/revalidate.go",
+      "test": "core/internal/modules/analytics/application/query/revalidate_test.go",
+      "authority_id": "analytics.query.revalidate"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query",
+      "layer": "application",
+      "resource": "query",
+      "operation": "update",
+      "source": "core/internal/modules/analytics/application/query/update.go",
+      "test": "core/internal/modules/analytics/application/query/update_test.go",
+      "authority_id": "analytics.query.update"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/queryexecution",
+      "layer": "application",
+      "resource": "queryexecution",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/application/queryexecution/execute.go",
+      "test": "core/internal/modules/analytics/application/queryexecution/execute_test.go",
+      "authority_id": "analytics.query.execute"
+    }
+  ]
+}

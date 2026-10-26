@@ -1,0 +1,11 @@
+{"version":2,"authorities":[
+  {"id":"workflow.runtime.cancel","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.runtime.execute.forms","owner":"workflow","scope_source":"actor_tenant","required_groups":["billing+forms","documents","iam_system_resources","workflow"],"ordered_domains":["billing","documents","forms","iam","system_resource_layout","workflow"],"participants":["documents","forms","iam","workflow"]},
+  {"id":"workflow.runtime.execute.iam","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","workflow"]},
+  {"id":"workflow.runtime.execute.workflow","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","workflow"]},
+  {"id":"workflow.runtime.get","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.runtime.repair","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.runtime.replan","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.runtime.signal","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
+  {"id":"workflow.runtime.start","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]}
+]}

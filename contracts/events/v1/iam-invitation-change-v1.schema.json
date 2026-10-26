@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/iam-invitation-change-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["command", "delivery_artifact_ref", "revision", "state"],
+  "properties": {
+    "command": {
+      "enum": [
+        "iam.invitation.accept",
+        "iam.invitation.create",
+        "iam.invitation.expire",
+        "iam.invitation.revoke"
+      ]
+    },
+    "delivery_artifact_ref": {
+      "type": ["string", "null"],
+      "pattern": "^iam-delivery://tenant/[0-9a-f-]{36}/artifact/[0-9a-f-]{36}$",
+      "maxLength": 128
+    },
+    "revision": {"type": "integer", "minimum": 1},
+    "state": {"enum": ["accepted", "expired", "pending", "revoked"]}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/work-reminder-due-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "due_at",
+    "task_id",
+    "task_version",
+    "title"
+  ],
+  "properties": {
+    "due_at": {"type": "string", "format": "date-time"},
+    "task_id": {"type": "string", "format": "uuid"},
+    "task_version": {"type": "integer", "minimum": 1},
+    "title": {"type": "string", "minLength": 1, "maxLength": 1200}
+  }
+}

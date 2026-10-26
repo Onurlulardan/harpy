@@ -1,0 +1,4 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/deploymentpolicy","layer":"adapters/postgres","resource":"deploymentpolicy","operation":"create","source":"core/internal/modules/tenancy/adapters/postgres/deploymentpolicy/create.go","test":"core/internal/modules/tenancy/adapters/postgres/deploymentpolicy/create_test.go","application_operation":"core/internal/modules/tenancy/application/deploymentpolicy/create.go"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/deploymentpolicy","layer":"adapters/postgres","resource":"deploymentpolicy","operation":"get","source":"core/internal/modules/tenancy/adapters/postgres/deploymentpolicy/get.go","test":"core/internal/modules/tenancy/adapters/postgres/deploymentpolicy/get_test.go","application_operation":"core/internal/modules/tenancy/application/deploymentpolicy/get.go"}
+]}

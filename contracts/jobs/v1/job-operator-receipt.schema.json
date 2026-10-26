@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/job-operator-receipt.schema.json",
+  "title": "Harpy Successful Job Operator Action Receipt v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "receipt_id", "action", "tenant_id", "authority", "source_job_id", "source_reference",
+    "result_job_id", "source_effect_idempotency_key", "result_effect_idempotency_key",
+    "reason", "ticket_reference", "actor_id", "causation_id", "occurred_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "job-operator-receipt.v1"},
+    "receipt_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "action": {"enum": ["adopt", "cancel", "retry"]},
+    "tenant_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "authority": {"$ref": "job-defs.schema.json#/$defs/authority"},
+    "source_job_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "source_reference": {"anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/reference"}]},
+    "result_job_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "source_effect_idempotency_key": {"anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/key"}]},
+    "result_effect_idempotency_key": {
+      "x-equals": "source_effect_idempotency_key",
+      "anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/key"}]
+    },
+    "reason": {"$ref": "job-defs.schema.json#/$defs/reason"},
+    "ticket_reference": {"$ref": "job-defs.schema.json#/$defs/ticket"},
+    "actor_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "causation_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "occurred_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"}
+  },
+  "oneOf": [
+    {"properties": {
+      "action": {"const": "adopt"},
+      "source_job_id": {"type": "null"},
+      "source_reference": {"$ref": "job-defs.schema.json#/$defs/reference"},
+      "result_job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+      "source_effect_idempotency_key": {"type": "null"},
+      "result_effect_idempotency_key": {"type": "null"}
+    }},
+    {"properties": {
+      "action": {"const": "cancel"},
+      "source_job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+      "source_reference": {"type": "null"},
+      "result_job_id": {"type": "null"},
+      "source_effect_idempotency_key": {"type": "null"},
+      "result_effect_idempotency_key": {"type": "null"}
+    }},
+    {"properties": {
+      "action": {"const": "retry"},
+      "source_job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+      "source_reference": {"type": "null"},
+      "result_job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"}
+    }, "oneOf": [
+      {"properties": {
+        "source_effect_idempotency_key": {"type": "null"},
+        "result_effect_idempotency_key": {"type": "null"}
+      }},
+      {"properties": {
+        "source_effect_idempotency_key": {"$ref": "job-defs.schema.json#/$defs/key"},
+        "result_effect_idempotency_key": {"$ref": "job-defs.schema.json#/$defs/key"}
+      }}
+    ]}
+  ],
+  "allOf": [{"oneOf": [
+    {"properties": {
+      "tenant_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+      "authority": {"properties": {"scope_kind": {"const": "tenant"}}}
+    }},
+    {"properties": {
+      "tenant_id": {"type": "null"},
+      "authority": {"properties": {"scope_kind": {"const": "global"}}}
+    }}
+  ]}]
+}

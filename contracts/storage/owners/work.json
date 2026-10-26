@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "work",
+    "prefix": "work_",
+    "scopes": ["tenant"],
+    "migration_dirs": [
+      {"path":"core/internal/modules/work/migrations/tenant","scope":"tenant"}
+    ],
+    "static_sql_dirs": [
+      {"path":"core/internal/modules/work/adapters/postgres/jobs/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/work/adapters/postgres/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/work/adapters/postgres/v1adoption/sql/tenant","scope":"tenant"}
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [],
+    "platform_routines": [],
+    "routine_execute_grants": [],
+    "platform_tables": [],
+    "foreign_keys": [],
+    "external_accesses": [
+      {"access":"write","target_owner":"platform_cutover","target":"platform.applied_change_receipts","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_copy_checkpoints","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operation_checkpoint_keys","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operations","contract":"ADR-0046"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_prepare_batch_v1","contract":"ADR-0022"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_record_batch_v1","contract":"ADR-0022"},
+      {"access":"read","target_owner":"tenancy","target":"tenancy_schema_identity","contract":"ADR-0034"}
+    ],
+    "legacy_tables": [
+      {"name":"board_members","owner":"work","adapter":"core/internal/modules/work/adapters/postgres/v1adoption/source_adapter.go","cutover_gate":"work.v1-storage-retired"},
+      {"name":"board_task_comments","owner":"work","adapter":"core/internal/modules/work/adapters/postgres/v1adoption/source_adapter.go","cutover_gate":"work.v1-storage-retired"},
+      {"name":"board_tasks","owner":"work","adapter":"core/internal/modules/work/adapters/postgres/v1adoption/source_adapter.go","cutover_gate":"work.v1-storage-retired"},
+      {"name":"calendar_events","owner":"work","adapter":"core/internal/modules/work/adapters/postgres/v1adoption/source_adapter.go","cutover_gate":"work.v1-storage-retired"},
+      {"name":"task_board_columns","owner":"work","adapter":"core/internal/modules/work/adapters/postgres/v1adoption/source_adapter.go","cutover_gate":"work.v1-storage-retired"},
+      {"name":"task_boards","owner":"work","adapter":"core/internal/modules/work/adapters/postgres/v1adoption/source_adapter.go","cutover_gate":"work.v1-storage-retired"}
+    ],
+    "dynamic_namespaces": []
+  }
+}

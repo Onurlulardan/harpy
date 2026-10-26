@@ -1,0 +1,149 @@
+{
+  "/api/invitations": {
+    "$ref": "iam-invitations-v1.paths.json#/pathItems/collection"
+  },
+  "/api/invitations/accept": {
+    "$ref": "iam-invitations-v1.paths.json#/pathItems/accept"
+  },
+  "/api/invitations/verify": {
+    "$ref": "iam-invitations-v1.paths.json#/pathItems/verify"
+  },
+  "/api/invitations/{id}": {
+    "$ref": "iam-invitations-v1.paths.json#/pathItems/item"
+  },
+  "/api/organizations": {
+    "$ref": "iam-organizations-v1.paths.json#/pathItems/collection"
+  },
+  "/api/organizations/query": {
+    "$ref": "iam-organizations-v1.paths.json#/pathItems/query"
+  },
+  "/api/organizations/{id}": {
+    "$ref": "iam-organizations-v1.paths.json#/pathItems/item"
+  },
+  "/api/organizations/{id}/permissions": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/organizationEffective"
+  },
+  "/api/organizations/{id}/state": {
+    "$ref": "iam-organizations-v1.paths.json#/pathItems/state"
+  },
+  "/api/roles": {
+    "$ref": "iam-roles-v1.paths.json#/pathItems/collection"
+  },
+  "/api/roles/query": {
+    "$ref": "iam-roles-v1.paths.json#/pathItems/query"
+  },
+  "/api/roles/{id}": {
+    "$ref": "iam-roles-v1.paths.json#/pathItems/item"
+  },
+  "/api/roles/{id}/permissions": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/roleEffective"
+  },
+  "/api/roles/{id}/state": {
+    "$ref": "iam-roles-v1.paths.json#/pathItems/state"
+  },
+  "/api/users": {
+    "$ref": "iam-users-v1.paths.json#/pathItems/collection"
+  },
+  "/api/users/query": {
+    "$ref": "iam-users-v1.paths.json#/pathItems/query"
+  },
+  "/api/users/{id}": {
+    "$ref": "iam-users-v1.paths.json#/pathItems/item"
+  },
+  "/api/users/{id}/permissions": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/userEffective"
+  },
+  "/api/users/{id}/state": {
+    "$ref": "iam-users-v1.paths.json#/pathItems/state"
+  },
+  "/api/organizations/export": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1export"
+  },
+  "/api/organizations/import/analyze": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1analyze"
+  },
+  "/api/organizations/import/execute": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1execute"
+  },
+  "/api/organizations/import/jobs": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1jobs"
+  },
+  "/api/organizations/import/jobs/{job_id}": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1jobs~1{job_id}"
+  },
+  "/api/organizations/import/jobs/{job_id}/cancel": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1jobs~1{job_id}~1cancel"
+  },
+  "/api/organizations/import/jobs/{job_id}/report": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1jobs~1{job_id}~1report"
+  },
+  "/api/organizations/import/jobs/{job_id}/resume": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1jobs~1{job_id}~1resume"
+  },
+  "/api/organizations/import/jobs/{job_id}/rows": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1jobs~1{job_id}~1rows"
+  },
+  "/api/organizations/import/sessions/{session_id}/cancel": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1organizations~1import~1sessions~1{session_id}~1cancel"
+  },
+  "/api/roles/export": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1export"
+  },
+  "/api/roles/import/analyze": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1analyze"
+  },
+  "/api/roles/import/execute": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1execute"
+  },
+  "/api/roles/import/jobs": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1jobs"
+  },
+  "/api/roles/import/jobs/{job_id}": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1jobs~1{job_id}"
+  },
+  "/api/roles/import/jobs/{job_id}/cancel": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1jobs~1{job_id}~1cancel"
+  },
+  "/api/roles/import/jobs/{job_id}/report": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1jobs~1{job_id}~1report"
+  },
+  "/api/roles/import/jobs/{job_id}/resume": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1jobs~1{job_id}~1resume"
+  },
+  "/api/roles/import/jobs/{job_id}/rows": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1jobs~1{job_id}~1rows"
+  },
+  "/api/roles/import/sessions/{session_id}/cancel": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1roles~1import~1sessions~1{session_id}~1cancel"
+  },
+  "/api/users/export": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1export"
+  },
+  "/api/users/import/analyze": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1analyze"
+  },
+  "/api/users/import/execute": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1execute"
+  },
+  "/api/users/import/jobs": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1jobs"
+  },
+  "/api/users/import/jobs/{job_id}": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1jobs~1{job_id}"
+  },
+  "/api/users/import/jobs/{job_id}/cancel": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1jobs~1{job_id}~1cancel"
+  },
+  "/api/users/import/jobs/{job_id}/report": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1jobs~1{job_id}~1report"
+  },
+  "/api/users/import/jobs/{job_id}/resume": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1jobs~1{job_id}~1resume"
+  },
+  "/api/users/import/jobs/{job_id}/rows": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1jobs~1{job_id}~1rows"
+  },
+  "/api/users/import/sessions/{session_id}/cancel": {
+    "$ref": "iam-system-transfer-v1-compat.paths.json#/paths/~1api~1users~1import~1sessions~1{session_id}~1cancel"
+  }
+}

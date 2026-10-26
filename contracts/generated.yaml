@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": "contracts/characterization/v1-gateway-routes.tsv",
+      "generator": "go run ./tools/v1inventory",
+      "input_sha256": "04aa8209acefa1b7b70f2700ef92d9ab627115f93d1f243d4706c8e18298aa9f",
+      "output_sha256": "63dc27a1f33aa7bac801197d90426d6cff19dc3e9c168fce79cc884164a913c0"
+    },
+    {
+      "path": "contracts/characterization/v1/baseline-golden.json",
+      "generator": "go run ./tools/v1characterize promote",
+      "input_sha256": "1253a696ee7002b7ef4faa7e594199f38ad3c14d194e5ee513dde16f7cb1eb5b",
+      "output_sha256": "1253a696ee7002b7ef4faa7e594199f38ad3c14d194e5ee513dde16f7cb1eb5b"
+    },
+    {
+      "path": "contracts/characterization/v1/golden.jsonl",
+      "generator": "go run ./tools/v1characterize promote",
+      "input_sha256": "c35a309807ae72239d771e07fa22776b9dccecb6975e932ef5e0233ef42f4705",
+      "output_sha256": "c35a309807ae72239d771e07fa22776b9dccecb6975e932ef5e0233ef42f4705"
+    },
+    {
+      "path": "contracts/http/core-api-v1.openapi.yaml",
+      "generator": "go run ./tools/coreopenapi",
+      "input_sha256": "cd9b024663493c9a3e79ffc78bcf9aa793576916970f227775029a12f8f671ea",
+      "output_sha256": "5dd61a02e85a5a21a1a6b2874d0ebbb06c7d9fe063b7089d6ffb5719075bd5e2"
+    },
+    {
+      "path": "core/internal/modules/billing/domain/money/currency_registry_gen.go",
+      "generator": "go run ./tools/currencyregistry",
+      "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
+      "output_sha256": "8f7d46dc1f12881cedaccdfe6d1906a73dba59d6d19fa76c8b1eede2ba24417d"
+    },
+    {
+      "path": "core/internal/modules/billing/migrations/platform/fresh/20260717010012_seed_billing_currency_exponents_v1.fresh.sql",
+      "generator": "go run ./tools/currencyregistry",
+      "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
+      "output_sha256": "36c8bbcee3854ce345c2e2298d100c0824aadf331bb5f141f765f1807c713795"
+    },
+    {
+      "path": "core/internal/modules/billing/migrations/platform/v1_adopted/20260717010012_seed_billing_currency_exponents_v1.v1_adopted.sql",
+      "generator": "go run ./tools/currencyregistry",
+      "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
+      "output_sha256": "36c8bbcee3854ce345c2e2298d100c0824aadf331bb5f141f765f1807c713795"
+    },
+    {
+      "path": "core/internal/modules/workflow/adapters/tzdb/assets/2026a.zip",
+      "generator": "go run ./tools/tzdbgen",
+      "input_sha256": "8836533a5e8cdf5ce31a47d12698f8e77ddfec117182e05ee3a28070a5302a66",
+      "output_sha256": "871fe07eae7b5daebf6da758fc6391859d7fb88db7fb69fb95d990afa9c9d555"
+    },
+    {
+      "path": "core/internal/modules/workflow/adapters/tzdb/assets/2026b.zip",
+      "generator": "go run ./tools/tzdbgen",
+      "input_sha256": "8836533a5e8cdf5ce31a47d12698f8e77ddfec117182e05ee3a28070a5302a66",
+      "output_sha256": "b8abc3aab3eb46ab8d7cc7c555ed8dd9adb75e1bc1fa36ee23f990889109bb13"
+    },
+    {
+      "path": "core/internal/modules/workflow/adapters/tzdb/assets/2026c.zip",
+      "generator": "go run ./tools/tzdbgen",
+      "input_sha256": "8836533a5e8cdf5ce31a47d12698f8e77ddfec117182e05ee3a28070a5302a66",
+      "output_sha256": "b2d18a7c8fa8142097a48c99609fb3c92db5ee98bc740294e57eab8ae9f94779"
+    }
+  ]
+}

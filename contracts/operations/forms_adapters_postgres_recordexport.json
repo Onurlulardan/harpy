@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "cancel",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/cancel_attempt.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/cancel_attempt_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/cancel_attempt.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "claim",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/claim_worker.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/claim_worker_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/claim.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "complete",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/complete_ready.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/complete_ready_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/complete_ready.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "delete",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/delete.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/delete_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "download",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/download.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/download_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/download.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "expire",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/expire.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/expire_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/expire.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "finish",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/finish_failure.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/finish_failure_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/finish_failure.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "get",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/get.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/get_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "list",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/list_recovery_keks.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/list_recovery_keks_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/list_recovery_keks.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "mark",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/mark_effect_started.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/mark_effect_started_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/mark_effect_started.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "record",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/record_unknown.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/record_unknown_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/record_unknown.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "resolve",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/resolve_unknown_delete.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/resolve_unknown_delete_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/resolve_unknown_delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "set",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/set_quota_fence.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/set_quota_fence_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/set_quota_fence.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordexport",
+      "layer": "adapters/postgres", "resource": "recordexport", "operation": "submit",
+      "source": "core/internal/modules/forms/adapters/postgres/recordexport/submit.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordexport/submit_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordexport/submit.go"
+    }
+  ]
+}

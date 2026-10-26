@@ -1,0 +1,179 @@
+{
+  "/api/auth/admin/sessions": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/adminSessions"
+  },
+  "/api/auth/admin/sessions/terminate-all": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/adminTerminateAll"
+  },
+  "/api/auth/admin/sessions/{id}": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/adminSession"
+  },
+  "/api/auth/change-password": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/authChangePassword"
+  },
+  "/api/auth/create-verification-token": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/createVerificationToken"
+  },
+  "/api/auth/csrf": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/csrf"
+  },
+  "/api/auth/forgot-password": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/forgotPassword"
+  },
+  "/api/auth/identifiers/verify": {
+    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/verifyIdentifier"
+  },
+  "/api/auth/initial-admin/setup/complete": {
+    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completeInitialAdminSetup"
+  },
+  "/api/auth/initial-password": {
+    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/initialPassword"
+  },
+  "/api/auth/login": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/operatorLogin"
+  },
+  "/api/auth/login-history": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/loginHistory"
+  },
+  "/api/auth/logout": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/logout"
+  },
+  "/api/auth/password/reset": {
+    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/startPasswordReset"
+  },
+  "/api/auth/password/reset/complete": {
+    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePasswordReset"
+  },
+  "/api/auth/portal/forgot-password": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalForgotPassword"
+  },
+  "/api/auth/portal/login": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/portalLogin"
+  },
+  "/api/auth/portal/lookup": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalLookup"
+  },
+  "/api/auth/portal/setup-password": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalSetupPassword"
+  },
+  "/api/auth/portal/setup/complete": {
+    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePortalSetup"
+  },
+  "/api/auth/portal-users": {
+    "$ref": "iam-portal-users-v1.paths.json#/pathItems/collection"
+  },
+  "/api/auth/portal-users/{id}/console-access": {
+    "$ref": "iam-portal-users-v1.paths.json#/pathItems/consoleAccess"
+  },
+  "/api/auth/portal-users/{id}/invite": {
+    "$ref": "iam-portal-users-v1.paths.json#/pathItems/invite"
+  },
+  "/api/auth/portal-users/{id}/link": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalUserUnlink"
+  },
+  "/api/auth/portal-users/{id}/status": {
+    "$ref": "iam-portal-users-v1.paths.json#/pathItems/status"
+  },
+  "/api/auth/post-restore/challenge": {
+    "$ref": "iam-post-restore-v1.paths.json#/pathItems/challenge"
+  },
+  "/api/auth/post-restore/reactivate-owner": {
+    "$ref": "iam-post-restore-v1.paths.json#/pathItems/reactivateOwner"
+  },
+  "/api/auth/reauthentication/complete": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/reauthenticationComplete"
+  },
+  "/api/auth/reauthentication/start": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/reauthenticationStart"
+  },
+  "/api/auth/refresh": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/refresh"
+  },
+  "/api/auth/register": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/register"
+  },
+  "/api/auth/register-tenant": {
+    "$ref": "tenant-provisioning-v1.paths.json#/pathItems/legacyAnonymousRegistration"
+  },
+  "/api/auth/reset-password": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/resetPassword"
+  },
+  "/api/auth/session": {
+    "$ref": "iam-auth-v1.paths.json#/pathItems/currentSession"
+  },
+  "/api/auth/sessions": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/authSessions"
+  },
+  "/api/auth/sessions/terminate-all": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/terminateAll"
+  },
+  "/api/auth/sessions/{id}": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/authSession"
+  },
+  "/api/auth/validate": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/validate"
+  },
+  "/api/auth/verify-email/{token}": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/verifyEmail"
+  },
+  "/api/iam/authenticators": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/authenticators"
+  },
+  "/api/iam/authenticators/recovery-codes": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/recoveryCodes"
+  },
+  "/api/iam/authenticators/totp/enrollments": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/totpEnrollments"
+  },
+  "/api/iam/authenticators/totp/enrollments/{authenticator_id}/complete": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/totpEnrollmentComplete"
+  },
+  "/api/iam/authenticators/webauthn/enrollments": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/webauthnEnrollments"
+  },
+  "/api/iam/authenticators/webauthn/enrollments/{authenticator_id}/complete": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/webauthnEnrollmentComplete"
+  },
+  "/api/iam/authenticators/{id}/retire": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/authenticatorRetire"
+  },
+  "/api/iam/authenticators/{id}/suspend": {
+    "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/authenticatorSuspend"
+  },
+  "/api/iam/identifiers": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/identifiers"
+  },
+  "/api/iam/identifiers/{id}/retire": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/identifierRetire"
+  },
+  "/api/iam/identifiers/{id}/tombstone": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/identifierTombstone"
+  },
+  "/api/iam/identifiers/{id}/verification": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/identifierVerification"
+  },
+  "/api/iam/password/change": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/passwordChange"
+  },
+  "/api/iam/portal-setups/{binding_id}": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetup"
+  },
+  "/api/iam/portal-setups/{binding_id}/decision": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetupDecision"
+  },
+  "/api/iam/portal-setups/{binding_id}/token": {
+    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetupToken"
+  },
+  "/api/iam/sessions": {
+    "$ref": "iam-lifecycle-sessions-v1.paths.json#/pathItems/sessions"
+  },
+  "/api/iam/sessions/{id}": {
+    "$ref": "iam-lifecycle-sessions-v1.paths.json#/pathItems/session"
+  },
+  "/api/profile": {
+    "$ref": "iam-profile-v1.paths.json#/pathItems/self"
+  },
+  "/api/profile/change-password": {
+    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/profileChangePassword"
+  }
+}

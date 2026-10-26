@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/http/menu","layer":"adapters/http","resource":"menu","operation":"get","source":"core/internal/modules/catalog/adapters/http/menu/get_menu.go","test":"core/internal/modules/catalog/adapters/http/menu/get_menu_test.go","application_operation":"core/internal/modules/catalog/application/menu/get.go"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/catalog/adapters/http/menu","layer":"adapters/http","resource":"menu","operation":"update","source":"core/internal/modules/catalog/adapters/http/menu/update_menu_override.go","test":"core/internal/modules/catalog/adapters/http/menu/update_menu_override_test.go","application_operation":"core/internal/modules/catalog/application/menu/update_override.go"}
+  ]
+}

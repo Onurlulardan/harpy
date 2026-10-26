@@ -1,0 +1,89 @@
+{
+  "schemas": {
+    "UserRecord": {
+      "type": "object", "additionalProperties": true,
+      "description": "Secret-free canonical user record. Additional members are visible published profile fields projected by public name.",
+      "propertyNames": {"not": {"enum": ["password", "password_hash", "email_normalized", "token_version", "authorization_version", "identifier_id"]}},
+      "required": ["id", "email", "first_name", "last_name", "status", "role_ids", "organization_ids", "email_verified", "revision", "created_at", "updated_at"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "email": {"type": "string", "format": "email"},
+        "first_name": {"type": "string"}, "last_name": {"type": "string"},
+        "phone": {"type": "string"},
+        "email_verified": {"type": "boolean"},
+        "account_type": {"enum": ["operator", "portal", "operator_portal"]},
+        "status": {"enum": ["ACTIVE", "INACTIVE", "DELETED"]},
+        "role_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+        "organization_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+        "organization_id": {
+          "type": "string", "format": "uuid", "deprecated": true,
+          "description": "V1 compatibility projection emitted only when organization_ids contains exactly one member."
+        },
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "RoleRecord": {
+      "type": "object", "additionalProperties": true,
+      "description": "Canonical role record. Additional members are visible published profile fields projected by public name.",
+      "propertyNames": {"not": {"enum": ["password", "password_hash", "email_normalized", "token_version", "authorization_version", "identifier_id"]}},
+      "required": ["id", "name", "scope_kind", "scope_id", "is_default", "is_protected", "status", "revision", "created_at", "updated_at"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "name": {"type": "string"}, "description": {"type": "string"},
+        "scope_kind": {"enum": ["tenant", "organization"]},
+        "scope_id": {"type": "string", "format": "uuid"},
+        "organization_id": {"type": ["string", "null"], "format": "uuid"},
+        "is_default": {"type": "boolean"}, "is_protected": {"type": "boolean"},
+        "status": {"enum": ["ACTIVE", "RETIRED"]},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "OrganizationRecord": {
+      "type": "object", "additionalProperties": true,
+      "description": "Canonical organization record. Additional members are visible published profile fields projected by public name.",
+      "propertyNames": {"not": {"enum": ["password", "password_hash", "email_normalized", "token_version", "authorization_version", "identifier_id"]}},
+      "required": ["id", "name", "slug", "status", "owner_ids", "revision", "created_at", "updated_at"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "name": {"type": "string"}, "slug": {"type": "string"},
+        "parent_id": {"type": ["string", "null"], "format": "uuid"},
+        "owner_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+        "owner_id": {"type": "string", "format": "uuid", "deprecated": true,
+          "description": "Emitted only when owner_ids contains exactly one active owner."},
+        "status": {"enum": ["ACTIVE", "SUSPENDED", "DELETED"]},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "QueryRecord": {
+      "type": "object",
+      "additionalProperties": true,
+      "minProperties": 1,
+      "description": "Secret-free projected query item. Explicit REST Query select may return any non-empty subset of authorized published fields.",
+      "propertyNames": {"not": {"enum": ["password", "password_hash", "email_normalized", "token_version", "authorization_version", "identifier_id"]}}
+    },
+    "CanonicalListRecord": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "revision"],
+      "description": "Canonical collection item with edge-mandatory concurrency identity fields and any authorized published projection.",
+      "propertyNames": {"not": {"enum": ["password", "password_hash", "email_normalized", "token_version", "authorization_version", "identifier_id"]}},
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "ResourceRecord": {
+      "anyOf": [
+        {"$ref": "#/schemas/UserRecord"},
+        {"$ref": "#/schemas/RoleRecord"},
+        {"$ref": "#/schemas/OrganizationRecord"}
+      ]
+    }
+  }
+}

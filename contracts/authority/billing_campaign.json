@@ -1,0 +1,5 @@
+{"version":2,"authorities":[
+  {"id":"billing.campaign.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.campaign.retire","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.campaign.version.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]}
+]}

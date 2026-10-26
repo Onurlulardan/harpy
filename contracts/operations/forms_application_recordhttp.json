@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordhttp",
+      "layer": "application",
+      "resource": "recordhttp",
+      "operation": "create",
+      "source": "core/internal/modules/forms/application/recordhttp/create.go",
+      "test": "core/internal/modules/forms/application/recordhttp/create_test.go",
+      "authority_id": "forms.record_kernel.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordhttp",
+      "layer": "application",
+      "resource": "recordhttp",
+      "operation": "delete",
+      "source": "core/internal/modules/forms/application/recordhttp/delete.go",
+      "test": "core/internal/modules/forms/application/recordhttp/delete_test.go",
+      "authority_id": "forms.record_kernel.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordhttp",
+      "layer": "application",
+      "resource": "recordhttp",
+      "operation": "get",
+      "source": "core/internal/modules/forms/application/recordhttp/get.go",
+      "test": "core/internal/modules/forms/application/recordhttp/get_test.go",
+      "authority_id": "forms.record_kernel.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordhttp",
+      "layer": "application",
+      "resource": "recordhttp",
+      "operation": "list",
+      "source": "core/internal/modules/forms/application/recordhttp/list.go",
+      "test": "core/internal/modules/forms/application/recordhttp/list_test.go",
+      "authority_id": "forms.restquery.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordhttp",
+      "layer": "application",
+      "resource": "recordhttp",
+      "operation": "resolve",
+      "source": "core/internal/modules/forms/application/recordhttp/resolve_v1.go",
+      "test": "core/internal/modules/forms/application/recordhttp/resolve_v1_test.go",
+      "authority_id": "forms.restquery.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordhttp",
+      "layer": "application",
+      "resource": "recordhttp",
+      "operation": "update",
+      "source": "core/internal/modules/forms/application/recordhttp/update.go",
+      "test": "core/internal/modules/forms/application/recordhttp/update_test.go",
+      "authority_id": "forms.record_kernel.update"
+    }
+  ]
+}

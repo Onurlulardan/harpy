@@ -1,0 +1,89 @@
+{
+  "openapi":"3.1.1",
+  "info":{"title":"Harpy Catalog canonical fragment","version":"2.0.0"},
+  "paths":{
+    "/api/catalog/packages":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"listCatalogPackages","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.package.list","parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/LimitParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/PackageAfterParameter"}],"responses":{"200":{"description":"Signed package page","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PackagePageEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/packages/{package_id}":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/PackageIDParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"getCatalogPackage","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.package.get","responses":{"200":{"description":"Exact signed package","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PackageEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/packages/{package_id}/versions":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/PackageIDParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"listCatalogPackageVersions","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.package_version.list","responses":{"200":{"description":"Immutable signed version list","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PackageVersionPageEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/packages/{package_id}/versions/{version}":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/PackageIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/VersionParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"getCatalogPackageVersion","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.package_version.get","responses":{"200":{"description":"Exact immutable signed version","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PackageVersionEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"listCatalogInstallations","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.installation.list","parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/LimitParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/AfterParameter"}],"responses":{"200":{"description":"Tenant installation page","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/InstallationPageEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}},
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"installCatalogPackage","x-harpy-permission":"catalog.install","x-harpy-authority":"catalog.installation.install","parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/InstallRequest"}}}},"responses":{"202":{"description":"Durable install operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"getCatalogInstallation","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.installation.get","responses":{"200":{"description":"Exact tenant installation","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/InstallationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/demo":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"getCatalogInstallationDemo","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.installation.demo.get","responses":{"200":{"description":"Current Catalog-owned demo lifecycle status","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/DemoStatusEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}},
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"installCatalogInstallationDemo","x-harpy-permission":"catalog.demo.manage","x-harpy-authority":"catalog.installation.demo.install","parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],"responses":{"202":{"description":"Durable demo install operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}},
+      "delete":{"security":[{"bearerAuth":[]}],"operationId":"removeCatalogInstallationDemo","x-harpy-permission":"catalog.demo.manage","x-harpy-authority":"catalog.installation.demo.remove","parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/DemoRemoveRequest"}}}},"responses":{"202":{"description":"Durable exact-receipt demo removal accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/demo/removal-plan":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"planCatalogInstallationDemoRemoval","x-harpy-permission":"catalog.demo.manage","x-harpy-authority":"catalog.installation.demo.removal_plan","responses":{"200":{"description":"Exact bounded owner-verified removal plan","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/DemoRemovalPlanEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/upgrades":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"upgradeCatalogInstallation","x-harpy-permission":"catalog.upgrade","x-harpy-authority":"catalog.installation.upgrade","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/UpgradeRequest"}}}},"responses":{"202":{"description":"Durable upgrade operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/disables":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"disableCatalogInstallation","x-harpy-permission":"catalog.disable","x-harpy-authority":"catalog.installation.disable","responses":{"200":{"description":"Installation disabled atomically","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/InstallationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/enables":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"enableCatalogInstallation","x-harpy-permission":"catalog.enable","x-harpy-authority":"catalog.installation.enable","responses":{"200":{"description":"Installation enabled atomically","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/InstallationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/restorations":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"restoreCatalogInstallation","x-harpy-permission":"catalog.restore","x-harpy-authority":"catalog.installation.restore","responses":{"202":{"description":"Durable restore operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/retirements":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"retireCatalogInstallation","x-harpy-permission":"catalog.retire","x-harpy-authority":"catalog.installation.retire","responses":{"202":{"description":"Durable retirement operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/purge-approvals":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"approveCatalogInstallationPurge","x-harpy-permission":"catalog.purge","x-harpy-authority":"catalog.installation.purge.approve","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PurgeApprovalRequest"}}}},"responses":{"201":{"description":"Single-use second-approver receipt created","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PurgeApprovalEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/installations/{installation_id}/purges":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/InstallationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"purgeCatalogInstallation","x-harpy-permission":"catalog.purge","x-harpy-authority":"catalog.installation.purge","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/PurgeRequest"}}}},"responses":{"202":{"description":"Cancellable purge operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/operations/{operation_id}":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/OperationIDParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"getCatalogOperation","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.operation.get","responses":{"200":{"description":"Exact durable lifecycle operation","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/operations/{operation_id}/cancellations":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/OperationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"cancelCatalogOperation","x-harpy-permission":"catalog.install","x-harpy-authority":"catalog.operation.cancel","responses":{"202":{"description":"Durable cancellation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/operations/{operation_id}/retries":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/OperationIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post":{"security":[{"bearerAuth":[]}],"operationId":"retryCatalogOperation","x-harpy-permission":"catalog.install","x-harpy-authority":"catalog.operation.retry","responses":{"202":{"description":"New sealed retry operation accepted","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/menu":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"}],
+      "get":{"security":[{"bearerAuth":[]}],"operationId":"getCatalogMenu","x-harpy-permission":"catalog.read","x-harpy-authority":"catalog.menu.get","responses":{"200":{"description":"Permission-filtered effective menu","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/MenuEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    },
+    "/api/catalog/menu/items/{item_id}/override":{
+      "parameters":[{"$ref":"catalog-v2.schemas.json#/$defs/TenantIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/TenantSlugParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/MenuItemIDParameter"},{"$ref":"catalog-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "patch":{"security":[{"bearerAuth":[]}],"operationId":"updateCatalogMenuOverride","x-harpy-permission":"catalog.menu.manage","x-harpy-authority":"catalog.menu.update","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/MenuOverrideRequest"}}}},"responses":{"200":{"description":"Menu override updated by revision CAS","content":{"application/json":{"schema":{"$ref":"catalog-v2.schemas.json#/$defs/MenuOverrideReceiptEnvelope"}}}},"default":{"$ref":"catalog-v2.schemas.json#/$defs/ErrorResponse"}}}
+    }
+  }
+}

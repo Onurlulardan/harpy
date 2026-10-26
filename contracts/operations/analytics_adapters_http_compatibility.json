@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/compatibility",
+      "layer": "adapters/http",
+      "resource": "compatibility",
+      "operation": "authorize",
+      "source": "core/internal/modules/analytics/adapters/http/compatibility/authorize.go",
+      "test": "core/internal/modules/analytics/adapters/http/compatibility/authorize_test.go",
+      "application_operation": "core/internal/modules/analytics/application/compatibility/authorize_legacy.go"
+    }
+  ]
+}

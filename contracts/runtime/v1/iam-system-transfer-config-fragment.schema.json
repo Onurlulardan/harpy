@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/iam-system-transfer-config-fragment.schema.json",
+  "type": "object",
+  "required": [
+    "HARPY_IAM_SYSTEM_TRANSFER_SPOOL_DIR",
+    "HARPY_IAM_SYSTEM_EXPORT_S3_ENDPOINT", "HARPY_IAM_SYSTEM_EXPORT_S3_REGION",
+    "HARPY_IAM_SYSTEM_EXPORT_S3_BUCKET", "HARPY_IAM_SYSTEM_EXPORT_S3_EXPECTED_BUCKET_OWNER",
+    "HARPY_IAM_SYSTEM_EXPORT_S3_PATH_STYLE", "HARPY_IAM_SYSTEM_EXPORT_S3_CREDENTIAL_SOURCE",
+    "HARPY_IAM_SYSTEM_EXPORT_FCART_KEK_KEYRING_FILE",
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_ENDPOINT", "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_REGION",
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_BUCKET", "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_EXPECTED_BUCKET_OWNER",
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_PATH_STYLE", "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE",
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_FCART_KEK_KEYRING_FILE"
+  ],
+  "properties": {
+    "HARPY_IAM_SYSTEM_TRANSFER_SPOOL_DIR": {"$ref": "config.schema.json#/$defs/absolutePath"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_ENDPOINT": {"$ref": "#/$defs/endpoint"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_REGION": {"$ref": "#/$defs/region"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_BUCKET": {"$ref": "#/$defs/bucket"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_EXPECTED_BUCKET_OWNER": {"$ref": "#/$defs/owner"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_PATH_STYLE": {"$ref": "config.schema.json#/$defs/boolean"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_CREDENTIAL_SOURCE": {"$ref": "#/$defs/credentialSource"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_ACCESS_KEY_ID_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_SECRET_ACCESS_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_EXPORT_S3_SESSION_TOKEN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_EXPORT_FCART_KEK_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_ENDPOINT": {"$ref": "#/$defs/endpoint"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_REGION": {"$ref": "#/$defs/region"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_BUCKET": {"$ref": "#/$defs/bucket"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_EXPECTED_BUCKET_OWNER": {"$ref": "#/$defs/owner"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_PATH_STYLE": {"$ref": "config.schema.json#/$defs/boolean"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE": {"$ref": "#/$defs/credentialSource"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_ACCESS_KEY_ID_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_SECRET_ACCESS_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_SESSION_TOKEN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_SYSTEM_IMPORT_SOURCE_FCART_KEK_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+  },
+  "allOf": [
+    {"$ref": "#/$defs/exportCredentials"},
+    {"$ref": "#/$defs/importCredentials"},
+    {
+      "if": {"required": ["HARPY_ENVIRONMENT"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}},
+      "then": {"properties": {
+        "HARPY_IAM_SYSTEM_EXPORT_S3_ENDPOINT": {"pattern": "^https://"},
+        "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_ENDPOINT": {"pattern": "^https://"}
+      }}
+    }
+  ],
+  "$defs": {
+    "endpoint": {"type": "string", "format": "uri", "pattern": "^https?://[^/\\s]+$"},
+    "region": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"},
+    "bucket": {"type": "string", "minLength": 3, "maxLength": 63, "pattern": "^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])$"},
+    "owner": {"type": "string", "pattern": "^[0-9]{12}$"},
+    "credentialSource": {"enum": ["workload_identity", "static_files"]},
+    "exportCredentials": {
+      "if": {"required": ["HARPY_IAM_SYSTEM_EXPORT_S3_CREDENTIAL_SOURCE"], "properties": {"HARPY_IAM_SYSTEM_EXPORT_S3_CREDENTIAL_SOURCE": {"const": "static_files"}}},
+      "then": {"required": ["HARPY_IAM_SYSTEM_EXPORT_S3_ACCESS_KEY_ID_FILE", "HARPY_IAM_SYSTEM_EXPORT_S3_SECRET_ACCESS_KEY_FILE"]},
+      "else": {"not": {"anyOf": [
+        {"required": ["HARPY_IAM_SYSTEM_EXPORT_S3_ACCESS_KEY_ID_FILE"]},
+        {"required": ["HARPY_IAM_SYSTEM_EXPORT_S3_SECRET_ACCESS_KEY_FILE"]},
+        {"required": ["HARPY_IAM_SYSTEM_EXPORT_S3_SESSION_TOKEN_FILE"]}
+      ]}}
+    },
+    "importCredentials": {
+      "if": {"required": ["HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE"], "properties": {"HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE": {"const": "static_files"}}},
+      "then": {"required": ["HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_ACCESS_KEY_ID_FILE", "HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_SECRET_ACCESS_KEY_FILE"]},
+      "else": {"not": {"anyOf": [
+        {"required": ["HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_ACCESS_KEY_ID_FILE"]},
+        {"required": ["HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_SECRET_ACCESS_KEY_FILE"]},
+        {"required": ["HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3_SESSION_TOKEN_FILE"]}
+      ]}}
+    }
+  }
+}

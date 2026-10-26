@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/version.schema.json",
+  "title": "Harpy Runtime Version v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "service", "version", "commit", "build_time", "go_version",
+    "contract_version", "environment"
+  ],
+  "properties": {
+    "service": {"enum": ["core-api", "core-migrator", "core-operator", "core-worker"]},
+    "version": {
+      "type": "string", "maxLength": 128,
+      "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "commit": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64}|unknown)$"},
+    "build_time": {"type": "string", "format": "date-time"},
+    "go_version": {"const": "go1.26.5"},
+    "contract_version": {"const": 1},
+    "environment": {"enum": ["development", "production", "staging", "test"]}
+  },
+  "allOf": [{
+    "if": {"properties": {"environment": {"enum": ["production", "staging"]}}},
+    "then": {"properties": {
+      "commit": {"pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"},
+      "build_time": {"pattern": "Z$"}
+    }}
+  }]
+}

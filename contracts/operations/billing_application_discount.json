@@ -1,0 +1,5 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discount","layer":"application","resource":"discount","operation":"redeem","source":"core/internal/modules/billing/application/discount/redeem.go","test":"core/internal/modules/billing/application/discount/redeem_test.go","authority_id":"billing.discount.redeem"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discount","layer":"application","resource":"discount","operation":"resolve","source":"core/internal/modules/billing/application/discount/resolve_current.go","test":"core/internal/modules/billing/application/discount/resolve_current_test.go","authority_id":"billing.discount.validate"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discount","layer":"application","resource":"discount","operation":"validate","source":"core/internal/modules/billing/application/discount/validate.go","test":"core/internal/modules/billing/application/discount/validate_test.go","authority_id":"billing.discount.validate"}
+]}

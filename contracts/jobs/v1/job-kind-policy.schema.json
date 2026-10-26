@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/job-kind-policy.schema.json",
+  "title": "Harpy Job Kind Policy v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "kind", "payload_revision", "owner_domain", "effect_class",
+    "maximum_attempts", "retry_mode", "retry_base_milliseconds", "retry_cap_milliseconds",
+    "lease_seconds", "heartbeat_seconds", "success_retention_days", "dead_retention_days",
+    "detail_redaction_days"
+  ],
+  "properties": {
+    "contract_version": {"const": "job-kind-policy.v1"},
+    "kind": {"$ref": "job-defs.schema.json#/$defs/kind"},
+    "payload_revision": {"type": "integer", "minimum": 1},
+    "owner_domain": {"$ref": "job-defs.schema.json#/$defs/domain"},
+    "effect_class": {"enum": ["database_transactional", "external"]},
+    "maximum_attempts": {"type": "integer", "minimum": 1, "maximum": 25},
+    "retry_mode": {"const": "full_jitter"},
+    "retry_base_milliseconds": {"const": 5000},
+    "retry_cap_milliseconds": {"const": 900000},
+    "lease_seconds": {"const": 60},
+    "heartbeat_seconds": {"const": 20},
+    "success_retention_days": {"const": 90},
+    "dead_retention_days": {"const": 365},
+    "detail_redaction_days": {"const": 30}
+  }
+}

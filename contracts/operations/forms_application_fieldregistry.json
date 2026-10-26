@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/fieldregistry",
+      "layer": "application",
+      "resource": "fieldregistry",
+      "operation": "resolve",
+      "source": "core/internal/modules/forms/application/fieldregistry/resolve.go",
+      "test": "core/internal/modules/forms/application/fieldregistry/resolve_test.go",
+      "authority_id": "forms.field_registry.resolve"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/fieldregistry",
+      "layer": "application",
+      "resource": "fieldregistry",
+      "operation": "validate",
+      "source": "core/internal/modules/forms/application/fieldregistry/validate_role.go",
+      "test": "core/internal/modules/forms/application/fieldregistry/validate_role_test.go",
+      "authority_id": "forms.field_registry.validate_role"
+    }
+  ]
+}

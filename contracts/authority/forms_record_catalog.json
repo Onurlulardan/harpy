@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "authorities": [
+    {"id":"forms.record_catalog.resolve","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]}
+  ]
+}

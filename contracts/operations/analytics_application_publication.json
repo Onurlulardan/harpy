@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "activate",
+      "source": "core/internal/modules/analytics/application/publication/activate.go",
+      "test": "core/internal/modules/analytics/application/publication/activate_test.go",
+      "authority_id": "analytics.publication.activate"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "approve",
+      "source": "core/internal/modules/analytics/application/publication/approve.go",
+      "test": "core/internal/modules/analytics/application/publication/approve_test.go",
+      "authority_id": "analytics.publication.approve"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/application/publication/create.go",
+      "test": "core/internal/modules/analytics/application/publication/create_test.go",
+      "authority_id": "analytics.publication.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/application/publication/execute.go",
+      "test": "core/internal/modules/analytics/application/publication/execute_test.go",
+      "authority_id": "analytics.publication.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/application/publication/get.go",
+      "test": "core/internal/modules/analytics/application/publication/get_test.go",
+      "authority_id": "analytics.publication.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/application/publication/list.go",
+      "test": "core/internal/modules/analytics/application/publication/list_test.go",
+      "authority_id": "analytics.publication.list"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "revoke",
+      "source": "core/internal/modules/analytics/application/publication/revoke.go",
+      "test": "core/internal/modules/analytics/application/publication/revoke_test.go",
+      "authority_id": "analytics.publication.revoke"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication",
+      "layer": "application",
+      "resource": "publication",
+      "operation": "submit",
+      "source": "core/internal/modules/analytics/application/publication/submit.go",
+      "test": "core/internal/modules/analytics/application/publication/submit_test.go",
+      "authority_id": "analytics.publication.submit"
+    }
+  ]
+}

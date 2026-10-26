@@ -1,0 +1,3 @@
+{"version":2,"authorities":[
+  {"id":"tenancy.recovery_target.get","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
+]}

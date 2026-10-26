@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/maintenance","layer":"application","resource":"maintenance","operation":"execute","source":"core/internal/modules/iam/application/maintenance/execute.go","test":"core/internal/modules/iam/application/maintenance/execute_test.go","authority_id":"iam.maintenance.execute"}
+]}

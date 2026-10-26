@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/retention",
+      "layer": "application",
+      "resource": "retention",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/application/retention/execute.go",
+      "test": "core/internal/modules/analytics/application/retention/execute_test.go",
+      "authority_id": "analytics.retention.purge.execute"
+    }
+  ]
+}

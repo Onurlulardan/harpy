@@ -1,0 +1,98 @@
+version: "3"
+vars:
+  COMPOSE: >-
+    docker compose --env-file .env.local
+    -f ops/local/compose.infra.yml -f ops/local/compose.tools.yml
+    -f ops/local/compose.runtime.yml -f ops/local/compose.recovery.yml
+    -f ops/local/compose.inventory.yml -f ops/local/compose.lifecycle.yml
+  LIFECYCLE: >-
+    docker compose --env-file .env.local --profile local-volume-catalog
+    -f ops/local/compose.infra.yml -f ops/local/compose.tools.yml
+    -f ops/local/compose.runtime.yml -f ops/local/compose.recovery.yml
+    -f ops/local/compose.inventory.yml -f ops/local/compose.lifecycle.yml
+tasks:
+  logs:
+    desc: Follow API, worker and migration executor logs
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - >-
+        {{.COMPOSE}} logs --tail=200 --follow
+        core-api core-worker schema-executor tenant-migration-executor
+        database-backup-executor
+  logs:api:
+    desc: Follow Core API logs
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - "{{.COMPOSE}} logs --tail=200 --follow core-api"
+  logs:worker:
+    desc: Follow Core Worker logs
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - "{{.COMPOSE}} logs --tail=200 --follow core-worker"
+  logs:infra:
+    desc: Follow local dependency logs
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - >-
+        {{.COMPOSE}} logs --tail=100 --follow
+        postgres rabbitmq minio s3-owner local-kms mailpit clamav
+  down:
+    desc: Stop frontend and containers while preserving every named volume
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - task: frontend:stop
+      - "{{.LIFECYCLE}} down --remove-orphans"
+  destroy:
+    desc: Permanently delete local database, queues, objects and mail volumes
+    dir: "{{.ROOT_DIR}}"
+    prompt: This permanently deletes all Backend V2 local data. Continue?
+    cmds:
+      - task: frontend:stop
+      - "{{.LIFECYCLE}} down --volumes --remove-orphans"
+      - go run ./tools/localconfig -output ops/local/state/secrets -reset
+  cleanup:
+    desc: Free disk space (build cache, unused images, volumes, containers)
+    dir: "{{.ROOT_DIR}}"
+    prompt: This prunes build cache, unused images, unused volumes, and stopped containers. Continue?
+    cmds:
+      - docker builder prune --all -f
+      - docker system prune -a -f
+      - docker volume prune -f
+  cleanup:images:
+    desc: Remove unused images only. Stack must be running or images will be rebuilt.
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - docker image prune --all -f
+  cleanup:all:
+    desc: Same as local:cleanup; prune cache, unused images, volumes, and containers
+    dir: "{{.ROOT_DIR}}"
+    prompt: This prunes build cache, unused images, unused volumes, and stopped containers. Continue?
+    cmds:
+      - docker builder prune --all -f
+      - docker system prune -a -f
+      - docker volume prune -f
+  cleanup:disk:
+    desc: "Prune Docker then compact the Windows VHDX so Explorer frees C: space"
+    dir: "{{.ROOT_DIR}}"
+    prompt: This stops Docker/WSL and compacts docker_data.vhdx. Continue?
+    cmds:
+      - docker builder prune --all -f
+      - docker system prune -a -f
+      - docker volume prune -f
+      - powershell -NoProfile -ExecutionPolicy Bypass -File ops/local/scripts/compact-docker-vhdx.ps1
+  build:refresh:
+    desc: Explicitly refresh digest-pinned build inputs from their registries
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - "{{.COMPOSE}} build --pull foundation-local-release local-release"
+      - docker builder prune --filter type=regular -f
+      - docker builder prune --filter type=source.local -f
+      - docker builder prune --max-used-space 2gb -f
+      - docker image prune -f
+  check:
+    desc: Run local tooling tests and repository guards
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - go test ./tools/localconfig ./tools/localrelease ./ops/local/cmd/...
+      - go run ./tools/fileguard
+      - go run ./tools/archguard

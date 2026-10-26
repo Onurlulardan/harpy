@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "owner": "catalog",
+  "streams": [
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260718180000,"version_to":20260718180001,"phase":"expand","target_database_generation":9,"next_minimum_runtime_generation":1},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260718180100,"version_to":20260718180103,"phase":"expand","target_database_generation":9,"next_minimum_runtime_generation":1},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260718180540,"version_to":20260718180543,"phase":"expand","target_database_generation":9,"next_minimum_runtime_generation":1},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260718230500,"version_to":20260718230514,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260718230515,"version_to":20260718230515,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260728103100,"version_to":20260728103100,"phase":"expand","target_database_generation":66,"next_minimum_runtime_generation":23},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260728105100,"version_to":20260728105100,"phase":"expand","target_database_generation":68,"next_minimum_runtime_generation":23},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260730120400,"version_to":20260730120401,"phase":"expand","target_database_generation":83,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260730144000,"version_to":20260730144009,"phase":"expand","target_database_generation":88,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260730144010,"version_to":20260730144010,"phase":"expand","target_database_generation":88,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260730144011,"version_to":20260730144012,"phase":"expand","target_database_generation":89,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260730145500,"version_to":20260730145500,"phase":"expand","target_database_generation":89,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260731110001,"version_to":20260731110001,"phase":"expand","target_database_generation":90,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260731110002,"version_to":20260731110002,"phase":"expand","target_database_generation":90,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260731111000,"version_to":20260731111000,"phase":"expand","target_database_generation":91,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260801015200,"version_to":20260801015201,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260802232200,"version_to":20260802232201,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/platform","scope":"platform","version_from":20260830115900,"version_to":20260830115900,"phase":"expand","target_database_generation":97,"next_minimum_runtime_generation":24},
+    {"owner":"catalog","directory":"core/internal/modules/catalog/migrations/tenant","scope":"tenant","version_from":20260830120000,"version_to":20260830120000,"phase":"expand","target_database_generation":97,"next_minimum_runtime_generation":24}
+  ]
+}

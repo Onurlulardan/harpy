@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "platform_postgres",
+    "prefix": "platform_postgres_",
+    "scopes": ["platform"],
+    "migration_dirs": [],
+    "static_sql_dirs": [
+      {"path": "core/internal/platform/postgres/adapters/postgres/sql", "scope": "platform"}
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [],
+    "platform_routines": [],
+    "routine_execute_grants": [],
+    "platform_tables": [],
+    "foreign_keys": [],
+    "external_accesses": [
+      {"access":"read","target_owner":"analytics","target":"platform.analytics_legacy_public_record_hit_v1","contract":"ADR-0031"},
+      {"access":"read","target_owner":"analytics","target":"platform.analytics_legacy_public_resolve_v1","contract":"ADR-0031"},
+      {"access":"read","target_owner":"analytics","target":"platform.analytics_public_admit_v1","contract":"ADR-0031"},
+      {"access":"read","target_owner":"analytics","target":"platform.analytics_public_release_v1","contract":"ADR-0031"},
+      {"access":"read","target_owner":"analytics","target":"platform.analytics_public_resolve_v1","contract":"ADR-0031"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_runtime_lock_domain_v1","contract":"ADR-0106"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_runtime_lock_group_members_v1","contract":"ADR-0106"},
+      {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_runtime_lock_group_v1","contract":"ADR-0106"},
+      {"access":"read","target_owner":"iam","target":"platform.iam_auth_throttle_blocked_v2","contract":"ADR-0066"},
+      {"access":"read","target_owner":"iam","target":"platform.iam_auth_throttle_record_failure_v2","contract":"ADR-0066"},
+      {"access":"read","target_owner":"iam","target":"platform.iam_snapshot_domain_generations_v1","contract":"ADR-0065"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_get_recovery_target_v1","contract":"ADR-0123"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_runtime_resolve_command_v1","contract":"ADR-0034"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_runtime_resolve_identity_v3","contract":"ADR-0034"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_runtime_resolve_slug_v1","contract":"ADR-0034"}
+    ],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  }
+}

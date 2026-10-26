@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$defs":{
+    "UpgradeRequired":{
+      "description":"The synchronous V1 IAM transfer surface is retired.",
+      "headers":{
+        "Cache-Control":{"required":true,"schema":{"const":"no-store"}},
+        "Deprecation":{"required":true,"schema":{"const":"true"}},
+        "Link":{"required":true,"schema":{"type":"string","pattern":"^</api/iam/system-resources/(users|roles|organizations)/record-(exports|imports|import-sources)(/\\{import_id\\}(/report)?)?>; rel=\\\"successor-version\\\"$"}}
+      },
+      "content":{"application/json":{"schema":{"$ref":"core-api-v1.components.json#/schemas/ErrorEnvelope"}}}
+    }
+  }
+}

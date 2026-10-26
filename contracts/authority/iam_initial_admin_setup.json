@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "iam.initial_admin_setup.accept",
+      "owner": "iam",
+      "scope_source": "credential_target",
+      "required_groups": ["iam_system_resources"],
+      "ordered_domains": ["iam", "system_resource_layout"],
+      "participants": ["iam", "system_resource_layout"]
+    }
+  ]
+}

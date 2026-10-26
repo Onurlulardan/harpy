@@ -1,0 +1,151 @@
+{
+  "schemas": {
+    "EmptyObject": {"type": "object", "additionalProperties": false, "maxProperties": 0},
+    "Message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "template_version_id", "producer", "notification_type", "category", "template_kind", "locale", "subject", "body", "data_digest_sha256", "subject_sha256", "body_sha256", "revision", "inbox_revision", "created_at"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "template_version_id": {"type": "string", "format": "uuid"},
+        "producer": {"type": "string", "minLength": 1, "maxLength": 128},
+        "notification_type": {"type": "string", "minLength": 1, "maxLength": 128},
+        "category": {"enum": ["security", "workflow_action", "billing", "document", "system", "product"]},
+        "template_kind": {"enum": ["system_html", "plain_text"]},
+        "locale": {"type": "string", "minLength": 2, "maxLength": 32},
+        "subject": {"type": "string", "maxLength": 4096},
+        "body": {"type": "string", "maxLength": 65536},
+        "data_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "subject_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "inbox_revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "created_at": {"type": "string", "format": "date-time"},
+        "read_at": {"type": "string", "format": "date-time"},
+        "dismissed_at": {"type": "string", "format": "date-time"},
+        "purged_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "MessagePage": {
+      "type": "object", "additionalProperties": false, "required": ["items", "unread"],
+      "properties": {
+        "items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Message"}},
+        "next_cursor": {"type": "string", "pattern": "^nr1\\.[A-Za-z0-9_-]+$"},
+        "unread": {"type": "integer", "format": "int64", "minimum": 0}
+      }
+    },
+    "QuietHours": {
+      "type": "object", "additionalProperties": false, "required": ["time_zone", "start_minute", "end_minute"],
+      "properties": {
+        "time_zone": {"type": "string", "minLength": 1, "maxLength": 64},
+        "start_minute": {"type": "integer", "minimum": 0, "maximum": 1439},
+        "end_minute": {"type": "integer", "minimum": 0, "maximum": 1439}
+      }
+    },
+    "Preference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["category", "channel", "enabled", "explicit", "verified_target", "revision"],
+      "properties": {
+        "category": {"enum": ["security", "workflow_action", "billing", "document", "system", "product"]},
+        "channel": {"enum": ["in_app", "email", "telegram"]},
+        "enabled": {"type": "boolean"},
+        "explicit": {"type": "boolean"},
+        "verified_target": {"type": "boolean"},
+        "quiet_hours": {"$ref": "#/schemas/QuietHours"},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "PreferenceUpdate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["category", "channel", "enabled", "quiet_hours", "expected_revision"],
+      "properties": {
+        "category": {"enum": ["security", "workflow_action", "billing", "document", "system", "product"]},
+        "channel": {"enum": ["in_app", "email", "telegram"]},
+        "enabled": {"type": "boolean"},
+        "quiet_hours": {"oneOf": [{"$ref": "#/schemas/QuietHours"}, {"type": "null"}]},
+        "expected_revision": {"type": "integer", "format": "int64", "minimum": 0}
+      }
+    },
+    "PreferencesRequest": {
+      "type": "object", "additionalProperties": false, "required": ["updates"],
+      "properties": {"updates": {"type": "array", "minItems": 1, "maxItems": 18, "items": {"$ref": "#/schemas/PreferenceUpdate"}}}
+    },
+    "IntentValue": {
+      "type": "object", "additionalProperties": false, "required": ["key", "kind"],
+      "properties": {
+        "key": {"type": "string", "minLength": 1, "maxLength": 128},
+        "kind": {"enum": ["string", "integer", "boolean", "time"]},
+        "string": {"type": "string", "maxLength": 8192},
+        "integer": {"type": "integer", "format": "int64"},
+        "boolean": {"type": "boolean"},
+        "time": {"type": "string", "format": "date-time"}
+      }
+    },
+    "IntentRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["notification_type", "recipient_principal_id", "template_version_id", "provider_config_version_id", "locale", "effect_key", "category", "channels", "data", "data_digest_sha256", "correlation_id", "causation_id"],
+      "properties": {
+        "notification_type": {"type": "string", "minLength": 1, "maxLength": 128},
+        "recipient_principal_id": {"type": "string", "format": "uuid"},
+        "template_version_id": {"type": "string", "format": "uuid"},
+        "provider_config_version_id": {"type": "string", "format": "uuid"},
+        "locale": {"type": "string", "minLength": 2, "maxLength": 32},
+        "effect_key": {"type": "string", "minLength": 1, "maxLength": 256},
+        "category": {"enum": ["security", "workflow_action", "billing", "document", "system", "product"]},
+        "channels": {"type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true, "items": {"enum": ["in_app", "email", "telegram"]}},
+        "data": {"type": "array", "maxItems": 128, "items": {"$ref": "#/schemas/IntentValue"}},
+        "data_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "correlation_id": {"type": "string", "format": "uuid"},
+        "causation_id": {"type": "string", "format": "uuid"}
+      }
+    },
+    "IntentResult": {
+      "type": "object", "additionalProperties": false,
+      "required": ["message_id", "inbox_revision", "replay", "outcome"],
+      "properties": {
+        "message_id": {"type": "string", "format": "uuid"},
+        "inbox_revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "replay": {"type": "boolean"},
+        "outcome": {"type": "string", "minLength": 1, "maxLength": 64}
+      }
+    },
+    "MarkAllResult": {
+      "type": "object", "additionalProperties": false, "required": ["updated"],
+      "properties": {"updated": {"type": "integer", "format": "int64", "minimum": 0}}
+    },
+    "RealtimeTicket": {
+      "type": "object", "additionalProperties": false, "required": ["token", "expires_at"],
+      "properties": {
+        "token": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+        "expires_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "MessageEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/Message"}}},
+    "MessagePageEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/MessagePage"}}},
+    "PreferencesEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "array", "maxItems": 18, "items": {"$ref": "#/schemas/Preference"}}}},
+    "IntentEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/IntentResult"}}},
+    "MarkAllEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/MarkAllResult"}}},
+    "RealtimeTicketEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/RealtimeTicket"}}}
+  },
+  "parameters": {
+    "TenantID": {"name": "X-Tenant-ID", "in": "header", "required": false, "schema": {"type": "string", "format": "uuid"}},
+    "TenantSlug": {"name": "X-Tenant-Slug", "in": "header", "required": false, "schema": {"type": "string", "minLength": 1, "maxLength": 128}},
+    "NotificationID": {"name": "notification_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "UserID": {"name": "user_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "Origin": {"name": "Origin", "in": "header", "required": true, "schema": {"type": "string", "format": "uri", "maxLength": 512}},
+    "CSRF": {"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "maxLength": 192}},
+    "SocketProtocols": {"name": "Sec-WebSocket-Protocol", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^harpy\\.notifications\\.v1, fc-ticket\\.[A-Za-z0-9_-]{43}$"}},
+    "ConsumerManifest": {"name": "X-Harpy-Consumer-Manifest", "in": "header", "required": true, "schema": {"type": "string", "maxLength": 4096}},
+    "ConsumerSignature": {"name": "X-Harpy-Consumer-Signature", "in": "header", "required": true, "schema": {"type": "string", "maxLength": 4096}}
+  },
+  "responses": {
+    "Message": {"description": "Recipient-scoped notification.", "content": {"application/json": {"schema": {"$ref": "#/schemas/MessageEnvelope"}}}},
+    "MessagePage": {"description": "Closed REST Query inbox page.", "content": {"application/json": {"schema": {"$ref": "#/schemas/MessagePageEnvelope"}}}},
+    "Preferences": {"description": "Closed preference matrix.", "content": {"application/json": {"schema": {"$ref": "#/schemas/PreferencesEnvelope"}}}},
+    "Intent": {"description": "Durable idempotent notification intent.", "content": {"application/json": {"schema": {"$ref": "#/schemas/IntentEnvelope"}}}},
+    "MarkAll": {"description": "Number of messages marked read.", "content": {"application/json": {"schema": {"$ref": "#/schemas/MarkAllEnvelope"}}}},
+    "RealtimeTicket": {"description": "Single-use realtime ticket.", "content": {"application/json": {"schema": {"$ref": "#/schemas/RealtimeTicketEnvelope"}}}},
+    "SocketUpgrade": {"description": "WebSocket upgrade; ticket-bearing subprotocol is never echoed."},
+    "Error": {"description": "Stable notification error envelope.", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

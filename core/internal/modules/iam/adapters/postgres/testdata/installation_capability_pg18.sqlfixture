@@ -1,0 +1,148 @@
+-- PostgreSQL 18 installation capability integration fixture.
+CREATE SCHEMA platform AUTHORIZATION harpy_owner;
+GRANT USAGE ON SCHEMA platform TO harpy_runtime;
+
+CREATE TABLE platform.test_activation_capabilities (
+    operation_id uuid NOT NULL,
+    command_name text NOT NULL,
+    environment_id uuid NOT NULL,
+    tenant_id uuid NOT NULL,
+    schema_name name NOT NULL,
+    operation_kind text NOT NULL,
+    consumed boolean NOT NULL DEFAULT false,
+    PRIMARY KEY (operation_id, command_name)
+);
+CREATE TABLE platform.test_owner_writes (
+    operation_id uuid PRIMARY KEY
+);
+CREATE TABLE platform.jobs (
+    id uuid PRIMARY KEY,
+    tenant_id uuid NOT NULL,
+    scope_kind text NOT NULL,
+    scope_id uuid NOT NULL,
+    authority_group_id text NOT NULL,
+    authority_group_generation bigint NOT NULL,
+    authority_domain text NOT NULL,
+    cutover_generation bigint NOT NULL,
+    writer_origin text NOT NULL,
+    kind text NOT NULL,
+    payload_ref text NOT NULL,
+    dedupe_key text NOT NULL,
+    effect_class text NOT NULL,
+    effect_idempotency_key text NOT NULL
+);
+CREATE TABLE platform.outbox (
+    event_id uuid PRIMARY KEY,
+    tenant_id uuid NOT NULL,
+    scope_kind text NOT NULL,
+    scope_id uuid NOT NULL,
+    writer_origin text NOT NULL,
+    event_type text NOT NULL,
+    aggregate_type text NOT NULL,
+    aggregate_id uuid NOT NULL,
+    causation_id uuid NOT NULL,
+    idempotency_key text NOT NULL,
+    business_effect_idempotency_key text NOT NULL,
+    payload_canonical bytea NOT NULL
+);
+
+CREATE FUNCTION platform.tenancy_activation_step_context_assert_v1(
+    p_operation_id uuid,p_command text,p_environment_id uuid,p_tenant_id uuid,
+    p_schema_name name,p_operation_kind text
+) RETURNS boolean LANGUAGE sql SECURITY DEFINER SET search_path TO pg_catalog
+AS $$
+SELECT EXISTS (
+    SELECT 1 FROM platform.test_activation_capabilities capability
+    WHERE capability.operation_id=p_operation_id
+      AND capability.command_name=p_command
+      AND capability.environment_id=p_environment_id
+      AND capability.tenant_id=p_tenant_id
+      AND capability.schema_name=p_schema_name
+      AND capability.operation_kind=p_operation_kind
+      AND NOT capability.consumed
+)
+$$;
+CREATE FUNCTION platform.tenancy_activation_step_consume_v1(
+    p_operation_id uuid,p_command text
+) RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
+AS $$
+BEGIN
+    UPDATE platform.test_activation_capabilities capability SET consumed=true
+    WHERE capability.operation_id=p_operation_id
+      AND capability.command_name=p_command AND NOT capability.consumed;
+    RETURN FOUND;
+END
+$$;
+CREATE FUNCTION platform.iam_installation_instance_owner_bind_v1(
+    p_operation_id uuid,p_environment_id uuid,p_tenant_id uuid,p_schema_name name,
+    p_user_id uuid,p_subject_id uuid,p_owner_role_id uuid,
+    p_role_permission_id uuid,p_owner_binding_id uuid,
+    p_authorization_version bigint,p_request_sha256 text
+) RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
+AS $$
+DECLARE v_inserted integer;
+BEGIN
+    IF pg_catalog.current_setting('application_name',true)
+       IS DISTINCT FROM 'harpy-v2:core-operator-initialize' THEN
+        RAISE EXCEPTION 'legacy owner identity is unavailable';
+    END IF;
+    INSERT INTO platform.test_owner_writes VALUES (p_operation_id)
+    ON CONFLICT DO NOTHING;
+    GET DIAGNOSTICS v_inserted=ROW_COUNT;
+    RETURN v_inserted=0;
+END
+$$;
+CREATE FUNCTION platform.platform_async_initial_admin_setup_enqueue_v1(
+    p_operation_id uuid,p_tenant_id uuid,p_artifact_id uuid,
+    p_artifact_ref text,p_schema_name name,p_manifest_sha256 text
+) RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
+AS $$
+BEGIN
+    IF pg_catalog.current_setting('application_name',true)
+       IS DISTINCT FROM 'harpy-v2:core-operator-initialize' THEN
+        RAISE EXCEPTION 'legacy enqueue identity is unavailable';
+    END IF;
+    INSERT INTO platform.jobs VALUES (
+        p_artifact_id,p_tenant_id,'tenant',p_tenant_id,
+        'iam_system_resources',1,'iam',1,'v2','iam.lifecycle.delivery',
+        p_artifact_ref,p_artifact_id::text,'external',
+        'iam.lifecycle.delivery:'||p_artifact_ref
+    ) ON CONFLICT DO NOTHING;
+    RETURN false;
+END
+$$;
+CREATE FUNCTION platform.platform_async_installation_activation_event_v1(
+    p_operation_id uuid,p_environment_id uuid,p_tenant_id uuid,
+    p_actor_id uuid,p_schema_name name,p_manifest_sha256 text
+) RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
+AS $$
+BEGIN
+    IF pg_catalog.current_setting('application_name',true)
+       IS DISTINCT FROM 'harpy-v2:core-operator-initialize' THEN
+        RAISE EXCEPTION 'legacy event identity is unavailable';
+    END IF;
+    INSERT INTO platform.outbox VALUES (
+        p_operation_id,p_tenant_id,'tenant',p_tenant_id,'v2',
+        'installation.activated','installation.environment',p_tenant_id,
+        p_operation_id,'installation.activation:'||p_operation_id::text,
+        'installation.activation:'||p_operation_id::text,
+        pg_catalog.convert_to(pg_catalog.jsonb_build_object(
+            'environment_id',p_environment_id::text,
+            'manifest_sha256',p_manifest_sha256,
+            'operation_id',p_operation_id::text,
+            'tenant_id',p_tenant_id::text
+        )::text,'UTF8')
+    ) ON CONFLICT DO NOTHING;
+    RETURN false;
+END
+$$;
+
+REVOKE ALL ON FUNCTION platform.iam_installation_instance_owner_bind_v1(
+    uuid,uuid,uuid,name,uuid,uuid,uuid,uuid,uuid,bigint,text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform.iam_installation_instance_owner_bind_v1(
+    uuid,uuid,uuid,name,uuid,uuid,uuid,uuid,uuid,bigint,text)
+TO harpy_runtime;
+REVOKE ALL ON FUNCTION platform.platform_async_initial_admin_setup_enqueue_v1(
+    uuid,uuid,uuid,text,name,text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION platform.platform_async_installation_activation_event_v1(
+    uuid,uuid,uuid,uuid,name,text) FROM PUBLIC;

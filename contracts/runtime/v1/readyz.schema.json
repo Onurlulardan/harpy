@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/readyz.schema.json",
+  "title": "Harpy Readiness v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "service", "reason", "checks"],
+  "properties": {
+    "status": {"enum": ["not_ready", "ready"]},
+    "service": {"enum": ["core-api", "core-migrator", "core-worker"]},
+    "reason": {"enum": ["dependency_failed", "draining", "none", "starting"]},
+    "checks": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {"$ref": "#/$defs/databaseCheck"},
+        {"$ref": "#/$defs/databaseRoleCheck"},
+        {"$ref": "#/$defs/deploymentPolicyCheck"},
+        {"$ref": "#/$defs/schemaContractCheck"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "check": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "status"],
+      "properties": {
+        "name": {"type": "string"},
+        "status": {"enum": ["not_ready", "ready"]}
+      }
+    },
+    "databaseCheck": {
+      "allOf": [{"$ref": "#/$defs/check"}, {"properties": {"name": {"const": "database"}}}]
+    },
+    "databaseRoleCheck": {
+      "allOf": [{"$ref": "#/$defs/check"}, {"properties": {"name": {"const": "database_role"}}}]
+    },
+    "deploymentPolicyCheck": {
+      "allOf": [{"$ref": "#/$defs/check"}, {"properties": {"name": {"const": "deployment_policy"}}}]
+    },
+    "schemaContractCheck": {
+      "allOf": [{"$ref": "#/$defs/check"}, {"properties": {"name": {"const": "schema_contract"}}}]
+    }
+  }
+}

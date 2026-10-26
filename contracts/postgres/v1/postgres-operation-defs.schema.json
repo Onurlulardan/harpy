@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/postgres-operation-defs.schema.json",
+  "$defs": {
+    "operationStep": {
+      "type": "object", "additionalProperties": false,
+      "required": ["step_id", "transaction_class"],
+      "properties": {
+        "step_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$"},
+        "transaction_class": {"enum": [
+          "read_only_preflight", "autocommit_ddl", "transactional_ddl",
+          "external_provisioner", "receipt_publication"
+        ]}
+      }
+    }
+  }
+}

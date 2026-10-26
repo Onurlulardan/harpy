@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/catalog/application/demohandoff",
+      "layer": "application",
+      "resource": "demohandoff",
+      "operation": "record",
+      "source": "core/internal/modules/catalog/application/demohandoff/record.go",
+      "test": "core/internal/modules/catalog/application/demohandoff/record_test.go",
+      "authority_id": "catalog.operation.resume"
+    }
+  ]
+}

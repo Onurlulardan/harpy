@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/events/v1/integration-event.schema.json",
+  "title": "Harpy Integration Event v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "event_id", "event_type", "event_version", "tenant_id", "producer_authority",
+    "aggregate_type", "aggregate_id", "aggregate_version", "event_sequence", "occurred_at",
+    "actor_id", "correlation_id", "causation_id", "idempotency_key",
+    "business_effect_idempotency_key", "payload_schema_sha256", "payload_sha256", "payload"
+  ],
+  "properties": {
+    "contract_version": {"const": "integration-event.v1"},
+    "event_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "event_type": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "event_version": {"type": "integer", "minimum": 1},
+    "tenant_id": {"$ref": "event-defs.schema.json#/$defs/nullableUuid"},
+    "producer_authority": {"$ref": "event-defs.schema.json#/$defs/authority"},
+    "aggregate_type": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "aggregate_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "aggregate_version": {"type": "integer", "minimum": 1},
+    "event_sequence": {"type": "integer", "minimum": 1},
+    "occurred_at": {"$ref": "event-defs.schema.json#/$defs/timestamp"},
+    "actor_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "correlation_id": {"$ref": "event-defs.schema.json#/$defs/correlation"},
+    "causation_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "idempotency_key": {"$ref": "event-defs.schema.json#/$defs/key"},
+    "business_effect_idempotency_key": {"$ref": "event-defs.schema.json#/$defs/key"},
+    "payload_schema_sha256": {"$ref": "event-defs.schema.json#/$defs/sha256"},
+    "payload_sha256": {"$ref": "event-defs.schema.json#/$defs/sha256"},
+    "payload": {"type": "object", "x-canonicalization": "RFC8785", "x-maxCanonicalUtf8Bytes": 65536}
+  },
+  "oneOf": [
+    {"properties": {
+      "tenant_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+      "producer_authority": {"properties": {"scope_kind": {"const": "tenant"}}}
+    }},
+    {"properties": {
+      "tenant_id": {"type": "null"},
+      "producer_authority": {"properties": {"scope_kind": {"const": "global"}}}
+    }}
+  ]
+}

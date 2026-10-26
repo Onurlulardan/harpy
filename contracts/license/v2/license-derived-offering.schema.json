@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/license/v2/license-derived-offering.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "offering_version_id", "revision", "effective_at", "license_id", "licensee_organization_id", "environment_id", "issuer", "snapshot_sequence", "snapshot_sha256", "release_channel", "booleans", "limits"],
+  "properties": {
+    "schema": {"const": "harpy-license-derived-offering.v1"},
+    "offering_version_id": {"$ref": "#/$defs/uuid"},
+    "revision": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "effective_at": {"type": "string", "format": "date-time"},
+    "license_id": {"$ref": "#/$defs/uuid"},
+    "licensee_organization_id": {"$ref": "#/$defs/uuid"},
+    "environment_id": {"$ref": "#/$defs/uuid"},
+    "issuer": {"type": "string", "minLength": 1, "maxLength": 256},
+    "snapshot_sequence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "release_channel": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "booleans": {
+      "type": "array", "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["key", "value"],
+        "properties": {
+          "key": {"type": "string", "pattern": "^[a-z][a-z0-9_.]{1,127}$"},
+          "value": {"type": "boolean"}
+        }
+      }
+    },
+    "limits": {
+      "type": "array", "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["key", "value", "unlimited"],
+        "properties": {
+          "key": {"type": "string", "pattern": "^[a-z][a-z0-9_.]{1,127}$"},
+          "value": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+          "unlimited": {"type": "boolean"}
+        },
+        "allOf": [
+          {"if": {"properties": {"unlimited": {"const": true}}}, "then": {"properties": {"value": {"const": 0}}}}
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}
+  }
+}

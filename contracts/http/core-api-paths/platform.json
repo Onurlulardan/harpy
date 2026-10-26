@@ -1,0 +1,162 @@
+{
+  "/.well-known/jwks.json": {
+    "get": {
+      "operationId": "iamReadJWKS",
+      "responses": {
+        "200": {
+          "$ref": "#/components/responses/JWKSRead"
+        },
+        "304": {
+          "$ref": "#/components/responses/JWKSNotModified"
+        },
+        "405": {
+          "$ref": "#/components/responses/MethodNotAllowed"
+        },
+        "503": {
+          "$ref": "#/components/responses/ServiceUnavailable"
+        }
+      }
+    },
+    "head": {
+      "operationId": "iamHeadJWKS",
+      "responses": {
+        "200": {
+          "$ref": "#/components/responses/JWKSHead"
+        },
+        "304": {
+          "$ref": "#/components/responses/JWKSNotModified"
+        },
+        "405": {
+          "$ref": "#/components/responses/MethodNotAllowed"
+        },
+        "503": {
+          "$ref": "#/components/responses/ServiceUnavailable"
+        }
+      }
+    }
+  },
+  "/api/app/config": {
+    "get": {
+      "operationId": "readRuntimeConfig",
+      "responses": {
+        "200": {
+          "description": "Persisted deployment mode, primary tenant login bootstrap, and composed optional services",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["success", "data"],
+                "properties": {
+                  "success": { "const": true },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "deployment_mode",
+                      "backend_version",
+                      "default_tenant_slug",
+                      "service_availability"
+                    ],
+                    "properties": {
+                      "deployment_mode": { "enum": ["onpremise", "saas"] },
+                      "backend_version": { "type": "string", "minLength": 1, "maxLength": 128 },
+                      "default_tenant_slug": {
+                        "anyOf": [
+                          { "type": "string", "minLength": 1, "maxLength": 100 },
+                          { "type": "null" }
+                        ]
+                      },
+                      "service_availability": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["ai_chat", "work"],
+                        "properties": {
+                          "ai_chat": { "type": "boolean" },
+                          "work": { "const": false }
+                        }
+                      }
+                    },
+                    "allOf": [
+                      {
+                        "if": { "properties": { "deployment_mode": { "const": "onpremise" } } },
+                        "then": { "properties": { "default_tenant_slug": { "type": "string" } } }
+                      },
+                      {
+                        "if": { "properties": { "deployment_mode": { "const": "saas" } } },
+                        "then": { "properties": { "default_tenant_slug": { "type": "null" } } }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+        "503": { "$ref": "#/components/responses/ServiceUnavailable" }
+      }
+    },
+    "head": {
+      "operationId": "headRuntimeConfig",
+      "responses": {
+        "200": {
+          "description": "Runtime config metadata with the same headers as GET"
+        },
+        "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+        "503": { "$ref": "#/components/responses/ServiceUnavailable" }
+      }
+    }
+  },
+  "/api/platform/tenants": {
+    "$ref": "tenant-provisioning-v1.paths.json#/pathItems/tenants"
+  },
+  "/api/admin/tenants": {
+    "$ref": "tenant-provisioning-v1.paths.json#/pathItems/legacyAdminTenants"
+  },
+  "/api/platform/tenant-provisioning-operations/{operation_id}": {
+    "$ref": "tenant-provisioning-v1.paths.json#/pathItems/operation"
+  },
+  "/api/platform/tenants/{tenant_id}/admin-setup/reissue": {
+    "$ref": "tenant-provisioning-v1.paths.json#/pathItems/reissue"
+  },
+  "/api/platform/operations/health": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/health"
+  },
+  "/api/platform/operations/traces": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/traces"
+  },
+  "/api/platform/operations/traces/search": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/traceSearch"
+  },
+  "/api/platform/operations/traces/stats": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/traceStats"
+  },
+  "/api/platform/operations/traces/spans/{span_id}": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/traceSpan"
+  },
+  "/api/platform/operations/traces/{correlation_id}": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/trace"
+  },
+  "/api/platform/operations/traces/{correlation_id}/timeline": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/traceTimeline"
+  },
+  "/api/platform/operations/alert-rules": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/rules"
+  },
+  "/api/platform/operations/alert-rules/{alert_rule_id}": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/rule"
+  },
+  "/api/platform/operations/alert-rules/{alert_rule_id}/test": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/ruleTest"
+  },
+  "/api/platform/operations/alert-events": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/events"
+  },
+  "/api/platform/operations/alert-events/{alert_event_id}": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/event"
+  },
+  "/api/platform/operations/permission-cache/flush": {
+    "$ref": "platform-operations-v1.paths.json#/pathItems/permissionCacheFlush"
+  }
+}

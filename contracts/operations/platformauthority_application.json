@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application",
+      "layer": "application",
+      "resource": "platformauthority",
+      "operation": "claim",
+      "source": "core/internal/modules/platformauthority/application/claim_delivery.go",
+      "test": "core/internal/modules/platformauthority/application/claim_delivery_test.go",
+      "authority_id": "platformauthority.delivery.process"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application",
+      "layer": "application",
+      "resource": "platformauthority",
+      "operation": "complete",
+      "source": "core/internal/modules/platformauthority/application/complete_delivery.go",
+      "test": "core/internal/modules/platformauthority/application/complete_delivery_test.go",
+      "authority_id": "platformauthority.delivery.process"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application",
+      "layer": "application",
+      "resource": "platformauthority",
+      "operation": "import",
+      "source": "core/internal/modules/platformauthority/application/import_acknowledgement.go",
+      "test": "core/internal/modules/platformauthority/application/import_acknowledgement_test.go",
+      "authority_id": "platformauthority.acknowledgement.import"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application",
+      "layer": "application",
+      "resource": "platformauthority",
+      "operation": "read",
+      "source": "core/internal/modules/platformauthority/application/read_development_binding_input.go",
+      "test": "core/internal/modules/platformauthority/application/read_development_binding_input_test.go",
+      "authority_id": "platformauthority.delivery.process"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application",
+      "layer": "application",
+      "resource": "platformauthority",
+      "operation": "retry",
+      "source": "core/internal/modules/platformauthority/application/retry_delivery.go",
+      "test": "core/internal/modules/platformauthority/application/retry_delivery_test.go",
+      "authority_id": "platformauthority.delivery.process"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application",
+      "layer": "application",
+      "resource": "platformauthority",
+      "operation": "update",
+      "source": "core/internal/modules/platformauthority/application/update_delivery_import.go",
+      "test": "core/internal/modules/platformauthority/application/update_delivery_import_test.go",
+      "authority_id": "platformauthority.delivery.process"
+    }
+  ]
+}

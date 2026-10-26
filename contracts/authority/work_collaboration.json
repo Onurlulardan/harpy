@@ -1,0 +1,12 @@
+{"version":2,"authorities":[
+  {"id":"work.calendar.change","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.calendar.get","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.calendar.list","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.checklist.change","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.column.create","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.column.update","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.comment.create","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.comment.list","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.comment.redact","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.inbox.list","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]}
+]}

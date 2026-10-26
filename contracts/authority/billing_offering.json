@@ -1,0 +1,5 @@
+{"version":2,"authorities":[
+  {"id":"billing.offering.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.offering.retire","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.offering.version.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]}
+]}

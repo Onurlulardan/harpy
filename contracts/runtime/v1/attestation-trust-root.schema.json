@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/attestation-trust-root.schema.json",
+  "title": "Harpy Attestation Trust Root v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "keys"],
+  "properties": {
+    "contract_version": {"const": "attestation-trust-root.v1"},
+    "keys": {
+      "type": "array", "minItems": 1, "maxItems": 32,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["key_id", "algorithm", "public_key", "not_before", "not_after"],
+        "properties": {
+          "key_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+          "algorithm": {"const": "Ed25519"},
+          "public_key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+          "not_before": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"},
+          "not_after": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"}
+        }
+      }
+    }
+  }
+}

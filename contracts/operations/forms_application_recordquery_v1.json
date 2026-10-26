@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "operations": [{
+    "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordquery",
+    "layer": "application",
+    "resource": "recordquery",
+    "operation": "read",
+    "source": "core/internal/modules/forms/application/recordquery/read_v1.go",
+    "test": "core/internal/modules/forms/application/recordquery/read_v1_test.go",
+    "authority_id": "forms.restquery.execute"
+  }]
+}

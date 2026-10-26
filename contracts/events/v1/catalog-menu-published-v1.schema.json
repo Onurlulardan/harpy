@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/catalog-menu-published-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_id", "installation_id", "operation_id", "menu_version_id",
+    "content_sha256"
+  ],
+  "properties": {
+    "package_id": {"type": "string", "format": "uuid"},
+    "installation_id": {"type": "string", "format": "uuid"},
+    "operation_id": {"type": "string", "format": "uuid"},
+    "menu_version_id": {"type": "string", "format": "uuid"},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

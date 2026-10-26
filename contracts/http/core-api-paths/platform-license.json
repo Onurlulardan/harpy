@@ -1,0 +1,5 @@
+{
+  "/api/platform/license": {"$ref":"platform-license-v1.paths.json#/pathItems/license"},
+  "/api/platform/license/refresh": {"$ref":"platform-license-v1.paths.json#/pathItems/refresh"},
+  "/api/platform/license/refresh-operations/{operation_id}": {"$ref":"platform-license-v1.paths.json#/pathItems/refreshOperation"}
+}

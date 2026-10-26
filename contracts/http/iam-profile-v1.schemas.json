@@ -1,0 +1,51 @@
+{
+  "parameters": {
+    "TenantID": {"name": "X-Tenant-ID", "in": "header", "required": false, "description": "Compatibility assertion only; verified access-token tenant remains authoritative.", "schema": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"}},
+    "Resource": {"name": "resource", "in": "path", "required": true, "schema": {"enum": ["user", "role", "organization"]}},
+    "SchemaID": {"name": "schema_id", "in": "path", "required": true, "schema": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"}},
+    "FieldID": {"name": "field_id", "in": "path", "required": true, "schema": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"}},
+    "PlanID": {"name": "plan_id", "in": "path", "required": true, "schema": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"}},
+    "SelfIdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": false, "description": "Optional V1 compatibility key; a bounded correlation-derived key is used when omitted.", "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}}
+  },
+  "schemas": {
+    "SelfEnvelope": {
+      "type": "object", "additionalProperties": false, "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "iam-profile-v1.records.json#/schemas/SelfProfile"}}
+    },
+    "SchemaEnvelope": {
+      "type": "object", "additionalProperties": false, "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "iam-profile-v1.records.json#/schemas/Schema"}}
+    },
+    "MutationEnvelope": {
+      "type": "object", "additionalProperties": false, "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "iam-profile-v1.records.json#/schemas/Mutation"}}
+    },
+    "RecoveryEnvelope": {
+      "type": "object", "additionalProperties": false, "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "iam-profile-v1.records.json#/schemas/Recovery"}}
+    }
+  },
+  "headers": {
+    "RevisionETag": {"required": true, "schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}},
+    "SchemaETag": {"required": true, "schema": {"type": "string", "pattern": "^\"schema-[0-9a-f-]{36}\"$"}}
+  },
+  "responses": {
+    "Self": {"description": "Current verified actor profile with restricted fields redacted.", "headers": {"ETag": {"$ref": "#/headers/RevisionETag"}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/SelfEnvelope"}}}},
+    "Schema": {"description": "Immutable active or historical IAM profile schema.", "headers": {"ETag": {"$ref": "#/headers/SchemaETag"}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/SchemaEnvelope"}}}},
+    "Mutation": {"description": "Committed idempotent profile lifecycle mutation.", "headers": {"ETag": {"$ref": "#/headers/RevisionETag"}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/MutationEnvelope"}}}},
+    "MutationCreated": {"description": "Committed idempotent profile schema publication.", "headers": {"ETag": {"$ref": "#/headers/RevisionETag"}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/MutationEnvelope"}}}},
+    "RecoveryCreated": {"description": "Committed idempotent recovery child plan or its durable replay.", "headers": {"ETag": {"$ref": "#/headers/RevisionETag"}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/RecoveryEnvelope"}}}},
+    "RequestInvalid": {"description": "Strict request decoding or semantic validation failed.", "x-harpy-error-code": "REQUEST_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthenticationFailed": {"description": "Bearer token is missing, invalid or bound to a different tenant.", "x-harpy-error-code": "AUTHENTICATION_FAILED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Forbidden": {"description": "Current IAM authority denied the operation.", "x-harpy-error-code": "AUTHORIZATION_DENIED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "FieldForbidden": {"description": "Self profile mutation named a non-writable field.", "x-harpy-error-code": "PROFILE_FIELD_FORBIDDEN", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "NotFound": {"description": "The authorized profile resource does not exist.", "x-harpy-error-code": "RESOURCE_NOT_FOUND", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Conflict": {"description": "Revision, active schema, field evidence or idempotency conflict.", "x-harpy-error-code": "RESOURCE_CONFLICT", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "ProfileWriteConflict": {"description": "Profile write conflict, including a fenced lineage that must be recovered.", "x-harpy-error-codes": ["RESOURCE_CONFLICT", "PROFILE_RECOVERY_REQUIRED"], "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "RecoveryConflict": {"description": "Recovery child conflict or bounded planning budget exhaustion.", "x-harpy-error-codes": ["RESOURCE_CONFLICT", "PROFILE_RECOVERY_BUDGET_EXCEEDED"], "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "BodyTooLarge": {"description": "Request body exceeds the bounded profile input budget.", "x-harpy-error-code": "REQUEST_BODY_TOO_LARGE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "MediaTypeUnsupported": {"description": "Request body is not canonical application/json.", "x-harpy-error-code": "MEDIA_TYPE_UNSUPPORTED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Unavailable": {"description": "IAM profile authority or storage is unavailable.", "x-harpy-error-code": "IAM_UNAVAILABLE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/tenantmigration","layer":"adapters/postgres","resource":"tenantmigration","operation":"get","source":"core/internal/modules/tenancy/adapters/postgres/tenantmigration/get.go","test":"core/internal/modules/tenancy/adapters/postgres/tenantmigration/get_test.go","application_operation":"core/internal/modules/tenancy/application/tenantmigration/get.go"}
+]}

@@ -1,0 +1,8 @@
+{"version":2,"authorities":[
+  {"id":"work.board.archive","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.board.create","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.board.get","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.board.list","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.board.restore","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.board.update","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]}
+]}

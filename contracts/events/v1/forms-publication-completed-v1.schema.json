@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/forms-publication-completed-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "definition_id",
+    "failure_code",
+    "publication_id",
+    "publication_revision",
+    "schema_result_generation",
+    "schema_job_id",
+    "state",
+    "version_id"
+  ],
+  "properties": {
+    "definition_id": {"type": "string", "format": "uuid"},
+    "failure_code": {
+      "type": ["string", "null"],
+      "pattern": "^SCHEMA_JOB_(FAILED|CANCELLED)$"
+    },
+    "publication_id": {"type": "string", "format": "uuid"},
+    "publication_revision": {"type": "integer", "minimum": 1},
+    "schema_result_generation": {"type": "integer", "minimum": 1},
+    "schema_job_id": {"type": "string", "format": "uuid"},
+    "state": {"enum": ["published", "failed"]},
+    "version_id": {"type": "string", "format": "uuid"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "state": {"const": "published"},
+        "failure_code": {"type": "null"}
+      }
+    },
+    {
+      "properties": {
+        "state": {"const": "failed"},
+        "failure_code": {
+          "type": "string",
+          "pattern": "^SCHEMA_JOB_(FAILED|CANCELLED)$"
+        }
+      }
+    }
+  ]
+}

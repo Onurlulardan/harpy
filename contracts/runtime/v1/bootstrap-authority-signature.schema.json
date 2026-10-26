@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/bootstrap-authority-signature.schema.json",
+  "title": "Harpy Bootstrap Authority Signature v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "manifest_sha256", "signature"],
+  "properties": {
+    "contract_version": {"const": "bootstrap-authority-signature.v1"},
+    "manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "signature": {"$ref": "signed-receipt-defs.schema.json#/$defs/signature"}
+  }
+}

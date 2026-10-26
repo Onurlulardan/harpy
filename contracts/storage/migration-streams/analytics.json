@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "owner": "analytics",
+  "streams": [
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260718161000,"version_to":20260718161021,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718161100,"version_to":20260718161111,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718161120,"version_to":20260718161127,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718161130,"version_to":20260718161147,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718161148,"version_to":20260718161158,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260718161159,"version_to":20260718161159,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718161203,"version_to":20260718161203,"phase":"expand","target_database_generation":8,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718180520,"version_to":20260718180522,"phase":"expand","target_database_generation":9,"next_minimum_runtime_generation":1},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260718230600,"version_to":20260718230600,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260718230601,"version_to":20260718230619,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260727220000,"version_to":20260727220000,"phase":"expand","target_database_generation":63,"next_minimum_runtime_generation":23},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260728110002,"version_to":20260728110002,"phase":"expand","target_database_generation":69,"next_minimum_runtime_generation":23},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260728110003,"version_to":20260728110003,"phase":"expand","target_database_generation":69,"next_minimum_runtime_generation":23},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260729100000,"version_to":20260729100000,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260729100009,"version_to":20260729100009,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260729100018,"version_to":20260729100018,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260729100040,"version_to":20260729100040,"phase":"contract","target_database_generation":71,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260730143000,"version_to":20260730143007,"phase":"expand","target_database_generation":87,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/platform","scope":"platform","version_from":20260730143008,"version_to":20260730143008,"phase":"expand","target_database_generation":87,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260730143009,"version_to":20260730143044,"phase":"expand","target_database_generation":87,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260730143045,"version_to":20260730143045,"phase":"expand","target_database_generation":87,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260730145400,"version_to":20260730145410,"phase":"expand","target_database_generation":89,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260801030000,"version_to":20260801030010,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24},
+    {"owner":"analytics","directory":"core/internal/modules/analytics/migrations/tenant","scope":"tenant","version_from":20260802010000,"version_to":20260802010037,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24}
+  ]
+}

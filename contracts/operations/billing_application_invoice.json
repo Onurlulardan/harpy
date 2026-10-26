@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/invoice","layer":"application","resource":"invoice","operation":"finalize","source":"core/internal/modules/billing/application/invoice/finalize.go","test":"core/internal/modules/billing/application/invoice/finalize_test.go","authority_id":"billing.invoice.finalize"}
+]}

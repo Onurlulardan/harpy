@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/publication","layer":"application","resource":"publication","operation":"publish","source":"core/internal/modules/workflow/application/publication/publish.go","test":"core/internal/modules/workflow/application/publication/publish_test.go","authority_id":"workflow.publication.publish"}
+  ]
+}

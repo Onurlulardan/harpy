@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/events/v1/event-producer-policy.schema.json",
+  "title": "Harpy Event Producer Policy v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "event_type", "event_version", "owner_domain", "payload_schema_sha256",
+    "maximum_payload_bytes", "delivered_retention_days", "undelivered_alarm_seconds"
+  ],
+  "properties": {
+    "contract_version": {"const": "event-producer-policy.v1"},
+    "event_type": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "event_version": {"type": "integer", "minimum": 1},
+    "owner_domain": {"$ref": "event-defs.schema.json#/$defs/domain"},
+    "payload_schema_sha256": {"$ref": "event-defs.schema.json#/$defs/sha256"},
+    "maximum_payload_bytes": {"const": 65536},
+    "delivered_retention_days": {"const": 30},
+    "undelivered_alarm_seconds": {"const": 300}
+  }
+}

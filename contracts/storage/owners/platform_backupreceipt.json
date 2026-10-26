@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "platform_backupreceipt",
+    "prefix": "platform_backupreceipt_",
+    "scopes": ["platform"],
+    "migration_dirs": [
+      {"path":"core/internal/platform/backupreceipt/migrations","scope":"platform"}
+    ],
+    "static_sql_dirs": [],
+    "platform_schemas": [],
+    "schema_usage_grants": [],
+    "platform_routines": ["platform.backup_reject_receipt_mutation_v1"],
+    "routine_execute_grants": [],
+    "platform_tables": ["platform.backup_receipts"],
+    "foreign_keys": [],
+    "external_accesses": [],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  }
+}

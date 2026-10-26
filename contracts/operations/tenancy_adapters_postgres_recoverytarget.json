@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/recoverytarget","layer":"adapters/postgres","resource":"recoverytarget","operation":"get","source":"core/internal/modules/tenancy/adapters/postgres/recoverytarget/get.go","test":"core/internal/modules/tenancy/adapters/postgres/recoverytarget/get_test.go","application_operation":"core/internal/modules/tenancy/application/recoverytarget/get.go"}
+]}

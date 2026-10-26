@@ -1,0 +1,18 @@
+{
+  "parameters":{
+    "idempotency":{"name":"Idempotency-Key","in":"header","required":true,"schema":{"type":"string","minLength":1,"maxLength":128,"pattern":"^[\\x21-\\x7e]+$"}},
+    "operation":{"name":"operation_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+    "tenant":{"name":"tenant_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"}}
+  },
+  "responses":{
+    "accepted":{"description":"Durable tenant provisioning operation accepted","headers":{"Location":{"required":true,"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"tenant-provisioning-v1.schemas.json#/$defs/AcceptedEnvelope"}}}},
+    "error":{"description":"Tenant provisioning request rejected","content":{"application/json":{"schema":{"$ref":"../runtime/v1/error-envelope.schema.json"}}}}
+  },
+  "pathItems":{
+    "tenants":{"post":{"operationId":"provisionCustomerTenant","security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.tenants.create","parameters":[{"$ref":"#/parameters/idempotency"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"tenant-provisioning-v1.schemas.json#/$defs/ProvisionRequest"}}}},"responses":{"202":{"$ref":"#/responses/accepted"},"default":{"$ref":"#/responses/error"}}}},
+    "legacyAdminTenants":{"post":{"operationId":"provisionCustomerTenantFromV1AdminRoute","deprecated":true,"security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.tenants.create","x-harpy-compat-policy":"exact-canonical-command-no-dual-writer","parameters":[{"$ref":"#/parameters/idempotency"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"tenant-provisioning-v1.schemas.json#/$defs/ProvisionRequest"}}}},"responses":{"202":{"$ref":"#/responses/accepted"},"default":{"$ref":"#/responses/error"}}}},
+    "legacyAnonymousRegistration":{"post":{"operationId":"retireAnonymousTenantRegistration","deprecated":true,"security":[],"x-harpy-successor":"/api/platform/tenants","responses":{"410":{"$ref":"#/responses/error"},"default":{"$ref":"#/responses/error"}}}},
+    "operation":{"parameters":[{"$ref":"#/parameters/operation"}],"get":{"operationId":"readCustomerTenantProvisioningOperation","security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.tenants.read","responses":{"200":{"description":"Current tenant provisioning operation","content":{"application/json":{"schema":{"$ref":"tenant-provisioning-v1.schemas.json#/$defs/OperationEnvelope"}}}},"default":{"$ref":"#/responses/error"}}}},
+    "reissue":{"parameters":[{"$ref":"#/parameters/tenant"}],"post":{"operationId":"reissueCustomerTenantInitialAdminSetup","security":[{"bearerAuth":[]}],"x-harpy-capability":"platform.tenants.admin_setup.reissue","parameters":[{"$ref":"#/parameters/idempotency"}],"responses":{"202":{"$ref":"#/responses/accepted"},"default":{"$ref":"#/responses/error"}}}}
+  }
+}

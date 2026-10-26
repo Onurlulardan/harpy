@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/customerworker","layer":"adapters/postgres","resource":"customerworker","operation":"claim","source":"core/internal/modules/tenancy/adapters/postgres/customerworker/claim.go","test":"core/internal/modules/tenancy/adapters/postgres/customerworker/claim_test.go","application_operation":"core/internal/modules/tenancy/application/customerworker/claim.go"}
+]}

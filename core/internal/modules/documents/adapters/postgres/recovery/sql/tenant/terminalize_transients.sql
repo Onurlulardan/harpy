@@ -1,0 +1,2 @@
+SELECT cancelled_uploads,expired_archives,cancelled_archives
+FROM documents_recovery_terminalize_transients_v2($1)

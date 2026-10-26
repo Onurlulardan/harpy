@@ -1,0 +1,77 @@
+{
+  "/api/workflow-human-tasks": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-human-tasks"
+  },
+  "/api/workflow-human-tasks/{task_id}": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-human-tasks~1{task_id}"
+  },
+  "/api/workflow-human-tasks/{task_id}/cancellations": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-human-tasks~1{task_id}~1cancellations"
+  },
+  "/api/workflow-human-tasks/{task_id}/claims": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-human-tasks~1{task_id}~1claims"
+  },
+  "/api/workflow-human-tasks/{task_id}/decisions": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-human-tasks~1{task_id}~1decisions"
+  },
+  "/api/workflow-human-tasks/{task_id}/reassignments": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-human-tasks~1{task_id}~1reassignments"
+  },
+  "/api/workflow-instances/{instance_id}": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-instances~1{instance_id}"
+  },
+  "/api/workflow-instances/{instance_id}/cancellations": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-instances~1{instance_id}~1cancellations"
+  },
+  "/api/workflow-instances/{instance_id}/repairs": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-instances~1{instance_id}~1repairs"
+  },
+  "/api/workflow-instances/{instance_id}/replans": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-instances~1{instance_id}~1replans"
+  },
+  "/api/workflow-instances/{instance_id}/signals": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-instances~1{instance_id}~1signals"
+  },
+  "/api/workflow-service/tasks/my-pending": {
+    "$ref": "workflow-v1-compat.paths.json#/paths/~1api~1workflow-service~1tasks~1my-pending"
+  },
+  "/api/workflow-service/tasks/{task_id}/action": {
+    "$ref": "workflow-v1-compat.paths.json#/paths/~1api~1workflow-service~1tasks~1{task_id}~1action"
+  },
+  "/api/workflow-service/workflows": {
+    "$ref": "workflow-v1-compat.paths.json#/paths/~1api~1workflow-service~1workflows"
+  },
+  "/api/workflow-service/workflows/validate": {
+    "$ref": "workflow-v1-compat.paths.json#/paths/~1api~1workflow-service~1workflows~1validate"
+  },
+  "/api/workflow-service/workflows/{workflow_id}": {
+    "$ref": "workflow-v1-compat.paths.json#/paths/~1api~1workflow-service~1workflows~1{workflow_id}"
+  },
+  "/api/workflow-service/workflows/{workflow_id}/history": {
+    "$ref": "workflow-v1-compat.paths.json#/paths/~1api~1workflow-service~1workflows~1{workflow_id}~1history"
+  },
+  "/api/workflow-versions/{workflow_version_id}/instances": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflow-versions~1{workflow_version_id}~1instances"
+  },
+  "/api/workflows": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows"
+  },
+  "/api/workflows/{workflow_id}": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows~1{workflow_id}"
+  },
+  "/api/workflows/{workflow_id}/draft": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows~1{workflow_id}~1draft"
+  },
+  "/api/workflows/{workflow_id}/publication-authority": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows~1{workflow_id}~1publication-authority"
+  },
+  "/api/workflows/{workflow_id}/publications": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows~1{workflow_id}~1publications"
+  },
+  "/api/workflows/{workflow_id}/renames": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows~1{workflow_id}~1renames"
+  },
+  "/api/workflows/{workflow_id}/retirements": {
+    "$ref": "workflow-v2.paths.json#/paths/~1api~1workflows~1{workflow_id}~1retirements"
+  }
+}

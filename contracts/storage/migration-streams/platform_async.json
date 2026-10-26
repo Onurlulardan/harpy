@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "owner": "platform_async",
+  "streams": [
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260715020000,"version_to":20260715021600,"phase":"expand","target_database_generation":3,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260715021610,"version_to":20260715022010,"phase":"expand","target_database_generation":3,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020020,"version_to":20260718020022,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020025,"version_to":20260718020032,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020035,"version_to":20260718020049,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020050,"version_to":20260718020059,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020110,"version_to":20260718020114,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020117,"version_to":20260718020118,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718020119,"version_to":20260718020143,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260718230700,"version_to":20260718230709,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260722094000,"version_to":20260722094000,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260722150000,"version_to":20260722150001,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260725123800,"version_to":20260725123800,"phase":"expand","target_database_generation":32,"next_minimum_runtime_generation":15},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260729100029,"version_to":20260729100029,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260729100043,"version_to":20260729100043,"phase":"contract","target_database_generation":71,"next_minimum_runtime_generation":24},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260801015000,"version_to":20260801015004,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"platform_async","directory":"core/internal/platform/async/migrations","scope":"platform","version_from":20260802020000,"version_to":20260802020049,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24}
+  ]
+}

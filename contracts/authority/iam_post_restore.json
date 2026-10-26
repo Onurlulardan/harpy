@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "iam.post_restore.reconcile",
+      "owner": "iam",
+      "scope_source": "environment_global",
+      "required_groups": ["iam_system_resources"],
+      "ordered_domains": ["iam", "system_resource_layout"],
+      "participants": ["iam", "system_resource_layout"]
+    }
+  ]
+}

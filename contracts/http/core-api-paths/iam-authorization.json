@@ -1,0 +1,77 @@
+{
+  "/api/permission-requests": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/collection"
+  },
+  "/api/permission-requests/mine": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/mine"
+  },
+  "/api/permission-requests/catalog/resources": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/catalogResources"
+  },
+  "/api/permission-requests/catalog/actions": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/catalogActions"
+  },
+  "/api/permission-requests/catalog/missing-resources": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/catalogMissingResources"
+  },
+  "/api/permission-requests/{id}": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/item"
+  },
+  "/api/permission-requests/{id}/approve": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/approve"
+  },
+  "/api/permission-requests/{id}/cancel": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/cancel"
+  },
+  "/api/permission-requests/{id}/expire": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/expire"
+  },
+  "/api/permission-requests/{id}/reject": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/reject"
+  },
+  "/api/permission-requests/{id}/review": {
+    "$ref": "iam-permission-requests-v1.paths.json#/pathItems/review"
+  },
+  "/api/permissions": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/collection"
+  },
+  "/api/permissions/actions": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/actionCollection"
+  },
+  "/api/permissions/actions/{id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/actionItem"
+  },
+  "/api/permissions/batch-check": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/batchCheck"
+  },
+  "/api/permissions/cache/invalidate/all": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateAll"
+  },
+  "/api/permissions/cache/invalidate/org/{org_id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateOrganization"
+  },
+  "/api/permissions/cache/invalidate/role/{role_id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateRole"
+  },
+  "/api/permissions/cache/invalidate/tenant/{tenant_id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateTenant"
+  },
+  "/api/permissions/cache/invalidate/{user_id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateUser"
+  },
+  "/api/permissions/cache/stats": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheStats"
+  },
+  "/api/permissions/check": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/check"
+  },
+  "/api/permissions/resources": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/resourceCollection"
+  },
+  "/api/permissions/resources/{id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/resourceItem"
+  },
+  "/api/permissions/{id}": {
+    "$ref": "iam-rbac-v1.paths.json#/pathItems/item"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/adapters/postgres/v1httpresolution","layer":"adapters/postgres","resource":"v1httpresolution","operation":"resolve","source":"core/internal/modules/workflow/adapters/postgres/v1httpresolution/resolve_source.go","test":"core/internal/modules/workflow/adapters/postgres/v1httpresolution/resolve_source_test.go","application_operation":"core/internal/modules/workflow/application/v1httpresolution/resolve_source.go"}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/core-worker-config.schema.json",
+  "title": "Harpy Core Worker Environment Snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile", "variables"],
+  "properties": {
+    "profile": {"const": "worker"},
+    "variables": {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/workerVariables"}
+  }
+}

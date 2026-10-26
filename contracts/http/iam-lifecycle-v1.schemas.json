@@ -1,0 +1,200 @@
+{
+  "schemas": {
+    "EmptyObject": {"type": "object", "additionalProperties": false, "maxProperties": 0},
+    "InitialPasswordRequest": {
+      "type": "object", "additionalProperties": false, "required": ["tenant_slug", "new_password"],
+      "properties": {"tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128}, "new_password": {"type": "string", "minLength": 1, "maxLength": 512}}
+    },
+    "IdentifierCreateRequest": {
+      "type": "object", "additionalProperties": false, "required": ["email"],
+      "properties": {"email": {"type": "string", "format": "email", "minLength": 3, "maxLength": 1024}}
+    },
+    "CredentialRequest": {
+      "type": "object", "additionalProperties": false, "required": ["tenant_slug", "token"],
+      "properties": {
+        "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
+        "token": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "PasswordResetStartRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tenant_slug", "identifier_kind", "identifier"],
+      "properties": {
+        "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
+        "identifier_kind": {"enum": ["email_v1", "portal_v1"]},
+        "identifier": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "PasswordResetCompleteRequest": {
+      "type": "object", "additionalProperties": false, "required": ["tenant_slug", "token", "password"],
+      "properties": {
+        "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
+        "token": {"type": "string", "minLength": 1, "maxLength": 512},
+        "password": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "PasswordChangeRequest": {
+      "type": "object", "additionalProperties": false, "required": ["current_password", "new_password"],
+      "properties": {
+        "current_password": {"type": "string", "minLength": 1, "maxLength": 512},
+        "new_password": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "PortalDecisionRequest": {
+      "type": "object", "additionalProperties": false, "required": ["decision"],
+      "properties": {"decision": {"enum": ["approve", "reject"]}}
+    },
+    "EnrollmentStartRequest": {
+      "type": "object", "additionalProperties": false, "required": ["display_label"],
+      "properties": {"display_label": {"type": "string", "minLength": 1}}
+    },
+    "WebAuthnCompleteRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["challenge_id", "challenge_key_id", "challenge", "credential"],
+      "properties": {
+        "challenge_id": {"type": "string", "format": "uuid"},
+        "challenge_key_id": {"type": "string", "minLength": 1},
+        "challenge": {"type": "string", "minLength": 1, "maxLength": 512},
+        "credential": {"type": "object", "minProperties": 1}
+      }
+    },
+    "TOTPCompleteRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["challenge_id", "challenge_key_id", "challenge", "code", "expected_challenge_revision"],
+      "properties": {
+        "challenge_id": {"type": "string", "format": "uuid"},
+        "challenge_key_id": {"type": "string", "minLength": 1},
+        "challenge": {"type": "string", "minLength": 1, "maxLength": 512},
+        "code": {"type": "string", "pattern": "^[0-9]{6}$"},
+        "expected_challenge_revision": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "MutationView": {
+      "type": "object", "additionalProperties": false, "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "Accepted": {
+      "type": "object", "additionalProperties": false, "required": ["accepted"],
+      "properties": {"accepted": {"const": true}}
+    },
+    "ChallengeView": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authenticator_id", "challenge_id", "challenge", "challenge_key_id", "rp_id", "origin", "user_verification_required"],
+      "properties": {
+        "authenticator_id": {"type": "string", "format": "uuid"},
+        "challenge_id": {"type": "string", "format": "uuid"},
+        "challenge": {"type": "string", "minLength": 1},
+        "challenge_key_id": {"type": "string", "minLength": 1},
+        "rp_id": {"type": "string", "minLength": 1, "maxLength": 253},
+        "origin": {"type": "string", "format": "uri"},
+        "user_verification_required": {"const": true}
+      }
+    },
+    "TOTPStartView": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authenticator_id", "challenge_id", "challenge", "challenge_key_id", "rp_id", "origin", "user_verification_required", "secret"],
+      "properties": {
+        "authenticator_id": {"type": "string", "format": "uuid"},
+        "challenge_id": {"type": "string", "format": "uuid"},
+        "challenge": {"type": "string", "minLength": 1},
+        "challenge_key_id": {"type": "string", "minLength": 1},
+        "rp_id": {"type": "string", "minLength": 1, "maxLength": 253},
+        "origin": {"type": "string", "format": "uri"},
+        "user_verification_required": {"const": true},
+        "secret": {"type": "string", "pattern": "^[A-Z2-7]{52}$"}
+      }
+    },
+    "RecoveryIssueView": {
+      "type": "object", "additionalProperties": false, "required": ["authenticator_id", "codes"],
+      "properties": {
+        "authenticator_id": {"type": "string", "format": "uuid"},
+        "codes": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"type": "string", "pattern": "^[^.]+\\.[A-Za-z0-9_-]{43}$"}}
+      }
+    },
+    "RecoveryCode": {
+      "type": "object", "additionalProperties": false,
+      "required": ["AuthenticatorID", "AuthenticatorRevision", "CodeID", "Position", "State", "CreatedAt", "ConsumedAt", "RevokedAt"],
+      "properties": {
+        "AuthenticatorID": {"type": "string", "format": "uuid"},
+        "AuthenticatorRevision": {"type": "integer", "format": "int64", "minimum": 1},
+        "CodeID": {"type": "string", "format": "uuid"},
+        "Position": {"type": "integer", "format": "int32", "minimum": 0},
+        "State": {"type": "string", "minLength": 1},
+        "CreatedAt": {"type": "string", "format": "date-time"},
+        "ConsumedAt": {"type": "string", "format": "date-time"},
+        "RevokedAt": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Authenticator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ID", "UserID", "Kind", "DisplayLabel", "State", "Revision", "CreatedAt", "UpdatedAt", "ActivatedAt", "LastUsedAt"],
+      "properties": {
+        "ID": {"type": "string", "format": "uuid"}, "UserID": {"type": "string", "format": "uuid"},
+        "Kind": {"type": "string", "minLength": 1}, "DisplayLabel": {"type": "string"},
+        "State": {"type": "string", "minLength": 1}, "Revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "CreatedAt": {"type": "string", "format": "date-time"}, "UpdatedAt": {"type": "string", "format": "date-time"},
+        "ActivatedAt": {"type": "string", "format": "date-time"}, "LastUsedAt": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Session": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "access_mode", "device_kind", "browser_family", "os_family", "revision", "created_at", "last_seen_at", "absolute_expiry"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"}, "portal_binding_id": {"type": "string", "format": "uuid"},
+        "access_mode": {"enum": ["operator_console", "portal"]}, "device_kind": {"type": "string", "minLength": 1},
+        "browser_family": {"type": "string", "minLength": 1}, "os_family": {"type": "string", "minLength": 1},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "created_at": {"type": "string", "format": "date-time"}, "last_seen_at": {"type": "string", "format": "date-time"},
+        "absolute_expiry": {"type": "string", "format": "date-time"}
+      }
+    },
+    "RecoveryCodeList": {"type": "object", "additionalProperties": false, "required": ["items"], "properties": {"items": {"type": "array", "items": {"$ref": "#/schemas/RecoveryCode"}}}},
+    "AuthenticatorList": {"type": "object", "additionalProperties": false, "required": ["items"], "properties": {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Authenticator"}}}},
+    "SessionList": {"type": "object", "additionalProperties": false, "required": ["items"], "properties": {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Session"}}}}
+  },
+  "parameters": {
+    "TenantID": {"name": "X-Tenant-ID", "in": "header", "required": false, "schema": {"type": "string", "format": "uuid"}},
+    "ID": {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "BindingID": {"name": "binding_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "AuthenticatorID": {"name": "authenticator_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "IfMatch": {"name": "If-Match", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}},
+    "Limit": {"name": "limit", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50}},
+    "AfterTime": {"name": "after_time", "in": "query", "required": false, "schema": {"type": "string", "format": "date-time"}},
+    "AfterID": {"name": "after_id", "in": "query", "required": false, "schema": {"type": "string", "format": "uuid"}},
+    "RetiredID": {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "minLength": 1}},
+    "RetiredToken": {"name": "token", "in": "path", "required": true, "schema": {"type": "string", "minLength": 1}},
+    "RetiredCode": {"name": "code", "in": "path", "required": true, "schema": {"type": "string", "minLength": 1}},
+    "Origin": {"name": "Origin", "in": "header", "required": true, "schema": {"type": "string", "format": "uri", "maxLength": 512}},
+    "InitialCSRF": {"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "minLength": 43, "maxLength": 43}},
+    "InitialChangeCookie": {"name": "__Secure-harpy-initial-change", "in": "cookie", "required": true, "schema": {"type": "string", "minLength": 66, "maxLength": 66}},
+    "InitialCSRFCookie": {"name": "__Host-harpy-initial-csrf", "in": "cookie", "required": true, "schema": {"type": "string", "minLength": 43, "maxLength": 43}}
+  },
+  "responses": {
+    "InitialGrant": {"description": "Initial password is replaced, browser auth cookies rotate, and initial continuation cookies expire.", "headers": {"Set-Cookie": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "iam-auth-v1.schemas.json#/schemas/AuthGrant"}}}},
+    "MutationCreated": {"description": "Revisioned lifecycle resource created.", "content": {"application/json": {"schema": {"$ref": "#/schemas/MutationView"}}}},
+    "Accepted": {"description": "Enumeration-safe lifecycle request accepted.", "content": {"application/json": {"schema": {"$ref": "#/schemas/Accepted"}}}},
+    "ChallengeCreated": {"description": "One-time enrollment challenge.", "content": {"application/json": {"schema": {"$ref": "#/schemas/ChallengeView"}}}},
+    "TOTPStarted": {"description": "One-time TOTP enrollment secret and challenge.", "content": {"application/json": {"schema": {"$ref": "#/schemas/TOTPStartView"}}}},
+    "RecoveryIssued": {"description": "Recovery code wires are revealed once.", "content": {"application/json": {"schema": {"$ref": "#/schemas/RecoveryIssueView"}}}},
+    "RecoveryCodes": {"description": "Recovery code lifecycle state.", "content": {"application/json": {"schema": {"$ref": "#/schemas/RecoveryCodeList"}}}},
+    "Authenticators": {"description": "Keyset page of authenticators.", "content": {"application/json": {"schema": {"$ref": "#/schemas/AuthenticatorList"}}}},
+    "Sessions": {"description": "Keyset page of sessions.", "content": {"application/json": {"schema": {"$ref": "#/schemas/SessionList"}}}},
+    "NoContent": {"description": "Lifecycle mutation completed."},
+    "InitialRequestInvalid": {"description": "Initial password document or password policy is invalid.", "x-harpy-error-codes": ["REQUEST_INVALID", "PASSWORD_POLICY_REJECTED"], "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "RequestInvalid": {"description": "Request invalid.", "x-harpy-error-code": "REQUEST_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthenticationFailed": {"description": "Authentication failed.", "x-harpy-error-code": "AUTHENTICATION_FAILED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "CSRFInvalid": {"description": "Origin or initial continuation proof invalid.", "x-harpy-error-code": "AUTH_CSRF_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthorizationDenied": {"description": "Operation forbidden.", "x-harpy-error-code": "AUTHORIZATION_DENIED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "CredentialInvalid": {"description": "Credential invalid or unavailable.", "x-harpy-error-code": "LIFECYCLE_CREDENTIAL_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Conflict": {"description": "Lifecycle mutation conflicts.", "x-harpy-error-code": "LIFECYCLE_CONFLICT", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "BodyTooLarge": {"description": "Body exceeds endpoint limit.", "x-harpy-error-code": "REQUEST_BODY_TOO_LARGE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "MediaTypeUnsupported": {"description": "Media type unsupported.", "x-harpy-error-code": "MEDIA_TYPE_UNSUPPORTED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Unavailable": {"description": "IAM unavailable.", "x-harpy-error-code": "IAM_UNAVAILABLE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthenticationUnavailable": {"description": "Authentication unavailable.", "x-harpy-error-code": "AUTHENTICATION_UNAVAILABLE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "ClientUpgradeRequired": {"description": "Retired compatibility surface.", "x-harpy-error-code": "CLIENT_UPGRADE_REQUIRED", "headers": {"Cache-Control": {"schema": {"type": "string", "const": "no-store"}}, "Link": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

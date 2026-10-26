@@ -1,0 +1,73 @@
+{
+  "schemas": {
+    "SelfUpdate": {
+      "type": "object", "additionalProperties": false,
+      "minProperties": 1, "maxProperties": 4,
+      "properties": {
+        "first_name": {"type": ["string", "null"]},
+        "last_name": {"type": ["string", "null"]},
+        "phone": {"type": ["string", "null"]},
+        "avatar": {"type": ["string", "null"]}
+      }
+    },
+    "Validation": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "maximum_bytes": {"type": "integer", "minimum": 0, "maximum": 1048576},
+        "maximum_items": {"type": "integer", "minimum": 0, "maximum": 1000},
+        "integer_minimum": {"type": "integer", "format": "int64"},
+        "integer_maximum": {"type": "integer", "format": "int64"},
+        "decimal_precision": {"type": "integer", "minimum": 0, "maximum": 1000},
+        "decimal_scale": {"type": "integer", "minimum": 0, "maximum": 1000},
+        "enum_values": {
+          "type": "array", "minItems": 1, "maxItems": 2000,
+          "uniqueItems": true, "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "Field": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "key", "type", "cardinality", "required", "classification", "normalization", "state", "validation"],
+      "properties": {
+        "id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "key": {"type": "string", "pattern": "^[a-z](?:[a-z0-9]|_(?=[a-z0-9])){0,62}$"},
+        "type": {"enum": ["string", "integer", "decimal", "boolean", "date", "timestamp", "uuid", "enum", "json"]},
+        "cardinality": {"enum": ["single", "list"]},
+        "required": {"type": "boolean"},
+        "classification": {"enum": ["public", "internal", "confidential", "restricted"]},
+        "normalization": {"enum": ["none_v1", "email_v1", "portal_v1"]},
+        "state": {"enum": ["active", "retired"]},
+        "validation": {"$ref": "#/schemas/Validation"}
+      }
+    },
+    "MigrationMapping": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_field_id", "target_field_id", "converter_kind"],
+      "properties": {
+        "source_field_id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "target_field_id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "converter_kind": {"enum": ["copy_v1", "copy_normalize_v1"]}
+      }
+    },
+    "SchemaPublish": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_id", "version", "expected_active_schema_id", "fields"],
+      "properties": {
+        "schema_id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "version": {"type": "integer", "format": "int64", "minimum": 2},
+        "expected_active_schema_id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "fields": {"type": "array", "items": {"$ref": "#/schemas/Field"}},
+        "migration_mappings": {"type": "array", "maxItems": 500, "items": {"$ref": "#/schemas/MigrationMapping"}}
+      }
+    },
+    "FieldRetire": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_id", "expected_active_schema_id", "expected_field_revision"],
+      "properties": {
+        "schema_id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "expected_active_schema_id": {"$ref": "iam-profile-v1.records.json#/schemas/UUID"},
+        "expected_field_revision": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    }
+  }
+}

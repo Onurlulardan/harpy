@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/migration-manifest.schema.json",
+  "title": "Harpy PostgreSQL Migration Manifest v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "engine", "postgres_major", "history_table",
+    "out_of_order", "entries"
+  ],
+  "properties": {
+    "contract_version": {"const": "postgres-migration-manifest.v1"},
+    "engine": {"const": "goose.v3"},
+    "postgres_major": {"const": 18},
+    "history_table": {"const": "platform.platform_migration_history"},
+    "out_of_order": {"const": false},
+    "entries": {
+      "type": "array", "minItems": 1, "maxItems": 10000, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/entry"}
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "owner", "scope", "version", "transaction_mode", "phase",
+        "target_database_generation", "next_minimum_runtime_generation", "variants"
+      ],
+      "properties": {
+        "owner": {"$ref": "postgres-artifact-defs.schema.json#/$defs/moduleName"},
+        "scope": {"enum": ["platform", "tenant"]},
+        "version": {
+          "type": "integer", "minimum": 20000101000000, "maximum": 99991231235959
+        },
+        "transaction_mode": {"enum": ["transactional", "non_transactional"]},
+        "phase": {"enum": ["foundation", "expand", "backfill", "switch", "contract"]},
+        "target_database_generation": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/safeInteger"
+        },
+        "next_minimum_runtime_generation": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/safeInteger"
+        },
+        "variants": {
+          "type": "object", "additionalProperties": false,
+          "minProperties": 1, "maxProperties": 2,
+          "properties": {
+            "fresh": {"$ref": "postgres-artifact-defs.schema.json#/$defs/migrationVariant"},
+            "v1_adopted": {"$ref": "postgres-artifact-defs.schema.json#/$defs/migrationVariant"}
+          },
+          "anyOf": [
+            {"required": ["fresh"]},
+            {"required": ["v1_adopted"]}
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/postrestore",
+      "layer": "application",
+      "resource": "postrestore",
+      "operation": "reconcile",
+      "source": "core/internal/modules/iam/application/postrestore/reconcile.go",
+      "test": "core/internal/modules/iam/application/postrestore/reconcile_test.go",
+      "authority_id": "iam.post_restore.reconcile"
+    }
+  ]
+}

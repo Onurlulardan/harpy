@@ -1,0 +1,56 @@
+
+{
+  "version": 1,
+  "owner": "platform_async",
+  "foreign_keys": [
+    {
+      "constraint":"inbox_authority_member_fk",
+      "source":"platform.inbox","source_columns":["scope_kind","scope_id","producer_group_id","producer_domain"],
+      "target_owner":"platform_cutover","target":"platform.cutover_group_members","target_columns":["scope_kind","scope_id","group_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"inbox_consumer_authority_fk",
+      "source":"platform.inbox","source_columns":["scope_kind","scope_id","consumer_domain"],
+      "target_owner":"platform_cutover","target":"platform.domain_cutovers","target_columns":["scope_kind","scope_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"inbox_consumer_authority_group_fk",
+      "source":"platform.inbox","source_columns":["scope_kind","scope_id","consumer_group_id"],
+      "target_owner":"platform_cutover","target":"platform.cutover_groups","target_columns":["scope_kind","scope_id","group_id"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"inbox_consumer_authority_member_fk",
+      "source":"platform.inbox","source_columns":["scope_kind","scope_id","consumer_group_id","consumer_domain"],
+      "target_owner":"platform_cutover","target":"platform.cutover_group_members","target_columns":["scope_kind","scope_id","group_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"inbox_tenant_fk",
+      "source":"platform.inbox","source_columns":["tenant_id"],
+      "target_owner":"tenancy","target":"platform.tenants","target_columns":["id"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"jobs_authority_fk",
+      "source":"platform.jobs","source_columns":["scope_kind","scope_id","authority_domain"],
+      "target_owner":"platform_cutover","target":"platform.domain_cutovers","target_columns":["scope_kind","scope_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"jobs_authority_group_fk",
+      "source":"platform.jobs","source_columns":["scope_kind","scope_id","authority_group_id"],
+      "target_owner":"platform_cutover","target":"platform.cutover_groups","target_columns":["scope_kind","scope_id","group_id"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    }
+  ]
+}

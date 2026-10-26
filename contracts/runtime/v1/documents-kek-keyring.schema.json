@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "documents-kek-keyring.schema.json",
+  "title": "Harpy Documents KEK keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "current", "retained"],
+  "properties": {
+    "version": {"const": 1},
+    "current": {"$ref": "#/$defs/key"},
+    "retained": {
+      "type": "array",
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/key"}
+    }
+  },
+  "$defs": {
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kid", "key"],
+      "properties": {
+        "kid": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+        "key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"}
+      }
+    }
+  }
+}

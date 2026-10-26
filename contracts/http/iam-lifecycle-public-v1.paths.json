@@ -1,0 +1,105 @@
+{
+  "pathItems": {
+    "initialPassword": {
+      "post": {
+        "operationId": "iamCompleteInitialPassword",
+        "security": [],
+        "parameters": [
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/Origin"},
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/InitialCSRF"},
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/InitialChangeCookie"},
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/InitialCSRFCookie"}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/InitialPasswordRequest"}}}},
+        "responses": {
+          "200": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/InitialGrant"},
+          "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/InitialRequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"},
+          "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CSRFInvalid"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationUnavailable"}
+        }
+      }
+    },
+    "verifyIdentifier": {
+      "post": {
+        "operationId": "iamVerifyIdentifier",
+        "security": [],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/CredentialRequest"}}}},
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"},
+          "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "startPasswordReset": {
+      "post": {
+        "operationId": "iamStartPasswordReset",
+        "security": [],
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetStartRequest"}}}},
+        "responses": {
+          "202": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Accepted"},
+          "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "completePasswordReset": {
+      "post": {
+        "operationId": "iamCompletePasswordReset",
+        "security": [],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetCompleteRequest"}}}},
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"},
+          "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "completeInitialAdminSetup": {
+      "post": {
+        "operationId": "iamCompleteInitialAdminSetup",
+        "security": [],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetCompleteRequest"}}}},
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"},
+          "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "completePortalSetup": {
+      "post": {
+        "operationId": "iamCompletePortalSetup",
+        "security": [],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetCompleteRequest"}}}},
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"},
+          "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    }
+  }
+}

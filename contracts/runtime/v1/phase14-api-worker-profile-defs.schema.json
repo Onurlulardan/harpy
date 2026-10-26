@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/phase14-api-worker-profile-defs.schema.json",
+  "$defs": {
+    "apiVariables": {
+      "allOf": [
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/apiVariables"},
+        {"$ref": "analytics-dashboard-export-artifact-config-fragment.schema.json#/$defs/common"},
+        {"$ref": "#/$defs/apiSpecialized"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "apiSpecialized": {
+      "type": "object",
+      "properties": {
+        "DEPLOYMENT_MODE": {"enum": ["onpremise", "saas"], "default": "onpremise"},
+        "HARPY_RECOVERY_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RECOVERY_CONTROL_SIGNING_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_SAAS_AUTHORITY_PROPOSER_KMS_KEY_ID": {"$ref": "#/$defs/proposerKMSKeyID"},
+        "HARPY_SAAS_AUTHORITY_WORKLOAD_IDENTITY_CONFIG_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+      },
+      "allOf": [{
+        "if": {"required": ["DEPLOYMENT_MODE"], "properties": {"DEPLOYMENT_MODE": {"const": "saas"}}},
+        "then": {
+          "required": ["HARPY_SAAS_AUTHORITY_PROPOSER_KMS_KEY_ID", "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"],
+          "not": {"anyOf": [
+            {"required": ["HARPY_RECOVERY_TRUST_BUNDLE_PATH"]},
+            {"required": ["HARPY_RECOVERY_CONTROL_SIGNING_KEY_FILE"]}
+          ]}
+        },
+        "else": {
+          "required": ["HARPY_RECOVERY_TRUST_BUNDLE_PATH", "HARPY_RECOVERY_CONTROL_SIGNING_KEY_FILE", "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"],
+          "not": {"anyOf": [
+            {"required": ["HARPY_SAAS_AUTHORITY_PROPOSER_KMS_KEY_ID"]},
+            {"required": ["HARPY_SAAS_AUTHORITY_WORKLOAD_IDENTITY_CONFIG_PATH"]}
+          ]}
+        }
+      }]
+    },
+    "workerVariables": {
+      "allOf": [
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/workerVariables"},
+        {"$ref": "analytics-dashboard-export-artifact-config-fragment.schema.json#/$defs/worker"},
+        {"$ref": "#/$defs/workerSpecialized"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "workerSpecialized": {
+      "type": "object",
+      "properties": {
+        "DEPLOYMENT_MODE": {"enum": ["onpremise", "saas"], "default": "onpremise"},
+        "HARPY_LICENSE_CREDENTIAL_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_LICENSE_ISSUER_URL": {"$ref": "#/$defs/serviceURL"},
+        "HARPY_LICENSE_SNAPSHOT_FILE": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_LICENSE_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RECOVERY_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_SAAS_AUTHORITY_REGISTRY_URL": {"$ref": "#/$defs/serviceURL"},
+        "HARPY_SAAS_AUTHORITY_WORKLOAD_IDENTITY_CONFIG_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+      },
+      "allOf": [{
+        "if": {"required": ["DEPLOYMENT_MODE"], "properties": {"DEPLOYMENT_MODE": {"const": "saas"}}},
+        "then": {
+          "required": ["HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH", "HARPY_SAAS_AUTHORITY_REGISTRY_URL"],
+          "not": {"anyOf": [
+            {"required": ["HARPY_LICENSE_CREDENTIAL_FILE"]}, {"required": ["HARPY_LICENSE_ISSUER_URL"]},
+            {"required": ["HARPY_LICENSE_SNAPSHOT_FILE"]}, {"required": ["HARPY_LICENSE_TRUST_BUNDLE_PATH"]},
+            {"required": ["HARPY_RECOVERY_TRUST_BUNDLE_PATH"]}, {"required": ["HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH"]},
+            {"required": ["HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE"]}
+          ]}
+        },
+        "else": {
+          "required": ["HARPY_LICENSE_TRUST_BUNDLE_PATH", "HARPY_RECOVERY_TRUST_BUNDLE_PATH", "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"],
+          "not": {"anyOf": [{"required": ["HARPY_SAAS_AUTHORITY_REGISTRY_URL"]}, {"required": ["HARPY_SAAS_AUTHORITY_WORKLOAD_IDENTITY_CONFIG_PATH"]}]},
+          "allOf": [{
+            "if": {"required": ["HARPY_ENVIRONMENT"], "properties": {"HARPY_ENVIRONMENT": {"const": "development"}}},
+            "then": {
+              "required": ["HARPY_LICENSE_SNAPSHOT_FILE", "HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH", "HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE"],
+              "not": {"anyOf": [{"required": ["HARPY_LICENSE_CREDENTIAL_FILE"]}, {"required": ["HARPY_LICENSE_ISSUER_URL"]}]}
+            },
+            "else": {
+              "allOf": [
+                {"$ref": "#/$defs/licenseSourceXor"},
+                {"not": {"anyOf": [{"required": ["HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH"]}, {"required": ["HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE"]}]}}
+              ]
+            }
+          }]
+        }
+      }]
+    },
+    "licenseSourceXor": {"oneOf": [
+      {
+        "required": ["HARPY_LICENSE_CREDENTIAL_FILE", "HARPY_LICENSE_ISSUER_URL"],
+        "not": {"required": ["HARPY_LICENSE_SNAPSHOT_FILE"]}
+      },
+      {
+        "required": ["HARPY_LICENSE_SNAPSHOT_FILE"],
+        "not": {"anyOf": [{"required": ["HARPY_LICENSE_CREDENTIAL_FILE"]}, {"required": ["HARPY_LICENSE_ISSUER_URL"]}]}
+      }
+    ]},
+    "serviceURL": {"type": "string", "format": "uri", "pattern": "^https?://[^\\s]+$"},
+    "proposerKMSKeyID": {
+      "type": "string",
+      "pattern": "^gcp-kms://projects/[a-z][a-z0-9-]{4,62}/locations/[a-z0-9-]+/keyRings/[A-Za-z0-9_-]+/cryptoKeys/[A-Za-z0-9_-]+/cryptoKeyVersions/[1-9][0-9]*$"
+    }
+  }
+}

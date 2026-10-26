@@ -1,0 +1,66 @@
+{
+  "schemas": {
+    "EmptyObject": {"type": "object", "additionalProperties": false, "maxProperties": 0},
+    "CreateRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["subject_type", "subject_id", "portal_profile_form_slug"],
+      "properties": {
+        "email": {"type": "string", "format": "email", "maxLength": 1024},
+        "first_name": {"type": "string", "maxLength": 200},
+        "last_name": {"type": "string", "maxLength": 200},
+        "subject_type": {"type": "string", "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"},
+        "subject_id": {"type": "string", "format": "uuid"},
+        "portal_profile_form_slug": {"type": "string", "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"},
+        "status": {"type": "string", "pattern": "^\\s*(?:[Pp][Ee][Nn][Dd][Ii][Nn][Gg]|[Ii][Nn][Aa][Cc][Tt][Ii][Vv][Ee])\\s*$"}
+      }
+    },
+    "StatusRequest": {
+      "type": "object", "additionalProperties": false, "required": ["status"],
+      "properties": {"status": {"type": "string", "pattern": "^\\s*(?:[Aa][Cc][Tt][Ii][Vv][Ee]|[Pp][Ee][Nn][Dd][Ii][Nn][Gg]|[Ii][Nn][Aa][Cc][Tt][Ii][Vv][Ee])\\s*$"}}
+    },
+    "PortalUser": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "email", "status", "account_type", "portal_binding_id", "portal_subject_type", "portal_subject_id", "revision", "portal_setup_required", "created_at", "updated_at"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "email": {"type": "string", "format": "email", "minLength": 3, "maxLength": 1024},
+        "status": {"enum": ["ACTIVE", "PENDING", "INACTIVE"]},
+        "account_type": {"enum": ["portal", "operator_portal"]},
+        "portal_binding_id": {"type": "string", "format": "uuid"},
+        "portal_subject_type": {"type": "string", "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"},
+        "portal_subject_id": {"type": "string", "format": "uuid"},
+        "revision": {"type": "integer", "format": "int64", "minimum": 1},
+        "portal_setup_required": {"type": "boolean"},
+        "invite_sent": {"type": "boolean"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Envelope": {
+      "type": "object", "additionalProperties": false, "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/PortalUser"}}
+    }
+  },
+  "parameters": {
+    "TenantID": {"name": "X-Tenant-ID", "in": "header", "required": false, "schema": {"type": "string", "format": "uuid"}},
+    "ID": {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+    "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "IfMatch": {"name": "If-Match", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}}
+  },
+  "responses": {
+    "PortalUser": {
+      "description": "Current portal-user projection.",
+      "headers": {"ETag": {"schema": {"type": "string", "pattern": "^\"revision-[1-9][0-9]*\"$"}}},
+      "content": {"application/json": {"schema": {"$ref": "#/schemas/Envelope"}}}
+    },
+    "RequestInvalid": {"description": "Request invalid.", "x-harpy-error-code": "REQUEST_INVALID", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthenticationFailed": {"description": "Authentication failed.", "x-harpy-error-code": "AUTHENTICATION_FAILED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "AuthorizationDenied": {"description": "Operation forbidden.", "x-harpy-error-code": "AUTHORIZATION_DENIED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "NotFound": {"description": "Portal user not found.", "x-harpy-error-code": "RESOURCE_NOT_FOUND", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Conflict": {"description": "Portal-user mutation conflicts.", "x-harpy-error-code": "RESOURCE_CONFLICT", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "BodyTooLarge": {"description": "Body exceeds 64 KiB.", "x-harpy-error-code": "REQUEST_BODY_TOO_LARGE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "MediaTypeUnsupported": {"description": "Media type unsupported.", "x-harpy-error-code": "MEDIA_TYPE_UNSUPPORTED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "PreconditionRequired": {"description": "Exact revision precondition required.", "x-harpy-error-code": "PRECONDITION_REQUIRED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "Unavailable": {"description": "IAM unavailable.", "x-harpy-error-code": "IAM_UNAVAILABLE", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

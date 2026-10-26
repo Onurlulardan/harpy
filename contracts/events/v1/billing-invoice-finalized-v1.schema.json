@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/billing-invoice-finalized-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["invoice_id", "invoice_revision"],
+  "properties": {
+    "invoice_id": {"type": "string", "format": "uuid"},
+    "invoice_revision": {"type": "integer", "minimum": 1}
+  }
+}

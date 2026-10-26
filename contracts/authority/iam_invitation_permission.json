@@ -1,0 +1,120 @@
+{"version":2,"authorities":[
+  {
+    "id":"iam.invitation.accept","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.invitation.create","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.invitation.expire","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.invitation.list","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.invitation.read","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.invitation.revoke","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {"id":"iam.invitationdelivery.claim","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.invitationdelivery.finalize","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.invitationdelivery.mark","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.invitationdelivery.release","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.lifecycledelivery.claim","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.lifecycledelivery.finalize","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.lifecycledelivery.mark","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.lifecycledelivery.release","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.credential_bcrypt_retire.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.directory_checksum.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.directory_repair.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.directory_tombstone_purge.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.identifier_retire.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.profile_backfill.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.maintenance.security_artifact_purge.execute","owner":"iam","scope_source":"job_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.password.change","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.password_reset.complete","owner":"iam","scope_source":"credential_target","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.password_reset.start","owner":"iam","scope_source":"credential_target","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.permission_cache.flush","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {
+    "id":"iam.permissionrequest.cancel","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.create","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.decide","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.expire","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.list","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.read","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.review","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.permissionrequest.workflow_decide","owner":"iam",
+    "scope_source":"actor_tenant",
+    "required_groups":["iam_system_resources","workflow"],
+    "ordered_domains":["iam","system_resource_layout","workflow"],
+    "participants":["iam","workflow"]
+  },
+  {"id":"iam.platform.authorization.authorize","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.operator.grant","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.operator.revoke","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.owner_transfer.acknowledge","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.owner_transfer.commit","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.owner_transfer.compensate_apply","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.owner_transfer.compensate_prepare","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.owner_transfer.prepare","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.platform.session_context.read","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_approval.decide","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_setup.read","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_setup.redeem","owner":"iam","scope_source":"credential_target","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_setup.start","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]}
+]}

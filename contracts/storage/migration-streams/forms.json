@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "owner": "forms",
+  "streams": [
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260718010000,"version_to":20260718010726,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/platform","scope":"platform","version_from":20260718010740,"version_to":20260718010741,"phase":"expand","target_database_generation":6,"next_minimum_runtime_generation":1},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260718051001,"version_to":20260718051002,"phase":"expand","target_database_generation":7,"next_minimum_runtime_generation":1},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260718180500,"version_to":20260718180502,"phase":"expand","target_database_generation":9,"next_minimum_runtime_generation":1},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/platform","scope":"platform","version_from":20260722000000,"version_to":20260722000001,"phase":"expand","target_database_generation":14,"next_minimum_runtime_generation":13},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260725124200,"version_to":20260725124200,"phase":"expand","target_database_generation":36,"next_minimum_runtime_generation":19},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260728110011,"version_to":20260728110011,"phase":"expand","target_database_generation":69,"next_minimum_runtime_generation":23},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260730133000,"version_to":20260730133003,"phase":"expand","target_database_generation":84,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/platform","scope":"platform","version_from":20260730133004,"version_to":20260730133004,"phase":"expand","target_database_generation":84,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260730133005,"version_to":20260730133013,"phase":"expand","target_database_generation":84,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260730133014,"version_to":20260730133022,"phase":"expand","target_database_generation":84,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260730145100,"version_to":20260730145114,"phase":"expand","target_database_generation":89,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260731111001,"version_to":20260731111005,"phase":"expand","target_database_generation":91,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260731111006,"version_to":20260731111008,"phase":"expand","target_database_generation":92,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260801014000,"version_to":20260801014000,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260801015300,"version_to":20260801015302,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260801015400,"version_to":20260801015406,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/platform","scope":"platform","version_from":20260801015407,"version_to":20260801015410,"phase":"expand","target_database_generation":93,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260801175200,"version_to":20260801175203,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260802230000,"version_to":20260802230002,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24},
+    {"owner":"forms","directory":"core/internal/modules/forms/migrations/tenant","scope":"tenant","version_from":20260802232700,"version_to":20260802232702,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24}
+  ]
+}

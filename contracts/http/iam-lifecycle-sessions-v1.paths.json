@@ -1,0 +1,41 @@
+{
+  "pathItems": {
+    "sessions": {
+      "get": {
+        "operationId": "iamListSessions", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.read",
+        "x-harpy-keyset-pair": ["after_time", "after_id"],
+        "parameters": [
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/Limit"},
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/AfterTime"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/AfterID"}
+        ],
+        "responses": {
+          "200": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Sessions"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "delete": {
+        "operationId": "iamRevokeAllSessions", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.session.revoke_all",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"}, "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "session": {
+      "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/ID"}],
+      "delete": {
+        "operationId": "iamRevokeSession", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.session.revoke_one",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IfMatch"}],
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"}, "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/permissioncache",
+      "layer": "adapters/postgres",
+      "resource": "permissioncache",
+      "operation": "purge",
+      "source": "core/internal/modules/iam/adapters/postgres/permissioncache/purge.go",
+      "test": "core/internal/modules/iam/adapters/postgres/permissioncache/purge_test.go",
+      "application_operation": "core/internal/modules/iam/application/permissioncache/purge.go"
+    }
+  ]
+}

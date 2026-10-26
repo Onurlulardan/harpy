@@ -1,0 +1,49 @@
+{
+  "pathItems": {
+    "plans": {
+      "get": {"operationId": "billingV1AdminListPlans", "deprecated": true, "security": [{"bearerAuth": []}], "x-harpy-permission": "platform.billing.read", "x-harpy-compat-policy": "preserved", "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}},
+      "post": {
+        "operationId": "billingV1AdminCreatePlan", "deprecated": true, "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "create immutable root and initial version",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/PlanMutation"}}}},
+        "responses": {"201": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-v1-compat.schemas.json#/responses/Conflict"}}
+      }
+    },
+    "plan": {
+      "get": {"operationId": "billingV1AdminGetPlan", "deprecated": true, "security": [{"bearerAuth": []}], "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}], "x-harpy-permission": "platform.billing.read", "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}},
+      "put": {
+        "operationId": "billingV1AdminUpdatePlan", "deprecated": true, "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "resolver loads exact snapshot revision; create immutable version",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/PlanMutation"}}}},
+        "responses": {"201": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+      },
+      "delete": {
+        "operationId": "billingV1AdminDeletePlan", "deprecated": true, "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+        "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "resolver loads exact snapshot revision; retire root",
+        "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+      }
+    },
+    "subscriptions": {"get": {
+      "operationId": "billingV1AdminListSubscriptions", "deprecated": true, "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.read", "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}
+    }},
+    "subscription": {"put": {
+      "operationId": "billingV1AdminUpdateSubscription", "deprecated": true, "security": [{"bearerAuth": []}],
+      "parameters": [{"$ref": "billing-v1-compat.schemas.json#/parameters/ID"}],
+      "x-harpy-permission": "platform.billing.manage", "x-harpy-compat-policy": "legal explicit transition only; plan_id unsupported",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-v1-compat.schemas.json#/schemas/AdminSubscriptionUpdate"}}}},
+      "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}, "400": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}, "422": {"$ref": "billing-v1-compat.schemas.json#/responses/Invalid"}}
+    }},
+    "events": {"get": {
+      "operationId": "billingV1AdminListEvents", "deprecated": true, "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.audit.read", "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}
+    }},
+    "revenue": {"get": {
+      "operationId": "billingV1AdminRevenue", "deprecated": true, "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.revenue.read", "x-harpy-compat-policy": "currency-grouped intentional difference",
+      "responses": {"200": {"$ref": "billing-v1-compat.schemas.json#/responses/Success"}}
+    }}
+  }
+}

@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/subscription","layer":"adapters/postgres","resource":"subscription","operation":"get","source":"core/internal/modules/billing/adapters/postgres/subscription/get_current.go","test":"core/internal/modules/billing/adapters/postgres/subscription/get_current_test.go","application_operation":"core/internal/modules/billing/application/subscription/get_current.go"}
+]}

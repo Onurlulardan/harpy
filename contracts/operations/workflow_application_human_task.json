@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "operations": [
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"cancel","source":"core/internal/modules/workflow/application/humantask/cancel.go","test":"core/internal/modules/workflow/application/humantask/cancel_test.go","authority_id":"workflow.human_task.cancel"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"claim","source":"core/internal/modules/workflow/application/humantask/claim.go","test":"core/internal/modules/workflow/application/humantask/claim_test.go","authority_id":"workflow.human_task.claim"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"decide","source":"core/internal/modules/workflow/application/humantask/decide.go","test":"core/internal/modules/workflow/application/humantask/decide_test.go","authority_id":"workflow.human_task.decide"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"expire","source":"core/internal/modules/workflow/application/humantask/expire.go","test":"core/internal/modules/workflow/application/humantask/expire_test.go","authority_id":"workflow.human_task.expire"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"get","source":"core/internal/modules/workflow/application/humantask/get.go","test":"core/internal/modules/workflow/application/humantask/get_test.go","authority_id":"workflow.human_task.get"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"list","source":"core/internal/modules/workflow/application/humantask/list.go","test":"core/internal/modules/workflow/application/humantask/list_test.go","authority_id":"workflow.human_task.list"},
+    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/humantask","layer":"application","resource":"humantask","operation":"reassign","source":"core/internal/modules/workflow/application/humantask/reassign.go","test":"core/internal/modules/workflow/application/humantask/reassign_test.go","authority_id":"workflow.human_task.reassign"}
+  ]
+}

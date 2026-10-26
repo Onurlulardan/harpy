@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/migrator-command-result.schema.json",
+  "title": "Harpy Migrator Command Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "success", "command"],
+  "properties": {
+    "contract_version": {"const": "migrator-command-result.v1"},
+    "success": {"const": true},
+    "command": {"enum": ["plan", "verify", "up"]},
+    "plan": {"$ref": "#/$defs/plan"},
+    "verify": {"$ref": "#/$defs/verify"},
+    "up": {"$ref": "#/$defs/up"}
+  },
+  "oneOf": [
+    {"properties": {"command": {"const": "plan"}}, "required": ["plan"], "not": {"anyOf": [{"required": ["verify"]}, {"required": ["up"]}]}},
+    {"properties": {"command": {"const": "verify"}}, "required": ["verify"], "not": {"anyOf": [{"required": ["plan"]}, {"required": ["up"]}]}},
+    {"properties": {"command": {"const": "up"}}, "required": ["up"], "not": {"anyOf": [{"required": ["plan"]}, {"required": ["verify"]}]}}
+  ],
+  "$defs": {
+    "plan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["current_version", "pending"],
+      "properties": {
+        "current_version": {"type": "integer", "minimum": 0},
+        "pending": {"type": "array", "maxItems": 10000, "items": {"$ref": "#/$defs/entry"}}
+      }
+    },
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner", "scope", "version", "transaction_mode", "phase", "target_database_generation", "next_minimum_runtime_generation", "origin", "path", "sha256"],
+      "properties": {
+        "owner": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$"},
+        "scope": {"enum": ["platform", "tenant"]},
+        "version": {"type": "integer", "minimum": 1},
+        "transaction_mode": {"enum": ["transactional", "non_transactional"]},
+        "phase": {"type": "string", "minLength": 1, "maxLength": 64},
+        "target_database_generation": {"type": "integer", "minimum": 1},
+        "next_minimum_runtime_generation": {"type": "integer", "minimum": 1},
+        "origin": {"enum": ["fresh", "v1_adopted"]},
+        "path": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_./-]*\\.sql$", "maxLength": 512},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "verify": {
+      "type": "object", "additionalProperties": false,
+      "required": ["database_version", "database_generation", "minimum_runtime_generation", "verified_run_id"],
+      "properties": {
+        "database_version": {"type": "integer", "minimum": 1},
+        "database_generation": {"type": "integer", "minimum": 1},
+        "minimum_runtime_generation": {"type": "integer", "minimum": 1},
+        "verified_run_id": {"type": "string", "format": "uuid"}
+      }
+    },
+    "up": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "applied_versions", "database_version"],
+      "properties": {
+        "run_id": {"type": "string", "format": "uuid"},
+        "applied_versions": {"type": "array", "maxItems": 10000, "items": {"type": "integer", "minimum": 1}},
+        "database_version": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

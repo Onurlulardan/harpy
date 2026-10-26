@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/permissioncache",
+      "layer": "application",
+      "resource": "permissioncache",
+      "operation": "purge",
+      "source": "core/internal/modules/iam/application/permissioncache/purge.go",
+      "test": "core/internal/modules/iam/application/permissioncache/purge_test.go",
+      "authority_id": "iam.permission_cache.flush"
+    }
+  ]
+}

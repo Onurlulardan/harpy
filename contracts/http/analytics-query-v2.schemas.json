@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "JsonObject": {"type": "object", "maxProperties": 500},
+    "Name": {"type": "string", "minLength": 1, "maxLength": 100},
+    "CreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "query", "parameters", "output"],
+      "properties": {
+        "name": {"$ref": "#/$defs/Name"},
+        "query": {"$ref": "#/$defs/JsonObject"},
+        "parameters": {"$ref": "#/$defs/JsonObject"},
+        "output": {"$ref": "#/$defs/JsonObject"}
+      }
+    },
+    "UpdateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_root_revision", "expected_version_revision", "name", "query", "parameters", "output"],
+      "properties": {
+        "expected_root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "expected_version_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "name": {"$ref": "#/$defs/Name"},
+        "query": {"$ref": "#/$defs/JsonObject"},
+        "parameters": {"$ref": "#/$defs/JsonObject"},
+        "output": {"$ref": "#/$defs/JsonObject"}
+      }
+    },
+    "DeleteRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_root_revision"],
+      "properties": {"expected_root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}}
+    },
+    "Dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_domain", "resource_kind", "resource_id", "version_id"],
+      "properties": {
+        "owner_domain": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-z][a-z0-9_]*$"},
+        "resource_kind": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-z][a-z0-9_]*$"},
+        "resource_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"}
+      }
+    },
+    "DependencyView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_domain", "resource_kind", "resource_id", "version_id"],
+      "properties": {
+        "owner_domain": {"type": "string", "minLength": 1, "maxLength": 64},
+        "resource_kind": {"type": "string", "minLength": 1, "maxLength": 64},
+        "resource_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"}
+      }
+    },
+    "PublishRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["draft_version_id", "expected_root_revision", "expected_draft_revision", "dependencies", "revision_bound_cache"],
+      "properties": {
+        "draft_version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "expected_root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "expected_draft_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "dependencies": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"$ref": "#/$defs/Dependency"}},
+        "revision_bound_cache": {"type": "boolean"}
+      }
+    },
+    "ExecuteRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version_id", "params"],
+      "properties": {
+        "version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "params": {"$ref": "#/$defs/JsonObject"}
+      }
+    },
+    "BatchExecuteItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data_source_id", "query_id", "version_id", "params"],
+      "properties": {
+        "data_source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "query_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "params": {"$ref": "#/$defs/JsonObject"}
+      }
+    },
+    "BatchExecuteRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["queries"],
+      "properties": {
+        "queries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {"$ref": "#/$defs/BatchExecuteItem"}
+        }
+      }
+    },
+    "BatchExecuteResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data_source_id", "success"],
+      "properties": {
+        "data_source_id": {"type": "string"},
+        "success": {"type": "boolean"},
+        "result": {},
+        "error_code": {"enum": ["QUERY_FAILED", "QUERY_TIMEOUT"]}
+      }
+    },
+    "BatchExecutionEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["results"],
+          "properties": {
+            "results": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 30,
+              "items": {"$ref": "#/$defs/BatchExecuteResult"}
+            }
+          }
+        }
+      }
+    },
+    "Query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["query_id", "version_id", "version_number", "root_revision", "reference_epoch", "version_revision", "lifecycle", "version_state", "cache_policy", "name", "query", "parameters", "output", "manifest_sha256", "created_at", "updated_at"],
+      "properties": {
+        "query_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_number": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "reference_epoch": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "version_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "lifecycle": {"enum": ["active", "retired"]},
+        "version_state": {"enum": ["draft", "published", "needs_revalidation", "retired"]},
+        "cache_policy": {"enum": ["none", "revision_bound"]},
+        "name": {"$ref": "#/$defs/Name"},
+        "query": {"$ref": "#/$defs/JsonObject"},
+        "parameters": {"$ref": "#/$defs/JsonObject"},
+        "output": {"$ref": "#/$defs/JsonObject"},
+        "manifest_sha256": {"$ref": "analytics-common-v2.schemas.json#/$defs/SHA256"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"},
+        "dependencies": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {"$ref": "#/$defs/DependencyView"}
+        }
+      }
+    },
+    "PublishedQuery": {
+      "allOf": [
+        {"$ref": "#/$defs/Query"},
+        {"type": "object", "required": ["dependencies"]}
+      ]
+    },
+    "Envelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/$defs/Query"}}},
+    "PublishedEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/$defs/PublishedQuery"}}},
+    "PageEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "after"], "properties": {"items": {"type": "array", "items": {"$ref": "#/$defs/Query"}}, "after": {"anyOf": [{"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"}, {"type": "null"}]}}}}
+    },
+    "ExecutionEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {}}}
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/provider",
+      "layer": "application",
+      "resource": "provider",
+      "operation": "create",
+      "source": "core/internal/modules/billing/application/provider/create_command.go",
+      "test": "core/internal/modules/billing/application/provider/create_command_test.go",
+      "authority_id": "billing.provider.command.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/provider",
+      "layer": "application",
+      "resource": "provider",
+      "operation": "execute",
+      "source": "core/internal/modules/billing/application/provider/execute_webhook.go",
+      "test": "core/internal/modules/billing/application/provider/execute_webhook_test.go",
+      "authority_id": "billing.provider.webhook.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/provider",
+      "layer": "application",
+      "resource": "provider",
+      "operation": "finalize",
+      "source": "core/internal/modules/billing/application/provider/finalize_command.go",
+      "test": "core/internal/modules/billing/application/provider/finalize_command_test.go",
+      "authority_id": "billing.provider.command.finalize"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/provider",
+      "layer": "application",
+      "resource": "provider",
+      "operation": "receive",
+      "source": "core/internal/modules/billing/application/provider/receive_webhook.go",
+      "test": "core/internal/modules/billing/application/provider/receive_webhook_test.go",
+      "authority_id": "billing.provider.webhook.receive"
+    }
+  ]
+}

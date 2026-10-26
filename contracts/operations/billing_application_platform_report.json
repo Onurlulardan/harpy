@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/platformreports",
+      "layer": "application",
+      "resource": "platformreports",
+      "operation": "resolve",
+      "source": "core/internal/modules/billing/application/platformreports/resolve_transition_target.go",
+      "test": "core/internal/modules/billing/application/platformreports/resolve_transition_target_test.go",
+      "authority_id": "billing.report.subscription.transition"
+    }
+  ]
+}
