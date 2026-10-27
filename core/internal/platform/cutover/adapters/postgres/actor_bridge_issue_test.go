@@ -26,7 +26,7 @@ func TestActorBridgeIssueReadsExactAuthority(t *testing.T) {
 	if authority.IAMGroupGeneration() != 5 || authority.IAMGeneration() != 6 ||
 		authority.TargetGeneration() != 7 || queryer.query != issueIAMV1ActorAssertionSQL ||
 		len(queryer.arguments) != 2 || queryer.arguments[0] != tenantID ||
-		queryer.arguments[1] != "forms" {
+		queryer.arguments[1] != "documents" {
 		t.Fatal("actor bridge issue authority query differs")
 	}
 }

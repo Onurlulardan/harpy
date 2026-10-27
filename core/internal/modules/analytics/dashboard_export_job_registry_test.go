@@ -45,7 +45,7 @@ func TestDashboardExportRegistryAcceptsActualReleaseAndForeignDelegate(t *testin
 		t.Fatal(err)
 	}
 	catalog := releaseCatalogWithAnalytics(t, releaseCatalog)
-	forms, err := catalog.Resolve("forms.record-export", 1)
+	forms, err := catalog.Resolve("iam.system-resource.record-export", 1)
 	if err != nil {
 		t.Fatal(err)
 	}

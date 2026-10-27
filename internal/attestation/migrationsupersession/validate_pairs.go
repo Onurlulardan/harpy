@@ -24,9 +24,11 @@ func validateChains(
 		}
 		for level := 1; level < chainDepth; level++ {
 			for _, origin := range []string{"fresh", "v1_adopted"} {
-				first, second := chain[level][origin], chain[level+1][origin]
-				if first.replacementPath != second.oldPath ||
-					first.replacementSHA256 != second.oldSHA256 {
+				first, firstOK := chain[level][origin]
+				second, secondOK := chain[level+1][origin]
+				if firstOK != secondOK || (firstOK &&
+					(first.replacementPath != second.oldPath ||
+						first.replacementSHA256 != second.oldSHA256)) {
 					return fmt.Errorf("migration supersession chain link differs")
 				}
 			}
@@ -44,9 +46,11 @@ func validateChains(
 func validatePair(pair map[string]Entry) error {
 	fresh, hasFresh := pair["fresh"]
 	adopted, hasAdopted := pair["v1_adopted"]
-	if !hasFresh || !hasAdopted || len(pair) != 2 ||
-		fresh.oldSHA256 != adopted.oldSHA256 ||
-		fresh.replacementSHA256 != adopted.replacementSHA256 {
+	if !hasFresh || (hasAdopted && len(pair) != 2) || (!hasAdopted && len(pair) != 1) {
+		return fmt.Errorf("migration supersession origin pair differs")
+	}
+	if hasAdopted && (fresh.oldSHA256 != adopted.oldSHA256 ||
+		fresh.replacementSHA256 != adopted.replacementSHA256) {
 		return fmt.Errorf("migration supersession origin pair differs")
 	}
 	return nil

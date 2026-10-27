@@ -53,7 +53,8 @@ func NewClient(
 }
 
 func (client *Client) Ready() bool {
-	return client != nil && !client.closed.Load() && len(client.targets) == 8
+	return client != nil && !client.closed.Load() &&
+		len(client.targets) == len(exactTargetDomains)
 }
 
 func (client *Client) Close() {

@@ -45,7 +45,7 @@ func TestActorBridgeIssueDatabaseUsesNarrowBoundQuery(t *testing.T) {
 		t.Fatalf("authority=%v err=%v", authority, err)
 	}
 	if statement != issueIAMV1ActorAssertionSQL || len(arguments) != 2 ||
-		arguments[0] != tenantID || arguments[1] != "forms" {
+		arguments[0] != tenantID || arguments[1] != "documents" {
 		t.Fatalf("query arguments = %#v", arguments)
 	}
 }
