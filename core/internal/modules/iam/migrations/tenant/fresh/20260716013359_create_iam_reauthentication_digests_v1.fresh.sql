@@ -23,7 +23,7 @@ BEGIN
             MESSAGE = 'IAM reauthentication binding input is invalid';
     END IF;
     RETURN pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:iam-reauth-session:v1', 'UTF8')
+        pg_catalog.convert_to('harpy:iam-reauth-session:v1', 'UTF8')
         OPERATOR(pg_catalog.||) pg_catalog.decode('00', 'hex')
         OPERATOR(pg_catalog.||) pg_catalog.uuid_send(p_tenant_id)
         OPERATOR(pg_catalog.||) pg_catalog.decode('00', 'hex')
@@ -66,7 +66,7 @@ BEGIN
             MESSAGE = 'IAM reauthentication context input is invalid';
     END IF;
     RETURN pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:iam-reauth-context:v1', 'UTF8')
+        pg_catalog.convert_to('harpy:iam-reauth-context:v1', 'UTF8')
         OPERATOR(pg_catalog.||) pg_catalog.decode('00', 'hex')
         OPERATOR(pg_catalog.||) pg_catalog.uuid_send(p_tenant_id)
         OPERATOR(pg_catalog.||) pg_catalog.decode('00', 'hex')

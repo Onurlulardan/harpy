@@ -14,6 +14,6 @@ const (
 	maximumPageSize              = 500
 	cursorLifetime               = 15 * time.Minute
 	allowedClockSkew             = 60 * time.Second
-	mandatoryPredicateDigestInfo = "forgecrud/rest-query/cursor-mandatory-predicate/v1"
+	mandatoryPredicateDigestInfo = "harpy/rest-query/cursor-mandatory-predicate/v1"
 	redacted                     = "[REDACTED]"
 )

@@ -10,7 +10,7 @@ DECLARE
 BEGIN
     PERFORM pg_catalog.pg_advisory_xact_lock(
         pg_catalog.hashtextextended(
-            'forgecrud:v2:tenancy-binding:' || NEW.environment_id::text,
+            'harpy:v2:tenancy-binding:' || NEW.environment_id::text,
             0
         )
     );

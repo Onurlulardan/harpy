@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	programStageSealDomain = "forgecrud.restquery.owner-program-stage.v1"
+	programStageSealDomain = "harpy.restquery.owner-program-stage.v1"
 	maximumStagePrograms   = 4
 )
 

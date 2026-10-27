@@ -96,7 +96,7 @@ BEGIN
       AND session.result_authorization_version = v_grant.authorization_version
       AND session.result_platform_clock = v_grant.platform_authorization_clock
       AND session.result_security_epoch = v_grant.security_epoch
-      AND session.result_client_id = 'forgecrud-operator-console-v1';
+      AND session.result_client_id = 'harpy-operator-console-v1';
     IF NOT FOUND THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM MCP refresh grant is stale';

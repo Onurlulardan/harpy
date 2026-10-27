@@ -65,7 +65,7 @@ BEGIN
         ''),'UTF8')),'hex') INTO v_receipt_sha
     FROM notifications_delivery_receipts AS receipt;
     RETURN pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/notifications/v1-provider-evidence/v1:'||p_scope_id::text||':'||
+        'harpy/notifications/v1-provider-evidence/v1:'||p_scope_id::text||':'||
         v_delivery_sha||':'||v_attempt_sha||':'||v_receipt_sha,
         'UTF8'
     )),'hex');

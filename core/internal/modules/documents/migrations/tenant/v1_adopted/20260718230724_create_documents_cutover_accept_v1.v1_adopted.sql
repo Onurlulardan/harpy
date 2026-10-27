@@ -109,7 +109,7 @@ BEGIN
             MESSAGE='Documents V1 adoption acceptance state differs';
     END IF;
     v_receipt_sha:=pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/documents/v1-cutover-receipt/v1:'||p_operation_id::text||':'||
+        'harpy/documents/v1-cutover-receipt/v1:'||p_operation_id::text||':'||
         p_cutover_run_id::text||':'||v_adoption_run_id::text||':'||p_scope_id::text||
         ':'||v_generation::text||':'||v_source_count::text||':'||
         v_source_bytes::text||':'||v_source_root||':'||v_target_root||':'||

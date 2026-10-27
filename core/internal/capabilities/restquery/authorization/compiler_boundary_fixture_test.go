@@ -24,11 +24,11 @@ func compilerBoundaryCodec(t *testing.T) cursor.Codec {
 		`{"version":1,"current":{"kid":"current-1","key":"%s"},`+
 			`"previous":{"kid":"previous-1","key":"%s"}}`, key(1), key(2),
 	)
-	t.Setenv("FORGECRUD_ENVIRONMENT", "development")
-	t.Setenv("FORGECRUD_POSTGRES_ENDPOINT_KIND", "direct_postgres")
-	t.Setenv("FORGECRUD_POSTGRES_DSN",
-		"postgresql://user@example.invalid/forgecrud?sslmode=disable")
-	t.Setenv("FORGECRUD_REST_QUERY_CURSOR_KEYRING", keyring)
+	t.Setenv("HARPY_ENVIRONMENT", "development")
+	t.Setenv("HARPY_POSTGRES_ENDPOINT_KIND", "direct_postgres")
+	t.Setenv("HARPY_POSTGRES_DSN",
+		"postgresql://user@example.invalid/harpy?sslmode=disable")
+	t.Setenv("HARPY_REST_QUERY_CURSOR_KEYRING", keyring)
 	configfixture.SetAPI(t)
 	loaded, err := config.LoadAPI()
 	if err != nil {

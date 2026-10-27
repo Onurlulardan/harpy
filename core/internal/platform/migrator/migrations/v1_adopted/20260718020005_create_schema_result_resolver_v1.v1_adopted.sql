@@ -68,7 +68,7 @@ BEGIN
         failure_sha256 := NULL;
         receipt_sha256 := pg_catalog.sha256(pg_catalog.convert_to(
             pg_catalog.format(
-                'forgecrud:v2:schema-result:v1|success|%s|%s|%s|%s',
+                'harpy:v2:schema-result:v1|success|%s|%s|%s|%s',
                 v_job.tenant_id, v_job.job_id, v_job.plan_sha256,
                 v_job.generation
             ),
@@ -98,7 +98,7 @@ BEGIN
         ELSIF v_job.state = 'cancelled' THEN
             failure_sha256 := pg_catalog.sha256(pg_catalog.convert_to(
                 pg_catalog.format(
-                    'forgecrud:v2:schema-result-cancelled:v1|%s|%s|%s|%s|%s',
+                    'harpy:v2:schema-result-cancelled:v1|%s|%s|%s|%s|%s',
                     v_job.tenant_id, v_job.job_id, v_job.plan_sha256,
                     v_job.generation, v_job.failure_code
                 ),
@@ -110,7 +110,7 @@ BEGIN
         END IF;
         receipt_sha256 := pg_catalog.sha256(pg_catalog.convert_to(
             pg_catalog.format(
-                'forgecrud:v2:schema-result:v1|failure|%s|%s|%s|%s|%s|%s',
+                'harpy:v2:schema-result:v1|failure|%s|%s|%s|%s|%s|%s',
                 v_job.tenant_id, v_job.job_id, v_job.plan_sha256,
                 v_job.generation, failure_code,
                 pg_catalog.encode(failure_sha256, 'hex')

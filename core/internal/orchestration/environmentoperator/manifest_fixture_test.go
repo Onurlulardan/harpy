@@ -12,9 +12,9 @@ import (
 
 func operatorManifest(t *testing.T, mode installationv1.DeploymentMode) installationv1.Manifest {
 	t.Helper()
-	tenant := installationv1.TenantMetadata{Name: "ForgeCRUD", Slug: "forgecrud"}
+	tenant := installationv1.TenantMetadata{Name: "Harpy", Slug: "harpy"}
 	admin := installationv1.AdminMetadata{DisplayName: "Platform Owner",
-		Email: "owner@forgecrud.test"}
+		Email: "owner@harpy.test"}
 	request := struct {
 		EnvironmentID  string                        `json:"environment_id"`
 		DeploymentMode installationv1.DeploymentMode `json:"deployment_mode"`

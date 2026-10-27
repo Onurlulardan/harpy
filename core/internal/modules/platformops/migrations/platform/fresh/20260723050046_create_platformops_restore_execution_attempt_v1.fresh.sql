@@ -54,7 +54,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR pg_catalog.substring(p_attempt_id::text,15,1)<>'7'
        OR pg_catalog.substring(p_lease_token::text,15,1)<>'7'
        OR p_plan_sha256 !~ '^[0-9a-f]{64}$' THEN

@@ -33,7 +33,7 @@ CREATE TABLE platform.iam_v1_actor_assertion_receipts (
         )
     ),
     CONSTRAINT iam_v1_actor_receipts_audience_check CHECK (
-        audience = 'urn:forgecrud:v1-domain:' || target_domain
+        audience = 'urn:harpy:v1-domain:' || target_domain
     ),
     CONSTRAINT iam_v1_actor_receipts_key_check
         CHECK (key_id ~ '^[a-z][a-z0-9_-]{0,62}$'),

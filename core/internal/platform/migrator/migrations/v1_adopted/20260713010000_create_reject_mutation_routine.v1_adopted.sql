@@ -8,7 +8,7 @@ AS $function$
 BEGIN
     RAISE EXCEPTION USING
         ERRCODE = '55000',
-        MESSAGE = 'forgecrud immutable foundation evidence cannot be mutated';
+        MESSAGE = 'harpy immutable foundation evidence cannot be mutated';
 END;
 $function$;
 -- +goose StatementEnd

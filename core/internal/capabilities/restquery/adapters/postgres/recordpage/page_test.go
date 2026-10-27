@@ -93,7 +93,7 @@ func TestPageSealHasRecordPageDomainSeparation(t *testing.T) {
 		t.Fatal(err)
 	}
 	legacy := legacyUndomainedPageSeal(page)
-	if pageSealDomain != "forgecrud.restquery.record-page.v1" || page.stateSeal == legacy {
+	if pageSealDomain != "harpy.restquery.record-page.v1" || page.stateSeal == legacy {
 		t.Fatal("page seal is not domain separated")
 	}
 }

@@ -49,7 +49,7 @@ CREATE TABLE platform.billing_v1_adoption_runs (
             '00000000-0000-0000-0000-000000000000'::uuid)
     ),
     CONSTRAINT billing_v1_adoption_runs_contract_check CHECK (
-        contract_version = 'forgecrud/billing-v1-adoption-plan/v1'
+        contract_version = 'harpy/billing-v1-adoption-plan/v1'
         AND source_timezone = 'UTC'
     ),
     CONSTRAINT billing_v1_adoption_runs_digest_check CHECK (

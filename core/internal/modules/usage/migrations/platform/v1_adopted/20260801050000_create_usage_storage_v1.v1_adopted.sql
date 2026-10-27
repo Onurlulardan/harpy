@@ -33,7 +33,7 @@ CREATE FUNCTION platform.usage_request_fact_immutable_v1()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog AS $$
 BEGIN
     IF TG_OP = 'DELETE'
-       AND pg_catalog.current_setting('forgecrud.usage_retention', true) = 'usage_retention_v1' THEN
+       AND pg_catalog.current_setting('harpy.usage_retention', true) = 'usage_retention_v1' THEN
         RETURN OLD;
     END IF;
     RAISE EXCEPTION USING ERRCODE = 'P6903', MESSAGE = 'usage facts are immutable';

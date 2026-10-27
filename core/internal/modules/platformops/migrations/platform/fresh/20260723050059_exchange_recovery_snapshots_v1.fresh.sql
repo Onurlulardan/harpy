@@ -9,9 +9,9 @@ AS $function$
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_process IS DISTINCT FROM
-          'forgecrud-v2:core-database-backup-executor' THEN
+          'harpy-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery snapshot export denied';
     END IF;
@@ -27,7 +27,7 @@ AS $function$
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_snapshot_id !~ '^[0-9]+-[0-9A-F]+-[0-9]+$' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery snapshot import denied';

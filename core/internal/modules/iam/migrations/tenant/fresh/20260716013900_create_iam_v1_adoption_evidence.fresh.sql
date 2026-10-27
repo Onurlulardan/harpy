@@ -16,7 +16,7 @@ CREATE TABLE iam_v1_adoption_runs (
     verified_at timestamptz,
     CONSTRAINT iam_v1_adoption_runs_pkey PRIMARY KEY (operation_id, run_id),
     CONSTRAINT iam_v1_adoption_runs_contract_check CHECK (
-        contract_version = 'forgecrud/iam-v1-adoption-plan/v1'
+        contract_version = 'harpy/iam-v1-adoption-plan/v1'
     ),
     CONSTRAINT iam_v1_adoption_runs_digest_check CHECK (
         pg_catalog.octet_length(source_sha256) = 32 AND

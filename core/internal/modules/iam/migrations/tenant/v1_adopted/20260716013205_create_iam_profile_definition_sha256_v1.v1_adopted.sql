@@ -45,7 +45,7 @@ BEGIN
     INTO v_fields
     FROM iam_profile_field_revisions AS snapshot
     WHERE snapshot.schema_version_id = p_schema_id;
-    v_document := '{"contract":"forgecrud/iam-profile-schema/v1"' ||
+    v_document := '{"contract":"harpy/iam-profile-schema/v1"' ||
         ',"fields":' || v_fields ||
         ',"id":' || pg_catalog.to_jsonb(p_schema_id::text)::text ||
         ',"resource_kind":' || pg_catalog.to_jsonb(v_resource_kind)::text ||

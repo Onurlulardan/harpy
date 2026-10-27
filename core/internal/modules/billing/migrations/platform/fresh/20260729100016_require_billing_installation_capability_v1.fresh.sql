@@ -15,7 +15,7 @@ BEGIN
             MESSAGE = 'billing installation identifier label is invalid';
     END IF;
     v_bytes := pg_catalog.substring(pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:billing:installation:v1','UTF8')
+        pg_catalog.convert_to('harpy:billing:installation:v1','UTF8')
         || pg_catalog.uuid_send(p_operation_id)
         || pg_catalog.decode('00','hex')
         || pg_catalog.convert_to(p_label,'UTF8')),1,16);

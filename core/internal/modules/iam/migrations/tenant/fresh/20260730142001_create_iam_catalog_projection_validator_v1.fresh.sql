@@ -41,7 +41,7 @@ BEGIN
     IF jsonb_typeof(v_document) IS DISTINCT FROM 'object' OR
        v_document->>'contract_version' IS DISTINCT FROM p_contract OR
        v_document->>'source_contract'
-           IS DISTINCT FROM 'forgecrud-v1.enterprise-seed.' || p_package_slug OR
+           IS DISTINCT FROM 'harpy-v1.enterprise-seed.' || p_package_slug OR
        v_document->>'component_id' IS DISTINCT FROM p_component_id::text OR
        v_document->>'module_slug' IS DISTINCT FROM p_package_slug OR
        jsonb_typeof(v_document->'resources') IS DISTINCT FROM 'array' OR

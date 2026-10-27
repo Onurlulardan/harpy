@@ -45,7 +45,7 @@ RETURNS TABLE (
     marker_revision bigint
 )
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
-SET application_name TO 'forgecrud-v2:core-operator-initialize'
+SET application_name TO 'harpy-v2:core-operator-initialize'
 AS $function$
 BEGIN
     IF NOT platform.tenancy_activation_step_context_assert_v1(
@@ -75,7 +75,7 @@ CREATE FUNCTION iam_initial_admin_setup_finalize_v2(
 )
 RETURNS uuid
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
-SET application_name TO 'forgecrud-v2:core-operator-initialize'
+SET application_name TO 'harpy-v2:core-operator-initialize'
 AS $function$
 DECLARE
     v_artifact_id uuid;

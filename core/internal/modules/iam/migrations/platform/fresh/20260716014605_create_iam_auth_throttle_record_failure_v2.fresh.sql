@@ -60,7 +60,7 @@ BEGIN
         v_epoch := 0;
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:iam-throttle:v2:' || p_scope_kind || ':' || v_scope_id::text || ':' ||
+        'harpy:iam-throttle:v2:' || p_scope_kind || ':' || v_scope_id::text || ':' ||
         p_purpose || ':' || p_dimension || ':' || p_key_id || ':' ||
         pg_catalog.encode(p_bucket_hmac,'hex'),0
     ));

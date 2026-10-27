@@ -8,7 +8,7 @@ func v1PredecessorBinding(
 	if base.validate() != nil || predecessorIndex < 0 {
 		return statementBinding{}, ErrContract
 	}
-	writer := newSealWriter("forgecrud.restquery.postgres.v1-predecessor.v1")
+	writer := newSealWriter("harpy.restquery.postgres.v1-predecessor.v1")
 	writer.writeBytes(base.continuation[:])
 	writer.writeInt(predecessorIndex)
 	continuation, err := writer.sum()
@@ -32,7 +32,7 @@ func v1PageBinding(
 		tupleSeal == [sha256.Size]byte{} {
 		return statementBinding{}, ErrContract
 	}
-	writer := newSealWriter("forgecrud.restquery.postgres.v1-keyset-page.v1")
+	writer := newSealWriter("harpy.restquery.postgres.v1-keyset-page.v1")
 	writer.writeBytes(base.continuation[:])
 	writer.writeBytes(predecessorSeal[:])
 	writer.writeBytes(tupleSeal[:])

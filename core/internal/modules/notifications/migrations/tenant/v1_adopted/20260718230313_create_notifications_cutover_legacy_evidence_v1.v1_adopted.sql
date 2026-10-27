@@ -48,7 +48,7 @@ BEGIN
     FROM notifications_compatibility_hits AS hit
     WHERE hit.contract_name='notifications_actor_stream_v1';
     RETURN pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/notifications/v1-legacy-evidence/v1:'||p_operation_id::text||':'||
+        'harpy/notifications/v1-legacy-evidence/v1:'||p_operation_id::text||':'||
         p_run_id::text||':'||p_scope_id::text||':'||v_state||':'||v_revision::text||':'||
         v_hit_count::text||':'||v_zero_since::text||':'||v_tenant_sha,
         'UTF8'

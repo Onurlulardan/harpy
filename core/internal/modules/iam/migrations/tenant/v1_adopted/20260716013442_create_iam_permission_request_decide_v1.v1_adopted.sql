@@ -67,7 +67,7 @@ BEGIN
        p_expected_reviewer_authorization_version < 1 OR
        p_decision NOT IN ('APPROVE', 'REJECT') OR
        pg_catalog.octet_length(p_step_up_purpose_sha256) IS DISTINCT FROM 32 OR
-       p_step_up_acr IS DISTINCT FROM 'urn:forgecrud:acr:step-up' OR
+       p_step_up_acr IS DISTINCT FROM 'urn:harpy:acr:step-up' OR
        NOT (p_amr_password OR p_amr_webauthn OR p_amr_totp) THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'IAM permission request decision input is invalid';

@@ -93,7 +93,7 @@ CREATE FUNCTION platform.iam_installation_instance_owner_bind_v2(
 )
 RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
-SET application_name TO 'forgecrud-v2:core-operator-initialize'
+SET application_name TO 'harpy-v2:core-operator-initialize'
 AS $function$
 DECLARE
     v_replayed boolean;

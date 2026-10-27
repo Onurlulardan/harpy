@@ -14,7 +14,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name',true)
-            !~ '^forgecrud-cutover/[0-9a-f-]{36}$'
+            !~ '^harpy-cutover/[0-9a-f-]{36}$'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
        OR p_deployment_mode NOT IN ('onpremise','saas')
        OR p_decision NOT IN ('ready','fenced')

@@ -37,7 +37,7 @@ AS $function$
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery snapshot transition denied';
     END IF;
@@ -55,7 +55,7 @@ AS $function$
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery copy transition denied';
     END IF;
@@ -73,7 +73,7 @@ AS $function$
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery verify transition denied';
     END IF;
@@ -93,7 +93,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_hold_sha256 !~ '^[0-9a-f]{64}$' OR p_inventory_count<0 THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='documents hold attestation denied';
@@ -125,7 +125,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_failure_code !~ '^[a-z0-9_]{1,64}$' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery execution failure denied';

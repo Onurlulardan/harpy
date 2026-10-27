@@ -8,7 +8,7 @@ import (
 )
 
 var aggregateContinuation = sha256.Sum256(
-	[]byte("forgecrud.restquery.postgres.aggregate-continuation.v1"),
+	[]byte("harpy.restquery.postgres.aggregate-continuation.v1"),
 )
 
 func aggregatePlanBinding(

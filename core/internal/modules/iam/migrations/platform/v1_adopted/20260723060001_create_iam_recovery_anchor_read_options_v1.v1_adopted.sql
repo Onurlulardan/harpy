@@ -8,7 +8,7 @@ AS $function$
 BEGIN
 RETURN (
 SELECT pg_catalog.sha256(pg_catalog.convert_to(
-    'forgecrud/recovery-anchor-set/v1' || COALESCE(pg_catalog.jsonb_agg(
+    'harpy/recovery-anchor-set/v1' || COALESCE(pg_catalog.jsonb_agg(
         pg_catalog.jsonb_build_object(
             'anchor_id',anchor.anchor_id,'generation',anchor.generation,
             'owner_user_id',anchor.owner_user_id,

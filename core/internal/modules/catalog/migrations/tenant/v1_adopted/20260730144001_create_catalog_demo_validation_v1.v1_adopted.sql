@@ -52,7 +52,7 @@ BEGIN
        p_content_sha256 !~ '^[0-9a-f]{64}$' OR
        p_module_slug IS DISTINCT FROM p_package_slug OR
        p_source_contract IS DISTINCT FROM
-           'forgecrud-v1.enterprise-seed.' || p_package_slug OR
+           'harpy-v1.enterprise-seed.' || p_package_slug OR
        octet_length(p_semantic_sha256) IS DISTINCT FROM 32 OR
        p_semantic_sha256 IS DISTINCT FROM pg_catalog.sha256(p_document_bytes) OR
        pg_catalog.encode(pg_catalog.sha256(p_document_bytes), 'hex')

@@ -119,9 +119,9 @@ BEGIN
             MESSAGE = 'system resource layout revision conflicts';
     END IF;
     v_contract := v_definition::jsonb ->> 'contract';
-    IF (v_contract = 'forgecrud/system-resource-layout/v1' AND
+    IF (v_contract = 'harpy/system-resource-layout/v1' AND
         p_compiler_version <> 'system-resource-presentation-compiler.v1')
-       OR (v_contract = 'forgecrud/system-resource-layout/v2' AND
+       OR (v_contract = 'harpy/system-resource-layout/v2' AND
            p_compiler_version <> 'system-resource-presentation-compiler.v2') THEN
         RAISE EXCEPTION USING ERRCODE = '23514',
             CONSTRAINT = 'system_resource_layout_publish_v4_compiler_guard',

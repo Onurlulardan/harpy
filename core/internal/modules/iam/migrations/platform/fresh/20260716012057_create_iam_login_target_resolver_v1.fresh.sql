@@ -35,7 +35,7 @@ BEGIN
     END IF;
 
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:iam-login-target:' || p_tenant_id::text || ':' ||
+        'harpy:iam-login-target:' || p_tenant_id::text || ':' ||
         p_identifier_kind || ':' || p_key_id || ':' ||
         pg_catalog.encode(p_identifier_hmac, 'hex'), 0
     ));

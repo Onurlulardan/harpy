@@ -31,7 +31,7 @@ INSERT INTO platform.billing_offering_versions (
 FROM (
     SELECT authority_id,'2026-07-22T00:00:00Z'::timestamptz AS effective_at,
         pg_catalog.jsonb_build_object(
-            'name','ForgeCRUD SaaS Control',
+            'name','Harpy SaaS Control',
             'description','Platform control tenant base','sort_order',0,
             'highlight_label','','color','','billing_interval','monthly'
         ) AS metadata
@@ -74,7 +74,7 @@ INSERT INTO platform.billing_saas_control_offering_publications (
     pg_catalog.statement_timestamp()
 FROM (
     SELECT pg_catalog.jsonb_build_object(
-        'schema','forgecrud-saas-control-offering.v1',
+        'schema','harpy-saas-control-offering.v1',
         'offering_key','saas_platform_control_base_v1','revision',1,
         'effective_at','2026-07-22T00:00:00Z',
         'policy','control_tenant_product_admission_denied',

@@ -33,5 +33,5 @@ type wireSort struct {
 
 type wireLastValue struct {
 	Null  bool            `json:"null"`
-	Value json.RawMessage `json:"value" forgecrudNull:"allowed"`
+	Value json.RawMessage `json:"value" harpyNull:"allowed"`
 }

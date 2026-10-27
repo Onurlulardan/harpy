@@ -37,7 +37,7 @@ CREATE TABLE iam_mcp_oauth_grants (
         scope = 'mcp:use' AND token_version > 0 AND authorization_version > 0 AND
         platform_authorization_clock >= 0 AND
         pg_catalog.octet_length(security_epoch) = 32 AND
-        acr IN ('urn:forgecrud:acr:baseline','urn:forgecrud:acr:step-up') AND
+        acr IN ('urn:harpy:acr:baseline','urn:harpy:acr:step-up') AND
         pg_catalog.cardinality(amr) BETWEEN 1 AND 3 AND
         amr <@ ARRAY['pwd','webauthn','totp']::text[] AND revision > 0
     ),

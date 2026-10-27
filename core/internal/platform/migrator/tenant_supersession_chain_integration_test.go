@@ -22,9 +22,9 @@ const (
 	chainSecond     = chainRoot + "supersessions/v2/fresh/" + chainBase + ".fresh.sql"
 	chainTerminal   = chainRoot + "supersessions/v3/fresh/" + chainBase + ".fresh.sql"
 	chainOriginalSH = "561757a212e2205e14091db2f9c05ab94f97d5a8cc67438d16c44a2ed4d0a8a2"
-	chainFirstSH    = "75ca56659160fe477fda1ddedec60389e378f410da3ef9e6b5dacfc885a98969"
-	chainSecondSH   = "93110a1aba60b236a4c9fb96cc8df675ec0efac81766b6af391e69b217819b73"
-	chainTerminalSH = "a6523dc1689b2bfa94ffed63e432a6d738cf0a86b3e4fb09e0c160adf1730724"
+	chainFirstSH    = "9ecca5ceb2b0453956a81f46e46d2bf633890ee5e8c212002b33b35d73faa575"
+	chainSecondSH   = "596819b7a320d41d283ea4d88846566a16bcbe6e6739701b64af77bca93d524d"
+	chainTerminalSH = "cef35a91f7e9cffebc4a48a3c26d69b5edb90cbd27afae1e67dc606c58309972"
 	chainOldRunID   = "018f0000-0000-7000-8000-000000000310"
 	chainNewRunID   = "018f0000-0000-7000-8000-000000000320"
 )

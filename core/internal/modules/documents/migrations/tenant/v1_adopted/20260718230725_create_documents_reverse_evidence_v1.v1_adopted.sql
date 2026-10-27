@@ -53,7 +53,7 @@ BEGIN
             MESSAGE='Documents V1 reverse authority is not ready';
     END IF;
     v_receipt_sha:=pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/documents/v1-reverse-receipt/v1:'||
+        'harpy/documents/v1-reverse-receipt/v1:'||
         p_reconciliation_id::text||':'||p_tenant_id::text||':'||
         p_source_generation::text||':'||p_target_generation::text||':'||
         p_source_count::text||':'||pg_catalog.encode(p_source_sha256,'hex')||':'||

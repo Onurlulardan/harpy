@@ -30,8 +30,8 @@ BEGIN
     RETURN QUERY
     SELECT principal.id, session.id,
            CASE session.access_mode
-               WHEN 'operator_console' THEN 'forgecrud-operator-console-v1'
-               WHEN 'portal' THEN 'forgecrud-portal-v1'
+               WHEN 'operator_console' THEN 'harpy-operator-console-v1'
+               WHEN 'portal' THEN 'harpy-portal-v1'
            END,
            session.access_mode, session.portal_binding_id,
            principal.token_version, principal.authorization_version,

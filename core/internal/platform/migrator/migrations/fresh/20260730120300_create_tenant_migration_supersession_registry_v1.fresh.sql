@@ -39,14 +39,14 @@ INSERT INTO platform.tenant_migration_supersessions (
     'core/internal/modules/system_resource_layout/migrations/tenant/fresh/20260730120104_repair_installation_layout_publications_v1.fresh.sql',
     '561757a212e2205e14091db2f9c05ab94f97d5a8cc67438d16c44a2ed4d0a8a2',
     'core/internal/modules/system_resource_layout/migrations/tenant/supersessions/fresh/20260730120104_repair_installation_layout_publications_v1.fresh.sql',
-    '75ca56659160fe477fda1ddedec60389e378f410da3ef9e6b5dacfc885a98969'
+    '9ecca5ceb2b0453956a81f46e46d2bf633890ee5e8c212002b33b35d73faa575'
 ),
 (
     'system_resource_layout','tenant',20260730120104,'v1_adopted',
     'core/internal/modules/system_resource_layout/migrations/tenant/v1_adopted/20260730120104_repair_installation_layout_publications_v1.v1_adopted.sql',
     '561757a212e2205e14091db2f9c05ab94f97d5a8cc67438d16c44a2ed4d0a8a2',
     'core/internal/modules/system_resource_layout/migrations/tenant/supersessions/v1_adopted/20260730120104_repair_installation_layout_publications_v1.v1_adopted.sql',
-    '75ca56659160fe477fda1ddedec60389e378f410da3ef9e6b5dacfc885a98969'
+    '9ecca5ceb2b0453956a81f46e46d2bf633890ee5e8c212002b33b35d73faa575'
 );
 
 CREATE TRIGGER tenant_migration_supersessions_reject_mutation

@@ -46,7 +46,7 @@ BEGIN
         p_canonical_steps
     );
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:v2:schema-revision:' || p_tenant_id::text || ':forms:' ||
+        'harpy:v2:schema-revision:' || p_tenant_id::text || ':forms:' ||
         p_resource_kind || ':' || p_resource_id::text,
         0
     ));

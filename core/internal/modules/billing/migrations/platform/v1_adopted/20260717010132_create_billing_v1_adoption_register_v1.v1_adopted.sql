@@ -56,7 +56,7 @@ BEGIN
               'subscriptions', 'usage_openings'
           ]::text[]
        OR v_plan->>'contract_version'
-            IS DISTINCT FROM 'forgecrud/billing-v1-adoption-plan/v1'
+            IS DISTINCT FROM 'harpy/billing-v1-adoption-plan/v1'
        OR v_plan->>'source_timezone' IS DISTINCT FROM 'UTC'
        OR v_plan->>'source_sha256' !~ '^[0-9a-f]{64}$'
        OR pg_catalog.jsonb_typeof(v_plan->'categories') IS DISTINCT FROM 'array'
@@ -79,7 +79,7 @@ BEGIN
               'session_seal_receipt_id', 'session_seal_sha256'
           ]::text[]
        OR v_evidence->>'contract_version' IS DISTINCT FROM
-            'forgecrud/billing-v1-cutover-evidence/v1'
+            'harpy/billing-v1-cutover-evidence/v1'
        OR (v_evidence->>'operation_id')::uuid IS DISTINCT FROM p_operation_id
        OR (v_evidence->>'run_id')::uuid IS DISTINCT FROM p_run_id
        OR v_evidence->>'scope_kind' IS DISTINCT FROM v_scope_kind

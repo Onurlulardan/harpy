@@ -20,7 +20,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR pg_catalog.current_setting('application_name', true)
-            <> 'forgecrud-v2:core-operator-license-reconcile'
+            <> 'harpy-v2:core-operator-license-reconcile'
        OR p_operation_id IS NULL
        OR pg_catalog.uuid_extract_version(p_operation_id) <> 7
        OR p_environment_id IS NULL THEN

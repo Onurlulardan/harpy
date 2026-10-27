@@ -60,9 +60,9 @@ BEGIN
             MESSAGE='Documents Form record adoption input is invalid';
     END IF;
     v_source_label:=pg_catalog.convert_to(
-        'forgecrud/forms/document-link-source/v1','UTF8');
+        'harpy/forms/document-link-source/v1','UTF8');
     v_link_label:=pg_catalog.convert_to(
-        'forgecrud/forms/document-link-catalog/v1','UTF8');
+        'harpy/forms/document-link-catalog/v1','UTF8');
     v_expected_source:=pg_catalog.sha256(
         pg_catalog.int4send(pg_catalog.octet_length(v_source_label))||v_source_label||
         pg_catalog.int4send(16)||pg_catalog.uuid_send(p_definition_id)||

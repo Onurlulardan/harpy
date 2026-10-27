@@ -46,7 +46,7 @@ BEGIN
        p_authorization_version < 1 OR p_authorization_clock < 0 OR
        p_issued_at < 1 OR p_expires_at - p_issued_at <> 30 OR
        p_audience IS DISTINCT FROM
-           'urn:forgecrud:v1-domain:' || p_target_domain OR
+           'urn:harpy:v1-domain:' || p_target_domain OR
        p_key_id !~ '^[a-z][a-z0-9_-]{0,62}$' OR
        pg_catalog.octet_length(p_permission_decision_sha256) <> 32 OR
        pg_catalog.octet_length(p_target_binding_sha256) <> 32 THEN

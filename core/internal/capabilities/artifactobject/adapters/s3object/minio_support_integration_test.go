@@ -33,7 +33,7 @@ func startMinIO(t *testing.T) *s3.Client {
 	runtime, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: testcontainers.ContainerRequest{
 			Image: minIOImage, Cmd: []string{"server", "/data", "--address", ":9000"},
-			Env: map[string]string{"MINIO_ROOT_USER": "forgecrud-integration",
+			Env: map[string]string{"MINIO_ROOT_USER": "harpy-integration",
 				"MINIO_ROOT_PASSWORD": "integration-secret-123"},
 			ExposedPorts: []string{"9000/tcp"},
 			HostConfigModifier: func(config *container.HostConfig) {
@@ -68,7 +68,7 @@ func startMinIO(t *testing.T) *s3.Client {
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 	loaded, err := awsconfig.LoadDefaultConfig(ctx, awsconfig.WithRegion("us-east-1"),
 		awsconfig.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
-			"forgecrud-integration", "integration-secret-123", "")))
+			"harpy-integration", "integration-secret-123", "")))
 	if err != nil {
 		t.Fatal(err)
 	}

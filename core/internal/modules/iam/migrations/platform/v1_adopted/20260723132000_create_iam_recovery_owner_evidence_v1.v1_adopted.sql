@@ -19,7 +19,7 @@ AS $function$
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_environment_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='recovery owner evidence denied';

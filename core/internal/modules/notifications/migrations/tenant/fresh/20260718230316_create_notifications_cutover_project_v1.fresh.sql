@@ -136,7 +136,7 @@ BEGIN
     );
     v_bridge_sha := notifications_v1_adoption_bridge_disabled_v1(p_scope_id);
     v_receipt_sha := pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/notifications/v1-cutover-receipt/v1:'||p_operation_id::text||':'||
+        'harpy/notifications/v1-cutover-receipt/v1:'||p_operation_id::text||':'||
         p_run_id::text||':'||p_scope_id::text||':'||v_generation::text||':'||
         v_source_count::text||':'||v_target_count::text||':'||v_source_sha||':'||
         v_target_sha||':'||v_queue_sha||':'||v_provider_sha||':'||v_legacy_sha||':'||

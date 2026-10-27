@@ -54,9 +54,9 @@ BEGIN
     FROM iam_current_session_read_v6(
         p_scope_schema, p_user_id, p_session_id
     ) AS session;
-    IF v_client_id IS DISTINCT FROM 'forgecrud-operator-console-v1' OR
+    IF v_client_id IS DISTINCT FROM 'harpy-operator-console-v1' OR
        p_auth_time IS NULL OR p_auth_time > v_now OR
-       p_acr NOT IN ('urn:forgecrud:acr:baseline','urn:forgecrud:acr:step-up') OR
+       p_acr NOT IN ('urn:harpy:acr:baseline','urn:harpy:acr:step-up') OR
        pg_catalog.cardinality(p_amr) NOT BETWEEN 1 AND 3 OR
        NOT p_amr <@ ARRAY['pwd','webauthn','totp']::text[] THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

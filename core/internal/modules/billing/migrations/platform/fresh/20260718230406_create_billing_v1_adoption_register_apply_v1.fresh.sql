@@ -50,7 +50,7 @@ BEGIN
        v_plan->>'scope_kind' IS DISTINCT FROM p_scope_kind OR
        (v_plan->>'scope_id')::uuid IS DISTINCT FROM p_scope_id OR
        v_plan->>'contract_version' IS DISTINCT FROM
-           'forgecrud/billing-v1-adoption-plan/v1' OR
+           'harpy/billing-v1-adoption-plan/v1' OR
        (v_plan->>'eligible')::boolean IS DISTINCT FROM true THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'billing V1 adoption compiled plan differs';
@@ -112,7 +112,7 @@ BEGIN
     END IF;
     v_evidence := pg_catalog.jsonb_build_object(
         'batch_sha256', p_batch_sha256,
-        'contract_version', 'forgecrud/billing-v1-cutover-evidence/v1',
+        'contract_version', 'harpy/billing-v1-cutover-evidence/v1',
         'evidence_generation', p_batch_ordinal,
         'lease_id', v_lease_id,
         'lease_manifest_sha256', p_lease_manifest_sha256,

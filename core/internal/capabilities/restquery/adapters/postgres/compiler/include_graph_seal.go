@@ -3,7 +3,7 @@ package compiler
 import "crypto/sha256"
 
 func includeGraphSeal(graph IncludeGraph) ([sha256.Size]byte, error) {
-	writer := newSealWriter("forgecrud.restquery.postgres.include-graph.v1")
+	writer := newSealWriter("harpy.restquery.postgres.include-graph.v1")
 	if writeIncludePlanBinding(writer, graph.binding) != nil {
 		return [sha256.Size]byte{}, ErrContract
 	}

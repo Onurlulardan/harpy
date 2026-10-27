@@ -87,7 +87,7 @@ BEGIN
         WHERE page.plan_id=p_plan_id ORDER BY page.page_number
     LOOP
         IF v_payload_reference<>pg_catalog.format(
-               'urn:forgecrud:iam:profile-backfill:%s:%s:%s:v1',
+               'urn:harpy:iam:profile-backfill:%s:%s:%s:v1',
                p_tenant_id,p_plan_id,v_page_number
            ) OR (v_page_number=1 AND v_after_resource_id IS NOT NULL) OR
            (v_page_number>1 AND v_after_resource_id<>v_prior_through) OR

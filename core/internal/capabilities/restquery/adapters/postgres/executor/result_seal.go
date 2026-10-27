@@ -6,7 +6,7 @@ import (
 	"hash"
 )
 
-const resultSealDomain = "forgecrud.restquery.postgres.execution-result.v1"
+const resultSealDomain = "harpy.restquery.postgres.execution-result.v1"
 
 func resultSeal(result Result) ([sha256.Size]byte, error) {
 	records, recordsErr := result.page.Records()

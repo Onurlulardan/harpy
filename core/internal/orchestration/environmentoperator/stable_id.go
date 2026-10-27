@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const stableNamespace = "forgecrud-v2/environment-initialize/v1"
+const stableNamespace = "harpy-v2/environment-initialize/v1"
 
 func stableID(manifest installationv1.Manifest, purpose string) uuid.UUID {
 	hash := sha256.New()

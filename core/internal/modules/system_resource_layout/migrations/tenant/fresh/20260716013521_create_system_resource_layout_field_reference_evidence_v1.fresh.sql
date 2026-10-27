@@ -44,7 +44,7 @@ BEGIN
       AND revision.state = 'published'
       AND field.value ->> 'field_id' = p_field_id::text;
     v_manifest := '{"checked_owner_count":1' ||
-        ',"contract":"forgecrud/system-resource-layout-reference/v1"' ||
+        ',"contract":"harpy/system-resource-layout-reference/v1"' ||
         ',"field_id":' || pg_catalog.to_jsonb(p_field_id::text)::text ||
         ',"live_reference_count":' || v_count::text ||
         ',"resource_kind":' || pg_catalog.to_jsonb(p_resource_kind)::text || '}';

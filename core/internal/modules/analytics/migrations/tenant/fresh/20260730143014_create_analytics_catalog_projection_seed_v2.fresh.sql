@@ -19,7 +19,7 @@ BEGIN
             MESSAGE='Analytics Catalog projection seed input is invalid';
     END IF;
     v_bytes:=pg_catalog.substring(pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:analytics:catalog:projection:v2','UTF8')||
+        pg_catalog.convert_to('harpy:analytics:catalog:projection:v2','UTF8')||
         pg_catalog.uuid_send(p_component_id)||
         pg_catalog.uuid_send(p_package_id)||
         pg_catalog.int4send(pg_catalog.octet_length(p_package_version))||

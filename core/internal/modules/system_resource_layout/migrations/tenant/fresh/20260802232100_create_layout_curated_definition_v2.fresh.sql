@@ -134,7 +134,7 @@ BEGIN
     END LOOP;
     RETURN system_resource_layout_canonical_json_v1(
         pg_catalog.jsonb_build_object(
-            'contract','forgecrud/system-resource-layout/v2','surfaces',v_surfaces));
+            'contract','harpy/system-resource-layout/v2','surfaces',v_surfaces));
 END;
 $function$;
 -- +goose StatementEnd

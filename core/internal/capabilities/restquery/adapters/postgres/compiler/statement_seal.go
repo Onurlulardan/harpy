@@ -8,7 +8,7 @@ import (
 )
 
 func statementSeal(statement RecordStatement) ([sha256.Size]byte, error) {
-	writer := newSealWriter("forgecrud.restquery.postgres.record-statement.v1")
+	writer := newSealWriter("harpy.restquery.postgres.record-statement.v1")
 	writer.writeString(statement.sql)
 	writer.writeInt(int64(statement.requestedSize))
 	writer.writeInt(int64(statement.class))

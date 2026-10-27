@@ -24,7 +24,7 @@ BEGIN
        p_version < 2 OR pg_catalog.jsonb_typeof(p_definition) <> 'object' OR
        pg_catalog.octet_length(p_definition_sha256) IS DISTINCT FROM 32 OR
        pg_catalog.octet_length(p_definition::text) > 4194304 OR
-       p_definition ->> 'contract' IS DISTINCT FROM 'forgecrud/iam-profile-schema/v1' OR
+       p_definition ->> 'contract' IS DISTINCT FROM 'harpy/iam-profile-schema/v1' OR
        p_definition ->> 'id' IS DISTINCT FROM p_schema_id::text OR
        p_definition ->> 'resource_kind' IS DISTINCT FROM p_resource_kind OR
        p_definition ->> 'version' IS DISTINCT FROM p_version::text OR

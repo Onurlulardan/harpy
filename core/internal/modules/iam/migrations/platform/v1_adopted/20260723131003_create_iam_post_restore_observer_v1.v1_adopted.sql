@@ -17,7 +17,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_reactivation_observer'
        OR pg_catalog.current_setting('application_name') IS DISTINCT FROM
-          'forgecrud-v2:core-operator-post-restore-reactivation-observer'
+          'harpy-v2:core-operator-post-restore-reactivation-observer'
        OR p_environment_id IS NULL OR p_restore_operation_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='post-restore reactivation observation denied';

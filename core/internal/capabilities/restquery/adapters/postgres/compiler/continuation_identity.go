@@ -18,7 +18,7 @@ func continuationIdentity(
 		return [sha256.Size]byte{}, ErrContract
 	}
 	writer := newSealWriter(
-		"forgecrud.restquery.postgres.execution-continuation.v1",
+		"harpy.restquery.postgres.execution-continuation.v1",
 	)
 	writer.writeBool(present)
 	if present {

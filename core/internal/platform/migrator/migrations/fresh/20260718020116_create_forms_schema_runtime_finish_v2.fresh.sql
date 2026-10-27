@@ -66,7 +66,7 @@ BEGIN
     v_step_state := CASE WHEN p_ready THEN 'succeeded' ELSE 'retryable' END;
     v_error_code := CASE WHEN p_ready THEN NULL ELSE 'retention_gate_waiting' END;
     v_outcome_sha256 := pg_catalog.encode(pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:v2:forms-schema-runtime:v1|'||
+        pg_catalog.convert_to('harpy:v2:forms-schema-runtime:v1|'||
             p_schema_job_id::text||'|'||p_step_ordinal::text||'|'||
             v_step.attempt::text||'|'||v_step_state,'UTF8')),'hex');
     INSERT INTO platform.schema_job_step_attempts (

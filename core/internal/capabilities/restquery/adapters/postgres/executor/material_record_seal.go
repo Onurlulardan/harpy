@@ -6,7 +6,7 @@ import (
 	"hash"
 )
 
-const materialRecordSealDomain = "forgecrud.restquery.include-material-record.v1"
+const materialRecordSealDomain = "harpy.restquery.include-material-record.v1"
 
 func sealMaterialRecord(record materialRecord) [sha256.Size]byte {
 	digest := sha256.New()

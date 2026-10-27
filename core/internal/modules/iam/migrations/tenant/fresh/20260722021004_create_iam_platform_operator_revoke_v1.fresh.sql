@@ -35,7 +35,7 @@ BEGIN
        p_actor_id IS NULL OR p_target_user_id IS NULL OR p_actor_id = p_target_user_id OR
        p_target_expected_authorization_version < 1 OR p_capability !~ '^platform\.' OR
        pg_catalog.octet_length(p_purpose_sha256) <> 32 OR
-       p_acr <> 'urn:forgecrud:acr:step-up' OR
+       p_acr <> 'urn:harpy:acr:step-up' OR
        NOT (p_amr_password OR p_amr_webauthn OR p_amr_totp) OR
        p_auth_time > v_now OR p_auth_time < v_now - INTERVAL '10 minutes' OR
        p_purpose_sha256 <> pg_catalog.sha256(pg_catalog.convert_to(

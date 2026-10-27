@@ -36,7 +36,7 @@ BEGIN
     );
     IF FOUND THEN RETURN; END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(
-        pg_catalog.hashtextextended('forgecrud:iam:organization-tree', 0)
+        pg_catalog.hashtextextended('harpy:iam:organization-tree', 0)
     );
     IF p_parent_id IS NOT NULL THEN
         IF NOT EXISTS (SELECT 1 FROM iam_organizations

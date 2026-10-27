@@ -11,7 +11,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_object_merkle_sha256 !~ '^[0-9a-f]{64}$'
        OR p_locator_remap_sha256 !~ '^[0-9a-f]{64}$'
        OR p_safety_evidence_sha256 !~ '^[0-9a-f]{64}$' THEN
@@ -56,7 +56,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_receipt_sha256 !~ '^[0-9a-f]{64}$'
        OR pg_catalog.octet_length(p_receipt_bytes) NOT BETWEEN 1 AND 2097152
        OR p_receipt_sha256<>pg_catalog.encode(
@@ -86,7 +86,7 @@ BEGIN
        OR v_attempt.lease_expires_at<=v_now
        OR v_restore.state<>'switched' THEN RETURN false; END IF;
     v_receipt := pg_catalog.convert_from(p_receipt_bytes,'UTF8')::jsonb;
-    IF v_receipt->>'schema' IS DISTINCT FROM 'forgecrud-recovery-artifact.v1'
+    IF v_receipt->>'schema' IS DISTINCT FROM 'harpy-recovery-artifact.v1'
        OR v_receipt->>'purpose' IS DISTINCT FROM 'restore_receipt'
        OR v_receipt->>'environment_id' IS DISTINCT FROM v_restore.environment_id::text
        OR v_receipt->>'operation_id' IS DISTINCT FROM p_operation_id::text

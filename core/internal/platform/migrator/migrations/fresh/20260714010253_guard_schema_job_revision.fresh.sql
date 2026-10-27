@@ -7,7 +7,7 @@ SET search_path TO pg_catalog
 AS $function$
 BEGIN
     IF NOT pg_catalog.pg_try_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:v2:schema-revision:' || NEW.tenant_id::text || ':' ||
+        'harpy:v2:schema-revision:' || NEW.tenant_id::text || ':' ||
         NEW.owner || ':' || NEW.resource_kind || ':' || NEW.resource_id::text,
         0
     )) THEN

@@ -55,7 +55,7 @@ BEGIN
        v_original->>'component_id' IS DISTINCT FROM p_component_id::text OR
        v_original->>'analytics_id' IS DISTINCT FROM p_component_id::text OR
        v_original->>'source_contract' IS DISTINCT FROM
-           'forgecrud-v1.enterprise-seed.'||p_module_slug OR
+           'harpy-v1.enterprise-seed.'||p_module_slug OR
        v_original->>'slug' IS DISTINCT FROM p_semantic_identity OR
        v_original->>'name' IS NULL OR
        pg_catalog.octet_length(v_original->>'name') NOT BETWEEN 1 AND 100 OR

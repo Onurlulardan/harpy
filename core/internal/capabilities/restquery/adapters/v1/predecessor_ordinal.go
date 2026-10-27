@@ -59,7 +59,7 @@ func (ordinal PredecessorOrdinal) Index() (int64, error) {
 
 func sealPredecessorOrdinal(ordinal PredecessorOrdinal) [sha256.Size]byte {
 	document := make([]byte, 0, 64)
-	document = append(document, "forgecrud.restquery.v1.predecessor-ordinal.v1"...)
+	document = append(document, "harpy.restquery.v1.predecessor-ordinal.v1"...)
 	value := make([]byte, 8)
 	binary.BigEndian.PutUint64(value, uint64(ordinal.page))
 	document = append(document, value...)

@@ -8,7 +8,7 @@ import (
 )
 
 func predecessorTupleSeal(tuple PredecessorTuple) ([sha256.Size]byte, error) {
-	writer := newSealWriter("forgecrud.restquery.postgres.v1-predecessor-tuple.v1")
+	writer := newSealWriter("harpy.restquery.postgres.v1-predecessor-tuple.v1")
 	writer.writeInt(tuple.predecessor)
 	writer.writeBytes(tuple.predecessorSeal[:])
 	if writeStatementBinding(writer, tuple.binding) != nil ||

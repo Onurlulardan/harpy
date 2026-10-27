@@ -27,7 +27,7 @@ BEGIN
     END IF;
     RETURN pg_catalog.sha256(
         pg_catalog.convert_to(
-            'forgecrud:iam-refresh-locator-source:v1', 'UTF8'
+            'harpy:iam-refresh-locator-source:v1', 'UTF8'
         ) OPERATOR(pg_catalog.||) pg_catalog.decode('00', 'hex')
           OPERATOR(pg_catalog.||) pg_catalog.uuid_send(p_token_id)
           OPERATOR(pg_catalog.||) pg_catalog.uuid_send(p_family_id)

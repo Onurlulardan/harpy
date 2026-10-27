@@ -43,7 +43,7 @@ BEGIN
            'mapping_sha256', 'source_sha256', 'tenant_id'
        ]::text[] OR
        v_plan->>'contract_version'
-           IS DISTINCT FROM 'forgecrud/iam-v1-adoption-plan/v1' OR
+           IS DISTINCT FROM 'harpy/iam-v1-adoption-plan/v1' OR
        (v_plan->>'tenant_id')::uuid IS DISTINCT FROM p_tenant_id OR
        v_plan->>'mapping_sha256' !~ '^[0-9a-f]{64}$' OR
        v_plan->>'source_sha256' !~ '^[0-9a-f]{64}$' OR

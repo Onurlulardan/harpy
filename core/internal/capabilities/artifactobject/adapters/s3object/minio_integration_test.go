@@ -40,7 +40,7 @@ func (client minIOPrivateACLClient) GetBucketAcl(ctx context.Context,
 
 func TestMinIOExactVersionLifecycle(t *testing.T) {
 	client := startMinIO(t)
-	bucket := "forgecrud-artifact-object-integration"
+	bucket := "harpy-artifact-object-integration"
 	createVersionedBucket(t, client, bucket)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

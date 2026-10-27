@@ -15,7 +15,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR pg_catalog.current_setting('application_name', true)
-            <> 'forgecrud-v2:core-operator-license-reconcile'
+            <> 'harpy-v2:core-operator-license-reconcile'
        OR p_environment_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing restored license binding denied';

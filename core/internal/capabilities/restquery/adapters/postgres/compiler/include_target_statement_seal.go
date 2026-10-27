@@ -5,7 +5,7 @@ import "crypto/sha256"
 func includeTargetStatementSeal(
 	statement IncludeTargetStatement,
 ) ([sha256.Size]byte, error) {
-	writer := newSealWriter("forgecrud.restquery.postgres.include-target-statement.v1")
+	writer := newSealWriter("harpy.restquery.postgres.include-target-statement.v1")
 	writer.writeString(statement.sql)
 	writer.writeInt(int64(statement.stableIndex))
 	writer.writeBytes(statement.stableFieldID[:])

@@ -22,7 +22,7 @@ BEGIN
            WHERE root.key NOT IN ('contract', 'sections')
        )
        OR v_document ->> 'contract' IS DISTINCT FROM
-          'forgecrud/system-resource-layout/v1'
+          'harpy/system-resource-layout/v1'
        OR pg_catalog.jsonb_typeof(v_document -> 'sections') <> 'array'
        OR pg_catalog.jsonb_array_length(v_document -> 'sections') > 64 THEN
         RETURN false;

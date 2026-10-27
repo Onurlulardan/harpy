@@ -5,7 +5,7 @@ import "crypto/sha256"
 func aggregateStatementSeal(
 	statement AggregateStatement,
 ) ([sha256.Size]byte, error) {
-	writer := newSealWriter("forgecrud.restquery.postgres.aggregate-statement.v1")
+	writer := newSealWriter("harpy.restquery.postgres.aggregate-statement.v1")
 	writer.writeString(statement.sql)
 	writer.writeInt(int64(statement.limit))
 	writer.writeInt(int64(statement.class))

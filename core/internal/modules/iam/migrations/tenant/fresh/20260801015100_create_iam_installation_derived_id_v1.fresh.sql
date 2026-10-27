@@ -20,7 +20,7 @@ BEGIN
             MESSAGE = 'IAM installation identity derivation input is invalid';
     END IF;
     v_digest := pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:iam:installation:v1', 'UTF8') ||
+        pg_catalog.convert_to('harpy:iam:installation:v1', 'UTF8') ||
         pg_catalog.uuid_send(p_operation_id) || '\x00'::bytea ||
         pg_catalog.convert_to(p_label, 'UTF8')
     );

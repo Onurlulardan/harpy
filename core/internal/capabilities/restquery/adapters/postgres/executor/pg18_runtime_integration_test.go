@@ -25,13 +25,13 @@ func pg18OpenRuntime(
 	t *testing.T, ctx context.Context, dsn string,
 ) (*postgres.Pool, cursor.Codec) {
 	t.Helper()
-	t.Setenv("FORGECRUD_ENVIRONMENT", "test")
-	t.Setenv("FORGECRUD_POSTGRES_ENDPOINT_KIND", "direct_postgres")
-	t.Setenv("FORGECRUD_POSTGRES_DSN", dsn)
-	t.Setenv("FORGECRUD_REST_QUERY_CURSOR_KEYRING", pg18CursorKeyring)
-	t.Setenv("FORGECRUD_POSTGRES_MAX_CONNS", "2")
-	t.Setenv("FORGECRUD_POSTGRES_MIN_CONNS", "0")
-	t.Setenv("FORGECRUD_POSTGRES_CLEANUP_TIMEOUT", "5s")
+	t.Setenv("HARPY_ENVIRONMENT", "test")
+	t.Setenv("HARPY_POSTGRES_ENDPOINT_KIND", "direct_postgres")
+	t.Setenv("HARPY_POSTGRES_DSN", dsn)
+	t.Setenv("HARPY_REST_QUERY_CURSOR_KEYRING", pg18CursorKeyring)
+	t.Setenv("HARPY_POSTGRES_MAX_CONNS", "2")
+	t.Setenv("HARPY_POSTGRES_MIN_CONNS", "0")
+	t.Setenv("HARPY_POSTGRES_CLEANUP_TIMEOUT", "5s")
 	configfixture.SetAPI(t)
 	loaded, err := config.LoadAPI()
 	if err != nil {

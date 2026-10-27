@@ -40,7 +40,7 @@ BEGIN
         p_tenant_id, p_group_generation, p_cutover_generation
     );
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:iam-throttle:tenant:' || p_tenant_id::text || ':' ||
+        'harpy:iam-throttle:tenant:' || p_tenant_id::text || ':' ||
         COALESCE(p_purpose, '') || ':' || COALESCE(p_dimension, '') || ':' ||
         COALESCE(p_key_id, '') || ':' ||
         COALESCE(pg_catalog.encode(p_bucket_hmac, 'hex'), ''), 0

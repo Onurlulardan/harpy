@@ -97,7 +97,7 @@ BEGIN
              OR pg_catalog.jsonb_typeof(session_row->'backend_start') IS DISTINCT FROM 'string'
              OR session_row->>'backend_start'!~'(Z|[+]00:00)$' OR (session_row->>'backend_start')::timestamptz>v_seal_issued_at
              OR session_row->>'session_user' IS DISTINCT FROM 'harpy_cutover_decoder'
-             OR session_row->>'application_name' IS DISTINCT FROM 'forgecrud-cutover/'||p_run_id::text) OR
+             OR session_row->>'application_name' IS DISTINCT FROM 'harpy-cutover/'||p_run_id::text) OR
        EXISTS (SELECT 1 FROM pg_catalog.jsonb_array_elements(v_seal->'payload'->'target_sessions') AS session_row
           WHERE (SELECT pg_catalog.count(*) FROM pg_catalog.jsonb_object_keys(session_row)) IS DISTINCT FROM 4::bigint
              OR (session_row ?& ARRAY['pid','backend_start','session_user','application_name']) IS DISTINCT FROM true
@@ -105,7 +105,7 @@ BEGIN
              OR pg_catalog.jsonb_typeof(session_row->'backend_start') IS DISTINCT FROM 'string'
              OR session_row->>'backend_start'!~'(Z|[+]00:00)$' OR (session_row->>'backend_start')::timestamptz>v_seal_issued_at
              OR session_row->>'session_user' IS DISTINCT FROM 'harpy_adopter'
-             OR session_row->>'application_name' IS DISTINCT FROM 'forgecrud-cutover/'||p_run_id::text) THEN
+             OR session_row->>'application_name' IS DISTINCT FROM 'harpy-cutover/'||p_run_id::text) THEN
         RAISE EXCEPTION USING ERRCODE='22023', MESSAGE='cutover sealed session set differs';
     END IF;
     SELECT pg_catalog.count(*) IS DISTINCT FROM pg_catalog.count(DISTINCT session_row.pid) INTO v_invalid

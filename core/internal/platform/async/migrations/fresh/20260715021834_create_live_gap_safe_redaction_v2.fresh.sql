@@ -97,7 +97,7 @@ BEGIN
         LIMIT p_batch_size
     LOOP
         PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-            'forgecrud:deadletter:' || v_root_id::text,0));
+            'harpy:deadletter:' || v_root_id::text,0));
         SELECT root.* INTO v_root
         FROM platform.dead_letters AS root
         WHERE root.id = v_root_id

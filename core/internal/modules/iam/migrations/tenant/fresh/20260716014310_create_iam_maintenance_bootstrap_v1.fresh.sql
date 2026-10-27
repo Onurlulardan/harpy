@@ -42,7 +42,7 @@ BEGIN
         WHEN 'iam.security-artifact-purge' THEN 3600
         ELSE 86400
     END;
-    v_reference := 'urn:forgecrud:iam:maintenance:' || p_tenant_id::text ||
+    v_reference := 'urn:harpy:iam:maintenance:' || p_tenant_id::text ||
         ':' || p_kind || ':v1';
     v_digest := pg_catalog.sha256(pg_catalog.convert_to(v_reference, 'UTF8'));
     INSERT INTO iam_maintenance_schedules (

@@ -30,7 +30,7 @@ BEGIN
     v_surfaces := '[]'::jsonb;
     v_seed := p_revision_id::text;
     IF p_revision_id IS NULL OR p_created_at IS NULL
-       OR v_definition ->> 'contract' <> 'forgecrud/system-resource-layout/v2'
+       OR v_definition ->> 'contract' <> 'harpy/system-resource-layout/v2'
        OR v_catalog ->> 'contract' <> 'forms-presentation-field-catalog.v1' THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'system resource curated compiler input is invalid';

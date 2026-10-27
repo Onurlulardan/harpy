@@ -20,7 +20,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-api'
+            IS DISTINCT FROM 'harpy-v2:core-api'
        OR p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='customer setup reissue target denied';
@@ -59,7 +59,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-api'
+            IS DISTINCT FROM 'harpy-v2:core-api'
        OR p_operation_id IS NULL OR p_reissue_operation_id IS NULL
        OR p_tenant_id IS NULL OR p_old_artifact_id IS NULL
        OR p_new_artifact_id IS NULL THEN
@@ -113,7 +113,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-api' THEN
+            IS DISTINCT FROM 'harpy-v2:core-api' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='customer setup reissue assertion denied';
     END IF;

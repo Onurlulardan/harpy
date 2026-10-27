@@ -10,7 +10,7 @@ SET search_path = pg_catalog
 AS $function$
 BEGIN
     RETURN pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/iam/rbac-step-up/v1|' || p_command_key || '|' ||
+        'harpy/iam/rbac-step-up/v1|' || p_command_key || '|' ||
         CASE WHEN p_command_key = 'iam.rbac.assignment.create'
             THEN '' ELSE coalesce(p_target_id::text, '') END,
         'UTF8'

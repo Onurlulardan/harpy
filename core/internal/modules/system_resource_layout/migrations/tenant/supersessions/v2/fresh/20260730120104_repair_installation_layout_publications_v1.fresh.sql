@@ -96,7 +96,7 @@ AND NOT EXISTS (
     OR publication.presentation_contract IS DISTINCT FROM 'forms-presentation.v1'
     OR publication.compiler_version IS DISTINCT FROM 'system-resource-presentation-compiler.v2'
     OR revision.definition_json::jsonb->>'contract' IS DISTINCT FROM
-       'forgecrud/system-resource-layout/v2'
+       'harpy/system-resource-layout/v2'
     OR publication.catalog_sha256 IS DISTINCT FROM pg_catalog.sha256(
        pg_catalog.convert_to(publication.catalog_json,'UTF8'))
     OR publication.presentation_sha256 IS DISTINCT FROM pg_catalog.sha256(

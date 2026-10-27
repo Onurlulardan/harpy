@@ -22,7 +22,7 @@ INSERT INTO platform.billing_offering_versions (
     'published','019b0000-0000-7000-8000-000000000202','2026-07-22T00:00:00Z'
 FROM platform.billing_global_authorities
 CROSS JOIN LATERAL (SELECT pg_catalog.jsonb_build_object(
-    'name','ForgeCRUD Free','description','Release-owned SaaS customer base',
+    'name','Harpy Free','description','Release-owned SaaS customer base',
     'sort_order',1,'highlight_label','','color','','billing_interval','monthly'
 ) AS metadata) AS presentation;
 
@@ -65,7 +65,7 @@ INSERT INTO platform.billing_saas_free_base_publications (
     pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(document::text,'UTF8')),'hex'),
     document,'2026-07-22T00:00:00Z',pg_catalog.statement_timestamp()
 FROM (SELECT pg_catalog.jsonb_build_object(
-    'schema','forgecrud-saas-free-base.v1','offering_key','saas_free_base_v1',
+    'schema','harpy-saas-free-base.v1','offering_key','saas_free_base_v1',
     'revision',1,'effective_at','2026-07-22T00:00:00Z','subscription',false,'trial',false,
     'entitlements',pg_catalog.jsonb_build_object(
         'forms.submissions',500,'iam.active_users',3,'forms.active_forms','unlimited',

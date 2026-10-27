@@ -26,7 +26,7 @@ AS $function$
 BEGIN
 RETURN pg_catalog.encode(pg_catalog.sha256(
     pg_catalog.convert_to(
-        'forgecrud/cutover/billing-forms-rehearsal/v2', 'UTF8') ||
+        'harpy/cutover/billing-forms-rehearsal/v2', 'UTF8') ||
     pg_catalog.decode('00','hex') || pg_catalog.uuid_send(p_tenant_id) ||
     pg_catalog.int8send(p_generation) ||
     pg_catalog.convert_to('billing','UTF8') ||

@@ -25,7 +25,7 @@ func TestMandatoryPredicateDigestUsesDedicatedExactHKDFContext(t *testing.T) {
 	}
 	derived, err := hkdf.Key(
 		sha256.New, bytes.Repeat([]byte{1}, 32), nil,
-		"forgecrud/rest-query/cursor-mandatory-predicate/v1", sha256.Size,
+		"harpy/rest-query/cursor-mandatory-predicate/v1", sha256.Size,
 	)
 	if err != nil {
 		t.Fatal(err)

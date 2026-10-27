@@ -43,7 +43,7 @@ BEGIN
      AND session.result_authorization_version = oauth_grant.authorization_version
      AND session.result_platform_clock = oauth_grant.platform_authorization_clock
      AND session.result_security_epoch = oauth_grant.security_epoch
-     AND session.result_client_id = 'forgecrud-operator-console-v1'
+     AND session.result_client_id = 'harpy-operator-console-v1'
     WHERE access.jti = p_access_jti
       AND access.grant_id = p_grant_id
       AND access.token_sha256 = p_access_token_sha256

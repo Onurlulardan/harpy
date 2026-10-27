@@ -8,8 +8,8 @@ import (
 
 const (
 	retirementKeyPrefix  = "rq.alias."
-	retirementKeyDomain  = "forgecrud/rest-query/v1-alias-retirement/v1\x00"
-	retirementSealDomain = "forgecrud/rest-query/v1-alias-retirement-key-seal/v1\x00"
+	retirementKeyDomain  = "harpy/rest-query/v1-alias-retirement/v1\x00"
+	retirementSealDomain = "harpy/rest-query/v1-alias-retirement-key-seal/v1\x00"
 )
 
 // RetirementKey is the opaque persisted identity of one manifest-alias pair.

@@ -6,7 +6,7 @@ import (
 	"hash"
 )
 
-const aggregateResultSealDomain = "forgecrud.restquery.postgres.aggregate-result.v1"
+const aggregateResultSealDomain = "harpy.restquery.postgres.aggregate-result.v1"
 
 func aggregateResultSeal(result AggregateResult) ([sha256.Size]byte, error) {
 	groups, groupsErr := result.page.Groups()

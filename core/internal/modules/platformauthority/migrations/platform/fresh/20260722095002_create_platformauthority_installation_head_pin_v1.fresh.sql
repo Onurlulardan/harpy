@@ -28,7 +28,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
+            IS DISTINCT FROM 'harpy-v2:core-operator-initialize'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
        OR p_tenant_id IS NULL OR p_schema_name IS NULL
        OR p_registry_binding_id IS NULL OR p_scope_kind IS DISTINCT FROM 'environment'

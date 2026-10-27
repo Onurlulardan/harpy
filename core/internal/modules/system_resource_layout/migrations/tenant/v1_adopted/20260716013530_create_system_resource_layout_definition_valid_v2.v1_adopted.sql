@@ -19,7 +19,7 @@ BEGIN
                 WHERE present.key NOT IN ('contract', 'surfaces')
            )
            OR v_document ->> 'contract' IS DISTINCT FROM
-              'forgecrud/system-resource-layout/v2'
+              'harpy/system-resource-layout/v2'
            OR pg_catalog.jsonb_typeof(v_document -> 'surfaces') IS DISTINCT FROM 'array'
         THEN
             RETURN false;

@@ -35,7 +35,7 @@ BEGIN
             MESSAGE = 'system resource layout v3 create contract is invalid';
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:system_resource_layout:' ||
+        'harpy:system_resource_layout:' ||
         pg_catalog.current_schema() || ':' || p_resource_kind, 0
     ));
     SELECT revision.resource_kind, revision.definition_json,

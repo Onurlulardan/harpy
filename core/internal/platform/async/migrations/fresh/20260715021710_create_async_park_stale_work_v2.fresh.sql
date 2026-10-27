@@ -82,7 +82,7 @@ BEGIN
     END IF;
 
     v_payload := pg_catalog.convert_to(
-        '{"contract_version":"forgecrud.job-stale-reference.v1","job_id":' ||
+        '{"contract_version":"harpy.job-stale-reference.v1","job_id":' ||
         pg_catalog.to_json(v_job.id::text)::text || ',"kind":' ||
         pg_catalog.to_json(v_job.kind)::text || ',"payload_reference":' ||
         pg_catalog.to_json(v_job.payload_ref)::text || ',"payload_revision":' ||
@@ -94,7 +94,7 @@ BEGIN
         pg_catalog.sha256(pg_catalog.convert_to('JOB_AUTHORITY_STALE', 'UTF8')), 'hex'
     );
     v_redacted_envelope := pg_catalog.jsonb_build_object(
-        'contract_version', 'forgecrud.job-stale-reference.v1',
+        'contract_version', 'harpy.job-stale-reference.v1',
         'job_id', v_job.id, 'kind', v_job.kind,
         'payload_revision', v_job.payload_revision,
         'payload_sha256', v_job.payload_sha256

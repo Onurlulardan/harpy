@@ -34,9 +34,9 @@ BEGIN
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR NOT (
            (p_operation_kind = 'environment_initialize'
-            AND v_application = 'forgecrud-v2:core-operator-initialize')
+            AND v_application = 'harpy-v2:core-operator-initialize')
            OR (p_operation_kind = 'saas_customer_tenant_provision'
-               AND v_application = 'forgecrud-v2:core-worker')
+               AND v_application = 'harpy-v2:core-worker')
        ) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'tenant activation initialization v4 denied';

@@ -15,7 +15,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_receipt_sha256 !~ '^[0-9a-f]{64}$'
        OR pg_catalog.octet_length(p_receipt_bytes) NOT BETWEEN 1 AND 2097152
        OR p_receipt_sha256<>pg_catalog.encode(
@@ -54,7 +54,7 @@ BEGIN
     END IF;
     v_receipt := pg_catalog.convert_from(p_receipt_bytes,'UTF8')::jsonb;
     IF v_receipt->>'schema' IS DISTINCT FROM
-          'forgecrud-recovery-artifact.v1'
+          'harpy-recovery-artifact.v1'
        OR v_receipt->>'purpose' IS DISTINCT FROM 'restore_receipt'
        OR v_receipt->>'environment_id' IS DISTINCT FROM
           v_restore.environment_id::text

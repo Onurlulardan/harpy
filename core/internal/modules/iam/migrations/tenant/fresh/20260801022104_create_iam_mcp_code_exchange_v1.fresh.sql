@@ -80,7 +80,7 @@ BEGIN
     FROM iam_current_session_read_v6(
         p_scope_schema, v_grant.user_id, v_grant.session_id
     ) AS session;
-    IF v_client_id IS DISTINCT FROM 'forgecrud-operator-console-v1' OR
+    IF v_client_id IS DISTINCT FROM 'harpy-operator-console-v1' OR
        v_token_version IS DISTINCT FROM v_grant.token_version OR
        v_authorization_version IS DISTINCT FROM v_grant.authorization_version OR
        v_platform_clock IS DISTINCT FROM v_grant.platform_authorization_clock OR

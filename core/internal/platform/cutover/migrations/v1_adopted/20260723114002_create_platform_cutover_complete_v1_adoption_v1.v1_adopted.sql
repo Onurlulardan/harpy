@@ -17,7 +17,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name',true)
-            !~ '^forgecrud-cutover/[0-9a-f-]{36}$'
+            !~ '^harpy-cutover/[0-9a-f-]{36}$'
        OR p_frontend_sha256 !~ '^[0-9a-f]{64}$'
        OR p_mcp_sha256 !~ '^[0-9a-f]{64}$'
        OR p_legacy_boolean_hits<>0 OR p_module_migration_hits<>0

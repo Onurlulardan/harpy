@@ -12,10 +12,10 @@ import (
 )
 
 const (
-	metadataContract = "forgecrud-contract"
-	metadataDigest   = "forgecrud-ciphertext-sha256"
-	metadataHeader   = "forgecrud-header-sha256"
-	metadataBytes    = "forgecrud-ciphertext-bytes"
+	metadataContract = "harpy-contract"
+	metadataDigest   = "harpy-ciphertext-sha256"
+	metadataHeader   = "harpy-header-sha256"
+	metadataBytes    = "harpy-ciphertext-bytes"
 )
 
 func validToken(value string, maximum int, lower bool) bool {

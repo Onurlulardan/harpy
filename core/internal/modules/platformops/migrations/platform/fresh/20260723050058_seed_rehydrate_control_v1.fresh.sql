@@ -17,7 +17,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_trust_sha256<>pg_catalog.encode(pg_catalog.sha256(p_trust_bytes),'hex')
        OR p_plan_sha256<>pg_catalog.encode(pg_catalog.sha256(p_plan_bytes),'hex')
        OR p_manifest_sha256<>pg_catalog.encode(
@@ -30,9 +30,9 @@ BEGIN
     v_plan:=pg_catalog.convert_from(p_plan_bytes,'UTF8')::jsonb;
     v_manifest:=pg_catalog.convert_from(p_manifest_bytes,'UTF8')::jsonb;
     IF v_trust->>'schema'<>'recovery-trust-bundle.v1'
-       OR v_plan->>'schema'<>'forgecrud-recovery-artifact.v1'
+       OR v_plan->>'schema'<>'harpy-recovery-artifact.v1'
        OR v_plan->>'purpose'<>'restore_plan'
-       OR v_manifest->>'schema'<>'forgecrud-recovery-artifact.v1'
+       OR v_manifest->>'schema'<>'harpy-recovery-artifact.v1'
        OR v_manifest->>'purpose'<>'recovery_manifest'
        OR v_plan->>'environment_id'<>v_trust->>'environment_id'
        OR v_manifest->>'environment_id'<>v_trust->>'environment_id'

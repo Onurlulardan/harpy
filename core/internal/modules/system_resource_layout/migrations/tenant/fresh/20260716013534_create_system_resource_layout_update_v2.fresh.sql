@@ -43,7 +43,7 @@ BEGIN
     END IF;
     IF v_state IS DISTINCT FROM 'draft'
        OR v_row_revision IS DISTINCT FROM p_expected_row_revision
-       OR v_contract IS DISTINCT FROM 'forgecrud/system-resource-layout/v2' THEN
+       OR v_contract IS DISTINCT FROM 'harpy/system-resource-layout/v2' THEN
         RAISE EXCEPTION USING ERRCODE = '40001',
             MESSAGE = 'system resource layout revision conflicts';
     END IF;

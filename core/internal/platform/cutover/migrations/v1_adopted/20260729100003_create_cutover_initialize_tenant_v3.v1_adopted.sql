@@ -23,9 +23,9 @@ BEGIN
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR NOT (
            (p_operation_kind = 'environment_initialize'
-            AND v_application = 'forgecrud-v2:core-operator-initialize')
+            AND v_application = 'harpy-v2:core-operator-initialize')
            OR (p_operation_kind = 'saas_customer_tenant_provision'
-               AND v_application = 'forgecrud-v2:core-worker')
+               AND v_application = 'harpy-v2:core-worker')
        )
        OR p_operation_id IS NULL OR p_tenant_id IS NULL
        OR p_owner_user_id IS NULL OR p_operation_id = p_owner_user_id

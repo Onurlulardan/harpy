@@ -21,7 +21,7 @@ BEGIN
     v_document := '{"cardinality":' ||
         pg_catalog.to_jsonb(p_cardinality)::text ||
         ',"classification":' || pg_catalog.to_jsonb(p_classification)::text ||
-        ',"contract":"forgecrud/iam-profile-field-semantic/v1"' ||
+        ',"contract":"harpy/iam-profile-field-semantic/v1"' ||
         ',"id":' || pg_catalog.to_jsonb(p_field_id::text)::text ||
         ',"key":' || pg_catalog.to_jsonb(p_field_key)::text ||
         ',"logical_type":' || pg_catalog.to_jsonb(p_value_kind)::text ||

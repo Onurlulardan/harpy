@@ -14,7 +14,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
+            IS DISTINCT FROM 'harpy-v2:core-operator-initialize'
        OR platform.tenancy_authority_reconcile_scope_assert_v1(
            'billing'
        ) IS DISTINCT FROM TRUE THEN
@@ -23,7 +23,7 @@ BEGIN
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(
         pg_catalog.hashtextextended(
-            'forgecrud:billing:global-authority-reconcile:v2', 0
+            'harpy:billing:global-authority-reconcile:v2', 0
         )
     );
     SELECT group_row.generation, domain_row.generation

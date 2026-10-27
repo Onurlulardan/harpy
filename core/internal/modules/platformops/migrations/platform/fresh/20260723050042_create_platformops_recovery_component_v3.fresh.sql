@@ -26,7 +26,7 @@ DECLARE
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_component_kind NOT IN (
            'database_archive','documents_inventory','key_custody',
            'owner_anchor','protected_authority'

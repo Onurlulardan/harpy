@@ -6,7 +6,7 @@ import (
 	"hash"
 )
 
-const pageSealDomain = "forgecrud.restquery.aggregate-page.v1"
+const pageSealDomain = "harpy.restquery.aggregate-page.v1"
 
 func cloneGroups(groups [][]byte) [][]byte {
 	if groups == nil {

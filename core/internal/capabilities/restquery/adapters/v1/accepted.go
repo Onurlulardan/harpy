@@ -12,8 +12,8 @@ import (
 
 const (
 	WarningHeaderName      = "Warning"
-	DeprecatedWarningValue = `299 ForgeCRUD "Deprecated query syntax"`
-	acceptedSealDomain     = "forgecrud/rest-query/v1-accepted/v1\x00"
+	DeprecatedWarningValue = `299 Harpy "Deprecated query syntax"`
+	acceptedSealDomain     = "harpy/rest-query/v1-accepted/v1\x00"
 )
 
 type Accepted struct {

@@ -23,7 +23,7 @@ CREATE FUNCTION platform.platform_async_initial_admin_setup_enqueue_v2(
 )
 RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
-SET application_name TO 'forgecrud-v2:core-operator-initialize'
+SET application_name TO 'harpy-v2:core-operator-initialize'
 AS $function$
 DECLARE
     v_replayed boolean;
@@ -65,7 +65,7 @@ CREATE FUNCTION platform.platform_async_installation_activation_event_v2(
 )
 RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
-SET application_name TO 'forgecrud-v2:core-operator-initialize'
+SET application_name TO 'harpy-v2:core-operator-initialize'
 AS $function$
 DECLARE
     v_replayed boolean;

@@ -9,7 +9,7 @@ import (
 )
 
 func includeNodeSeal(node IncludeNode) ([sha256.Size]byte, error) {
-	writer := newSealWriter("forgecrud.restquery.postgres.include-node.v1")
+	writer := newSealWriter("harpy.restquery.postgres.include-node.v1")
 	path, pathErr := node.path.Value()
 	targetStorage, targetStorageErr := node.targetStorage.FingerprintSHA256()
 	relationStorage, relationStorageErr := node.relationStorage.FingerprintSHA256()

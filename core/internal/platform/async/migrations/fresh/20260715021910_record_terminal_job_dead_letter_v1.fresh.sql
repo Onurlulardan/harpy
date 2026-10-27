@@ -81,7 +81,7 @@ BEGIN
     );
     v_payload := pg_catalog.convert_to(
         '{"attempt":' || NEW.attempts::text ||
-        ',"contract_version":"forgecrud.job-terminal-reference.v1","job_id":' ||
+        ',"contract_version":"harpy.job-terminal-reference.v1","job_id":' ||
         pg_catalog.to_json(NEW.id::text)::text || ',"kind":' ||
         pg_catalog.to_json(NEW.kind)::text || ',"payload_reference":' ||
         pg_catalog.to_json(NEW.payload_ref)::text || ',"payload_revision":' ||
@@ -92,14 +92,14 @@ BEGIN
     v_payload_sha256 := pg_catalog.encode(pg_catalog.sha256(v_payload), 'hex');
     v_redacted_envelope := pg_catalog.jsonb_build_object(
         'attempt', NEW.attempts,
-        'contract_version', 'forgecrud.job-terminal-reference.v1',
+        'contract_version', 'harpy.job-terminal-reference.v1',
         'job_id', NEW.id, 'kind', NEW.kind,
         'payload_revision', NEW.payload_revision,
         'payload_sha256', NEW.payload_sha256,
         'reason_code', NEW.last_error_code
     );
     v_root_digest := pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud.job-terminal-dead-letter.v1' || pg_catalog.chr(10) ||
+        'harpy.job-terminal-dead-letter.v1' || pg_catalog.chr(10) ||
         'job_id=' || NEW.id::text || pg_catalog.chr(10) ||
         'attempt=' || NEW.attempts::text || pg_catalog.chr(10) ||
         'reason=' || NEW.last_error_code, 'UTF8'

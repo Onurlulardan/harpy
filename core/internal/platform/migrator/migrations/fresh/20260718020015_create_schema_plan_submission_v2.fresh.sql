@@ -39,7 +39,7 @@ BEGIN
             MESSAGE='schema V2 submission authority receipt is unavailable';
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:v2:schema-revision:'||p_tenant_id::text||':forms:'||
+        'harpy:v2:schema-revision:'||p_tenant_id::text||':forms:'||
         p_resource_kind||':'||p_resource_id::text,0
     ));
     SELECT existing.job_id,existing.generation,existing.job_state,existing.terminal

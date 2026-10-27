@@ -70,7 +70,7 @@ BEGIN
      AND session.result_authorization_version = oauth_grant.authorization_version
      AND session.result_platform_clock = oauth_grant.platform_authorization_clock
      AND session.result_security_epoch = oauth_grant.security_epoch
-     AND session.result_client_id = 'forgecrud-operator-console-v1'
+     AND session.result_client_id = 'harpy-operator-console-v1'
     LEFT JOIN iam_mcp_oauth_access_tokens AS access
       ON access.refresh_token_id = token.successor_id
     WHERE token.id = p_token_id AND token.family_id = p_family_id

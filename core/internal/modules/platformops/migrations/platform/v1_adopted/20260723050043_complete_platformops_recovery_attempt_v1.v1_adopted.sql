@@ -40,7 +40,7 @@ BEGIN
     v_now := pg_catalog.statement_timestamp();
     IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
+          IS DISTINCT FROM 'harpy-v2:core-database-backup-executor'
        OR p_recovery_set_id IS NULL OR p_attempt_id IS NULL
        OR p_lease_token IS NULL OR p_database_system_id IS NULL
        OR p_manifest_sha256 IS NULL OR p_manifest_bytes IS NULL
@@ -107,7 +107,7 @@ BEGIN
         RETURN false;
     END IF;
     v_manifest := pg_catalog.convert_from(p_manifest_bytes,'UTF8')::jsonb;
-    IF v_manifest->>'schema' IS DISTINCT FROM 'forgecrud-recovery-artifact.v1'
+    IF v_manifest->>'schema' IS DISTINCT FROM 'harpy-recovery-artifact.v1'
        OR v_manifest->>'purpose' IS DISTINCT FROM 'recovery_manifest'
        OR v_manifest->>'environment_id' IS DISTINCT FROM v_environment_id::text
        OR v_manifest->>'operation_id' IS DISTINCT FROM v_operation_id::text

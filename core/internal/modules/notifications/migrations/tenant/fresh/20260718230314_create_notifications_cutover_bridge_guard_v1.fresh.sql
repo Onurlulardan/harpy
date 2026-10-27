@@ -31,7 +31,7 @@ BEGIN
             MESSAGE='Notifications V1 bridge is disabled: signed mTLS receipt contract missing';
     END IF;
     RETURN pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/notifications/v1-bridge-disabled/v1:'||p_scope_id::text||':'||
+        'harpy/notifications/v1-bridge-disabled/v1:'||p_scope_id::text||':'||
         v_writer||':'||
         v_lifecycle||':'||v_generation::text||
         ':missing-signed-mtls-stable-effect-receipt-contract','UTF8'

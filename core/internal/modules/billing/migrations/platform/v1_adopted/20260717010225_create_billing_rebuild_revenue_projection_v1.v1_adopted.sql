@@ -54,7 +54,7 @@ BEGIN
     END IF;
 
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:v2:billing:revenue-rebuild', 0
+        'harpy:v2:billing:revenue-rebuild', 0
     ));
 
     SELECT digest.row_count, digest.revision_ceiling,

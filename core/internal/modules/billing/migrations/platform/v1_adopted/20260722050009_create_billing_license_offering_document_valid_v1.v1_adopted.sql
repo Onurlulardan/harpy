@@ -19,7 +19,7 @@ BEGIN
        OR (SELECT pg_catalog.count(*)
            FROM pg_catalog.jsonb_object_keys(p_document)) <> 13
        OR p_document ->> 'schema' <>
-            'forgecrud-license-derived-offering.v1'
+            'harpy-license-derived-offering.v1'
        OR p_document ->> 'offering_version_id' <>
             p_offering_version_id::text
        OR (p_document ->> 'revision')::bigint <> p_revision

@@ -95,7 +95,7 @@ BEGIN
         END IF;
         RETURN v_existing.deleted_count;
     END IF;
-    PERFORM pg_catalog.set_config('forgecrud.usage_retention', 'usage_retention_v1', true);
+    PERFORM pg_catalog.set_config('harpy.usage_retention', 'usage_retention_v1', true);
     WITH candidates AS (
         SELECT facts.fact_id FROM platform.usage_request_facts AS facts
         WHERE facts.environment_id = p_environment_id AND facts.occurred_at < p_delete_before

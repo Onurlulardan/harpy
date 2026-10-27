@@ -9,7 +9,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore' THEN
+          IS DISTINCT FROM 'harpy-v2:core-database-restore' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='restore heartbeat denied';
     END IF;
@@ -32,7 +32,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_failure_code !~ '^[a-z0-9_]{1,64}$' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='restore failure transition denied';

@@ -23,7 +23,7 @@ BEGIN
             MESSAGE = 'billing license offering input is invalid';
     END IF;
     v_metadata := pg_catalog.jsonb_build_object(
-        'name', 'ForgeCRUD License',
+        'name', 'Harpy License',
         'description', 'License-derived on-premise base offering',
         'sort_order', 0,
         'highlight_label', '',

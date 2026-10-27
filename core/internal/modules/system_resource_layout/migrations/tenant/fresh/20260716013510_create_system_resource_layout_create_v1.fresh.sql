@@ -33,7 +33,7 @@ BEGIN
             MESSAGE = 'system resource layout create contract is invalid';
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'forgecrud:system_resource_layout:' ||
+        'harpy:system_resource_layout:' ||
         pg_catalog.current_schema() || ':' || p_resource_kind, 0
     ));
     SELECT COALESCE(pg_catalog.max(revision.version), 0) + 1

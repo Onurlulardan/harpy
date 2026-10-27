@@ -26,7 +26,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore' THEN
+          IS DISTINCT FROM 'harpy-v2:core-database-restore' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='restore drain transition denied';
     END IF;
@@ -58,7 +58,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_drain_ack_sha256 !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='restore apply transition denied';
@@ -94,7 +94,7 @@ DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
-          IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
+          IS DISTINCT FROM 'harpy-v2:core-database-restore'
        OR p_archive_readback_sha256 !~ '^[0-9a-f]{64}$'
        OR p_new_database_system_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',

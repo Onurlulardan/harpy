@@ -21,7 +21,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name',true)
-            IS DISTINCT FROM 'forgecrud-cutover/'||p_run_id::text
+            IS DISTINCT FROM 'harpy-cutover/'||p_run_id::text
        OR p_scope_kind IS DISTINCT FROM 'global' OR p_scope_id IS NULL
        OR p_operation_id IS NULL OR p_run_id IS NULL
        OR p_relation_ordinal<1 OR p_checkpoint_key=''

@@ -16,7 +16,7 @@ BEGIN
             MESSAGE = 'system resource layout definition is invalid';
     END IF;
     v_document := p_definition::jsonb;
-    IF v_document ->> 'contract' = 'forgecrud/system-resource-layout/v1' THEN
+    IF v_document ->> 'contract' = 'harpy/system-resource-layout/v1' THEN
         SELECT COALESCE(
             pg_catalog.jsonb_agg(pg_catalog.to_jsonb(source.field_id)
                 ORDER BY source.field_id),

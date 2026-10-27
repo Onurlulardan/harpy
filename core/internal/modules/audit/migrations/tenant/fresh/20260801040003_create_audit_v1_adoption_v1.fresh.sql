@@ -11,7 +11,7 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = '22023', MESSAGE = 'AUDIT_V1_IDENTITY_INVALID';
     END IF;
     v_digest := pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:audit:v1-adoption:v1','UTF8') ||
+        pg_catalog.convert_to('harpy:audit:v1-adoption:v1','UTF8') ||
         pg_catalog.uuid_send(p_source_id) || '\x00'::bytea ||
         pg_catalog.convert_to(p_label,'UTF8'));
     v_digest := pg_catalog.set_byte(v_digest, 6,

@@ -18,7 +18,7 @@ BEGIN
             MESSAGE='Analytics Catalog deterministic identity input is invalid';
     END IF;
     v_bytes := pg_catalog.substring(pg_catalog.sha256(
-        pg_catalog.convert_to('forgecrud:analytics:catalog:v2','UTF8') ||
+        pg_catalog.convert_to('harpy:analytics:catalog:v2','UTF8') ||
         pg_catalog.uuid_send(p_component_id) ||
         pg_catalog.decode('00','hex') ||
         pg_catalog.convert_to(p_label,'UTF8')

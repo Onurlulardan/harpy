@@ -75,13 +75,13 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize' THEN
+            IS DISTINCT FROM 'harpy-v2:core-operator-initialize' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing global authority reconciliation is denied';
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(
         pg_catalog.hashtextextended(
-            'forgecrud:billing:global-authority-reconcile:v1', 0
+            'harpy:billing:global-authority-reconcile:v1', 0
         )
     );
     SELECT group_row.generation, domain_row.generation

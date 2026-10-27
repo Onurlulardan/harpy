@@ -71,7 +71,7 @@ BEGIN
         END IF;
     END IF;
     RETURN pg_catalog.jsonb_build_object(
-        'contract', 'forgecrud/iam-profile-write-contract/v1',
+        'contract', 'harpy/iam-profile-write-contract/v1',
         'plan_id', v_plan_id,
         'source', v_source,
         'target', v_target,

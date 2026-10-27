@@ -24,7 +24,7 @@ BEGIN
 
     SELECT pg_catalog.pg_try_advisory_xact_lock(
         pg_catalog.hashtextextended(
-            'forgecrud.platform_async.retention-cycle.v1', 0
+            'harpy.platform_async.retention-cycle.v1', 0
         )
     ) INTO lock_acquired;
     jobs_redacted := 0;

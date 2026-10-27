@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 )
 
-const pageSealDomain = "forgecrud.restquery.record-page.v1"
+const pageSealDomain = "harpy.restquery.record-page.v1"
 
 func cloneRecords(records [][]byte) [][]byte {
 	if records == nil {

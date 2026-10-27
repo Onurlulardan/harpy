@@ -25,7 +25,7 @@ BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
-            IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
+            IS DISTINCT FROM 'harpy-v2:core-operator-initialize'
        OR p_operation_id IS NULL
        OR p_manifest_sha256 !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

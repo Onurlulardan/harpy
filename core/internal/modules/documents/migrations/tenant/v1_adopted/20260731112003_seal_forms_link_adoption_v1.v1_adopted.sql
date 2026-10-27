@@ -31,7 +31,7 @@ BEGIN
     v_issued_micro:=(pg_catalog.date_part('epoch',p_issued_at)*1000000)::bigint;
     v_expected_source:=pg_catalog.sha256(
         pg_catalog.convert_to(
-            'forgecrud/forms/document-link-source-receipt/v1','UTF8') ||
+            'harpy/forms/document-link-source-receipt/v1','UTF8') ||
         pg_catalog.uuid_send(p_operation_id) ||
         pg_catalog.uuid_send(p_definition_id) ||
         pg_catalog.int8send(p_epoch) || pg_catalog.uuid_send(p_cursor) ||
@@ -65,7 +65,7 @@ BEGIN
     END IF;
     v_receipt:=pg_catalog.sha256(
         pg_catalog.convert_to(
-            'forgecrud/documents/form-record-adoption-receipt/v1','UTF8') ||
+            'harpy/documents/form-record-adoption-receipt/v1','UTF8') ||
         p_source_receipt || pg_catalog.uuid_send(p_operation_id) ||
         pg_catalog.int8send(p_epoch) || pg_catalog.int8send(v_issued_micro)
     );

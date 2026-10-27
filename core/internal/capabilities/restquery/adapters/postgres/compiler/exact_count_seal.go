@@ -6,7 +6,7 @@ func exactCountStatementSeal(
 	statement ExactCountStatement,
 ) ([sha256.Size]byte, error) {
 	writer := newSealWriter(
-		"forgecrud.restquery.postgres.exact-count-statement.v1",
+		"harpy.restquery.postgres.exact-count-statement.v1",
 	)
 	writer.writeString(statement.sql)
 	writer.writeInt(int64(statement.class))

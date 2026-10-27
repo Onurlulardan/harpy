@@ -80,7 +80,7 @@ BEGIN
             MESSAGE='Notifications V1 queue adoption evidence differs';
     END IF;
     RETURN pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
-        'forgecrud/notifications/v1-queue-evidence/v1:'||p_operation_id::text||':'||
+        'harpy/notifications/v1-queue-evidence/v1:'||p_operation_id::text||':'||
         p_run_id::text||':'||v_async_run::text||':'||v_generation::text||':'||
         v_inventory||':'||v_acceptance||':'||v_zero||':'||v_disposition_sha||':'||
         v_fence_sha||':'||v_expected_items::text,'UTF8'

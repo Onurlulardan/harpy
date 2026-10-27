@@ -1,6 +1,7 @@
 package async
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -33,11 +34,16 @@ func TestStaleJobForwardMigrationsFreezeDiscoveryAndLeastPrivilege(t *testing.T)
 		var source strings.Builder
 		var finalizer string
 		for _, document := range documents {
-			if strings.Contains(document.Path(), "/"+origin+"/202607150217") {
-				source.Write(document.Content())
-				if strings.Contains(document.Path(), "20260715021750_") {
-					finalizer = string(document.Content())
-				}
+			if !strings.Contains(document.Path(), "/fresh/202607150217") {
+				continue
+			}
+			content := document.Content()
+			if origin == "v1_adopted" {
+				content = readStaleJobAdoptedTwin(t, document.Path())
+			}
+			source.Write(content)
+			if strings.Contains(document.Path(), "20260715021750_") {
+				finalizer = string(content)
 			}
 		}
 		for _, marker := range markers {
@@ -52,4 +58,22 @@ func TestStaleJobForwardMigrationsFreezeDiscoveryAndLeastPrivilege(t *testing.T)
 			t.Fatalf("%s stale migration replaced an applied routine", origin)
 		}
 	}
+}
+
+func readStaleJobAdoptedTwin(t *testing.T, freshPath string) []byte {
+	t.Helper()
+	const prefix = "core/internal/platform/async/"
+	if !strings.HasPrefix(freshPath, prefix) ||
+		!strings.Contains(freshPath, "/fresh/") ||
+		!strings.HasSuffix(freshPath, ".fresh.sql") {
+		t.Fatalf("stale job fresh path is invalid: %s", freshPath)
+	}
+	relative := strings.TrimPrefix(freshPath, prefix)
+	relative = strings.Replace(relative, "/fresh/", "/v1_adopted/", 1)
+	relative = strings.TrimSuffix(relative, ".fresh.sql") + ".v1_adopted.sql"
+	content, err := os.ReadFile(relative)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return content
 }

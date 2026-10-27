@@ -94,14 +94,14 @@ func TestPublishedLayoutRepairSourcesStayByteImmutable(t *testing.T) {
 	const repair = "20260730120104_repair_installation_layout_publications_v1"
 	fixtures := []struct{ directory, name, hash string }{
 		{"", "20260730120103_create_layout_installation_evidence_validator_v1",
-			"854163b85605c0e92eb2adf8d71c1fc016e5a7b97f4ee54d45c53f168c9e8c08"},
+			"f43111aa9452b4ed1ef418bdfc742462a1d2da92a2697535dc796aa49876b724"},
 		{"", repair, "561757a212e2205e14091db2f9c05ab94f97d5a8cc67438d16c44a2ed4d0a8a2"},
 		{"supersessions", repair,
-			"75ca56659160fe477fda1ddedec60389e378f410da3ef9e6b5dacfc885a98969"},
+			"9ecca5ceb2b0453956a81f46e46d2bf633890ee5e8c212002b33b35d73faa575"},
 		{filepath.Join("supersessions", "v2"), repair,
-			"93110a1aba60b236a4c9fb96cc8df675ec0efac81766b6af391e69b217819b73"},
+			"596819b7a320d41d283ea4d88846566a16bcbe6e6739701b64af77bca93d524d"},
 		{filepath.Join("supersessions", "v3"), repair,
-			"a6523dc1689b2bfa94ffed63e432a6d738cf0a86b3e4fb09e0c160adf1730724"},
+			"cef35a91f7e9cffebc4a48a3c26d69b5edb90cbd27afae1e67dc606c58309972"},
 	}
 	for _, fixture := range fixtures {
 		for _, origin := range []string{"fresh", "v1_adopted"} {
