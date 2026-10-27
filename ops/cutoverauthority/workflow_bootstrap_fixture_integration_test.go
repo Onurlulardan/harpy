@@ -15,9 +15,6 @@ func workflowBootstrapAuthority(now time.Time) runtimev1.BootstrapAuthorityManif
 		workflowBootstrapRole("harpy_owner", true, "permanent", false, false, false, false, -1),
 		workflowBootstrapRole("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
 		workflowBootstrapRole("harpy_runtime", true, "permanent", false, false, false, false, -1),
-		workflowBootstrapRole("forge_runtime", true, "compatibility", false, false, false, false, -1),
-		workflowBootstrapRole("harpy_forms_record_reader", true, "permanent", false, false, false, false, -1),
-		workflowBootstrapRole("harpy_forms_record_writer", true, "permanent", false, false, false, false, -1),
 		workflowBootstrapRole("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
 		workflowBootstrapRole("harpy_migrator", true, "permanent", true, false, false, false, -1),
 		workflowBootstrapRole("harpy_v1_runtime", false, "coexistence", false, false, false, false, -1),
@@ -34,8 +31,6 @@ func workflowBootstrapAuthority(now time.Time) runtimev1.BootstrapAuthorityManif
 	}
 	memberships := []runtimev1.BootstrapAuthorityMembership{
 		workflowMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		workflowMembership("harpy_v2_runtime", "harpy_forms_record_reader", true, false, true),
-		workflowMembership("harpy_v2_runtime", "harpy_forms_record_writer", true, false, true),
 		workflowMembership("harpy_migrator", "harpy_owner", true, false, true),
 		workflowMembership("harpy_backup", "harpy_backup_reader", true, false, true),
 		workflowMembership("harpy_restore", "harpy_owner", true, false, true),

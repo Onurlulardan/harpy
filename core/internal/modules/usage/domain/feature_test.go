@@ -5,8 +5,8 @@ import "testing"
 func TestFeatureForRouteUsesTemplatesOnly(t *testing.T) {
 	cases := map[string]string{
 		"/api/auth/login":                         "Authentication",
-		"/api/form-engine/dynamic/{form_slug}":    "Form: {form_slug}",
-		"/api/form-engine/dynamic/purchase-order": "Form: purchase-order",
+		"/api/form-engine/dynamic/purchase-order": "Other",
+		"/api/ai/chat":                            "Other",
 		"/api/traces/{id}":                        "Traces",
 		"/api/system/health":                      "System Health",
 		"/api/alerts":                             "System Health",

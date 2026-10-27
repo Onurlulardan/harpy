@@ -18,7 +18,7 @@ func assertProductionRoleFixture(
 	expected := builtEntrypointRolesManifest().Roles
 	var count int
 	if err := admin.QueryRow(ctx, `SELECT count(*) FROM pg_catalog.pg_roles
-WHERE rolname LIKE 'harpy_%' OR rolname='forge_runtime'`).Scan(&count); err != nil || count != len(expected) {
+WHERE rolname LIKE 'harpy_%'`).Scan(&count); err != nil || count != len(expected) {
 		t.Fatalf("production role fixture count=%d want=%d err=%v", count, len(expected), err)
 	}
 	for _, role := range expected {
@@ -44,12 +44,6 @@ FROM pg_catalog.pg_authid AS role WHERE role.rolname=$1`, role.Name).Scan(
 	}
 	assertProductionRoleMembership(
 		t, ctx, admin, "harpy_v2_runtime", "harpy_runtime",
-	)
-	assertProductionRoleMembership(
-		t, ctx, admin, "harpy_v2_runtime", "harpy_forms_record_reader",
-	)
-	assertProductionRoleMembership(
-		t, ctx, admin, "harpy_v2_runtime", "harpy_forms_record_writer",
 	)
 	assertProductionRoleMembership(
 		t, ctx, admin, "harpy_migrator", "harpy_owner",

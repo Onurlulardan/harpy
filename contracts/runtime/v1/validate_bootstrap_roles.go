@@ -7,8 +7,8 @@ func validateBootstrapAuthorityRoles(
 	origin DatabaseOrigin,
 	database BootstrapAuthorityDatabase,
 ) error {
-	if len(roles) != 19 {
-		return fmt.Errorf("bootstrap authority must contain exactly nineteen roles")
+	if len(roles) != 16 {
+		return fmt.Errorf("bootstrap authority must contain exactly sixteen roles")
 	}
 	v1Enabled := origin == DatabaseOriginV1Adopted
 	legacyEnabled := origin == DatabaseOriginV1Adopted &&
@@ -17,9 +17,6 @@ func validateBootstrapAuthorityRoles(
 		roleContract("harpy_owner", true, "permanent", false, false, false, false, -1),
 		roleContract("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
 		roleContract("harpy_runtime", true, "permanent", false, false, false, false, -1),
-		roleContract("forge_runtime", true, "compatibility", false, false, false, false, -1),
-		roleContract("harpy_forms_record_reader", true, "permanent", false, false, false, false, -1),
-		roleContract("harpy_forms_record_writer", true, "permanent", false, false, false, false, -1),
 		roleContract("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
 		roleContract("harpy_migrator", true, "permanent", true, false, false, false, -1),
 		roleContract("harpy_v1_runtime", v1Enabled, "coexistence", v1Enabled, false, false, false, -1),

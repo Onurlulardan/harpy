@@ -63,7 +63,7 @@ func assertSystemResourceMethods(
 ) {
 	t.Helper()
 	want := map[string][]string{
-		"collection": {"get", "post"},
+		"collection": {"get", "post", "delete"},
 		"query":      {"post"},
 		"item":       {"parameters", "get", "put", "delete"},
 		"state":      {"patch"},
@@ -80,6 +80,12 @@ func assertSystemResourceMethods(
 			if item[method] == nil {
 				t.Fatalf("%s/%s is missing %s", resource, name, method)
 			}
+		}
+	}
+	if resource == "users" {
+		operation := items["collection"].(map[string]any)["delete"].(map[string]any)
+		if operation["operationId"] != "iamDeleteUsers" {
+			t.Fatalf("users collection delete operationId=%v", operation["operationId"])
 		}
 	}
 }

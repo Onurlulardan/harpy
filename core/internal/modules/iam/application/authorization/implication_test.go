@@ -24,37 +24,21 @@ func TestEvaluateDoesNotGrantFormsParentImplication(t *testing.T) {
 		ImpliedResourceID: testResourceID, ImpliedActionID: testActionID,
 		ImpliedResourceState: "active", ImpliedActionState: "active",
 	}
-	decision := evaluate(
-		testRequest(t), testSnapshot(t, []BindingFact{binding}, []ImplicationFact{edge}),
+	_, err := NewSnapshot(
+		&ActorFact{ID: testActorID, Status: "active", TokenVersion: 7, AuthorizationVersion: 9},
+		&ResourceFact{ID: testResourceID, State: "active", Protected: true},
+		&ActionFact{ID: testActionID, State: "active"},
+		11, []BindingFact{binding}, []ImplicationFact{edge},
 	)
-	if decision.Allowed() || decision.Reason() != ReasonNoEffectivePermission {
-		t.Fatalf("forms parent implication granted access: %t/%s",
-			decision.Allowed(), decision.Reason())
-	}
-	edge.State = "retired"
-	decision = evaluate(
-		testRequest(t), testSnapshot(t, []BindingFact{binding}, []ImplicationFact{edge}),
-	)
-	if decision.Allowed() {
-		t.Fatal("retired implication allowed access")
+	if err == nil {
+		t.Fatal("forms parent implication was accepted as authorization evidence")
 	}
 }
 
 func TestEvaluateDoesNotChainOrInventHierarchy(t *testing.T) {
 	binding := testExactBinding(SubjectUser)
-	edge := ImplicationFact{
-		ID:   uuid.MustParse("25000000-0000-4000-8000-000000000001"),
-		Kind: "v1_form_parent_v1", State: "active",
-		SourcePermissionID:    uuid.MustParse("26000000-0000-4000-8000-000000000001"),
-		SourcePermissionState: "active",
-		SourceResourceID:      testResourceID, SourceActionID: testActionID,
-		SourceResourceState: "active", SourceActionState: "active",
-		ImpliedPermissionID: testPermissionID, ImpliedPermissionState: "active",
-		ImpliedResourceID: testResourceID, ImpliedActionID: testActionID,
-		ImpliedResourceState: "active", ImpliedActionState: "active",
-	}
 	decision := evaluate(
-		testRequest(t), testSnapshot(t, []BindingFact{binding}, []ImplicationFact{edge}),
+		testRequest(t), testSnapshot(t, []BindingFact{binding}, nil),
 	)
 	if decision.Reason() != ReasonDirectUserExact {
 		t.Fatalf("unrelated edge changed direct decision to %s", decision.Reason())
@@ -82,18 +66,24 @@ func TestEvaluateDoesNotGrantFormsRecordOperation(t *testing.T) {
 				ImpliedResourceID:      testResourceID, ImpliedActionID: testActionID,
 				ImpliedResourceState: "active", ImpliedActionState: "active",
 			}
-			decision := evaluate(testRequest(t),
-				testSnapshot(t, []BindingFact{binding}, []ImplicationFact{edge}))
-			if decision.Allowed() {
-				t.Fatalf("forms record implication granted %s", path)
+			_, err := NewSnapshot(
+				&ActorFact{ID: testActorID, Status: "active", TokenVersion: 7, AuthorizationVersion: 9},
+				&ResourceFact{ID: testResourceID, State: "active", Protected: true},
+				&ActionFact{ID: testActionID, State: "active"},
+				11, []BindingFact{binding}, []ImplicationFact{edge},
+			)
+			if err == nil {
+				t.Fatalf("forms record implication accepted for %s", path)
 			}
 		})
 	}
 }
 
 func TestEvaluateRejectsUnknownImplicationKind(t *testing.T) {
-	edge := ImplicationFact{ID: uuid.New(), Kind: "unknown_v1", State: "active"}
-	if edge.valid() {
-		t.Fatal("unknown implication kind is valid")
+	for _, kind := range []string{"unknown_v1", "v1_form_parent_v1", "forms_record_operation_v1"} {
+		edge := ImplicationFact{ID: uuid.New(), Kind: kind, State: "active"}
+		if edge.valid() {
+			t.Fatalf("%s implication kind is valid", kind)
+		}
 	}
 }

@@ -21,17 +21,6 @@ func builtEntrypointAuthorityRoles() []runtimev1.BootstrapAuthorityRole {
 			"harpy_runtime", true, "permanent", false, false, false, false, -1,
 		),
 		builtEntrypointAuthorityRole(
-			"forge_runtime", true, "compatibility", false, false, false, false, -1,
-		),
-		builtEntrypointAuthorityRole(
-			"harpy_forms_record_reader", true, "permanent",
-			false, false, false, false, -1,
-		),
-		builtEntrypointAuthorityRole(
-			"harpy_forms_record_writer", true, "permanent",
-			false, false, false, false, -1,
-		),
-		builtEntrypointAuthorityRole(
 			"harpy_v2_runtime", true, "permanent", true, false, false, false, -1,
 		),
 		builtEntrypointAuthorityRole(

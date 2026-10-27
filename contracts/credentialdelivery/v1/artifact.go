@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	ArtifactSchema       = "harpy-installation-credential-delivery-artifact.v1"
-	ForgeGuardAdapterID  = "forgeguard"
-	MaximumArtifactBytes = 4096
+	ArtifactSchema        = "harpy-installation-credential-delivery-artifact.v1"
+	InstallationAdapterID = "local-terminal"
+	MaximumArtifactBytes  = 4096
 )
 
 var ErrInvalidArtifact = errors.New("credential delivery artifact is invalid")
@@ -58,7 +58,7 @@ func (artifact SealedArtifact) valid() bool {
 	ciphertext, ciphertextErr := base64.RawURLEncoding.Strict().DecodeString(artifact.Ciphertext)
 	return artifact.Schema == ArtifactSchema && operationErr == nil &&
 		operationID.Version() == uuid.Version(7) && attemptErr == nil && attemptID != uuid.Nil &&
-		artifact.AdapterID == ForgeGuardAdapterID && digestPattern.MatchString(artifact.ClaimTokenSHA256) &&
+		artifact.AdapterID == InstallationAdapterID && digestPattern.MatchString(artifact.ClaimTokenSHA256) &&
 		leaseErr == nil && lease.Location() == time.UTC && nonceErr == nil && len(nonce) == 12 &&
 		ciphertextErr == nil && len(ciphertext) == 48
 }

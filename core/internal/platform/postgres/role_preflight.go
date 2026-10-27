@@ -27,7 +27,6 @@ func validateRolePreflight(
 	var sessionRole, currentRole roleCatalog
 	var admin, inherit, set bool
 	var membershipCount int
-	var formsReader, formsWriter bool
 	var sessionTemp, currentTemp, currentCreate bool
 	var sessionConnect, currentConnect bool
 	err := queryer.QueryRow(ctx, preflightRolesSQL).Scan(
@@ -37,7 +36,7 @@ func validateRolePreflight(
 		&currentRole.name, &currentRole.superuser, &currentRole.inherit,
 		&currentRole.createRole, &currentRole.createDB, &currentRole.login,
 		&currentRole.replication, &currentRole.bypassRLS, &currentRole.connLimit,
-		&admin, &inherit, &set, &membershipCount, &formsReader, &formsWriter,
+		&admin, &inherit, &set, &membershipCount,
 		&sessionTemp, &currentTemp, &sessionConnect, &currentConnect, &currentCreate,
 	)
 	if err != nil {
@@ -47,7 +46,6 @@ func validateRolePreflight(
 		!safeRole(currentRole, contract.currentUser, contract.currentLogin) ||
 		admin || inherit || set != contract.memberSet ||
 		membershipCount != contract.memberships ||
-		formsReader != contract.formsRecord || formsWriter != contract.formsRecord ||
 		sessionTemp || (!contract.currentTemp && currentTemp) ||
 		!sessionConnect || !currentConnect || currentCreate != contract.currentCreate {
 		return fmt.Errorf("%w: role contract", ErrStartupPreflight)

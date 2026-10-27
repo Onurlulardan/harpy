@@ -22,7 +22,6 @@ func TestCatalogPG18FreshAndAdoptedLifecycleReplayIsolation(t *testing.T) {
 			coordinator := openCatalogCoordinator(t, ctx, database)
 			assertCatalogLifecycleReplayIsolation(t, ctx, database, coordinator)
 			assertCatalogDemoLifecycleAtomicity(t, ctx, database, coordinator)
-			assertCatalogAIWorkspaceProjection(t, ctx, database, coordinator)
 			if origin == "v1_adopted" {
 				assertCatalogAdoption(t, ctx, coordinator)
 				assertCatalogRowCount(t, ctx, database.owner,

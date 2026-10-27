@@ -12,9 +12,12 @@ func TestIAMSystemResourceQuerySchemasSeparatePartialAndCanonicalItems(t *testin
 	))["schemas"].(map[string]any)
 
 	user := records["UserRecord"].(map[string]any)
-	iamAssertAbsent(t, user["properties"].(map[string]any), "first_name", "last_name")
-	if iamStringSet(user["required"])["email"] {
-		t.Fatal("confidential user email cannot be required in a response")
+	iamAssertPresent(t, user["properties"].(map[string]any), "first_name", "last_name")
+	required := iamStringSet(user["required"])
+	for _, name := range []string{"email", "first_name", "last_name"} {
+		if !required[name] {
+			t.Fatalf("user response must require published field %s", name)
+		}
 	}
 	resource := records["ResourceRecord"].(map[string]any)
 	if resource["oneOf"] != nil || len(resource["anyOf"].([]any)) != 3 {
@@ -57,6 +60,9 @@ func TestIAMSystemResourcePathsPublishCanonicalAndDirectQueryFailures(t *testing
 			"200", "400", "401", "403", "422", "503")
 		iamAssertResponseCodes(t, collection, "post",
 			"201", "400", "401", "403", "409", "413", "415", "422", "503")
+		iamAssertResponseReference(t, collection, "delete", "200", "Delete")
+		iamAssertResponseCodes(t, collection, "delete",
+			"200", "400", "401", "403", "409", "413", "415", "503")
 		iamAssertResponseCodes(t, items["query"].(map[string]any), "post",
 			"200", "400", "401", "403", "413", "415", "422", "503")
 		item := items["item"].(map[string]any)

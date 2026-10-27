@@ -60,10 +60,10 @@ func TestRolesManifestRejectsCatalogDrift(t *testing.T) {
 			roles[0], roles[1] = roles[1], roles[0]
 		}},
 		{"extension admin not superuser", func(value map[string]any) {
-			value["roles"].([]any)[9].(map[string]any)["superuser"] = false
+			value["roles"].([]any)[6].(map[string]any)["superuser"] = false
 		}},
 		{"cluster admin can login", func(value map[string]any) {
-			value["roles"].([]any)[8].(map[string]any)["login"] = true
+			value["roles"].([]any)[5].(map[string]any)["login"] = true
 		}},
 		{"role has unknown attribute", func(value map[string]any) {
 			value["roles"].([]any)[0].(map[string]any)["temporary"] = true

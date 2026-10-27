@@ -26,7 +26,7 @@ func TestV1DifferentialPinsActualSourceSnapshot(t *testing.T) {
 		}
 		paths[source.Path] = struct{}{}
 	}
-	if len(sources) != 8 || len(paths) != len(sources) {
+	if len(sources) != 3 || len(paths) != len(sources) {
 		t.Fatalf("V1 source snapshot count = %d/%d", len(sources), len(paths))
 	}
 }

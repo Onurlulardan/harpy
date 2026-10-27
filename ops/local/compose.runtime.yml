@@ -69,7 +69,6 @@ services:
       - local-secret-api:/run/secrets:ro
       - local-dev-authority:/run/dev-authority:ro
       - local-recovery-signing:/run/recovery-signing:ro
-      - forms-import-staging:/var/lib/harpy/forms-import-staging
       - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
     depends_on:
       postgres:
@@ -105,7 +104,6 @@ services:
     volumes:
       - local-secret-worker:/run/secrets:ro
       - local-dev-authority:/run/dev-authority
-      - forms-export-spool:/var/lib/harpy/forms-export-spool
       - analytics-dashboard-export-spool:/var/lib/harpy/analytics-dashboard-export-spool
       - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
     depends_on:

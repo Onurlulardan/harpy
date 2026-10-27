@@ -28,7 +28,6 @@ type profileContract struct {
 	memberships     int
 	memberSet       bool
 	currentLogin    bool
-	formsRecord     bool
 	currentTemp     bool
 	currentCreate   bool
 }
@@ -66,8 +65,7 @@ func runtimeProfile(application string) profileContract {
 	return profileContract{
 		sessionUser: "harpy_v2_runtime", currentUser: "harpy_runtime",
 		applicationName: "harpy-v2:" + application, runtime: true,
-		foundation: true, profileTx: true, memberships: 3, memberSet: true,
-		formsRecord: true,
+		foundation: true, profileTx: true, memberships: 1, memberSet: true,
 	}
 }
 

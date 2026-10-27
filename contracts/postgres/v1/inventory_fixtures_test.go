@@ -7,14 +7,6 @@ func validPrivilegesManifest(origin string) map[string]any {
 			"admin_option": false, "inherit_option": false, "set_option": true,
 		},
 		map[string]any{
-			"member": "harpy_v2_runtime", "role": "harpy_forms_record_reader",
-			"admin_option": false, "inherit_option": false, "set_option": true,
-		},
-		map[string]any{
-			"member": "harpy_v2_runtime", "role": "harpy_forms_record_writer",
-			"admin_option": false, "inherit_option": false, "set_option": true,
-		},
-		map[string]any{
 			"member": "harpy_migrator", "role": "harpy_owner",
 			"admin_option": false, "inherit_option": false, "set_option": true,
 		},

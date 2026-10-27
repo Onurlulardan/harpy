@@ -11,7 +11,7 @@ func TestExternalEffectPermitSealsRequestAndWorkerAuthority(t *testing.T) {
 	t.Parallel()
 	repository, claim := validLifecycleClaim(t, jobsv1.EffectExternal)
 	spec := validExternalSpec(t)
-	if spec.Provider() != "forms-exporter" || spec.Operation() != "export" {
+	if spec.Provider() != "analytics-exporter" || spec.Operation() != "export" {
 		t.Fatalf("spec getters = %q %q", spec.Provider(), spec.Operation())
 	}
 	startedAt := time.Now().UTC()

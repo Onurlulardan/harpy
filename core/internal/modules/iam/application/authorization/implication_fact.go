@@ -35,7 +35,12 @@ func (fact ImplicationFact) valid() bool {
 }
 
 func validImplicationKind(kind string) bool {
-	return kind == "v1_form_parent_v1" || kind == "forms_record_operation_v1"
+	switch kind {
+	case "v1_form_parent_v1", "forms_record_operation_v1":
+		return false
+	default:
+		return false
+	}
 }
 
 func (fact ImplicationFact) activeFor(resourceID, actionID uuid.UUID) bool {

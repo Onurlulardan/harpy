@@ -56,7 +56,7 @@ func sealArtifactWithNonce(
 	}
 	artifact := SealedArtifact{
 		Schema: ArtifactSchema, OperationID: operationID.String(), AttemptID: attemptID.String(),
-		AdapterID: ForgeGuardAdapterID, ClaimTokenSHA256: claimTokenSHA256,
+		AdapterID: InstallationAdapterID, ClaimTokenSHA256: claimTokenSHA256,
 		LeaseExpiresAt: leaseExpiresAt.Format(time.RFC3339Nano),
 		Nonce:          base64.RawURLEncoding.EncodeToString(nonce),
 	}

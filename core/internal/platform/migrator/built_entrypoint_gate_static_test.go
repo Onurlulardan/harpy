@@ -32,7 +32,6 @@ func TestBuiltEntrypointGateUsesProductionRoleFixture(t *testing.T) {
 	document := readBuiltEntrypointGateSource(t, "production_role_fixture_integration_test.go")
 	for _, role := range []string{
 		"harpy_cluster_admin", "harpy_extension_admin",
-		"harpy_forms_record_reader", "harpy_forms_record_writer",
 		"harpy_adopter", "harpy_cutover_decoder", "harpy_cutover_finalizer",
 	} {
 		if !strings.Contains(document, role) {

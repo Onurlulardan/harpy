@@ -14,7 +14,7 @@ func TestStepUpPurposeHasStableBrowserVector(t *testing.T) {
 		t.Fatal(err)
 	}
 	encoded := base64.RawURLEncoding.EncodeToString(digest[:])
-	const expected = "wtK89l_CJ4HBUsIGY3_3F-77uD6k8B6NBdLlFSJEl4M"
+	const expected = "cggpnm0EOMUoG0a_C-hv5vhfiMwjrWK8cLySsNF_ucE"
 	if encoded != expected {
 		t.Fatalf("step-up vector drifted: %s", encoded)
 	}

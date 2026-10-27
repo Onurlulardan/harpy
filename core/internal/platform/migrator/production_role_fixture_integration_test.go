@@ -11,12 +11,6 @@ func productionRoleFixtureStatements(databaseName string) []string {
 			"PASSWORD NULL VALID UNTIL 'infinity'",
 		"CREATE ROLE harpy_runtime NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB " +
 			"NOCREATEROLE NOREPLICATION NOBYPASSRLS",
-		"CREATE ROLE forge_runtime NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB " +
-			"NOCREATEROLE NOREPLICATION NOBYPASSRLS",
-		"CREATE ROLE harpy_forms_record_reader NOLOGIN NOINHERIT NOSUPERUSER " +
-			"NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS",
-		"CREATE ROLE harpy_forms_record_writer NOLOGIN NOINHERIT NOSUPERUSER " +
-			"NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS",
 		"CREATE ROLE harpy_v2_runtime LOGIN NOINHERIT NOSUPERUSER NOCREATEDB " +
 			"NOCREATEROLE NOREPLICATION NOBYPASSRLS",
 		"CREATE ROLE harpy_migrator LOGIN NOINHERIT NOSUPERUSER NOCREATEDB " +
@@ -50,10 +44,6 @@ func productionRoleFixtureStatements(databaseName string) []string {
 	}
 	return append(statements,
 		"GRANT harpy_runtime TO harpy_v2_runtime "+
-			"WITH ADMIN FALSE, INHERIT FALSE, SET TRUE",
-		"GRANT harpy_forms_record_reader TO harpy_v2_runtime "+
-			"WITH ADMIN FALSE, INHERIT FALSE, SET TRUE",
-		"GRANT harpy_forms_record_writer TO harpy_v2_runtime "+
 			"WITH ADMIN FALSE, INHERIT FALSE, SET TRUE",
 		"GRANT harpy_owner TO harpy_migrator "+
 			"WITH ADMIN FALSE, INHERIT FALSE, SET TRUE",

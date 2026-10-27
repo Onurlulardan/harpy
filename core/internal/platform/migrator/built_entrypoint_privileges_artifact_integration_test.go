@@ -17,8 +17,6 @@ func TestBuiltEntrypointPrivilegesManifestValidates(t *testing.T) {
 func builtEntrypointPrivilegesManifest() postgresv1.PrivilegesManifest {
 	memberships := []postgresv1.RoleMembership{
 		{Member: "harpy_v2_runtime", Role: "harpy_runtime", SetOption: true},
-		{Member: "harpy_v2_runtime", Role: "harpy_forms_record_reader", SetOption: true},
-		{Member: "harpy_v2_runtime", Role: "harpy_forms_record_writer", SetOption: true},
 		{Member: "harpy_migrator", Role: "harpy_owner", SetOption: true},
 		{Member: "harpy_backup", Role: "harpy_backup_reader", SetOption: true},
 		{Member: "harpy_restore", Role: "harpy_owner", SetOption: true},

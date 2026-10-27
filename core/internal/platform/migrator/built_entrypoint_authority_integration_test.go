@@ -49,12 +49,6 @@ func builtEntrypointAuthorityManifest(
 				"harpy_v2_runtime", "harpy_runtime", true, false, true,
 			),
 			builtEntrypointAuthorityMembership(
-				"harpy_v2_runtime", "harpy_forms_record_reader", true, false, true,
-			),
-			builtEntrypointAuthorityMembership(
-				"harpy_v2_runtime", "harpy_forms_record_writer", true, false, true,
-			),
-			builtEntrypointAuthorityMembership(
 				"harpy_migrator", "harpy_owner", true, false, true,
 			),
 			builtEntrypointAuthorityMembership(

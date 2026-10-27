@@ -12,9 +12,5 @@
 !notification-service/**
 !document-service/**
 !log-service/**
-!form-engine-service/**
-!workflow-service/**
 !openapi-service/**
-!ai-chat-service/**
-!mcp-service/**
 

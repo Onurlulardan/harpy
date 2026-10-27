@@ -17,8 +17,8 @@ func TestRetirementKeyDomainSeparatedGolden(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := "rq.alias.c0226b2c0e6b86c91cb8a8bb6e8038ce" +
-		"77f9e69e8d37be23fd26d7afc1a98bff"
+	want := "rq.alias.03cef2893997f4c67dcfa7290c872eb4" +
+		"7119c250b09e166cc60a7e1dbefdaca6"
 	if value != want {
 		t.Fatalf("retirement key=%q", value)
 	}

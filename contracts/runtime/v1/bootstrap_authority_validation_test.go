@@ -10,7 +10,7 @@ func TestValidateBootstrapAuthorityManifestAcceptsExactOrigins(t *testing.T) {
 	retained := validAuthorityManifest("v1_adopted", digest)
 	authorityDatabase(retained)["extension_owner"] = "oracle"
 	authorityDatabase(retained)["extension_owner_mode"] = "adopted_retained_inventory"
-	authorityRole(retained, 11)["enabled"] = false
+	authorityRole(retained, 8)["enabled"] = false
 	fixtures := []map[string]any{
 		validAuthorityManifest("fresh", digest),
 		validAuthorityManifest("v1_adopted", digest),
@@ -31,12 +31,12 @@ func TestValidateBootstrapAuthorityManifestRejectsSemanticDrift(t *testing.T) {
 		mutate func(*BootstrapAuthorityManifest)
 	}{
 		{"environment identity", func(value *BootstrapAuthorityManifest) { value.EnvironmentID = "" }},
-		{"incomplete role set", func(value *BootstrapAuthorityManifest) { value.Roles = value.Roles[:16] }},
+		{"incomplete role set", func(value *BootstrapAuthorityManifest) { value.Roles = value.Roles[:15] }},
 		{"authority owner login", func(value *BootstrapAuthorityManifest) { value.Roles[1].Login = true }},
-		{"adopter replication", func(value *BootstrapAuthorityManifest) { value.Roles[12].Replication = true }},
-		{"decoder login", func(value *BootstrapAuthorityManifest) { value.Roles[13].Login = true }},
-		{"adopter connection", func(value *BootstrapAuthorityManifest) { value.Roles[12].ConnectionLimit = 1 }},
-		{"incomplete memberships", func(value *BootstrapAuthorityManifest) { value.Memberships = value.Memberships[:5] }},
+		{"adopter replication", func(value *BootstrapAuthorityManifest) { value.Roles[9].Replication = true }},
+		{"decoder login", func(value *BootstrapAuthorityManifest) { value.Roles[10].Login = true }},
+		{"adopter connection", func(value *BootstrapAuthorityManifest) { value.Roles[9].ConnectionLimit = 1 }},
+		{"incomplete memberships", func(value *BootstrapAuthorityManifest) { value.Memberships = value.Memberships[:4] }},
 		{"two leases", func(value *BootstrapAuthorityManifest) { value.CredentialLeases = value.CredentialLeases[:1] }},
 		{"unique lease IDs", func(value *BootstrapAuthorityManifest) {
 			value.CredentialLeases[1].LeaseID = value.CredentialLeases[0].LeaseID

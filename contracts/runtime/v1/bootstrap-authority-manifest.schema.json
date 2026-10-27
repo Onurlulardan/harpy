@@ -60,14 +60,11 @@
     },
     "createrole_self_grant": {"const": ""},
     "roles": {
-      "type": "array", "minItems": 19, "maxItems": 19, "items": false,
+      "type": "array", "minItems": 16, "maxItems": 16, "items": false,
       "prefixItems": [
         {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_owner"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
         {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_cutover_authority_owner"}, "enabled": {"const": true}, "credential_mode": {"const": "externally_provisioned"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
         {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_runtime"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
-        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "forge_runtime"}, "enabled": {"const": true}, "credential_mode": {"const": "compatibility"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
-        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_forms_record_reader"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
-        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_forms_record_writer"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
         {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_v2_runtime"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
         {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_migrator"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
         {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_v1_runtime"}, "credential_mode": {"const": "coexistence"}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
@@ -84,11 +81,9 @@
       ]
     },
     "memberships": {
-      "type": "array", "minItems": 7, "maxItems": 7, "items": false,
+      "type": "array", "minItems": 5, "maxItems": 5, "items": false,
       "prefixItems": [
         {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v2_runtime"}, "role": {"const": "harpy_runtime"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
-        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v2_runtime"}, "role": {"const": "harpy_forms_record_reader"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
-        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v2_runtime"}, "role": {"const": "harpy_forms_record_writer"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
         {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_migrator"}, "role": {"const": "harpy_owner"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
         {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_backup"}, "role": {"const": "harpy_backup_reader"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
         {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_restore"}, "role": {"const": "harpy_owner"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
@@ -111,23 +106,23 @@
   "allOf": [
     {"if": {"properties": {"database_origin": {"const": "fresh"}}}, "then": {"properties": {
       "database": {"properties": {"create_database": {"const": true}, "source_owner": {"type": "null"}, "extension_owner": {"const": "harpy_extension_admin"}, "extension_owner_mode": {"const": "fresh_leased_admin"}, "ownership_executor": {"const": "cluster_bootstrap"}, "template": {"const": "template0"}}},
-      "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}, "login": {"const": false}}}, {}, {}, {"properties": {"enabled": {"const": false}}}]},
-      "memberships": {"prefixItems": [{}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
+      "roles": {"prefixItems": [{}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}, "login": {"const": false}}}, {}, {}, {"properties": {"enabled": {"const": false}}}]},
+      "memberships": {"prefixItems": [{}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
     }}},
     {"if": {"properties": {"database_origin": {"const": "v1_adopted"}}}, "then": {
       "properties": {
         "database": {"properties": {"create_database": {"const": false}, "source_owner": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"}, "ownership_executor": {"const": "external_root_provisioner"}, "template": {"type": "null"}}},
-        "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}, "login": {"const": true}}}, {}, {}, {}]},
-        "memberships": {"prefixItems": [{}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
+        "roles": {"prefixItems": [{}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}, "login": {"const": true}}}]},
+        "memberships": {"prefixItems": [{}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
       },
       "oneOf": [
         {"properties": {
           "database": {"properties": {"extension_owner": {"const": "harpy_legacy_extension_owner"}, "extension_owner_mode": {"const": "adopted_reassigned"}}},
-          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
+          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
         }},
         {"properties": {
           "database": {"properties": {"extension_owner": {"$ref": "#/$defs/externalExtensionOwner"}, "extension_owner_mode": {"const": "adopted_retained_inventory"}}},
-          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
+          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
         }}
       ]
     }}

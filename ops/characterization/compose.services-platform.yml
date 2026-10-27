@@ -19,13 +19,7 @@ x-platform-env: &platform-env
   NOTIFICATION_SERVICE_URL: http://notification-service:8004
   DOCUMENT_SERVICE_URL: http://document-service:8005
   LOG_SERVICE_URL: http://log-service:8006
-  FORM_ENGINE_SERVICE_URL: http://form-engine-service:8010
-  WORKFLOW_SERVICE_URL: http://workflow-service:8011
   OPENAPI_SERVICE_URL: http://openapi-service:8012
-  AI_CHAT_SERVICE_URL: http://ai-chat-service:8013
-  MCP_SERVICE_URL: http://mcp-service:8014
-  MCP_API_GATEWAY_URL: http://api-gateway:8000
-  MCP_PUBLIC_BASE_URL: http://mcp-service:8014/mcp
   DEPLOYMENT_MODE: saas
   DEFAULT_TENANT_ID: 10000000-0000-4000-8000-000000000001
   DEFAULT_TENANT_NAME: Oracle Tenant A
@@ -54,15 +48,6 @@ services:
   auth-service:
     image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-auth:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
     pull_policy: never
-    build:
-      context: ../../../backend
-      dockerfile: ../backend-v2/ops/characterization/Dockerfile.v1-runtime
-      target: auth-runtime
-      args:
-        V1_GO_IMAGE: ${V1_ORACLE_GO_IMAGE:?V1_ORACLE_GO_IMAGE is required}
-        V1_DISTROLESS_IMAGE: ${V1_ORACLE_DISTROLESS_IMAGE:?V1_ORACLE_DISTROLESS_IMAGE is required}
-        V1_POSTGRES_IMAGE: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
-        V1_SOURCE_VERSION: ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
     env_file: ${V1_ORACLE_ENV_FILE:-.env}
     environment: *platform-env
     command: ["/opt/harpy/bin/auth-service"]

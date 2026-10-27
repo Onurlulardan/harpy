@@ -40,8 +40,6 @@ func writeBuiltCutoverBootstrapAuthority(
 		Roles: builtCutoverAuthorityRoles(),
 		Memberships: []runtimev1.BootstrapAuthorityMembership{
 			builtCutoverAuthorityMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-			builtCutoverAuthorityMembership("harpy_v2_runtime", "harpy_forms_record_reader", true, false, true),
-			builtCutoverAuthorityMembership("harpy_v2_runtime", "harpy_forms_record_writer", true, false, true),
 			builtCutoverAuthorityMembership("harpy_migrator", "harpy_owner", true, false, true),
 			builtCutoverAuthorityMembership("harpy_backup", "harpy_backup_reader", true, false, true),
 			builtCutoverAuthorityMembership("harpy_restore", "harpy_owner", true, false, true),

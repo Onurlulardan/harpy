@@ -38,22 +38,6 @@ func TestSealedArtifactRoundTripAndBinding(t *testing.T) {
 	}
 }
 
-func TestForgeGuardConformanceVector(t *testing.T) {
-	operationID := uuid.MustParse("019cba35-a9ad-7ff1-92f3-4c16bd26b60f")
-	attemptID := uuid.MustParse("019cba36-2862-7f57-bf3d-71dbdc7337e6")
-	credential := []byte(base64.RawURLEncoding.EncodeToString(bytes.Repeat([]byte{7}, 32)))
-	document, err := sealArtifactWithNonce(operationID, attemptID, strings.Repeat("a", 64),
-		time.Date(2026, 7, 23, 14, 5, 0, 0, time.UTC), credential,
-		[]byte("12345678901234567890123456789012"), bytes.Repeat([]byte{1}, 12))
-	if err != nil {
-		t.Fatal(err)
-	}
-	const expected = `{"schema":"harpy-installation-credential-delivery-artifact.v1","operation_id":"019cba35-a9ad-7ff1-92f3-4c16bd26b60f","attempt_id":"019cba36-2862-7f57-bf3d-71dbdc7337e6","adapter_id":"forgeguard","claim_token_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","lease_expires_at":"2026-07-23T14:05:00Z","nonce":"AQEBAQEBAQEBAQEB","ciphertext":"2ZEXJLMM_8iuhttMsSWTH0IRaNDHOjJ0eFPmdmhOMJ2kpoT_TMDWezm5fi05oUki"}`
-	if string(document) != expected {
-		t.Fatalf("ForgeGuard delivery vector drifted: %s", document)
-	}
-}
-
 func TestParseArtifactRejectsUnknownAndTamperedFields(t *testing.T) {
 	operationID := uuid.MustParse("019cba35-a9ad-7ff1-92f3-4c16bd26b60f")
 	attemptID := uuid.MustParse("019cba36-2862-7f57-bf3d-71dbdc7337e6")

@@ -38,18 +38,6 @@
       {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
       {"properties": {"name": {"const": "harpy_runtime"}}}
     ]},
-    "runtimeCompatibility": {"allOf": [
-      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
-      {"properties": {"name": {"const": "forge_runtime"}}}
-    ]},
-    "formsRecordReader": {"allOf": [
-      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
-      {"properties": {"name": {"const": "harpy_forms_record_reader"}}}
-    ]},
-    "formsRecordWriter": {"allOf": [
-      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
-      {"properties": {"name": {"const": "harpy_forms_record_writer"}}}
-    ]},
     "v2Runtime": {"allOf": [
       {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
       {"properties": {"name": {"const": "harpy_v2_runtime"}}}
@@ -107,11 +95,10 @@
       {"properties": {"name": {"const": "harpy_legacy_extension_owner"}}}
     ]},
     "freshRoles": {
-      "type": "array", "minItems": 18, "maxItems": 18, "items": false,
+      "type": "array", "minItems": 15, "maxItems": 15, "items": false,
       "prefixItems": [
         {"$ref": "#/$defs/owner"}, {"$ref": "#/$defs/cutoverAuthorityOwner"},
-        {"$ref": "#/$defs/runtime"}, {"$ref": "#/$defs/runtimeCompatibility"},
-        {"$ref": "#/$defs/formsRecordReader"}, {"$ref": "#/$defs/formsRecordWriter"},
+        {"$ref": "#/$defs/runtime"},
         {"$ref": "#/$defs/v2Runtime"}, {"$ref": "#/$defs/migrator"},
         {"$ref": "#/$defs/clusterAdmin"}, {"$ref": "#/$defs/extensionAdmin"},
         {"$ref": "#/$defs/adopter"}, {"$ref": "#/$defs/decoder"},
@@ -122,11 +109,10 @@
       ]
     },
     "adoptedRoles": {
-      "type": "array", "minItems": 20, "maxItems": 20, "items": false,
+      "type": "array", "minItems": 17, "maxItems": 17, "items": false,
       "prefixItems": [
         {"$ref": "#/$defs/owner"}, {"$ref": "#/$defs/cutoverAuthorityOwner"},
-        {"$ref": "#/$defs/runtime"}, {"$ref": "#/$defs/runtimeCompatibility"},
-        {"$ref": "#/$defs/formsRecordReader"}, {"$ref": "#/$defs/formsRecordWriter"},
+        {"$ref": "#/$defs/runtime"},
         {"$ref": "#/$defs/v2Runtime"}, {"$ref": "#/$defs/migrator"},
         {"$ref": "#/$defs/clusterAdmin"}, {"$ref": "#/$defs/extensionAdmin"},
         {"$ref": "#/$defs/adopter"}, {"$ref": "#/$defs/decoder"},

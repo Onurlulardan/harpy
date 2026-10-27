@@ -20,7 +20,7 @@ func validLifecycleClaim(
 	row := validJobClaimRow(authority, workerID, time.Now().UTC())
 	row.effectClass = string(effectClass)
 	if effectClass == jobsv1.EffectExternal {
-		row.effectKey = pgtype.Text{String: "effect:forms:export:42", Valid: true}
+		row.effectKey = pgtype.Text{String: "effect:analytics:export:42", Valid: true}
 	}
 	claim, err := newJobClaim(row, authority, workerID)
 	if err != nil {
@@ -32,8 +32,8 @@ func validLifecycleClaim(
 func validExternalSpec(t *testing.T) ExternalEffectRequestSpec {
 	t.Helper()
 	spec, err := NewExternalEffectRequestSpec(
-		uuid.New(), "forms-exporter", "export",
-		"request:forms.export.42", uuid.New(),
+		uuid.New(), "analytics-exporter", "export",
+		"request:analytics.export.42", uuid.New(),
 	)
 	if err != nil {
 		t.Fatal(err)

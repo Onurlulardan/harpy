@@ -13,11 +13,6 @@
     {"routine":"platform.platform_async_dispose_stale_job_v1","identity_arguments":"uuid,text,uuid,uuid,uuid,uuid,text,uuid,text,bigint,text,bigint,text,text,bytea,text,text,text,uuid,uuid,text,text,text","role":"harpy_runtime","contract":"ADR-0056"},
     {"routine":"platform.platform_async_event_gap_job_ready_v2","identity_arguments":"uuid","role":"harpy_runtime","contract":"ADR-0056"},
     {"routine":"platform.platform_async_external_effect_evidence_v1","identity_arguments":"uuid,text,uuid,text,bigint,text,bigint,uuid,uuid,bigint,text,integer,text,text,text,uuid,text,integer,text,text,text,text,text,text,uuid","role":"harpy_runtime","contract":"ADR-0056"},
-    {"routine":"platform.platform_async_finalize_stale_external_unknown_v1","identity_arguments":"uuid,uuid,bigint,uuid,timestamptz","role":"harpy_runtime","contract":"ADR-0056"},
-    {"routine":"platform.platform_async_forms_export_candidate_v1","identity_arguments":"","role":"harpy_runtime","contract":"ADR-0056"},
-    {"routine":"platform.platform_async_forms_export_checkpoint_v1","identity_arguments":"uuid,uuid,uuid,uuid,bigint,uuid,timestamptz","role":"harpy_runtime","contract":"ADR-0056"},
-    {"routine":"platform.platform_async_forms_export_control_v1","identity_arguments":"uuid,uuid,uuid,boolean,timestamptz","role":"harpy_runtime","contract":"ADR-0056"},
-    {"routine":"platform.platform_async_forms_export_effect_start_v1","identity_arguments":"uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,timestamptz","role":"harpy_runtime","contract":"ADR-0056"},
-    {"routine":"platform.platform_async_forms_export_kek_schema_v1","identity_arguments":"uuid","role":"harpy_runtime","contract":"ADR-0056"}
+    {"routine":"platform.platform_async_finalize_stale_external_unknown_v1","identity_arguments":"uuid,uuid,bigint,uuid,timestamptz","role":"harpy_runtime","contract":"ADR-0056"}
   ]
 }

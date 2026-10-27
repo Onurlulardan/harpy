@@ -12,9 +12,9 @@ func TestIAMSystemResourceMutationSchemasMatchCanonicalEdge(t *testing.T) {
 	schemas := document["schemas"].(map[string]any)
 
 	userCreate := schemas["UserCreate"].(map[string]any)
-	iamAssertStrings(t, userCreate["required"], "email", "password")
+	iamAssertStrings(t, userCreate["required"], "email", "password", "first_name", "last_name")
 	userCreateProperties := userCreate["properties"].(map[string]any)
-	iamAssertAbsent(t, userCreateProperties, "first_name", "last_name")
+	iamAssertPresent(t, userCreateProperties, "first_name", "last_name")
 	password := userCreateProperties["password"].(map[string]any)
 	if password["minLength"] != float64(15) ||
 		password["maxLength"] != float64(128) {
@@ -27,7 +27,7 @@ func TestIAMSystemResourceMutationSchemasMatchCanonicalEdge(t *testing.T) {
 
 	userUpdate := schemas["UserUpdate"].(map[string]any)
 	userUpdateProperties := userUpdate["properties"].(map[string]any)
-	iamAssertAbsent(t, userUpdateProperties, "first_name", "last_name")
+	iamAssertPresent(t, userUpdateProperties, "first_name", "last_name")
 	organizationAlias := userUpdateProperties["organization_id"].(map[string]any)
 	if organizationAlias["format"] != "uuid" || organizationAlias["deprecated"] != true {
 		t.Fatalf("user organization compatibility alias=%v", organizationAlias)
@@ -89,11 +89,12 @@ func iamStringSet(value any) map[string]bool {
 	return result
 }
 
-func iamAssertAbsent(t *testing.T, values map[string]any, names ...string) {
+func iamAssertPresent(t *testing.T, values map[string]any, names ...string) {
 	t.Helper()
 	for _, name := range names {
-		if values[name] != nil {
-			t.Fatalf("unexpected explicitly published property %q", name)
+		property, ok := values[name].(map[string]any)
+		if !ok || property["type"] != "string" {
+			t.Fatalf("published string property %q is missing", name)
 		}
 	}
 }
