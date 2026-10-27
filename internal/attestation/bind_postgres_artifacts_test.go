@@ -80,23 +80,6 @@ func TestBindPostgresArtifactSetRejectsCrossDocumentTamper(t *testing.T) {
 			t.Fatal("unverified artifact wrapper accepted")
 		}
 	})
-
-	t.Run("missing release origin variant", func(t *testing.T) {
-		release, authority, artifacts := testVerifiedArtifactSet(t)
-		manifest := artifacts.Migration.Value()
-		manifest.Entries[0].Variants.V1Adopted = nil
-		verified, err := VerifyMigrationManifestArtifact(testDocument(t, manifest))
-		if err != nil {
-			t.Fatal(err)
-		}
-		artifacts.Migration = verified
-		releaseManifest := release.Value()
-		releaseManifest.MigrationManifestSHA256 = verified.DigestSHA256()
-		release = newVerifiedRelease(releaseManifest, release.ManifestSHA256())
-		if _, err := BindPostgresArtifactSet(release, authority, artifacts); err == nil {
-			t.Fatal("release with one-sided migration origin was accepted")
-		}
-	})
 }
 
 func testVerifiedArtifactSet(

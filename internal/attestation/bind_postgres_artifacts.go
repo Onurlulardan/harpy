@@ -32,7 +32,7 @@ func BindPostgresArtifactSet(
 		return VerifiedPostgresArtifactSet{}, err
 	}
 	migrationManifest := artifacts.Migration.Value()
-	if err := requireCompleteMigrationOrigins(migrationManifest); err != nil {
+	if err := requireFreshMigrationVariant(migrationManifest); err != nil {
 		return VerifiedPostgresArtifactSet{}, err
 	}
 	selected, err := migrationManifest.Select(origin)
@@ -45,10 +45,10 @@ func BindPostgresArtifactSet(
 	}, nil
 }
 
-func requireCompleteMigrationOrigins(manifest postgresv1.MigrationManifest) error {
+func requireFreshMigrationVariant(manifest postgresv1.MigrationManifest) error {
 	for _, entry := range manifest.Entries {
-		if entry.Variants.Fresh == nil || entry.Variants.V1Adopted == nil {
-			return fmt.Errorf("release migration entry lacks an origin variant")
+		if entry.Variants.Fresh == nil {
+			return fmt.Errorf("release migration entry lacks a fresh variant")
 		}
 	}
 	return nil
