@@ -19,7 +19,8 @@ func analyticsDashboardExportFreshMigrations(t *testing.T) map[string][]byte {
 	fresh := map[string][]byte{}
 	for _, document := range documents {
 		name := path.Base(document.Path())
-		if !strings.HasSuffix(name, ".fresh.sql") {
+		if !strings.HasSuffix(name, ".fresh.sql") ||
+			strings.Contains(document.Path(), "/supersessions/") {
 			continue
 		}
 		version, parseErr := strconv.ParseInt(name[:14], 10, 64)

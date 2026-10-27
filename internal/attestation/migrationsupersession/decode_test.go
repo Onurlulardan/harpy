@@ -41,8 +41,14 @@ func TestDecodeRejectsDuplicateAndUnpairedEntries(t *testing.T) {
 	if _, err := DecodeCatalog(marshalCatalogDocument(t, decoded)); err == nil {
 		t.Fatal("duplicate entry was accepted")
 	}
-	decoded.Entries = decoded.Entries[:1]
-	if _, err := DecodeCatalog(marshalCatalogDocument(t, decoded)); err == nil {
-		t.Fatal("unpaired entry was accepted")
+	freshOnly := decoded
+	freshOnly.Entries = append([]entryDocument(nil), decoded.Entries[:1]...)
+	if _, err := DecodeCatalog(marshalCatalogDocument(t, freshOnly)); err != nil {
+		t.Fatalf("fresh catalog: %v", err)
+	}
+	adoptedOnly := decoded
+	adoptedOnly.Entries = append([]entryDocument(nil), decoded.Entries[1:2]...)
+	if _, err := DecodeCatalog(marshalCatalogDocument(t, adoptedOnly)); err == nil {
+		t.Fatal("adopted-only entry was accepted")
 	}
 }

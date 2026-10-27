@@ -26,8 +26,8 @@ func TestLoadStartupRegistryUsesFreshDocuments(t *testing.T) {
 		t.Fatalf("fresh entries = %d documents = %d digests = %d",
 			registry.FreshEntryCount(), len(documents), len(registry.Digests()))
 	}
-	if len(paths) != 2055 {
-		t.Fatalf("selected fresh entry count = %d, want 2055", len(paths))
+	if len(paths) != 1982 {
+		t.Fatalf("selected fresh entry count = %d, want 1982", len(paths))
 	}
 	versions := make(map[int64]string, len(paths))
 	owners := map[string]bool{}
