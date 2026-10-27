@@ -1,9 +1,6 @@
 package asyncmanifestv1
 
 import (
-	"crypto/sha256"
-	"fmt"
-	"os"
 	"testing"
 
 	jobsv1 "github.com/Onurlulardan/harpy/contracts/jobs/v1"
@@ -33,11 +30,7 @@ func TestReleaseManifestContainsIdentityChangeProducer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	document, err := os.ReadFile("../../events/v1/iam-identity-change-v1.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	digest := fmt.Sprintf("%x", sha256.Sum256(document))
+	digest := schemaDigest(t, "../../events/v1/iam-identity-change-v1.schema.json")
 	if policy.OwnerDomain != "iam" || policy.PayloadSchemaSHA256 != digest {
 		t.Fatalf("identity change producer = %#v", policy)
 	}
@@ -52,11 +45,7 @@ func TestReleaseManifestContainsPermissionRequestDecisionProducer(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	document, err := os.ReadFile("../../events/v1/iam-permission-request-decided-v1.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	digest := fmt.Sprintf("%x", sha256.Sum256(document))
+	digest := schemaDigest(t, "../../events/v1/iam-permission-request-decided-v1.schema.json")
 	if policy.OwnerDomain != "iam" || policy.PayloadSchemaSHA256 != digest {
 		t.Fatalf("permission request producer = %#v", policy)
 	}
@@ -71,11 +60,7 @@ func TestReleaseManifestContainsPermissionRequestTransitionProducer(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
-	document, err := os.ReadFile("../../events/v1/iam-permission-request-transitioned-v1.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	digest := fmt.Sprintf("%x", sha256.Sum256(document))
+	digest := schemaDigest(t, "../../events/v1/iam-permission-request-transitioned-v1.schema.json")
 	if policy.OwnerDomain != "iam" || policy.PayloadSchemaSHA256 != digest {
 		t.Fatalf("permission request transition producer = %#v", policy)
 	}
@@ -141,11 +126,7 @@ func TestReleaseManifestContainsBillingSubscriptionContracts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	document, err := os.ReadFile("../../events/v1/billing-subscription-change-v1.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	digest := fmt.Sprintf("%x", sha256.Sum256(document))
+	digest := schemaDigest(t, "../../events/v1/billing-subscription-change-v1.schema.json")
 	if producer.OwnerDomain != "billing" || producer.PayloadSchemaSHA256 != digest {
 		t.Fatalf("billing subscription producer = %#v", producer)
 	}

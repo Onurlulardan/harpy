@@ -1,17 +1,13 @@
 package local
 
 import (
-	"os"
 	"strings"
 	"testing"
 )
 
 func TestLocalBuildKeepsImageAndBuilderCache(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local.yml")
-	if err != nil {
-		t.Fatalf("read local Taskfile: %v", err)
-	}
-	build := taskBlock(t, string(document), "build", "project")
+	document := readContractText(t, "../../.taskfiles/local.yml")
+	build := taskBlock(t, document, "build", "project")
 	if !strings.Contains(build, "build foundation-local-release local-release") ||
 		strings.Contains(build, "mcp-service") || strings.Contains(build, "ai-service") {
 		t.Fatal("local:build must compile the local images without AI or MCP")
@@ -26,11 +22,8 @@ func TestLocalBuildKeepsImageAndBuilderCache(t *testing.T) {
 }
 
 func TestLocalCleanupReclaimsUnusedImages(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local-operations.yml")
-	if err != nil {
-		t.Fatalf("read local operations Taskfile: %v", err)
-	}
-	cleanup := taskBlock(t, string(document), "cleanup", "cleanup:images")
+	document := readContractText(t, "../../.taskfiles/local-operations.yml")
+	cleanup := taskBlock(t, document, "cleanup", "cleanup:images")
 	for _, required := range []string{
 		"docker builder prune --all -f",
 		"docker system prune -a -f",
@@ -40,7 +33,7 @@ func TestLocalCleanupReclaimsUnusedImages(t *testing.T) {
 			t.Fatalf("local:cleanup is missing %q", required)
 		}
 	}
-	all := taskBlock(t, string(document), "cleanup:all", "cleanup:disk")
+	all := taskBlock(t, document, "cleanup:all", "cleanup:disk")
 	for _, required := range []string{
 		"docker builder prune --all -f",
 		"docker system prune -a -f",
@@ -53,11 +46,8 @@ func TestLocalCleanupReclaimsUnusedImages(t *testing.T) {
 }
 
 func TestLocalCleanupDiskCompactsWindowsVhdx(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local-operations.yml")
-	if err != nil {
-		t.Fatalf("read local operations Taskfile: %v", err)
-	}
-	block := taskBlock(t, string(document), "cleanup:disk", "build:refresh")
+	document := readContractText(t, "../../.taskfiles/local-operations.yml")
+	block := taskBlock(t, document, "cleanup:disk", "build:refresh")
 	for _, required := range []string{
 		"docker system prune -a -f",
 		"ops/local/scripts/compact-docker-vhdx.ps1",
@@ -66,11 +56,7 @@ func TestLocalCleanupDiskCompactsWindowsVhdx(t *testing.T) {
 			t.Fatalf("local:cleanup:disk is missing %q", required)
 		}
 	}
-	script, err := os.ReadFile("scripts/compact-docker-vhdx.ps1")
-	if err != nil {
-		t.Fatalf("read compact script: %v", err)
-	}
-	body := string(script)
+	body := readContractText(t, "scripts/compact-docker-vhdx.ps1")
 	for _, required := range []string{
 		`Join-Path $env:LOCALAPPDATA 'Docker\wsl\disk\docker_data.vhdx'`,
 		"wsl --shutdown",

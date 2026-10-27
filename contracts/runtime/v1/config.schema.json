@@ -20,7 +20,7 @@
     "unknown_harpy_key": {"const": "reject_per_profile"},
     "secret_file": {"$ref": "#/$defs/secretFilePolicy"},
     "variables": {
-      "type": "array", "minItems": 188, "maxItems": 188, "uniqueItems": true,
+      "type": "array", "minItems": 166, "maxItems": 166, "uniqueItems": true,
       "items": {"$ref": "#/$defs/catalogVariable"}
     }
   },

@@ -1,17 +1,12 @@
 package local
 
 import (
-	"os"
 	"strings"
 	"testing"
 )
 
 func TestRecoveryComposeKeepsStorageAndCredentialsIsolated(t *testing.T) {
-	content, err := os.ReadFile("compose.recovery.yml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	compose := string(content)
+	compose := readContractText(t, "compose.recovery.yml")
 	required := []string{
 		"  recovery-minio:\n",
 		"- recovery-minio-data:/data",
@@ -28,30 +23,20 @@ func TestRecoveryComposeKeepsStorageAndCredentialsIsolated(t *testing.T) {
 			t.Fatalf("recovery compose is missing %q", value)
 		}
 	}
-	runtime, err := os.ReadFile("compose.runtime.yml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if strings.Contains(string(runtime), "local-secret-recovery") ||
-		strings.Contains(string(runtime), "recovery-minio-data") {
+	runtime := readContractText(t, "compose.runtime.yml")
+	if strings.Contains(runtime, "local-secret-recovery") ||
+		strings.Contains(runtime, "recovery-minio-data") {
 		t.Fatal("normal API or worker compose received recovery authority")
 	}
 }
 
 func TestRecoveryTaskHandshakeAndReconcileOrder(t *testing.T) {
-	root, err := os.ReadFile("../../Taskfile.yml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(string(root),
+	root := readContractText(t, "../../Taskfile.yml")
+	if !strings.Contains(root,
 		"\"local:recovery\": .taskfiles/local-recovery.yml") {
 		t.Fatal("local recovery Taskfile namespace is not included")
 	}
-	content, err := os.ReadFile("../../.taskfiles/local-recovery.yml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	document := string(content)
+	document := readContractText(t, "../../.taskfiles/local-recovery.yml")
 	for _, task := range []string{"restore", "rehydrate"} {
 		next := "rehydrate"
 		if task == "rehydrate" {
@@ -81,11 +66,7 @@ func TestRecoveryTaskHandshakeAndReconcileOrder(t *testing.T) {
 }
 
 func TestMainLocalLifecycleIncludesRecoveryVolumes(t *testing.T) {
-	content, err := os.ReadFile("../../.taskfiles/local.yml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	document := string(content)
+	document := readContractText(t, "../../.taskfiles/local.yml")
 	if strings.Count(document, "-f ops/local/compose.recovery.yml") != 2 ||
 		!strings.Contains(document, "database-backup-executor") ||
 		!strings.Contains(document, "run --rm recovery-s3-init") {

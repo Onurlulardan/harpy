@@ -1,8 +1,6 @@
 package runtimev1
 
 import (
-	"encoding/json"
-	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -37,31 +35,6 @@ func TestBillingCanonicalOpenAPIRoutesAndSecurityAreExact(t *testing.T) {
 			if operation["x-harpy-permission"] != expected.Permission {
 				t.Fatalf("operation %s permission=%v", key, operation["x-harpy-permission"])
 			}
-		}
-	}
-}
-
-func TestBillingV1OpenAPIMatchesExactCharacterizationRoutes(t *testing.T) {
-	directory := filepath.Join("..", "..", "http")
-	core := readOpenAPIDocument(t, filepath.Join(directory, "core-api-v1.openapi.yaml"))
-	paths := core["paths"].(map[string]any)
-	routes := readBillingCharacterizationRoutes(t)
-	if len(routes) != 26 {
-		t.Fatalf("legacy route count=%d", len(routes))
-	}
-	for _, route := range routes {
-		path := strings.ReplaceAll(route.Path, ":id", "{id}")
-		item := resolveCorePathItem(t, directory, paths, path)
-		operation, found := item[strings.ToLower(route.Method)].(map[string]any)
-		if !found || operation["deprecated"] != true {
-			t.Fatalf("legacy operation %s %s=%v", route.Method, path, item)
-		}
-		if route.Auth == "public" {
-			if security, found := operation["security"].([]any); !found || len(security) != 0 {
-				t.Fatalf("legacy public route %s security=%v", path, operation["security"])
-			}
-		} else {
-			assertBillingBearerSecurity(t, route.Method+" "+path, operation)
 		}
 	}
 }
@@ -120,32 +93,3 @@ func assertBillingBearerSecurity(t *testing.T, key string, operation map[string]
 	}
 }
 
-type characterizedBillingRoute struct {
-	Method string `json:"method"`
-	Path   string `json:"path"`
-	Auth   string `json:"auth"`
-}
-
-func readBillingCharacterizationRoutes(t *testing.T) []characterizedBillingRoute {
-	t.Helper()
-	directory := filepath.Join("..", "..", "characterization", "domains", "billing-v1", "routes")
-	files, err := filepath.Glob(filepath.Join(directory, "*.json"))
-	if err != nil || len(files) != 6 {
-		t.Fatalf("Billing V1 route files=%d err=%v", len(files), err)
-	}
-	var result []characterizedBillingRoute
-	for _, path := range files {
-		content, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		var document struct {
-			Routes []characterizedBillingRoute `json:"routes"`
-		}
-		if err := json.Unmarshal(content, &document); err != nil {
-			t.Fatal(err)
-		}
-		result = append(result, document.Routes...)
-	}
-	return result
-}

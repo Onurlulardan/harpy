@@ -17,7 +17,7 @@
     "snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "release_channel": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
     "booleans": {
-      "type": "array", "minItems": 7, "maxItems": 7,
+      "type": "array", "minItems": 6, "maxItems": 6,
       "items": {
         "type": "object", "additionalProperties": false,
         "required": ["key", "value"],

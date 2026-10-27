@@ -12,7 +12,7 @@ import (
 
 func TestPhase11ModuleGate(t *testing.T) {
 	root := documentsRepositoryRoot(t)
-	assertDocumentMigrationsAbsent(t, root)
+	assertDocumentMigrationsPresent(t, root)
 	assertDocumentFileBudget(t, root)
 	assertDocumentFragments(t, root)
 }
@@ -26,14 +26,11 @@ func documentsRepositoryRoot(t *testing.T) string {
 	return filepath.Clean(filepath.Join(filepath.Dir(filename), "..", "..", "..", ".."))
 }
 
-func assertDocumentMigrationsAbsent(t *testing.T, root string) {
+func assertDocumentMigrationsPresent(t *testing.T, root string) {
 	t.Helper()
 	base := filepath.Join(root, "core", "internal", "modules", "documents", "migrations")
-	_, err := os.Stat(base)
-	if err == nil {
-		t.Fatalf("documents migrations directory exists: %s", base)
-	}
-	if !os.IsNotExist(err) {
+	info, err := os.Stat(base)
+	if err != nil || !info.IsDir() {
 		t.Fatalf("documents migrations directory: %v", err)
 	}
 }

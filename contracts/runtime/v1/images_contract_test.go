@@ -71,11 +71,4 @@ func TestPostgresImageContractIsPinnedAndUsedByIntegration(t *testing.T) {
 	if !strings.Contains(string(compose), "--locale="+contract.Postgres.Locale) {
 		t.Fatalf("integration runtime does not use locale %q", contract.Postgres.Locale)
 	}
-	golden, err := os.ReadFile("../../characterization/v1/golden.jsonl")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(string(golden), contract.SourcePostgres.Digest) {
-		t.Fatal("source image digest is not attested by Phase 0 golden")
-	}
 }

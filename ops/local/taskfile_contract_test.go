@@ -8,11 +8,8 @@ import (
 )
 
 func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local.yml")
-	if err != nil {
-		t.Fatalf("read local Taskfile: %v", err)
-	}
-	block := taskBlock(t, string(document), "up", "status")
+	document := readContractText(t, "../../.taskfiles/local.yml")
+	block := taskBlock(t, document, "up", "status")
 	actual := make([]string, 0)
 	for _, line := range strings.Split(block, "\n") {
 		line = strings.TrimSpace(line)
@@ -40,11 +37,8 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 }
 
 func TestLocalInfraReloadsClamAVAfterSignatureUpdate(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local.yml")
-	if err != nil {
-		t.Fatalf("read local Taskfile: %v", err)
-	}
-	block := taskBlock(t, string(document), "infra", "bootstrap")
+	document := readContractText(t, "../../.taskfiles/local.yml")
+	block := taskBlock(t, document, "infra", "bootstrap")
 	required := []string{
 		"local-kms mailpit",
 		"run --rm --no-deps clamav-update",
@@ -65,11 +59,8 @@ func TestLocalInfraReloadsClamAVAfterSignatureUpdate(t *testing.T) {
 }
 
 func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local.yml")
-	if err != nil {
-		t.Fatalf("read local Taskfile: %v", err)
-	}
-	build := taskBlock(t, string(document), "build", "project")
+	document := readContractText(t, "../../.taskfiles/local.yml")
+	build := taskBlock(t, document, "build", "project")
 	if strings.Contains(build, "build --pull") {
 		t.Fatal("normal local:build must not require registry access")
 	}
@@ -79,23 +70,17 @@ func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
 	) {
 		t.Fatal("normal local:build must build the local images in one cache-sharing bake")
 	}
-	if strings.Contains(string(document), "compose.satellites.yml") ||
+	if strings.Contains(document, "compose.satellites.yml") ||
 		strings.Contains(build, "mcp-service") || strings.Contains(build, "ai-service") {
 		t.Fatal("local COMPOSE still builds AI or MCP satellites")
 	}
-	inventory, err := os.ReadFile("../../.taskfiles/local-inventory.yml")
-	if err != nil {
-		t.Fatalf("read local inventory Taskfile: %v", err)
-	}
-	if strings.Contains(string(inventory), "compose.satellites.yml") {
+	inventory := readContractText(t, "../../.taskfiles/local-inventory.yml")
+	if strings.Contains(inventory, "compose.satellites.yml") {
 		t.Fatal("local inventory COMPOSE still includes AI or MCP satellites")
 	}
 
-	operations, err := os.ReadFile("../../.taskfiles/local-operations.yml")
-	if err != nil {
-		t.Fatalf("read local operations Taskfile: %v", err)
-	}
-	refresh := taskBlock(t, string(operations), "build:refresh", "check")
+	operations := readContractText(t, "../../.taskfiles/local-operations.yml")
+	refresh := taskBlock(t, operations, "build:refresh", "check")
 	if !strings.Contains(
 		refresh,
 		"build --pull foundation-local-release local-release",
@@ -105,11 +90,8 @@ func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
 }
 
 func TestLocalDockerfilePinsFrontendAndBaseImages(t *testing.T) {
-	content, err := os.ReadFile("Dockerfile")
-	if err != nil {
-		t.Fatalf("read local Dockerfile: %v", err)
-	}
-	lines := strings.Split(string(content), "\n")
+	content := readContractText(t, "Dockerfile")
+	lines := strings.Split(content, "\n")
 	const frontend = "# syntax=docker/dockerfile:1.12@sha256:" +
 		"93bfd3b68c109427185cd78b4779fc82b484b0b7618e36d0f104d4d801e66d25"
 	if len(lines) == 0 || lines[0] != frontend {
@@ -123,11 +105,8 @@ func TestLocalDockerfilePinsFrontendAndBaseImages(t *testing.T) {
 }
 
 func TestDestructiveLocalOperationsRunFromRepositoryRoot(t *testing.T) {
-	document, err := os.ReadFile("../../.taskfiles/local-operations.yml")
-	if err != nil {
-		t.Fatalf("read local operations Taskfile: %v", err)
-	}
-	destroy := taskBlock(t, string(document), "destroy", "cleanup")
+	document := readContractText(t, "../../.taskfiles/local-operations.yml")
+	destroy := taskBlock(t, document, "destroy", "cleanup")
 	for _, required := range []string{
 		`dir: "{{.ROOT_DIR}}"`,
 		"down --volumes --remove-orphans",
@@ -137,6 +116,15 @@ func TestDestructiveLocalOperationsRunFromRepositoryRoot(t *testing.T) {
 			t.Fatalf("local:destroy is missing %q", required)
 		}
 	}
+}
+
+func readContractText(t *testing.T, path string) string {
+	t.Helper()
+	content, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read %s: %v", path, err)
+	}
+	return strings.ReplaceAll(string(content), "\r\n", "\n")
 }
 
 func taskBlock(t *testing.T, document, name, next string) string {

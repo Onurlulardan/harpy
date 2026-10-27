@@ -53,8 +53,8 @@ func TestLifecycleHTTPRoutesExposeExactV2Surface(t *testing.T) {
 func TestLifecycleHTTPRetiredV1RoutesReturnGoneWithoutEcho(t *testing.T) {
 	handler := &LifecycleHTTP{report: func(error) {}}
 	routes := handler.Routes()[25:]
-	if len(routes) != 25 {
-		t.Fatalf("retired route count=%d want 25", len(routes))
+	if len(routes) != 21 {
+		t.Fatalf("retired route count=%d want 21", len(routes))
 	}
 	secret := "v1-secret-must-not-echo"
 	portalUnlinkFound := false

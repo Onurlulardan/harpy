@@ -1,9 +1,6 @@
 package asyncmanifestv1
 
 import (
-	"crypto/sha256"
-	"fmt"
-	"os"
 	"testing"
 
 	jobsv1 "github.com/Onurlulardan/harpy/contracts/jobs/v1"
@@ -51,11 +48,7 @@ func TestBillingProducerPoliciesMatchVersionedSchemas(t *testing.T) {
 		if err != nil {
 			t.Fatalf("resolve %s: %v", eventType, err)
 		}
-		document, err := os.ReadFile("../../events/v1/" + file)
-		if err != nil {
-			t.Fatal(err)
-		}
-		digest := fmt.Sprintf("%x", sha256.Sum256(document))
+		digest := schemaDigest(t, "../../events/v1/"+file)
 		if policy.OwnerDomain != "billing" || policy.PayloadSchemaSHA256 != digest {
 			t.Fatalf("billing producer %s = %#v", eventType, policy)
 		}

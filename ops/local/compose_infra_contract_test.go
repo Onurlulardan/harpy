@@ -1,18 +1,12 @@
 package local
 
 import (
-	"os"
 	"strings"
 	"testing"
 )
 
 func TestRabbitMQConfigFileUsesExtensionlessBasePath(t *testing.T) {
-	content, err := os.ReadFile("compose.infra.yml")
-	if err != nil {
-		t.Fatalf("read compose.infra.yml: %v", err)
-	}
-
-	compose := string(content)
+	compose := readContractText(t, "compose.infra.yml")
 	if !strings.Contains(compose, "RABBITMQ_CONFIG_FILE: /run/secrets/rabbitmq\n") {
 		t.Fatal("RabbitMQ config must use the extensionless base path")
 	}
@@ -22,12 +16,7 @@ func TestRabbitMQConfigFileUsesExtensionlessBasePath(t *testing.T) {
 }
 
 func TestClamAVUpdatesSignaturesBeforeServing(t *testing.T) {
-	content, err := os.ReadFile("compose.infra.yml")
-	if err != nil {
-		t.Fatalf("read compose.infra.yml: %v", err)
-	}
-
-	compose := string(content)
+	compose := readContractText(t, "compose.infra.yml")
 	required := []string{
 		"  clamav-update:\n",
 		"command: [\"/bin/sh\", \"/scripts/update-clamav.sh\"]",

@@ -1,23 +1,10 @@
 package asyncmanifestv1
 
-import (
-	"crypto/sha256"
-	"fmt"
-	"os"
-	"testing"
-)
+import "testing"
 
 func TestWorkProducerPolicyPinsSchemaBytes(t *testing.T) {
-	reminder, err := os.ReadFile("../../events/v1/work-reminder-due-v1.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	reminderDigest := fmt.Sprintf("%x", sha256.Sum256(reminder))
-	mutation, err := os.ReadFile("../../events/v1/work-mutation-v1.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	mutationDigest := fmt.Sprintf("%x", sha256.Sum256(mutation))
+	reminderDigest := schemaDigest(t, "../../events/v1/work-reminder-due-v1.schema.json")
+	mutationDigest := schemaDigest(t, "../../events/v1/work-mutation-v1.schema.json")
 	policies := WorkProducerPolicies()
 	if len(policies) != 1+len(workMutationEventTypes()) ||
 		policies[0].EventType != WorkReminderDueEventType ||

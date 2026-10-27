@@ -27,7 +27,7 @@ func TestPromotionCompatibilitySelectsNewestCreatedCampaign(t *testing.T) {
 			t.Fatalf("%s still selects campaigns by priority", document.Path())
 		}
 	}
-	if found != 2 {
-		t.Fatalf("promotion guard migration documents=%d want=2", found)
+	if found != 1 {
+		t.Fatalf("promotion guard migration documents=%d want=1", found)
 	}
 }

@@ -56,11 +56,11 @@ func TestRecordFullRolloutBindsProtectedReceiptInputs(t *testing.T) {
 	if err != nil || persisted != digest {
 		t.Fatalf("persisted digest = %x, %v", persisted, err)
 	}
-	if len(database.arguments) != 16 || database.arguments[0] != environment ||
+	if len(database.arguments) != 15 || database.arguments[0] != environment ||
 		database.arguments[1] != environment || database.arguments[2] != tenant ||
 		database.arguments[3] != hex.EncodeToString(digest[:]) ||
-		database.arguments[12] != hex.EncodeToString(digest[:]) ||
-		database.arguments[15] != now {
+		database.arguments[11] != hex.EncodeToString(digest[:]) ||
+		database.arguments[14] != now {
 		t.Fatalf("full rollout bindings = %#v", database.arguments)
 	}
 }
