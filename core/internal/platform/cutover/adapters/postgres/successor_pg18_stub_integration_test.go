@@ -67,8 +67,7 @@ BEGIN
     RETURN v_id;
 END;$function$;
 CREATE FUNCTION platform.billing_finalize_authority_successor_v1(
-    p_operation_id uuid,p_run_id uuid,p_forms_operation_id uuid,
-    p_forms_run_id uuid,p_digest text
+    p_operation_id uuid,p_run_id uuid,p_digest text
 ) RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog
 AS $function$
 DECLARE v_id uuid;
@@ -81,12 +80,8 @@ BEGIN
     IF FOUND THEN RETURN v_id; END IF;
     v_id:=pg_catalog.uuidv7();
     INSERT INTO platform.successor_authority_test_calls (
-        module,operation_id,run_id,companion_operation_id,companion_run_id,
-        acceptance_digest,authority_id
-    ) VALUES (
-        'billing',p_operation_id,p_run_id,p_forms_operation_id,p_forms_run_id,
-        p_digest,v_id
-    );
+        module,operation_id,run_id,acceptance_digest,authority_id
+    ) VALUES ('billing',p_operation_id,p_run_id,p_digest,v_id);
     RETURN v_id;
 END;$function$;
 REVOKE ALL ON FUNCTION platform.analytics_finalize_authority_successor_v1(
@@ -94,13 +89,13 @@ REVOKE ALL ON FUNCTION platform.analytics_finalize_authority_successor_v1(
 REVOKE ALL ON FUNCTION platform.workflow_finalize_authority_successor_v1(
     uuid,uuid,text) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.billing_finalize_authority_successor_v1(
-    uuid,uuid,uuid,uuid,text) FROM PUBLIC;
+    uuid,uuid,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_finalize_authority_successor_v1(
     uuid,uuid,text) TO harpy_cutover_authority_owner;
 GRANT EXECUTE ON FUNCTION platform.workflow_finalize_authority_successor_v1(
     uuid,uuid,text) TO harpy_cutover_authority_owner;
 GRANT EXECUTE ON FUNCTION platform.billing_finalize_authority_successor_v1(
-    uuid,uuid,uuid,uuid,text) TO harpy_cutover_authority_owner;`
+    uuid,uuid,text) TO harpy_cutover_authority_owner;`
 	if _, err := connection.Exec(ctx, statement); err != nil {
 		t.Fatalf("prepare successor module stubs: %v", err)
 	}

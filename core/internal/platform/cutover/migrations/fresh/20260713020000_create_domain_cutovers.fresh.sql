@@ -17,7 +17,7 @@ CREATE TABLE platform.domain_cutovers (
         CHECK (scope_kind IN ('global', 'tenant')),
     CONSTRAINT domain_cutovers_domain_check
         CHECK (domain IN (
-            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'analytics', 'billing', 'catalog', 'documents', 'iam',
             'notifications', 'work', 'workflow'
         )),
     CONSTRAINT domain_cutovers_global_check

@@ -29,7 +29,7 @@ func TestContractRetirementAgainstPostgreSQL184(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	identity, err := contractretirement.NewIdentity("restquery", "forms")
+	identity, err := contractretirement.NewIdentity("restquery", "analytics")
 	if err != nil {
 		t.Fatal(err)
 	}

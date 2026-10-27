@@ -1,20 +1,17 @@
 -- +goose Up
 -- Migration stream version: 20260729100011.
 -- +goose StatementBegin
-CREATE FUNCTION platform.cutover_finalize_successor_group_v1(p_operation_id uuid,p_run_id uuid,p_companion_operation_id uuid,p_companion_run_id uuid,p_acceptance_digest text)
+CREATE FUNCTION platform.cutover_finalize_successor_group_v1(p_operation_id uuid,p_run_id uuid,p_acceptance_digest text)
 RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog
 AS $function$
 DECLARE
-    v_operation platform.cutover_operations%ROWTYPE; v_companion platform.cutover_operations%ROWTYPE; v_group platform.cutover_groups%ROWTYPE;
+    v_operation platform.cutover_operations%ROWTYPE; v_group platform.cutover_groups%ROWTYPE;
     v_members jsonb; v_expected jsonb; v_changed_at timestamptz;
     v_count integer; v_authority_id uuid;
-    v_billing_operation_id uuid; v_billing_run_id uuid; v_forms_operation_id uuid; v_forms_run_id uuid;
 BEGIN
     IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer'
-       OR p_acceptance_digest !~ '^[0-9a-f]{64}$'
-       OR (p_companion_operation_id IS NULL) IS DISTINCT FROM
-          (p_companion_run_id IS NULL) THEN
+       OR p_acceptance_digest !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE='P5734', MESSAGE='cutover successor group authority is denied';
     END IF;
     SELECT operation.* INTO STRICT v_operation
@@ -22,38 +19,17 @@ BEGIN
     WHERE operation.operation_id=p_operation_id AND operation.run_id=p_run_id
       AND operation.state='completed' AND (
         (operation.scope_kind='tenant' AND operation.group_id IN ('analytics','billing_forms','workflow')
-         AND operation.domain IN ('analytics','billing','forms','workflow')) OR
+         AND operation.domain IN ('analytics','billing','workflow')) OR
         (operation.scope_kind='global' AND operation.group_id='billing' AND operation.domain='billing'))
     FOR SHARE;
     IF v_operation.group_id='billing_forms' THEN
-        SELECT operation.* INTO STRICT v_companion
-        FROM platform.cutover_operations AS operation
-        WHERE operation.operation_id=p_companion_operation_id
-          AND operation.run_id=p_companion_run_id AND operation.state='completed'
-          AND operation.scope_kind=v_operation.scope_kind
-          AND operation.scope_id=v_operation.scope_id
-          AND operation.group_id=v_operation.group_id
-          AND operation.cutover_generation=v_operation.cutover_generation
-          AND operation.domain=CASE v_operation.domain
-              WHEN 'billing' THEN 'forms' ELSE 'billing' END
-        FOR SHARE;
-        IF v_operation.domain NOT IN ('billing','forms') THEN
+        IF v_operation.domain IS DISTINCT FROM 'billing' THEN
             RAISE EXCEPTION USING ERRCODE='P5735',
-                MESSAGE='billing forms successor operations differ';
+                MESSAGE='billing successor operation differs';
         END IF;
-        v_expected:='["billing","forms"]'::jsonb;
-        IF v_operation.domain='billing' THEN
-            v_billing_operation_id:=p_operation_id; v_billing_run_id:=p_run_id;
-            v_forms_operation_id:=p_companion_operation_id;
-            v_forms_run_id:=p_companion_run_id;
-        ELSE
-            v_billing_operation_id:=p_companion_operation_id;
-            v_billing_run_id:=p_companion_run_id;
-            v_forms_operation_id:=p_operation_id; v_forms_run_id:=p_run_id;
-        END IF;
+        v_expected:='["billing"]'::jsonb;
     ELSE
-        IF p_companion_operation_id IS NOT NULL
-           OR v_operation.group_id IS DISTINCT FROM v_operation.domain THEN
+        IF v_operation.group_id IS DISTINCT FROM v_operation.domain THEN
             RAISE EXCEPTION USING ERRCODE='P5735',
                 MESSAGE='singleton successor operation differs';
         END IF;
@@ -185,16 +161,13 @@ BEGIN
     ELSIF v_group.group_id='workflow' THEN
         SELECT platform.workflow_finalize_authority_successor_v1(
             p_operation_id,p_run_id,p_acceptance_digest) INTO STRICT v_authority_id;
-    ELSIF v_group.group_id='billing_forms' THEN
-        SELECT platform.billing_finalize_authority_successor_v1(v_billing_operation_id,
-            v_billing_run_id,v_forms_operation_id,v_forms_run_id,p_acceptance_digest) INTO STRICT v_authority_id;
     ELSE
         SELECT platform.billing_finalize_authority_successor_v1(
-            p_operation_id,p_run_id,NULL,NULL,p_acceptance_digest) INTO STRICT v_authority_id;
+            p_operation_id,p_run_id,p_acceptance_digest) INTO STRICT v_authority_id;
     END IF;
     RETURN v_authority_id;
 END;
 $function$;
 -- +goose StatementEnd
-REVOKE ALL ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,uuid,uuid,text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,uuid,uuid,text) TO harpy_cutover_authority_owner;
+REVOKE ALL ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,text) TO harpy_cutover_authority_owner;

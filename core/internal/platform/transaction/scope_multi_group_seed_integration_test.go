@@ -20,8 +20,7 @@ func seedMultiGroupAuthorityRows(
 		"INSERT INTO platform.cutover_groups VALUES('tenant',$1,'billing_forms','v2','v2',1)",
 		"INSERT INTO platform.cutover_groups VALUES('tenant',$1,'workflow','v2','v2',1)",
 		"INSERT INTO platform.cutover_group_members VALUES" +
-			"('tenant',$1,'billing_forms',1,'billing')," +
-			"('tenant',$1,'billing_forms',2,'forms')",
+			"('tenant',$1,'billing_forms',1,'billing')",
 		"INSERT INTO platform.cutover_group_members VALUES" +
 			"('tenant',$1,'workflow',1,'workflow')",
 		"INSERT INTO platform.domain_cutovers VALUES('tenant',$1,'billing','v2','v2',1)",

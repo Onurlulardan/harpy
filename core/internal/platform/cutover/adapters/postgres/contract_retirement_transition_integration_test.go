@@ -45,7 +45,7 @@ FROM platform.contract_retirements WHERE contract_key=$1`, keyValue(t, window)).
 		_, _ = diagnostic.Exec(ctx, "SET ROLE harpy_owner")
 		var ignored int64
 		diagnosticErr := diagnostic.QueryRow(ctx, reconcileContractRetirementSQL,
-			keyValue(t, window), "restquery", "forms", 1, storedRevision).Scan(&ignored)
+			keyValue(t, window), "restquery", "analytics", 1, storedRevision).Scan(&ignored)
 		var postgresError *pgconn.PgError
 		code, message := "", ""
 		if errors.As(diagnosticErr, &postgresError) {
@@ -146,7 +146,7 @@ func verifyEligibleHitReset(
 	_, err := database.admin.Exec(ctx, `INSERT INTO platform.contract_retirements (
 contract_key,owner_module,domain,state,remaining_scope_count,hit_count,
 zero_hit_since,eligible_at,revision,updated_at)
-VALUES ($1,'restquery','forms','eligible',0,0,clock_timestamp()-interval '31 days',
+VALUES ($1,'restquery','analytics','eligible',0,0,clock_timestamp()-interval '31 days',
 clock_timestamp(),1,clock_timestamp())`, value)
 	if err != nil {
 		t.Fatalf("seed eligible: %s", err.Error())
@@ -175,7 +175,7 @@ func verifyContractRetirementOverflow(
 	key := contractRetirementKey(t, "9")
 	_, err := database.admin.Exec(ctx, `INSERT INTO platform.contract_retirements (
 contract_key,owner_module,domain,state,remaining_scope_count,hit_count,revision)
-VALUES ($1,'restquery','forms','active',1,9223372036854775807,1)`, keyValue(t, key))
+VALUES ($1,'restquery','analytics','active',1,9223372036854775807,1)`, keyValue(t, key))
 	if err != nil {
 		t.Fatalf("seed overflow: %s", err.Error())
 	}

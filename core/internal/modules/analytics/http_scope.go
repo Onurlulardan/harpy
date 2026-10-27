@@ -85,9 +85,9 @@ func (runtime *HTTPRuntime) queryOwnerCommand(
 	if err != nil {
 		return err
 	}
-	billingGroup, billingGeneration, formsGeneration, err :=
+	billingGroup, billingGeneration, _, err :=
 		runtime.resolver.ResolveTenantBillingGenerations(ctx, access.TenantID())
-	if err != nil || billingGroup < 1 || billingGeneration < 1 || formsGeneration < 1 {
+	if err != nil || billingGroup < 1 || billingGeneration < 1 {
 		return analyticshttp.ErrUnavailable
 	}
 	request, err := platformtx.AdmitMultiGroupCommandScope(
@@ -98,8 +98,7 @@ func (runtime *HTTPRuntime) queryOwnerCommand(
 		}, []platformtx.CommandAuthorityDomain{
 			{Name: "analytics", Generation: analyticsGeneration},
 			{Name: "billing", Generation: billingGeneration},
-			{Name: "forms", Generation: formsGeneration},
-		}, []string{"analytics", "forms"})
+		}, []string{"analytics", "billing"})
 	if err != nil {
 		return analyticshttp.ErrUnavailable
 	}
@@ -115,9 +114,9 @@ func (runtime *HTTPRuntime) queryOwnerSnapshot(
 	if err != nil {
 		return err
 	}
-	_, _, formsGeneration, err := runtime.resolver.ResolveTenantBillingGenerations(
+	_, billingGeneration, _, err := runtime.resolver.ResolveTenantBillingGenerations(
 		ctx, access.TenantID())
-	if err != nil || formsGeneration < 1 {
+	if err != nil || billingGeneration < 1 {
 		return analyticshttp.ErrUnavailable
 	}
 	actor, err := actorcontext.Issue(access.PrincipalID(), access.TenantID())
@@ -125,7 +124,7 @@ func (runtime *HTTPRuntime) queryOwnerSnapshot(
 		return analyticshttp.ErrUnavailable
 	}
 	verified, err := platformtx.NewSnapshotAuthorityIssuer().Issue(operation,
-		map[string]int64{"analytics": analyticsGeneration, "forms": formsGeneration})
+		map[string]int64{"analytics": analyticsGeneration, "billing": billingGeneration})
 	if err != nil {
 		return analyticshttp.ErrUnavailable
 	}

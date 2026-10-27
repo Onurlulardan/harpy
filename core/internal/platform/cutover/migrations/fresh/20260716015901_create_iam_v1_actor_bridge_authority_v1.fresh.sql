@@ -25,7 +25,7 @@ BEGIN
        CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_target_domain IS NULL OR
        NOT (p_target_domain = ANY (ARRAY[
-           'analytics','billing','catalog','documents','forms',
+           'analytics','billing','catalog','documents',
            'notifications','work','workflow'
        ]::text[])) THEN
         RAISE EXCEPTION USING ERRCODE = '22023',

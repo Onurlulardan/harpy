@@ -45,7 +45,7 @@ WITH tenants AS (
 ), expected_member(group_id, ordinal, domain) AS (
     VALUES
         ('analytics',1,'analytics'),
-        ('billing_forms',1,'billing'), ('billing_forms',2,'forms'),
+        ('billing_forms',1,'billing'),
         ('catalog',1,'catalog'), ('documents',1,'documents'),
         ('iam_system_resources',1,'iam'),
         ('iam_system_resources',2,'system_resource_layout'),
@@ -55,11 +55,11 @@ WITH tenants AS (
 SELECT 1 / CASE WHEN EXISTS (
     SELECT 1 FROM tenants AS tenant
     WHERE (SELECT pg_catalog.count(*) FROM platform.domain_cutovers
-           WHERE scope_kind = 'tenant' AND scope_id = tenant.scope_id) <> 10
+           WHERE scope_kind = 'tenant' AND scope_id = tenant.scope_id) <> 9
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_groups
            WHERE scope_kind = 'tenant' AND scope_id = tenant.scope_id) <> 8
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_group_members
-           WHERE scope_kind = 'tenant' AND scope_id = tenant.scope_id) <> 10
+           WHERE scope_kind = 'tenant' AND scope_id = tenant.scope_id) <> 9
        OR (SELECT pg_catalog.count(*)
            FROM expected_group AS expected
            JOIN platform.cutover_groups AS authority
@@ -73,7 +73,7 @@ SELECT 1 / CASE WHEN EXISTS (
             AND member.scope_id = tenant.scope_id
             AND member.group_id = expected.group_id
             AND member.ordinal = expected.ordinal
-            AND member.domain = expected.domain) <> 10
+            AND member.domain = expected.domain) <> 9
 ) OR EXISTS (
     SELECT 1
     FROM platform.domain_cutovers AS domain

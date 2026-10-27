@@ -19,18 +19,18 @@ func assertMultiGroupCommandAuthority(
 	t.Helper()
 	request := multiGroupScopeRequestFor(t, tenantA, 1, 1)
 	err := coordinator.InTenant(ctx, request, func(_ context.Context, scope TenantScope) error {
-		forms, err := MintOwnerAuthority(scope, "forms")
-		if err != nil || forms.GroupID() != "billing_forms" ||
-			forms.GroupGeneration() != 1 || forms.Generation() != 1 {
-			t.Fatalf("Forms authority mismatch: %+v %v", forms, err)
+		billing, err := MintOwnerAuthority(scope, "billing")
+		if err != nil || billing.GroupID() != "billing_forms" ||
+			billing.GroupGeneration() != 1 || billing.Generation() != 1 {
+			t.Fatalf("Billing authority mismatch: %+v %v", billing, err)
 		}
 		workflow, err := MintOwnerAuthority(scope, "workflow")
 		if err != nil || workflow.GroupID() != "workflow" ||
 			workflow.GroupGeneration() != 1 || workflow.Generation() != 1 {
 			t.Fatalf("Workflow authority mismatch: %+v %v", workflow, err)
 		}
-		if _, err := MintOwnerAuthority(scope, "billing"); !errors.Is(err, ErrScopeOwner) {
-			t.Fatalf("non-participant Billing authority error = %v", err)
+		if _, err := MintOwnerAuthority(scope, "forms"); !errors.Is(err, ErrScopeOwner) {
+			t.Fatalf("non-participant forms authority error = %v", err)
 		}
 		return nil
 	})
@@ -64,10 +64,9 @@ func multiGroupScopeRequestFor(
 		},
 		[]CommandAuthorityDomain{
 			{Name: "workflow", Generation: domainGeneration},
-			{Name: "forms", Generation: domainGeneration},
 			{Name: "billing", Generation: domainGeneration},
 		},
-		[]string{"workflow", "forms"},
+		[]string{"workflow", "billing"},
 	)
 	if err != nil {
 		t.Fatal(err)

@@ -29,7 +29,7 @@ VALUES($1,'t_provider_two','ACTIVE',NULL)
 	if err == nil {
 		cutover := newBillingCutoverAuthorityFixture(
 			"tenant", tenantID, "billing_forms", 1,
-			"v2", "v2", billingAcceptanceA, "billing", "forms",
+			"v2", "v2", billingAcceptanceA, "billing",
 		)
 		err = seedBillingCutoverAuthority(ctx, transaction, cutover)
 	}

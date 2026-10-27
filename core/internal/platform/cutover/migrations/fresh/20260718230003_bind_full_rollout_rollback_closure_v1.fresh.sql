@@ -59,19 +59,19 @@ BEGIN
            domain_row.scope_id=p_environment_id AND domain_row.domain='billing')
        OR (domain_row.scope_kind='tenant' AND
            domain_row.scope_id=p_tenant_id AND domain_row.domain IN (
-               'iam','system_resource_layout','billing','forms','workflow',
+               'iam','system_resource_layout','billing','workflow',
                'analytics','catalog','work','documents','notifications'
            ))
     ORDER BY domain_row.scope_kind,domain_row.domain
     FOR SHARE;
     GET DIAGNOSTICS v_domain_count = ROW_COUNT;
-    IF v_domain_count IS DISTINCT FROM 11 OR EXISTS (
+    IF v_domain_count IS DISTINCT FROM 10 OR EXISTS (
         SELECT 1 FROM platform.domain_cutovers AS domain_row
         WHERE ((domain_row.scope_kind='global' AND
                 domain_row.scope_id=p_environment_id AND domain_row.domain='billing')
            OR (domain_row.scope_kind='tenant' AND
                domain_row.scope_id=p_tenant_id AND domain_row.domain IN (
-                   'iam','system_resource_layout','billing','forms','workflow',
+                   'iam','system_resource_layout','billing','workflow',
                    'analytics','catalog','work','documents','notifications'
                )))
           AND (domain_row.state IS DISTINCT FROM 'v2' OR
@@ -114,12 +114,12 @@ BEGIN
     ORDER BY member.group_id,member.ordinal
     FOR SHARE;
     GET DIAGNOSTICS v_member_count = ROW_COUNT;
-    IF v_member_count IS DISTINCT FROM 4 OR
+    IF v_member_count IS DISTINCT FROM 3 OR
        (SELECT pg_catalog.jsonb_agg(member.domain ORDER BY member.ordinal)
         FROM platform.cutover_group_members AS member
         WHERE member.scope_kind='tenant' AND member.scope_id=p_tenant_id
           AND member.group_id='billing_forms') IS DISTINCT FROM
-          '["billing","forms"]'::jsonb OR
+          '["billing"]'::jsonb OR
        (SELECT pg_catalog.jsonb_agg(member.domain ORDER BY member.ordinal)
         FROM platform.cutover_group_members AS member
         WHERE member.scope_kind='tenant' AND member.scope_id=p_tenant_id

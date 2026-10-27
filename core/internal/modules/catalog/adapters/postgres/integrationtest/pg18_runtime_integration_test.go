@@ -61,10 +61,10 @@ func catalogLifecycleRequestForActor(
 			})
 		}
 	}
-	participants := []string{"analytics", "catalog", "forms", "iam", "workflow"}
+	participants := []string{"analytics", "catalog", "iam", "workflow"}
 	if operation == "catalog.operation.resume" {
 		participants = []string{
-			"analytics", "catalog", "documents", "forms", "iam", "workflow",
+			"analytics", "catalog", "documents", "iam", "workflow",
 		}
 	}
 	request, err := platformtx.AdmitMultiGroupCommandScope(

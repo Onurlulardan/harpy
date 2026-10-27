@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-const tenantSettingsSnapshotOwnerCount = 5
+const tenantSettingsSnapshotOwnerCount = 4
 
 type TenantSettingsSnapshotIssuer struct {
 	valid bool
@@ -27,7 +27,7 @@ func (issuer TenantSettingsSnapshotIssuer) Issue(
 		len(domainGenerations) != tenantSettingsSnapshotOwnerCount {
 		return VerifiedOperation{}, fmt.Errorf("tenant settings snapshot is invalid")
 	}
-	required := []string{"billing", "forms", "iam", "notifications", "tenancy"}
+	required := []string{"billing", "iam", "notifications", "tenancy"}
 	names := make([]string, 0, len(domainGenerations))
 	for name, generation := range domainGenerations {
 		if !authorityNamePattern.MatchString(name) || generation <= 0 {

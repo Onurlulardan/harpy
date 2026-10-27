@@ -32,10 +32,6 @@ func (runtime *HTTPRuntime) resolveMenuGenerations(
 	if err != nil {
 		return nil, cataloghttp.ErrUnavailable
 	}
-	_, _, forms, err := runtime.resolver.ResolveTenantBillingGenerations(ctx, access.TenantID())
-	if err != nil {
-		return nil, cataloghttp.ErrUnavailable
-	}
 	_, catalogGeneration, err := runtime.resolver.ResolveTenantCatalogGenerations(
 		ctx, access.TenantID(),
 	)
@@ -43,12 +39,11 @@ func (runtime *HTTPRuntime) resolveMenuGenerations(
 		return nil, cataloghttp.ErrUnavailable
 	}
 	_, workflow, err := runtime.resolver.ResolveTenantWorkflowGenerations(ctx, access.TenantID())
-	if err != nil || analytics < 1 || catalogGeneration < 1 || forms < 1 || workflow < 1 {
+	if err != nil || analytics < 1 || catalogGeneration < 1 || workflow < 1 {
 		return nil, cataloghttp.ErrUnavailable
 	}
 	return map[string]int64{
-		"analytics": analytics, "catalog": catalogGeneration,
-		"forms": forms, "workflow": workflow,
+		"analytics": analytics, "catalog": catalogGeneration, "workflow": workflow,
 	}, nil
 }
 
@@ -90,7 +85,7 @@ func resolveCatalogCommandGenerations(
 	if err != nil {
 		return nil, nil, cataloghttp.ErrUnavailable
 	}
-	billingGroup, billing, forms, err := resolver.ResolveTenantBillingGenerations(ctx, tenantID)
+	billingGroup, billing, _, err := resolver.ResolveTenantBillingGenerations(ctx, tenantID)
 	if err != nil {
 		return nil, nil, cataloghttp.ErrUnavailable
 	}
@@ -111,7 +106,7 @@ func resolveCatalogCommandGenerations(
 		return nil, nil, cataloghttp.ErrUnavailable
 	}
 	workflowGroup, workflow, err := resolver.ResolveTenantWorkflowGenerations(ctx, tenantID)
-	values := []int64{analyticsGroup, analytics, billingGroup, billing, forms,
+	values := []int64{analyticsGroup, analytics, billingGroup, billing,
 		catalogGroup, catalogGeneration, iamGroup, iam, layout,
 		workflowGroup, workflow}
 	if includeDocuments {
@@ -130,7 +125,7 @@ func resolveCatalogCommandGenerations(
 		{ID: "iam_system_resources", Generation: iamGroup}, {ID: "workflow", Generation: workflowGroup}}
 	domains := []platformtx.CommandAuthorityDomain{{Name: "analytics", Generation: analytics},
 		{Name: "billing", Generation: billing}, {Name: "catalog", Generation: catalogGeneration},
-		{Name: "forms", Generation: forms}, {Name: "iam", Generation: iam},
+		{Name: "iam", Generation: iam},
 		{Name: "system_resource_layout", Generation: layout}, {Name: "workflow", Generation: workflow}}
 	if includeDocuments {
 		groups = append(groups[:3], append(

@@ -69,7 +69,7 @@ BEGIN
         AND v_members IS DISTINCT FROM '["billing"]'::jsonb
     ) OR (
         v_operation.scope_kind = 'tenant'
-        AND v_members IS DISTINCT FROM '["billing","forms"]'::jsonb
+        AND v_members IS DISTINCT FROM '["billing"]'::jsonb
     ) THEN
         RAISE EXCEPTION USING ERRCODE = 'P5721', MESSAGE = 'billing finalized authority members differ';
     END IF;
@@ -94,7 +94,7 @@ BEGIN
     FOR SHARE OF member, domain_row;
     GET DIAGNOSTICS v_locked_count = ROW_COUNT;
     IF (v_operation.scope_kind = 'global' AND v_locked_count IS DISTINCT FROM 1)
-       OR (v_operation.scope_kind = 'tenant' AND v_locked_count IS DISTINCT FROM 2)
+       OR (v_operation.scope_kind = 'tenant' AND v_locked_count IS DISTINCT FROM 1)
     THEN
         RAISE EXCEPTION USING ERRCODE = 'P5721', MESSAGE = 'billing finalized authority domains differ';
     END IF;

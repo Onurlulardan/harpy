@@ -79,7 +79,7 @@ func verifyContractRetirementConcurrency(
 	_, err := database.admin.Exec(ctx, `INSERT INTO platform.contract_retirements (
 contract_key,owner_module,domain,state,remaining_scope_count,hit_count,
 zero_hit_since,eligible_at,revision,updated_at)
-VALUES ($1,'restquery','forms','eligible',0,0,clock_timestamp()-interval '31 days',
+VALUES ($1,'restquery','analytics','eligible',0,0,clock_timestamp()-interval '31 days',
 clock_timestamp(),1,clock_timestamp())`, value)
 	if err != nil {
 		t.Fatal(err)

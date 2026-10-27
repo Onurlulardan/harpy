@@ -69,8 +69,7 @@ BEGIN
               WHERE extra.scope_kind = 'tenant'
                 AND extra.scope_id = p_tenant_id
                 AND extra.group_id = 'billing_forms'
-                AND NOT ((extra.ordinal = 1 AND extra.domain = 'billing')
-                    OR (extra.ordinal = 2 AND extra.domain = 'forms'))
+                AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
           )
         FOR SHARE OF tenant, group_row, billing_member, billing_row;
     EXCEPTION WHEN NO_DATA_FOUND OR TOO_MANY_ROWS THEN

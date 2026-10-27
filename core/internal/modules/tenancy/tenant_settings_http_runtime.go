@@ -72,7 +72,7 @@ func NewTenantSettingsHTTPRuntime(resolver TenantSettingsGenerationResolver,
 
 func validTenantSettingsSnapshotAuthority(value TenantSettingsAuthority) bool {
 	return value.Tenancy > 0 && value.IAM > 0 && value.Notifications > 0 &&
-		value.Billing > 0 && value.Forms > 0
+		value.Billing > 0
 }
 
 func validTenantSettingsCommandAuthority(value TenantSettingsAuthority,

@@ -122,8 +122,8 @@ func assertQueryOwnerScope(
 	}
 	groups, domains, participants := operationAuthority(probe.request)
 	if !slices.Equal(groups, []string{"analytics", "billing_forms"}) ||
-		!slices.Equal(domains, []string{"analytics", "billing", "forms"}) ||
-		!slices.Equal(participants, []string{"analytics", "forms"}) {
+		!slices.Equal(domains, []string{"analytics", "billing"}) ||
+		!slices.Equal(participants, []string{"analytics", "billing"}) {
 		t.Fatalf(
 			"%s authority groups=%v domains=%v participants=%v",
 			operation,

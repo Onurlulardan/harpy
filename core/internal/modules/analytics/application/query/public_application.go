@@ -44,7 +44,7 @@ func (application *PublicApplication) Run(
 		!validUUIDv7(versionID) || ctx == nil || ctx.Err() != nil ||
 		platformtx.RequireActive(scope, platformtx.SnapshotQuery) != nil ||
 		platformtx.RequireOwner(scope, "analytics") != nil ||
-		platformtx.RequireOwner(scope, "forms") != nil ||
+		platformtx.RequireOwner(scope, "billing") != nil ||
 		scope.OperationID() != "analytics.publication.execute" {
 		return ExecutionResult{}, ErrInvalid
 	}

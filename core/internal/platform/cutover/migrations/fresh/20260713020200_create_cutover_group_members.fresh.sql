@@ -17,7 +17,7 @@ CREATE TABLE platform.cutover_group_members (
     CONSTRAINT cutover_group_members_ordinal_check CHECK (ordinal BETWEEN 1 AND 2),
     CONSTRAINT cutover_group_members_domain_check
         CHECK (domain IN (
-            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'analytics', 'billing', 'catalog', 'documents', 'iam',
             'notifications', 'work', 'workflow'
         )),
     CONSTRAINT cutover_group_members_group_domain_unique

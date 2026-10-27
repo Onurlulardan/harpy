@@ -49,7 +49,7 @@ func assertGlobalMembershipMismatch(
 ) {
 	t.Helper()
 	adminExecute(t, ctx, database, `INSERT INTO platform.cutover_group_members
-VALUES('global',$1,'billing',2,'forms')`, scopeEnvironmentID)
+VALUES('global',$1,'billing',2,'catalog')`, scopeEnvironmentID)
 	defer adminExecute(t, context.Background(), database, `DELETE FROM platform.cutover_group_members
 WHERE scope_kind='global' AND scope_id=$1 AND group_id='billing' AND ordinal=2`,
 		scopeEnvironmentID)

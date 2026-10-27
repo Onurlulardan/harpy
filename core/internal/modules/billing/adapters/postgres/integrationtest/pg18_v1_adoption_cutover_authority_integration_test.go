@@ -57,7 +57,7 @@ VALUES($1,'t_billing_isolation','ACTIVE',NULL)`, tenantID); err != nil {
 	}
 	fixture := newBillingCutoverAuthorityFixture(
 		"tenant", tenantID, "billing_forms", 1,
-		"shadow", "v1", nil, "billing", "forms",
+		"shadow", "v1", nil, "billing",
 	)
 	fixture.reason = "billing isolation cutover"
 	fixture.changeReference = "billing-cutover:isolation"

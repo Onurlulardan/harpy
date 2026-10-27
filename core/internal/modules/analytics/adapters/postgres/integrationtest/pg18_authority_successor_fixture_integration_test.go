@@ -97,9 +97,9 @@ func seedAnalyticsWrongDomainSuccessor(
 	_, err := database.ExecContext(ctx, `INSERT INTO platform.cutover_groups(
 scope_kind,scope_id,group_id,generation,state,writer,requested_by,approved_by,
 reason,change_reference,acceptance_digest,changed_at) VALUES(
-'tenant',$1,'forms',2,'v2','v2',
+'tenant',$1,'documents',2,'v2','v2',
 '019c1000-0000-7000-8000-000000000911',
-'019c1000-0000-7000-8000-000000000912','finalized','forms-finalized',$2,
+'019c1000-0000-7000-8000-000000000912','finalized','documents-finalized',$2,
 '2026-07-29T11:00:00Z')`, analyticsTenantA, digest)
 	if err != nil {
 		t.Fatal(err)
@@ -107,21 +107,21 @@ reason,change_reference,acceptance_digest,changed_at) VALUES(
 	_, err = database.ExecContext(ctx, `INSERT INTO platform.domain_cutovers(
 scope_kind,scope_id,domain,generation,state,writer,requested_by,approved_by,
 reason,change_reference,acceptance_digest,changed_at) VALUES(
-'tenant',$1,'forms',2,'v2','v2',
+'tenant',$1,'documents',2,'v2','v2',
 '019c1000-0000-7000-8000-000000000911',
-'019c1000-0000-7000-8000-000000000912','finalized','forms-finalized',$2,
+'019c1000-0000-7000-8000-000000000912','finalized','documents-finalized',$2,
 '2026-07-29T11:00:00Z')`, analyticsTenantA, digest)
 	if err != nil {
 		t.Fatal(err)
 	}
 	_, err = database.ExecContext(ctx, `INSERT INTO
-platform.cutover_group_members VALUES('tenant',$1,'forms','forms',1)`,
+platform.cutover_group_members VALUES('tenant',$1,'documents','documents',1)`,
 		analyticsTenantA)
 	if err != nil {
 		t.Fatal(err)
 	}
 	seedAnalyticsSuccessorOperation(t, ctx, database,
-		analyticsSuccessorWrongOp, analyticsSuccessorWrongRun, "forms", "forms")
+		analyticsSuccessorWrongOp, analyticsSuccessorWrongRun, "documents", "documents")
 }
 
 func createAnalyticsSuccessorCaller(

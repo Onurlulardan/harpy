@@ -47,10 +47,6 @@ func prepareBillingSuccessorFixture(
 		t, ctx, database, billingTenantSuccessorOp, billingTenantSuccessorRun,
 		"tenant", billingTenantID, "billing_forms", "billing",
 	)
-	seedBillingSuccessorOperation(
-		t, ctx, database, billingFormsSuccessorOp, billingFormsSuccessorRun,
-		"tenant", billingTenantID, "billing_forms", "forms",
-	)
 	createBillingSuccessorCaller(t, ctx, database)
 }
 

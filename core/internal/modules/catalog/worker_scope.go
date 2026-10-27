@@ -19,7 +19,7 @@ func (processor *workerProcessor) scopeRequest(
 	}
 	request, err := platformtx.AdmitMultiGroupCommandScope(
 		snapshot.ActorID, tenantID, "catalog.operation.resume", groups, domains,
-		[]string{"analytics", "catalog", "documents", "forms", "iam", "workflow"},
+		[]string{"analytics", "catalog", "documents", "iam", "workflow"},
 	)
 	if err != nil {
 		return platformtx.ScopeRequest{}, asyncUnavailable()

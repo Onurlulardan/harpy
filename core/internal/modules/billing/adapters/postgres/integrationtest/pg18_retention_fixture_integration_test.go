@@ -95,7 +95,7 @@ VALUES($1,'t_retention_b','ACTIVE',NULL)`, tenantID); err != nil {
 	}
 	fixture := newBillingCutoverAuthorityFixture(
 		"tenant", tenantID, "billing_forms", 1,
-		"v2", "v2", billingAcceptanceA, "billing", "forms",
+		"v2", "v2", billingAcceptanceA, "billing",
 	)
 	if err = seedBillingCutoverAuthority(ctx, transaction, fixture); err != nil {
 		t.Fatal(err)

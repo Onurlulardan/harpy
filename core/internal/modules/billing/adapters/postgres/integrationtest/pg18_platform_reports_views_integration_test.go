@@ -129,17 +129,17 @@ func assertTransitionTarget(
 	)
 	var tenantID uuid.UUID
 	var provider string
-	var group, billing, forms int64
+	var group, billing int64
 	err := connection.QueryRowContext(
 		ctx, statement, fixture.subscriptionID,
-	).Scan(&tenantID, &provider, &group, &billing, &forms)
+	).Scan(&tenantID, &provider, &group, &billing)
 	if !want && errors.Is(err, sql.ErrNoRows) {
 		return
 	}
 	if err != nil || !want || tenantID != fixture.tenantID || provider != "manual" ||
-		group != 1 || billing != 1 || forms != 1 {
-		t.Fatalf("transition target tenant=%s provider=%s generations=%d/%d/%d err=%v",
-			tenantID, provider, group, billing, forms, err)
+		group != 1 || billing != 1 {
+		t.Fatalf("transition target tenant=%s provider=%s generations=%d/%d err=%v",
+			tenantID, provider, group, billing, err)
 	}
 }
 

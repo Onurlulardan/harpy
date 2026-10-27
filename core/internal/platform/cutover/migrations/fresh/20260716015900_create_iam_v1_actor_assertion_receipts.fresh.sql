@@ -28,7 +28,7 @@ CREATE TABLE platform.iam_v1_actor_assertion_receipts (
     ),
     CONSTRAINT iam_v1_actor_receipts_domain_check CHECK (
         target_domain IN (
-            'analytics','billing','catalog','documents','forms',
+            'analytics','billing','catalog','documents',
             'notifications','work','workflow'
         )
     ),
@@ -68,7 +68,7 @@ JOIN platform.tenants AS tenant
   ON tenant.id = authority.scope_id AND tenant.deleted_at IS NULL
 WHERE authority.scope_kind = 'tenant'
   AND authority.domain IN (
-      'analytics','billing','catalog','documents','forms',
+      'analytics','billing','catalog','documents',
       'notifications','work','workflow'
   )
   AND authority.state IN ('v1','shadow') AND authority.writer = 'v1';

@@ -45,7 +45,7 @@ func seedScopeRows(t *testing.T, ctx context.Context, admin *pgx.Conn) {
 		); err != nil {
 			t.Fatal(err)
 		}
-		for _, domain := range []string{"crm", "forms"} {
+		for _, domain := range []string{"crm"} {
 			if _, err := admin.Exec(
 				ctx, "INSERT INTO platform.domain_cutovers VALUES('tenant',$1,$2,'v2','v2',1)",
 				tenant.id, domain,

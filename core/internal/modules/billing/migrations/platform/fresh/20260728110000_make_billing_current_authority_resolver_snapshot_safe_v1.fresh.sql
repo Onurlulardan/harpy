@@ -50,8 +50,7 @@ BEGIN
               SELECT 1 FROM platform.cutover_group_members AS extra
               WHERE extra.scope_kind = 'tenant' AND extra.scope_id = p_tenant_id
                 AND extra.group_id = 'billing_forms'
-                AND NOT ((extra.ordinal = 1 AND extra.domain = 'billing')
-                      OR (extra.ordinal = 2 AND extra.domain = 'forms'))
+                AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
           );
     EXCEPTION WHEN NO_DATA_FOUND OR TOO_MANY_ROWS THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

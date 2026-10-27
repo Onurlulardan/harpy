@@ -18,7 +18,7 @@ BEGIN
        p_contract_key OPERATOR(pg_catalog.!~) '^rq[.]alias[.][0-9a-f]{64}$' OR
        p_owner_module OPERATOR(pg_catalog.!~) '^[a-z][a-z0-9_]{0,62}$' OR
        NOT (p_domain OPERATOR(pg_catalog.=) ANY (
-           ARRAY['analytics','billing','catalog','documents','forms','iam',
+           ARRAY['analytics','billing','catalog','documents','iam',
                  'notifications','work','workflow']::text[]
        )) OR p_remaining_scope_count IS NULL OR
        p_remaining_scope_count OPERATOR(pg_catalog.<) 0 THEN

@@ -37,9 +37,9 @@ func (coordinator *publicScopeCoordinator) InPublicationSnapshot(
 	if err != nil || analyticsGeneration < 1 {
 		return publicationapp.ErrUnavailable
 	}
-	_, _, formsGeneration, err := coordinator.resolver.ResolveTenantBillingGenerations(
+	_, billingGeneration, _, err := coordinator.resolver.ResolveTenantBillingGenerations(
 		ctx, route.TenantID)
-	if err != nil || formsGeneration < 1 {
+	if err != nil || billingGeneration < 1 {
 		return publicationapp.ErrUnavailable
 	}
 	identity := append([]byte("harpy/analytics/public-principal/v1\x00"),
@@ -52,7 +52,7 @@ func (coordinator *publicScopeCoordinator) InPublicationSnapshot(
 	}
 	operation, err := platformtx.NewSnapshotAuthorityIssuer().Issue(
 		"analytics.publication.execute", map[string]int64{
-			"analytics": analyticsGeneration, "forms": formsGeneration,
+			"analytics": analyticsGeneration, "billing": billingGeneration,
 		})
 	if err != nil {
 		return publicationapp.ErrUnavailable

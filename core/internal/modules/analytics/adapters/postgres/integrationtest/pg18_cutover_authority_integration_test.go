@@ -96,7 +96,7 @@ SET generation=2,state='shadow',writer='v1' WHERE scope_kind='tenant'
 AND scope_id=$1 AND domain='analytics'`, authority.tenantID)
 	execAnalyticsCutoverSeed(t, ctx, database, `INSERT INTO platform.domain_cutovers
 (scope_kind,scope_id,domain,generation,state,writer) VALUES
-('tenant',$1,'iam',1,'v2','v2'),('tenant',$1,'forms',1,'v2','v2')`, authority.tenantID)
+('tenant',$1,'iam',1,'v2','v2')`, authority.tenantID)
 	seedAnalyticsCutoverOperation(t, ctx, database, authority, leaseExpiry)
 	return authority
 }

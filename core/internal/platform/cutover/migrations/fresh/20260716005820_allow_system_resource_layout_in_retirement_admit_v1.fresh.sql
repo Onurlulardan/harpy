@@ -19,7 +19,7 @@ BEGIN
        p_contract_keys IS NULL OR p_owner_module IS NULL OR p_domain IS NULL OR
        p_owner_module OPERATOR(pg_catalog.!~) '^[a-z][a-z0-9_]{0,62}$' OR
        NOT (p_domain OPERATOR(pg_catalog.=) ANY (
-           ARRAY['analytics','billing','catalog','documents','forms','iam',
+           ARRAY['analytics','billing','catalog','documents','iam',
                  'notifications','system_resource_layout','work','workflow']::text[]
        )) THEN
         RAISE EXCEPTION USING ERRCODE = '22023',

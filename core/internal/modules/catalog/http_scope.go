@@ -80,7 +80,7 @@ func (runtime *HTTPRuntime) lifecycleCommand(ctx context.Context, access catalog
 		return err
 	}
 	request, err := platformtx.AdmitMultiGroupCommandScope(access.PrincipalID(), access.TenantID(),
-		operation, groups, domains, []string{"analytics", "catalog", "forms", "iam", "workflow"})
+		operation, groups, domains, []string{"analytics", "catalog", "iam", "workflow"})
 	if err != nil {
 		return cataloghttp.ErrUnavailable
 	}

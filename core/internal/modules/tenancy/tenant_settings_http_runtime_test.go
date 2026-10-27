@@ -138,7 +138,7 @@ func TestTenantSettingsRuntimeBuildsCrossOwnerSnapshotAuthority(t *testing.T) {
 			coordinator.calls, issuer.calls)
 	}
 	want := map[string]int64{
-		"billing": 5, "forms": 6, "iam": 3, "notifications": 4, "tenancy": 2,
+		"billing": 5, "iam": 3, "notifications": 4, "tenancy": 2,
 	}
 	if !reflect.DeepEqual(issuer.authorities, want) {
 		t.Fatalf("snapshot authorities=%v want=%v", issuer.authorities, want)

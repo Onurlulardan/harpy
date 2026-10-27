@@ -132,12 +132,10 @@ INSERT INTO platform.cutover_groups VALUES
  ('tenant','71000000-0000-4000-8000-000000000071','billing_forms',1,'v2','v2');
 INSERT INTO platform.cutover_group_members VALUES
  ('global','70000000-0000-4000-8000-000000000007','billing',1,'billing'),
- ('tenant','71000000-0000-4000-8000-000000000071','billing_forms',1,'billing'),
- ('tenant','71000000-0000-4000-8000-000000000071','billing_forms',2,'forms');
+ ('tenant','71000000-0000-4000-8000-000000000071','billing_forms',1,'billing');
 INSERT INTO platform.domain_cutovers VALUES
  ('global','70000000-0000-4000-8000-000000000007','billing',1,'v2','v2'),
- ('tenant','71000000-0000-4000-8000-000000000071','billing',1,'v2','v2'),
- ('tenant','71000000-0000-4000-8000-000000000071','forms',1,'v2','v2');`
+ ('tenant','71000000-0000-4000-8000-000000000071','billing',1,'v2','v2');`
 	if _, err := database.ExecContext(ctx, statement); err != nil {
 		t.Fatalf("prepare subscription platform: %v", err)
 	}

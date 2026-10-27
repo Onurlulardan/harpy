@@ -11,7 +11,7 @@ ALTER TABLE platform.domain_cutovers
     DROP CONSTRAINT domain_cutovers_domain_check,
     ADD CONSTRAINT domain_cutovers_domain_check
         CHECK (domain IN (
-            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'analytics', 'billing', 'catalog', 'documents', 'iam',
             'notifications', 'system_resource_layout', 'work', 'workflow'
         )) NOT VALID;
 
@@ -22,7 +22,7 @@ ALTER TABLE platform.cutover_group_members
     DROP CONSTRAINT cutover_group_members_domain_check,
     ADD CONSTRAINT cutover_group_members_domain_check
         CHECK (domain IN (
-            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'analytics', 'billing', 'catalog', 'documents', 'iam',
             'notifications', 'system_resource_layout', 'work', 'workflow'
         )) NOT VALID;
 
@@ -34,7 +34,7 @@ ALTER TABLE platform.cutover_transition_events
     ADD CONSTRAINT cutover_transition_events_domain_check
         CHECK (
             domain IS NULL OR domain IN (
-                'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+                'analytics', 'billing', 'catalog', 'documents', 'iam',
                 'notifications', 'system_resource_layout', 'work', 'workflow'
             )
         ) NOT VALID;
@@ -46,7 +46,7 @@ ALTER TABLE platform.contract_retirements
     DROP CONSTRAINT contract_retirements_domain_check,
     ADD CONSTRAINT contract_retirements_domain_check
         CHECK (domain IN (
-            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'analytics', 'billing', 'catalog', 'documents', 'iam',
             'notifications', 'system_resource_layout', 'work', 'workflow'
         )) NOT VALID;
 

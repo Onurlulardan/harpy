@@ -24,7 +24,7 @@ BEGIN
     JOIN platform.tenants AS tenant
       ON tenant.id = authority.scope_id AND tenant.deleted_at IS NULL
     WHERE authority.scope_kind = 'tenant' AND authority.domain IN (
-        'analytics','billing','catalog','documents','forms',
+        'analytics','billing','catalog','documents',
         'notifications','work','workflow'
     )
     ORDER BY authority.scope_id, authority.domain COLLATE "C"
@@ -35,7 +35,7 @@ BEGIN
         JOIN platform.tenants AS tenant
           ON tenant.id = authority.scope_id AND tenant.deleted_at IS NULL
         WHERE authority.scope_kind = 'tenant' AND authority.domain IN (
-            'analytics','billing','catalog','documents','forms',
+            'analytics','billing','catalog','documents',
             'notifications','work','workflow'
         ) AND authority.state IN ('v1','shadow') AND authority.writer = 'v1'
     ) THEN

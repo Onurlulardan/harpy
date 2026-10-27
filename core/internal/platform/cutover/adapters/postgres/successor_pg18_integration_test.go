@@ -70,35 +70,27 @@ func TestCutoverSuccessorFinalizationAgainstPostgreSQL184(t *testing.T) {
 				index++
 			}
 
-			billingForms := seedSuccessorFixture(
+			billingOnly := seedSuccessorFixture(
 				t, ctx, database, index, "billing_forms",
-				[]string{"billing", "forms"}, 6)
-			seedSuccessorZeroInventory(t, ctx, database, billingForms)
-			allowSuccessorReceipt(t, ctx, database.admin, billingForms.operations[0])
+				[]string{"billing"}, 6)
+			seedSuccessorZeroInventory(t, ctx, database, billingOnly)
+			allowSuccessorReceipt(t, ctx, database.admin, billingOnly.operations[0])
 			if err := finalizeSuccessor(
-				ctx, finalizer, billingForms.operations[0]); err != nil {
-				t.Fatalf("billing partial successor finalize: %v", err)
+				ctx, finalizer, billingOnly.operations[0]); err != nil {
+				t.Fatalf("billing successor finalize: %v", err)
 			}
-			assertSuccessorRoute(t, ctx, database.admin, billingForms,
-				"quiescing", "none", 6, 0, 0)
-			assertSuccessorOperationState(t, ctx, database.admin,
-				billingForms.operations[0], "completed", 1)
-			assertSuccessorOperationState(t, ctx, database.admin,
-				billingForms.operations[1], "quiescing", 0)
-
-			allowSuccessorReceipt(t, ctx, database.admin, billingForms.operations[1])
-			if err := finalizeSuccessor(
-				ctx, finalizer, billingForms.operations[1]); err != nil {
-				t.Fatalf("forms completing successor finalize: %v", err)
-			}
-			assertSuccessorRoute(t, ctx, database.admin, billingForms,
-				"v2", "v2", 7, 1, 3)
+			assertSuccessorRoute(t, ctx, database.admin, billingOnly,
+				"v2", "v2", 7, 1, 2)
 			assertSuccessorAtomicXID(
-				t, ctx, database.admin, billingForms, billingForms.operations[1])
-			assertBillingSuccessorCall(
-				t, ctx, database, billingForms.operations[0], billingForms.operations[1])
-			assertBillingFormsConcurrentCompletion(
-				t, ctx, database, index+1)
+				t, ctx, database.admin, billingOnly, billingOnly.operations[0])
+			assertGlobalBillingSuccessorCall(t, ctx, database, billingOnly)
+			if err := finalizeSuccessor(
+				ctx, finalizer, billingOnly.operations[0]); err != nil {
+				t.Fatalf("billing successor replay: %v", err)
+			}
+			assertSuccessorRoute(t, ctx, database.admin, billingOnly,
+				"v2", "v2", 7, 1, 2)
+			assertBillingOnlySuccessorCompletion(t, ctx, database, index+1)
 
 			globalBilling := seedGlobalBillingSuccessorFixture(
 				t, ctx, database, index+2, 6)
@@ -134,25 +126,6 @@ func TestCutoverSuccessorFinalizationAgainstPostgreSQL184(t *testing.T) {
 			assertSuccessorOperationState(t, ctx, database.admin,
 				globalWrongReceipt.operations[0], "quiescing", 0)
 		})
-	}
-}
-
-func assertBillingSuccessorCall(
-	t *testing.T, ctx context.Context, database cutoverIntegrationDatabase,
-	billing, forms successorOperation,
-) {
-	t.Helper()
-	var companionOperation, companionRun, digest string
-	err := database.admin.QueryRow(ctx, `
-SELECT companion_operation_id::text,companion_run_id::text,acceptance_digest
-FROM platform.successor_authority_test_calls
-WHERE module='billing' AND operation_id=$1 AND run_id=$2`,
-		billing.operationID, billing.runID).Scan(
-		&companionOperation, &companionRun, &digest)
-	if err != nil || companionOperation != forms.operationID ||
-		companionRun != forms.runID || digest != successorAcceptanceDigest {
-		t.Fatalf("billing successor call companion=%s/%s digest=%s err=%v",
-			companionOperation, companionRun, digest, err)
 	}
 }
 

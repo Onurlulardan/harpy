@@ -27,9 +27,8 @@ func (runtime *TenantSettingsHTTPRuntime) snapshot(ctx context.Context,
 		return settings.ErrUnavailable
 	}
 	verified, err := runtime.issueSnapshot(operation,
-		map[string]int64{"billing": authority.Billing, "forms": authority.Forms,
-			"iam": authority.IAM, "notifications": authority.Notifications,
-			"tenancy": authority.Tenancy})
+		map[string]int64{"billing": authority.Billing, "iam": authority.IAM,
+			"notifications": authority.Notifications, "tenancy": authority.Tenancy})
 	if err != nil {
 		return settings.ErrUnavailable
 	}

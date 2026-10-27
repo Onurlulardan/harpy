@@ -66,7 +66,7 @@ func TestCatalogResumeGenerationsIncludeExactDocumentsAuthority(t *testing.T) {
 			"iam_system_resources", "workflow",
 		}) ||
 		!reflect.DeepEqual(domainNames(domains), []string{
-			"analytics", "billing", "catalog", "documents", "forms",
+			"analytics", "billing", "catalog", "documents",
 			"iam", "system_resource_layout", "workflow",
 		}) {
 		t.Fatalf("Catalog resume authority drifted: groups=%v domains=%v",

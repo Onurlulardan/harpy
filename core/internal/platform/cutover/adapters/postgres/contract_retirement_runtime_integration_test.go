@@ -51,7 +51,7 @@ FROM platform.contract_retirements WHERE contract_key = ANY($1::text[])`,
 	if !contractretirement.FaultIs(err, contractretirement.FaultMissing) {
 		t.Fatalf("missing fault = %v", err)
 	}
-	wrongIdentity, _ := contractretirement.NewIdentity("other", "forms")
+	wrongIdentity, _ := contractretirement.NewIdentity("other", "analytics")
 	_, err = runtime.RecordHits(ctx, contractRetirementBatch(t, wrongIdentity, active))
 	if !contractretirement.FaultIs(err, contractretirement.FaultIdentityMismatch) {
 		t.Fatalf("identity fault = %v", err)
@@ -117,7 +117,7 @@ func verifyContractRetirementAllOrNone(
 	_, err := database.admin.Exec(ctx, `INSERT INTO platform.contract_retirements (
 contract_key,owner_module,domain,state,remaining_scope_count,hit_count,
 zero_hit_since,eligible_at,retired_at,revision,updated_at)
-VALUES ($1,'restquery','forms','retired',0,0,clock_timestamp()-interval '31 days',
+VALUES ($1,'restquery','analytics','retired',0,0,clock_timestamp()-interval '31 days',
 clock_timestamp()-interval '1 day',clock_timestamp(),1,clock_timestamp())`, keyValue(t, retired))
 	if err != nil {
 		t.Fatal(err)

@@ -72,7 +72,7 @@ BEGIN
                WHERE member.scope_kind = 'tenant'
                  AND member.scope_id = p_scope_id
                  AND member.group_id = 'billing_forms')
-              IS DISTINCT FROM 'billing,forms'
+              IS DISTINCT FROM 'billing'
        )) OR (p_batch->>'operation_id')::uuid IS DISTINCT FROM p_operation_id OR
        (p_batch->>'run_id')::uuid IS DISTINCT FROM p_run_id OR
        p_batch->>'scope_kind' IS DISTINCT FROM p_scope_kind OR

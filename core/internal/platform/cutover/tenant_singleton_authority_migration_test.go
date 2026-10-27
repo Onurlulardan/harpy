@@ -44,7 +44,7 @@ func TestTenantSingletonAuthorityMigrationCoversEveryRuntimeGroup(t *testing.T) 
 	}
 	for _, marker := range []string{
 		"CREATE FUNCTION platform.cutover_initialize_tenant_v2(",
-		"<> 8", "<> 10",
+		"<> 8", "<> 9",
 		"tenant cutover initialization v2 domain conflict",
 		"tenant cutover initialization v2 authority conflict",
 	} {

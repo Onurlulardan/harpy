@@ -19,7 +19,7 @@ CREATE TABLE platform.contract_retirements (
         CHECK (owner_module ~ '^[a-z][a-z0-9_]{0,62}$'),
     CONSTRAINT contract_retirements_domain_check
         CHECK (domain IN (
-            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'analytics', 'billing', 'catalog', 'documents', 'iam',
             'notifications', 'work', 'workflow'
         )),
     CONSTRAINT contract_retirements_state_check

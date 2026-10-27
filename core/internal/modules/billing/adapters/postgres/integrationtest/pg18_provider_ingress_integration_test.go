@@ -144,7 +144,7 @@ func assertStaleProviderTargetRejected(
 	t.Helper()
 	_, err := connection.ExecContext(ctx, `
 UPDATE platform.domain_cutovers SET generation=2
-WHERE scope_kind='tenant' AND scope_id=$1 AND domain='forms'
+WHERE scope_kind='tenant' AND scope_id=$1 AND domain='billing'
 `, uuid.MustParse(billingTenantID))
 	if err != nil {
 		t.Fatal(err)

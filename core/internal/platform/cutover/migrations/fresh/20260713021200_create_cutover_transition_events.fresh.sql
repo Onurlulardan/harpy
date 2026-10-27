@@ -58,7 +58,7 @@ CREATE TABLE platform.cutover_transition_events (
     CONSTRAINT cutover_transition_events_domain_check
         CHECK (
             domain IS NULL OR domain IN (
-                'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+                'analytics', 'billing', 'catalog', 'documents', 'iam',
                 'notifications', 'work', 'workflow'
             )
         ),

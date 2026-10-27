@@ -59,7 +59,7 @@ func TestFullRolloutCompletionMigrationsKeepProtectedSurfaceClosed(t *testing.T)
 		"SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin'",
 		"p_rollback_window_closed_at < p_last_legacy_hit_at",
 		"FOR SHARE;",
-		`'["billing","forms"]'::jsonb`,
+		`'["billing"]'::jsonb`,
 		`'["iam","system_resource_layout"]'::jsonb`,
 		"retirement.state IS DISTINCT FROM 'retired'",
 		"ON CONFLICT (receipt_id) DO NOTHING",

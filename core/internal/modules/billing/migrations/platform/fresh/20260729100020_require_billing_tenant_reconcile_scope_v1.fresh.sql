@@ -43,8 +43,7 @@ BEGIN
               SELECT 1 FROM platform.cutover_group_members AS extra
               WHERE extra.scope_kind = 'tenant' AND extra.scope_id = tenant.id
                 AND extra.group_id = 'billing_forms'
-                AND NOT ((extra.ordinal = 1 AND extra.domain = 'billing')
-                OR (extra.ordinal = 2 AND extra.domain = 'forms'))
+                AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
           )
           AND NOT EXISTS (
               SELECT 1 FROM platform.billing_tenant_authorities AS authority
@@ -92,8 +91,7 @@ BEGIN
           SELECT 1 FROM platform.cutover_group_members AS extra
           WHERE extra.scope_kind = 'tenant' AND extra.scope_id = tenant.id
             AND extra.group_id = 'billing_forms'
-            AND NOT ((extra.ordinal = 1 AND extra.domain = 'billing')
-                OR (extra.ordinal = 2 AND extra.domain = 'forms'))
+            AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
       )
       AND NOT EXISTS (
           SELECT 1 FROM platform.billing_tenant_authorities AS authority

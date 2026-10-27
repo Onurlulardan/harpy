@@ -85,7 +85,7 @@ INSERT INTO platform.tenancy_tenant_bindings VALUES (
 	}
 	tenant := newBillingCutoverAuthorityFixture(
 		"tenant", uuid.MustParse(billingTenantID), "billing_forms",
-		1, "v2", "v2", billingAcceptanceA, "billing", "forms",
+		1, "v2", "v2", billingAcceptanceA, "billing",
 	)
 	if err := seedBillingCutoverAuthority(ctx, database, tenant); err != nil {
 		t.Fatalf("seed Billing cutover prerequisites: %v", err)

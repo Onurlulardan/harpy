@@ -29,12 +29,12 @@ func validatePersisted(value PersistedRehearsal) error {
 	}
 	evidence := value.Evidence
 	if evidence.TenantID == uuid.Nil || evidence.Generation < 1 ||
-		evidence.GroupID != CanonicalGroupID || len(evidence.Members) != 2 ||
+		evidence.GroupID != CanonicalGroupID || len(evidence.Members) != 1 ||
 		!evidence.QuiesceDrained || !evidence.UsageFlushed ||
 		evidence.ProductionDualWrite {
 		return ErrInvalid
 	}
-	want := []string{"billing", "forms"}
+	want := []string{"billing"}
 	seen := map[uuid.UUID]struct{}{value.ReceiptID: {}}
 	for index, member := range evidence.Members {
 		if member.Domain != want[index] || member.OperationID == uuid.Nil ||

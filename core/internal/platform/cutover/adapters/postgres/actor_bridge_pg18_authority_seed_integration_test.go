@@ -21,8 +21,7 @@ INSERT INTO platform.domain_cutovers (
 ) VALUES
     ('tenant',$1,'iam','v2','v2',7,$2,'actor bridge PG18','IAM-BRIDGE-1'),
     ('tenant',$1,'system_resource_layout','v2','v2',8,$2,
-     'actor bridge PG18','IAM-BRIDGE-1'),
-    ('tenant',$1,'forms','v1','v1',11,$2,'actor bridge PG18','IAM-BRIDGE-1');
+     'actor bridge PG18','IAM-BRIDGE-1');
 INSERT INTO platform.cutover_groups (
     scope_kind, scope_id, group_id, state, writer, generation,
     requested_by, reason, change_reference

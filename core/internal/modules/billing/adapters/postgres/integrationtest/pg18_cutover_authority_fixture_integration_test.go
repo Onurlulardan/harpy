@@ -143,7 +143,7 @@ VALUES($1,$2,'ACTIVE',NULL)`, tenantID, schema); err != nil {
 	}
 	fixture := newBillingCutoverAuthorityFixture(
 		"tenant", tenantID, "billing_forms", generation,
-		"v2", "v2", digest, "billing", "forms",
+		"v2", "v2", digest, "billing",
 	)
 	if err = seedBillingCutoverAuthority(ctx, transaction, fixture); err != nil {
 		t.Fatal(err)

@@ -12,7 +12,7 @@ var catalogAuthorityGroups = []struct {
 	members []string
 }{
 	{"analytics", []string{"analytics"}},
-	{"billing_forms", []string{"billing", "forms"}},
+	{"billing_forms", []string{"billing"}},
 	{"catalog", []string{"catalog"}},
 	{"documents", []string{"documents"}},
 	{"iam_system_resources", []string{"iam", "system_resource_layout"}},

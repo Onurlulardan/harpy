@@ -32,7 +32,7 @@ VALUES($1,$2,'ACTIVE',NULL)`,
 	}
 	fixture := newBillingCutoverAuthorityFixture(
 		"tenant", tenantID, "billing_forms", 1,
-		"v1", "v1", billingAcceptanceA, "billing", "forms",
+		"v1", "v1", billingAcceptanceA, "billing",
 	)
 	if err = seedBillingCutoverAuthority(ctx, transaction, fixture); err != nil {
 		t.Fatalf("insert Billing shadow authority: %v", err)

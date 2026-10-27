@@ -22,7 +22,7 @@ func TestSuccessorFinalizationBindsRouteAuthorityAndEvidence(t *testing.T) {
 	for _, marker := range []string{
 		"SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer'",
 		"CURRENT_USER IS DISTINCT FROM 'harpy_owner'",
-		"'[\"billing\",\"forms\"]'::jsonb",
+		"'[\"billing\"]'::jsonb",
 		"operation.scope_kind='global' AND operation.group_id='billing'",
 		"adoption.state='accepted' AND adoption.item_count=0",
 		"zero_receipt.queue_count=0",
@@ -32,7 +32,7 @@ func TestSuccessorFinalizationBindsRouteAuthorityAndEvidence(t *testing.T) {
 		"UPDATE platform.cutover_groups",
 		"platform.analytics_finalize_authority_successor_v1(",
 		"platform.billing_finalize_authority_successor_v1(",
-		"p_operation_id,p_run_id,NULL,NULL,p_acceptance_digest",
+		"p_operation_id,p_run_id,p_acceptance_digest",
 		"platform.workflow_finalize_authority_successor_v1(",
 	} {
 		if !strings.Contains(apply, marker) {
@@ -57,13 +57,8 @@ func TestSuccessorFinalizerRequiresProtectedPairBeforeSwitch(t *testing.T) {
 		"SECURITY INVOKER",
 		"cutover_authority.finalization_receipts%ROWTYPE",
 		"cutover_authority.verify_finalization_receipt_v1(",
-		"pg_catalog.pg_advisory_xact_lock",
-		"FROM platform.cutover_groups AS group_row",
-		"group_row.generation=NEW.cutover_generation",
-		"billing forms serialization authority differs",
-		"IF NOT FOUND THEN RETURN NEW; END IF;",
-		"v_companion_receipt.terminal_evidence_sha256",
-		"billing forms protected receipts differ",
+		"cutover_finalize_successor_group_v1(",
+		"NEW.operation_id,NEW.run_id,v_receipt.terminal_evidence_sha256",
 		"AFTER UPDATE OF state ON platform.cutover_operations",
 		"ENABLE ALWAYS TRIGGER",
 		"TO harpy_cutover_authority_owner",

@@ -129,7 +129,7 @@ func assertProtectedBillingEvidence(t *testing.T, ctx context.Context,
 	if err := database.QueryRowContext(ctx, `SELECT string_agg(domain,',' ORDER BY ordinal)
 FROM platform.cutover_group_members
 WHERE scope_kind='tenant' AND scope_id=$1 AND group_id='billing_forms'`,
-		tenant.scopeID).Scan(&groupOrder); err != nil || groupOrder != "billing,forms" {
+		tenant.scopeID).Scan(&groupOrder); err != nil || groupOrder != "billing" {
 		t.Fatalf("Billing tenant cutover group order=%q err=%v", groupOrder, err)
 	}
 	var globalBatches, tenantBatches, complete, receipts, rollbackReceipts int

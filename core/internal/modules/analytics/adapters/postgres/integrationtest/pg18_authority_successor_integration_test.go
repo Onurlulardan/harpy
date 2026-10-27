@@ -147,7 +147,7 @@ func assertAnalyticsSuccessorExtraMember(
 ) {
 	t.Helper()
 	if _, err := database.ExecContext(ctx, `INSERT INTO
-platform.cutover_group_members VALUES('tenant',$1,'analytics','forms',2)`,
+platform.cutover_group_members VALUES('tenant',$1,'analytics','billing',2)`,
 		analyticsTenantA); err != nil {
 		t.Fatal(err)
 	}
@@ -156,7 +156,7 @@ platform.cutover_group_members VALUES('tenant',$1,'analytics','forms',2)`,
 	requireAnalyticsPGCode(t, err, "P6101", "successor extra member")
 	if _, err = database.ExecContext(ctx, `DELETE FROM platform.cutover_group_members
 WHERE scope_kind='tenant' AND scope_id=$1 AND group_id='analytics'
-AND domain='forms'`, analyticsTenantA); err != nil {
+AND domain='billing'`, analyticsTenantA); err != nil {
 		t.Fatal(err)
 	}
 }

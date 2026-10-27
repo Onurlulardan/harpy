@@ -43,11 +43,11 @@ type Acceptance struct{ digest [sha256.Size]byte }
 
 func EvaluateGroup(value GroupEvidence) (Acceptance, error) {
 	if value.TenantID == uuid.Nil || value.Generation < 1 || value.GroupID != MandatoryGroupID ||
-		len(value.Members) != 2 || !value.QuiesceDrained || !value.UsageFlushed ||
+		len(value.Members) != 1 || !value.QuiesceDrained || !value.UsageFlushed ||
 		value.ProductionDualWrite {
 		return Acceptance{}, ErrInvalid
 	}
-	want := []string{"billing", "forms"}
+	want := []string{"billing"}
 	for index, member := range value.Members {
 		if member.Domain != want[index] || member.SourceCount != member.TargetCount ||
 			member.DifferenceCount != 0 || member.AcceptanceSHA256 == [sha256.Size]byte{} ||

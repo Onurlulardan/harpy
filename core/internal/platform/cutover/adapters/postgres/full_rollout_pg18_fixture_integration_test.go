@@ -20,7 +20,7 @@ func seedFullRolloutAuthority(
 	t.Helper()
 	requester := uuid.MustParse(integrationOwnerID)
 	approver := uuid.MustParse(integrationRunID)
-	domains := []string{"iam", "system_resource_layout", "billing", "forms", "workflow",
+	domains := []string{"iam", "system_resource_layout", "billing", "workflow",
 		"analytics", "catalog", "work", "documents", "notifications"}
 	_, err := admin.Exec(ctx, `INSERT INTO platform.domain_cutovers (
 scope_kind,scope_id,domain,state,writer,generation,requested_by,approved_by,
@@ -44,7 +44,6 @@ reason,change_reference,acceptance_digest,changed_at
 INSERT INTO platform.cutover_group_members
 (scope_kind,scope_id,group_id,ordinal,domain) VALUES
 ('tenant',$2,'billing_forms',1,'billing'),
-('tenant',$2,'billing_forms',2,'forms'),
 ('tenant',$2,'iam_system_resources',1,'iam'),
 ('tenant',$2,'iam_system_resources',2,'system_resource_layout');
 WITH moment AS (SELECT pg_catalog.clock_timestamp() AS value)
