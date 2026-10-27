@@ -74,7 +74,7 @@ func TestAnalyticsDashboardExportDedicatedExpiryAndControlContracts(t *testing.T
 	guard := analyticsExportFresh(t,
 		"20260802020025_allow_analytics_dashboard_export_current_unknown_v1")
 	for _, token := range []string{"analytics.dashboard.export.render",
-		"platform_async_guard_job_attempt_v3", "assert_cleanup_owner_v1",
+		"platform_async_guard_job_attempt_v6", "assert_cleanup_owner_v1",
 		"platform_async_validate_stale_external_attempt_unknown_v1"} {
 		if !strings.Contains(guard, token) {
 			t.Fatalf("Analytics-specific unknown guard misses %q", token)
@@ -83,7 +83,7 @@ func TestAnalyticsDashboardExportDedicatedExpiryAndControlContracts(t *testing.T
 	jobGuard := analyticsExportFresh(t,
 		"20260802020026_allow_analytics_dashboard_export_current_unknown_job_v1")
 	for _, token := range []string{"analytics.dashboard.export.render",
-		"platform_async_guard_job_transition_v3", "assert_cleanup_owner_v1",
+		"platform_async_guard_job_transition_v6", "assert_cleanup_owner_v1",
 		"platform_async_validate_stale_external_job_unknown_v1"} {
 		if !strings.Contains(jobGuard, token) {
 			t.Fatalf("Analytics-specific unknown job guard misses %q", token)

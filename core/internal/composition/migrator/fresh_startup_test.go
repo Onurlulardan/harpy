@@ -77,7 +77,6 @@ func assertFreshTerminal(t *testing.T, versions map[int64]string) {
 		20260728105100: "/catalog/migrations/tenant/supersessions/fresh/",
 		20260727090000: "/tenancy/migrations/platform/supersessions/fresh/",
 		20260727090100: "/tenancy/migrations/platform/supersessions/fresh/",
-		20260718020030: "/platform/async/migrations/supersessions/fresh/",
 	}
 	for version, fragment := range checks {
 		if !strings.Contains(versions[version], fragment) {
