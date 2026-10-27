@@ -14,6 +14,16 @@ import (
 
 func loadStartupProfile(t *testing.T, startup string, lines []string) error {
 	t.Helper()
+	return loadStartupCommand(t, startup, lines, []string{})
+}
+
+func loadStartupProfilePreserving(t *testing.T, startup string, lines []string, keys ...string) error {
+	t.Helper()
+	return loadStartupCommand(t, startup, lines, preservedProcessEnv(lines, keys))
+}
+
+func loadStartupCommand(t *testing.T, startup string, lines, env []string) error {
+	t.Helper()
 	path := filepath.Join(t.TempDir(), startup+".env")
 	body := strings.Join(lines, "\n") + "\n"
 	if err := os.WriteFile(path, []byte(body), 0o600); err != nil {
@@ -24,7 +34,7 @@ func loadStartupProfile(t *testing.T, startup string, lines []string) error {
 		return err
 	}
 	command := exec.Command(binary, startup, path)
-	command.Env = []string{}
+	command.Env = env
 	output, err := command.CombinedOutput()
 	if err != nil {
 		text := strings.TrimSpace(string(output))
@@ -88,6 +98,23 @@ func copyFile(source, target string) error {
 	defer output.Close()
 	_, err = io.Copy(output, input)
 	return err
+}
+
+func preservedProcessEnv(lines []string, keys []string) []string {
+	wanted := map[string]struct{}{}
+	for _, key := range keys {
+		wanted[key] = struct{}{}
+	}
+	env := make([]string, 0, len(keys))
+	for _, line := range lines {
+		key, value, ok := strings.Cut(line, "=")
+		if ok {
+			if _, keep := wanted[key]; keep && value != "" {
+				env = append(env, line)
+			}
+		}
+	}
+	return env
 }
 
 func goTool() string {

@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	preserved := preservedProcessKeys()
 	os.Clearenv()
 	if len(os.Args) != 3 {
 		os.Stderr.WriteString("profile and env file are required")
@@ -16,6 +17,12 @@ func main() {
 	if _, err := envfile.Consume([]string{"--env-file", os.Args[2]}, os.Args[1]); err != nil {
 		os.Stderr.WriteString(err.Error())
 		os.Exit(1)
+	}
+	for key, value := range preserved {
+		if err := os.Setenv(key, value); err != nil {
+			os.Stderr.WriteString(err.Error())
+			os.Exit(1)
+		}
 	}
 	var err error
 	switch os.Args[1] {
@@ -33,4 +40,17 @@ func main() {
 		os.Stderr.WriteString(err.Error())
 		os.Exit(1)
 	}
+}
+
+func preservedProcessKeys() map[string]string {
+	preserved := map[string]string{}
+	for _, key := range []string{
+		"HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH",
+		"HARPY_RELEASE_TRUST_ROOT_PATH",
+	} {
+		if value := os.Getenv(key); value != "" {
+			preserved[key] = value
+		}
+	}
+	return preserved
 }

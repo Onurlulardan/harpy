@@ -66,12 +66,20 @@ func applyFile(path, profile string) error {
 	if err != nil {
 		return err
 	}
+	mode := deploymentModeForApply(values)
 	for key, value := range values {
-		if err := applyKey(profile, key, value); err != nil {
+		if err := applyKey(profile, key, value, mode); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func deploymentModeForApply(values map[string]string) string {
+	if mode := os.Getenv("DEPLOYMENT_MODE"); mode != "" {
+		return mode
+	}
+	return values["DEPLOYMENT_MODE"]
 }
 
 func parseFile(file *os.File) (map[string]string, error) {
@@ -98,12 +106,12 @@ func parseFile(file *os.File) (map[string]string, error) {
 	return values, nil
 }
 
-func applyKey(profile, key, value string) error {
+func applyKey(profile, key, value, mode string) error {
 	if managedEnvironmentKey(key) {
 		if !config.StartupProfilesRecognize(key) {
 			return fmt.Errorf("config %s: profile contains an unknown key", key)
 		}
-		if !config.StartupProfileAllows(profile, key) {
+		if !config.StartupProfileAllowsForMode(profile, key, mode) {
 			return nil
 		}
 	}

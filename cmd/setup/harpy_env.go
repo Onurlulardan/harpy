@@ -3,6 +3,7 @@ package main
 import (
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 const localManagementListenAddress = "0.0.0.0:9090"
@@ -45,7 +46,36 @@ func harpyEnvLines(root string, in answers) ([]string, error) {
 			"HARPY_DOCUMENTS_S3_SECRET_ACCESS_KEY_FILE="+secret,
 		)
 	}
-	return lines, nil
+	runtime, err := runtimeMaterial(root, in.Profile)
+	if err != nil {
+		return nil, err
+	}
+	release, err := releaseMaterial(root, in.Profile)
+	if err != nil {
+		return nil, err
+	}
+	return mergeEnvLines(lines, runtime, release), nil
+}
+
+func mergeEnvLines(groups ...[]string) []string {
+	index := map[string]int{}
+	merged := make([]string, 0)
+	for _, group := range groups {
+		for _, line := range group {
+			key, _, ok := strings.Cut(line, "=")
+			if !ok || key == "" {
+				merged = append(merged, line)
+				continue
+			}
+			if at, found := index[key]; found {
+				merged[at] = line
+				continue
+			}
+			index[key] = len(merged)
+			merged = append(merged, line)
+		}
+	}
+	return merged
 }
 
 func documentsCredentialFiles(in answers, secrets string) (string, string) {

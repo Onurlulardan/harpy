@@ -52,17 +52,15 @@ func loadOperatorStartup(t *testing.T, mode string, lines, env []string) {
 	}
 	requireEnvKey(t, lines, "HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH")
 	requireEnvKey(t, lines, "HARPY_RELEASE_TRUST_ROOT_PATH")
-	err := loadStartupProfile(t, "operator_initialize", env)
-	if err == nil || !strings.Contains(err.Error(), "forbidden") {
-		t.Fatalf("on-prem operator accepted shared authority keys: %v", err)
+	if err := loadStartupProfile(t, "operator_initialize", env); err != nil {
+		t.Fatalf("operator: %v", err)
 	}
-	// API and worker require these keys. On-prem operator initialize forbids them.
-	legal := withoutEnvKeys(env,
+	err := loadStartupProfilePreserving(t, "operator_initialize", env,
 		"HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH",
 		"HARPY_RELEASE_TRUST_ROOT_PATH",
 	)
-	if err = loadStartupProfile(t, "operator_initialize", legal); err != nil {
-		t.Fatalf("operator: %v", err)
+	if err == nil || !strings.Contains(err.Error(), "forbidden") {
+		t.Fatalf("on-prem operator accepted process authority keys: %v", err)
 	}
 }
 

@@ -43,6 +43,65 @@ func TestConsumeLoadsProfileKeysAndSkipsOtherProfiles(t *testing.T) {
 	}
 }
 
+func TestConsumeSkipsOnPremOperatorAckBundleAndReleaseTrust(t *testing.T) {
+	path := filepath.Join(t.TempDir(), ".env")
+	body := strings.Join([]string{
+		"DEPLOYMENT_MODE=onpremise",
+		"HARPY_ENVIRONMENT=development",
+		"HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH=/authority/ack-trust.json",
+		"HARPY_RELEASE_TRUST_ROOT_PATH=/release/trust.json",
+	}, "\n")
+	if err := os.WriteFile(path, []byte(body+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	keys := []string{
+		"DEPLOYMENT_MODE", "HARPY_ENVIRONMENT",
+		"HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH",
+		"HARPY_RELEASE_TRUST_ROOT_PATH",
+	}
+	for _, key := range keys {
+		t.Setenv(key, "")
+	}
+	if _, err := Consume([]string{"--env-file", path}, "operator_initialize"); err != nil {
+		t.Fatal(err)
+	}
+	if os.Getenv("HARPY_ENVIRONMENT") != "development" ||
+		os.Getenv("HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH") != "" ||
+		os.Getenv("HARPY_RELEASE_TRUST_ROOT_PATH") != "" {
+		t.Fatal("on-prem operator applied shared authority files")
+	}
+	for _, key := range keys {
+		t.Setenv(key, "")
+	}
+	if _, err := Consume([]string{"--env-file", path}, "api"); err != nil {
+		t.Fatal(err)
+	}
+	if os.Getenv("HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH") != "/authority/ack-trust.json" {
+		t.Fatal("API skipped the shared ack trust bundle")
+	}
+	if _, err := Consume([]string{"--env-file", path}, "worker"); err != nil {
+		t.Fatal(err)
+	}
+	if os.Getenv("HARPY_RELEASE_TRUST_ROOT_PATH") != "/release/trust.json" {
+		t.Fatal("worker skipped the shared release trust root")
+	}
+	for _, key := range keys {
+		t.Setenv(key, "")
+	}
+	saas := filepath.Join(t.TempDir(), "saas.env")
+	saasBody := strings.Replace(body, "DEPLOYMENT_MODE=onpremise", "DEPLOYMENT_MODE=saas", 1)
+	if err := os.WriteFile(saas, []byte(saasBody+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Consume([]string{"--env-file", saas}, "operator_initialize"); err != nil {
+		t.Fatal(err)
+	}
+	if os.Getenv("HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH") == "" ||
+		os.Getenv("HARPY_RELEASE_TRUST_ROOT_PATH") == "" {
+		t.Fatal("SaaS operator initialize skipped required authority files")
+	}
+}
+
 func TestConsumeRejectsUnknownHarpyKeyByName(t *testing.T) {
 	directory := t.TempDir()
 	path := filepath.Join(directory, ".env")

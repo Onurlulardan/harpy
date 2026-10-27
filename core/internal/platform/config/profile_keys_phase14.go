@@ -31,14 +31,33 @@ func workerPhase14Keys() []string {
 }
 
 func operatorInitializeKeys() []string {
+	return append(operatorInitializeCommonKeys(), operatorInitializeSaaSAuthorityKeys()...)
+}
+
+func operatorInitializeCommonKeys() []string {
 	return []string{
 		deploymentModeEnvironmentKey, "HARPY_INSTALLATION_MANIFEST_PATH",
 		"HARPY_INITIAL_ADMIN_PASSWORD_FILE", "HARPY_RECOVERY_SIGNING_DIRECTORY",
 		iamDirectoryKeyringEnvironmentKey, iamDirectoryKeyringEnvironmentKey + "_FILE",
 		licenseCredentialKey, licenseIssuerURLKey, licenseSnapshotKey,
 		licenseTrustBundleKey, saasKMSKeyIDKey, saasRegistryURLKey,
-		ackTrustBundleKey, saasWorkloadIdentityKey, "HARPY_RELEASE_TRUST_ROOT_PATH",
+		saasWorkloadIdentityKey,
 	}
+}
+
+func operatorInitializeSaaSAuthorityKeys() []string {
+	return []string{ackTrustBundleKey, "HARPY_RELEASE_TRUST_ROOT_PATH"}
+}
+
+func StartupProfileAllowsForMode(profileName, key, mode string) bool {
+	if profile(profileName) == profileOperatorInitialize && mode != string(DeploymentSaaS) {
+		for _, saasKey := range operatorInitializeSaaSAuthorityKeys() {
+			if key == saasKey {
+				return false
+			}
+		}
+	}
+	return StartupProfileAllows(profileName, key)
 }
 
 func operatorIdentityReconcileKeys() []string {

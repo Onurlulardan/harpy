@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -48,5 +49,64 @@ func TestLocalEnvMatchesProcessKeys(t *testing.T) {
 	}
 	if _, found := awsEnv["HARPY_DOCUMENTS_S3_ENDPOINT"]; found {
 		t.Fatal("aws profile wrote documents keys that require a bucket owner")
+	}
+}
+
+func TestSingleTenantEnvWritesBootMaterial(t *testing.T) {
+	root := t.TempDir()
+	runOK(t, root, []string{"--defaults"}, "")
+	env := readEnv(t, root, "single-tenant")
+	cursor := env["HARPY_REST_QUERY_CURSOR_KEYRING"]
+	if cursor == "" {
+		cursor = env["HARPY_REST_QUERY_CURSOR_KEYRING_FILE"]
+	}
+	manifest := env["HARPY_RELEASE_MANIFEST_PATH"]
+	if cursor == "" || manifest == "" {
+		t.Fatalf("cursor=%q manifest=%q", cursor, manifest)
+	}
+	if _, err := os.Stat(cursor); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(manifest); err != nil {
+		t.Fatal(err)
+	}
+	if env["HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"] == "" || env["HARPY_RELEASE_TRUST_ROOT_PATH"] == "" {
+		t.Fatal("shared authority paths missing")
+	}
+	assertEnvFileKeysUnique(t, root, "single-tenant")
+	_ = runOK(t, root, []string{"--defaults"}, "")
+	again := readEnv(t, root, "single-tenant")
+	againCursor := again["HARPY_REST_QUERY_CURSOR_KEYRING"]
+	if againCursor == "" {
+		againCursor = again["HARPY_REST_QUERY_CURSOR_KEYRING_FILE"]
+	}
+	if againCursor == "" || again["HARPY_RELEASE_MANIFEST_PATH"] == "" {
+		t.Fatal("second run dropped boot material")
+	}
+	if _, err := os.Stat(againCursor); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(again["HARPY_RELEASE_MANIFEST_PATH"]); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func assertEnvFileKeysUnique(t *testing.T, root, profile string) {
+	t.Helper()
+	seen := map[string]struct{}{}
+	body := mustRead(t, filepath.Join(root, "deploy", profile, ".env"))
+	for _, line := range strings.Split(body, "\n") {
+		line = strings.TrimSpace(strings.TrimRight(line, "\r"))
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		key, _, ok := strings.Cut(line, "=")
+		if !ok || key == "" {
+			continue
+		}
+		if _, exists := seen[key]; exists {
+			t.Fatalf("duplicate %s", key)
+		}
+		seen[key] = struct{}{}
 	}
 }

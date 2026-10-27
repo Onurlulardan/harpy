@@ -52,6 +52,9 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 	if err != nil {
 		return nil, fmt.Errorf("postgres manifests: %w", err)
 	}
+	if err = applySchemaContractManifests(&manifests); err != nil {
+		return nil, err
+	}
 	operations, err := buildPostgresOperations(manifests)
 	if err != nil {
 		return nil, fmt.Errorf("postgres operations: %w", err)
@@ -95,7 +98,9 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 	if err = attestation.DecodeStrict(operationDocument.body, &operation); err != nil {
 		return nil, err
 	}
-	receipts, err := localRuntimeReceipts(keys, manifests, operations, authority, releaseDocument)
+	bootstrap, extensionReceipt, cleanup, err := buildRuntimeReceipts(
+		keys, manifests, operations, authority, releaseDocument,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("runtime receipts: %w", err)
 	}
@@ -109,11 +114,11 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 		{"HARPY_RELEASE_MANIFEST_PATH", "release-manifest.json", releaseDocument.body},
 		{"HARPY_RELEASE_SIGNATURE_PATH", "release-signature.json", releaseSignature},
 		{"HARPY_RELEASE_TRUST_ROOT_PATH", "trust-root.json", keys.rootDocument},
-		{"HARPY_BOOTSTRAP_RECEIPT_PATH", "bootstrap-receipt.json", receipts[0]},
-		{"HARPY_EXTENSION_RECEIPT_PATH", "extension-receipt.json", receipts[1]},
+		{"HARPY_BOOTSTRAP_RECEIPT_PATH", "bootstrap-receipt.json", bootstrap},
+		{"HARPY_EXTENSION_RECEIPT_PATH", "extension-receipt.json", extensionReceipt},
 		{"HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH", "authority-manifest.json", authority.body},
 		{"HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH", "authority-signature.json", authoritySignature},
-		{"HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH", "cleanup-receipt.json", receipts[2]},
+		{"HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH", "cleanup-receipt.json", cleanup},
 		{"HARPY_MIGRATION_MANIFEST_PATH", "migration-manifest.json", manifests.migration.body},
 		{"HARPY_EXTENSION_MANIFEST_PATH", "extension-manifest.json", manifests.extension.body},
 		{"HARPY_ROLES_MANIFEST_PATH", "roles-manifest.json", manifests.roles.body},
@@ -129,17 +134,4 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 		{"HARPY_CATALOG_PACKAGE_SET_PATH", "catalog-package-set.json", catalog},
 		{"HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE", "catalog-package-keyring.json", keys.keyring},
 	}, nil
-}
-
-func localRuntimeReceipts(
-	keys releaseKeys, manifests postgresManifests, operations postgresOperations,
-	authority, release releaseDocument,
-) ([][]byte, error) {
-	bootstrap, extension, cleanup, err := buildRuntimeReceipts(
-		keys, manifests, operations, authority, release,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return [][]byte{bootstrap, extension, cleanup}, nil
 }

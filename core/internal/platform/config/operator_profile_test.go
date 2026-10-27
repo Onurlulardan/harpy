@@ -1,6 +1,9 @@
 package config
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestOperatorProfilesLoadExactArtifacts(t *testing.T) {
 	initialize, err := loadOperatorInitialize(validOperatorInitializeEnvironment(DeploymentOnPrem))
@@ -45,6 +48,47 @@ func TestOperatorProfilesRejectCrossProfileAndModeKeys(t *testing.T) {
 	if _, err := loadOperatorInitialize(onPrem); err == nil {
 		t.Fatal("on-premise initialize accepted SaaS registry input")
 	}
+}
+
+func TestOnPremOperatorInitializeSkipsSharedAckBundleAndReleaseTrust(t *testing.T) {
+	directory := phase14FixtureDirectory("shared-onprem-operator")
+	shared := append(validOperatorInitializeEnvironment(DeploymentOnPrem),
+		ackTrustBundleKey+"="+phase14FixtureFile(directory, "ack-trust.json", false),
+		"HARPY_RELEASE_TRUST_ROOT_PATH="+phase14FixtureFile(directory, "release-trust.json", false),
+	)
+	if _, err := loadOperatorInitialize(shared); err == nil || !strings.Contains(err.Error(), "forbidden") {
+		t.Fatalf("on-prem operator initialize accepted shared authority files: %v", err)
+	}
+	loaded, err := loadOperatorInitialize(entriesAllowedForMode(shared, "operator_initialize", string(DeploymentOnPrem)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if loaded.DeploymentMode() != DeploymentOnPrem ||
+		loaded.AckTrustBundle().Path().Value() != "" ||
+		loaded.ReleaseTrustRoot().Path().Value() != "" {
+		t.Fatal("on-prem operator initialize consumed shared authority files")
+	}
+	if !StartupProfileAllowsForMode("operator_initialize", ackTrustBundleKey, string(DeploymentSaaS)) ||
+		!StartupProfileAllows("api", ackTrustBundleKey) ||
+		!StartupProfileAllows("worker", "HARPY_RELEASE_TRUST_ROOT_PATH") {
+		t.Fatal("SaaS operator, API, or worker lost a required authority file")
+	}
+	api := withoutEnvironmentKey(validAPIEnvironment(), ackTrustBundleKey)
+	if _, err := loadAPI(api); err == nil || !strings.Contains(err.Error(), ackTrustBundleKey) {
+		t.Fatalf("API accepted a missing ack trust bundle: %v", err)
+	}
+}
+
+func entriesAllowedForMode(entries []string, profileName, mode string) []string {
+	allowed := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		key, _, found := strings.Cut(entry, "=")
+		if found && !StartupProfileAllowsForMode(profileName, key, mode) {
+			continue
+		}
+		allowed = append(allowed, entry)
+	}
+	return allowed
 }
 
 func TestTenantMigrationExecutorOwnsModeAndReleaseInputs(t *testing.T) {
