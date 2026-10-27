@@ -77,7 +77,7 @@ func (reports *platformReports) executePlatformTransition(
 		command.Access.PrincipalID(), target.TenantID,
 		subscriptionapp.OperationPlatformTransition, billingAuthorityGroup,
 		target.GroupGeneration, map[string]int64{
-			"billing": target.BillingGeneration, "forms": target.FormsGeneration,
+			"billing": target.BillingGeneration,
 		},
 	)
 	if err != nil {

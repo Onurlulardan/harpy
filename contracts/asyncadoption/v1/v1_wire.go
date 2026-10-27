@@ -16,15 +16,6 @@ type V1QueueMessage struct {
 	PublishedAt time.Time      `json:"published_at"`
 }
 
-type V1ImportJob struct {
-	ID              string `json:"id"`
-	Status          string `json:"status"`
-	ClientRequestID string `json:"client_request_id"`
-	LeaseOwner      string `json:"lease_owner"`
-	TenantID        string `json:"tenant_id"`
-	LastHeartbeatAt string `json:"last_heartbeat_at"`
-}
-
 type V1IdempotencyResponse struct {
 	State       string `json:"state"`
 	RequestHash string `json:"request_hash"`
@@ -39,18 +30,6 @@ func DecodeV1QueueMessage(document []byte) (V1QueueMessage, error) {
 	if value.ID == "" || value.Type == "" || value.Payload == nil ||
 		value.RetryCount < 0 || value.PublishedAt.IsZero() {
 		return V1QueueMessage{}, fmt.Errorf("V1 queue message is incomplete")
-	}
-	return value, nil
-}
-
-func DecodeV1ImportJob(document []byte) (V1ImportJob, error) {
-	var value V1ImportJob
-	if err := decodeV1Wire(document, &value); err != nil {
-		return V1ImportJob{}, err
-	}
-	if value.ID == "" || value.Status == "" || value.ClientRequestID == "" ||
-		value.TenantID == "" {
-		return V1ImportJob{}, fmt.Errorf("V1 import job is incomplete")
 	}
 	return value, nil
 }

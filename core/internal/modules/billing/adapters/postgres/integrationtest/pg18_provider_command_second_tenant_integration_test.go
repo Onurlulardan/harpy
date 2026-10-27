@@ -35,7 +35,7 @@ VALUES($1,'t_provider_two','ACTIVE',NULL)
 	}
 	if err == nil {
 		_, err = transaction.ExecContext(ctx, `
-SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,1,$3)
+SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,$3)
 `, authorityID, tenantID, f.now)
 	}
 	if err == nil {

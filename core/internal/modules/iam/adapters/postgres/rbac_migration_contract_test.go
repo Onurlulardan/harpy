@@ -47,7 +47,6 @@ func TestIAMRBACMigrationContracts(t *testing.T) {
 		}},
 		{iamRBACMigrationNames[6], []string{
 			"CREATE TABLE iam_permission_implications (",
-			"implication_kind = 'v1_form_parent_v1'",
 			"source_match_kind = 'exact' AND implied_match_kind = 'exact'",
 			"hit_count >= 0", "retirement_receipt_id IS NOT NULL",
 			"CREATE FUNCTION iam_guard_permission_implication_v1()",

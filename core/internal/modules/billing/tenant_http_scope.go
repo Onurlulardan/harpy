@@ -11,7 +11,7 @@ import (
 const billingAuthorityGroup = "billing_forms"
 
 type generations struct {
-	group, billing, forms int64
+	group, billing int64
 }
 
 func (application *tenantOperations) resolve(
@@ -24,13 +24,13 @@ func (application *tenantOperations) resolve(
 		access.Scope() != billingapi.AccessScopeTenant {
 		return generations{}, billingapi.ErrForbidden
 	}
-	group, billing, forms, err := application.resolver.ResolveTenantBillingGenerations(
+	group, billing, _, err := application.resolver.ResolveTenantBillingGenerations(
 		ctx, access.TenantID(),
 	)
-	if err != nil || group < 1 || billing < 1 || forms < 1 {
+	if err != nil || group < 1 || billing < 1 {
 		return generations{}, billingapi.ErrAuthorityUnavailable
 	}
-	return generations{group: group, billing: billing, forms: forms}, nil
+	return generations{group: group, billing: billing}, nil
 }
 
 func (application *tenantOperations) inCommand(
@@ -43,7 +43,7 @@ func (application *tenantOperations) inCommand(
 	request, err := platformtx.AdmitCommandScope(
 		access.PrincipalID(), access.TenantID(), operation,
 		billingAuthorityGroup, authority.group,
-		map[string]int64{"billing": authority.billing, "forms": authority.forms},
+		map[string]int64{"billing": authority.billing},
 	)
 	if err != nil {
 		return billingapi.ErrAuthorityUnavailable
@@ -65,9 +65,7 @@ func (application *tenantOperations) inSnapshot(
 		return billingapi.ErrAuthorityUnavailable
 	}
 	verified, err := platformtx.NewSnapshotAuthorityIssuer().Issue(
-		operation, map[string]int64{
-			"billing": authority.billing, "forms": authority.forms,
-		},
+		operation, map[string]int64{"billing": authority.billing},
 	)
 	if err != nil {
 		return billingapi.ErrAuthorityUnavailable

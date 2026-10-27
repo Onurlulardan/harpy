@@ -28,7 +28,7 @@ func TestReconcileAndRunRestoredLicenseGrantStayExactlyBound(t *testing.T) {
 		RestoreReceiptID:     uuid.New(),
 		RestoreReceiptSHA256: strings.Repeat("a", 64),
 		LicenseID:            uuid.New(), LicenseeOrganizationID: uuid.New(),
-		DeliveryKind: "connected", Issuer: "forgeguard",
+		DeliveryKind: "connected", Issuer: "harpy",
 		PreviousSequence: 4, PreviousSHA256: strings.Repeat("b", 64),
 		NextSequence: 5, NextSHA256: strings.Repeat("c", 64),
 		AuthorityRevision: 7,

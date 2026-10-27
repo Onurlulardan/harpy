@@ -25,7 +25,7 @@ BEGIN
         implied_permission_id, implied_match_kind, retirement_contract_key,
         state, hit_count, last_hit_at, retirement_receipt_id, revision,
         created_at, updated_at, retired_at
-    ) VALUES (p_id, 'v1_form_parent_v1', p_source_permission_id, 'exact',
+    ) VALUES (p_id, p_retirement_contract_key, p_source_permission_id, 'exact',
         p_implied_permission_id, 'exact', p_retirement_contract_key,
         'active', 0, NULL, NULL, 1, v_now, v_now, NULL);
     v_count := iam_rbac_bump_all_users_v1(v_clock);

@@ -38,7 +38,6 @@ func (resolver *mappingResolver) ProviderTarget(
 		&evidence.TenantID, &evidence.MappingID, &evidence.ProviderAccountID,
 		&subscriptionID, &invoiceID, &evidence.MappingRevision,
 		&evidence.GroupGeneration, &evidence.BillingGeneration,
-		&evidence.FormsGeneration,
 	)
 	if err != nil {
 		return platformtx.ProviderTargetEvidence{}, fmt.Errorf("resolve provider mapping: %w", err)

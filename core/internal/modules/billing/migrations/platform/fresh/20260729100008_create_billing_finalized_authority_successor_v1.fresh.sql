@@ -1,8 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE FUNCTION platform.billing_finalize_authority_successor_v1(
-    p_operation_id uuid, p_run_id uuid, p_forms_operation_id uuid,
-    p_forms_run_id uuid, p_acceptance_digest text
+    p_operation_id uuid, p_run_id uuid, p_acceptance_digest text
 )
 RETURNS uuid
 LANGUAGE plpgsql
@@ -11,7 +10,6 @@ SET search_path = pg_catalog
 AS $function$
 DECLARE
     v_operation platform.cutover_operations%ROWTYPE;
-    v_companion platform.cutover_operations%ROWTYPE;
     v_group_generation bigint;
     v_requested_by uuid;
     v_approved_by uuid;
@@ -45,28 +43,6 @@ BEGIN
           )
       )
     FOR SHARE;
-    IF v_operation.scope_kind = 'global' THEN
-        IF p_forms_operation_id IS NOT NULL OR p_forms_run_id IS NOT NULL THEN
-            RAISE EXCEPTION USING ERRCODE = 'P5721', MESSAGE = 'billing global successor companion is invalid';
-        END IF;
-    ELSE
-        IF p_forms_operation_id IS NULL OR p_forms_run_id IS NULL
-           OR pg_catalog.uuid_extract_version(p_forms_operation_id) IS DISTINCT FROM 7
-           OR pg_catalog.uuid_extract_version(p_forms_run_id) IS DISTINCT FROM 7 THEN
-            RAISE EXCEPTION USING ERRCODE = 'P5721', MESSAGE = 'billing tenant successor companion is required';
-        END IF;
-        SELECT operation.* INTO STRICT v_companion
-        FROM platform.cutover_operations AS operation
-        WHERE operation.operation_id = p_forms_operation_id
-          AND operation.run_id = p_forms_run_id
-          AND operation.state = 'completed'
-          AND operation.scope_kind = v_operation.scope_kind
-          AND operation.scope_id = v_operation.scope_id
-          AND operation.group_id = v_operation.group_id
-          AND operation.domain = 'forms'
-          AND operation.cutover_generation = v_operation.cutover_generation
-        FOR SHARE;
-    END IF;
     SELECT group_row.generation, group_row.requested_by,
            group_row.approved_by, group_row.reason,
            group_row.change_reference, group_row.changed_at
@@ -140,8 +116,7 @@ BEGIN
         WHERE authority.authority_id = v_authority_id
           AND authority.tenant_id = v_operation.scope_id
           AND authority.authority_group_generation = v_group_generation
-          AND authority.billing_generation = v_group_generation
-          AND authority.forms_generation = v_group_generation;
+          AND authority.billing_generation = v_group_generation;
     END IF;
     IF FOUND THEN
         RETURN v_authority_id;
@@ -161,12 +136,11 @@ BEGIN
             INSERT INTO platform.billing_tenant_authorities (
                 authority_id, tenant_id, scope_kind, scope_id,
                 authority_group_id, authority_group_generation,
-                billing_domain, billing_generation,
-                forms_domain, forms_generation, created_at
+                billing_domain, billing_generation, created_at
             ) VALUES (
                 v_authority_id, v_operation.scope_id, 'tenant',
                 v_operation.scope_id, 'billing_forms', v_group_generation,
-                'billing', v_group_generation, 'forms', v_group_generation,
+                'billing', v_group_generation,
                 pg_catalog.transaction_timestamp()
             );
         END IF;
@@ -184,8 +158,7 @@ BEGIN
             WHERE authority.authority_id = v_authority_id
               AND authority.tenant_id = v_operation.scope_id
               AND authority.authority_group_generation = v_group_generation
-              AND authority.billing_generation = v_group_generation
-              AND authority.forms_generation = v_group_generation;
+              AND authority.billing_generation = v_group_generation;
         END IF;
     END;
     RETURN v_authority_id;
@@ -195,6 +168,6 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION platform.billing_finalize_authority_successor_v1(
-    uuid,uuid,uuid,uuid,text) FROM PUBLIC;
+    uuid,uuid,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_finalize_authority_successor_v1(
-    uuid,uuid,uuid,uuid,text) TO harpy_cutover_authority_owner;
+    uuid,uuid,text) TO harpy_cutover_authority_owner;

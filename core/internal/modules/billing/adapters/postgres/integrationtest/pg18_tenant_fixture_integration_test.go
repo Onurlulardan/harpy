@@ -40,7 +40,7 @@ func prepareBillingTenantFixture(
 		t.Fatal(err)
 	}
 	if _, err = transaction.ExecContext(ctx, `
-SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,1,$3)
+SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,$3)
 `, fixture.authorityID, uuid.MustParse(billingTenantID), now); err != nil {
 		_ = transaction.Rollback()
 		t.Fatal(err)

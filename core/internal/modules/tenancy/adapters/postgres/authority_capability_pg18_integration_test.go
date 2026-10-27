@@ -46,7 +46,7 @@ func assertAuthorityCapabilityFlow(
  WHERE operation_id=$1),
 (SELECT pg_catalog.count(*) FROM platform.tenancy_authority_reconcile_scopes
  WHERE operation_id=$1)`, plan.operationID).Scan(&calls, &scopes)
-	if err != nil || calls != 4 || scopes != 0 {
+	if err != nil || calls != 3 || scopes != 0 {
 		t.Fatalf("authority calls/scopes=%d/%d err=%v", calls, scopes, err)
 	}
 }
@@ -67,12 +67,12 @@ SELECT pg_catalog.set_config(
 )`); err != nil {
 		return err
 	}
-	rows := make([]int, 8)
+	rows := make([]int, 6)
 	err = transaction.QueryRowContext(ctx, `
 SELECT * FROM platform.tenancy_authority_reconcile_current_v1($1,$2)`,
 		operationID, manifest).Scan(
 		&rows[0], &rows[1], &rows[2], &rows[3],
-		&rows[4], &rows[5], &rows[6], &rows[7],
+		&rows[4], &rows[5],
 	)
 	if err != nil {
 		return err

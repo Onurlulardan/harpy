@@ -79,13 +79,13 @@ func assertBillingSuccessorPrivileges(
 	err := database.QueryRowContext(ctx, `
 SELECT
  has_function_privilege('harpy_cutover_authority_owner',
- 'platform.billing_finalize_authority_successor_v1(uuid,uuid,uuid,uuid,text)',
+ 'platform.billing_finalize_authority_successor_v1(uuid,uuid,text)',
  'EXECUTE'),
  has_function_privilege('harpy_cutover_finalizer',
- 'platform.billing_finalize_authority_successor_v1(uuid,uuid,uuid,uuid,text)',
+ 'platform.billing_finalize_authority_successor_v1(uuid,uuid,text)',
  'EXECUTE'),
  has_function_privilege('harpy_cutover_finalizer',
- 'cutover_authority.billing_test_finalize_v1(uuid,uuid,uuid,uuid,text)',
+ 'cutover_authority.billing_test_finalize_v1(uuid,uuid,text)',
  'EXECUTE'),
  has_table_privilege('harpy_cutover_finalizer',
  'platform.billing_global_authorities','INSERT'),
@@ -119,7 +119,7 @@ func assertBillingSuccessorWrongPrincipal(
 	t.Helper()
 	var authorityID string
 	err := database.QueryRowContext(ctx, `
-SELECT platform.billing_finalize_authority_successor_v1($1,$2,NULL,NULL,$3)`,
+SELECT platform.billing_finalize_authority_successor_v1($1,$2,$3)`,
 		billingGlobalSuccessorOp, billingGlobalSuccessorRun,
 		billingAcceptanceC,
 	).Scan(&authorityID)

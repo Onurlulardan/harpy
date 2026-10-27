@@ -83,7 +83,7 @@ BEGIN
             MESSAGE='billing installation offering pin is unavailable';
     END IF;
     PERFORM platform.billing_register_tenant_authority_v1(
-        p_authority_id,p_tenant_id,1,1,1,v_now
+        p_authority_id,p_tenant_id,1,1,v_now
     );
     INSERT INTO platform.billing_tenant_base_offerings (
         id,authority_id,tenant_id,offering_version_id,effective_start,

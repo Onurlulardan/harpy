@@ -16,7 +16,7 @@ func TestGen71BillingContractRetiresOnlyLegacyWriters(t *testing.T) {
 		"platform.billing_reconcile_current_global_authority_v1()",
 		"platform.billing_reconcile_current_tenant_authorities_v1()",
 		"platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz)",
-		"platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz)",
+		"platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)",
 	}
 	for _, signature := range retired {
 		for _, marker := range []string{

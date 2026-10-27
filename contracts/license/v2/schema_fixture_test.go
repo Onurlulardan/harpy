@@ -11,7 +11,7 @@ func validSnapshotContract() map[string]any {
 		"algorithm": SignatureAlgorithm, "canonicalization": Canonicalization,
 		"payload_sha256": digest, "signature": signature,
 		"payload": map[string]any{
-			"schema": SnapshotSchema, "issuer": "forgeguard",
+			"schema": SnapshotSchema, "issuer": "harpy",
 			"audience": SnapshotAudience, "product": SnapshotProduct,
 			"license_id": fixtureUUID(1), "licensee_organization_id": fixtureUUID(2),
 			"environment_id": fixtureUUID(3), "deployment_mode": "onpremise",
@@ -63,7 +63,7 @@ func validTrustContract() map[string]any {
 			"payload_sha256": strings.Repeat("a", 64),
 			"signature":      strings.Repeat("A", 86),
 			"payload": map[string]any{
-				"schema": KeysetSchema, "issuer": "forgeguard", "audience": KeysetAudience,
+				"schema": KeysetSchema, "issuer": "harpy", "audience": KeysetAudience,
 				"sequence": 1, "issued_at": fixtureInstant, "not_before": fixtureInstant,
 				"expires_at": fixtureInstant, "snapshot_signers": []any{key("license-1")},
 			},
@@ -98,7 +98,7 @@ func validDerivedOfferingContract() map[string]any {
 		"schema": DerivedOfferingSchema, "offering_version_id": fixtureUUID(4),
 		"revision": 1, "effective_at": fixtureInstant,
 		"license_id": fixtureUUID(1), "licensee_organization_id": fixtureUUID(2),
-		"environment_id": fixtureUUID(3), "issuer": "forgeguard",
+		"environment_id": fixtureUUID(3), "issuer": "harpy",
 		"snapshot_sequence": 1, "snapshot_sha256": strings.Repeat("a", 64),
 		"release_channel": "stable", "booleans": booleans, "limits": limits,
 	}

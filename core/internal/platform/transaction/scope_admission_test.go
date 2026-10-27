@@ -25,7 +25,7 @@ func TestAdmitMultiGroupCommandScopeSealsExactParticipants(t *testing.T) {
 	)
 	if err != nil || !request.valid() || request.Mode != Command ||
 		!request.Operation.allowsOwner("workflow") ||
-		!request.Operation.allowsOwner("forms") ||
+		request.Operation.allowsOwner("forms") ||
 		request.Operation.allowsOwner("billing") {
 		t.Fatalf("multi-group admission=%+v error=%v", request, err)
 	}

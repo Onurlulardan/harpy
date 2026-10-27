@@ -37,19 +37,19 @@ func assertProviderTargetResolved(
 	statement := loadBillingAdapterSQL(t, "provider", "resolve_provider_target.sql")
 	var tenantID, mappingID, accountID, subscriptionID uuid.UUID
 	var invoiceID *uuid.UUID
-	var mappingRevision, groupGeneration, billingGeneration, formsGeneration int64
+	var mappingRevision, groupGeneration, billingGeneration int64
 	err := connection.QueryRowContext(
 		ctx, statement, "testpay", fixture.accountKey,
 		"subscription", fixture.objectID,
 	).Scan(
 		&tenantID, &mappingID, &accountID, &subscriptionID, &invoiceID,
-		&mappingRevision, &groupGeneration, &billingGeneration, &formsGeneration,
+		&mappingRevision, &groupGeneration, &billingGeneration,
 	)
 	if err != nil || tenantID != uuid.MustParse(billingTenantID) ||
 		mappingID != fixture.mappingID || accountID != fixture.providerAccountID ||
 		subscriptionID != fixture.subscriptionID || invoiceID != nil ||
 		mappingRevision != 1 || groupGeneration != 1 ||
-		billingGeneration != 1 || formsGeneration != 1 {
+		billingGeneration != 1 {
 		t.Fatalf("resolved provider target is invalid: %v", err)
 	}
 }

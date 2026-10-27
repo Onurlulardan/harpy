@@ -58,7 +58,7 @@ func validGrant(t *testing.T, now time.Time) Grant {
 	return Grant{Revision: 2, LeaseUntil: now.Add(time.Minute), Binding: Binding{
 		OperationID: newV7(), EnvironmentID: newV7(), LicenseID: uuid.New(),
 		LicenseeOrganizationID: uuid.New(), DeploymentMode: "onpremise",
-		DeliveryKind: "connected", Issuer: "forgeguard", Sequence: 4,
+		DeliveryKind: "connected", Issuer: "harpy", Sequence: 4,
 		SnapshotSHA256: strings.Repeat("1", 64), OfferingVersionID: newV7(),
 		Revision: 1, OfferingSHA256: strings.Repeat("2", 64), EffectiveAt: now,
 		ManifestSHA256: licensebootstrapv1.ManifestSHA256(),

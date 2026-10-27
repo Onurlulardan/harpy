@@ -24,7 +24,7 @@ func TestAcknowledgementBindsDrainAndSwitchAuthority(t *testing.T) {
 	trust, err := BuildTrust(TrustInput{
 		EnvironmentID:           environmentID,
 		DeploymentBindingSHA256: strings.Repeat("a", 64),
-		Generation:              1, KeyID: "forgeguard.restore.g1", PublicKey: public,
+		Generation:              1, KeyID: "host.g1", PublicKey: public,
 	})
 	if err != nil {
 		t.Fatal(err)

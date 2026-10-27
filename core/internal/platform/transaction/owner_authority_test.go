@@ -10,20 +10,20 @@ import (
 func TestMintOwnerAuthorityProjectsExactVerifiedDomain(t *testing.T) {
 	tenantID := uuid.MustParse("11111111-1111-4111-8111-111111111111")
 	operation, err := NewAuthorityIssuer().Issue(
-		"forms.records.create", "billing_forms", 7,
-		map[string]int64{"billing": 3, "forms": 5},
+		"billing.subscription.create", "billing_forms", 7,
+		map[string]int64{"billing": 3},
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
 	scope := activeAuthorityScope(tenantID, operation)
-	authority, err := MintOwnerAuthority(scope, "forms")
+	authority, err := MintOwnerAuthority(scope, "billing")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if authority.ScopeKind() != "tenant" || authority.ScopeID() != tenantID ||
 		authority.GroupID() != "billing_forms" || authority.GroupGeneration() != 7 ||
-		authority.Domain() != "forms" || authority.Generation() != 5 ||
+		authority.Domain() != "billing" || authority.Generation() != 3 ||
 		authority.Origin() != WriterOriginV2 || !authority.OwnsScope(scope) {
 		t.Fatalf("unexpected owner authority: %#v", authority)
 	}

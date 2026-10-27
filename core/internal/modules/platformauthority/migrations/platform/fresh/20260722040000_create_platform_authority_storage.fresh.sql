@@ -3,7 +3,7 @@ CREATE TABLE platform.platformauthority_bindings (
     binding_id uuid PRIMARY KEY,
     environment_id uuid NOT NULL UNIQUE,
     deployment_mode text NOT NULL CHECK (deployment_mode IN ('onpremise', 'saas')),
-    registry_kind text NOT NULL CHECK (registry_kind IN ('forgeguard', 'development', 'saas_provider')),
+    registry_kind text NOT NULL CHECK (registry_kind IN ('development', 'saas_provider')),
     license_binding_id uuid UNIQUE,
     finalization_receipt_sha256 text CHECK (finalization_receipt_sha256 ~ '^[0-9a-f]{64}$'),
     recovery_trust_bundle_sha256 text CHECK (recovery_trust_bundle_sha256 ~ '^[0-9a-f]{64}$'),
@@ -16,7 +16,7 @@ CREATE TABLE platform.platformauthority_bindings (
     proof_bytes bytea,
     created_at timestamptz NOT NULL,
     CHECK (
-        (deployment_mode = 'onpremise' AND registry_kind IN ('forgeguard', 'development')
+        (deployment_mode = 'onpremise' AND registry_kind = 'development'
             AND license_binding_id IS NOT NULL AND finalization_receipt_sha256 IS NOT NULL
             AND recovery_trust_bundle_sha256 IS NOT NULL
             AND proof_sha256 IS NOT NULL AND proof_bytes IS NOT NULL)

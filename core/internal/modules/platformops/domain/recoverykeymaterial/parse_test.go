@@ -62,7 +62,7 @@ func TestParseRejectsUnknownAndBindingDrift(t *testing.T) {
 func TestParseRejectsWrongProviderAndNonCanonicalBytes(t *testing.T) {
 	document := materialFixture(t, ProviderLocalKeyring, "local/recovery-1")
 	if _, err := Parse(document, materialExpected(
-		ProviderForgeGuard, "binding/recovery-1",
+		ProviderLocalKeyring, "binding/recovery-1",
 	)); err == nil {
 		t.Fatal("wrong provider binding was accepted")
 	}

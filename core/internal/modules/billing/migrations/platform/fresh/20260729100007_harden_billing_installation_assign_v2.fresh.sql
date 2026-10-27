@@ -21,7 +21,6 @@ DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
     v_group_generation bigint;
     v_billing_generation bigint;
-    v_forms_generation bigint;
     v_replayed boolean;
 BEGIN
     IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
@@ -46,10 +45,8 @@ BEGIN
             MESSAGE = 'billing installation assignment input is invalid';
     END IF;
     BEGIN
-        SELECT group_row.generation,
-               billing_row.generation, forms_row.generation
-        INTO STRICT v_group_generation,
-            v_billing_generation, v_forms_generation
+        SELECT group_row.generation, billing_row.generation
+        INTO STRICT v_group_generation, v_billing_generation
         FROM platform.tenants AS tenant
         JOIN platform.cutover_groups AS group_row
           ON group_row.scope_kind = 'tenant'
@@ -60,34 +57,22 @@ BEGIN
          AND billing_member.scope_id = group_row.scope_id
          AND billing_member.group_id = group_row.group_id
          AND billing_member.ordinal = 1 AND billing_member.domain = 'billing'
-        JOIN platform.cutover_group_members AS forms_member
-          ON forms_member.scope_kind = group_row.scope_kind
-         AND forms_member.scope_id = group_row.scope_id
-         AND forms_member.group_id = group_row.group_id
-         AND forms_member.ordinal = 2 AND forms_member.domain = 'forms'
         JOIN platform.domain_cutovers AS billing_row
           ON billing_row.scope_kind = 'tenant'
          AND billing_row.scope_id = tenant.id AND billing_row.domain = 'billing'
-        JOIN platform.domain_cutovers AS forms_row
-          ON forms_row.scope_kind = 'tenant'
-         AND forms_row.scope_id = tenant.id AND forms_row.domain = 'forms'
         WHERE tenant.id = p_tenant_id AND tenant.deleted_at IS NULL
           AND tenant.status IN ('ACTIVE', 'TRIAL')
           AND group_row.state = 'v2' AND group_row.writer = 'v2'
           AND billing_row.state = 'v2' AND billing_row.writer = 'v2'
-          AND forms_row.state = 'v2' AND forms_row.writer = 'v2'
           AND NOT EXISTS (
               SELECT 1 FROM platform.cutover_group_members AS extra
               WHERE extra.scope_kind = 'tenant'
                 AND extra.scope_id = p_tenant_id
                 AND extra.group_id = 'billing_forms'
-                AND NOT (
-                    (extra.ordinal = 1 AND extra.domain = 'billing')
-                    OR (extra.ordinal = 2 AND extra.domain = 'forms')
-                )
+                AND NOT ((extra.ordinal = 1 AND extra.domain = 'billing')
+                    OR (extra.ordinal = 2 AND extra.domain = 'forms'))
           )
-        FOR SHARE OF tenant, group_row, billing_member, forms_member,
-            billing_row, forms_row;
+        FOR SHARE OF tenant, group_row, billing_member, billing_row;
     EXCEPTION WHEN NO_DATA_FOUND OR TOO_MANY_ROWS THEN
         RAISE EXCEPTION USING ERRCODE = 'P5721',
             MESSAGE = 'billing installation current authority is unavailable';
@@ -161,7 +146,7 @@ BEGIN
     END IF;
     PERFORM platform.billing_register_tenant_authority_v1(
         p_authority_id, p_tenant_id, v_group_generation,
-        v_billing_generation, v_forms_generation, v_now
+        v_billing_generation, v_now
     );
     INSERT INTO platform.billing_tenant_base_offerings (
         id, authority_id, tenant_id, offering_version_id, effective_start,

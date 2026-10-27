@@ -21,12 +21,8 @@ func TestV1QueueAndTimerFixturesMapToChecksummedJobs(t *testing.T) {
 		class                                       InventoryClass
 		surface                                     SourceSurface
 	}{
-		{"v1-form-event.json", "form.event", V1FormEventQueue,
-			V1QueueContract, "workflow.handle_form_event", ClassQueue, SurfaceQueue},
 		{"v1-schedule-event.json", "schedule.event", V1ScheduleQueue,
-			V1QueueContract, "workflow.start_schedule", ClassQueue, SurfaceQueue},
-		{"v1-delay-event.json", "workflow.delay.complete", V1DelayQueue,
-			V1DelayContract, "workflow.resume_delay", ClassTimer, SurfaceDelayedPlugin},
+			V1QueueContract, "platform.schedule", ClassQueue, SurfaceQueue},
 	}
 	for _, test := range cases {
 		t.Run(test.messageType, func(t *testing.T) {
@@ -47,7 +43,7 @@ func TestV1QueueAndTimerFixturesMapToChecksummedJobs(t *testing.T) {
 				t.Fatal("V1 immutable payload evidence changed during mapping")
 			}
 			if err := ValidateTargetPolicy(
-				item, differentialTargetCatalog(t, test.target, "workflow"),
+				item, differentialTargetCatalog(t, test.target, "platform"),
 			); err != nil {
 				t.Fatal(err)
 			}
@@ -66,29 +62,7 @@ func TestV1QueueAndTimerFixturesMapToChecksummedJobs(t *testing.T) {
 	}
 }
 
-func TestV1ImportAndIdempotencyFixturesHaveExplicitDisposition(t *testing.T) {
-	importDocument := readV1Fixture(t, "v1-import-job.json")
-	importJob, err := DecodeV1ImportJob(importDocument)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if importJob.Status != "running" || importJob.ClientRequestID == "" ||
-		importJob.LeaseOwner == "" || importJob.LastHeartbeatAt == "" {
-		t.Fatalf("V1 import state drifted: %#v", importJob)
-	}
-	item := differentialItem(
-		t, importDocument, importJob.ID, V1ImportFutureState, V1ImportContract,
-		"forms.import.resume", ClassFuture, SurfaceFutureState,
-		time.Date(2026, 7, 15, 12, 0, 0, 0, time.UTC),
-	)
-	if item.IdempotencyIdentity != V1ImportFutureState+"/"+importJob.ID {
-		t.Fatal("V1 import idempotency identity is not stable")
-	}
-	if err := ValidateTargetPolicy(
-		item, differentialTargetCatalog(t, "forms.import.resume", "forms"),
-	); err != nil {
-		t.Fatal(err)
-	}
+func TestV1IdempotencyFixturesHaveExplicitDisposition(t *testing.T) {
 	idempotencyDocument := readV1Fixture(t, "v1-idempotency-complete.json")
 	cached, err := DecodeV1IdempotencyResponse(idempotencyDocument)
 	if err != nil {

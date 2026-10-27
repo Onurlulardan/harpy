@@ -103,7 +103,7 @@ func validObjectLock(policy ObjectLockPolicy) bool {
 }
 
 func validProvider(provider KeyProvider) bool {
-	return (provider.Kind == "local_keyring" || provider.Kind == "forgeguard") &&
+	return provider.Kind == "local_keyring" &&
 		len(provider.Handle) >= 1 && len(provider.Handle) <= 512 &&
 		!strings.ContainsAny(provider.Handle, "\x00\r\n")
 }

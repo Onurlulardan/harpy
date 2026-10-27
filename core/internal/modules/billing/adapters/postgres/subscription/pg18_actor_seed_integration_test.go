@@ -47,7 +47,7 @@ WHERE scope_kind='global' AND authority_group_id='billing'
 		t.Fatalf("load seeded global billing authority: %v", err)
 	}
 	if _, err = transaction.ExecContext(ctx, `
-SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,1,$3)
+SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,$3)
 `, fixture.authorityID, fixture.tenantID, now.Add(-time.Hour)); err != nil {
 		t.Fatalf("register tenant subscription authority: %v", err)
 	}

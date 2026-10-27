@@ -72,7 +72,7 @@ SELECT authority_id FROM platform.billing_global_authorities
 	}
 	defer transaction.Rollback()
 	if _, err = transaction.ExecContext(ctx, `
-SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,1,$3)
+SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,$3)
 `, f.authorityID, f.tenantID, f.now); err == nil {
 		_, err = transaction.ExecContext(ctx, `
  SELECT platform.billing_create_offering_v1(

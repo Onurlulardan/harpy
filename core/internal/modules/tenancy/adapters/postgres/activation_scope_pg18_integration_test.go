@@ -83,7 +83,7 @@ func assertActivationAndReplay(
 		&tenants, &domains, &groups, &members, &authorities, &facts,
 	)
 	if err != nil || tenants != 1 || domains != 10 || groups != 8 ||
-		members != 10 || authorities != 2 || facts != 1 {
+		members != 10 || authorities != 1 || facts != 1 {
 		t.Fatalf(
 			"%s activation counts tenant=%d domain=%d group=%d member=%d authority=%d fact=%d err=%v",
 			fixture.kind, tenants, domains, groups, members, authorities, facts, err,

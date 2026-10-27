@@ -33,7 +33,6 @@ WITH public_routines(signature) AS (
         ('platform.tenancy_authority_scope_commit_guard_v1()'),
         ('platform.billing_installation_id_v1(uuid,text)'),
         ('platform.analytics_reconcile_current_tenant_authorities_v2()'),
-        ('platform.workflow_reconcile_current_tenant_authorities_v2()'),
         ('platform.billing_reconcile_current_global_authority_v2()'),
         ('platform.billing_reconcile_current_tenant_authorities_v2()')
 ), legacy_routines(signature) AS (

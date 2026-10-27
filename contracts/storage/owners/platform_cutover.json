@@ -81,8 +81,7 @@
       {"access": "read", "target_owner": "platform_migrator", "target": "platform.tenant_migration_requirement_catalogs", "contract": "ADR-0048"},
       {"access": "read", "target_owner": "platform_migrator", "target": "platform.tenant_migration_requirement_targets", "contract": "ADR-0048"},
       {"access": "read", "target_owner": "platform_migrator", "target": "platform.tenant_migration_requirements", "contract": "ADR-0048"},
-      {"access": "read", "target_owner": "tenancy", "target": "platform.tenants", "contract": "ADR-0048"},
-      {"access":"read","target_owner":"workflow","target":"platform.workflow_finalize_authority_successor_v1","contract":"ADR-0106"}
+      {"access": "read", "target_owner": "tenancy", "target": "platform.tenants", "contract": "ADR-0048"}
     ],
     "legacy_tables": [],
     "dynamic_namespaces": []

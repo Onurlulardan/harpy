@@ -36,7 +36,7 @@ func newAuthorityFixture(t *testing.T) authorityFixture {
 	return authorityFixture{
 		now: now, binding: binding, privateKey: privateKey, publicKey: publicKey,
 		payload: wirePayload{
-			Schema: SnapshotSchema, Issuer: "forgeguard", Audience: SnapshotAudience,
+			Schema: SnapshotSchema, Issuer: "harpy", Audience: SnapshotAudience,
 			Product: SnapshotProduct, LicenseID: binding.LicenseID.String(),
 			LicenseeOrganizationID: binding.LicenseeOrganizationID.String(),
 			EnvironmentID:          binding.EnvironmentID.String(), DeploymentMode: "onpremise",

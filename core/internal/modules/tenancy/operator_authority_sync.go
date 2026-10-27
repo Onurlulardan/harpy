@@ -74,7 +74,6 @@ func (synchronizer *TenantAuthoritySynchronizer) Synchronize(
 	}
 	if result.BillingGlobalReconciled < 0 || result.BillingGlobalRemaining != 0 ||
 		result.BillingTenantReconciled < 0 || result.BillingTenantRemaining != 0 ||
-		result.WorkflowReconciled < 0 || result.WorkflowRemaining != 0 ||
 		result.AnalyticsReconciled < 0 || result.AnalyticsRemaining != 0 {
 		return TenantAuthorityReconciliation{},
 			errTenantAuthorityReconciliationIncomplete

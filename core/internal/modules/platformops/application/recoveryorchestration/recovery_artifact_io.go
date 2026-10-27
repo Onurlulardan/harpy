@@ -58,7 +58,7 @@ func recoveryProviderPath(kind, handle string) (string, error) {
 	if filepath.IsAbs(handle) {
 		return filepath.Clean(handle), nil
 	}
-	if kind != "local_keyring" && kind != "forgeguard" ||
+	if kind != "local_keyring" ||
 		filepath.Base(handle) != handle {
 		return "", fmt.Errorf("recovery key provider handle is invalid")
 	}

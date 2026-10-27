@@ -135,9 +135,6 @@ BEGIN
     v_authority_id := pg_catalog.overlay(
         p_operation_id::text, '7', 15, 1
     )::uuid;
-    PERFORM platform.workflow_register_tenant_authority_v1(
-        v_authority_id, p_tenant_id, 1, 1, v_created_at
-    );
     PERFORM platform.analytics_register_tenant_authority_v1(
         v_authority_id, p_tenant_id, 1, 1, v_created_at
     );

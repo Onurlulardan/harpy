@@ -104,7 +104,7 @@ func registerBillingV1TenantAuthority(
 	authorityID := billingV7(t)
 	connection := billingRuntimeConnection(t, ctx, database)
 	if _, err := connection.ExecContext(ctx, `SELECT platform.billing_register_tenant_authority_v1(
-$1,$2,1,1,1,$3)`, authorityID, uuid.MustParse(billingTenantID), now); err != nil {
+$1,$2,1,1,$3)`, authorityID, uuid.MustParse(billingTenantID), now); err != nil {
 		t.Fatal(err)
 	}
 	return authorityID

@@ -19,9 +19,9 @@ REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities
 REVOKE ALL ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM harpy_v2_runtime;
-REVOKE ALL ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM harpy_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM harpy_v2_runtime;
+REVOKE ALL ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz) FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz) FROM harpy_v2_runtime;
 
 WITH retired(signature) AS (
     VALUES
@@ -31,7 +31,7 @@ WITH retired(signature) AS (
         ('platform.billing_reconcile_current_global_authority_v1()'),
         ('platform.billing_reconcile_current_tenant_authorities_v1()'),
         ('platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz)'),
-        ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz)')
+        ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)')
 ), retained(signature) AS (
     VALUES
         ('platform.billing_installation_assign_v3(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text)'),

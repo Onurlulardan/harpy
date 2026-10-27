@@ -67,13 +67,6 @@ BEGIN
            NOT EXISTS (
                SELECT 1 FROM platform.tenants AS tenant
                WHERE tenant.id = p_scope_id AND tenant.deleted_at IS NULL
-           ) OR NOT EXISTS (
-               SELECT 1
-               FROM platform.domain_cutovers AS forms_row
-               WHERE forms_row.scope_kind = 'tenant'
-                 AND forms_row.scope_id = p_scope_id
-                 AND forms_row.domain = 'forms'
-                 AND forms_row.state IN ('shadow','quiescing')
            ) OR (SELECT pg_catalog.string_agg(member.domain, ',' ORDER BY member.ordinal)
                FROM platform.cutover_group_members AS member
                WHERE member.scope_kind = 'tenant'

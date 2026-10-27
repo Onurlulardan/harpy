@@ -56,18 +56,18 @@ WHERE offering_key='saas_platform_control_base_v1'`).Scan(
 	if err != nil || replayed {
 		t.Fatalf("current-generation installation = replay=%t err=%v", replayed, err)
 	}
-	var groupGeneration, billingGeneration, formsGeneration int64
+	var groupGeneration, billingGeneration int64
 	if err = database.QueryRowContext(ctx, `
-SELECT authority_group_generation,billing_generation,forms_generation
+SELECT authority_group_generation,billing_generation
 FROM platform.billing_tenant_authorities
 WHERE authority_id=$1`, authorityID).Scan(
-		&groupGeneration, &billingGeneration, &formsGeneration,
+		&groupGeneration, &billingGeneration,
 	); err != nil {
 		t.Fatal(err)
 	}
-	if groupGeneration != 5 || billingGeneration != 5 || formsGeneration != 5 {
-		t.Fatalf("installation generations = %d/%d/%d, want 5/5/5",
-			groupGeneration, billingGeneration, formsGeneration)
+	if groupGeneration != 5 || billingGeneration != 5 {
+		t.Fatalf("installation generations = %d/%d, want 5/5",
+			groupGeneration, billingGeneration)
 	}
 	replayed, err = assignBillingInstallation(
 		t, ctx, database, operationID, tenantID,

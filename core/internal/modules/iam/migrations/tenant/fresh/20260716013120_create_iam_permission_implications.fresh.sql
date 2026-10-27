@@ -26,8 +26,10 @@ CREATE TABLE iam_permission_implications (
         FOREIGN KEY (implied_permission_id, implied_match_kind)
         REFERENCES iam_permissions (id, match_kind)
         ON UPDATE NO ACTION ON DELETE RESTRICT,
-    CONSTRAINT iam_permission_implications_kind_check
-        CHECK (implication_kind = 'v1_form_parent_v1'),
+    CONSTRAINT iam_permission_implications_kind_check CHECK (
+        pg_catalog.char_length(implication_kind) BETWEEN 1 AND 100 AND
+        implication_kind ~ '^[a-z][a-z0-9]*([-_][a-z0-9]+)*(\.[a-z][a-z0-9]*([-_][a-z0-9]+)*)*$'
+    ),
     CONSTRAINT iam_permission_implications_exact_check
         CHECK (source_match_kind = 'exact' AND implied_match_kind = 'exact'),
     CONSTRAINT iam_permission_implications_distinct_check

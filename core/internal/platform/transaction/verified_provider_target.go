@@ -17,7 +17,6 @@ type ProviderTargetEvidence struct {
 	MappingRevision     int64
 	GroupGeneration     int64
 	BillingGeneration   int64
-	FormsGeneration     int64
 	LookupBindingSHA256 [32]byte
 }
 
@@ -44,10 +43,7 @@ func issueProviderTarget(
 	}
 	operation, err := NewAuthorityIssuer().Issue(
 		lookup.OperationID(), providerAuthorityGroup, evidence.GroupGeneration,
-		map[string]int64{
-			"billing": evidence.BillingGeneration,
-			"forms":   evidence.FormsGeneration,
-		},
+		map[string]int64{"billing": evidence.BillingGeneration},
 	)
 	if err != nil {
 		return verifiedProviderTarget{}, fmt.Errorf("provider target capability is invalid")
@@ -65,7 +61,7 @@ func validProviderEvidence(value ProviderTargetEvidence) bool {
 	return value.TenantID != uuid.Nil && value.MappingID != uuid.Nil &&
 		value.ProviderAccountID != uuid.Nil && value.MappingRevision > 0 &&
 		value.GroupGeneration > 0 && value.BillingGeneration > 0 &&
-		value.FormsGeneration > 0 && value.LookupBindingSHA256 != [32]byte{}
+		value.LookupBindingSHA256 != [32]byte{}
 }
 
 func providerEvidenceMatchesLookup(

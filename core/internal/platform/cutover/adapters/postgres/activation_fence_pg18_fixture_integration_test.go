@@ -73,7 +73,6 @@ BEGIN
         'platform.tenancy_authority_scope_commit_guard_v1()',
         'platform.billing_installation_id_v1(uuid,text)',
         'platform.analytics_reconcile_current_tenant_authorities_v2()',
-        'platform.workflow_reconcile_current_tenant_authorities_v2()',
         'platform.billing_reconcile_current_global_authority_v2()',
         'platform.billing_reconcile_current_tenant_authorities_v2()'
     ] LOOP
@@ -114,9 +113,7 @@ BEGIN
         'platform.iam_installation_instance_owner_bind_v1(uuid,uuid,uuid,name,uuid,uuid,uuid,uuid,uuid,bigint,text)',
         'platform.iam_installation_instance_owner_input_v1(uuid)',
         'platform.analytics_reconcile_current_tenant_authorities_v1()',
-        'platform.analytics_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)',
-        'platform.workflow_reconcile_current_tenant_authorities_v1()',
-        'platform.workflow_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'
+        'platform.analytics_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'
     ] LOOP
         EXECUTE pg_catalog.format(
             'CREATE FUNCTION %s RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS %L',

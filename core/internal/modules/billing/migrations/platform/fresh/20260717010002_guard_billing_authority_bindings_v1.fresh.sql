@@ -77,29 +77,22 @@ BEGIN
       ON billing_row.scope_kind = group_row.scope_kind
      AND billing_row.scope_id = group_row.scope_id
      AND billing_row.domain = 'billing'
-    JOIN platform.domain_cutovers AS forms_row
-      ON forms_row.scope_kind = group_row.scope_kind
-     AND forms_row.scope_id = group_row.scope_id
-     AND forms_row.domain = 'forms'
     WHERE tenant.id = NEW.tenant_id
       AND tenant.deleted_at IS NULL
       AND tenant.status IN ('ACTIVE', 'TRIAL')
       AND NEW.authority_group_generation = group_row.generation
       AND NEW.billing_generation = billing_row.generation
-      AND NEW.forms_generation = forms_row.generation
       AND group_row.state = billing_row.state
-      AND group_row.state = forms_row.state
       AND group_row.writer = billing_row.writer
-      AND group_row.writer = forms_row.writer
       AND EXISTS (
           SELECT 1 FROM platform.cutover_group_members AS member_row
           WHERE member_row.scope_kind = group_row.scope_kind
             AND member_row.scope_id = group_row.scope_id
             AND member_row.group_id = group_row.group_id
-            AND member_row.domain IN ('billing', 'forms')
-          HAVING pg_catalog.count(*) = 2
+            AND member_row.domain = 'billing'
+          HAVING pg_catalog.count(*) = 1
       )
-    FOR SHARE OF tenant, group_row, billing_row, forms_row;
+    FOR SHARE OF tenant, group_row, billing_row;
     IF NOT FOUND THEN
         RAISE EXCEPTION USING ERRCODE = 'P5721',
             MESSAGE = 'billing tenant authority binding is stale';

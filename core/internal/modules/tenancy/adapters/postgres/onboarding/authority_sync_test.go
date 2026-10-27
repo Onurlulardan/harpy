@@ -29,10 +29,8 @@ func TestAuthoritySynchronizerCallsOwnerRoutinesAtomically(t *testing.T) {
 			*destinations[1].(*int) = 0
 			*destinations[2].(*int) = 2
 			*destinations[3].(*int) = 0
-			*destinations[4].(*int) = 3
+			*destinations[4].(*int) = 4
 			*destinations[5].(*int) = 0
-			*destinations[6].(*int) = 4
-			*destinations[7].(*int) = 0
 			return nil
 		})
 	})
@@ -43,8 +41,7 @@ func TestAuthoritySynchronizerCallsOwnerRoutinesAtomically(t *testing.T) {
 		context.Background(), operationID, manifestSHA256,
 	)
 	if err != nil || result.BillingGlobalReconciled != 1 ||
-		result.BillingTenantReconciled != 2 || result.WorkflowReconciled != 3 ||
-		result.WorkflowRemaining != 0 || result.AnalyticsReconciled != 4 ||
+		result.BillingTenantReconciled != 2 || result.AnalyticsReconciled != 4 ||
 		result.AnalyticsRemaining != 0 {
 		t.Fatalf("authority reconciliation = %#v, %v", result, err)
 	}

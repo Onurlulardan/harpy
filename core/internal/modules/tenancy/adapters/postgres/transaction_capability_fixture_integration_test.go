@@ -149,7 +149,6 @@ CREATE TABLE platform.test_tenancy_authority_calls(
 	for _, stub := range []struct{ name, owner, key string }{
 		{"billing_reconcile_current_global_authority_v2", "billing", "billing_global"},
 		{"billing_reconcile_current_tenant_authorities_v2", "billing", "billing_tenant"},
-		{"workflow_reconcile_current_tenant_authorities_v2", "workflow", "workflow"},
 		{"analytics_reconcile_current_tenant_authorities_v2", "analytics", "analytics"},
 	} {
 		installAuthorityCapabilityStub(t, ctx, database, stub.name, stub.owner, stub.key)

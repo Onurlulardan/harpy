@@ -28,7 +28,7 @@ func TestBillingAuthorityReconcileMigrationsArePairedAndOwnerSafe(t *testing.T) 
 				"billing_register_tenant_authority_v1(",
 				"harpy:billing:tenant-authority-reconcile:v1",
 				"EXCEPTION WHEN SQLSTATE '23505'",
-				"extra.ordinal = 2 AND extra.domain = 'forms'",
+				"extra.ordinal = 1 AND extra.domain = 'billing'",
 			},
 		},
 	}
@@ -62,7 +62,7 @@ func TestBillingInstallationAssignmentUsesLockedCurrentAuthority(t *testing.T) {
 	for _, marker := range []string{
 		"DROP FUNCTION platform.billing_installation_assign_v2(",
 		"INTO STRICT v_group_generation",
-		"FOR SHARE OF tenant, group_row, billing_member, forms_member",
+		"FOR SHARE OF tenant, group_row, billing_member, billing_row",
 		"billing_assert_tenant_authority_v1(",
 		"billing installation base assignment is unavailable",
 		"p_authority_id, p_tenant_id, v_group_generation",
@@ -150,8 +150,6 @@ func TestBillingFinalizedSuccessorIsNarrowAndEvidenceBound(t *testing.T) {
 		"SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer'",
 		"operation.state = 'completed'",
 		"operation.domain = 'billing'",
-		"operation.domain = 'forms'",
-		"operation.cutover_generation = v_operation.cutover_generation",
 		"group_row.generation = v_operation.cutover_generation + 1",
 		"group_row.acceptance_digest = p_acceptance_digest",
 		"domain_row.acceptance_digest = p_acceptance_digest",

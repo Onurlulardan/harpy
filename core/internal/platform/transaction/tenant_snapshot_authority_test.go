@@ -41,8 +41,8 @@ func TestTenantSnapshotAuthorityRejectsWrongModeOwnerAndClosedScope(t *testing.T
 		t.Fatalf("zero scope error = %v", err)
 	}
 	command, _ := NewAuthorityIssuer().Issue(
-		"forms.records.create", "billing_forms", 1,
-		map[string]int64{"billing": 1, "forms": 1},
+		"billing.subscription.create", "billing_forms", 1,
+		map[string]int64{"billing": 1},
 	)
 	if _, err := MintTenantSnapshotAuthority(
 		activeAuthorityScope(tenantID, command), "forms",

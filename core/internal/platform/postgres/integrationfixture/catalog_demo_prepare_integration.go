@@ -58,7 +58,7 @@ func (environment *CatalogDemoEnvironment) prepare(
 			t.Fatalf("apply Catalog demo cutover dependency %s: %v", name, err)
 		}
 	}
-	environment.execFixture(t, ctx, "authority_"+origin+".fixture")
+	environment.execFixture(t, ctx, "authority_fresh.fixture")
 	environment.prepareBootstrap(t, ctx, origin)
 	environment.applyRuntimeFoundation(t, ctx, root, origin)
 	platformCount := applyCatalogDemoDocuments(t, ctx, environment.owner,

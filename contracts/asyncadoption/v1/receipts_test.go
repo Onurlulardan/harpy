@@ -23,8 +23,8 @@ func TestCancelDispositionRequiresReasonAndTicket(t *testing.T) {
 
 func TestRestartFenceZeroObservationAndAcceptanceAreDigestBound(t *testing.T) {
 	fences := []RestartFenceReceipt{
-		newTestFence(t, FenceEnqueue, "workflow.v1.enqueue", "2026-07-15T12:00:01Z"),
-		newTestFence(t, FenceScheduler, V1CronScheduler, "2026-07-15T12:00:02Z"),
+		newTestFence(t, FenceEnqueue, "platform.enqueue", "2026-07-15T12:00:01Z"),
+		newTestFence(t, FenceScheduler, "platform.scheduler", "2026-07-15T12:00:02Z"),
 		newTestFence(t, FenceConsumer, V1ScheduleQueue, "2026-07-15T12:00:03Z"),
 	}
 	componentRoot, err := ComponentManifestSHA256(fences)

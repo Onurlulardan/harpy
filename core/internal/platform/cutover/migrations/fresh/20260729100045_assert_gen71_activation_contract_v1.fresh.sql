@@ -23,8 +23,6 @@ WITH retired(signature) AS (
         ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz)'),
         ('platform.analytics_reconcile_current_tenant_authorities_v1()'),
         ('platform.analytics_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'),
-        ('platform.workflow_reconcile_current_tenant_authorities_v1()'),
-        ('platform.workflow_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'),
         ('platform.platformops_installation_recovery_initialize_v1(uuid,uuid,uuid,name,text,bigint,text,text)'),
         ('platform.platform_async_initial_admin_setup_enqueue_v1(uuid,uuid,uuid,text,name,text)'),
         ('platform.platform_async_installation_activation_event_v1(uuid,uuid,uuid,uuid,name,text)'),
@@ -66,8 +64,7 @@ WITH retired(signature) AS (
         ('platform.billing_installation_id_v1(uuid,text)'),
         ('platform.billing_reconcile_current_global_authority_v2()'),
         ('platform.billing_reconcile_current_tenant_authorities_v2()'),
-        ('platform.analytics_reconcile_current_tenant_authorities_v2()'),
-        ('platform.workflow_reconcile_current_tenant_authorities_v2()')
+        ('platform.analytics_reconcile_current_tenant_authorities_v2()')
 ), required_tables(relation_name) AS (
     VALUES
         ('platform.tenancy_activation_step_capabilities'),

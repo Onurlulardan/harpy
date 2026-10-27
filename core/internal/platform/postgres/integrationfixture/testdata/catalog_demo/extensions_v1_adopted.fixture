@@ -1,8 +1,0 @@
-BEGIN;
-SET LOCAL ROLE legacy_vector_owner;
-CREATE EXTENSION vector WITH SCHEMA public;
-COMMIT;
-BEGIN;
-SET LOCAL ROLE harpy_extension_admin;
-CREATE EXTENSION pg_trgm WITH SCHEMA platform_ext;
-COMMIT;

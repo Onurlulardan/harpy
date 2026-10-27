@@ -16,23 +16,21 @@ func TestMultiGroupIssuerSealsCanonicalGroupsDomainsAndParticipants(t *testing.T
 		t.Fatalf("multi-group operation rejected: %+v %v", operation, err)
 	}
 	if len(operation.groups) != 2 || operation.groups[0].id != "billing_forms" ||
-		operation.groups[1].id != "workflow" || len(operation.domains) != 3 ||
+		operation.groups[1].id != "workflow" || len(operation.domains) != 2 ||
 		operation.domains[0] != (domainExpectation{
 			name: "billing", generation: 11, groupID: "billing_forms",
 		}) || operation.domains[1] != (domainExpectation{
-		name: "forms", generation: 13, groupID: "billing_forms",
-	}) || operation.domains[2] != (domainExpectation{
 		name: "workflow", generation: 17, groupID: "workflow",
 	}) {
 		t.Fatalf("operation was not canonical: %+v", operation)
 	}
-	if !operation.allowsOwner("forms") || !operation.allowsOwner("workflow") ||
-		operation.allowsOwner("billing") {
+	if !operation.allowsOwner("workflow") || operation.allowsOwner("billing") ||
+		operation.allowsOwner("forms") {
 		t.Fatalf("participant authority widened: %+v", operation.participants)
 	}
 	groups[0].ID, domains[0].Name, participants[0] = "work", "work", "billing"
-	if operation.groups[1].id != "workflow" || operation.domains[2].name != "workflow" ||
-		operation.participants[1] != "workflow" {
+	if operation.groups[1].id != "workflow" || operation.domains[1].name != "workflow" ||
+		operation.participants[0] != "workflow" {
 		t.Fatal("operation retained caller-owned slices")
 	}
 }
@@ -81,7 +79,7 @@ func TestMultiGroupOperationTamperFailsClosed(t *testing.T) {
 	duplicateGroup.groups = append(append([]groupExpectation{}, operation.groups...), operation.groups[1])
 	wrongOwningGroup := operation
 	wrongOwningGroup.domains = append([]domainExpectation{}, operation.domains...)
-	wrongOwningGroup.domains[1].groupID = "workflow"
+	wrongOwningGroup.domains[0].groupID = "workflow"
 	duplicateParticipant := operation
 	duplicateParticipant.participants = []string{"forms", "forms"}
 	if duplicateGroup.valid() || wrongOwningGroup.valid() || duplicateParticipant.valid() {
@@ -100,10 +98,6 @@ func TestMultiGroupOwnerAuthorityUsesContainingExactGroup(t *testing.T) {
 	state := &scopeState{tenantID: uuid.New(), operation: operation, mode: Command}
 	state.active.Store(true)
 	scope := TenantScope{state: state}
-	forms, err := MintOwnerAuthority(scope, "forms")
-	if err != nil || forms.GroupID() != "billing_forms" || forms.GroupGeneration() != 3 {
-		t.Fatalf("Forms authority mismatch: %+v %v", forms, err)
-	}
 	workflow, err := MintOwnerAuthority(scope, "workflow")
 	if err != nil || workflow.GroupID() != "workflow" || workflow.GroupGeneration() != 7 {
 		t.Fatalf("Workflow authority mismatch: %+v %v", workflow, err)
@@ -120,6 +114,5 @@ func validMultiGroupAuthorityInput() (
 			{ID: "workflow", Generation: 7}, {ID: "billing_forms", Generation: 3},
 		}, []CommandAuthorityDomain{
 			{Name: "workflow", Generation: 17}, {Name: "billing", Generation: 11},
-			{Name: "forms", Generation: 13},
-		}, []string{"workflow", "forms"}
+		}, []string{"workflow"}
 }

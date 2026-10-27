@@ -54,7 +54,7 @@ func TestProviderTargetRejectsLookupOrMappingDrift(t *testing.T) {
 		}(),
 		func() ProviderTargetEvidence {
 			value := providerEvidenceFixture(lookup)
-			value.FormsGeneration = 0
+			value.BillingGeneration = 0
 			return value
 		}(),
 	}
@@ -72,7 +72,7 @@ func providerEvidenceFixture(lookup ProviderLookup) ProviderTargetEvidence {
 		ProviderAccountID: uuid.MustParse("33333333-3333-4333-8333-333333333333"),
 		SubscriptionID:    uuid.MustParse("44444444-4444-4444-8444-444444444444"),
 		MappingRevision:   3, GroupGeneration: 7,
-		BillingGeneration: 11, FormsGeneration: 13,
+		BillingGeneration: 11,
 		LookupBindingSHA256: ProviderLookupBinding(lookup),
 	}
 }

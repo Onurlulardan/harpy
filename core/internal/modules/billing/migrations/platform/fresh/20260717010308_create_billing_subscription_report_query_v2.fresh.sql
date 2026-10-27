@@ -37,14 +37,8 @@ WITH current_global AS (
      AND billing_row.scope_id = authority.scope_id
      AND billing_row.domain = authority.billing_domain
      AND billing_row.generation = authority.billing_generation
-    JOIN platform.domain_cutovers AS forms_row
-      ON forms_row.scope_kind = authority.scope_kind
-     AND forms_row.scope_id = authority.scope_id
-     AND forms_row.domain = authority.forms_domain
-     AND forms_row.generation = authority.forms_generation
     WHERE group_row.writer = 'v2' AND group_row.state = 'v2'
       AND billing_row.writer = 'v2' AND billing_row.state = 'v2'
-      AND forms_row.writer = 'v2' AND forms_row.state = 'v2'
 )
 SELECT
     subscription.id,

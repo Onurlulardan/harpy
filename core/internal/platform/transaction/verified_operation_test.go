@@ -3,16 +3,16 @@ package transaction
 import "testing"
 
 func TestAuthorityIssuerBindsExactGroupMembersAndGenerations(t *testing.T) {
-	generations := map[string]int64{"billing": 4, "forms": 5}
+	generations := map[string]int64{"billing": 4}
 	operation, err := NewAuthorityIssuer().Issue(
-		"forms.records.create", "billing_forms", 3, generations,
+		"billing.subscription.create", "billing_forms", 3, generations,
 	)
-	if err != nil || !operation.valid() || !operation.allowsOwner("forms") ||
+	if err != nil || !operation.valid() || !operation.allowsOwner("billing") ||
 		operation.allowsOwner("workflow") || operation.mode != Command {
 		t.Fatalf("unexpected operation capability: %+v %v", operation, err)
 	}
-	generations["forms"] = 99
-	if operation.domains[1].generation != 5 {
+	generations["billing"] = 99
+	if operation.domains[0].generation != 4 {
 		t.Fatal("operation capability retained caller-owned generation map")
 	}
 	if _, err := NewAuthorityIssuer().Issue(

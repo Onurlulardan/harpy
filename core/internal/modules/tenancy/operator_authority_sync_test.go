@@ -15,7 +15,7 @@ func TestTenantAuthoritySynchronizerAcceptsCompleteReplay(t *testing.T) {
 	) (TenantAuthorityReconciliation, error) {
 		return TenantAuthorityReconciliation{
 			BillingGlobalReconciled: 1, BillingTenantReconciled: 2,
-			WorkflowReconciled: 3, AnalyticsReconciled: 4,
+			AnalyticsReconciled: 4,
 		}, nil
 	})
 	if err != nil {
@@ -26,7 +26,7 @@ func TestTenantAuthoritySynchronizerAcceptsCompleteReplay(t *testing.T) {
 	)
 	if err != nil || result.BillingGlobalReconciled != 1 ||
 		result.BillingTenantReconciled != 2 ||
-		result.WorkflowReconciled != 3 || result.AnalyticsReconciled != 4 {
+		result.AnalyticsReconciled != 4 {
 		t.Fatalf("reconciliation = %#v, %v", result, err)
 	}
 }
@@ -35,7 +35,7 @@ func TestTenantAuthoritySynchronizerRejectsIncompleteAndStorageFailure(t *testin
 	incomplete, _ := newTenantAuthoritySynchronizer(func(
 		context.Context, uuid.UUID, string,
 	) (TenantAuthorityReconciliation, error) {
-		return TenantAuthorityReconciliation{WorkflowRemaining: 1}, nil
+		return TenantAuthorityReconciliation{AnalyticsRemaining: 1}, nil
 	})
 	if _, err := incomplete.Synchronize(
 		context.Background(), authorityOperationID, authorityManifestSHA256,

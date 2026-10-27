@@ -185,7 +185,7 @@
       {"access":"read","target_owner":"platform_async","target":"platform.platform_async_installation_activation_evidence_assert_v1","contract":"ADR-0118"}, {"access":"read","target_owner":"platform_cutover","target":"platform.platform_cutover_v1_adoption_plans","contract":"ADR-0022"},
       {"access":"read","target_owner":"platform_migrator","target":"platform.platform_migrator_verify_new_tenant_v1","contract":"ADR-0118"},
       {"access":"read","target_owner":"platform_migrator","target":"platform.release_generations","contract":"ADR-0118"},
-      {"access":"read","target_owner":"platform_migrator","target":"platform.schema_contracts","contract":"ADR-0118"}, {"access":"read","target_owner":"workflow","target":"platform.workflow_reconcile_current_tenant_authorities_v1","contract":"ADR-0118"}, {"access":"read","target_owner":"workflow","target":"platform.workflow_reconcile_current_tenant_authorities_v2","contract":"ADR-0118"}, {"access":"read","target_owner":"workflow","target":"platform.workflow_register_tenant_authority_v1","contract":"ADR-0118"}
+      {"access":"read","target_owner":"platform_migrator","target":"platform.schema_contracts","contract":"ADR-0118"}
     ],
     "legacy_tables": [
       {

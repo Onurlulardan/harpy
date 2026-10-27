@@ -24,7 +24,6 @@ func TestCurrentTenantAuthorityResolverRemainsBillingOwnedAndPrivate(t *testing.
 		"platform.billing_resolve_current_tenant_authority_v1",
 		"platform.billing_tenant_authorities", "platform.cutover_groups",
 		"billing_member.domain = 'billing' AND billing_member.ordinal = 1",
-		"forms_member.domain = 'forms' AND forms_member.ordinal = 2",
 		"group_row.state = 'v2' AND group_row.writer = 'v2'",
 		"platform.billing_assert_tenant_authority_v1(v_authority_id)",
 		"REVOKE ALL ON FUNCTION",
@@ -57,7 +56,6 @@ func TestCurrentTenantAuthorityReceiptFreezesAllSchemaSubmissionGenerations(t *t
 		"platform.billing_resolve_current_tenant_authority_receipt_v1",
 		"authority_id uuid", "authority_group_id text",
 		"authority_group_generation bigint", "billing_generation bigint",
-		"forms_generation bigint",
 		"platform.billing_resolve_current_tenant_authority_v1(p_tenant_id)",
 		"FOR SHARE", "REVOKE ALL ON FUNCTION",
 	} {

@@ -16,8 +16,6 @@ type AuthorityReconciliation struct {
 	BillingGlobalRemaining  int
 	BillingTenantReconciled int
 	BillingTenantRemaining  int
-	WorkflowReconciled      int
-	WorkflowRemaining       int
 	AnalyticsReconciled     int
 	AnalyticsRemaining      int
 }
@@ -51,8 +49,6 @@ func (synchronizer *AuthoritySynchronizer) Synchronize(
 		&result.BillingGlobalRemaining,
 		&result.BillingTenantReconciled,
 		&result.BillingTenantRemaining,
-		&result.WorkflowReconciled,
-		&result.WorkflowRemaining,
 		&result.AnalyticsReconciled,
 		&result.AnalyticsRemaining,
 	)

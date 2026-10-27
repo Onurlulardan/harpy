@@ -100,14 +100,9 @@ BEGIN
           ON billing_row.scope_kind = authority.scope_kind
          AND billing_row.scope_id = authority.scope_id
          AND billing_row.domain = authority.billing_domain
-        JOIN platform.domain_cutovers AS forms_row
-          ON forms_row.scope_kind = authority.scope_kind
-         AND forms_row.scope_id = authority.scope_id
-         AND forms_row.domain = authority.forms_domain
         WHERE authority.tenant_id = p_scope_id
           AND authority.authority_group_generation = group_row.generation
           AND authority.billing_generation = billing_row.generation
-          AND authority.forms_generation = forms_row.generation
           AND billing_row.generation = v_cutover_generation;
     END IF;
     v_evidence := pg_catalog.jsonb_build_object(

@@ -80,7 +80,6 @@
       {"constraint":"analytics_tenant_authorities_tenant_fk","source":"platform.analytics_tenant_authorities","source_columns":["tenant_id"],"target_owner":"tenancy","target":"platform.tenants","target_columns":["id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0031"}
     ],
     "external_accesses": [
-      {"access":"read","target_owner":"forms","target":"forms_catalog_analytics_dependency_v1","contract":"ADR-0031"},
       {"access":"read","target_owner":"analytics","target":"platform.analytics_assert_tenant_authority_v1","contract":"ADR-0031"},
       {"access":"read","target_owner":"analytics","target":"platform.analytics_public_activate_v1","contract":"ADR-0031"},
       {"access":"read","target_owner":"analytics","target":"platform.analytics_public_repair_v1","contract":"ADR-0031"},

@@ -12,7 +12,7 @@ func validKeyID(value string) bool {
 }
 
 func validProvider(kind, handle string) bool {
-	return (kind == ProviderLocalKeyring || kind == ProviderForgeGuard) &&
+	return kind == ProviderLocalKeyring &&
 		len(handle) >= 1 && len(handle) <= 512 &&
 		!strings.ContainsAny(handle, "\x00\r\n")
 }

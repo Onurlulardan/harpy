@@ -60,17 +60,8 @@ const (
 )
 
 const (
-	V1CronScheduler          = "workflow.cron.scheduler"
 	V1ScheduleQueue          = "schedule.events"
-	V1DelayQueue             = "workflow.delay"
-	V1WebhookRetryQueue      = "workflow.webhook.retry"
-	V1FormEventQueue         = "form.events"
-	V1ImportFutureState      = "forms.import.future_state"
 	V1QueueContract          = "v1.queue-message.v1"
-	V1SchedulerContract      = "v1.workflow-minute-scheduler.v1"
-	V1DelayContract          = "v1.workflow-delayed-plugin.v1"
-	V1WebhookTTLContract     = "v1.workflow-webhook-ttl-not-delay.v1"
-	V1ImportContract         = "v1.forms-import-job.v1"
 	V1IdempotencyContract    = "v1.redis-idempotency-cache.v1"
 	V1IdempotencyDisposition = "invalidate_at_cutover"
 )

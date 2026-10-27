@@ -21,7 +21,7 @@ func (storage *store) ResolveTransitionTarget(
 	var target platformreportapp.TransitionTarget
 	err := storage.query(ctx, resolveTransitionTargetSQL, subscriptionID).Scan(
 		&target.TenantID, &target.Provider, &target.GroupGeneration,
-		&target.BillingGeneration, &target.FormsGeneration,
+		&target.BillingGeneration,
 	)
 	if err != nil || !target.Valid() {
 		return platformreportapp.TransitionTarget{}, platformreportapp.ErrTarget

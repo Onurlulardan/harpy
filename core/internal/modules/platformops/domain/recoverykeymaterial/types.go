@@ -13,7 +13,6 @@ const (
 
 	PurposeComponentSealing Purpose = "recovery_component_sealing"
 	ProviderLocalKeyring            = "local_keyring"
-	ProviderForgeGuard              = "forgeguard"
 )
 
 var ErrInvalid = errors.New("recovery key material is invalid")

@@ -32,7 +32,7 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 		environmentID: mustV7(t), offeringVersionID: mustV7(t),
 	}
 	payload := licensev2.SnapshotPayload{
-		Schema: licensev2.SnapshotSchema, Issuer: "forgeguard",
+		Schema: licensev2.SnapshotSchema, Issuer: "harpy",
 		Audience: licensev2.SnapshotAudience, Product: licensev2.SnapshotProduct,
 		LicenseID:              fixture.licenseID.String(),
 		LicenseeOrganizationID: fixture.organizationID.String(),
@@ -53,7 +53,7 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 			LicenseeOrganizationID: fixture.organizationID.String(),
 			EnvironmentID:          fixture.environmentID.String(), DeliveryKind: licensev2.DeliveryConnected,
 		},
-		issuer: "forgeguard", sequence: 5, digest: hex.EncodeToString(digest[:]), channel: "stable",
+		issuer: "harpy", sequence: 5, digest: hex.EncodeToString(digest[:]), channel: "stable",
 		projection: billingapi.LicenseEntitlementProjection{
 			Boolean: map[string]bool{
 				"forms.builder.enabled": true, "workflow.builder.enabled": true,

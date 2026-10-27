@@ -145,7 +145,6 @@ PRIMARY KEY(scope_kind,scope_id,group_id,ordinal))`,
 	`CREATE TABLE platform.activation_authority_calls (
 domain text,authority_id uuid,tenant_id uuid,created_at timestamptz,
 PRIMARY KEY(domain,tenant_id))`,
-	activationAuthorityStub("workflow"),
 	activationAuthorityStub("analytics"),
 }
 

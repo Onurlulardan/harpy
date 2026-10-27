@@ -1,1 +1,0 @@
-{"id":"93000000-0000-4000-8000-000000000001","type":"workflow.delay.complete","payload":{"delay_seconds":300,"instance_id":"93100000-0000-4000-8000-000000000001","node_id":"delay-1","started_at":"2026-07-15T10:02:00Z","tenant_slug":"acme"},"priority":1,"retry_count":0,"published_at":"2026-07-15T10:02:00Z"}

@@ -53,10 +53,9 @@ func TestTenancyTransactionCapabilitiesLoadFreshAndFailClosed(t *testing.T) {
 		"v_operation.state IS DISTINCT FROM 'succeeded'",
 		"FROM platform.billing_reconcile_current_global_authority_v2()",
 		"FROM platform.billing_reconcile_current_tenant_authorities_v2()",
-		"FROM platform.workflow_reconcile_current_tenant_authorities_v2()",
 		"FROM platform.analytics_reconcile_current_tenant_authorities_v2()",
 		"DELETE FROM platform.tenancy_authority_reconcile_scopes",
-		"v_deleted IS DISTINCT FROM 3",
+		"v_deleted IS DISTINCT FROM 2",
 	} {
 		if !strings.Contains(reconcile, marker) {
 			t.Fatalf("tenancy reconcile wrapper lacks %q", marker)

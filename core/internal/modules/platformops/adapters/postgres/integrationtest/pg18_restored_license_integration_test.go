@@ -22,7 +22,7 @@ func exerciseRestoredLicenseGrant(
 	arguments := []any{
 		operationID, environmentID, "abababab-abab-4bab-8bab-abababababab",
 		receiptSHA256, "bcbcbcbc-bcbc-4cbc-8cbc-bcbcbcbcbcbc",
-		"cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd", "connected", "forgeguard",
+		"cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd", "connected", "harpy",
 		int64(4), strings.Repeat("c", 64), int64(5), strings.Repeat("d", 64),
 		restoredlicensev1.ManifestSHA256(), int64(7),
 	}

@@ -54,7 +54,7 @@ BEGIN
      AND operation.status='completed'
     WHERE binding.environment_id=p_environment_id
       AND binding.deployment_mode='onpremise'
-      AND binding.registry_kind IN ('forgeguard','development')
+      AND binding.registry_kind = 'development'
       AND binding.signer_status='active';
     IF NOT FOUND THEN
         RAISE EXCEPTION USING ERRCODE='P0002',

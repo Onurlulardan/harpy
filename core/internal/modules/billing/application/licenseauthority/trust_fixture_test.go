@@ -34,7 +34,7 @@ func newTrustFixture(t *testing.T) trustFixture {
 		now:        time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC),
 		rootPublic: rootPublic, rootPrivate: rootPrivate,
 		signerPublic: signerPublic, signerPrivate: signerPrivate,
-		rootStatus: TrustKeyActive, signerStatus: TrustKeyActive, issuer: "forgeguard",
+		rootStatus: TrustKeyActive, signerStatus: TrustKeyActive, issuer: "harpy",
 	}
 }
 

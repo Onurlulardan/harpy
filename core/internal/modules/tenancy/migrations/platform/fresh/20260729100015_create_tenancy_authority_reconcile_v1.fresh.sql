@@ -9,8 +9,6 @@ RETURNS TABLE (
     billing_global_remaining integer,
     billing_tenant_reconciled integer,
     billing_tenant_remaining integer,
-    workflow_reconciled integer,
-    workflow_remaining integer,
     analytics_reconciled integer,
     analytics_remaining integer
 )
@@ -72,7 +70,7 @@ BEGIN
            v_operation.operation_id, v_operation.environment_id,
            v_operation.manifest_sha256, v_operation.step_plan_sha256,
            owner_key, pg_catalog.transaction_timestamp()
-    FROM (VALUES ('billing'), ('workflow'), ('analytics')) AS owners(owner_key);
+    FROM (VALUES ('billing'), ('analytics')) AS owners(owner_key);
 
     SELECT reconciled_count, remaining_count
     INTO billing_global_reconciled, billing_global_remaining
@@ -80,9 +78,6 @@ BEGIN
     SELECT reconciled_count, remaining_count
     INTO billing_tenant_reconciled, billing_tenant_remaining
     FROM platform.billing_reconcile_current_tenant_authorities_v2();
-    SELECT reconciled_count, remaining_count
-    INTO workflow_reconciled, workflow_remaining
-    FROM platform.workflow_reconcile_current_tenant_authorities_v2();
     SELECT reconciled_count, remaining_count
     INTO analytics_reconciled, analytics_remaining
     FROM platform.analytics_reconcile_current_tenant_authorities_v2();
@@ -92,7 +87,7 @@ BEGIN
       AND scope.transaction_id = pg_catalog.pg_current_xact_id()
       AND scope.operation_id = v_operation.operation_id;
     GET DIAGNOSTICS v_deleted = ROW_COUNT;
-    IF v_deleted IS DISTINCT FROM 3 THEN
+    IF v_deleted IS DISTINCT FROM 2 THEN
         RAISE EXCEPTION USING ERRCODE = '23514',
             MESSAGE = 'tenancy authority reconcile scope cleanup failed';
     END IF;

@@ -93,12 +93,7 @@ func validateKnownV1Surface(value Item) error {
 		surface  SourceSurface
 		contract string
 	}{
-		V1CronScheduler:     {ClassTimer, SurfaceScheduler, V1SchedulerContract},
-		V1ScheduleQueue:     {ClassQueue, SurfaceQueue, V1QueueContract},
-		V1DelayQueue:        {ClassTimer, SurfaceDelayedPlugin, V1DelayContract},
-		V1WebhookRetryQueue: {ClassTimer, SurfaceTTLQueue, V1WebhookTTLContract},
-		V1FormEventQueue:    {ClassQueue, SurfaceQueue, V1QueueContract},
-		V1ImportFutureState: {ClassFuture, SurfaceFutureState, V1ImportContract},
+		V1ScheduleQueue: {ClassQueue, SurfaceQueue, V1QueueContract},
 	}
 	policy, known := want[value.SourceName]
 	if known && (value.InventoryClass != policy.class || value.SourceSurface != policy.surface ||

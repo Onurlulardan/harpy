@@ -50,13 +50,13 @@ func prepareRetentionFixture(
 		dueA: billingV7(t), futureA: billingV7(t), dueB: billingV7(t),
 	}
 	if _, err := connection.ExecContext(ctx, `
-SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,1,$3)
+SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,$3)
 `, fixture.authorityA, fixture.tenantA, now); err != nil {
 		t.Fatal(err)
 	}
 	seedRetentionTenantB(t, ctx, database, fixture.tenantB)
 	if _, err := connection.ExecContext(ctx, `
-SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,1,$3)
+SELECT platform.billing_register_tenant_authority_v1($1,$2,1,1,$3)
 `, fixture.authorityB, fixture.tenantB, now); err != nil {
 		t.Fatal(err)
 	}

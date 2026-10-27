@@ -103,17 +103,17 @@ CREATE SCHEMA cutover_authority
 AUTHORIZATION harpy_cutover_authority_owner;
 GRANT USAGE ON SCHEMA cutover_authority TO harpy_cutover_finalizer;
 CREATE FUNCTION cutover_authority.billing_test_finalize_v1(
- uuid,uuid,uuid,uuid,text
+ uuid,uuid,text
 ) RETURNS uuid LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog
-AS 'SELECT platform.billing_finalize_authority_successor_v1($1,$2,$3,$4,$5)';
+AS 'SELECT platform.billing_finalize_authority_successor_v1($1,$2,$3)';
 ALTER FUNCTION cutover_authority.billing_test_finalize_v1(
- uuid,uuid,uuid,uuid,text
+ uuid,uuid,text
 ) OWNER TO harpy_cutover_authority_owner;
 REVOKE ALL ON FUNCTION cutover_authority.billing_test_finalize_v1(
- uuid,uuid,uuid,uuid,text
+ uuid,uuid,text
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION cutover_authority.billing_test_finalize_v1(
- uuid,uuid,uuid,uuid,text
+ uuid,uuid,text
 ) TO harpy_cutover_finalizer`); err != nil {
 		t.Fatalf("create Billing successor caller: %v", err)
 	}
@@ -155,8 +155,8 @@ func callBillingSuccessor(
 ) (string, error) {
 	var authorityID string
 	err := connection.QueryRowContext(ctx, `
-SELECT cutover_authority.billing_test_finalize_v1($1,$2,$3,$4,$5)`,
-		operationID, runID, formsOperationID, formsRunID, digest,
+SELECT cutover_authority.billing_test_finalize_v1($1,$2,$3)`,
+		operationID, runID, digest,
 	).Scan(&authorityID)
 	return authorityID, err
 }

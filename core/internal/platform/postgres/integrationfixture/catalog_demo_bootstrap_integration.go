@@ -19,7 +19,7 @@ func (environment *CatalogDemoEnvironment) prepareBootstrap(
 ) {
 	t.Helper()
 	environment.execFixture(t, ctx, "bootstrap_tables.fixture")
-	environment.execFixture(t, ctx, "extensions_"+origin+".fixture")
+	environment.execFixture(t, ctx, "extensions_fresh.fixture")
 	migrationDigest, err := schemacontract.IntegrationMigrationManifestSHA256()
 	if err != nil {
 		t.Fatal(err)
@@ -36,9 +36,6 @@ func (environment *CatalogDemoEnvironment) prepareBootstrap(
 			[]any{origin, migrationDigest, runtimev1.PostgresImageDigest}},
 	}
 	extensionSchema, extensionOwner := "platform_ext", "harpy_extension_admin"
-	if origin == "v1_adopted" {
-		extensionSchema, extensionOwner = "public", "legacy_vector_owner"
-	}
 	commands = append(commands, struct {
 		name string
 		args []any

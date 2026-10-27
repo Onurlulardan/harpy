@@ -14,7 +14,6 @@ func TestTenantActivationV4MigrationLoadsFreshAndStaysExpandCompatible(t *testin
 		"v_application = 'harpy-v2:core-operator-initialize'",
 		"v_application = 'harpy-v2:core-worker'",
 		"platform.cutover_initialize_tenant_v3(",
-		"platform.workflow_register_tenant_authority_v1(",
 		"platform.analytics_register_tenant_authority_v1(",
 		"GRANT EXECUTE ON FUNCTION platform.tenancy_activation_initialize_v4(",
 	} {

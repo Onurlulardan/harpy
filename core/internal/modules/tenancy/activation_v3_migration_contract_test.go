@@ -10,7 +10,6 @@ func TestTenantActivationV3MigrationLoadsFreshAndRegistersAuthorities(t *testing
 	for _, marker := range []string{
 		"CREATE FUNCTION platform.tenancy_activation_initialize_v3(",
 		"platform.tenancy_activation_initialize_v2(",
-		"platform.workflow_register_tenant_authority_v1(",
 		"platform.analytics_register_tenant_authority_v1(",
 		"p_operation_id::text, '7', 15, 1",
 		"tenant.created_at INTO STRICT v_created_at",

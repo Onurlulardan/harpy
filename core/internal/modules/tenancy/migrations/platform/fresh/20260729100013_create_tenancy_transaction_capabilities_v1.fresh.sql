@@ -61,7 +61,7 @@ CREATE TABLE platform.tenancy_authority_reconcile_scopes (
     CHECK (backend_pid > 0),
     CHECK (manifest_sha256 ~ '^[0-9a-f]{64}$'),
     CHECK (step_plan_sha256 ~ '^[0-9a-f]{64}$'),
-    CHECK (owner_key IN ('billing', 'workflow', 'analytics'))
+    CHECK (owner_key IN ('billing', 'analytics'))
 );
 
 -- +goose StatementBegin
@@ -112,7 +112,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog AS $function$
 BEGIN
     RETURN SESSION_USER = 'harpy_v2_runtime'
        AND CURRENT_USER = 'harpy_owner'
-       AND p_owner_key IN ('billing', 'workflow', 'analytics')
+       AND p_owner_key IN ('billing', 'analytics')
        AND EXISTS (
             SELECT 1
             FROM platform.tenancy_authority_reconcile_scopes AS scope
