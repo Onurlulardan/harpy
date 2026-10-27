@@ -45,9 +45,7 @@ func newFreshRegistry(selected []Document) (*ReleaseRegistry, error) {
 	return registry, nil
 }
 
-// Support versions 20260801019000-20260801019012 are frozen names, not UTC
-// timestamps, so MigrationManifest.Validate cannot accept this fresh set.
-// The startup digest is still the SHA-256 of the JCS canonical manifest.
+// The startup digest is the SHA-256 of the JCS canonical manifest.
 func canonicalFreshManifest(manifest postgresv1.MigrationManifest) ([]byte, error) {
 	encoded, err := json.Marshal(manifest)
 	if err != nil {
@@ -107,6 +105,9 @@ func freshManifest(selected []Document) (postgresv1.MigrationManifest, error) {
 		PostgresMajor:   18,
 		HistoryTable:    "platform.platform_migration_history",
 		Entries:         entries,
+	}
+	if err := manifest.Validate(); err != nil {
+		return postgresv1.MigrationManifest{}, err
 	}
 	return manifest, nil
 }

@@ -99,11 +99,9 @@ an internal durable job and has no HTTP route.
 
 ## Storage and migration handoff
 
-- Provider: `support.MigrationDocuments()` embeds 13 platform `fresh` and 13
-  platform `v1_adopted` documents, versions `20260801019000` through
-  `20260801019012`.
-- All 13 fresh/adopted pairs are byte-identical; no Support version collides
-  with a non-Support migration.
+- Provider: `support.MigrationDocuments()` embeds 13 platform `fresh`
+  documents, versions `20260801020100` through `20260801020112`.
+- No Support version collides with a non-Support migration.
 - Archguard reports 43 uncovered Support SQL files: 10 runtime adapter SQL, 7
   adoption adapter SQL, 13 fresh migrations and 13 adopted migrations. Register
   exact directory/table/routine ownership once; do not move or rewrite SQL.
