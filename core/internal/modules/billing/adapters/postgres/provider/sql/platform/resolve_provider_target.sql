@@ -29,7 +29,7 @@ WHERE account.provider_key = $1
   AND mapping.retired_at IS NULL
   AND authority.scope_kind = 'tenant'
   AND authority.scope_id = mapping.tenant_id
-  AND authority.authority_group_id = 'billing_forms'
+  AND authority.authority_group_id = 'billing'
   AND authority.billing_domain = 'billing'
   AND authority.authority_group_generation = group_row.generation
   AND authority.billing_generation = billing_row.generation

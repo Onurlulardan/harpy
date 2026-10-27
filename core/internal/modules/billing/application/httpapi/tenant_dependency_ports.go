@@ -10,7 +10,7 @@ import (
 type TenantGenerationResolver interface {
 	ResolveTenantBillingGenerations(
 		context.Context, uuid.UUID,
-	) (group, billing, forms int64, err error)
+	) (group, billing int64, err error)
 }
 
 type TenantScopeCoordinator interface {

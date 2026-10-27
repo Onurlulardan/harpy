@@ -17,7 +17,7 @@ const (
 func testAuthority() Authority {
 	return Authority{
 		ScopeKind: ScopeTenant, ScopeID: tenantID, Domain: "forms", CutoverGeneration: 3,
-		WriterOrigin: WriterV2, GroupID: "billing_forms", GroupGeneration: 4,
+		WriterOrigin: WriterV2, GroupID: "billing", GroupGeneration: 4,
 	}
 }
 

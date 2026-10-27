@@ -3,7 +3,7 @@ package entitlement
 import "testing"
 
 func TestKeyVocabulary(t *testing.T) {
-	valid := []string{"a", "forms.submissions", "documents_storage", "api.v2_calls"}
+	valid := []string{"a", "iam.active_users", "documents_storage", "api.v2_calls"}
 	for _, input := range valid {
 		key, err := NewKey(input)
 		if err != nil || !key.Valid() {

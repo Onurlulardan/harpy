@@ -89,7 +89,7 @@ func TestSnapshotOperationTamperFailsClosed(t *testing.T) {
 	wrongMode := operation
 	wrongMode.mode = Command
 	withGroup := operation
-	withGroup.groups = []groupExpectation{{id: "billing_forms", generation: 1}}
+	withGroup.groups = []groupExpectation{{id: "billing", generation: 1}}
 	if duplicate.valid() || wrongMode.valid() || withGroup.valid() {
 		t.Fatal("tampered snapshot operation remained valid")
 	}

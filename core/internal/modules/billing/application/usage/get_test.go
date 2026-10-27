@@ -30,7 +30,7 @@ func TestGetRejectsUnboundScopeAndBuildsTypedCounterSnapshot(t *testing.T) {
 	); !errors.Is(err, ErrQueryScope) || store.called {
 		t.Fatalf("unbound query = %v, called = %t", err, store.called)
 	}
-	key, err := entitlement.NewKey("forms.submissions")
+	key, err := entitlement.NewKey("iam.active_users")
 	if err != nil {
 		t.Fatal(err)
 	}

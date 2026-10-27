@@ -26,7 +26,7 @@ BEGIN
             'resource_kind','resource_version_id'
           ]::text[]
           OR (dependency.value->>'ordinal')::bigint<>dependency.position-1
-          OR dependency.value->>'owner_domain' NOT IN ('iam','forms')
+          OR dependency.value->>'owner_domain' <> 'iam'
           OR dependency.value->>'dependency_sha256'!~'^[0-9a-f]{64}$'
        ) THEN
         RAISE EXCEPTION USING ERRCODE='22023',

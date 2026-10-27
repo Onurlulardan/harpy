@@ -88,7 +88,7 @@ BEGIN
     FROM platform.cutover_groups AS cutover_group
     WHERE cutover_group.scope_kind='tenant'
       AND cutover_group.scope_id=p_tenant_id
-      AND cutover_group.group_id IN ('billing_forms','iam_system_resources')
+      AND cutover_group.group_id IN ('billing','iam_system_resources')
     ORDER BY cutover_group.group_id
     FOR SHARE;
     GET DIAGNOSTICS v_group_count = ROW_COUNT;
@@ -96,7 +96,7 @@ BEGIN
         SELECT 1 FROM platform.cutover_groups AS cutover_group
         WHERE cutover_group.scope_kind='tenant'
           AND cutover_group.scope_id=p_tenant_id
-          AND cutover_group.group_id IN ('billing_forms','iam_system_resources')
+          AND cutover_group.group_id IN ('billing','iam_system_resources')
           AND (cutover_group.state IS DISTINCT FROM 'v2' OR
                cutover_group.writer IS DISTINCT FROM 'v2' OR
                cutover_group.approved_by IS NULL OR
@@ -110,7 +110,7 @@ BEGIN
     PERFORM 1
     FROM platform.cutover_group_members AS member
     WHERE member.scope_kind='tenant' AND member.scope_id=p_tenant_id
-      AND member.group_id IN ('billing_forms','iam_system_resources')
+      AND member.group_id IN ('billing','iam_system_resources')
     ORDER BY member.group_id,member.ordinal
     FOR SHARE;
     GET DIAGNOSTICS v_member_count = ROW_COUNT;
@@ -118,7 +118,7 @@ BEGIN
        (SELECT pg_catalog.jsonb_agg(member.domain ORDER BY member.ordinal)
         FROM platform.cutover_group_members AS member
         WHERE member.scope_kind='tenant' AND member.scope_id=p_tenant_id
-          AND member.group_id='billing_forms') IS DISTINCT FROM
+          AND member.group_id='billing') IS DISTINCT FROM
           '["billing"]'::jsonb OR
        (SELECT pg_catalog.jsonb_agg(member.domain ORDER BY member.ordinal)
         FROM platform.cutover_group_members AS member

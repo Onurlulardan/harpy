@@ -12,7 +12,7 @@ func TestVersionAcceptsTypedRegistryGrantsAndDefensiveCopies(t *testing.T) {
 	now := time.Date(2026, 7, 17, 12, 0, 0, 0, time.UTC)
 	amount, _ := money.New(9900, "USD", money.RegistryVersion)
 	price, _ := NewPrice(Monthly, amount)
-	entry := entitlement.RegistryV1ByKey()["forms.submissions"]
+	entry := entitlement.RegistryV1ByKey()["iam.active_users"]
 	limit, _ := entitlement.IntegerValue(500)
 	grant, _ := NewGrant(entry.Definition, limit)
 	prices, grants := []Price{price}, []Grant{grant}
@@ -23,7 +23,7 @@ func TestVersionAcceptsTypedRegistryGrantsAndDefensiveCopies(t *testing.T) {
 	prices[0] = Price{}
 	grants[0] = Grant{}
 	if version.Prices()[0].Cadence() != Monthly ||
-		version.Grants()[0].Definition().Key() != "forms.submissions" {
+		version.Grants()[0].Definition().Key() != "iam.active_users" {
 		t.Fatal("caller mutation changed version")
 	}
 	copyPrices := version.Prices()
@@ -37,7 +37,7 @@ func TestVersionRejectsDuplicatePriceAndGrant(t *testing.T) {
 	now := time.Date(2026, 7, 17, 12, 0, 0, 0, time.UTC)
 	amount, _ := money.New(0, "USD", money.RegistryVersion)
 	price, _ := NewPrice(Monthly, amount)
-	entry := entitlement.RegistryV1ByKey()["forms.submissions"]
+	entry := entitlement.RegistryV1ByKey()["iam.active_users"]
 	grant, _ := NewGrant(entry.Definition, entitlement.UnlimitedValue())
 	if _, err := NewVersion("Base", true, true, true, 0, 0, now, nil,
 		[]Price{price, price}, []Grant{grant}); err == nil {

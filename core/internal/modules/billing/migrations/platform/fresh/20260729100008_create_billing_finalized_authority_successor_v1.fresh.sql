@@ -39,7 +39,7 @@ BEGIN
           (operation.scope_kind = 'global' AND operation.group_id = 'billing')
           OR (
               operation.scope_kind = 'tenant'
-              AND operation.group_id = 'billing_forms'
+              AND operation.group_id = 'billing'
           )
       )
     FOR SHARE;
@@ -139,7 +139,7 @@ BEGIN
                 billing_domain, billing_generation, created_at
             ) VALUES (
                 v_authority_id, v_operation.scope_id, 'tenant',
-                v_operation.scope_id, 'billing_forms', v_group_generation,
+                v_operation.scope_id, 'billing', v_group_generation,
                 'billing', v_group_generation,
                 pg_catalog.transaction_timestamp()
             );

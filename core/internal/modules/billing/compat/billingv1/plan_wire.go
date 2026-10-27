@@ -62,12 +62,8 @@ func legacyPlanValues(
 		}
 		boolean := entitlement.Boolean != nil && *entitlement.Boolean
 		switch entitlement.Key {
-		case "forms.submissions":
-			limits.SubmissionsPerMonth = integer
 		case "iam.active_users":
 			limits.MaxUsers = integer
-		case "forms.active_forms":
-			limits.MaxForms = integer
 		case "documents.storage_bytes":
 			if integer == -1 {
 				limits.MaxStorageMB = -1

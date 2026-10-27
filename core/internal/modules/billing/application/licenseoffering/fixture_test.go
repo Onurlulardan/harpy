@@ -56,14 +56,14 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 		issuer: "harpy", sequence: 5, digest: hex.EncodeToString(digest[:]), channel: "stable",
 		projection: billingapi.LicenseEntitlementProjection{
 			Boolean: map[string]bool{
-				"forms.builder.enabled": true, "workflow.builder.enabled": true,
+				"workflow.builder.enabled": true,
 				"api.builder.enabled": true, "analytics.dashboard_builder.enabled": false,
 				"workflow.enabled": true, "api.access": true,
 			},
 			Limits: map[string]billingapi.LicenseLimit{
-				"iam.active_users": {Value: 10}, "forms.active_forms": {Unlimited: true},
+				"iam.active_users": {Value: 10},
 				"workflow.active_definitions": {}, "api.active_endpoints": {},
-				"analytics.active_dashboards": {}, "forms.submissions": {Unlimited: true},
+				"analytics.active_dashboards": {},
 				"documents.storage_bytes": {Unlimited: true},
 			}, Channel: "stable",
 		},

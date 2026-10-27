@@ -5,7 +5,7 @@
       "id": "billing.provider.command.create",
       "owner": "billing",
       "scope_source": "actor_tenant",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     },
@@ -13,7 +13,7 @@
       "id": "billing.provider.command.finalize",
       "owner": "billing",
       "scope_source": "job_tenant",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     },
@@ -21,7 +21,7 @@
       "id": "billing.provider.webhook.execute",
       "owner": "billing",
       "scope_source": "job_tenant",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     },
@@ -29,7 +29,7 @@
       "id": "billing.provider.webhook.receive",
       "owner": "billing",
       "scope_source": "provider_mapping",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     }

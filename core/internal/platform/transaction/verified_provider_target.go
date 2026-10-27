@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const providerAuthorityGroup = "billing_forms"
+const providerAuthorityGroup = "billing"
 
 type ProviderTargetEvidence struct {
 	TenantID            uuid.UUID

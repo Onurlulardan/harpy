@@ -31,7 +31,7 @@ func newProtectedBillingAuthority(t *testing.T, scope string,
 	if err != nil {
 		t.Fatal(err)
 	}
-	group, checkpoint := "billing_forms", "billing"
+	group, checkpoint := "billing"
 	if scope == "global" {
 		group, checkpoint = "billing", "catalog"
 	}
@@ -56,7 +56,7 @@ VALUES($1,'t_billing_isolation','ACTIVE',NULL)`, tenantID); err != nil {
 		t.Fatalf("seed Billing isolation tenant: %v", err)
 	}
 	fixture := newBillingCutoverAuthorityFixture(
-		"tenant", tenantID, "billing_forms", 1,
+		"tenant", tenantID, "billing", 1,
 		"shadow", "v1", nil, "billing",
 	)
 	fixture.reason = "billing isolation cutover"

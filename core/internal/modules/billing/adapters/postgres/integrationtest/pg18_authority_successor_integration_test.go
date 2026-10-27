@@ -58,7 +58,7 @@ func assertBillingCompetingSuccessorRejected(
 	t.Helper()
 	seedBillingSuccessorOperation(
 		t, ctx, database, billingCompetingGlobalOp, billingCompetingGlobalRun,
-		"global", billingEnvironmentID, "billing", "billing",
+		"global", billingEnvironmentID, "billing",
 	)
 	_, err := callBillingSuccessor(
 		ctx, connection, billingCompetingGlobalOp, billingCompetingGlobalRun,
@@ -157,7 +157,7 @@ func assertBillingSuccessorNegativeEvidence(
 	_, err := database.ExecContext(ctx, `
 INSERT INTO platform.cutover_group_members(
  scope_kind,scope_id,group_id,ordinal,domain
-) VALUES('tenant',$1,'billing_forms',3,'analytics')`, billingTenantID)
+) VALUES('tenant',$1,'billing',3,'analytics')`, billingTenantID)
 	requireBillingPGCode(t, err, "23514", "cutover extra member")
 }
 

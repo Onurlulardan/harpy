@@ -31,7 +31,7 @@
 - Global identity comes only from registered environment state. Tenant identity
   comes from verified actor/scope; provider identity comes from verified object
   mapping; job identity comes from persisted authority evidence.
-- Tenant Billing requires the exact `billing_forms` group with ordered domains
+- Tenant Billing requires the exact `billing` group with ordered domains
   `billing,forms`; missing or stale generation fails closed.
 - Business mutation, audit, outbox/job and idempotency receipt commit together.
   Provider network effects run outside database transactions and finalize from
@@ -60,7 +60,7 @@
   deterministic discount applicability/stacking, PostgreSQL usage authority,
   transaction-atomic event/audit and fail-closed limits.
 - V1 catalog and tenant adoption remain bounded, receipt-backed and fenced.
-  Global Billing precedes tenant `billing_forms`; no production dual write or
+  Global Billing precedes tenant `billing`; no production dual write or
   destructive down migration is introduced.
 
 ## Freeze verification plan

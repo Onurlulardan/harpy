@@ -5,7 +5,7 @@ import "testing"
 func TestAuthorityIssuerBindsExactGroupMembersAndGenerations(t *testing.T) {
 	generations := map[string]int64{"billing": 4}
 	operation, err := NewAuthorityIssuer().Issue(
-		"billing.subscription.create", "billing_forms", 3, generations,
+		"billing.subscription.create", "billing", 3, generations,
 	)
 	if err != nil || !operation.valid() || !operation.allowsOwner("billing") ||
 		operation.allowsOwner("workflow") || operation.mode != Command {
@@ -16,7 +16,7 @@ func TestAuthorityIssuerBindsExactGroupMembersAndGenerations(t *testing.T) {
 		t.Fatal("operation capability retained caller-owned generation map")
 	}
 	if _, err := NewAuthorityIssuer().Issue(
-		"forms.records.create", "billing_forms", 3, map[string]int64{"forms": 5},
+		"documents.items.create", "billing", 3, map[string]int64{"forms": 5},
 	); err == nil {
 		t.Fatal("partial authority group accepted")
 	}

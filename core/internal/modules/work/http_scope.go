@@ -9,8 +9,8 @@ import (
 )
 
 type workGenerations struct {
-	group, work                  int64
-	billingGroup, billing, forms int64
+	group, work           int64
+	billingGroup, billing int64
 }
 
 func (runtime *PlatformHTTPRuntime) resolve(ctx context.Context,
@@ -31,13 +31,13 @@ func (runtime *PlatformHTTPRuntime) resolve(ctx context.Context,
 func (runtime *PlatformHTTPRuntime) resolveForms(ctx context.Context,
 	access HTTPAccess, values workGenerations,
 ) (workGenerations, error) {
-	group, billing, forms, err := runtime.resolver.ResolveTenantBillingGenerations(
+	group, billing, err := runtime.resolver.ResolveTenantBillingGenerations(
 		ctx, access.TenantID())
-	if err != nil || group < 1 || billing < 1 || forms < 1 ||
+	if err != nil || group < 1 || billing < 1 ||
 		values.group < 1 || values.work < 1 {
 		return workGenerations{}, ErrHTTPUnavailable
 	}
-	values.billingGroup, values.billing, values.forms = group, billing, forms
+	values.billingGroup, values.billing = group, billing
 	return values, nil
 }
 
@@ -61,14 +61,13 @@ func (runtime *PlatformHTTPRuntime) commandForms(ctx context.Context, access HTT
 		access.PrincipalID(), access.TenantID(), operation,
 		[]platformtx.CommandAuthorityGroup{
 			{ID: "work", Generation: values.group},
-			{ID: "billing_forms", Generation: values.billingGroup},
+			{ID: "billing", Generation: values.billingGroup},
 		},
 		[]platformtx.CommandAuthorityDomain{
 			{Name: "work", Generation: values.work},
 			{Name: "billing", Generation: values.billing},
-			{Name: "forms", Generation: values.forms},
 		},
-		[]string{"work", "forms"},
+		[]string{"work"},
 	)
 	if err != nil {
 		return ErrHTTPUnavailable
@@ -102,7 +101,7 @@ func (runtime *PlatformHTTPRuntime) snapshotForms(ctx context.Context, access HT
 		return ErrHTTPUnavailable
 	}
 	authority, err := platformtx.NewSnapshotAuthorityIssuer().Issue(operation,
-		map[string]int64{"forms": values.forms, "work": values.work})
+		map[string]int64{"billing": values.billing, "work": values.work})
 	if err != nil {
 		return ErrHTTPUnavailable
 	}

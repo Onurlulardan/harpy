@@ -72,7 +72,7 @@ BEGIN
     JOIN platform.cutover_groups AS group_row
       ON group_row.scope_kind = 'tenant'
      AND group_row.scope_id = tenant.id
-     AND group_row.group_id = 'billing_forms'
+     AND group_row.group_id = 'billing'
     JOIN platform.domain_cutovers AS billing_row
       ON billing_row.scope_kind = group_row.scope_kind
      AND billing_row.scope_id = group_row.scope_id

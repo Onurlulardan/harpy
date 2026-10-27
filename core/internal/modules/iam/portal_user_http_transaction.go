@@ -71,7 +71,7 @@ func (application *portalUserHTTPApplication) portalUserCreateRequest(
 	return platformtx.AdmitMultiGroupCommandScope(
 		claims.Subject(), claims.Tenant(), "iam.portal_user.create",
 		[]platformtx.CommandAuthorityGroup{
-			{ID: "billing_forms", Generation: generations["billing"]},
+			{ID: "billing", Generation: generations["billing"]},
 			{ID: identityAuthorityGroup, Generation: generations["iam"]},
 		}, []platformtx.CommandAuthorityDomain{
 			{Name: "billing", Generation: generations["billing"]},

@@ -39,7 +39,7 @@ BEGIN
          AND billing_member.domain = 'billing' AND billing_member.ordinal = 1
         WHERE authority.tenant_id = p_tenant_id
           AND authority.scope_kind = 'tenant' AND authority.scope_id = p_tenant_id
-          AND authority.authority_group_id = 'billing_forms'
+          AND authority.authority_group_id = 'billing'
           AND authority.billing_domain = 'billing'
           AND tenant.deleted_at IS NULL AND tenant.status IN ('ACTIVE', 'TRIAL')
           AND group_row.state = 'v2' AND group_row.writer = 'v2'
@@ -49,7 +49,7 @@ BEGIN
           AND NOT EXISTS (
               SELECT 1 FROM platform.cutover_group_members AS extra
               WHERE extra.scope_kind = 'tenant' AND extra.scope_id = p_tenant_id
-                AND extra.group_id = 'billing_forms'
+                AND extra.group_id = 'billing'
                 AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
           );
     EXCEPTION WHEN NO_DATA_FOUND OR TOO_MANY_ROWS THEN

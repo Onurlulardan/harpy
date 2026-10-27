@@ -31,7 +31,6 @@ BEGIN
     SELECT candidate.* INTO v_job
     FROM platform.schema_jobs AS candidate
     WHERE candidate.tenant_id = p_tenant_id
-      AND candidate.owner = 'forms'
       AND candidate.plan_sha256 = p_plan_sha256
     FOR SHARE;
     IF NOT FOUND THEN

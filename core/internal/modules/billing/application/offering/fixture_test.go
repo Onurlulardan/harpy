@@ -46,7 +46,7 @@ func versionFixture(t *testing.T) offeringdomain.Version {
 	t.Helper()
 	amount, _ := money.New(9900, "USD", money.RegistryVersion)
 	price, _ := offeringdomain.NewPrice(offeringdomain.Monthly, amount)
-	entry := entitlement.RegistryV1ByKey()["forms.submissions"]
+	entry := entitlement.RegistryV1ByKey()["iam.active_users"]
 	limit, _ := entitlement.IntegerValue(500)
 	grant, _ := offeringdomain.NewGrant(entry.Definition, limit)
 	value, err := offeringdomain.NewVersion(

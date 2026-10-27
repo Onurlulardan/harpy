@@ -5,7 +5,7 @@
       "id": "billing.v1adoption.compile",
       "owner": "billing",
       "scope_source": "environment_global",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     }

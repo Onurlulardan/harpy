@@ -143,7 +143,7 @@ func assertBillingTypedRuntimeRead(
 		ctx, fixture.environmentID.String(),
 	)
 	if err != nil || string(result.State) != expected ||
-		len(result.Projection.Boolean) != 6 || len(result.Projection.Limits) != 7 ||
+		len(result.Projection.Boolean) != 5 || len(result.Projection.Limits) != 5 ||
 		result.Projection.Channel != fixture.channel || result.DatabaseNow.IsZero() {
 		t.Fatalf("typed runtime projection=%+v err=%v", result, err)
 	}

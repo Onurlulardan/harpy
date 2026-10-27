@@ -18,11 +18,11 @@ BEGIN
     FROM platform.cutover_operations AS operation
     WHERE operation.operation_id=p_operation_id AND operation.run_id=p_run_id
       AND operation.state='completed' AND (
-        (operation.scope_kind='tenant' AND operation.group_id IN ('analytics','billing_forms','workflow')
+        (operation.scope_kind='tenant' AND operation.group_id IN ('analytics','billing','workflow')
          AND operation.domain IN ('analytics','billing','workflow')) OR
         (operation.scope_kind='global' AND operation.group_id='billing' AND operation.domain='billing'))
     FOR SHARE;
-    IF v_operation.group_id='billing_forms' THEN
+    IF v_operation.group_id='billing' THEN
         IF v_operation.domain IS DISTINCT FROM 'billing' THEN
             RAISE EXCEPTION USING ERRCODE='P5735',
                 MESSAGE='billing successor operation differs';

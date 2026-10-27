@@ -4,7 +4,7 @@ func tenantAuthorityGroupMembers(groupID string) ([]string, bool) {
 	switch groupID {
 	case "analytics":
 		return []string{"analytics"}, true
-	case "billing_forms":
+	case "billing":
 		return []string{"billing"}, true
 	case "catalog":
 		return []string{"catalog"}, true

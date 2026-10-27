@@ -24,7 +24,7 @@ func (resolver queryFixtureDependencies) Dependencies(context.Context, platformt
 }
 
 func TestPublishBoundAcceptsReplayAndPersistsRevisionCachePolicy(t *testing.T) {
-	requestDependency := DependencyRequest{OwnerDomain: "forms", ResourceKind: "form",
+	requestDependency := DependencyRequest{OwnerDomain: "iam", ResourceKind: "form",
 		ResourceID: queryFixtureID, VersionID: queryFixtureVersion}
 	resolved := DependencySnapshot{DependencyRequest: requestDependency,
 		CatalogVersion: 1, QueryContractVersion: 1, PolicyVersion: 1,
@@ -71,7 +71,7 @@ func TestPublishBoundFailsClosedWhenDependencyOwnerUnavailable(t *testing.T) {
 		queryFixtureIdentity(), OperationPublish, PublishRequest{QueryID: queryFixtureID,
 			DraftVersionID: queryFixtureVersion, ExpectedRootRevision: 1,
 			ExpectedDraftRevision: 1, IdempotencyKey: "query-publish-2",
-			Dependencies: []DependencyRequest{{OwnerDomain: "forms", ResourceKind: "form",
+			Dependencies: []DependencyRequest{{OwnerDomain: "iam", ResourceKind: "form",
 				ResourceID: queryFixtureID, VersionID: queryFixtureVersion}}})
 	if !errors.Is(err, ErrOwnerNotV2) {
 		t.Fatalf("publish error = %v", err)
@@ -79,7 +79,7 @@ func TestPublishBoundFailsClosedWhenDependencyOwnerUnavailable(t *testing.T) {
 }
 
 func TestPublishBoundDoesNotWriteOwnerStateWhenBuilderIsDisabled(t *testing.T) {
-	requestDependency := DependencyRequest{OwnerDomain: "forms", ResourceKind: "form",
+	requestDependency := DependencyRequest{OwnerDomain: "iam", ResourceKind: "form",
 		ResourceID: queryFixtureID, VersionID: queryFixtureVersion}
 	resolved := DependencySnapshot{DependencyRequest: requestDependency,
 		CatalogVersion: 1, QueryContractVersion: 1, PolicyVersion: 1,

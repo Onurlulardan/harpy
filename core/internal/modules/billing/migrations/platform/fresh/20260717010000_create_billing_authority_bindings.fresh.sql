@@ -73,7 +73,7 @@ CREATE TABLE platform.billing_tenant_authorities (
     CONSTRAINT billing_tenant_authorities_shape_check CHECK (
         authority_id <> '00000000-0000-0000-0000-000000000000'::uuid
         AND scope_kind = 'tenant' AND scope_id = tenant_id
-        AND authority_group_id = 'billing_forms'
+        AND authority_group_id = 'billing'
         AND billing_domain = 'billing'
         AND authority_group_generation > 0
         AND billing_generation > 0

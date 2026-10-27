@@ -85,7 +85,7 @@ func resolveCatalogCommandGenerations(
 	if err != nil {
 		return nil, nil, cataloghttp.ErrUnavailable
 	}
-	billingGroup, billing, _, err := resolver.ResolveTenantBillingGenerations(ctx, tenantID)
+	billingGroup, billing, err := resolver.ResolveTenantBillingGenerations(ctx, tenantID)
 	if err != nil {
 		return nil, nil, cataloghttp.ErrUnavailable
 	}
@@ -121,7 +121,7 @@ func resolveCatalogCommandGenerations(
 		}
 	}
 	groups := []platformtx.CommandAuthorityGroup{{ID: "analytics", Generation: analyticsGroup},
-		{ID: "billing_forms", Generation: billingGroup}, {ID: "catalog", Generation: catalogGroup},
+		{ID: "billing", Generation: billingGroup}, {ID: "catalog", Generation: catalogGroup},
 		{ID: "iam_system_resources", Generation: iamGroup}, {ID: "workflow", Generation: workflowGroup}}
 	domains := []platformtx.CommandAuthorityDomain{{Name: "analytics", Generation: analytics},
 		{Name: "billing", Generation: billing}, {Name: "catalog", Generation: catalogGeneration},

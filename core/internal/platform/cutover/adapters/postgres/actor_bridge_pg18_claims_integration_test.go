@@ -48,7 +48,7 @@ func issueActorBridgeCredential(
 		SubjectID:            uuid.MustParse(actorBridgeUserID),
 		PermissionID:         uuid.MustParse(actorBridgePermissionID),
 		TargetDomain:         actorassertionv1.DomainDocuments,
-		ResourceKey:          "forms.records",
+		ResourceKey:          "documents.items",
 		ActionKey:            "read",
 		TargetBindingSHA256:  targetDigest,
 		IAMGroupGeneration:   authority.IAMGroupGeneration(),

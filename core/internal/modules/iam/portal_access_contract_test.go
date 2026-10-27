@@ -13,7 +13,7 @@ func TestPortalAccessRuntimeFailsClosedWithoutAuthority(t *testing.T) {
 		t.Fatalf("verify error=%v", err)
 	}
 	if err := (*PortalAccessRuntime)(nil).AuthorizePortalAction(
-		context.Background(), PortalAccessDecision{}, "forms.records", "read",
+		context.Background(), PortalAccessDecision{}, "documents.items", "read",
 	); !errors.Is(err, ErrPortalAccessUnavailable) {
 		t.Fatalf("authorize error=%v", err)
 	}

@@ -78,7 +78,7 @@ VALUES($1,'t_billing_b','ACTIVE',NULL)
 `, fixture.tenantID)
 	if err == nil {
 		cutover := newBillingCutoverAuthorityFixture(
-			"tenant", fixture.tenantID, "billing_forms", 1,
+			"tenant", fixture.tenantID, "billing", 1,
 			"v2", "v2", billingAcceptanceA, "billing",
 		)
 		err = seedBillingCutoverAuthority(ctx, transaction, cutover)
@@ -133,8 +133,8 @@ func seedTenantQueryMeters(
 		start, end                 time.Time
 		committed, reserved, gauge int64
 	}{
-		{fixture.counterPeriodID, uuid.MustParse("01900000-0000-7000-8000-000000000005"),
-			"forms.submissions", "counter", "calendar_month_utc",
+		{fixture.counterPeriodID, uuid.MustParse("01900000-0000-7000-8000-000000000006"),
+			"iam.active_users", "gauge", "never",
 			monthStart, monthStart.AddDate(0, 1, 0), 7, 1, 0},
 		{fixture.gaugePeriodID, uuid.MustParse("01900000-0000-7000-8000-000000000003"),
 			"documents.storage_bytes", "gauge", "never",

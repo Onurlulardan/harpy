@@ -19,7 +19,7 @@ func assertProviderPGWildcardClaimRejected(
 	t.Helper()
 	err := f.connection.QueryRowContext(ctx, `
 SELECT job_state FROM platform.platform_async_external_effect_evidence_v1(
- $1,'tenant',$1,'billing_forms',1,'billing',1,$2,$3,1,
+ $1,'tenant',$1,'billing',1,'billing',1,$2,$3,1,
  'billing.provider.finalize',1,$4,$5,'billing:provider:%',$6,
  'billing.provider.command',1,$7,$5,$8,$8,'testpay','command',$6
 )`, f.tenantID, f.finalizerID, attemptID,
@@ -87,7 +87,7 @@ func submitProviderPGEvidence(
 	err := runner.QueryRowContext(ctx, `
 SELECT job_state,job_attempts,effect_started
 FROM platform.platform_async_external_effect_evidence_v1(
- $1,'tenant',$1,'billing_forms',1,'billing',1,$2,$3,1,
+ $1,'tenant',$1,'billing',1,'billing',1,$2,$3,1,
  'billing.provider.finalize',1,$4,$5,$6,$7,'billing.provider.command',1,
  $8,$5,$9,$9,'testpay','command',$7
 )`, f.tenantID, f.finalizerID, attemptID,

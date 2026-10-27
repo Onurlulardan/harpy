@@ -21,7 +21,7 @@ func TestIAMActorBridgeConsumesStartupKeyAfterHTTPComposition(t *testing.T) {
 	if actorBridge < billingForms || actorBridge < domains {
 		t.Fatal("actor bridge must consume and wipe its startup key after every IAM config consumer")
 	}
-	portal, err := os.ReadFile("build_api_billing_forms.go")
+	portal, err := os.ReadFile("build_api_billing.go")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -24,7 +24,7 @@ func (effects *queryFixtureEffects) QueryPublished(
 }
 
 func TestPublishBoundFailsTransactionWhenAsyncEffectFails(t *testing.T) {
-	requestDependency := DependencyRequest{OwnerDomain: "forms", ResourceKind: "form",
+	requestDependency := DependencyRequest{OwnerDomain: "iam", ResourceKind: "form",
 		ResourceID: queryFixtureID, VersionID: queryFixtureVersion}
 	resolved := DependencySnapshot{DependencyRequest: requestDependency,
 		CatalogVersion: 1, QueryContractVersion: 1, PolicyVersion: 1,

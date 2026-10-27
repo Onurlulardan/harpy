@@ -103,7 +103,7 @@ func billingV1AdoptionFixture(at time.Time) (
 }
 
 func billingV1GaugeFixture(at time.Time) []billingv1adoptionapp.GaugeOpening {
-	keys := []string{"documents.storage_bytes", "forms.active_forms", "iam.active_users"}
+	keys := []string{"documents.storage_bytes", "iam.active_users"}
 	result := make([]billingv1adoptionapp.GaugeOpening, 0, len(keys))
 	for index, key := range keys {
 		result = append(result, billingv1adoptionapp.GaugeOpening{

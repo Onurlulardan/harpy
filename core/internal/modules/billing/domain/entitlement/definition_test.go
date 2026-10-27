@@ -3,7 +3,7 @@ package entitlement
 import "testing"
 
 func TestDefinitionCombinationMatrix(t *testing.T) {
-	key, _ := NewKey("forms.submissions")
+	key, _ := NewKey("iam.active_users")
 	tests := []struct {
 		name      string
 		value     ValueKind

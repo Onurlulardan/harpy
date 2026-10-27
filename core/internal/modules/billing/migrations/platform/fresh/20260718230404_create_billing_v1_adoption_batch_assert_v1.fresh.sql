@@ -19,7 +19,7 @@ DECLARE
 BEGIN
     v_change_count := pg_catalog.jsonb_array_length(p_batch->'changes');
     v_group := CASE p_expected_scope
-        WHEN 'global' THEN 'billing' ELSE 'billing_forms' END;
+        WHEN 'global' THEN 'billing' ELSE 'billing' END;
     IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
        CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -71,7 +71,7 @@ BEGIN
                FROM platform.cutover_group_members AS member
                WHERE member.scope_kind = 'tenant'
                  AND member.scope_id = p_scope_id
-                 AND member.group_id = 'billing_forms')
+                 AND member.group_id = 'billing')
               IS DISTINCT FROM 'billing'
        )) OR (p_batch->>'operation_id')::uuid IS DISTINCT FROM p_operation_id OR
        (p_batch->>'run_id')::uuid IS DISTINCT FROM p_run_id OR

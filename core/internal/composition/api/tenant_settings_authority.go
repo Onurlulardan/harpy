@@ -38,7 +38,7 @@ func (resolver *tenantSettingsGenerationResolver) ResolveTenantSettingsAuthority
 	if err != nil {
 		return tenancymodule.TenantSettingsAuthority{}, err
 	}
-	_, billing, forms, err := resolver.pool.ResolveTenantBillingGenerations(ctx, tenantID)
+	_, billing, err := resolver.pool.ResolveTenantBillingGenerations(ctx, tenantID)
 	if err != nil {
 		return tenancymodule.TenantSettingsAuthority{}, err
 	}
@@ -50,7 +50,7 @@ func (resolver *tenantSettingsGenerationResolver) ResolveTenantSettingsAuthority
 		TenancyGroup: tenancyGroup, Tenancy: tenancy,
 		IAMGroup: iamGroup, IAM: iam, SystemResourceLayout: layout,
 		NotificationsGroup: notificationGroup, Notifications: notifications,
-		Billing: billing, Forms: forms,
+		Billing: billing,
 	}, nil
 }
 

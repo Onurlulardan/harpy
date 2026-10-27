@@ -16,7 +16,7 @@ BEGIN
     FROM platform.tenants AS tenant
     JOIN platform.cutover_groups AS group_row
       ON group_row.scope_kind = 'tenant' AND group_row.scope_id = tenant.id
-     AND group_row.group_id = 'billing_forms'
+     AND group_row.group_id = 'billing'
     JOIN platform.cutover_group_members AS billing_member
       ON billing_member.scope_kind = group_row.scope_kind
      AND billing_member.scope_id = group_row.scope_id
@@ -29,7 +29,7 @@ BEGIN
     WHERE tenant.id = NEW.tenant_id AND tenant.deleted_at IS NULL
       AND tenant.status IN ('ACTIVE', 'TRIAL')
       AND NEW.scope_kind = 'tenant' AND NEW.scope_id = tenant.id
-      AND NEW.authority_group_id = 'billing_forms'
+      AND NEW.authority_group_id = 'billing'
       AND NEW.billing_domain = 'billing'
       AND NEW.authority_group_generation = group_row.generation
       AND NEW.billing_generation = billing_row.generation
@@ -74,7 +74,7 @@ BEGIN
         FROM platform.tenants AS tenant
         JOIN platform.cutover_groups AS group_row
           ON group_row.scope_kind = 'tenant' AND group_row.scope_id = tenant.id
-         AND group_row.group_id = 'billing_forms'
+         AND group_row.group_id = 'billing'
         JOIN platform.cutover_group_members AS billing_member
           ON billing_member.scope_kind = group_row.scope_kind
          AND billing_member.scope_id = group_row.scope_id
@@ -89,7 +89,7 @@ BEGIN
           AND NOT EXISTS (
               SELECT 1 FROM platform.cutover_group_members AS extra
               WHERE extra.scope_kind = 'tenant' AND extra.scope_id = tenant.id
-                AND extra.group_id = 'billing_forms'
+                AND extra.group_id = 'billing'
                 AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
           )
           AND NOT EXISTS (
@@ -122,7 +122,7 @@ BEGIN
     FROM platform.tenants AS tenant
     JOIN platform.cutover_groups AS group_row
       ON group_row.scope_kind = 'tenant' AND group_row.scope_id = tenant.id
-     AND group_row.group_id = 'billing_forms'
+     AND group_row.group_id = 'billing'
     JOIN platform.cutover_group_members AS billing_member
       ON billing_member.scope_kind = group_row.scope_kind
      AND billing_member.scope_id = group_row.scope_id
@@ -137,7 +137,7 @@ BEGIN
       AND NOT EXISTS (
           SELECT 1 FROM platform.cutover_group_members AS extra
           WHERE extra.scope_kind = 'tenant' AND extra.scope_id = tenant.id
-            AND extra.group_id = 'billing_forms'
+            AND extra.group_id = 'billing'
             AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
       )
       AND NOT EXISTS (

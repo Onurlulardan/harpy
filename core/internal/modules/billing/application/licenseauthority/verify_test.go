@@ -22,8 +22,7 @@ func TestVerifyProducesBoundImmutableSnapshot(t *testing.T) {
 		t.Fatalf("unexpected verified snapshot: %+v", snapshot)
 	}
 	projection := ProjectEntitlements(snapshot)
-	if !projection.Boolean["forms.builder.enabled"] ||
-		!projection.Limits["forms.active_forms"].Unlimited ||
+	if !projection.Boolean["api.builder.enabled"] ||
 		projection.Limits["iam.active_users"].Value != 25 {
 		t.Fatalf("unexpected entitlement projection: %+v", projection)
 	}

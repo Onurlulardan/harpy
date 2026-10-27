@@ -29,7 +29,7 @@ BEGIN
       AND authority.tenant_id = p_tenant_id
       AND authority.scope_kind = 'tenant'
       AND authority.scope_id = p_tenant_id
-      AND authority.authority_group_id = 'billing_forms'
+      AND authority.authority_group_id = 'billing'
       AND authority.billing_domain = 'billing'
     FOR SHARE OF authority;
 

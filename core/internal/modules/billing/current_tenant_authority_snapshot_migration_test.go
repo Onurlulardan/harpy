@@ -25,7 +25,7 @@ func TestBillingCurrentAuthorityResolverIsSnapshotSafe(t *testing.T) {
 		"SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'",
 		"CURRENT_USER IS DISTINCT FROM 'harpy_owner'",
 		"tenant.status IN ('ACTIVE', 'TRIAL')",
-		"authority.authority_group_id = 'billing_forms'",
+		"authority.authority_group_id = 'billing'",
 		"billing_member.domain = 'billing' AND billing_member.ordinal = 1",
 		"group_row.state = 'v2' AND group_row.writer = 'v2'",
 		"billing_row.state = 'v2' AND billing_row.writer = 'v2'",

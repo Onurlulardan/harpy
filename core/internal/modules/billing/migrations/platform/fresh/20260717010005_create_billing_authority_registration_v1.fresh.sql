@@ -79,7 +79,7 @@ BEGIN
      AND billing_row.domain = 'billing'
     WHERE group_row.scope_kind = 'tenant'
       AND group_row.scope_id = p_tenant_id
-      AND group_row.group_id = 'billing_forms'
+      AND group_row.group_id = 'billing'
       AND group_row.state = 'v2' AND group_row.writer = 'v2'
       AND billing_row.state = 'v2' AND billing_row.writer = 'v2'
       AND group_row.generation = p_group_generation
@@ -94,7 +94,7 @@ BEGIN
         authority_group_generation, billing_domain, billing_generation,
         created_at
     ) VALUES (
-        p_authority_id, p_tenant_id, 'tenant', p_tenant_id, 'billing_forms',
+        p_authority_id, p_tenant_id, 'tenant', p_tenant_id, 'billing',
         p_group_generation, 'billing', p_billing_generation, p_created_at
     );
 END;

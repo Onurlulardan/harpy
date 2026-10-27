@@ -58,7 +58,7 @@ func TestCancelOwnedJobUsesBoundAuthorityAndIsReplaySafe(t *testing.T) {
 	}
 	database := &cancelOwnedJobDatabase{state: "cancelled", requested: requestedAt}
 	repository := &repository{database: database, authority: authorityStamp{
-		scopeID: tenantID, groupID: "billing_forms", groupGeneration: 3,
+		scopeID: tenantID, groupID: "billing", groupGeneration: 3,
 		domain: "billing", generation: 4,
 	}}
 	persisted, err := repository.CancelOwnedJob(context.Background(), request)
@@ -80,7 +80,7 @@ func TestCancelOwnedJobUsesBoundAuthorityAndIsReplaySafe(t *testing.T) {
 func TestCancelOwnedJobFailsClosedBeforeOrAfterSQL(t *testing.T) {
 	database := &cancelOwnedJobDatabase{err: pgx.ErrNoRows}
 	repository := &repository{database: database, authority: authorityStamp{
-		scopeID: uuid.New(), groupID: "billing_forms", groupGeneration: 1,
+		scopeID: uuid.New(), groupID: "billing", groupGeneration: 1,
 		domain: "billing", generation: 1,
 	}}
 	if _, err := repository.CancelOwnedJob(

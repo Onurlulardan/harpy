@@ -19,7 +19,7 @@ import (
 )
 
 type HTTPGenerationResolver interface {
-	ResolveTenantBillingGenerations(context.Context, uuid.UUID) (int64, int64, int64, error)
+	ResolveTenantBillingGenerations(context.Context, uuid.UUID) (int64, int64, error)
 	ResolveTenantDocumentsGenerations(context.Context, uuid.UUID) (int64, int64, error)
 }
 

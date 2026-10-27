@@ -23,8 +23,8 @@ func (*catalogGenerationFixture) ResolveTenantAnalyticsGenerations(
 
 func (*catalogGenerationFixture) ResolveTenantBillingGenerations(
 	context.Context, uuid.UUID,
-) (int64, int64, int64, error) {
-	return 21, 22, 23, nil
+) (int64, int64, error) {
+	return 21, 22, nil
 }
 
 func (*catalogGenerationFixture) ResolveTenantCatalogGenerations(
@@ -62,7 +62,7 @@ func TestCatalogResumeGenerationsIncludeExactDocumentsAuthority(t *testing.T) {
 	}
 	if fixture.documentsCalls != 1 ||
 		!reflect.DeepEqual(groupNames(groups), []string{
-			"analytics", "billing_forms", "catalog", "documents",
+			"analytics", "billing", "catalog", "documents",
 			"iam_system_resources", "workflow",
 		}) ||
 		!reflect.DeepEqual(domainNames(domains), []string{

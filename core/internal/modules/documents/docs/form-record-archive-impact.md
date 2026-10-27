@@ -29,7 +29,7 @@ Status: controlled Documents reopen complete; aggregate refrozen.
 
 - Tenant and actor come from opaque access evidence and are checked again by the
   Documents archive access authority before any tenant scope opens.
-- Creation uses the existing billing+forms and documents authority generations,
+- Creation uses the existing billing and documents authority generations,
   then Documents-owned link and archive adapters in one tenant command.
 - Archive polling is actor-owned and refreshes `documents.item.download` before
   the Documents snapshot query.

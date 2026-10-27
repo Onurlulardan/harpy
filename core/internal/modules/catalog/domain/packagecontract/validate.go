@@ -78,7 +78,8 @@ func validateComponent(wire componentWire, seen map[string]ComponentKind) (Compo
 }
 
 func validComponentOwner(kind ComponentKind, owner string) bool {
-	wanted := map[ComponentKind]string{ComponentForm: "forms", ComponentWorkflow: "workflow",
+	wanted := map[ComponentKind]string{
+		ComponentWorkflow:  "workflow",
 		ComponentDashboard: "analytics", ComponentEndpoint: "analytics",
 		ComponentIAM: "iam", ComponentDemo: "catalog"}
 	return wanted[kind] != "" && wanted[kind] == owner

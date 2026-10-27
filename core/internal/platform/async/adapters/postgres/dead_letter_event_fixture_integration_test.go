@@ -37,7 +37,7 @@ func deadLetterEventRoot(
 		ProducerAuthority: eventsv1.Authority{
 			ScopeKind: eventsv1.ScopeTenant, ScopeID: tenant, Domain: "forms",
 			CutoverGeneration: 1, WriterOrigin: eventsv1.WriterV2,
-			GroupID: "billing_forms", GroupGeneration: 1,
+			GroupID: "billing", GroupGeneration: 1,
 		},
 		AggregateType: "form.entry", AggregateID: aggregateID.String(),
 		AggregateVersion: 1, EventSequence: 1,

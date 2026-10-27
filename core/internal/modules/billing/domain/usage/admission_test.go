@@ -68,7 +68,7 @@ func counterDefinition(
 	allowUnlimited bool,
 ) entitlement.Definition {
 	t.Helper()
-	key, err := entitlement.NewKey("forms.submissions")
+	key, err := entitlement.NewKey("iam.active_users")
 	if err != nil {
 		t.Fatal(err)
 	}

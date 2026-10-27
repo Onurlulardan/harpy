@@ -90,7 +90,7 @@ func reserveCounter(
 	var start, end time.Time
 	var committed, reserved, gauge, revision int64
 	err = transaction.QueryRowContext(ctx, statements.lockSnapshot,
-		fixture.authorityID, uuid.MustParse(billingTenantID), "forms.submissions",
+		fixture.authorityID, uuid.MustParse(billingTenantID), "iam.active_users",
 		fixture.counterPeriodID, "counter").Scan(
 		&key, &valueKind, &meter, &reset, &enforcement, &allowsUnlimited,
 		&limit, &unlimited, &periodID, &start, &end, &committed, &reserved, &gauge,

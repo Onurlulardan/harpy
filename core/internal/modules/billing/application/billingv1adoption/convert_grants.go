@@ -11,15 +11,7 @@ func convertGrants(
 ) ([]offeringdomain.Grant, error) {
 	values := map[entitlement.Key]entitlement.Value{}
 	var err error
-	values["forms.submissions"], err = integerValue(limits["submissions_per_month"])
-	if err != nil {
-		return nil, ErrLimits
-	}
 	values["iam.active_users"], err = integerValue(limits["max_users"])
-	if err != nil {
-		return nil, ErrLimits
-	}
-	values["forms.active_forms"], err = integerValue(limits["max_forms"])
 	if err != nil {
 		return nil, ErrLimits
 	}

@@ -1,9 +1,9 @@
 {
   "version": 2,
   "authorities": [
-    {"id":"catalog.operation.cancel","owner":"catalog","scope_source":"actor_tenant","required_groups":["analytics","billing+forms","catalog","iam_system_resources","workflow"],"ordered_domains":["analytics","billing","catalog","forms","iam","system_resource_layout","workflow"],"participants":["analytics","catalog","forms","iam","workflow"]},
+    {"id":"catalog.operation.cancel","owner":"catalog","scope_source":"actor_tenant","required_groups":["analytics","billing","catalog","iam_system_resources","workflow"],"ordered_domains":["analytics","billing","catalog","forms","iam","system_resource_layout","workflow"],"participants":["analytics","catalog","forms","iam","workflow"]},
     {"id":"catalog.operation.get","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
-    {"id":"catalog.operation.resume","owner":"catalog","scope_source":"actor_tenant","required_groups":["analytics","billing+forms","catalog","documents","iam_system_resources","workflow"],"ordered_domains":["analytics","billing","catalog","documents","forms","iam","system_resource_layout","workflow"],"participants":["analytics","catalog","documents","forms","iam","workflow"]},
-    {"id":"catalog.operation.retry","owner":"catalog","scope_source":"actor_tenant","required_groups":["analytics","billing+forms","catalog","iam_system_resources","workflow"],"ordered_domains":["analytics","billing","catalog","forms","iam","system_resource_layout","workflow"],"participants":["analytics","catalog","forms","iam","workflow"]}
+    {"id":"catalog.operation.resume","owner":"catalog","scope_source":"actor_tenant","required_groups":["analytics","billing","catalog","documents","iam_system_resources","workflow"],"ordered_domains":["analytics","billing","catalog","documents","forms","iam","system_resource_layout","workflow"],"participants":["analytics","catalog","documents","forms","iam","workflow"]},
+    {"id":"catalog.operation.retry","owner":"catalog","scope_source":"actor_tenant","required_groups":["analytics","billing","catalog","iam_system_resources","workflow"],"ordered_domains":["analytics","billing","catalog","forms","iam","system_resource_layout","workflow"],"participants":["analytics","catalog","forms","iam","workflow"]}
   ]
 }

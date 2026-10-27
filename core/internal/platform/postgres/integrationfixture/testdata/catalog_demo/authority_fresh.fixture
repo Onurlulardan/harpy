@@ -3,22 +3,22 @@ INSERT INTO platform.tenants VALUES(
 INSERT INTO catalog_a.tenancy_schema_identity VALUES(
 true,'76000000-0000-4000-8000-000000000071','catalog_a','new',clock_timestamp());
 WITH authority(group_id,ordinal,domain) AS (VALUES
- ('analytics',1,'analytics'),('billing_forms',1,'billing'),
- ('billing_forms',2,'forms'),('catalog',1,'catalog'),
+ ('analytics',1,'analytics'),('billing',1,'billing'),
+ ('catalog',1,'catalog'),
  ('iam_system_resources',1,'iam'),
  ('iam_system_resources',2,'system_resource_layout'),('workflow',1,'workflow'))
 INSERT INTO platform.cutover_groups
 SELECT 'tenant','76000000-0000-4000-8000-000000000071',group_id,7,'v2','v2'
 FROM authority GROUP BY group_id;
 WITH authority(group_id,ordinal,domain) AS (VALUES
- ('analytics',1,'analytics'),('billing_forms',1,'billing'),
- ('billing_forms',2,'forms'),('catalog',1,'catalog'),
+ ('analytics',1,'analytics'),('billing',1,'billing'),
+ ('catalog',1,'catalog'),
  ('iam_system_resources',1,'iam'),
  ('iam_system_resources',2,'system_resource_layout'),('workflow',1,'workflow'))
 INSERT INTO platform.cutover_group_members
 SELECT 'tenant','76000000-0000-4000-8000-000000000071',group_id,ordinal,domain
 FROM authority;
-WITH domains(domain) AS (VALUES ('analytics'),('billing'),('forms'),('catalog'),
+WITH domains(domain) AS (VALUES ('analytics'),('billing'),('catalog'),
  ('iam'),('system_resource_layout'),('workflow'))
 INSERT INTO platform.domain_cutovers
 SELECT 'tenant','76000000-0000-4000-8000-000000000071',domain,7,'v2','v2'

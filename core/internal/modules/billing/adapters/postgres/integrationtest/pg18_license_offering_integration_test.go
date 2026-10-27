@@ -93,12 +93,12 @@ func billingLicenseOfferingDocument(
 	}
 	booleans := []booleanGrant{}
 	for _, key := range []string{"analytics.dashboard_builder.enabled", "api.access",
-		"api.builder.enabled", "forms.builder.enabled", "workflow.builder.enabled", "workflow.enabled"} {
+		"api.builder.enabled", "workflow.builder.enabled", "workflow.enabled"} {
 		booleans = append(booleans, booleanGrant{Key: key, Value: true})
 	}
 	limits := []integerGrant{}
 	for _, key := range []string{"analytics.active_dashboards", "api.active_endpoints",
-		"documents.storage_bytes", "forms.active_forms", "forms.submissions",
+		"documents.storage_bytes",
 		"iam.active_users", "workflow.active_definitions"} {
 		grant := integerGrant{Key: key, Value: 10}
 		if key == "iam.active_users" {

@@ -72,7 +72,7 @@ func seedProviderPGCutoverAuthorities(
 	)
 	if err = seedBillingCutoverAuthority(ctx, transaction, global); err == nil {
 		tenant := newBillingCutoverAuthorityFixture(
-			"tenant", uuid.MustParse(providerPGTenant), "billing_forms",
+			"tenant", uuid.MustParse(providerPGTenant), "billing",
 			1, "v2", "v2", billingAcceptanceA, "billing",
 		)
 		err = seedBillingCutoverAuthority(ctx, transaction, tenant)

@@ -71,7 +71,7 @@ func TestResolveDropsPurchasedGrantAtBoundary(t *testing.T) {
 
 func definitionFixture(t *testing.T) (domain.Key, domain.Definition) {
 	t.Helper()
-	key, _ := domain.NewKey("forms.submissions")
+	key, _ := domain.NewKey("iam.active_users")
 	definition, err := domain.NewDefinition(
 		key, domain.Integer, domain.Counter, domain.BillingPeriod, domain.Hard, true)
 	if err != nil {

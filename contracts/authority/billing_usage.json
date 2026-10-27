@@ -1,9 +1,9 @@
 {"version":2,"authorities":[
-  {"id":"billing.usage.adjust","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"billing.usage.commit","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"billing.usage.expire","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"billing.usage.read","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"billing.usage.release","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"billing.usage.reserve","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"billing.usage.start","owner":"billing","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]}
+  {"id":"billing.usage.adjust","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"billing.usage.commit","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"billing.usage.expire","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"billing.usage.read","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"billing.usage.release","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"billing.usage.reserve","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"billing.usage.start","owner":"billing","scope_source":"actor_tenant","required_groups":["billing"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]}
 ]}

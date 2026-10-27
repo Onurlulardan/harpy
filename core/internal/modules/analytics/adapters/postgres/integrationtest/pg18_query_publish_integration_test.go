@@ -83,7 +83,7 @@ func publishAnalyticsQuery(
 't_analytics_a',$1,$2,$3,decode(repeat('32',32),'hex'),$4,$5,$6,$7,1,
 '{}'::bytea,'{}'::bytea,'{}'::bytea,
 jsonb_build_array(jsonb_build_object(
- 'owner_domain','forms','resource_kind','form','resource_id',$8::uuid,
+ 'owner_domain','iam','resource_kind','form','resource_id',$8::uuid,
  'resource_version_id',$9::uuid,'owner_generation',1,'catalog_version',1,
  'query_contract_version',1,'policy_version',1,
  'data_revision_capability','record_revision','dependency_sha256',repeat('44',32))),

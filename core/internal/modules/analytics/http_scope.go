@@ -85,7 +85,7 @@ func (runtime *HTTPRuntime) queryOwnerCommand(
 	if err != nil {
 		return err
 	}
-	billingGroup, billingGeneration, _, err :=
+	billingGroup, billingGeneration, err :=
 		runtime.resolver.ResolveTenantBillingGenerations(ctx, access.TenantID())
 	if err != nil || billingGroup < 1 || billingGeneration < 1 {
 		return analyticshttp.ErrUnavailable
@@ -94,7 +94,7 @@ func (runtime *HTTPRuntime) queryOwnerCommand(
 		access.PrincipalID(), access.TenantID(), operation,
 		[]platformtx.CommandAuthorityGroup{
 			{ID: "analytics", Generation: analyticsGroup},
-			{ID: "billing_forms", Generation: billingGroup},
+			{ID: "billing", Generation: billingGroup},
 		}, []platformtx.CommandAuthorityDomain{
 			{Name: "analytics", Generation: analyticsGeneration},
 			{Name: "billing", Generation: billingGeneration},
@@ -114,7 +114,7 @@ func (runtime *HTTPRuntime) queryOwnerSnapshot(
 	if err != nil {
 		return err
 	}
-	_, billingGeneration, _, err := runtime.resolver.ResolveTenantBillingGenerations(
+	_, billingGeneration, err := runtime.resolver.ResolveTenantBillingGenerations(
 		ctx, access.TenantID())
 	if err != nil || billingGeneration < 1 {
 		return analyticshttp.ErrUnavailable

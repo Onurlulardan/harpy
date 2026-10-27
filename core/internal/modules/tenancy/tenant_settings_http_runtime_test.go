@@ -125,7 +125,7 @@ func TestTenantSettingsRuntimeRequiresNotificationsForSMTPCommands(t *testing.T)
 
 func TestTenantSettingsRuntimeBuildsCrossOwnerSnapshotAuthority(t *testing.T) {
 	resolver := &settingsAuthorityFake{value: TenantSettingsAuthority{
-		Tenancy: 2, IAM: 3, Notifications: 4, Billing: 5, Forms: 6}}
+		Tenancy: 2, IAM: 3, Notifications: 4, Billing: 5}}
 	coordinator := &settingsCoordinatorFake{}
 	issuer := &settingsSnapshotIssueFake{}
 	runtime := &TenantSettingsHTTPRuntime{resolver: resolver, coordinator: coordinator,

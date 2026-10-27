@@ -115,7 +115,7 @@ CREATE TABLE analytics_query_dependencies (
         REFERENCES analytics_saved_query_versions (id) ON UPDATE NO ACTION ON DELETE RESTRICT,
     CONSTRAINT analytics_query_dependencies_shape_check CHECK (
         ordinal BETWEEN 0 AND 31
-        AND owner_domain IN ('forms', 'iam')
+        AND owner_domain IN ('iam')
         AND pg_catalog.octet_length(resource_kind) BETWEEN 1 AND 64
         AND resource_id <> '00000000-0000-0000-0000-000000000000'::uuid
         AND resource_version_id <> '00000000-0000-0000-0000-000000000000'::uuid

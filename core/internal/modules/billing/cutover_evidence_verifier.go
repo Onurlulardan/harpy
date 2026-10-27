@@ -97,7 +97,7 @@ func billingCutoverLeaseMatches(
 	expectedGroup := "billing"
 	expectedDomains := []string{"billing"}
 	if plan.ScopeKind == "tenant" {
-		expectedGroup = "billing_forms"
+		expectedGroup = "billing"
 	}
 	return evidence.Lease.OperationID() == operation.OperationID.String() &&
 		evidence.Lease.RunID() == operation.RunID.String() &&

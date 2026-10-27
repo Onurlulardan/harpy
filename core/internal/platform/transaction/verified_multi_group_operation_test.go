@@ -15,10 +15,10 @@ func TestMultiGroupIssuerSealsCanonicalGroupsDomainsAndParticipants(t *testing.T
 	if err != nil || !operation.valid() {
 		t.Fatalf("multi-group operation rejected: %+v %v", operation, err)
 	}
-	if len(operation.groups) != 2 || operation.groups[0].id != "billing_forms" ||
+	if len(operation.groups) != 2 || operation.groups[0].id != "billing" ||
 		operation.groups[1].id != "workflow" || len(operation.domains) != 2 ||
 		operation.domains[0] != (domainExpectation{
-			name: "billing", generation: 11, groupID: "billing_forms",
+			name: "billing", generation: 11, groupID: "billing",
 		}) || operation.domains[1] != (domainExpectation{
 		name: "workflow", generation: 17, groupID: "workflow",
 	}) {
@@ -111,7 +111,7 @@ func validMultiGroupAuthorityInput() (
 	[]CommandAuthorityGroup, []CommandAuthorityDomain, []string,
 ) {
 	return []CommandAuthorityGroup{
-			{ID: "workflow", Generation: 7}, {ID: "billing_forms", Generation: 3},
+			{ID: "workflow", Generation: 7}, {ID: "billing", Generation: 3},
 		}, []CommandAuthorityDomain{
 			{Name: "workflow", Generation: 17}, {Name: "billing", Generation: 11},
 		}, []string{"workflow"}

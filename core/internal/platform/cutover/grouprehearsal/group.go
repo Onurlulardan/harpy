@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	MandatoryGroupID  = "billing+forms"
-	CanonicalGroupID  = "billing_forms"
+	MandatoryGroupID  = "billing"
+	CanonicalGroupID  = "billing"
 	WriterV1          = "v1"
 	groupDigestDomain = "harpy/cutover/billing-forms-rehearsal/v1\x00"
 )

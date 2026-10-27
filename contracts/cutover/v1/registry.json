@@ -3,7 +3,7 @@
   "groups": [
     {"scope_kind":"global","ordinal":1,"group_id":"billing","members":["billing"]},
     {"scope_kind":"tenant","ordinal":1,"group_id":"iam_system_resources","members":["iam","system_resource_layout"]},
-    {"scope_kind":"tenant","ordinal":2,"group_id":"billing_forms","members":["billing","forms"]},
+    {"scope_kind":"tenant","ordinal":2,"group_id":"billing","members":["billing","forms"]},
     {"scope_kind":"tenant","ordinal":3,"group_id":"workflow","members":["workflow"]},
     {"scope_kind":"tenant","ordinal":4,"group_id":"analytics","members":["analytics"]},
     {"scope_kind":"tenant","ordinal":5,"group_id":"catalog","members":["catalog"]},

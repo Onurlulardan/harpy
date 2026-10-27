@@ -13,7 +13,7 @@ type TenantSettingsAuthority struct {
 	TenancyGroup, Tenancy               int64
 	IAMGroup, IAM, SystemResourceLayout int64
 	NotificationsGroup, Notifications   int64
-	Billing, Forms                      int64
+	Billing                             int64
 }
 
 type TenantSettingsGenerationResolver interface {

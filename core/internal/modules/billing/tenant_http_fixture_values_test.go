@@ -60,7 +60,7 @@ func usageFixture(tenantID uuid.UUID) billingapi.TenantUsageSnapshot {
 	return billingapi.TenantUsageSnapshot{
 		TenantID: tenantID,
 		View: billingapi.UsageView{Meters: []billingapi.UsageMeterView{{
-			EntitlementKey: "forms.submissions", Kind: "integer",
+			EntitlementKey: "iam.active_users", Kind: "integer",
 			Current: 9, Limit: &limit, ResetPolicy: "calendar_month_utc",
 			PeriodStart: &periodStart, PeriodEnd: &periodEnd,
 		}}},

@@ -23,9 +23,9 @@ func assertUsageRaceState(
 	if err := database.QueryRowContext(ctx, `
 SELECT
  (SELECT count(*) FROM platform.billing_entitlement_decisions
-  WHERE tenant_id=$1 AND entitlement_key='forms.submissions'),
+  WHERE tenant_id=$1 AND entitlement_key='iam.active_users'),
  (SELECT count(*) FROM platform.billing_usage_reservations
-  WHERE tenant_id=$1 AND entitlement_key='forms.submissions'),
+  WHERE tenant_id=$1 AND entitlement_key='iam.active_users'),
  committed_total, reserved_total
 FROM platform.billing_usage_totals WHERE meter_period_id=$2
 `, uuid.MustParse(billingTenantID), fixture.counterPeriodID).Scan(

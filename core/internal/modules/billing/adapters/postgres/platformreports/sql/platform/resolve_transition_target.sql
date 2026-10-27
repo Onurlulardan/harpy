@@ -25,7 +25,7 @@ WHERE subscription.id = $1
   AND tenant.deleted_at IS NULL
   AND tenant.status IN ('ACTIVE', 'TRIAL')
   AND authority.scope_kind = 'tenant'
-  AND authority.authority_group_id = 'billing_forms'
+  AND authority.authority_group_id = 'billing'
   AND authority.billing_domain = 'billing'
   AND group_row.state = 'v2' AND group_row.writer = 'v2'
   AND billing_row.state = 'v2' AND billing_row.writer = 'v2'

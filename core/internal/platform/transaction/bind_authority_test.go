@@ -26,7 +26,7 @@ func TestBindAuthorityRejectsMissingScopeAuthorityAndWrongOwner(t *testing.T) {
 		t.Fatal(err)
 	}
 	operation, err := NewAuthorityIssuer().Issue(
-		"billing.subscription.create", "billing_forms", 7,
+		"billing.subscription.create", "billing", 7,
 		map[string]int64{"billing": 3},
 	)
 	if err != nil {

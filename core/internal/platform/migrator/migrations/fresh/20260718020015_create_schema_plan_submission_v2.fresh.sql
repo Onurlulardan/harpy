@@ -34,12 +34,12 @@ BEGIN
     FROM platform.billing_resolve_current_tenant_authority_receipt_v1(
         p_tenant_id
     ) receipt;
-    IF NOT FOUND OR v_group_id IS DISTINCT FROM 'billing_forms' THEN
+    IF NOT FOUND OR v_group_id IS DISTINCT FROM 'billing' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='schema V2 submission authority receipt is unavailable';
     END IF;
     PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(
-        'harpy:v2:schema-revision:'||p_tenant_id::text||':forms:'||
+        'harpy:v2:schema-revision:'||p_tenant_id::text||':'||
         p_resource_kind||':'||p_resource_id::text,0
     ));
     SELECT existing.job_id,existing.generation,existing.job_state,existing.terminal
@@ -85,7 +85,7 @@ BEGIN
         submission_group_generation,submission_billing_generation,
         submission_forms_generation
     ) VALUES (
-        p_job_id,p_tenant_id,'forms',p_resource_kind,p_resource_id,
+        p_job_id,p_tenant_id,'billing',p_resource_kind,p_resource_id,
         p_resource_revision,p_compiler_version,p_plan_contract_version,v_plan,
         p_canonical_plan_bytes,p_plan_sha256,
         pg_catalog.jsonb_array_length(p_canonical_steps),

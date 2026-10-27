@@ -2,7 +2,7 @@
 CREATE TABLE platform.schema_jobs (
     job_id uuid PRIMARY KEY,
     tenant_id uuid NOT NULL,
-    owner text NOT NULL CHECK (owner = 'forms'),
+    owner text NOT NULL CHECK (owner ~ '^[a-z][a-z0-9_]{0,62}$'),
     resource_kind text NOT NULL
         CHECK (resource_kind IN ('form_storage', 'form_purge')),
     resource_id uuid NOT NULL,

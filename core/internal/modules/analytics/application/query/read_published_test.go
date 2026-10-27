@@ -17,7 +17,7 @@ func TestReadPublishedReturnsImmutableVersionAndDependencies(t *testing.T) {
 	)
 	dependency := DependencySnapshot{
 		DependencyRequest: DependencyRequest{
-			OwnerDomain:  "forms",
+			OwnerDomain:  "iam",
 			ResourceKind: "form",
 			ResourceID:   queryFixtureID,
 			VersionID:    queryFixtureVersion,

@@ -107,7 +107,7 @@ func catalogDemoScopeRequest(t *testing.T) platformtx.ScopeRequest {
 		reflect.ValueOf(
 			[]platformtx.CommandAuthorityGroup{
 				{ID: "analytics", Generation: 7},
-				{ID: "billing_forms", Generation: 7},
+				{ID: "billing", Generation: 7},
 				{ID: "catalog", Generation: 7},
 				{ID: "iam_system_resources", Generation: 7},
 				{ID: "workflow", Generation: 7},

@@ -4,19 +4,28 @@ import "testing"
 
 func TestManifestIsOrderIndependentAndRevisionBoundFailsClosed(t *testing.T) {
 	digest := [32]byte{1}
-	forms, _ := NewEntry("forms", "form", id(1), id(2), 1, 1, 1,
-		"forms.records.revision.v1", digest)
-	iam, _ := NewEntry("iam", "directory", id(3), id(4), 2, 1, 3,
+	left, err := NewEntry("iam", "directory", id(1), id(2), 1, 1, 1,
 		"iam.directory.revision.v1", digest)
-	first, err := NewManifest([]Entry{forms, iam}, true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	second, err := NewManifest([]Entry{iam, forms}, true)
+	right, rightErr := NewEntry("iam", "role", id(3), id(4), 2, 1, 3,
+		"iam.role.revision.v1", digest)
+	if rightErr != nil {
+		t.Fatal(rightErr)
+	}
+	first, err := NewManifest([]Entry{left, right}, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := NewManifest([]Entry{right, left}, true)
 	if err != nil || !first.Equal(second) {
 		t.Fatalf("manifest parity = %v, %v", first.Equal(second), err)
 	}
-	withoutRevision, _ := NewEntry("forms", "form", id(5), id(6), 1, 1, 1, "", digest)
+	withoutRevision, revisionErr := NewEntry("iam", "directory", id(5), id(6), 1, 1, 1, "", digest)
+	if revisionErr != nil {
+		t.Fatal(revisionErr)
+	}
 	if _, err := NewManifest([]Entry{withoutRevision}, true); err != ErrInvalid {
 		t.Fatalf("revision-bound manifest error = %v", err)
 	}

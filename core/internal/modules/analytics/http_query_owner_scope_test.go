@@ -25,8 +25,8 @@ func (queryOwnerGenerationFixture) ResolveTenantAnalyticsGenerations(
 func (queryOwnerGenerationFixture) ResolveTenantBillingGenerations(
 	context.Context,
 	uuid.UUID,
-) (int64, int64, int64, error) {
-	return 21, 22, 23, nil
+) (int64, int64, error) {
+	return 21, 22, nil
 }
 
 type queryOwnerScopeProbe struct {
@@ -121,7 +121,7 @@ func assertQueryOwnerScope(
 		t.Fatalf("%s scope: %v", operation, err)
 	}
 	groups, domains, participants := operationAuthority(probe.request)
-	if !slices.Equal(groups, []string{"analytics", "billing_forms"}) ||
+	if !slices.Equal(groups, []string{"analytics", "billing"}) ||
 		!slices.Equal(domains, []string{"analytics", "billing"}) ||
 		!slices.Equal(participants, []string{"analytics", "billing"}) {
 		t.Fatalf(

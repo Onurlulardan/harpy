@@ -16,7 +16,7 @@ func compileUsageOpenings(
 	seen := map[string]struct{}{}
 	for _, source := range snapshot.Usage {
 		key := source.ID.String()
-		start, end, monthValid := monthPeriod(source.Month)
+		_, _, monthValid := monthPeriod(source.Month)
 		evidence := mapping.UsageFlushEvidenceSHA256[source.ID]
 		if source.ID == uuid.Nil || source.TenantID != snapshot.TenantID || source.Count < 0 ||
 			!monthValid || !canonicalOptional(source.CreatedAt) || !canonicalOptional(source.UpdatedAt) ||
@@ -29,24 +29,13 @@ func compileUsageOpenings(
 			continue
 		}
 		seen[source.Month] = struct{}{}
-		row := UsageOpeningRecord{SourceID: key,
-			MeterPeriodID: mustIdentity("usage-period", snapshot.TenantID.String(), source.Month),
-			TenantID:      snapshot.TenantID.String(), EntitlementKey: "forms.submissions",
-			PeriodStart: start, PeriodEnd: end, Count: source.Count,
-			FlushEvidenceSHA256: evidence,
-		}
-		if source.Count > 0 {
-			value := mustIdentity("usage-opening", key)
-			row.EntryID = &value
-		}
-		result = append(result, row)
 	}
 	sort.Slice(result, func(i, j int) bool { return result[i].PeriodStart.Before(result[j].PeriodStart) })
 	return result, issues
 }
 
 var requiredGaugeKeys = []string{
-	"documents.storage_bytes", "forms.active_forms", "iam.active_users",
+	"documents.storage_bytes", "iam.active_users",
 }
 
 func compileGaugeOpenings(

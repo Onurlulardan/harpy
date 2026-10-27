@@ -125,9 +125,9 @@ func analyticsCatalogExpectedDependencyManifest(t *testing.T) [sha256.Size]byte 
 			digest[index] = fixture.digestByte
 		}
 		entry, err := dependency.NewEntry(
-			"forms", "form", analyticsCatalogUUIDBytes(t, fixture.resourceID),
+			"iam", "form", analyticsCatalogUUIDBytes(t, fixture.resourceID),
 			analyticsCatalogUUIDBytes(t, fixture.versionID), 1, 1, 1,
-			"forms.records.revision.v1", digest,
+			"documents.items.revision.v1", digest,
 		)
 		if err != nil {
 			t.Fatal(err)

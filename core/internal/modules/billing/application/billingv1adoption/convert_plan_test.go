@@ -20,13 +20,13 @@ func TestConvertPlanMapsExactTypedCatalog(t *testing.T) {
 		t.Fatal(err)
 	}
 	if result.Key != "pro" || len(result.MissingFields) != 0 ||
-		len(result.Version.Prices()) != 2 || len(result.Version.Grants()) != 6 ||
+		len(result.Version.Prices()) != 2 || len(result.Version.Grants()) != 4 ||
 		result.Version.TrialDays() != 14 || !result.Version.Public() ||
 		!result.Version.Available() {
 		t.Fatalf("result = %#v", result)
 	}
 	values := grantValues(result.Version)
-	if value, ok := values["forms.submissions"].Integer(); !ok || value != 500 {
+	if value, ok := values["iam.active_users"].Integer(); !ok || value != 3 {
 		t.Fatalf("submissions = %d, %t", value, ok)
 	}
 	if value, ok := values["documents.storage_bytes"].Integer(); !ok || value != 100*1_048_576 {
@@ -50,7 +50,7 @@ func TestConvertPlanPreservesMissingAsZeroWithEvidence(t *testing.T) {
 	}
 	values := grantValues(result.Version)
 	for _, key := range []entitlement.Key{
-		"forms.submissions", "iam.active_users", "forms.active_forms",
+		"iam.active_users",
 		"documents.storage_bytes",
 	} {
 		if value, ok := values[key].Integer(); !ok || value != 0 {

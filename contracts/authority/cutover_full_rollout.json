@@ -6,7 +6,7 @@
       "owner": "cutover",
       "scope_source": "credential_target",
       "required_groups": [
-        "analytics", "billing+forms", "catalog", "documents",
+        "analytics", "billing", "catalog", "documents",
         "iam_system_resources", "notifications", "work", "workflow"
       ],
       "ordered_domains": [

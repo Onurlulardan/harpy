@@ -71,7 +71,7 @@ func seedFormsCatalogDependency(
 	}
 	_, err := database.ExecContext(ctx, `INSERT INTO
 t_analytics_a.forms_catalog_dependency_fixture VALUES(
-$1,$2,$3,$4,1,1,1,1,'forms.records.revision.v1',
+$1,$2,$3,$4,1,1,1,1,'documents.items.revision.v1',
 decode(repeat($5,32),'hex'))`,
 		slug, publicationID, definitionID, versionID, digestPair)
 	if err != nil {

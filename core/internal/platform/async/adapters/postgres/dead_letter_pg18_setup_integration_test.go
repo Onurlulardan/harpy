@@ -47,19 +47,19 @@ func addDeadLetterAuthorities(t *testing.T, ctx context.Context, database *sql.D
 	const statement = `
 INSERT INTO platform.cutover_groups VALUES
     ('tenant','11111111-1111-4111-8111-111111111111',
-     'billing_forms','v2','v2',1),
+     'billing','v2','v2',1),
     ('tenant','22222222-2222-4222-8222-222222222222',
-     'billing_forms','v2','v2',1);
+     'billing','v2','v2',1);
 INSERT INTO platform.domain_cutovers VALUES
     ('tenant','11111111-1111-4111-8111-111111111111',
-     'forms','v2','v2',1,NULL,pg_catalog.clock_timestamp()),
+     'billing','v2','v2',1,NULL,pg_catalog.clock_timestamp()),
     ('tenant','22222222-2222-4222-8222-222222222222',
-     'forms','v2','v2',1,NULL,pg_catalog.clock_timestamp());
+     'billing','v2','v2',1,NULL,pg_catalog.clock_timestamp());
 INSERT INTO platform.cutover_group_members VALUES
     ('tenant','11111111-1111-4111-8111-111111111111',
-     'billing_forms','forms'),
+     'billing','billing'),
     ('tenant','22222222-2222-4222-8222-222222222222',
-     'billing_forms','forms');`
+     'billing','billing');`
 	if _, err := database.ExecContext(ctx, statement); err != nil {
 		t.Fatalf("add dead-letter authorities: %v", err)
 	}

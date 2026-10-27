@@ -51,7 +51,7 @@ BEGIN
         JOIN platform.cutover_groups AS group_row
           ON group_row.scope_kind = 'tenant'
          AND group_row.scope_id = tenant.id
-         AND group_row.group_id = 'billing_forms'
+         AND group_row.group_id = 'billing'
         JOIN platform.cutover_group_members AS billing_member
           ON billing_member.scope_kind = group_row.scope_kind
          AND billing_member.scope_id = group_row.scope_id
@@ -68,7 +68,7 @@ BEGIN
               SELECT 1 FROM platform.cutover_group_members AS extra
               WHERE extra.scope_kind = 'tenant'
                 AND extra.scope_id = p_tenant_id
-                AND extra.group_id = 'billing_forms'
+                AND extra.group_id = 'billing'
                 AND NOT (extra.ordinal = 1 AND extra.domain = 'billing')
           )
         FOR SHARE OF tenant, group_row, billing_member, billing_row;

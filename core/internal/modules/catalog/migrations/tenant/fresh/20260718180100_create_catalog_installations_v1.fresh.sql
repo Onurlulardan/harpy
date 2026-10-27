@@ -17,7 +17,7 @@ CREATE TABLE catalog_installations (
 CREATE TABLE catalog_component_bindings (
     installation_id uuid NOT NULL,
     component_id uuid NOT NULL,
-    owner_module text NOT NULL CHECK (owner_module IN ('iam','forms','workflow','analytics','catalog')),
+    owner_module text NOT NULL CHECK (owner_module IN ('iam','workflow','analytics','catalog')),
     owner_generation bigint NOT NULL CHECK (owner_generation > 0),
     owner_contract text NOT NULL CHECK (length(owner_contract) BETWEEN 1 AND 64),
     content_sha256 text NOT NULL CHECK (content_sha256 ~ '^[0-9a-f]{64}$'),

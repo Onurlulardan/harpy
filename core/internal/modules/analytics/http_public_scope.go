@@ -37,7 +37,7 @@ func (coordinator *publicScopeCoordinator) InPublicationSnapshot(
 	if err != nil || analyticsGeneration < 1 {
 		return publicationapp.ErrUnavailable
 	}
-	_, billingGeneration, _, err := coordinator.resolver.ResolveTenantBillingGenerations(
+	_, billingGeneration, err := coordinator.resolver.ResolveTenantBillingGenerations(
 		ctx, route.TenantID)
 	if err != nil || billingGeneration < 1 {
 		return publicationapp.ErrUnavailable

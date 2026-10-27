@@ -57,7 +57,7 @@ BEGIN
             MESSAGE='Analytics Catalog endpoint sources differ';
     END IF;
     SELECT pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
-        'owner_domain','forms','resource_kind','form',
+        'owner_domain','iam','resource_kind','form',
         'resource_id',dependency.definition_id,
         'resource_version_id',dependency.version_id,
         'owner_generation',dependency.owner_generation,

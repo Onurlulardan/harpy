@@ -49,7 +49,7 @@ INSERT INTO platform.cutover_transition_events (
  (pg_catalog.uuidv7(),NULL,'group','request','global',$1,'billing',NULL,
   'shadow','quiescing','v1','none',6,6,$2,$2,NULL,
   'global Billing successor PG18',$4),
- (pg_catalog.uuidv7(),NULL,'domain','request','global',$1,'billing','billing',
+ (pg_catalog.uuidv7(),NULL,'domain','request','global',$1,'billing',
   'shadow','quiescing','v1','none',6,6,$2,$2,NULL,
   'global Billing successor PG18',$4);
 INSERT INTO platform.cutover_operations (
@@ -58,7 +58,7 @@ INSERT INTO platform.cutover_operations (
  lease_expires_at,last_heartbeat_at,lease_manifest_sha256,plan_sha256,
  transform_manifest_sha256,source_system_identifier,source_database_oid,
  target_system_identifier,target_database_oid,publication_name,slot_name,state
-) SELECT $5,$6,$7,$8,$9,'global',$1,'billing','billing',$10,1,$2,
+) SELECT $5,$6,$7,$8,$9,'global',$1,'billing',$10,1,$2,
  clock_timestamp()+interval '1 hour',clock_timestamp(),repeat('a',64),
  repeat('b',64),repeat('c',64),control.system_identifier,database_row.oid,
  control.system_identifier,database_row.oid,$11,$11||'_slot','quiescing'

@@ -11,7 +11,7 @@ import (
 
 const (
 	actorBridgeUserID       = "51000000-0000-4000-8000-000000000001"
-	actorBridgePermissionID = "93000000-0000-4000-8000-000000000001"
+	actorBridgePermissionID = "93000000-0000-4000-8000-000000000003"
 )
 
 func seedActorBridgeIAMTenant(
@@ -65,14 +65,6 @@ INSERT INTO iam_users (
     pg_catalog.decode(pg_catalog.repeat('22',32),'hex'),1,1,1,
     '2026-07-16T00:00:00Z','2026-07-16T00:00:00Z',NULL
     );
-INSERT INTO iam_resources (
-    id, resource_key, owner_domain, resource_kind, display_name, description,
-    is_protected, state, revision, created_at, updated_at, retired_at
-) VALUES (
-    '91000000-0000-4000-8000-000000000001','forms.records','forms',
-    'system_resource','Form records',NULL,true,'active',1,
-    '2026-07-16T00:10:00Z','2026-07-16T00:10:00Z',NULL
-);
 INSERT INTO iam_actions (
     id, action_key, display_name, description, is_protected,
     state, revision, created_at, updated_at, retired_at
@@ -84,10 +76,6 @@ INSERT INTO iam_permissions (
     id, match_kind, resource_id, action_id, is_protected,
     state, revision, created_at, updated_at, retired_at
 ) VALUES
-    ('93000000-0000-4000-8000-000000000001','exact',
-     '91000000-0000-4000-8000-000000000001',
-     '92000000-0000-4000-8000-000000000001',false,'active',1,
-     '2026-07-16T00:10:00Z','2026-07-16T00:10:00Z',NULL),
     ('93000000-0000-4000-8000-000000000003','tenant_all',
      NULL,NULL,true,'active',1,
      '2026-07-16T00:10:00Z','2026-07-16T00:10:00Z',NULL);
@@ -135,13 +123,4 @@ INSERT INTO iam_protected_admin_policies (
     '93000000-0000-4000-8000-000000000003','tenant_all',true,'active',
     '96000000-0000-4000-8000-000000000001','active',1,'active',1,1,
     '2026-07-16T00:10:00Z','2026-07-16T00:10:00Z'
-);
-INSERT INTO iam_user_permission_bindings (
-    id, user_id, permission_id, permission_match_kind, state,
-    revision, created_at, updated_at, activated_at, revoked_at
-) VALUES (
-    '97000000-0000-4000-8000-000000000001',
-    '51000000-0000-4000-8000-000000000001',
-    '93000000-0000-4000-8000-000000000001','exact','active',1,
-    '2026-07-16T00:10:00Z','2026-07-16T00:10:00Z','2026-07-16T00:10:00Z',NULL
 );`

@@ -37,13 +37,13 @@ INSERT INTO platform.cutover_groups (
 scope_kind,scope_id,group_id,state,writer,generation,requested_by,approved_by,
 reason,change_reference,acceptance_digest,changed_at
 ) VALUES
-('tenant',$2,'billing_forms','v2','v2',1,$3,$4,
+('tenant',$2,'billing','v2','v2',1,$3,$4,
 'full rollout PG18','PHASE13-FINAL',repeat('b',64),clock_timestamp()-interval '1 hour'),
 ('tenant',$2,'iam_system_resources','v2','v2',1,$3,$4,
 'full rollout PG18','PHASE13-FINAL',repeat('c',64),clock_timestamp()-interval '1 hour');
 INSERT INTO platform.cutover_group_members
 (scope_kind,scope_id,group_id,ordinal,domain) VALUES
-('tenant',$2,'billing_forms',1,'billing'),
+('tenant',$2,'billing',1,'billing'),
 ('tenant',$2,'iam_system_resources',1,'iam'),
 ('tenant',$2,'iam_system_resources',2,'system_resource_layout');
 WITH moment AS (SELECT pg_catalog.clock_timestamp() AS value)

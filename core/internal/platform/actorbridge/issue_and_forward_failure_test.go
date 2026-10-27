@@ -61,7 +61,7 @@ func TestIssueAndForwardNeverOpensNetworkWhenIAMDenies(t *testing.T) {
 	defer forwarder.Close()
 	request, _ := http.NewRequest(http.MethodPost, "/records", bytes.NewReader([]byte("body")))
 	input, err := NewForwardInput(
-		actorassertionv1.DomainDocuments, "forms.records", "create", 1, 1, request,
+		actorassertionv1.DomainDocuments, "documents.items", "create", 1, 1, request,
 	)
 	if err != nil {
 		t.Fatal(err)

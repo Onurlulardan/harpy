@@ -14,7 +14,7 @@ BEGIN
             MESSAGE='cutover successor finalizer trigger target differs';
     END IF;
     IF OLD.state IS DISTINCT FROM 'quiescing' OR NEW.state IS DISTINCT FROM 'completed'
-       OR NEW.group_id NOT IN ('analytics','billing','billing_forms','workflow') THEN
+       OR NEW.group_id NOT IN ('analytics','billing','workflow') THEN
         RETURN NEW;
     END IF;
     IF NEW.scope_kind NOT IN ('global','tenant')

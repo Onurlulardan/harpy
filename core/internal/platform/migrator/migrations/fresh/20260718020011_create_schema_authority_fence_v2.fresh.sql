@@ -14,7 +14,7 @@ BEGIN
        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.uuid_extract_version(p_tenant_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_authority_id) IS DISTINCT FROM 7
-       OR p_authority_group_id IS DISTINCT FROM 'billing_forms'
+       OR p_authority_group_id IS DISTINCT FROM 'billing'
        OR p_group_generation NOT BETWEEN 1 AND 9007199254740991
        OR p_billing_generation NOT BETWEEN 1 AND 9007199254740991 THEN
         RETURN false;
@@ -50,7 +50,7 @@ BEGIN
       AND NOT EXISTS (
           SELECT 1 FROM platform.cutover_group_members extra
           WHERE extra.scope_kind='tenant' AND extra.scope_id=p_tenant_id
-            AND extra.group_id='billing_forms'
+            AND extra.group_id='billing'
             AND NOT (extra.ordinal=1 AND extra.domain='billing')
       )
     FOR SHARE OF authority,tenant,group_row,billing_row,billing_member;

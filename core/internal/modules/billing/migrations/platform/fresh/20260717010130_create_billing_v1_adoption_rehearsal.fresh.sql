@@ -24,15 +24,11 @@ CREATE TABLE platform.billing_v1_adoption_opening_evidence (
         REFERENCES platform.billing_v1_adoption_runs (operation_id, run_id)
         ON UPDATE NO ACTION ON DELETE RESTRICT,
     CONSTRAINT billing_v1_adoption_opening_evidence_kind_check CHECK (
-        (evidence_kind = 'submission_usage'
-            AND entitlement_key = 'forms.submissions'
-            AND owner_fact_id IS NULL)
-        OR (evidence_kind = 'owner_gauge'
+        evidence_kind = 'owner_gauge'
             AND entitlement_key IN (
                 'documents.storage_bytes',
-                'forms.active_forms',
                 'iam.active_users'
-            ) AND owner_fact_id IS NOT NULL)
+            ) AND owner_fact_id IS NOT NULL
     ),
     CONSTRAINT billing_v1_adoption_opening_evidence_value_check CHECK (
         opening_value >= 0

@@ -143,7 +143,7 @@ func assertUsageQuery(
 	if err = rows.Err(); err != nil {
 		t.Fatal(err)
 	}
-	if got["forms.submissions"] != wantCounter || got["documents.storage_bytes"] != wantGauge {
+	if got["iam.active_users"] != wantCounter || got["documents.storage_bytes"] != wantGauge {
 		t.Fatalf("usage totals = %v, want counter=%d gauge=%d", got, wantCounter, wantGauge)
 	}
 }

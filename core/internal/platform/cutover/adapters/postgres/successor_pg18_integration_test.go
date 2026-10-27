@@ -71,7 +71,7 @@ func TestCutoverSuccessorFinalizationAgainstPostgreSQL184(t *testing.T) {
 			}
 
 			billingOnly := seedSuccessorFixture(
-				t, ctx, database, index, "billing_forms",
+				t, ctx, database, index, "billing",
 				[]string{"billing"}, 6)
 			seedSuccessorZeroInventory(t, ctx, database, billingOnly)
 			allowSuccessorReceipt(t, ctx, database.admin, billingOnly.operations[0])

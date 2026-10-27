@@ -13,7 +13,7 @@ import (
 func lifecycleFixture(t *testing.T) (*Commands, *testStore, Reservation, time.Time) {
 	t.Helper()
 	now := time.Date(2026, time.July, 17, 12, 0, 0, 0, time.UTC)
-	key, err := entitlement.NewKey("forms.submissions")
+	key, err := entitlement.NewKey("iam.active_users")
 	if err != nil {
 		t.Fatal(err)
 	}

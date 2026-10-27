@@ -21,7 +21,7 @@ const (
 func producerAuthority() Authority {
 	return Authority{
 		ScopeKind: ScopeTenant, ScopeID: eventTenantID, Domain: "forms", CutoverGeneration: 3,
-		WriterOrigin: WriterV2, GroupID: "billing_forms", GroupGeneration: 4,
+		WriterOrigin: WriterV2, GroupID: "billing", GroupGeneration: 4,
 	}
 }
 

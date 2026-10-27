@@ -80,9 +80,8 @@ FROM (
         'policy','control_tenant_product_admission_denied',
         'entitlements',pg_catalog.jsonb_build_object(
             'iam.active_users','unlimited','api.access',true,
-            'forms.submissions',0,'forms.active_forms',0,
             'documents.storage_bytes',0,
-            'workflow.enabled',false,'forms.builder.enabled',false,
+            'workflow.enabled',false,
             'workflow.builder.enabled',false,'api.builder.enabled',false,
             'analytics.dashboard_builder.enabled',false,
             'workflow.active_definitions',0,'api.active_endpoints',0,

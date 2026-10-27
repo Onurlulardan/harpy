@@ -133,7 +133,7 @@ func purgeCoordinationResult(
 }
 
 func ownerResultExact(pin catalogdomain.ComponentPin, result componentowner.OwnerResult) bool {
-	return pin.Owner != "forms" || result.HasResourceBinding()
+	return true
 }
 
 func (application *Application) purgeOwnerSteps(

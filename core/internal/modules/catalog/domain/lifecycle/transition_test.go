@@ -105,8 +105,8 @@ func operationFixture(t *testing.T, kind OperationKind) Operation {
 	packageID, _ := packagecontract.ParsePackageID(lifecyclePackage)
 	componentID, _ := packagecontract.ParseComponentID(lifecycleComponent)
 	plan, err := NewPlan(packageID, versionFixture(t, "1.0.0"), nil, []ComponentPin{{
-		ComponentID: componentID, Owner: "forms", OwnerGeneration: 1,
-		Contract: "forms.v2", ContentSHA256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		ComponentID: componentID, Owner: "catalog", OwnerGeneration: 1,
+		Contract: "catalog.v2", ContentSHA256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 	}})
 	if err != nil {
 		t.Fatal(err)

@@ -21,7 +21,7 @@ func TestRegistryRejectsPartialBillingFormsGroup(t *testing.T) {
 	groups := registry["groups"].([]any)
 	groups[2].(map[string]any)["members"] = []any{"billing"}
 	if err := compileCutoverSchema(t, "registry.schema.json").Validate(registry); err == nil {
-		t.Fatal("partial billing+forms group accepted")
+		t.Fatal("partial billing group accepted")
 	}
 }
 

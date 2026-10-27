@@ -12,10 +12,10 @@ func TestValidateCredentialLeaseAcceptsExactRegistrySemantics(t *testing.T) {
 		t.Fatalf("valid tenant lease rejected: %v", err)
 	}
 	billingForms := validTypedCredentialLease()
-	billingForms.GroupID = "billing_forms"
+	billingForms.GroupID = "billing"
 	billingForms.Domains = []string{"billing", "forms"}
 	if err := ValidateCredentialLease(billingForms); err != nil {
-		t.Fatalf("valid billing+forms lease rejected: %v", err)
+		t.Fatalf("valid billing lease rejected: %v", err)
 	}
 	globalBilling := validTypedCredentialLease()
 	globalBilling.ScopeKind = "global"
@@ -40,10 +40,10 @@ func TestValidateCredentialLeaseRejectsSemanticDrift(t *testing.T) {
 		{"decoder limit drift", func(v *CredentialLease) { v.RoleLeases[0].ConnectionLimit = 3 }},
 		{"adopter replication", func(v *CredentialLease) { v.RoleLeases[1].Replication = true }},
 		{"partial billing forms", func(v *CredentialLease) {
-			v.GroupID, v.Domains = "billing_forms", []string{"billing"}
+			v.GroupID, v.Domains = "billing", []string{"billing"}
 		}},
 		{"reordered billing forms", func(v *CredentialLease) {
-			v.GroupID, v.Domains = "billing_forms", []string{"forms", "billing"}
+			v.GroupID, v.Domains = "billing", []string{"forms", "billing"}
 		}},
 		{"tenant billing singleton", func(v *CredentialLease) {
 			v.GroupID, v.Domains = "billing", []string{"billing"}

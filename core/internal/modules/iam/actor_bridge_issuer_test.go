@@ -14,7 +14,7 @@ func TestActorBridgeIssuerIAMBuildsCurrentAuthorizationPipeline(t *testing.T) {
 		t.Fatalf("runtime valid=%t err=%v", runtime.Valid(), err)
 	}
 	_, err = runtime.AuthorizeActorBridge(
-		context.Background(), platformtx.TenantScope{}, "forms.records", "read", 1, 1,
+		context.Background(), platformtx.TenantScope{}, "documents.items", "read", 1, 1,
 	)
 	if !platformactorbridge.FaultIs(err, platformactorbridge.FaultUnavailable) {
 		t.Fatalf("unowned authorization error = %v", err)

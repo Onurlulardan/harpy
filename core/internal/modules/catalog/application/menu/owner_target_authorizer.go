@@ -39,8 +39,6 @@ func (authorizer *ownerTargetAuthorizer) Allows(ctx context.Context,
 
 func targetOwner(kind packagecontract.MenuKind) (string, bool) {
 	switch kind {
-	case packagecontract.MenuForm:
-		return "forms", true
 	case packagecontract.MenuWorkflow:
 		return "workflow", true
 	case packagecontract.MenuDashboard, packagecontract.MenuEndpoint:

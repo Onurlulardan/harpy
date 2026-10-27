@@ -63,7 +63,7 @@ func validMenuPin(value MenuPin) bool {
 }
 
 func validOwner(value string) bool {
-	return value == "iam" || value == "forms" || value == "workflow" ||
+	return value == "iam" || value == "workflow" ||
 		value == "analytics" || value == "catalog"
 }
 

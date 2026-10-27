@@ -1,9 +1,9 @@
 {
   "version": 2,
   "authorities": [
-    {"id":"analytics.catalog_owner.finalize","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing+forms"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
+    {"id":"analytics.catalog_owner.finalize","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
     {"id":"analytics.catalog_owner.restore","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
-    {"id":"analytics.catalog_owner.retire","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing+forms"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
+    {"id":"analytics.catalog_owner.retire","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
     {"id":"analytics.compatibility.accept","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
     {"id":"analytics.compatibility.authorize","owner":"analytics","scope_source":"credential_target","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
     {"id":"analytics.compatibility.backfill","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
@@ -30,12 +30,12 @@
     {"id":"analytics.publication.revoke","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
     {"id":"analytics.publication.submit","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
     {"id":"analytics.query.create","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
-    {"id":"analytics.query.delete","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing+forms"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
+    {"id":"analytics.query.delete","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
     {"id":"analytics.query.execute","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
     {"id":"analytics.query.get","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
     {"id":"analytics.query.list","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]},
-    {"id":"analytics.query.publish","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing+forms"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
-    {"id":"analytics.query.revalidate","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing+forms"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
+    {"id":"analytics.query.publish","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
+    {"id":"analytics.query.revalidate","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics","billing"],"ordered_domains":["analytics","billing","forms"],"participants":["analytics","forms"]},
     {"id":"analytics.query.update","owner":"analytics","scope_source":"actor_tenant","required_groups":["analytics"],"ordered_domains":["analytics"],"participants":["analytics"]}
   ]
 }

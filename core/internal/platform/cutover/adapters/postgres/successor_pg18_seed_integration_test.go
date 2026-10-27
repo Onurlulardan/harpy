@@ -72,7 +72,7 @@ INSERT INTO platform.domain_cutovers (
 ) VALUES ('tenant',$1,$2,'quiescing','none',$3,$4,$5,'successor PG18',$6);
 INSERT INTO platform.cutover_group_members (
  scope_kind,scope_id,group_id,ordinal,domain
-) SELECT 'tenant',$1,$7,$8,$2 WHERE $7='billing_forms';
+) SELECT 'tenant',$1,$7,$8,$2 WHERE $7='billing';
 INSERT INTO platform.cutover_transition_events (
  event_id,request_event_id,target_kind,event_kind,scope_kind,scope_id,group_id,
  domain,previous_state,new_state,previous_writer,new_writer,previous_generation,

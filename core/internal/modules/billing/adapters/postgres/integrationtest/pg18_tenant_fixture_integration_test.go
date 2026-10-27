@@ -67,7 +67,7 @@ SELECT platform.billing_add_offering_price_v1($1,$2,$3,$4,$5,$6,$7,$8)
 	for _, grant := range []struct {
 		key   string
 		value int64
-	}{{"forms.submissions", 5}, {"documents.storage_bytes", 100}} {
+	}{{"iam.active_users", 5}, {"documents.storage_bytes", 100}} {
 		if err == nil {
 			_, err = transaction.ExecContext(ctx, `
 SELECT platform.billing_add_offering_grant_v1($1,$2,$3,'integer',NULL,$4,false,$5)
@@ -111,8 +111,8 @@ INSERT INTO platform.billing_tenant_base_offerings(
 		key, meter, reset string
 		start, end        time.Time
 	}{
-		{fixture.counterPeriodID, uuid.MustParse("01900000-0000-7000-8000-000000000005"),
-			"forms.submissions", "counter", "calendar_month_utc",
+		{fixture.counterPeriodID, uuid.MustParse("01900000-0000-7000-8000-000000000006"),
+			"iam.active_users", "gauge", "never",
 			monthStart, monthStart.AddDate(0, 1, 0)},
 		{fixture.gaugePeriodID, uuid.MustParse("01900000-0000-7000-8000-000000000003"),
 			"documents.storage_bytes", "gauge", "never",

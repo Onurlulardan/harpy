@@ -27,14 +27,9 @@ func legacyUsage(view billingapi.UsageView) usageWire {
 			limit = *meter.Limit
 		}
 		switch meter.EntitlementKey {
-		case "forms.submissions":
-			result.Submissions = usageCounterWire{meter.Current, limit}
-			result.Limits.SubmissionsPerMonth = limit
 		case "iam.active_users":
 			result.Users = usageCounterWire{meter.Current, limit}
 			result.Limits.MaxUsers = limit
-		case "forms.active_forms":
-			result.Limits.MaxForms = limit
 		case "documents.storage_bytes":
 			result.Storage.CurrentMB = meter.Current / (1024 * 1024)
 			if limit == -1 {

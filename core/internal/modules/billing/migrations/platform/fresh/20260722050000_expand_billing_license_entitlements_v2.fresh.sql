@@ -39,13 +39,11 @@ SELECT 2, authority_id, 'ADR-0120',
 '
            || 'api.builder.enabled|boolean||||false|platform_api|enabled
 '
-           || 'forms.builder.enabled|boolean||||false|forms|enabled
-'
            || 'workflow.active_definitions|integer|gauge|never|hard|true|workflow|count
 '
            || 'workflow.builder.enabled|boolean||||false|workflow|enabled',
            'UTF8'
-       )), 7, '2026-07-22 00:00:00+00'::timestamptz
+       )), 6, '2026-07-22 00:00:00+00'::timestamptz
 FROM platform.billing_global_authorities;
 
 INSERT INTO platform.billing_entitlement_definitions (
@@ -65,9 +63,6 @@ SELECT seed.id, registry.authority_id, 2, seed.entitlement_key,
        ), 'UTF8')), registry.published_at
 FROM platform.billing_entitlement_registry_versions AS registry
 CROSS JOIN (VALUES
-    ('01900000-0000-7000-8000-000000000008'::uuid,
-     'forms.builder.enabled', 'boolean', NULL::text, NULL::text,
-     NULL::text, false, 'forms', 'enabled'),
     ('01900000-0000-7000-8000-000000000009'::uuid,
      'workflow.builder.enabled', 'boolean', NULL::text, NULL::text,
      NULL::text, false, 'workflow', 'enabled'),

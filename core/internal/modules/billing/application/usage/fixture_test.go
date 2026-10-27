@@ -142,7 +142,7 @@ func reserveFixture(
 ) (*Commands, *testStore, ReserveRequest, []uuid.UUID) {
 	t.Helper()
 	now := time.Date(2026, time.July, 17, 10, 0, 0, 0, time.UTC)
-	key, _ := entitlement.NewKey("forms.submissions")
+	key, _ := entitlement.NewKey("iam.active_users")
 	definition, err := entitlement.NewDefinition(
 		key, entitlement.Integer, entitlement.Counter,
 		entitlement.BillingPeriod, enforcement, true,

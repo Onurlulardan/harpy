@@ -34,7 +34,7 @@ func newConsumerFixture(t testingT) consumerFixture {
 		SubjectID:    fixtureUUID(0x20, 0x02),
 		PermissionID: fixtureUUID(0x30, 0x03),
 		TargetDomain: actorassertionv1.DomainDocuments,
-		ResourceKey:  "forms.records", ActionKey: "create",
+		ResourceKey:  "documents.items", ActionKey: "create",
 		TargetBindingSHA256: target, IAMGroupGeneration: 11,
 		IAMGeneration: 12, TargetGeneration: 13, TokenVersion: 7,
 		AuthorizationVersion: 19, AuthorizationClock: 23,

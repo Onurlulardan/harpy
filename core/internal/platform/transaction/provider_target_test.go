@@ -23,7 +23,7 @@ func TestProviderTargetMintsOnlyBillingAuthorityForMappedTenant(t *testing.T) {
 	scope := ProviderTenantScope{state: state}
 	authority, err := MintProviderOwnerAuthority(scope, "billing")
 	if err != nil || !authority.OwnsProviderScope(scope) ||
-		authority.ScopeID() != evidence.TenantID || authority.GroupID() != "billing_forms" ||
+		authority.ScopeID() != evidence.TenantID || authority.GroupID() != "billing" ||
 		authority.GroupGeneration() != 7 || authority.Domain() != "billing" ||
 		authority.Generation() != 11 {
 		t.Fatalf("authority=%+v error=%v", authority, err)

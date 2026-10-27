@@ -42,7 +42,7 @@ func providerEffectRequest(t *testing.T, operation string) effectsv1.Request {
 		providerEffectID, "billing.provider.command", 1, &tenantID,
 		effectsv1.Authority{
 			ScopeKind: effectsv1.ScopeTenant, ScopeID: tenantID,
-			GroupID: "billing_forms", GroupGeneration: 1,
+			GroupID: "billing", GroupGeneration: 1,
 			Domain: "billing", CutoverGeneration: 1,
 			WriterOrigin: effectsv1.WriterV2,
 		}, "manual", operation, "manual:command:1", "corr-1", providerCauseID,

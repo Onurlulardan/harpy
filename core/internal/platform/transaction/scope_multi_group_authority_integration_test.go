@@ -20,7 +20,7 @@ func assertMultiGroupCommandAuthority(
 	request := multiGroupScopeRequestFor(t, tenantA, 1, 1)
 	err := coordinator.InTenant(ctx, request, func(_ context.Context, scope TenantScope) error {
 		billing, err := MintOwnerAuthority(scope, "billing")
-		if err != nil || billing.GroupID() != "billing_forms" ||
+		if err != nil || billing.GroupID() != "billing" ||
 			billing.GroupGeneration() != 1 || billing.Generation() != 1 {
 			t.Fatalf("Billing authority mismatch: %+v %v", billing, err)
 		}
@@ -60,7 +60,7 @@ func multiGroupScopeRequestFor(
 		uuid.MustParse(tenant), "workflow.forms.set-field",
 		[]CommandAuthorityGroup{
 			{ID: "workflow", Generation: groupGeneration},
-			{ID: "billing_forms", Generation: groupGeneration},
+			{ID: "billing", Generation: groupGeneration},
 		},
 		[]CommandAuthorityDomain{
 			{Name: "workflow", Generation: domainGeneration},
@@ -82,9 +82,9 @@ func assertMissingMultiGroupMember(
 ) {
 	t.Helper()
 	remove := "DELETE FROM platform.cutover_group_members WHERE scope_kind='tenant' " +
-		"AND scope_id=$1 AND group_id='billing_forms' AND domain='billing'"
+		"AND scope_id=$1 AND group_id='billing' AND domain='billing'"
 	restore := "INSERT INTO platform.cutover_group_members " +
-		"VALUES('tenant',$1,'billing_forms',1,'billing') ON CONFLICT DO NOTHING"
+		"VALUES('tenant',$1,'billing',1,'billing') ON CONFLICT DO NOTHING"
 	adminExecute(t, ctx, database, remove, tenantA)
 	t.Cleanup(func() { adminExecute(t, context.Background(), database, restore, tenantA) })
 	assertScopeError(

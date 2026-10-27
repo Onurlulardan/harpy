@@ -73,14 +73,14 @@ BEGIN
             p_operation_id, p_owner_user_id, 'SaaS customer V2 activation',
             v_reference, p_manifest_sha256
         FROM pg_catalog.unnest(ARRAY[
-            'analytics','billing_forms','catalog','documents',
+            'analytics','billing','catalog','documents',
             'iam_system_resources','notifications','work','workflow'
         ]) AS entry(group_id);
         INSERT INTO platform.cutover_group_members (
             scope_kind, scope_id, group_id, ordinal, domain
         ) VALUES
             ('tenant',p_tenant_id,'analytics',1,'analytics'),
-            ('tenant',p_tenant_id,'billing_forms',1,'billing'),
+            ('tenant',p_tenant_id,'billing',1,'billing'),
             ('tenant',p_tenant_id,'catalog',1,'catalog'),
             ('tenant',p_tenant_id,'documents',1,'documents'),
             ('tenant',p_tenant_id,'iam_system_resources',1,'iam'),
@@ -104,7 +104,7 @@ BEGIN
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_groups
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND group_id IN (
-                 'analytics','billing_forms','catalog','documents',
+                 'analytics','billing','catalog','documents',
                  'iam_system_resources','notifications','work','workflow'
              )
              AND state = 'v2' AND writer = 'v2' AND generation = 1
@@ -119,7 +119,7 @@ BEGIN
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND (group_id,ordinal,domain) IN (
                  ('analytics',1,'analytics'),
-                 ('billing_forms',1,'billing'),
+                 ('billing',1,'billing'),
                  ('catalog',1,'catalog'),('documents',1,'documents'),
                  ('iam_system_resources',1,'iam'),
                  ('iam_system_resources',2,'system_resource_layout'),

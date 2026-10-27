@@ -38,7 +38,7 @@ BEGIN
     IF v_keys IS DISTINCT FROM
         'analytics.active_dashboards,analytics.dashboard_builder.enabled,' ||
         'api.access,api.active_endpoints,api.builder.enabled,documents.storage_bytes,' ||
-        'forms.active_forms,forms.builder.enabled,forms.submissions,iam.active_users,' ||
+        'iam.active_users,' ||
         'workflow.active_definitions,workflow.builder.enabled,workflow.enabled' THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'billing license projection keys are invalid';

@@ -12,7 +12,7 @@ func assertBillingOnlySuccessorCompletion(
 	database cutoverIntegrationDatabase, index int,
 ) {
 	t.Helper()
-	fixture := seedSuccessorFixture(t, ctx, database, index, "billing_forms",
+	fixture := seedSuccessorFixture(t, ctx, database, index, "billing",
 		[]string{"billing"}, 6)
 	seedSuccessorZeroInventory(t, ctx, database, fixture)
 	allowSuccessorReceipt(t, ctx, database.admin, fixture.operations[0])

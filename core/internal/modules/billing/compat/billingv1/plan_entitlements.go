@@ -36,9 +36,7 @@ func legacyEntitlements(
 	features planFeatures,
 ) []billingapi.EntitlementInput {
 	return []billingapi.EntitlementInput{
-		integerEntitlement("forms.submissions", limits.SubmissionsPerMonth),
 		integerEntitlement("iam.active_users", limits.MaxUsers),
-		integerEntitlement("forms.active_forms", limits.MaxForms),
 		integerEntitlement("documents.storage_bytes", storageBytes(limits.MaxStorageMB)),
 		booleanEntitlement("workflow.enabled", features.Workflows),
 		booleanEntitlement("api.access", features.APIAccess),

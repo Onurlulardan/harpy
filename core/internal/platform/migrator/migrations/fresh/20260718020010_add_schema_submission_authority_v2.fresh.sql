@@ -26,7 +26,7 @@ ALTER TABLE platform.schema_jobs
          AND canonical_plan_bytes IS NOT NULL
          AND pg_catalog.uuid_extract_version(submission_authority_id)
                 IS NOT DISTINCT FROM 7
-         AND submission_authority_group_id='billing_forms'
+         AND submission_authority_group_id='billing'
          AND submission_group_generation BETWEEN 1 AND 9007199254740991
          AND submission_billing_generation BETWEEN 1 AND 9007199254740991
          AND submission_forms_generation BETWEEN 1 AND 9007199254740991)

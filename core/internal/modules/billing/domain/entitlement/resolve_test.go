@@ -4,7 +4,7 @@ import "testing"
 
 func TestResolveUsesBaseSubscriptionOverridePrecedence(t *testing.T) {
 	booleanKey, _ := NewKey("features.ai")
-	integerKey, _ := NewKey("forms.submissions")
+	integerKey, _ := NewKey("iam.active_users")
 	booleanDefinition, _ := NewDefinition(
 		booleanKey, Boolean, NoMeter, Never, NoEnforcement, false,
 	)
@@ -36,7 +36,7 @@ func TestResolveUsesBaseSubscriptionOverridePrecedence(t *testing.T) {
 }
 
 func TestResolveFailsClosedOnMissingOrMismatchedDefinition(t *testing.T) {
-	key, _ := NewKey("forms.submissions")
+	key, _ := NewKey("iam.active_users")
 	definition, _ := NewDefinition(key, Integer, Counter, Never, Hard, false)
 	limit, _ := IntegerValue(10)
 	tests := []struct {

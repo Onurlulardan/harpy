@@ -78,12 +78,12 @@ func fixtureUUID(last int) string {
 func validDerivedOfferingContract() map[string]any {
 	booleanKeys := []string{
 		"analytics.dashboard_builder.enabled", "api.access",
-		"api.builder.enabled", "forms.builder.enabled", "workflow.builder.enabled",
+		"api.builder.enabled", "workflow.builder.enabled",
 		"workflow.enabled",
 	}
 	limitKeys := []string{
 		"analytics.active_dashboards", "api.active_endpoints", "documents.storage_bytes",
-		"forms.active_forms", "forms.submissions", "iam.active_users",
+		"iam.active_users",
 		"workflow.active_definitions",
 	}
 	booleans := make([]any, len(booleanKeys))

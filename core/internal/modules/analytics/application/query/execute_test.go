@@ -54,7 +54,7 @@ func TestExecuteBoundRejectsStaleRevisionCacheRace(t *testing.T) {
 }
 
 func executionDependency() DependencySnapshot {
-	return DependencySnapshot{DependencyRequest: DependencyRequest{OwnerDomain: "forms",
+	return DependencySnapshot{DependencyRequest: DependencyRequest{OwnerDomain: "iam",
 		ResourceKind: "form", ResourceID: queryFixtureID, VersionID: queryFixtureVersion},
 		CatalogVersion: 1, QueryContractVersion: 1, PolicyVersion: 1,
 		OwnerGeneration: 1, WriterV2: true,

@@ -19,7 +19,7 @@ type Step struct {
 var requiredSteps = []Step{
 	{Scope: ScopeGlobal, Domain: "billing"},
 	{Scope: ScopeTenant, Domain: "iam"},
-	{Scope: ScopeTenant, Domain: "billing+forms"},
+	{Scope: ScopeTenant, Domain: "billing"},
 	{Scope: ScopeTenant, Domain: "workflow"},
 	{Scope: ScopeTenant, Domain: "analytics"},
 	{Scope: ScopeTenant, Domain: "catalog"},

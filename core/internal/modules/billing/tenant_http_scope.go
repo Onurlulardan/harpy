@@ -8,7 +8,7 @@ import (
 	platformtx "github.com/Onurlulardan/harpy/core/internal/platform/transaction"
 )
 
-const billingAuthorityGroup = "billing_forms"
+const billingAuthorityGroup = "billing"
 
 type generations struct {
 	group, billing int64
@@ -24,7 +24,7 @@ func (application *tenantOperations) resolve(
 		access.Scope() != billingapi.AccessScopeTenant {
 		return generations{}, billingapi.ErrForbidden
 	}
-	group, billing, _, err := application.resolver.ResolveTenantBillingGenerations(
+	group, billing, err := application.resolver.ResolveTenantBillingGenerations(
 		ctx, access.TenantID(),
 	)
 	if err != nil || group < 1 || billing < 1 {

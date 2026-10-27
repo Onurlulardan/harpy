@@ -54,7 +54,7 @@ BEGIN
             MESSAGE='Analytics Catalog dependency manifest input is invalid';
     END IF;
     RETURN pg_catalog.sha256(
-        pg_catalog.int4send(5) || pg_catalog.convert_to('forms','UTF8') ||
+        pg_catalog.int4send(3) || pg_catalog.convert_to('iam','UTF8') ||
         pg_catalog.int4send(4) || pg_catalog.convert_to('form','UTF8') ||
         pg_catalog.int4send(16) || pg_catalog.uuid_send(p_resource_id) ||
         pg_catalog.int4send(16) || pg_catalog.uuid_send(p_resource_version_id) ||
@@ -102,7 +102,7 @@ BEGIN
         ORDER BY item.value->>'owner_domain',item.value->>'resource_kind',
             item.value->>'resource_id',item.value->>'resource_version_id'
     LOOP
-        IF v_dependency->>'owner_domain' <> 'forms' OR
+        IF v_dependency->>'owner_domain' <> 'iam' OR
            v_dependency->>'resource_kind' <> 'form' OR
            NOT pg_catalog.pg_input_is_valid(
                v_dependency->>'resource_id','uuid') OR

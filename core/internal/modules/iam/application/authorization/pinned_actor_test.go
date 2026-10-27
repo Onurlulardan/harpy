@@ -4,7 +4,7 @@ import "testing"
 
 func testPinnedActorRequest(t *testing.T) PinnedActorRequest {
 	t.Helper()
-	request, err := NewPinnedActorRequest("forms.records", "import", 9)
+	request, err := NewPinnedActorRequest("documents.items", "import", 9)
 	if err != nil {
 		t.Fatal(err)
 	}

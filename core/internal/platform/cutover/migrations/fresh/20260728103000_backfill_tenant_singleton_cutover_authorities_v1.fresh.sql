@@ -40,12 +40,12 @@ WITH tenants AS (
     WHERE scope_kind = 'tenant'
 ), expected_group(group_id) AS (
     VALUES
-        ('analytics'), ('billing_forms'), ('catalog'), ('documents'),
+        ('analytics'), ('billing'), ('catalog'), ('documents'),
         ('iam_system_resources'), ('notifications'), ('work'), ('workflow')
 ), expected_member(group_id, ordinal, domain) AS (
     VALUES
         ('analytics',1,'analytics'),
-        ('billing_forms',1,'billing'),
+        ('billing',1,'billing'),
         ('catalog',1,'catalog'), ('documents',1,'documents'),
         ('iam_system_resources',1,'iam'),
         ('iam_system_resources',2,'system_resource_layout'),

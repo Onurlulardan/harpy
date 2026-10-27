@@ -42,19 +42,19 @@ INSERT INTO platform.billing_offering_entitlements (
     definition.id,definition.value_type,definition.unlimited_allowed,
     CASE definition.entitlement_key
       WHEN 'workflow.enabled' THEN false
-      WHEN 'api.access' THEN false WHEN 'forms.builder.enabled' THEN false
+      WHEN 'api.access' THEN false
       WHEN 'workflow.builder.enabled' THEN false WHEN 'api.builder.enabled' THEN false
       WHEN 'analytics.dashboard_builder.enabled' THEN false ELSE NULL END,
     CASE definition.entitlement_key
-      WHEN 'forms.submissions' THEN 500 WHEN 'iam.active_users' THEN 3
+      WHEN 'iam.active_users' THEN 3
       WHEN 'documents.storage_bytes' THEN 104857600
       WHEN 'workflow.active_definitions' THEN 0 WHEN 'api.active_endpoints' THEN 0
       WHEN 'analytics.active_dashboards' THEN 0 ELSE NULL END,
-    definition.entitlement_key='forms.active_forms','2026-07-22T00:00:00Z'
+    false,'2026-07-22T00:00:00Z'
 FROM platform.billing_global_authorities AS authority
 CROSS JOIN platform.billing_entitlement_definitions AS definition;
 
-SELECT 1 / ((pg_catalog.count(*)=13)::integer)
+SELECT 1 / ((pg_catalog.count(*)=10)::integer)
 FROM platform.billing_offering_entitlements
 WHERE offering_version_id='019b0000-0000-7000-8000-000000000201';
 
@@ -68,9 +68,9 @@ FROM (SELECT pg_catalog.jsonb_build_object(
     'schema','harpy-saas-free-base.v1','offering_key','saas_free_base_v1',
     'revision',1,'effective_at','2026-07-22T00:00:00Z','subscription',false,'trial',false,
     'entitlements',pg_catalog.jsonb_build_object(
-        'forms.submissions',500,'iam.active_users',3,'forms.active_forms','unlimited',
+        'iam.active_users',3,
         'documents.storage_bytes',104857600,'workflow.enabled',false,
-        'api.access',false,'forms.builder.enabled',false,'workflow.builder.enabled',false,
+        'api.access',false,'workflow.builder.enabled',false,
         'api.builder.enabled',false,'analytics.dashboard_builder.enabled',false,
         'workflow.active_definitions',0,'api.active_endpoints',0,
         'analytics.active_dashboards',0)) AS document) AS publication;

@@ -32,7 +32,7 @@ BEGIN
     FROM platform.cutover_operations AS operation
     WHERE operation.operation_id = p_operation_id AND operation.run_id = p_run_id
       AND operation.scope_kind = 'tenant' AND operation.scope_id = p_scope_id
-      AND operation.group_id = 'billing_forms' AND operation.domain = 'billing';
+      AND operation.group_id = 'billing' AND operation.domain = 'billing';
     SELECT staged.applied_count, staged.key_state_sha256,
         staged.state_sha256, staged.plan_bytes
     INTO STRICT v_applied, v_key_sha, v_state_sha, v_plan

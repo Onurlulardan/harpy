@@ -4,7 +4,7 @@ import "slices"
 
 var tenantGroupDomains = map[string][]string{
 	"iam_system_resources": {"iam", "system_resource_layout"},
-	"billing_forms":        {"billing", "forms"},
+	"billing":        {"billing", "forms"},
 	"workflow":             {"workflow"},
 	"analytics":            {"analytics"},
 	"catalog":              {"catalog"},

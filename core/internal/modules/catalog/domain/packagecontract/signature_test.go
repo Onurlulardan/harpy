@@ -62,5 +62,5 @@ func dependencyJSON(packageID string) string {
 }
 
 func manifestDocument(packageID, dependencies string) []byte {
-	return []byte(fmt.Sprintf(`{"contract":"catalog-package.v1","package_id":"%s","slug":"package-test","version":"1.0.0","platform_contract":"harpy.v2","profile":"business","dependencies":%s,"components":[{"ID":"%s","Owner":"forms","Contract":"forms.v2","kind":"FORM","content_sha256":"%064d"}],"menu":[]}`, packageID, dependencies, componentA, 1))
+	return []byte(fmt.Sprintf(`{"contract":"catalog-package.v1","package_id":"%s","slug":"package-test","version":"1.0.0","platform_contract":"harpy.v2","profile":"business","dependencies":%s,"components":[{"ID":"%s","Owner":"iam","Contract":"iam.template.v1","kind":"IAM_TEMPLATE","content_sha256":"%064d"}],"menu":[]}`, packageID, dependencies, componentA, 1))
 }

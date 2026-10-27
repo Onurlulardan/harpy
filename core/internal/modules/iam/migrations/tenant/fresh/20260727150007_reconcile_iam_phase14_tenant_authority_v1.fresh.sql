@@ -3,7 +3,7 @@ MERGE INTO iam_resources AS target
 USING (VALUES
     ('019f9d00-0000-8000-8000-000000000001'::uuid,'catalog'::text,'catalog'::text,'catalog','Catalog'),
     ('019f9d00-0000-8000-8000-000000000002','catalog.menu','catalog','catalog_menu','Catalog Menu'),
-    ('019f9d00-0000-8000-8000-000000000003','billing','billing','billing_subscription','Billing'),
+    ('019f9d00-0000-8000-8000-000000000003','billing','billing_subscription','Billing'),
     ('019f9d00-0000-8000-8000-000000000004','billing.usage','billing','billing_usage','Billing Usage'),
     ('019f9d00-0000-8000-8000-000000000005','billing.entitlements','billing','billing_entitlements','Billing Entitlements'),
     ('019f9d00-0000-8000-8000-000000000006','documents.folder','documents','document_folder','Document Folders'),

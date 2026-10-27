@@ -60,20 +60,19 @@ func (runtime knowledgeFileScopes) commandRequest(ctx context.Context,
 ) (platformtx.ScopeRequest, error) {
 	tenantID, actorID := uuid.UUID(access.TenantID), uuid.UUID(access.ActorID)
 	if operation == "documents.upload.create" || operation == "documents.upload.put" {
-		billingGroup, billing, forms, err := runtime.generations.
+		billingGroup, billing, err := runtime.generations.
 			ResolveTenantBillingGenerations(ctx, tenantID)
 		documentsGroup, documentsGeneration, documentsErr := runtime.generations.
 			ResolveTenantDocumentsGenerations(ctx, tenantID)
 		if err != nil || documentsErr != nil || !positiveGenerations([]int64{
-			billingGroup, billing, forms, documentsGroup, documentsGeneration}) {
+			billingGroup, billing, documentsGroup, documentsGeneration}) {
 			return platformtx.ScopeRequest{}, ErrDocumentsRuntime
 		}
 		return platformtx.AdmitMultiGroupCommandScope(actorID, tenantID, operation,
-			[]platformtx.CommandAuthorityGroup{{ID: "billing_forms", Generation: billingGroup},
+			[]platformtx.CommandAuthorityGroup{{ID: "billing", Generation: billingGroup},
 				{ID: "documents", Generation: documentsGroup}},
 			[]platformtx.CommandAuthorityDomain{{Name: "billing", Generation: billing},
-				{Name: "documents", Generation: documentsGeneration},
-				{Name: "forms", Generation: forms}}, []string{"billing", "documents"})
+				{Name: "documents", Generation: documentsGeneration}}, []string{"billing", "documents"})
 	}
 	group, generation, err := runtime.generations.ResolveTenantDocumentsGenerations(ctx, tenantID)
 	if err != nil || group < 1 || generation < 1 ||

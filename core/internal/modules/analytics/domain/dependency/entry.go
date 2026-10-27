@@ -41,6 +41,6 @@ func (entry Entry) PolicyVersion() uint64          { return entry.policyVersion 
 func (entry Entry) DataRevisionCapability() string { return entry.dataRevision }
 func (entry Entry) SHA256() [32]byte               { return entry.digest }
 
-func allowedPhase8Owner(value string) bool { return value == "forms" || value == "iam" }
+func allowedPhase8Owner(value string) bool { return value == "iam" }
 func validID(value [16]byte) bool          { var zero [16]byte; return value != zero }
 func zeroDigest(value [32]byte) bool       { return bytes.Equal(value[:], make([]byte, 32)) }

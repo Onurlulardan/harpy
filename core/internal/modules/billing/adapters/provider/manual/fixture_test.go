@@ -27,7 +27,7 @@ func manualRequest(t *testing.T, operation string) effectsv1.Request {
 		manualEffectID, "billing.provider.command", 1, &tenantID,
 		effectsv1.Authority{
 			ScopeKind: effectsv1.ScopeTenant, ScopeID: tenantID,
-			GroupID: "billing_forms", GroupGeneration: 2,
+			GroupID: "billing", GroupGeneration: 2,
 			Domain: "billing", CutoverGeneration: 3,
 			WriterOrigin: effectsv1.WriterV2,
 		}, "manual", operation, "manual:subscription:10", "corr-10",

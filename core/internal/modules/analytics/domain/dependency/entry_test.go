@@ -11,13 +11,13 @@ func TestEntryAllowsNoDataRevisionCapability(t *testing.T) {
 	var digest [32]byte
 	digest[0] = 3
 	if _, err := NewEntry(
-		"forms", "form", resourceID, versionID,
+		"iam", "directory", resourceID, versionID,
 		1, 1, 1, "", digest,
 	); err != nil {
 		t.Fatalf("empty revision capability rejected: %v", err)
 	}
 	if _, err := NewEntry(
-		"forms", "form", resourceID, versionID,
+		"iam", "directory", resourceID, versionID,
 		1, 1, 1, strings.Repeat("r", 129), digest,
 	); err == nil {
 		t.Fatal("oversized revision capability accepted")

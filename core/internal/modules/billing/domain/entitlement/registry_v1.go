@@ -16,9 +16,7 @@ type RegistryEntry struct {
 
 func RegistryV1() []RegistryEntry {
 	return []RegistryEntry{
-		integerEntry("forms.submissions", Counter, CalendarMonthUTC, "forms", UnitCount),
 		integerEntry("iam.active_users", Gauge, Never, "iam", UnitCount),
-		integerEntry("forms.active_forms", Gauge, Never, "forms", UnitCount),
 		integerEntry("documents.storage_bytes", Gauge, Never, "documents", UnitByte),
 		booleanEntry("workflow.enabled", "workflow"),
 		booleanEntry("api.access", "platform"),

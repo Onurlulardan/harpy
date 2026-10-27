@@ -152,7 +152,7 @@ func assertPlatformReportAuthorityCuts(
 	t.Helper()
 	if _, err := connection.ExecContext(ctx, `
 UPDATE platform.cutover_groups SET generation=2
-WHERE scope_kind='tenant' AND scope_id=$1 AND group_id='billing_forms'
+WHERE scope_kind='tenant' AND scope_id=$1 AND group_id='billing'
 `, fixture.b.tenantID); err != nil {
 		t.Fatal(err)
 	}

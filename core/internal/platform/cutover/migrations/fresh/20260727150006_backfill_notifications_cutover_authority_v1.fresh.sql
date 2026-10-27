@@ -88,7 +88,7 @@ BEGIN
            OR (SELECT pg_catalog.count(*) FROM platform.cutover_groups
                WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
                  AND group_id IN (
-                    'billing_forms','iam_system_resources','notifications'
+                    'billing','iam_system_resources','notifications'
                  )
                  AND state = 'v2' AND writer = 'v2' AND generation = 1
                  AND requested_by = p_operation_id AND approved_by = p_owner_user_id
@@ -101,7 +101,7 @@ BEGIN
            OR (SELECT pg_catalog.count(*) FROM platform.cutover_group_members
                WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
                  AND (group_id,ordinal,domain) IN (
-                    ('billing_forms',1,'billing'),
+                    ('billing',1,'billing'),
                     ('iam_system_resources',1,'iam'),
                     ('iam_system_resources',2,'system_resource_layout'),
                     ('notifications',1,'notifications')
@@ -128,12 +128,12 @@ BEGIN
         p_operation_id, p_owner_user_id, 'fresh V2 tenant activation',
         v_reference, p_manifest_sha256
       FROM pg_catalog.unnest(ARRAY[
-        'billing_forms','iam_system_resources','notifications'
+        'billing','iam_system_resources','notifications'
       ]) AS entry(group_id);
     INSERT INTO platform.cutover_group_members (
         scope_kind, scope_id, group_id, ordinal, domain
     ) VALUES
-        ('tenant',p_tenant_id,'billing_forms',1,'billing'),
+        ('tenant',p_tenant_id,'billing',1,'billing'),
         ('tenant',p_tenant_id,'iam_system_resources',1,'iam'),
         ('tenant',p_tenant_id,'iam_system_resources',2,'system_resource_layout'),
         ('tenant',p_tenant_id,'notifications',1,'notifications');

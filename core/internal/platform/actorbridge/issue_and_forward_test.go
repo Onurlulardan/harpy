@@ -64,7 +64,7 @@ func TestIssueAndForwardCommitsEvidenceBeforeExactMTLSRoute(t *testing.T) {
 	request.Header.Set("Authorization", "Bearer client-credential")
 	request.Header.Set("Cookie", "session=client")
 	input, err := NewForwardInput(
-		actorassertionv1.DomainDocuments, "forms.records", "create", 7, 19, request,
+		actorassertionv1.DomainDocuments, "documents.items", "create", 7, 19, request,
 	)
 	if err != nil {
 		t.Fatal(err)

@@ -13,9 +13,9 @@ type testResolver struct{ calls int }
 
 func (resolver *testResolver) ResolveTenantBillingGenerations(
 	_ context.Context, _ uuid.UUID,
-) (int64, int64, int64, error) {
+) (int64, int64, error) {
 	resolver.calls++
-	return 7, 8, 9, nil
+	return 7, 8, nil
 }
 
 type testCoordinator struct{ modes []platformtx.ScopeMode }

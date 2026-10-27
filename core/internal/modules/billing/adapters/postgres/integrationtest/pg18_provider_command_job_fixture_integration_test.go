@@ -64,7 +64,7 @@ INSERT INTO platform.jobs(
  kind,payload_revision,payload_ref,payload_sha256,dedupe_key,effect_class,
  effect_idempotency_key,priority,run_at,state,attempts,max_attempts,
  lease_generation,created_at,updated_at
-) VALUES($1,$2,'tenant',$2,'billing_forms',1,'billing',1,'v2',
+) VALUES($1,$2,'tenant',$2,'billing',1,'billing',1,'v2',
  'billing.provider.command',1,$3,$4,$5,'external',$5,100,$6,
  'queued',0,8,0,$6,$6)
 `, f.commandID, f.tenantID,
@@ -92,7 +92,7 @@ INSERT INTO platform.jobs(
  kind,payload_revision,payload_ref,payload_sha256,dedupe_key,effect_class,
  priority,run_at,state,attempts,max_attempts,lease_owner_id,lease_generation,
  lease_heartbeat_at,lease_until,created_at,updated_at
-) VALUES($1,$2,'tenant',$2,'billing_forms',1,'billing',1,'v2',
+) VALUES($1,$2,'tenant',$2,'billing',1,'billing',1,'v2',
  'billing.provider.finalize',1,$3,$4,$5,'database_transactional',100,$6::timestamptz,
  'running',1,8,$7,1,$6::timestamptz,$6::timestamptz+interval '1 minute',
  $6::timestamptz,$6::timestamptz)
@@ -172,7 +172,7 @@ INSERT INTO platform.jobs(
  kind,payload_revision,payload_ref,payload_sha256,dedupe_key,effect_class,
  effect_idempotency_key,priority,run_at,state,attempts,max_attempts,
  lease_generation,created_at,updated_at
-) VALUES($1,$2,'tenant',$2,'billing_forms',1,'billing',1,'v2',
+) VALUES($1,$2,'tenant',$2,'billing',1,'billing',1,'v2',
  'billing.provider.reconcile',1,$3,$4,$5,'external',$5,100,$6,
  'queued',0,8,0,$6,$6)
 `, jobID, f.tenantID,

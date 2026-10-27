@@ -22,7 +22,7 @@ func TestCompileBuildsEligibleDeterministicBundle(t *testing.T) {
 	if len(bundle.Global.Offerings) != 1 || len(bundle.Global.Discounts) != 1 ||
 		len(bundle.Global.Campaigns) != 1 || len(bundle.Tenants[0].Subscriptions) != 1 ||
 		len(bundle.Tenants[0].Redemptions) != 1 || len(bundle.Tenants[0].LegacyEvents) != 1 ||
-		len(bundle.Tenants[0].GaugeOpenings) != 3 {
+		len(bundle.Tenants[0].GaugeOpenings) != 2 {
 		t.Fatal("compiled Billing V1 bundle lost canonical records")
 	}
 	first, firstSHA, err := EncodeScopePlan(bundle.Tenants[0])

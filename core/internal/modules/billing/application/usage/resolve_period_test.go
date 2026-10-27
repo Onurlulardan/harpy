@@ -9,7 +9,7 @@ import (
 
 func TestResolvePeriodReturnsOnlyStoreUUIDv7(t *testing.T) {
 	commands, store, _, _ := reserveFixture(t, entitlement.Hard, 0, 0, 10)
-	key, _ := entitlement.NewKey("forms.submissions")
+	key, _ := entitlement.NewKey("iam.active_users")
 	periodID, err := commands.ResolvePeriod(context.Background(), key)
 	if err != nil || periodID != store.snapshot.PeriodID || store.resolveCalls != 1 {
 		t.Fatalf("period=%s calls=%d error=%v", periodID, store.resolveCalls, err)

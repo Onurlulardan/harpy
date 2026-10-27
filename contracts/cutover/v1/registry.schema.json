@@ -34,7 +34,7 @@
     },
     "globalBilling":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"global"},"ordinal":{"const":1},"group_id":{"const":"billing"},"members":{"const":["billing"]}}}]},
     "tenantIAMSystemResources":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"tenant"},"ordinal":{"const":1},"group_id":{"const":"iam_system_resources"},"members":{"const":["iam","system_resource_layout"]}}}]},
-    "tenantBillingForms":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"tenant"},"ordinal":{"const":2},"group_id":{"const":"billing_forms"},"members":{"const":["billing","forms"]}}}]},
+    "tenantBillingForms":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"tenant"},"ordinal":{"const":2},"group_id":{"const":"billing"},"members":{"const":["billing","forms"]}}}]},
     "tenantWorkflow":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"tenant"},"ordinal":{"const":3},"group_id":{"const":"workflow"},"members":{"const":["workflow"]}}}]},
     "tenantAnalytics":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"tenant"},"ordinal":{"const":4},"group_id":{"const":"analytics"},"members":{"const":["analytics"]}}}]},
     "tenantCatalog":{"allOf":[{"$ref":"#/$defs/group"},{"properties":{"scope_kind":{"const":"tenant"},"ordinal":{"const":5},"group_id":{"const":"catalog"},"members":{"const":["catalog"]}}}]},

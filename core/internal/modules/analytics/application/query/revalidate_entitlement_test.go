@@ -14,7 +14,7 @@ import (
 
 func TestRevalidateDoesNotWriteOwnerStateWhenBuilderIsDisabled(t *testing.T) {
 	dependency := DependencyRequest{
-		OwnerDomain: "forms", ResourceKind: "form",
+		OwnerDomain: "iam", ResourceKind: "form",
 		ResourceID: queryFixtureID, VersionID: queryFixtureVersion,
 	}
 	resolved := DependencySnapshot{

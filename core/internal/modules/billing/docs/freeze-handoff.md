@@ -23,7 +23,7 @@ final integration work.
   payment/provider ledger, entitlement, usage and retention authorities stored
   under qualified `platform.billing_*` objects.
 - Public and platform state uses sealed global scope. Tenant state requires the
-  exact `billing_forms` group and ordered domains `billing,forms`.
+  exact `billing` group and ordered domains `billing,forms`.
 - API composition already builds the global, tenant and platform-report Billing
   runtimes, mounts canonical and V1 routes, and separately builds the platform
   license handler. The migrator consumes Billing migration documents and the

@@ -5,7 +5,7 @@
       "id": "billing.legal_hold.place",
       "owner": "billing",
       "scope_source": "actor_tenant",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     },
@@ -13,7 +13,7 @@
       "id": "billing.legal_hold.release",
       "owner": "billing",
       "scope_source": "actor_tenant",
-      "required_groups": ["billing+forms"],
+      "required_groups": ["billing"],
       "ordered_domains": ["billing", "forms"],
       "participants": ["billing", "forms"]
     }
