@@ -34,8 +34,6 @@ func (authority *iamResourceAuthority) AuthorizeRead(
 	switch request.Kind {
 	case "FORM":
 		permission.Resource = "forms.definition"
-	case "FORM_RECORD":
-		permission.Resource = "forms.records"
 	default:
 		return false, 0, ports.ErrForbidden
 	}
