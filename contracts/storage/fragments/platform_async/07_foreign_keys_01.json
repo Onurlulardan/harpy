@@ -1,0 +1,73 @@
+
+{
+  "version": 1,
+  "owner": "platform_async",
+  "foreign_keys": [
+    {
+      "constraint":"artifact_quota_counters_tenant_fk",
+      "source":"platform.artifact_quota_counters","source_columns":["tenant_id"],
+      "target_owner":"tenancy","target":"platform.tenants","target_columns":["id"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0025"
+    },
+    {
+      "constraint":"async_v1_runs_domain_fk",
+      "source":"platform.async_v1_adoption_runs","source_columns":["scope_kind","scope_id","domain"],
+      "target_owner":"platform_cutover","target":"platform.domain_cutovers","target_columns":["scope_kind","scope_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"async_v1_runs_group_fk",
+      "source":"platform.async_v1_adoption_runs","source_columns":["scope_kind","scope_id","group_id"],
+      "target_owner":"platform_cutover","target":"platform.cutover_groups","target_columns":["scope_kind","scope_id","group_id"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"async_v1_runs_member_fk",
+      "source":"platform.async_v1_adoption_runs","source_columns":["scope_kind","scope_id","group_id","domain"],
+      "target_owner":"platform_cutover","target":"platform.cutover_group_members","target_columns":["scope_kind","scope_id","group_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"cutover_job_bindings_operation_fk",
+      "source":"platform.cutover_job_bindings",
+      "source_columns":["operation_id","cutover_run_id"],
+      "target_owner":"platform_cutover","target":"platform.cutover_operations",
+      "target_columns":["operation_id","run_id"],"match_type":"simple",
+      "on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0114"
+    },
+    {
+      "constraint":"cutover_job_bindings_tenant_fk",
+      "source":"platform.cutover_job_bindings","source_columns":["tenant_id"],
+      "target_owner":"tenancy","target":"platform.tenants",
+      "target_columns":["id"],"match_type":"simple",
+      "on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0114"
+    },
+    {
+      "constraint":"dead_letters_authority_fk",
+      "source":"platform.dead_letters","source_columns":["scope_kind","scope_id","authority_domain"],
+      "target_owner":"platform_cutover","target":"platform.domain_cutovers","target_columns":["scope_kind","scope_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"dead_letters_authority_group_fk",
+      "source":"platform.dead_letters","source_columns":["scope_kind","scope_id","authority_group_id"],
+      "target_owner":"platform_cutover","target":"platform.cutover_groups","target_columns":["scope_kind","scope_id","group_id"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    },
+    {
+      "constraint":"dead_letters_authority_member_fk",
+      "source":"platform.dead_letters","source_columns":["scope_kind","scope_id","authority_group_id","authority_domain"],
+      "target_owner":"platform_cutover","target":"platform.cutover_group_members","target_columns":["scope_kind","scope_id","group_id","domain"],
+      "match_type":"simple","on_update":"no_action","on_delete":"restrict",
+      "deferrable":false,"initially_deferred":false,"contract":"ADR-0056"
+    }
+  ]
+}

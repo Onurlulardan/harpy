@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/events/v1/event-bootstrap-receipt.schema.json",
+  "title": "Harpy Event Bootstrap Receipt v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "receipt_id", "consumer", "consumer_version", "tenant_id",
+    "producer_authority", "consumer_authority", "aggregate_type", "aggregate_id", "through_sequence", "state_reference",
+    "state_sha256", "correlation_id", "causation_id", "occurred_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "event-bootstrap-receipt.v1"},
+    "receipt_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "consumer": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "consumer_version": {"type": "integer", "minimum": 1},
+    "tenant_id": {"$ref": "event-defs.schema.json#/$defs/nullableUuid"},
+    "producer_authority": {"$ref": "event-defs.schema.json#/$defs/authority"},
+    "consumer_authority": {
+      "$ref": "event-defs.schema.json#/$defs/authority",
+      "properties": {"writer_origin": {"const": "v2"}}
+    },
+    "aggregate_type": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "aggregate_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "through_sequence": {"type": "integer", "minimum": 0},
+    "state_reference": {"$ref": "event-defs.schema.json#/$defs/reference"},
+    "state_sha256": {"$ref": "event-defs.schema.json#/$defs/sha256"},
+    "correlation_id": {"$ref": "event-defs.schema.json#/$defs/correlation"},
+    "causation_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+    "occurred_at": {"$ref": "event-defs.schema.json#/$defs/timestamp"}
+  },
+  "oneOf": [
+    {"properties": {
+      "tenant_id": {"$ref": "event-defs.schema.json#/$defs/uuid"},
+      "producer_authority": {"properties": {"scope_kind": {"const": "tenant"}}},
+      "consumer_authority": {"properties": {"scope_kind": {"const": "tenant"}}}
+    }},
+    {"properties": {
+      "tenant_id": {"type": "null"},
+      "producer_authority": {"properties": {"scope_kind": {"const": "global"}}},
+      "consumer_authority": {"properties": {"scope_kind": {"const": "global"}}}
+    }}
+  ]
+}

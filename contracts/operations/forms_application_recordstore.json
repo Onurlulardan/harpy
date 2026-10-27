@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "claim",
+      "source": "core/internal/modules/forms/application/recordstore/claim.go",
+      "test": "core/internal/modules/forms/application/recordstore/claim_test.go",
+      "authority_id": "forms.record_store.claim"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "create",
+      "source": "core/internal/modules/forms/application/recordstore/create.go",
+      "test": "core/internal/modules/forms/application/recordstore/create_test.go",
+      "authority_id": "forms.record_store.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "delete",
+      "source": "core/internal/modules/forms/application/recordstore/delete.go",
+      "test": "core/internal/modules/forms/application/recordstore/delete_test.go",
+      "authority_id": "forms.record_store.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "finish",
+      "source": "core/internal/modules/forms/application/recordstore/finish.go",
+      "test": "core/internal/modules/forms/application/recordstore/finish_test.go",
+      "authority_id": "forms.record_store.finish"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "get",
+      "source": "core/internal/modules/forms/application/recordstore/get.go",
+      "test": "core/internal/modules/forms/application/recordstore/get_test.go",
+      "authority_id": "forms.record_store.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "read",
+      "source": "core/internal/modules/forms/application/recordstore/read_active.go",
+      "test": "core/internal/modules/forms/application/recordstore/read_active_test.go",
+      "authority_id": "forms.record_catalog.resolve"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application",
+      "resource": "recordstore",
+      "operation": "resolve",
+      "source": "core/internal/modules/forms/application/recordstore/resolve_exact.go",
+      "test": "core/internal/modules/forms/application/recordstore/resolve_exact_test.go",
+      "authority_id": "forms.record_catalog.resolve"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordstore",
+      "layer": "application", "resource": "recordstore", "operation": "update",
+      "source": "core/internal/modules/forms/application/recordstore/update.go",
+      "test": "core/internal/modules/forms/application/recordstore/update_test.go",
+      "authority_id": "forms.record_store.update"
+    }
+  ]
+}

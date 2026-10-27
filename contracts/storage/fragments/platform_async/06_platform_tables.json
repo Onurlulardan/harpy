@@ -1,0 +1,22 @@
+
+{
+  "version": 1,
+  "owner": "platform_async",
+  "platform_tables": [
+    "platform.artifact_quota_counters",
+    "platform.async_v1_adoption_dispositions",
+    "platform.async_v1_adoption_items",
+    "platform.async_v1_adoption_job_bindings",
+    "platform.async_v1_adoption_runs",
+    "platform.async_v1_restart_fence_receipts",
+    "platform.async_v1_zero_inventory_receipts",
+    "platform.cutover_job_bindings",
+    "platform.dead_letters",
+    "platform.idempotency_receipts",
+    "platform.inbox",
+    "platform.job_attempts",
+    "platform.jobs",
+    "platform.outbox",
+    "platform.platform_async_installation_activation_receipts"
+  ]
+}

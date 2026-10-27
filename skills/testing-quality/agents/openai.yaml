@@ -1,0 +1,4 @@
+interface:
+  display_name: "Testing Quality"
+  short_description: "Enforce architecture contract and runtime quality"
+  default_prompt: "Use $testing-quality to verify this backend-v2 change."

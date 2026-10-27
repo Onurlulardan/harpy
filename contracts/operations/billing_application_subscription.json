@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "cancel",
+      "source": "core/internal/modules/billing/application/subscription/cancel_at_period_end.go",
+      "test": "core/internal/modules/billing/application/subscription/cancel_at_period_end_test.go",
+      "authority_id": "billing.subscription.cancel_at_period_end"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "change",
+      "source": "core/internal/modules/billing/application/subscription/change_at_period_end.go",
+      "test": "core/internal/modules/billing/application/subscription/change_at_period_end_test.go",
+      "authority_id": "billing.subscription.change_at_period_end"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "claim",
+      "source": "core/internal/modules/billing/application/subscription/claim_trial.go",
+      "test": "core/internal/modules/billing/application/subscription/claim_trial_test.go",
+      "authority_id": "billing.subscription.claim_trial"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "execute",
+      "source": "core/internal/modules/billing/application/subscription/execute_due_boundary.go",
+      "test": "core/internal/modules/billing/application/subscription/execute_due_boundary_test.go",
+      "authority_id": "billing.subscription.execute_due_boundary"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "get",
+      "source": "core/internal/modules/billing/application/subscription/get_current.go",
+      "test": "core/internal/modules/billing/application/subscription/get_current_test.go",
+      "authority_id": "billing.subscription.read"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "resume",
+      "source": "core/internal/modules/billing/application/subscription/resume_cancellation.go",
+      "test": "core/internal/modules/billing/application/subscription/resume_cancellation_test.go",
+      "authority_id": "billing.subscription.resume_cancellation"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "set",
+      "source": "core/internal/modules/billing/application/subscription/set_platform_transition.go",
+      "test": "core/internal/modules/billing/application/subscription/set_platform_transition_test.go",
+      "authority_id": "billing.subscription.platform_transition"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/subscription",
+      "layer": "application",
+      "resource": "subscription",
+      "operation": "update",
+      "source": "core/internal/modules/billing/application/subscription/update_from_provider.go",
+      "test": "core/internal/modules/billing/application/subscription/update_from_provider_test.go",
+      "authority_id": "billing.subscription.update_from_provider"
+    }
+  ]
+}

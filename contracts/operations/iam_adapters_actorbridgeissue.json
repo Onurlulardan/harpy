@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/actorbridgeissue","layer":"adapters/postgres","resource":"actorbridgeissue","operation":"resolve","source":"core/internal/modules/iam/adapters/postgres/actorbridgeissue/resolve.go","test":"core/internal/modules/iam/adapters/postgres/actorbridgeissue/resolve_test.go","application_operation":"core/internal/modules/iam/application/actorbridgeissue/resolve.go"}
+]}

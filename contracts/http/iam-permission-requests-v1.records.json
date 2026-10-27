@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://http/iam-permission-requests-v1/records",
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f-]{36}$"},
+    "state": {"enum": ["PENDING", "IN_REVIEW", "APPROVED", "REJECTED", "CANCELLED", "EXPIRED"]},
+    "item": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "ordinal", "target_kind", "target_id", "permission_id", "permission_protected", "planned_binding_id", "state", "revision"],
+      "properties": {
+        "id": {"$ref": "#/$defs/uuid"},
+        "ordinal": {"type": "integer", "minimum": 1, "maximum": 100},
+        "target_kind": {"enum": ["USER", "ROLE", "ORGANIZATION"]},
+        "target_id": {"$ref": "#/$defs/uuid"},
+        "permission_id": {"$ref": "#/$defs/uuid"},
+        "permission_protected": {"type": "boolean"},
+        "planned_binding_id": {"$ref": "#/$defs/uuid"},
+        "granted_binding_id": {"$ref": "#/$defs/uuid"},
+        "state": {"$ref": "#/$defs/state"},
+        "revision": {"type": "integer", "minimum": 1}
+      }
+    },
+    "group": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "requester_id", "mode", "state", "revision", "expires_at", "created_at", "updated_at", "step_up_purpose_sha256", "items"],
+      "properties": {
+        "id": {"$ref": "#/$defs/uuid"},
+        "requester_id": {"$ref": "#/$defs/uuid"},
+        "mode": {"enum": ["SELF_SERVICE", "PRIVILEGED"]},
+        "state": {"$ref": "#/$defs/state"},
+        "reviewer_id": {"$ref": "#/$defs/uuid"},
+        "review_task_id": {"$ref": "#/$defs/uuid"},
+        "revision": {"type": "integer", "minimum": 1},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "terminal_at": {"type": "string", "format": "date-time"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"},
+        "step_up_purpose_sha256": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+        "items": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"$ref": "#/$defs/item"}}
+      }
+    },
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "state", "revision", "step_up_purpose_sha256"],
+      "properties": {
+        "id": {"$ref": "#/$defs/uuid"},
+        "state": {"$ref": "#/$defs/state"},
+        "revision": {"type": "integer", "minimum": 1},
+        "step_up_purpose_sha256": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"}
+      }
+    },
+    "catalogResource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "slug", "description", "is_system", "kind"],
+      "properties": {
+        "id": {"$ref": "#/$defs/uuid"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 255},
+        "slug": {"type": "string", "minLength": 1, "maxLength": 100},
+        "description": {"type": "string", "maxLength": 2000},
+        "is_system": {"type": "boolean"},
+        "kind": {"enum": ["form", "system"]},
+        "form_slug": {"type": "string", "minLength": 1, "maxLength": 95}
+      }
+    },
+    "catalogAction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "slug", "description", "is_system"],
+      "properties": {
+        "id": {"$ref": "#/$defs/uuid"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 255},
+        "slug": {"type": "string", "minLength": 1, "maxLength": 100},
+        "description": {"type": "string", "maxLength": 2000},
+        "is_system": {"type": "boolean"}
+      }
+    },
+    "catalogPagination": {
+      "type": "object", "additionalProperties": false,
+      "required": ["has_more"],
+      "properties": {
+        "has_more": {"type": "boolean"},
+        "next_after_id": {"$ref": "#/$defs/uuid"}
+      }
+    },
+    "catalogResourcePageEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {
+          "type": "object", "additionalProperties": false,
+          "required": ["items", "pagination"],
+          "properties": {
+            "items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/catalogResource"}},
+            "pagination": {"$ref": "#/$defs/catalogPagination"}
+          }
+        }
+      }
+    },
+    "catalogActionPageEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {
+          "type": "object", "additionalProperties": false,
+          "required": ["items", "pagination"],
+          "properties": {
+            "items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/catalogAction"}},
+            "pagination": {"$ref": "#/$defs/catalogPagination"}
+          }
+        }
+      }
+    },
+    "recordEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {"success": {"const": true}, "data": {"oneOf": [{"$ref": "#/$defs/group"}, {"$ref": "#/$defs/reference"}]}}
+    },
+    "pageEnvelope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {
+          "type": "object", "additionalProperties": false,
+          "required": ["items", "pagination"],
+          "properties": {
+            "items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/group"}},
+            "pagination": {
+              "type": "object", "additionalProperties": false,
+              "required": ["has_more"],
+              "properties": {"has_more": {"type": "boolean"}, "next_after_id": {"$ref": "#/$defs/uuid"}}
+            }
+          }
+        }
+      }
+    }
+  }
+}

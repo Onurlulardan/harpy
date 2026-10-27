@@ -1,0 +1,96 @@
+{
+  "openapi": "3.1.1",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "Harpy Core API v1",
+    "version": "platform-runtime.v1",
+    "description": "Core API routes are admitted only after dependency readiness and use exact method/path contracts."
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "$ref": "core-api-v1.components.json#/securitySchemes/bearerAuth"
+      },
+      "capabilityAuth": {
+        "$ref": "analytics-common-v2.schemas.json#/$defs/CapabilityAuthScheme"
+      }
+    },
+    "schemas": {
+      "ErrorEnvelope": {
+        "$ref": "core-api-v1.components.json#/schemas/ErrorEnvelope"
+      },
+      "JWK": {
+        "$ref": "core-api-v1.components.json#/schemas/JWK"
+      },
+      "JWKS": {
+        "$ref": "core-api-v1.components.json#/schemas/JWKS"
+      }
+    },
+    "headers": {
+      "ContentType": {
+        "$ref": "core-api-v1.components.json#/headers/ContentType"
+      },
+      "JWKContentType": {
+        "$ref": "core-api-v1.components.json#/headers/JWKContentType"
+      },
+      "JWKSCacheControl": {
+        "$ref": "core-api-v1.components.json#/headers/JWKSCacheControl"
+      },
+      "ETag": {
+        "$ref": "core-api-v1.components.json#/headers/ETag"
+      },
+      "CorrelationID": {
+        "$ref": "core-api-v1.components.json#/headers/CorrelationID"
+      },
+      "CacheControl": {
+        "$ref": "core-api-v1.components.json#/headers/CacheControl"
+      },
+      "ContentTypeOptions": {
+        "$ref": "core-api-v1.components.json#/headers/ContentTypeOptions"
+      }
+    },
+    "responses": {
+      "JWKSRead": {
+        "$ref": "core-api-v1.components.json#/responses/JWKSRead"
+      },
+      "JWKSHead": {
+        "$ref": "core-api-v1.components.json#/responses/JWKSHead"
+      },
+      "JWKSNotModified": {
+        "$ref": "core-api-v1.components.json#/responses/JWKSNotModified"
+      },
+      "RouteNotFound": {
+        "$ref": "core-api-v1.components.json#/responses/RouteNotFound"
+      },
+      "ServiceUnavailable": {
+        "$ref": "core-api-v1.components.json#/responses/ServiceUnavailable"
+      },
+      "MethodNotAllowed": {
+        "$ref": "core-api-v1.components.json#/responses/MethodNotAllowed"
+      },
+      "InternalError": {
+        "$ref": "core-api-v1.components.json#/responses/InternalError"
+      }
+    }
+  },
+  "x-harpy-phase": "phase-8-analytics",
+  "x-harpy-handler-errors": {
+    "unmatched": {
+      "status": 404,
+      "$ref": "#/components/responses/RouteNotFound"
+    },
+    "draining": {
+      "status": 503,
+      "$ref": "#/components/responses/ServiceUnavailable"
+    },
+    "panic": {
+      "status": 500,
+      "$ref": "#/components/responses/InternalError"
+    }
+  },
+  "x-harpy-transport-error-exclusion": [
+    "malformed-request",
+    "header-limit",
+    "read-header-timeout"
+  ]
+}

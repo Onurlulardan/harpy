@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/schemaevolution",
+      "layer": "application",
+      "resource": "schemaevolution",
+      "operation": "compile",
+      "source": "core/internal/modules/forms/application/schemaevolution/compile.go",
+      "test": "core/internal/modules/forms/application/schemaevolution/compile_test.go",
+      "authority_id": "forms.schemaevolution.compile"
+    }
+  ]
+}

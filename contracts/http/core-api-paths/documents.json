@@ -1,0 +1,77 @@
+{
+  "/api/document-archives": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-archives"
+  },
+  "/api/document-archives/{archive_id}": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-archives~1{archive_id}"
+  },
+  "/api/document-archives/{archive_id}/content": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-archives~1{archive_id}~1content"
+  },
+  "/api/document-uploads": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-uploads"
+  },
+  "/api/document-uploads/{upload_id}": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-uploads~1{upload_id}"
+  },
+  "/api/document-uploads/{upload_id}/cancel": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-uploads~1{upload_id}~1cancel"
+  },
+  "/api/document-uploads/{upload_id}/content": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1document-uploads~1{upload_id}~1content"
+  },
+  "/api/documents": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents"
+  },
+  "/api/documents/batch": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1batch"
+  },
+  "/api/documents/{document_id}": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}"
+  },
+  "/api/documents/{document_id}/copy": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1copy"
+  },
+  "/api/documents/{document_id}/download": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1download"
+  },
+  "/api/documents/{document_id}/move": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1move"
+  },
+  "/api/documents/{document_id}/purge": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1purge"
+  },
+  "/api/documents/{document_id}/purge/cancel": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1purge~1cancel"
+  },
+  "/api/documents/{document_id}/restore": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1restore"
+  },
+  "/api/documents/{document_id}/versions": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1versions"
+  },
+  "/api/documents/{document_id}/versions/latest": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1versions~1latest"
+  },
+  "/api/documents/{document_id}/versions/{version_id}/content": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1documents~1{document_id}~1versions~1{version_id}~1content"
+  },
+  "/api/folders": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1folders"
+  },
+  "/api/folders/{folder_id}": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1folders~1{folder_id}"
+  },
+  "/api/folders/{folder_id}/contents": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1folders~1{folder_id}~1contents"
+  },
+  "/api/folders/{folder_id}/download": {
+    "$ref": "documents-v1-compat.paths.json#/paths/~1api~1folders~1{folder_id}~1download"
+  },
+  "/api/folders/{folder_id}/move": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1folders~1{folder_id}~1move"
+  },
+  "/api/folders/{folder_id}/restore": {
+    "$ref": "documents-v2.paths.json#/paths/~1api~1folders~1{folder_id}~1restore"
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "pathItems": {
+    "collection": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "post": {
+        "operationId": "createFormRecord", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.create", "x-harpy-authority": "forms.record_kernel.create",
+        "parameters": [{"$ref": "forms-record-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "forms-record-v2.schemas.json#/$defs/RecordDocument"}}}},
+        "responses": {"201": {"$ref": "forms-record-v2.schemas.json#/$defs/MutationResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "409": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "413": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "415": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "422": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "query": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "post": {
+        "operationId": "queryFormRecords", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.read", "x-harpy-authority": "restquery.execute",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/QueryResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "413": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "415": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "422": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "writeSchema": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/MutationActionParameter"}
+      ],
+      "get": {
+        "operationId": "getFormRecordWriteSchema", "security": [{"bearerAuth": []}],
+        "x-harpy-permission-by-action": {"create": "forms.records.create", "update": "forms.records.update"},
+        "x-harpy-authority-by-action": {"create": "forms.record_kernel.create", "update": "forms.record_kernel.update"},
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/WriteSchemaResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "options": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FieldParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/MutationActionParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/OptionLimitParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/OptionAfterParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/OptionSearchParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/OptionValueParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/OptionLabelFieldParameter"}
+      ],
+      "get": {
+        "operationId": "listFormRecordOptions", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.read",
+        "x-harpy-authorities": ["restquery.execute", "forms.record_kernel.create", "forms.record_kernel.update"],
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/OptionResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "422": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "createValidation": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "post": {
+        "operationId": "validateFormRecordCreate", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.create", "x-harpy-authority": "forms.record_kernel.create",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "forms-record-v2.schemas.json#/$defs/RecordDocument"}}}},
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/ValidationResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "413": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "415": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "422": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "updateValidation": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/RecordIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/IfMatchParameter"}
+      ],
+      "post": {
+        "operationId": "validateFormRecordUpdate", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.update", "x-harpy-authority": "forms.record_kernel.update",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "forms-record-v2.schemas.json#/$defs/RecordDocument"}}}},
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/ValidationResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "404": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "409": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "413": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "415": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "422": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "428": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "print": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/RecordIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "get": {
+        "operationId": "printFormRecord", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.read", "x-harpy-authority": "forms.record_kernel.get",
+        "responses": {"200": {"description": "Authorized record PDF", "headers": {"Cache-Control": {"schema": {"const": "private, no-store"}}}, "content": {"application/pdf": {"schema": {"type": "string", "format": "binary"}}}}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "404": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "item": {
+      "parameters": [
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/FormVersionIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/PublicationIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/RecordIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "forms-record-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "get": {
+        "operationId": "getFormRecord", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.read", "x-harpy-authority": "forms.record_kernel.get",
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/RecordResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "404": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "patch": {
+        "operationId": "updateFormRecord", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.update", "x-harpy-authority": "forms.record_kernel.update",
+        "parameters": [{"$ref": "forms-record-v2.schemas.json#/$defs/IdempotencyKeyParameter"}, {"$ref": "forms-record-v2.schemas.json#/$defs/IfMatchParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "forms-record-v2.schemas.json#/$defs/RecordDocument"}}}},
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/MutationResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "404": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "409": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "413": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "415": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "422": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "428": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "delete": {
+        "operationId": "deleteFormRecord", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "forms.records.delete", "x-harpy-authority": "forms.record_kernel.delete",
+        "parameters": [{"$ref": "forms-record-v2.schemas.json#/$defs/IdempotencyKeyParameter"}, {"$ref": "forms-record-v2.schemas.json#/$defs/IfMatchParameter"}],
+        "responses": {"200": {"$ref": "forms-record-v2.schemas.json#/$defs/MutationResponse"}, "400": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "401": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "403": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "404": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "409": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "428": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}, "503": {"$ref": "forms-record-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    }
+  }
+}

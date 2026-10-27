@@ -1,0 +1,194 @@
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  secret-projector:
+    volumes:
+      - local-secret-recovery-minio:/targets/recovery-minio
+      - local-secret-recovery-s3-init:/targets/recovery-s3-init
+      - local-secret-recovery-backup:/targets/recovery-backup
+      - local-secret-recovery-restore:/targets/recovery-restore
+      - local-secret-recovery-operator:/targets/recovery-operator
+      - local-recovery-key-state:/targets/recovery-key-state
+      - local-restore-state:/targets/restore-state
+
+  recovery-minio:
+    <<: *logging
+    image: minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER_FILE: /run/secrets/recovery-minio-root-access-key.txt
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/recovery-minio-root-secret-key.txt
+    command: ["server", "/data", "--address", ":9000"]
+    volumes:
+      - recovery-minio-data:/data
+      - local-secret-recovery-minio:/run/secrets:ro
+    networks: [local]
+
+  recovery-s3-owner:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/s3-owner-proxy"]
+    environment:
+      S3_OWNER_PROXY_LISTEN_ADDR: 0.0.0.0:9000
+      S3_OWNER_PROXY_UPSTREAM_URL: http://recovery-minio:9000
+      S3_OWNER_EXPECTED_BUCKET_OWNER: "210987654321"
+    depends_on:
+      recovery-minio:
+        condition: service_started
+    healthcheck:
+      test: [CMD, /app/local-health, -http, http://127.0.0.1:9000/livez, -timeout, 2s]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks: [local]
+
+  recovery-s3-init:
+    image: minio/mc@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727
+    entrypoint: ["/bin/sh", "/scripts/init-recovery-s3.sh"]
+    volumes:
+      - ./scripts:/scripts:ro
+      - local-secret-recovery-s3-init:/run/secrets:ro
+    depends_on:
+      minio:
+        condition: service_started
+      recovery-minio:
+        condition: service_started
+    networks: [local]
+
+  recovery-infra-check:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/local-health"]
+    command:
+      - -timeout
+      - 3m
+      - -http
+      - http://s3-owner:9000/livez
+      - -http
+      - http://recovery-s3-owner:9000/livez
+    networks: [local]
+
+  database-backup-executor:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/core-migrator", "database-backup-executor"]
+    env_file: ./state/secrets/database-backup-executor.env
+    volumes:
+      - local-secret-recovery-backup:/run/secrets:ro
+      - release-state:/run/release:ro
+      - local-recovery-signing:/run/recovery-signing:ro
+      - local-recovery-key-state:/run/recovery-state
+    depends_on:
+      postgres:
+        condition: service_healthy
+      s3-owner:
+        condition: service_healthy
+      recovery-s3-owner:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, /app/local-health, -http, http://127.0.0.1:9000/readyz, -timeout, 2s]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+    networks: [local]
+
+  database-restore:
+    image: harpy/backend-v2-local:dev
+    restart: "no"
+    entrypoint: ["/app/core-migrator", "database-restore"]
+    env_file: ./state/secrets/database-restore.env
+    volumes:
+      - local-secret-recovery-restore:/run/secrets:ro
+      - release-state:/run/release:ro
+      - local-recovery-signing:/run/recovery-signing:ro
+      - local-recovery-key-state:/run/recovery-state:ro
+      - local-restore-state:/run/restore-state
+      - ./state/recovery/handoff:/run/handoff:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      recovery-s3-owner:
+        condition: service_healthy
+    networks: [local]
+
+  database-rehydrate:
+    image: harpy/backend-v2-local:dev
+    restart: "no"
+    entrypoint: ["/app/core-migrator", "database-restore"]
+    env_file: ./state/secrets/database-rehydrate.env
+    volumes:
+      - local-secret-recovery-restore:/run/secrets:ro
+      - release-state:/run/release:ro
+      - local-recovery-signing:/run/recovery-signing:ro
+      - local-restore-state:/run/restore-state
+      - ./state/recovery/handoff:/run/handoff:ro
+    depends_on:
+      recovery-s3-owner:
+        condition: service_healthy
+    networks: [local]
+
+  local-recovery-state:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/local-recovery-state"]
+    volumes:
+      - local-restore-state:/run/restore-state
+      - local-recovery-signing:/run/recovery-signing:ro
+      - postgres-data:/probe/postgres:ro
+      - local-installation-state:/probe/policy:ro
+      - ./state/recovery/handoff:/run/handoff
+    networks: [local]
+
+  restore-identity-reconcile:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-operator", "reconcile-restored-identity"]
+    env_file: ./state/secrets/operator-restore-identity.env
+    volumes:
+      - local-secret-recovery-operator:/run/secrets:ro
+      - local-restore-state:/run/restore-state:ro
+      - local-recovery-signing:/run/recovery-signing:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  restore-license-reconcile:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-operator", "reconcile-restored-license"]
+    env_file: ./state/secrets/operator-restore-license.env
+    volumes:
+      - local-secret-recovery-operator:/run/secrets:ro
+      - local-restore-state:/run/restore-state:ro
+      - local-recovery-signing:/run/recovery-signing:ro
+      - local-dev-authority:/run/dev-authority:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  volume-catalog:
+    volumes:
+      - recovery-minio-data:/catalog/recovery-minio:ro
+      - local-secret-recovery-minio:/catalog/secret-recovery-minio:ro
+      - local-secret-recovery-s3-init:/catalog/secret-recovery-s3-init:ro
+      - local-secret-recovery-backup:/catalog/secret-recovery-backup:ro
+      - local-secret-recovery-restore:/catalog/secret-recovery-restore:ro
+      - local-secret-recovery-operator:/catalog/secret-recovery-operator:ro
+      - local-recovery-key-state:/catalog/recovery-key-state:ro
+      - local-restore-state:/catalog/restore-state:ro
+
+volumes:
+  recovery-minio-data:
+  local-secret-recovery-minio:
+  local-secret-recovery-s3-init:
+  local-secret-recovery-backup:
+  local-secret-recovery-restore:
+  local-secret-recovery-operator:
+  local-recovery-key-state:
+  local-restore-state:

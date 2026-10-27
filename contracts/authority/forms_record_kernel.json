@@ -1,0 +1,9 @@
+{"version":2,"authorities":[
+  {"id":"forms.record_kernel.authorize_mutation","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"forms.record_kernel.authorize_read","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"forms.record_kernel.create","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms","documents"],"ordered_domains":["billing","documents","forms"],"participants":["documents","forms"]},
+  {"id":"forms.record_kernel.delete","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms","documents"],"ordered_domains":["billing","documents","forms"],"participants":["documents","forms"]},
+  {"id":"forms.record_kernel.get","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"forms.record_kernel.list","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
+  {"id":"forms.record_kernel.update","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms","documents"],"ordered_domains":["billing","documents","forms"],"participants":["documents","forms"]}
+]}

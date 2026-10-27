@@ -1,0 +1,81 @@
+package restqueryv1
+
+import (
+	"reflect"
+	"testing"
+)
+
+func TestIssueCatalogIsExhaustive(t *testing.T) {
+	t.Parallel()
+	expected := []IssueCode{
+		"ARITY_MISMATCH",
+		"AST_NODE_COUNT_EXCEEDED",
+		"BATCH_COUNT_EXCEEDED",
+		"BODY_SIZE_EXCEEDED",
+		"BOOLEAN_DEPTH_EXCEEDED",
+		"CAPABILITY_REQUIRED",
+		"CURSOR_SIZE_EXCEEDED",
+		"FIELD_DUPLICATE",
+		"FIELD_FORBIDDEN",
+		"FIELD_UNKNOWN",
+		"FUNCTION_NOT_ALLOWED",
+		"FUNCTION_UNKNOWN",
+		"GROUP_COUNT_EXCEEDED",
+		"HAVING_COUNT_EXCEEDED",
+		"INCLUDE_DEPTH_EXCEEDED",
+		"INCLUDE_EDGE_COUNT_EXCEEDED",
+		"INCLUDE_RESULT_COUNT_EXCEEDED",
+		"INDEX_INVALID",
+		"INDEX_NON_CONTIGUOUS",
+		"ITEM_COUNT_EXCEEDED",
+		"LITERAL_COUNT_EXCEEDED",
+		"MEASURE_COUNT_EXCEEDED",
+		"MEMBER_DUPLICATE",
+		"MEMBER_FORBIDDEN",
+		"MEMBER_REQUIRED",
+		"MEMBER_UNKNOWN",
+		"NAME_DUPLICATE",
+		"NAME_INVALID",
+		"NAME_RESERVED",
+		"NFC_REQUIRED",
+		"NUL_FORBIDDEN",
+		"OPERAND_COUNT_EXCEEDED",
+		"OPERATOR_NOT_ALLOWED",
+		"OPERATOR_UNKNOWN",
+		"PAGE_ORDINAL_OVERFLOW",
+		"PAGE_SIZE_EXCEEDED",
+		"PAGE_SIZE_MISMATCH",
+		"PARAMETER_ARITY_MISMATCH",
+		"PARAMETER_REQUIRED",
+		"PARAMETER_UNKNOWN",
+		"PERCENT_ENCODING_INVALID",
+		"PLANNER_COST_EXCEEDED",
+		"PREDICATE_COUNT_EXCEEDED",
+		"QUERY_SIZE_EXCEEDED",
+		"RAW_PLUS_FORBIDDEN",
+		"REFERENCE_INVALID",
+		"RELATION_CYCLE",
+		"RELATION_UNKNOWN",
+		"RESULT_COUNT_EXCEEDED",
+		"SEARCH_SIZE_EXCEEDED",
+		"SELECT_COUNT_EXCEEDED",
+		"SORT_COUNT_EXCEEDED",
+		"TYPE_MISMATCH",
+		"UTF8_INVALID",
+		"VALUE_NOT_ALLOWED",
+		"VALUE_NOT_CANONICAL",
+		"VALUE_OUT_OF_RANGE",
+	}
+	if actual := IssueCodes(); !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("issue catalog drifted\nwant: %#v\n got: %#v", expected, actual)
+	}
+}
+
+func TestIssueCatalogReturnsCopy(t *testing.T) {
+	t.Parallel()
+	catalog := IssueCodes()
+	catalog[0] = "CHANGED"
+	if IssueCodes()[0] != IssueArityMismatch {
+		t.Fatal("issue catalog exposed mutable storage")
+	}
+}

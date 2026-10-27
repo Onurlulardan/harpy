@@ -1,0 +1,45 @@
+name: harpy-v2-integration
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.3-pg18-bookworm@sha256:c8a919765f2ef63681329fa21021b830cd4d79d1165bdca730dd016014e4da84
+    environment:
+      POSTGRES_DB: harpy_integration
+      POSTGRES_USER: harpy_bootstrap
+      POSTGRES_PASSWORD: harpy_integration_only
+      POSTGRES_INITDB_ARGS: >-
+        --encoding=UTF8
+        --locale=en_US.utf8
+        --data-checksums
+        --auth-host=scram-sha-256
+        --auth-local=scram-sha-256
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - "127.0.0.1:${HARPY_PG18_PORT:-55432}:5432"
+    tmpfs:
+      - /var/lib/postgresql:rw,noexec,nosuid,size=1g
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U harpy_bootstrap -d harpy_integration && test \"$$(PGPASSWORD=$${POSTGRES_PASSWORD} psql -h 127.0.0.1 -U harpy_bootstrap -d harpy_integration -Atqc 'SHOW data_checksums')\" = on"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+      start_period: 3s
+    stop_grace_period: 10s
+
+  rabbitmq:
+    image: rabbitmq:4.3.2-alpine@sha256:835cbc6fabceedef7a3b0ce3195a17adccb753a3ba645bdd61c5557b6e4bf580
+    environment:
+      RABBITMQ_DEFAULT_USER: harpy_worker
+      RABBITMQ_DEFAULT_PASS: harpy_integration_only
+      RABBITMQ_DEFAULT_VHOST: harpy_integration
+    ports:
+      - "127.0.0.1:${HARPY_RABBITMQ_PORT:-55672}:5672"
+    tmpfs:
+      - /var/lib/rabbitmq:rw,noexec,nosuid,size=512m
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
+    stop_grace_period: 20s

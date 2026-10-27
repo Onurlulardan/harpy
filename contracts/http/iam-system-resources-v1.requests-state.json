@@ -1,0 +1,8 @@
+{
+  "schemas": {
+    "OrganizationState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state"], "properties": {"state": {"const": "SUSPENDED"}}
+    }
+  }
+}

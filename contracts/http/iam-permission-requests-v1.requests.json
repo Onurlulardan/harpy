@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://http/iam-permission-requests-v1/requests",
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f-]{36}$"},
+    "item": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_kind", "target_id", "permission_id"],
+      "properties": {
+        "target_kind": {"enum": ["USER", "ROLE", "ORGANIZATION"]},
+        "target_id": {"$ref": "#/$defs/uuid"},
+        "permission_id": {"$ref": "#/$defs/uuid"}
+      }
+    },
+    "create": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "expires_at", "items"],
+      "properties": {
+        "mode": {"enum": ["SELF_SERVICE", "PRIVILEGED"]},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "items": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"$ref": "#/$defs/item"}}
+      }
+    },
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_state"],
+      "properties": {"expected_state": {"const": "PENDING"}}
+    },
+    "decide": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_state", "review_task_id"],
+      "properties": {
+        "expected_state": {"const": "IN_REVIEW"},
+        "review_task_id": {"$ref": "#/$defs/uuid"}
+      }
+    },
+    "terminal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_state"],
+      "properties": {"expected_state": {"enum": ["PENDING", "IN_REVIEW"]}}
+    }
+  }
+}

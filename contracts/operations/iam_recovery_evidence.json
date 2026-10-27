@@ -1,0 +1,4 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/recoveryevidence","layer":"adapters/postgres","resource":"recoveryevidence","operation":"read","source":"core/internal/modules/iam/adapters/postgres/recoveryevidence/read_owner_anchors.go","test":"core/internal/modules/iam/adapters/postgres/recoveryevidence/read_owner_anchors_test.go","application_operation":"core/internal/modules/iam/application/recoveryevidence/read_owner_anchors.go"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/recoveryevidence","layer":"application","resource":"recoveryevidence","operation":"read","source":"core/internal/modules/iam/application/recoveryevidence/read_owner_anchors.go","test":"core/internal/modules/iam/application/recoveryevidence/read_owner_anchors_test.go","authority_id":"iam.recovery_evidence.read"}
+]}

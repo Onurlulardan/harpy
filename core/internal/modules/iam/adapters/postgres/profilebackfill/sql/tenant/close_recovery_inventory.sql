@@ -1,0 +1,1 @@
+CLOSE iam_profile_recovery_inventory_v1;

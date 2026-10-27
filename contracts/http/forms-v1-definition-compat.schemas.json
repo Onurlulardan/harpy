@@ -1,0 +1,35 @@
+{
+  "parameters": {
+    "TenantIDParameter":{"name":"X-Tenant-ID","in":"header","required":true,"schema":{"type":"string","format":"uuid"}},
+    "TenantSlugParameter":{"name":"X-Tenant-Slug","in":"header","required":true,"schema":{"type":"string","minLength":1,"maxLength":100}}
+  },
+  "schemas": {
+    "Error": {"type":"object","additionalProperties":false,"required":["success","error","code"],"properties":{"success":{"const":false},"error":{"type":"string"},"code":{"type":"string"}}},
+    "Pagination": {"type":"object","additionalProperties":false,"required":["page","limit","total","total_pages","has_next","has_prev"],"properties":{"page":{"type":"integer","minimum":1},"limit":{"type":"integer","minimum":1,"maximum":100},"total":{"type":"integer","minimum":0},"total_pages":{"type":"integer","minimum":0},"has_next":{"type":"boolean"},"has_prev":{"type":"boolean"}}},
+    "Summary": {"type":"object","required":["id","slug","title","description","icon","tag","active_version","active_status","total_versions","is_system","has_approval_workflow","created_at","updated_at"],"properties":{"id":{"type":"string","format":"uuid"},"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"icon":{"type":"string"},"tag":{"type":"string"},"active_version":{"type":"string"},"active_version_id":{"type":"string","format":"uuid"},"active_status":{"type":"string"},"total_versions":{"type":"integer"},"is_system":{"type":"boolean"},"has_approval_workflow":{"type":"boolean"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}},
+    "Detail": {"allOf":[{"$ref":"#/schemas/Summary"},{"type":"object","required":["version","version_id","status","config"],"properties":{"version":{"type":"string"},"version_id":{"type":"string","format":"uuid"},"status":{"type":"string"},"config":{"type":"object"}}}]},
+    "Create": {"type":"object","additionalProperties":false,"required":["slug","title","config"],"properties":{"slug":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"icon":{"type":"string"},"tag":{"type":"string"},"version":{"type":"string"},"status":{"type":"string"},"config":{"type":"object"}}},
+    "Update": {"type":"object","additionalProperties":false,"minProperties":1,"properties":{"title":{"type":"string"},"description":{"type":"string"},"icon":{"type":"string"},"tag":{"type":"string"},"status":{"type":"string"},"create_new_version":{"type":"boolean"},"config":{"type":"object"}}},
+    "Validate": {"type":"object","additionalProperties":false,"required":["mode","slug","title","config"],"properties":{"mode":{"enum":["create","update"]},"id":{"type":"string","format":"uuid"},"slug":{"type":"string"},"title":{"type":"string"},"config":{"type":"object"}}}
+  },
+  "requestBodies": {
+    "Create":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/schemas/Create"}}}},
+    "Update":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/schemas/Update"}}}},
+    "Validate":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/schemas/Validate"}}}}
+  },
+  "responses": {
+    "Error":{"description":"Deterministic compatibility error envelope.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}},
+    "List":{"description":"Merged system and canonical custom descriptors.","content":{"application/json":{"schema":{"type":"object"}}}},
+    "Detail":{"description":"V1 detail projection with canonical revision ETag.","content":{"application/json":{"schema":{"type":"object"}}}},
+    "Versions":{"description":"Bounded canonical version page.","content":{"application/json":{"schema":{"type":"object"}}}},
+    "Slug":{"description":"Permanent slug ownership result.","content":{"application/json":{"schema":{"type":"object"}}}},
+    "Message":{"description":"Successful compatibility command.","content":{"application/json":{"schema":{"type":"object"}}}},
+    "PublicationAccepted":{"description":"Canonical publication operation accepted.","content":{"application/json":{"schema":{"type":"object"}}}},
+    "Invalid":{"description":"Unknown or invalid request member.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}},
+    "Forbidden":{"description":"Protected system definition.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}},
+    "NotFound":{"description":"Definition not found.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}},
+    "Conflict":{"description":"CAS or lifecycle conflict.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}},
+    "Upgrade":{"description":"Dedicated IAM permission-request client required.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}},
+    "Unavailable":{"description":"Authority or retirement evidence unavailable.","content":{"application/json":{"schema":{"$ref":"#/schemas/Error"}}}}
+  }
+}

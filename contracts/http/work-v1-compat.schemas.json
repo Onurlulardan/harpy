@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$defs":{
+    "LegacyID":{"type":"string","format":"uuid"},
+    "LegacyBoard":{"type":"object","additionalProperties":true,"required":["id","name"],"properties":{"id":{"$ref":"#/$defs/LegacyID"},"name":{"type":"string"}}},
+    "LegacyTask":{"type":"object","additionalProperties":true,"required":["id","board_id","title","status"],"properties":{"id":{"$ref":"#/$defs/LegacyID"},"board_id":{"$ref":"#/$defs/LegacyID"},"title":{"type":"string"},"status":{"type":"string"}}},
+    "LegacyEvent":{"type":"object","additionalProperties":true,"required":["id","title"],"properties":{"id":{"$ref":"#/$defs/LegacyID"},"title":{"type":"string"}}},
+    "LegacyList":{"type":"object","additionalProperties":true,"required":["success","data"],"properties":{"success":{"const":true},"data":{"type":"array","items":{"type":"object"}}}},
+    "LegacyObject":{"type":"object","additionalProperties":true},
+    "Error":{"description":"Fail-closed compatibility error","content":{"application/json":{"schema":{"$ref":"core-api-v1.components.json#/schemas/ErrorEnvelope"}}}}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "data": {
+    "id": "018f47f4-7b1b-7000-8000-000000000001",
+    "slug": "tickets",
+    "title": "Tickets",
+    "description": "Support tickets",
+    "icon": "Ticket",
+    "version": "1.0.0",
+    "version_id": "018f47f4-7b1b-7000-8000-000000000002",
+    "status": "DRAFT",
+    "config": {"form":{"fields":[]},"slug":"tickets"},
+    "is_system": false,
+    "total_versions": 1,
+    "created_at": "2026-07-18T12:00:00Z",
+    "updated_at": "2026-07-18T12:00:00Z"
+  }
+}

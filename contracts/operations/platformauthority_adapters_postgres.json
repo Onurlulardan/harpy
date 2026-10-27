@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/adapters/postgres",
+      "layer": "adapters/postgres",
+      "resource": "platformauthority",
+      "operation": "claim",
+      "source": "core/internal/modules/platformauthority/adapters/postgres/claim_delivery.go",
+      "test": "core/internal/modules/platformauthority/adapters/postgres/claim_delivery_test.go",
+      "application_operation": "core/internal/modules/platformauthority/application/claim_delivery.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/adapters/postgres",
+      "layer": "adapters/postgres",
+      "resource": "platformauthority",
+      "operation": "complete",
+      "source": "core/internal/modules/platformauthority/adapters/postgres/complete_delivery.go",
+      "test": "core/internal/modules/platformauthority/adapters/postgres/complete_delivery_test.go",
+      "application_operation": "core/internal/modules/platformauthority/application/complete_delivery.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/adapters/postgres",
+      "layer": "adapters/postgres",
+      "resource": "platformauthority",
+      "operation": "read",
+      "source": "core/internal/modules/platformauthority/adapters/postgres/read_development_binding_input.go",
+      "test": "core/internal/modules/platformauthority/adapters/postgres/read_development_binding_input_test.go",
+      "application_operation": "core/internal/modules/platformauthority/application/read_development_binding_input.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/adapters/postgres",
+      "layer": "adapters/postgres",
+      "resource": "platformauthority",
+      "operation": "retry",
+      "source": "core/internal/modules/platformauthority/adapters/postgres/retry_delivery.go",
+      "test": "core/internal/modules/platformauthority/adapters/postgres/retry_delivery_test.go",
+      "application_operation": "core/internal/modules/platformauthority/application/retry_delivery.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/adapters/postgres",
+      "layer": "adapters/postgres",
+      "resource": "platformauthority",
+      "operation": "update",
+      "source": "core/internal/modules/platformauthority/adapters/postgres/update_delivery_import.go",
+      "test": "core/internal/modules/platformauthority/adapters/postgres/update_delivery_import_test.go",
+      "application_operation": "core/internal/modules/platformauthority/application/update_delivery_import.go"
+    }
+  ]
+}

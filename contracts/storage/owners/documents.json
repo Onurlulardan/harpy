@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "owner": {
+    "name": "documents",
+    "prefix": "documents_",
+    "scopes": ["tenant"],
+    "migration_dirs": [
+      {"path":"core/internal/modules/documents/migrations/tenant","scope":"tenant"}
+    ],
+    "static_sql_dirs": [
+      {"path":"core/internal/modules/documents/adapters/postgres/adoption/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/archive/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/deletion/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/download/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/folder/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/formscleanup/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/item/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/legalhold/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/link/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/purge/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/recovery/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/upload/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/uploadreconcile/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/documents/adapters/postgres/v1adoption/sql/tenant","scope":"tenant"}
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [],
+    "platform_routines": [],
+    "routine_execute_grants": [],
+    "platform_tables": [],
+    "foreign_keys": [],
+    "external_accesses": null,
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  },
+  "includes": [
+    "contracts/storage/fragments/documents/01_external_accesses.json"
+  ]
+}

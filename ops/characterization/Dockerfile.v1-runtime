@@ -1,0 +1,80 @@
+ARG V1_GO_IMAGE=scratch
+ARG V1_DISTROLESS_IMAGE=scratch
+ARG V1_POSTGRES_IMAGE=scratch
+
+FROM ${V1_GO_IMAGE} AS builder
+WORKDIR /src
+
+COPY go.mod go.sum ./
+RUN go mod download
+COPY shared/ ./shared/
+COPY docs/ ./docs/
+COPY migrations/ ./migrations/
+COPY cmd/ ./cmd/
+COPY locales/ ./locales/
+COPY api-gateway/ ./api-gateway/
+COPY auth-service/ ./auth-service/
+COPY permission-service/ ./permission-service/
+COPY notification-service/ ./notification-service/
+COPY document-service/ ./document-service/
+COPY log-service/ ./log-service/
+COPY form-engine-service/ ./form-engine-service/
+COPY workflow-service/ ./workflow-service/
+COPY openapi-service/ ./openapi-service/
+COPY ai-chat-service/ ./ai-chat-service/
+COPY mcp-service/ ./mcp-service/
+
+ARG V1_SOURCE_VERSION
+RUN mkdir -p /out
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/api-gateway ./api-gateway
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/auth-service ./auth-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/permission-service ./permission-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/notification-service ./notification-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/document-service ./document-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/log-service ./log-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/form-engine-service ./form-engine-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/workflow-service ./workflow-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/openapi-service ./openapi-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/ai-chat-service ./ai-chat-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -ldflags "-X main.Version=${V1_SOURCE_VERSION}" -o /out/mcp-service ./mcp-service
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -o /out/migrate ./cmd/migrate
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -o /out/seed ./cmd/seed
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
+    -o /out/backfill-form-record-index ./cmd/backfill-form-record-index
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -o /out/healthcheck ./cmd/healthcheck
+
+FROM ${V1_DISTROLESS_IMAGE} AS runtime
+ARG V1_SOURCE_VERSION
+LABEL org.opencontainers.image.revision="${V1_SOURCE_VERSION}"
+WORKDIR /home/nonroot
+COPY --from=builder --chown=65532:65532 /out/ /opt/harpy/bin/
+COPY --from=builder --chown=65532:65532 /src/shared/mail_templates/ /mail_templates/
+COPY --from=builder --chown=65532:65532 /src/shared/modules/ /shared/modules/
+COPY --from=builder --chown=65532:65532 /src/locales/ /locales/
+COPY --from=builder --chown=65532:65532 \
+    /src/ai-chat-service/ai-knowledge/ /home/nonroot/ai-chat-service/ai-knowledge/
+USER 65532:65532
+ENTRYPOINT []
+
+FROM ${V1_POSTGRES_IMAGE} AS auth-runtime
+ARG V1_SOURCE_VERSION
+LABEL org.opencontainers.image.revision="${V1_SOURCE_VERSION}"
+WORKDIR /home/postgres
+COPY --from=builder --chown=postgres:postgres /out/auth-service /opt/harpy/bin/auth-service
+COPY --from=builder --chown=postgres:postgres /out/healthcheck /opt/harpy/bin/healthcheck
+COPY --from=builder --chown=postgres:postgres /src/shared/mail_templates/ /mail_templates/
+COPY --from=builder --chown=postgres:postgres /src/shared/modules/ /shared/modules/
+COPY --from=builder --chown=postgres:postgres /src/locales/ /locales/
+USER postgres
+ENTRYPOINT []

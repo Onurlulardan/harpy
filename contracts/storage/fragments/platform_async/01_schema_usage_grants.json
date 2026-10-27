@@ -1,0 +1,10 @@
+
+{
+  "version": 1,
+  "owner": "platform_async",
+  "schema_usage_grants": [
+    {"schema":"platform","role":"harpy_adopter","contract":"ADR-0056"},
+    {"schema":"platform","role":"harpy_cluster_admin","contract":"ADR-0056"},
+    {"schema":"platform","role":"harpy_runtime","contract":"ADR-0056"}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "iam.recovery_anchor.create",
+      "owner": "iam",
+      "scope_source": "actor_tenant",
+      "required_groups": ["iam_system_resources"],
+      "ordered_domains": ["iam", "system_resource_layout"],
+      "participants": ["iam", "system_resource_layout"]
+    },
+    {
+      "id": "iam.recovery_anchor.delete",
+      "owner": "iam",
+      "scope_source": "actor_tenant",
+      "required_groups": ["iam_system_resources"],
+      "ordered_domains": ["iam", "system_resource_layout"],
+      "participants": ["iam", "system_resource_layout"]
+    },
+    {
+      "id": "iam.recovery_anchor.list",
+      "owner": "iam",
+      "scope_source": "actor_tenant",
+      "required_groups": ["iam_system_resources"],
+      "ordered_domains": ["iam", "system_resource_layout"],
+      "participants": ["iam", "system_resource_layout"]
+    },
+    {
+      "id": "iam.recovery_anchor.reconcile",
+      "owner": "iam",
+      "scope_source": "actor_tenant",
+      "required_groups": ["iam_system_resources"],
+      "ordered_domains": ["iam", "system_resource_layout"],
+      "participants": ["iam", "system_resource_layout"]
+    }
+  ]
+}

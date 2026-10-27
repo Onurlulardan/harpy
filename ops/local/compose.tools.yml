@@ -1,0 +1,197 @@
+services:
+  secret-projector:
+    image: harpy/backend-v2-local:dev
+    user: "0:0"
+    network_mode: none
+    entrypoint: ["/app/local-secret-projector"]
+    volumes:
+      - ./state/secrets:/source:ro
+      - local-secret-postgres:/targets/postgres
+      - local-secret-rabbitmq:/targets/rabbitmq
+      - local-secret-s3-init:/targets/s3-init
+      - local-secret-kms:/targets/kms
+      - local-secret-mailpit:/targets/mailpit
+      - local-secret-infra-check:/targets/infra-check
+      - local-secret-local-release:/targets/local-release
+      - local-secret-migrator:/targets/migrator
+      - local-secret-schema:/targets/schema
+      - local-secret-operator:/targets/operator
+      - local-secret-api:/targets/api
+      - local-secret-worker:/targets/worker
+      - local-secret-mcp:/targets/mcp
+      - local-secret-ai:/targets/ai
+      - foundation-release-state:/targets/foundation-release
+      - release-state:/targets/release
+      - forms-export-spool:/targets/forms-export
+      - analytics-dashboard-export-spool:/targets/analytics-dashboard-export
+      - forms-import-staging:/targets/forms-import
+      - iam-transfer-spool:/targets/iam-transfer
+      - ai-system-knowledge:/targets/ai-system-knowledge
+      - mailpit-data:/targets/mailpit-data
+      - local-installation-state:/targets/installation
+      - local-dev-authority:/targets/dev-authority
+      - local-recovery-signing:/targets/recovery-signing
+
+  s3-init:
+    image: minio/mc@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727
+    entrypoint: ["/bin/sh", "/scripts/init-s3.sh"]
+    volumes:
+      - ./scripts:/scripts:ro
+      - local-secret-s3-init:/run/secrets:ro
+    depends_on:
+      minio:
+        condition: service_started
+    networks: [local]
+
+  infra-check:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/local-health"]
+    command:
+      - -timeout
+      - 3m
+      - -ca-file
+      - /run/secrets/local-ca.crt
+      - -tcp
+      - postgres:5432
+      - -tcp
+      - rabbitmq:5672
+      - -tcp
+      - minio:9000
+      - -tcp
+      - clamav:3310
+      - -http
+      - http://s3-owner:9000/livez
+      - -http
+      - http://mailpit:8025/readyz
+      - -http
+      - https://kms-emulator/livez
+    volumes:
+      - local-secret-infra-check:/run/secrets:ro
+    networks: [local]
+
+  runtime-check:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/local-health"]
+    command:
+      - -timeout
+      - 2m
+      - -http
+      - http://tenant-migration-executor:9000/readyz
+      - -http
+      - http://schema-executor:9000/readyz
+      - -http
+      - http://core-api:9000/readyz
+      - -http
+      - http://core-worker:9000/readyz
+    networks: [local]
+
+  local-release:
+    image: harpy/backend-v2-local:dev
+    build:
+      context: ../..
+      dockerfile: ops/local/Dockerfile
+    entrypoint: ["/app/local-release"]
+    volumes:
+      - local-secret-local-release:/run/secrets:ro
+      - release-state:/run/release
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  foundation-local-release:
+    image: harpy/backend-v2-local-foundation:dev
+    build:
+      context: ../..
+      dockerfile: ops/local/Dockerfile
+      args:
+        LOCAL_RELEASE_CONTRACT_COMMAND: foundation-contract
+    entrypoint: ["/app/local-release"]
+    volumes:
+      - local-secret-local-release:/run/secrets:ro
+      - foundation-release-state:/run/release
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  core-migrator:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-migrator"]
+    env_file: ./state/secrets/migrator.env
+    environment:
+      HARPY_LOG_LEVEL: debug
+    volumes:
+      - local-secret-migrator:/run/secrets:ro
+      - release-state:/run/release:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  foundation-core-migrator:
+    image: harpy/backend-v2-local-foundation:dev
+    entrypoint: ["/app/core-migrator"]
+    env_file: ./state/secrets/migrator.env
+    environment:
+      HARPY_LOG_LEVEL: debug
+    volumes:
+      - local-secret-migrator:/run/secrets:ro
+      - foundation-release-state:/run/release:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  installation-artifacts:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-operator", "local-artifacts"]
+    volumes:
+      - local-secret-operator:/run/secrets:ro
+      - release-state:/run/release:ro
+      - local-installation-state:/run/installation
+      - local-dev-authority:/run/dev-authority
+    networks: [local]
+
+  dev-license:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-operator", "local-license"]
+    env_file: ./state/secrets/operator.env
+    volumes:
+      - local-secret-operator:/run/secrets:ro
+      - local-installation-state:/run/installation:ro
+      - local-dev-authority:/run/dev-authority:ro
+      - local-recovery-signing:/run/recovery-signing
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  core-operator:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-operator"]
+    command: ["initialize"]
+    env_file: ./state/secrets/operator.env
+    volumes:
+      - local-secret-operator:/run/secrets:ro
+      - local-installation-state:/run/installation
+      - local-dev-authority:/run/dev-authority
+      - local-recovery-signing:/run/recovery-signing
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
+  installation-delivery:
+    image: harpy/backend-v2-local:dev
+    entrypoint: ["/app/core-operator", "local-delivery"]
+    env_file: ./state/secrets/operator.env
+    volumes:
+      - local-secret-operator:/run/secrets:ro
+      - local-installation-state:/run/installation
+      - local-dev-authority:/run/dev-authority:ro
+      - local-recovery-signing:/run/recovery-signing
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]

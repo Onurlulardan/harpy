@@ -1,0 +1,3 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/invoice","layer":"adapters/postgres","resource":"invoice","operation":"finalize","source":"core/internal/modules/billing/adapters/postgres/invoice/finalize.go","test":"core/internal/modules/billing/adapters/postgres/invoice/finalize_test.go","application_operation":"core/internal/modules/billing/application/invoice/finalize.go"}
+]}

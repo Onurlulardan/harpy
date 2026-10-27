@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "platformauthority",
+    "prefix": "platformauthority_",
+    "scopes": ["platform"],
+    "migration_dirs": [
+      {"path": "core/internal/modules/platformauthority/migrations/platform", "scope": "platform"}
+    ],
+    "static_sql_dirs": [
+      {"path": "core/internal/modules/platformauthority/adapters/postgres/recoveryevidence/sql/platform", "scope": "platform"},
+      {"path": "core/internal/modules/platformauthority/adapters/postgres/sql/platform", "scope": "platform"}
+    ],
+    "platform_schemas": [],
+    "schema_usage_grants": [
+      {"schema": "platform", "role": "harpy_backup_reader", "contract": "ADR-0123"},
+      {"schema": "platform", "role": "harpy_runtime", "contract": "ADR-0126"}
+    ],
+    "platform_routines": [
+      "platform.platformauthority_bind_v1",
+      "platform.platformauthority_bind_v2",
+      "platform.platformauthority_commit_v1",
+      "platform.platformauthority_delivery_await_import_v1",
+      "platform.platformauthority_delivery_claim_v1",
+      "platform.platformauthority_delivery_retry_v1",
+      "platform.platformauthority_delivery_succeed_v1",
+      "platform.platformauthority_development_binding_input_v1",
+      "platform.platformauthority_fence_signer_v1",
+      "platform.platformauthority_get_binding_v1",
+      "platform.platformauthority_get_binding_v2",
+      "platform.platformauthority_get_head_v1",
+      "platform.platformauthority_get_operation_v1",
+      "platform.platformauthority_guard_binding_v2",
+      "platform.platformauthority_guard_head_v1",
+      "platform.platformauthority_guard_operation_v1",
+      "platform.platformauthority_installation_head_pin_v1",
+      "platform.platformauthority_installation_head_pin_v2",
+      "platform.platformauthority_installation_head_pin_v3",
+      "platform.platformauthority_installation_owner_bind_v1",
+      "platform.platformauthority_installation_owner_bind_v2",
+      "platform.platformauthority_installation_owner_bind_v3",
+      "platform.platformauthority_prepare_v1",
+      "platform.platformauthority_prepare_v2",
+      "platform.platformauthority_record_ack_v1",
+      "platform.platformauthority_recovery_head_evidence_v1",
+      "platform.platformauthority_reject_mutation_v1",
+      "platform.platformauthority_rotate_signer_v1",
+      "platform.platformauthority_saas_binding_read_v1"
+    ],
+    "routine_execute_grants": [
+      {"routine": "platform.platformauthority_bind_v1", "identity_arguments": "uuid,uuid,text,text,uuid,text,text,bigint,text,text,text,bytea,timestamptz", "role": "harpy_runtime", "contract": "ADR-0127"},
+      {"routine": "platform.platformauthority_bind_v2", "identity_arguments": "uuid,uuid,text,text,uuid,text,text,bigint,text,text,text,bytea,timestamptz", "role": "harpy_runtime", "contract": "ADR-0127"},
+      {"routine": "platform.platformauthority_commit_v1", "identity_arguments": "uuid,timestamptz", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_delivery_await_import_v1", "identity_arguments": "uuid,uuid,bigint", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_delivery_claim_v1", "identity_arguments": "uuid", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_delivery_retry_v1", "identity_arguments": "uuid,uuid,bigint,text,boolean", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_delivery_succeed_v1", "identity_arguments": "uuid,uuid,bigint", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_development_binding_input_v1", "identity_arguments": "uuid", "role": "harpy_runtime", "contract": "ADR-0119"},
+      {"routine": "platform.platformauthority_fence_signer_v1", "identity_arguments": "uuid,bigint,text,text,timestamptz", "role": "harpy_runtime", "contract": "ADR-0127"},
+      {"routine": "platform.platformauthority_get_binding_v1", "identity_arguments": "uuid", "role": "harpy_runtime", "contract": "ADR-0127"},
+      {"routine": "platform.platformauthority_get_binding_v2", "identity_arguments": "uuid", "role": "harpy_runtime", "contract": "ADR-0127"},
+      {"routine": "platform.platformauthority_get_head_v1", "identity_arguments": "uuid,text,uuid", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_get_operation_v1", "identity_arguments": "uuid", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_installation_head_pin_v1", "identity_arguments": "uuid,uuid,uuid,name,uuid,text,uuid,bigint,text,text,text,text,text", "role": "harpy_runtime", "contract": "ADR-0118"},
+      {"routine": "platform.platformauthority_installation_head_pin_v2", "identity_arguments": "uuid,uuid,uuid,name,uuid,text,uuid,bigint,text,text,text,text,text", "role": "harpy_runtime", "contract": "ADR-0119"},
+      {"routine": "platform.platformauthority_installation_head_pin_v3", "identity_arguments": "uuid,uuid,uuid,name,uuid,text,uuid,bigint,text,text,text,text,text", "role": "harpy_runtime", "contract": "ADR-0122"},
+      {"routine": "platform.platformauthority_installation_owner_bind_v1", "identity_arguments": "uuid,uuid,uuid,name,text,uuid,uuid,uuid,text", "role": "harpy_runtime", "contract": "ADR-0118"},
+      {"routine": "platform.platformauthority_installation_owner_bind_v2", "identity_arguments": "uuid,uuid,uuid,name,text,uuid,uuid,uuid,text", "role": "harpy_runtime", "contract": "ADR-0119"},
+      {"routine": "platform.platformauthority_installation_owner_bind_v3", "identity_arguments": "uuid,uuid,uuid,name,text,uuid,uuid,uuid,text", "role": "harpy_runtime", "contract": "ADR-0122"},
+      {"routine": "platform.platformauthority_prepare_v1", "identity_arguments": "uuid,uuid,text,text,uuid,bigint,text,text,bytea,text,bytea,text,timestamptz,timestamptz,timestamptz", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_prepare_v2", "identity_arguments": "uuid,uuid,text,text,uuid,bigint,text,text,bytea,text,bytea,text,timestamptz,timestamptz,text,timestamptz", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_record_ack_v1", "identity_arguments": "uuid,uuid,text,uuid,bigint,text,text,text,text,bytea,bigint,timestamptz", "role": "harpy_runtime", "contract": "ADR-0126"},
+      {"routine": "platform.platformauthority_recovery_head_evidence_v1", "identity_arguments": "uuid", "role": "harpy_backup_reader", "contract": "ADR-0123"},
+      {"routine": "platform.platformauthority_rotate_signer_v1", "identity_arguments": "uuid,uuid,bigint,text,bigint,text,text,text,timestamptz", "role": "harpy_runtime", "contract": "ADR-0127"},
+      {"routine": "platform.platformauthority_saas_binding_read_v1", "identity_arguments": "uuid", "role": "harpy_runtime", "contract": "ADR-0119"}
+    ],
+    "platform_tables": [
+      "platform.platformauthority_bindings",
+      "platform.platformauthority_delivery_jobs",
+      "platform.platformauthority_heads",
+      "platform.platformauthority_installation_head_pins",
+      "platform.platformauthority_installation_owner_bindings",
+      "platform.platformauthority_operations",
+      "platform.platformauthority_receipts",
+      "platform.platformauthority_signer_events"
+    ],
+    "foreign_keys": [],
+    "external_accesses": [
+      {"access":"read","target_owner":"platformops","target":"platform.platformops_installation_recovery_identities","contract":"ADR-0119"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_assert_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_assert_v2","contract":"ADR-0119"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_step_consume_v1","contract":"ADR-0122"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_step_context_assert_v1","contract":"ADR-0122"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_onboarding_operations","contract":"ADR-0119"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_onboarding_receipts","contract":"ADR-0119"}
+    ],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  }
+}

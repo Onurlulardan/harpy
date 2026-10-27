@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/privileged-profile-defs.schema.json",
+  "$defs": {
+    "base": {
+      "type": "object",
+      "required": [
+        "HARPY_ENVIRONMENT", "HARPY_POSTGRES_ENDPOINT_KIND",
+        "HARPY_RELEASE_MANIFEST_PATH", "HARPY_RELEASE_SIGNATURE_PATH",
+        "HARPY_RELEASE_TRUST_ROOT_PATH",
+        "HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH",
+        "HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH",
+        "HARPY_CREDENTIAL_LEASE_ID"
+      ],
+      "properties": {
+        "HARPY_ENVIRONMENT": {"$ref": "config.schema.json#/$defs/environment"},
+        "HARPY_POSTGRES_ENDPOINT_KIND": {"$ref": "config.schema.json#/$defs/postgresEndpointKind"},
+        "HARPY_POSTGRES_CONNECT_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+        "HARPY_POSTGRES_CLEANUP_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+        "HARPY_LOG_LEVEL": {"$ref": "config.schema.json#/$defs/logLevel", "default": "info"},
+        "HARPY_RELEASE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RELEASE_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RELEASE_TRUST_ROOT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_CREDENTIAL_LEASE_ID": {"$ref": "config.schema.json#/$defs/uuid"},
+        "HARPY_ATTESTATION_SIGNING_KEY": {"$ref": "config.schema.json#/$defs/secret"},
+        "HARPY_ATTESTATION_SIGNING_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+      },
+      "allOf": [{"$ref": "config.schema.json#/$defs/signingKeyXor"}]
+    },
+    "clusterBootstrapVariables": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {"type": "object", "required": [
+          "HARPY_BOOTSTRAP_RECEIPT_PATH", "HARPY_ROLES_MANIFEST_PATH",
+          "HARPY_PRIVILEGES_MANIFEST_PATH", "HARPY_OWNERSHIP_MANIFEST_PATH",
+          "HARPY_BOOTSTRAP_OPERATION_PATH"
+        ], "properties": {
+          "HARPY_BOOTSTRAP_MAINTENANCE_DSN": {"$ref": "config.schema.json#/$defs/postgresDSN"},
+          "HARPY_BOOTSTRAP_MAINTENANCE_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+          "HARPY_BOOTSTRAP_TARGET_DSN": {"$ref": "config.schema.json#/$defs/postgresDSN"},
+          "HARPY_BOOTSTRAP_TARGET_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+          "HARPY_BOOTSTRAP_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_ROLES_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_PRIVILEGES_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_OWNERSHIP_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_BOOTSTRAP_OPERATION_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+        }},
+        {"$ref": "config.schema.json#/$defs/bootstrapMaintenanceDSNXor"},
+        {"$ref": "config.schema.json#/$defs/bootstrapTargetDSNXor"},
+        {"$ref": "#/$defs/bootstrapTLSRules"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "extensionAdminVariables": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {"type": "object", "required": [
+          "HARPY_EXTENSION_RECEIPT_PATH", "HARPY_EXTENSION_MANIFEST_PATH",
+          "HARPY_OWNERSHIP_MANIFEST_PATH", "HARPY_EXTENSION_OPERATION_PATH"
+        ], "properties": {
+          "HARPY_EXTENSION_ADMIN_POSTGRES_DSN": {"$ref": "config.schema.json#/$defs/postgresDSN"},
+          "HARPY_EXTENSION_ADMIN_POSTGRES_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+          "HARPY_EXTENSION_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_EXTENSION_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_OWNERSHIP_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+          "HARPY_EXTENSION_OPERATION_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+        }},
+        {"$ref": "config.schema.json#/$defs/extensionDSNXor"},
+        {"$ref": "#/$defs/extensionTLSRules"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "cutoverAdoptionVariables": {
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "HARPY_ENVIRONMENT", "HARPY_POSTGRES_ENDPOINT_KIND",
+            "HARPY_CUTOVER_LEASE_MANIFEST_PATH",
+            "HARPY_CUTOVER_LEASE_SIGNATURE_PATH", "HARPY_CUTOVER_TRUST_ROOT_PATH",
+            "HARPY_CUTOVER_SESSION_SEAL_RECEIPT_PATH",
+            "HARPY_CUTOVER_BATCH_PATH"
+          ],
+          "properties": {
+            "HARPY_ENVIRONMENT": {"$ref": "config.schema.json#/$defs/environment"},
+            "HARPY_POSTGRES_ENDPOINT_KIND": {"$ref": "config.schema.json#/$defs/postgresEndpointKind"},
+            "HARPY_CUTOVER_SOURCE_DSN": {
+              "$ref": "config.schema.json#/$defs/postgresDSN",
+              "pattern": "^postgres(?:ql)?://harpy_cutover_decoder(?::[^@\\s]*)?@"
+            },
+            "HARPY_CUTOVER_SOURCE_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_CUTOVER_TARGET_DSN": {
+              "$ref": "config.schema.json#/$defs/postgresDSN",
+              "pattern": "^postgres(?:ql)?://harpy_adopter(?::[^@\\s]*)?@"
+            },
+            "HARPY_CUTOVER_TARGET_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_POSTGRES_CONNECT_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+            "HARPY_POSTGRES_CLEANUP_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+            "HARPY_LOG_LEVEL": {"$ref": "config.schema.json#/$defs/logLevel", "default": "info"},
+            "HARPY_CUTOVER_LEASE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_LEASE_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_TRUST_ROOT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_SESSION_SEAL_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_BATCH_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+          }
+        },
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/oneShotTelemetryVariables"},
+        {"$ref": "config.schema.json#/$defs/cutoverSourceDSNXor"},
+        {"$ref": "config.schema.json#/$defs/cutoverTargetDSNXor"},
+        {"$ref": "#/$defs/cutoverTLSRules"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "cutoverFinalizationVariables": {
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "HARPY_ENVIRONMENT", "HARPY_POSTGRES_ENDPOINT_KIND",
+            "HARPY_CUTOVER_LEASE_MANIFEST_PATH",
+            "HARPY_CUTOVER_LEASE_SIGNATURE_PATH", "HARPY_CUTOVER_TRUST_ROOT_PATH",
+            "HARPY_CUTOVER_SESSION_SEAL_RECEIPT_PATH",
+            "HARPY_CUTOVER_CREDENTIAL_CLEANUP_RECEIPT_PATH",
+            "HARPY_CUTOVER_FINALIZER_LEASE_MANIFEST_PATH",
+            "HARPY_CUTOVER_FINALIZER_LEASE_SIGNATURE_PATH"
+          ],
+          "properties": {
+            "HARPY_ENVIRONMENT": {"$ref": "config.schema.json#/$defs/environment"},
+            "HARPY_POSTGRES_ENDPOINT_KIND": {"$ref": "config.schema.json#/$defs/postgresEndpointKind"},
+            "HARPY_CUTOVER_FINALIZER_DSN": {
+              "$ref": "config.schema.json#/$defs/postgresDSN",
+              "pattern": "^postgres(?:ql)?://harpy_cutover_finalizer(?::[^@\\s]*)?@"
+            },
+            "HARPY_CUTOVER_FINALIZER_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_POSTGRES_CONNECT_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+            "HARPY_POSTGRES_CLEANUP_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+            "HARPY_LOG_LEVEL": {"$ref": "config.schema.json#/$defs/logLevel", "default": "info"},
+            "HARPY_CUTOVER_LEASE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_LEASE_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_TRUST_ROOT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_SESSION_SEAL_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_CREDENTIAL_CLEANUP_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_FINALIZER_LEASE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_CUTOVER_FINALIZER_LEASE_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+          }
+        },
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/oneShotTelemetryVariables"},
+        {"$ref": "config.schema.json#/$defs/cutoverFinalizerDSNXor"},
+        {"$ref": "#/$defs/cutoverFinalizationTLSRules"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "bootstrapTLSRules": {"allOf": [
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_BOOTSTRAP_MAINTENANCE_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_BOOTSTRAP_MAINTENANCE_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_BOOTSTRAP_MAINTENANCE_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_BOOTSTRAP_MAINTENANCE_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_BOOTSTRAP_TARGET_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_BOOTSTRAP_TARGET_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_BOOTSTRAP_TARGET_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_BOOTSTRAP_TARGET_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}}
+    ]},
+    "extensionTLSRules": {"allOf": [
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_EXTENSION_ADMIN_POSTGRES_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_EXTENSION_ADMIN_POSTGRES_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_EXTENSION_ADMIN_POSTGRES_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_EXTENSION_ADMIN_POSTGRES_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}}
+    ]},
+    "cutoverTLSRules": {"allOf": [
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_CUTOVER_SOURCE_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_CUTOVER_SOURCE_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_CUTOVER_SOURCE_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_CUTOVER_SOURCE_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_CUTOVER_TARGET_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_CUTOVER_TARGET_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_CUTOVER_TARGET_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_CUTOVER_TARGET_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}}
+    ]},
+    "cutoverFinalizationTLSRules": {"allOf": [
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_CUTOVER_FINALIZER_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_CUTOVER_FINALIZER_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
+      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_CUTOVER_FINALIZER_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_CUTOVER_FINALIZER_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}}
+    ]}
+  }
+}

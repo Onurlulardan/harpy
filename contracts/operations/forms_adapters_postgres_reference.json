@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/reference",
+      "layer": "adapters/postgres", "resource": "reference", "operation": "create",
+      "source": "core/internal/modules/forms/adapters/postgres/reference/create.go",
+      "test": "core/internal/modules/forms/adapters/postgres/reference/create_test.go",
+      "application_operation": "core/internal/modules/forms/application/reference/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/reference",
+      "layer": "adapters/postgres", "resource": "reference", "operation": "list",
+      "source": "core/internal/modules/forms/adapters/postgres/reference/list.go",
+      "test": "core/internal/modules/forms/adapters/postgres/reference/list_test.go",
+      "application_operation": "core/internal/modules/forms/application/reference/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/reference",
+      "layer": "adapters/postgres", "resource": "reference", "operation": "release",
+      "source": "core/internal/modules/forms/adapters/postgres/reference/release.go",
+      "test": "core/internal/modules/forms/adapters/postgres/reference/release_test.go",
+      "application_operation": "core/internal/modules/forms/application/reference/release.go"
+    }
+  ]
+}

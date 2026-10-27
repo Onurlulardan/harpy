@@ -1,0 +1,1 @@
+SELECT platform.platformops_export_recovery_snapshot_v1($1)

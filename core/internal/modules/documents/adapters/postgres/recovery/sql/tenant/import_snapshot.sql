@@ -1,0 +1,1 @@
+SELECT platform.platformops_import_recovery_snapshot_v1($1)

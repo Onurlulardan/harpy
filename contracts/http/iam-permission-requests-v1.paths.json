@@ -1,0 +1,128 @@
+{
+  "pathItems": {
+    "collection": {
+      "get": {
+        "operationId": "iamListPermissionRequests", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50}},
+          {"name": "after_id", "in": "query", "schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/uuid"}}
+        ],
+        "responses": {"200": {"$ref": "#/responses/page"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      },
+      "post": {
+        "operationId": "iamCreatePermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/idempotency"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.requests.json#/$defs/create"}}}},
+        "responses": {"201": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "409": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "mine": {
+      "get": {
+        "operationId": "iamListMyPermissionRequests", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50}},
+          {"name": "after_id", "in": "query", "schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/uuid"}}
+        ],
+        "responses": {"200": {"$ref": "#/responses/page"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "catalogResources": {
+      "get": {
+        "operationId": "iamListPermissionRequestCatalogResources", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "#/parameters/catalogLimit"}, {"$ref": "#/parameters/catalogAfter"},
+          {"$ref": "#/parameters/catalogSearch"}, {"$ref": "#/parameters/catalogKindAll"}
+        ],
+        "responses": {"200": {"$ref": "#/responses/catalogResourcePage"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "catalogActions": {
+      "get": {
+        "operationId": "iamListPermissionRequestCatalogActions", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "#/parameters/catalogLimit"}, {"$ref": "#/parameters/catalogAfter"},
+          {"$ref": "#/parameters/catalogSearch"}
+        ],
+        "responses": {"200": {"$ref": "#/responses/catalogActionPage"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "catalogMissingResources": {
+      "get": {
+        "operationId": "iamListPermissionRequestMissingResources", "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"$ref": "#/parameters/catalogLimit"}, {"$ref": "#/parameters/catalogAfter"},
+          {"$ref": "#/parameters/catalogSearch"}, {"$ref": "#/parameters/catalogKindForm"},
+          {"$ref": "#/parameters/catalogAction"}
+        ],
+        "responses": {"200": {"$ref": "#/responses/catalogResourcePage"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "404": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "item": {
+      "get": {
+        "operationId": "iamGetPermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/id"}],
+        "responses": {"200": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "404": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "review": {
+      "post": {
+        "operationId": "iamReviewPermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/id"}, {"$ref": "#/parameters/revision"}, {"$ref": "#/parameters/idempotency"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.requests.json#/$defs/review"}}}},
+        "responses": {"200": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "409": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "approve": {"$ref": "#/pathItems/decisionApprove"},
+    "reject": {"$ref": "#/pathItems/decisionReject"},
+    "decisionApprove": {
+      "post": {
+        "operationId": "iamApprovePermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/id"}, {"$ref": "#/parameters/revision"}, {"$ref": "#/parameters/idempotency"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.requests.json#/$defs/decide"}}}},
+        "responses": {"200": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "409": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "decisionReject": {
+      "post": {
+        "operationId": "iamRejectPermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/id"}, {"$ref": "#/parameters/revision"}, {"$ref": "#/parameters/idempotency"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.requests.json#/$defs/decide"}}}},
+        "responses": {"200": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "409": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "cancel": {
+      "post": {
+        "operationId": "iamCancelPermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/id"}, {"$ref": "#/parameters/revision"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.requests.json#/$defs/terminal"}}}},
+        "responses": {"200": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "409": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    },
+    "expire": {
+      "post": {
+        "operationId": "iamExpirePermissionRequest", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "#/parameters/id"}, {"$ref": "#/parameters/revision"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.requests.json#/$defs/terminal"}}}},
+        "responses": {"200": {"$ref": "#/responses/record"}, "400": {"$ref": "#/responses/error"}, "401": {"$ref": "#/responses/error"}, "403": {"$ref": "#/responses/error"}, "409": {"$ref": "#/responses/error"}, "503": {"$ref": "#/responses/error"}}
+      }
+    }
+  },
+  "parameters": {
+    "id": {"name": "id", "in": "path", "required": true, "schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/uuid"}},
+    "revision": {"name": "If-Match", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^\\\"revision-[1-9][0-9]*\\\"$"}},
+    "idempotency": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "catalogLimit": {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50}},
+    "catalogAfter": {"name": "after_id", "in": "query", "schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/uuid"}},
+    "catalogSearch": {"name": "search", "in": "query", "schema": {"type": "string", "minLength": 1, "maxLength": 128}},
+    "catalogKindAll": {"name": "kind", "in": "query", "schema": {"enum": ["all", "form", "system"], "default": "all"}},
+    "catalogKindForm": {"name": "kind", "in": "query", "schema": {"enum": ["all", "form", "system"], "default": "form"}},
+    "catalogAction": {"name": "action", "in": "query", "schema": {"type": "string", "minLength": 1, "maxLength": 100, "default": "read", "pattern": "^[a-z][a-z0-9]*([-_][a-z0-9]+)*(\\.[a-z][a-z0-9]*([-_][a-z0-9]+)*)*$"}}
+  },
+  "responses": {
+    "record": {"description": "Permission request state.", "headers": {"ETag": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/recordEnvelope"}}}},
+    "page": {"description": "Visible permission request page.", "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/pageEnvelope"}}}},
+    "catalogResourcePage": {"description": "Requestable non-protected resource catalog page.", "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/catalogResourcePageEnvelope"}}}},
+    "catalogActionPage": {"description": "Requestable non-protected action catalog page.", "content": {"application/json": {"schema": {"$ref": "iam-permission-requests-v1.records.json#/$defs/catalogActionPageEnvelope"}}}},
+    "error": {"description": "Stable error envelope.", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}

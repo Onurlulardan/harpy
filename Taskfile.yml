@@ -1,0 +1,36 @@
+version: "3"
+
+dotenv: [".env.local"]
+
+includes:
+  local: .taskfiles/local.yml
+  "local:recovery": .taskfiles/local-recovery.yml
+  "local:inventory": .taskfiles/local-inventory.yml
+
+tasks:
+  dev:
+    desc: Start the complete Harpy local stack
+    cmds:
+      - task: local:up
+
+  stop:
+    desc: Stop the local stack while preserving data
+    cmds:
+      - task: local:down
+
+  check:
+    desc: Run repository architecture and file guards
+    cmds:
+      - go run ./tools/fileguard
+      - go run ./tools/archguard
+
+  "migration:verify":
+    desc: Verify manifest lineage, lifecycle waiting, replay, recovery, and data-preserving upgrade
+    cmds:
+      - go run ./tools/migrationmanifest
+      - go test ./core/internal/orchestration/environmentoperator ./core/internal/platform/migration ./tools/internal/migrationmanifest -count=1
+      - >-
+        go test -p=1 -timeout=20m -tags=integration
+        ./core/internal/platform/migrator
+        -run "^(TestRunnerPlanVerifyUpAgainstPostgreSQL184|TestRunnerGenerationTwoExpandAndFinalizedReplayOnPostgreSQL184|TestTenantMigrationExecutorPostgreSQL184CrashRetryAndV1Sentinel|TestTenantMigrationPostgreSQL184RollsBackDDLAndRetriesNewRun|TestTenantMigrationPostgreSQL184IncrementalReleasePreservesIdentity)$"
+        -count=1 -v

@@ -1,0 +1,3 @@
+{"version":2,"authorities":[
+  {"id":"iam.actorbridgeissue.resolve","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]}
+]}

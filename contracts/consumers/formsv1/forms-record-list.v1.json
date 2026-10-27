@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "contract_id": "forms-record-list-consumers.v1",
+  "consumers": ["frontend-v3", "mcp"],
+  "routes": [
+    {
+      "id": "records.list",
+      "method": "GET",
+      "path": "/api/form-engine/dynamic/{slug}",
+      "operation_id": "formsV1DynamicList",
+      "success_status": 200,
+      "errors": [
+        {"scenario": "authentication", "status": 401, "code": "AUTHENTICATION_FAILED"},
+        {"scenario": "authorization", "status": 403, "code": "AUTHORIZATION_DENIED"},
+        {"scenario": "not_found", "status": 404, "code": "FORM_CONFIG_NOT_FOUND"},
+        {"scenario": "query_invalid", "status": 422, "code": "QUERY_INVALID"},
+        {"scenario": "authority_unavailable", "status": 503, "code": "FORM_AUTHORITY_UNAVAILABLE"},
+        {"scenario": "service_unavailable", "status": 503, "code": "FORM_SERVICE_UNAVAILABLE"}
+      ]
+    },
+    {
+      "id": "records.export.legacy",
+      "method": "GET",
+      "path": "/api/form-engine/dynamic/{slug}/export",
+      "operation_id": "formsV1DynamicExportUpgradeRequired",
+      "success_status": 0,
+      "errors": [
+        {"scenario": "authentication", "status": 401, "code": "AUTHENTICATION_FAILED"},
+        {"scenario": "authorization", "status": 403, "code": "AUTHORIZATION_DENIED"},
+        {"scenario": "client_upgrade_required", "status": 426, "code": "CLIENT_UPGRADE_REQUIRED"},
+        {"scenario": "service_unavailable", "status": 503, "code": "FORM_SERVICE_UNAVAILABLE"}
+      ]
+    }
+  ],
+  "query_keys": ["filter_operator", "filters", "limit", "page", "search", "sort"],
+  "success_pointers": [
+    "/data/items",
+    "/data/meta",
+    "/data/meta/has_approval_workflow",
+    "/data/pagination/has_next",
+    "/data/pagination/has_prev",
+    "/data/pagination/limit",
+    "/data/pagination/page",
+    "/data/pagination/total",
+    "/data/pagination/total_pages",
+    "/success"
+  ]
+}

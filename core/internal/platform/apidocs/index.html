@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Harpy API documentation</title>
+  <link rel="stylesheet" href="/swagger/style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">Harpy</p>
+      <h1 id="title">API documentation</h1>
+      <p id="version">Loading the OpenAPI contract…</p>
+    </div>
+    <a href="/swagger/openapi.json" download>Download OpenAPI</a>
+  </header>
+  <main>
+    <label for="search">Filter paths and operations</label>
+    <input id="search" type="search" autocomplete="off" placeholder="Search, for example: tenant or POST">
+    <p id="status" role="status"></p>
+    <section id="operations" aria-live="polite"></section>
+  </main>
+  <template id="operation-template">
+    <article>
+      <div class="operation-heading">
+        <span class="method"></span>
+        <code class="path"></code>
+      </div>
+      <h2 class="summary"></h2>
+      <p class="operation-id"></p>
+    </article>
+  </template>
+  <script src="/swagger/app.js" defer></script>
+</body>
+</html>

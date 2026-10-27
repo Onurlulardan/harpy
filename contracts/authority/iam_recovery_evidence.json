@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "iam.recovery_evidence.read",
+      "owner": "iam",
+      "scope_source": "environment_global",
+      "required_groups": ["iam_system_resources", "tenancy"],
+      "ordered_domains": ["iam", "system_resource_layout", "tenancy"],
+      "participants": ["iam", "tenancy"]
+    }
+  ]
+}

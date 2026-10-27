@@ -1,0 +1,16 @@
+SELECT pg_catalog.convert_to(pg_catalog.jsonb_agg(
+ pg_catalog.jsonb_build_object(
+  'field_id',field_entry.field_id::text,
+  'public_name',field_entry.public_name
+ ) ORDER BY field_entry.field_id
+)::text,'UTF8')
+FROM catalog_a.forms_publication_fields AS field_entry
+WHERE field_entry.publication_id=(
+ SELECT row_entry.publication_id
+ FROM catalog_a.forms_catalog_demo_rows AS row_entry
+ JOIN catalog_a.forms_catalog_demo_runs AS run_entry
+   ON run_entry.run_id=row_entry.run_id
+ WHERE run_entry.package_id=$1::uuid
+ ORDER BY row_entry.publication_id
+ LIMIT 1
+)

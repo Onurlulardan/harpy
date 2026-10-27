@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "analytics.retention.purge.execute",
+      "owner": "analytics",
+      "scope_source": "job_tenant",
+      "required_groups": ["analytics"],
+      "ordered_domains": ["analytics"],
+      "participants": ["analytics"]
+    }
+  ]
+}

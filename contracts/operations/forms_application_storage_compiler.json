@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/storagecompiler",
+      "layer": "application",
+      "resource": "storagecompiler",
+      "operation": "compile",
+      "source": "core/internal/modules/forms/application/storagecompiler/compile_create.go",
+      "test": "core/internal/modules/forms/application/storagecompiler/compile_create_test.go",
+      "authority_id": "forms.storage_compiler.compile"
+    }
+  ]
+}

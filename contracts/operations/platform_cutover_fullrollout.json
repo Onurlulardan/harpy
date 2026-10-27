@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/platform/cutover/adapters/postgres",
+      "layer": "adapters/postgres",
+      "resource": "cutover",
+      "operation": "record",
+      "source": "core/internal/platform/cutover/adapters/postgres/record_full_rollout.go",
+      "test": "core/internal/platform/cutover/adapters/postgres/record_full_rollout_test.go",
+      "application_operation": "core/internal/platform/cutover/application/record_full_rollout.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/platform/cutover/application",
+      "layer": "application",
+      "resource": "cutover",
+      "operation": "record",
+      "source": "core/internal/platform/cutover/application/record_full_rollout.go",
+      "test": "core/internal/platform/cutover/application/record_full_rollout_test.go",
+      "authority_id": "cutover.full_rollout.record"
+    }
+  ]
+}

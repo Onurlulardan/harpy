@@ -1,0 +1,87 @@
+{
+  "openapi": "3.1.1",
+  "info": {"title": "Harpy Analytics publication API", "version": "2.0.0"},
+  "paths": {
+    "/api/analytics/publications": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}],
+      "get": {
+        "security": [{"bearerAuth": []}], "operationId": "listAnalyticsPublications",
+        "x-harpy-permission": "analytics.publication.read", "x-harpy-authority": "analytics.publication.list",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/LimitParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/AfterParameter"}],
+        "responses": {"200": {"description": "Publication release page", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PageEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "createAnalyticsPublication",
+        "x-harpy-permission": ["analytics.publication.read", "analytics.publication.publish_public", "analytics.publication.publish_capability"],
+        "x-harpy-permission-discriminator": "request.audience", "x-harpy-authority": "analytics.publication.create",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/CreateRequest"}}}},
+        "responses": {"201": {"description": "Immutable publication release created", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/publications/{release_id}": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/ReleaseIDParameter"}],
+      "get": {
+        "security": [{"bearerAuth": []}], "operationId": "getAnalyticsPublication",
+        "x-harpy-permission": "analytics.publication.read", "x-harpy-authority": "analytics.publication.get",
+        "responses": {"200": {"description": "Exact publication release", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/publications/{release_id}/submissions": {
+      "$ref": "#/components/pathItems/submit"
+    },
+    "/api/analytics/publications/{release_id}/approvals": {
+      "$ref": "#/components/pathItems/approve"
+    },
+    "/api/analytics/publications/{release_id}/activations": {
+      "$ref": "#/components/pathItems/activate"
+    },
+    "/api/analytics/publications/{release_id}/revocations": {
+      "$ref": "#/components/pathItems/revoke"
+    },
+    "/api/published/queries/{public_id}/{slug}": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/PublicIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/SlugParameter"}],
+      "x-harpy-tenant-headers": "forbidden",
+      "get": {
+        "security": [{}, {"capabilityAuth": []}], "operationId": "executePublishedAnalyticsQueryGET",
+        "x-harpy-authority": "analytics.publication.execute", "x-harpy-declared-parameters-only": true,
+        "responses": {"200": {"description": "Opaque publication result", "headers": {"Cache-Control": {"schema": {"const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicResult"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "post": {
+        "security": [{}, {"capabilityAuth": []}], "operationId": "executePublishedAnalyticsQueryPOST",
+        "x-harpy-authority": "analytics.publication.execute", "x-harpy-declared-parameters-only": true,
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicPOSTRequest"}}}},
+        "responses": {"200": {"description": "Opaque publication result", "headers": {"Cache-Control": {"schema": {"const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicResult"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/published/dashboards/{public_id}/{slug}": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/PublicIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/SlugParameter"}],
+      "x-harpy-tenant-headers": "forbidden",
+      "get": {
+        "security": [{}, {"capabilityAuth": []}], "operationId": "executePublishedAnalyticsDashboard",
+        "x-harpy-authority": "analytics.publication.execute", "x-harpy-declared-parameters-only": true,
+        "responses": {"200": {"description": "Opaque dashboard result", "headers": {"Cache-Control": {"schema": {"const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicResult"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    }
+  },
+  "components": {
+    "pathItems": {
+      "submit": {
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/ReleaseIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "post": {"security": [{"bearerAuth": []}], "operationId": "submitAnalyticsPublication", "x-harpy-permission": "analytics.publication.read", "x-harpy-authority": "analytics.publication.submit", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/TransitionRequest"}}}}, "responses": {"200": {"description": "Publication submitted", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}}
+      },
+      "approve": {
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/ReleaseIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "post": {"security": [{"bearerAuth": []}], "operationId": "approveAnalyticsPublication", "x-harpy-permission": "analytics.publication.read", "x-harpy-authority": "analytics.publication.approve", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/TransitionRequest"}}}}, "responses": {"200": {"description": "Publication approved", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}}
+      },
+      "activate": {
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/ReleaseIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "post": {"security": [{"bearerAuth": []}], "operationId": "activateAnalyticsPublication", "x-harpy-permission": "analytics.publication.read", "x-harpy-authority": "analytics.publication.activate", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/ActivateRequest"}}}}, "responses": {"200": {"description": "Publication activated; capability token is returned once", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/ActivationEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}}
+      },
+      "revoke": {
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/ReleaseIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "post": {"security": [{"bearerAuth": []}], "operationId": "revokeAnalyticsPublication", "x-harpy-permission": "analytics.publication.revoke", "x-harpy-authority": "analytics.publication.revoke", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/TransitionRequest"}}}}, "responses": {"200": {"description": "Publication revoked with a new generation", "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}}
+      }
+    }
+  }
+}

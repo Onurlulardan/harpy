@@ -1,0 +1,152 @@
+{
+  "/api/admin/billing/campaigns": {
+    "$ref": "billing-v1-admin-promotions.paths.json#/pathItems/campaigns"
+  },
+  "/api/admin/billing/campaigns/{id}": {
+    "$ref": "billing-v1-admin-promotions.paths.json#/pathItems/campaign"
+  },
+  "/api/admin/billing/coupons": {
+    "$ref": "billing-v1-admin-promotions.paths.json#/pathItems/coupons"
+  },
+  "/api/admin/billing/coupons/{id}": {
+    "$ref": "billing-v1-admin-promotions.paths.json#/pathItems/coupon"
+  },
+  "/api/admin/billing/events": {
+    "$ref": "billing-v1-admin-core.paths.json#/pathItems/events"
+  },
+  "/api/admin/billing/plans": {
+    "$ref": "billing-v1-admin-core.paths.json#/pathItems/plans"
+  },
+  "/api/admin/billing/plans/{id}": {
+    "$ref": "billing-v1-admin-core.paths.json#/pathItems/plan"
+  },
+  "/api/admin/billing/revenue": {
+    "$ref": "billing-v1-admin-core.paths.json#/pathItems/revenue"
+  },
+  "/api/admin/billing/subscriptions": {
+    "$ref": "billing-v1-admin-core.paths.json#/pathItems/subscriptions"
+  },
+  "/api/admin/billing/subscriptions/{id}": {
+    "$ref": "billing-v1-admin-core.paths.json#/pathItems/subscription"
+  },
+  "/api/billing/campaigns/active": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/activeCampaign"
+  },
+  "/api/billing/coupons/validate": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/validateCoupon"
+  },
+  "/api/billing/plans": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/publicPlans"
+  },
+  "/api/billing/subscription": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/subscription"
+  },
+  "/api/billing/subscription/apply-coupon": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/applyCoupon"
+  },
+  "/api/billing/subscription/cancel": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/cancel"
+  },
+  "/api/billing/subscription/change-plan": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/changePlan"
+  },
+  "/api/billing/subscription/resume": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/resume"
+  },
+  "/api/billing/usage": {
+    "$ref": "billing-v1-public-tenant.paths.json#/pathItems/usage"
+  },
+  "/api/billing/v2/discounts/validate": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/validateDiscount"
+  },
+  "/api/billing/v2/offerings": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/publicOfferings"
+  },
+  "/api/billing/v2/promotions/active": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/activeCampaign"
+  },
+  "/api/billing/v2/subscriptions/current": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/currentSubscription"
+  },
+  "/api/billing/v2/subscriptions/current/cancellations": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/scheduleCancellation"
+  },
+  "/api/billing/v2/subscriptions/current/cancellations/resume": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/resumeCancellation"
+  },
+  "/api/billing/v2/subscriptions/current/changes": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/scheduleChange"
+  },
+  "/api/billing/v2/subscriptions/current/discount-redemptions": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/redeemDiscount"
+  },
+  "/api/billing/v2/usage": {
+    "$ref": "billing-public-tenant-v2.paths.json#/pathItems/usage"
+  },
+  "/api/platform/billing/campaigns": {
+    "$ref": "billing-platform-campaigns-v2.paths.json#/pathItems/collection"
+  },
+  "/api/platform/billing/campaigns/query": {
+    "$ref": "billing-platform-campaigns-v2.paths.json#/pathItems/query"
+  },
+  "/api/platform/billing/campaigns/{campaign_id}": {
+    "$ref": "billing-platform-campaigns-v2.paths.json#/pathItems/item"
+  },
+  "/api/platform/billing/campaigns/{campaign_id}/retire": {
+    "$ref": "billing-platform-campaigns-v2.paths.json#/pathItems/retire"
+  },
+  "/api/platform/billing/campaigns/{campaign_id}/versions": {
+    "$ref": "billing-platform-campaigns-v2.paths.json#/pathItems/versions"
+  },
+  "/api/platform/billing/discounts": {
+    "$ref": "billing-platform-discounts-v2.paths.json#/pathItems/collection"
+  },
+  "/api/platform/billing/discounts/query": {
+    "$ref": "billing-platform-discounts-v2.paths.json#/pathItems/query"
+  },
+  "/api/platform/billing/discounts/{discount_id}": {
+    "$ref": "billing-platform-discounts-v2.paths.json#/pathItems/item"
+  },
+  "/api/platform/billing/discounts/{discount_id}/retire": {
+    "$ref": "billing-platform-discounts-v2.paths.json#/pathItems/retire"
+  },
+  "/api/platform/billing/discounts/{discount_id}/versions": {
+    "$ref": "billing-platform-discounts-v2.paths.json#/pathItems/versions"
+  },
+  "/api/platform/billing/events": {
+    "$ref": "billing-platform-reports-v2.paths.json#/pathItems/events"
+  },
+  "/api/platform/billing/events/query": {
+    "$ref": "billing-platform-reports-v2.paths.json#/pathItems/eventQuery"
+  },
+  "/api/platform/billing/offerings": {
+    "$ref": "billing-platform-offerings-v2.paths.json#/pathItems/collection"
+  },
+  "/api/platform/billing/offerings/query": {
+    "$ref": "billing-platform-offerings-v2.paths.json#/pathItems/query"
+  },
+  "/api/platform/billing/offerings/{offering_id}": {
+    "$ref": "billing-platform-offerings-v2.paths.json#/pathItems/item"
+  },
+  "/api/platform/billing/offerings/{offering_id}/retire": {
+    "$ref": "billing-platform-offerings-v2.paths.json#/pathItems/retire"
+  },
+  "/api/platform/billing/offerings/{offering_id}/versions": {
+    "$ref": "billing-platform-offerings-v2.paths.json#/pathItems/versions"
+  },
+  "/api/platform/billing/revenue/query": {
+    "$ref": "billing-platform-reports-v2.paths.json#/pathItems/revenueQuery"
+  },
+  "/api/platform/billing/subscriptions": {
+    "$ref": "billing-platform-reports-v2.paths.json#/pathItems/subscriptions"
+  },
+  "/api/platform/billing/subscriptions/query": {
+    "$ref": "billing-platform-reports-v2.paths.json#/pathItems/subscriptionQuery"
+  },
+  "/api/platform/billing/subscriptions/{subscription_id}/transitions": {
+    "$ref": "billing-platform-reports-v2.paths.json#/pathItems/subscriptionTransition"
+  },
+  "/webhooks/billing/{provider}": {
+    "$ref": "billing-webhook-v2.paths.json#/pathItems/ingress"
+  }
+}

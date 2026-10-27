@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/bootstrap-authority-manifest.schema.json",
+  "title": "Harpy Bootstrap Authority Manifest v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "manifest_id", "environment_id", "release_id", "issued_at", "expires_at",
+    "database_origin", "database", "connections", "createrole_self_grant",
+    "roles", "memberships", "credential_leases", "roles_manifest_sha256",
+    "privileges_manifest_sha256", "ownership_manifest_sha256",
+    "bootstrap_operation_digest", "credential_cleanup_operation_digest"
+  ],
+  "properties": {
+    "contract_version": {"const": "bootstrap-authority-manifest.v1"},
+    "manifest_id": {"type": "string", "format": "uuid"},
+    "environment_id": {"type": "string", "format": "uuid"},
+    "release_id": {"type": "string", "format": "uuid"},
+    "issued_at": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"},
+    "expires_at": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"},
+    "database_origin": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseOrigin"},
+    "database": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "name", "create_database", "source_owner", "owner", "extension_owner",
+        "extension_owner_mode", "extension_owner_application_login",
+        "ownership_executor", "ownership_attestation",
+        "encoding", "locale_provider", "collation", "ctype", "data_checksums", "template",
+        "public_connect", "public_create", "public_temp"
+      ],
+      "properties": {
+        "name": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseName"},
+        "create_database": {"type": "boolean"},
+        "source_owner": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+        "owner": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseOwner"},
+        "extension_owner": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"},
+        "extension_owner_mode": {"enum": ["fresh_leased_admin", "adopted_reassigned", "adopted_retained_inventory"]},
+        "extension_owner_application_login": {"const": false},
+        "ownership_executor": {"enum": ["cluster_bootstrap", "external_root_provisioner"]},
+        "ownership_attestation": {"const": "bootstrap_live_catalog"},
+        "encoding": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseEncoding"},
+        "locale_provider": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseLocaleProvider"},
+        "collation": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseCollation"},
+        "ctype": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseCType"},
+        "data_checksums": {"const": true},
+        "template": {"enum": ["template0", null]},
+        "public_connect": {"const": false},
+        "public_create": {"const": false},
+        "public_temp": {"const": false}
+      }
+    },
+    "connections": {
+      "type": "object", "additionalProperties": false,
+      "required": ["endpoint_kind", "maintenance_database", "target_database", "same_server_required"],
+      "properties": {
+        "endpoint_kind": {"const": "direct_postgres"},
+        "maintenance_database": {"const": "postgres"},
+        "target_database": {"$ref": "signed-receipt-defs.schema.json#/$defs/databaseName"},
+        "same_server_required": {"const": true}
+      }
+    },
+    "createrole_self_grant": {"const": ""},
+    "roles": {
+      "type": "array", "minItems": 19, "maxItems": 19, "items": false,
+      "prefixItems": [
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_owner"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_cutover_authority_owner"}, "enabled": {"const": true}, "credential_mode": {"const": "externally_provisioned"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_runtime"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "forge_runtime"}, "enabled": {"const": true}, "credential_mode": {"const": "compatibility"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_forms_record_reader"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_forms_record_writer"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_v2_runtime"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_migrator"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_v1_runtime"}, "credential_mode": {"const": "coexistence"}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_cluster_admin"}, "enabled": {"const": true}, "credential_mode": {"const": "leased"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": true}, "createrole": {"const": true}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": 1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_extension_admin"}, "enabled": {"const": true}, "credential_mode": {"const": "leased"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": true}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": 1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_legacy_extension_owner"}, "credential_mode": {"const": "adopted_only"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_adopter"}, "enabled": {"const": true}, "credential_mode": {"const": "cutover_leased"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": 0}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_cutover_decoder"}, "enabled": {"const": true}, "credential_mode": {"const": "cutover_leased"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": 0}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_cutover_finalizer"}, "enabled": {"const": true}, "credential_mode": {"const": "cutover_finalization_leased"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": 0}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_backup_reader"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": false}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_backup"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_restore"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]},
+        {"allOf": [{"$ref": "#/$defs/role"}, {"properties": {"name": {"const": "harpy_reactivation_observer"}, "enabled": {"const": true}, "credential_mode": {"const": "permanent"}, "login": {"const": true}, "inherit": {"const": false}, "superuser": {"const": false}, "createdb": {"const": false}, "createrole": {"const": false}, "replication": {"const": false}, "bypassrls": {"const": false}, "connection_limit": {"const": -1}}}]}
+      ]
+    },
+    "memberships": {
+      "type": "array", "minItems": 7, "maxItems": 7, "items": false,
+      "prefixItems": [
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v2_runtime"}, "role": {"const": "harpy_runtime"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v2_runtime"}, "role": {"const": "harpy_forms_record_reader"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v2_runtime"}, "role": {"const": "harpy_forms_record_writer"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_migrator"}, "role": {"const": "harpy_owner"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_backup"}, "role": {"const": "harpy_backup_reader"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_restore"}, "role": {"const": "harpy_owner"}, "enabled": {"const": true}, "admin": {"const": false}, "inherit": {"const": false}, "set": {"const": true}}}]},
+        {"allOf": [{"$ref": "#/$defs/membership"}, {"properties": {"member": {"const": "harpy_v1_runtime"}, "role": {"const": "harpy_runtime"}, "admin": {"const": false}, "inherit": {"const": true}, "set": {"const": false}}}]}
+      ]
+    },
+    "credential_leases": {
+      "type": "array", "minItems": 2, "maxItems": 2, "items": false,
+      "prefixItems": [
+        {"allOf": [{"$ref": "#/$defs/lease"}, {"properties": {"principal": {"const": "harpy_cluster_admin"}}}]},
+        {"allOf": [{"$ref": "#/$defs/lease"}, {"properties": {"principal": {"const": "harpy_extension_admin"}}}]}
+      ]
+    },
+    "roles_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "privileges_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "ownership_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "bootstrap_operation_digest": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "credential_cleanup_operation_digest": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"}
+  },
+  "allOf": [
+    {"if": {"properties": {"database_origin": {"const": "fresh"}}}, "then": {"properties": {
+      "database": {"properties": {"create_database": {"const": true}, "source_owner": {"type": "null"}, "extension_owner": {"const": "harpy_extension_admin"}, "extension_owner_mode": {"const": "fresh_leased_admin"}, "ownership_executor": {"const": "cluster_bootstrap"}, "template": {"const": "template0"}}},
+      "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}, "login": {"const": false}}}, {}, {}, {"properties": {"enabled": {"const": false}}}]},
+      "memberships": {"prefixItems": [{}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
+    }}},
+    {"if": {"properties": {"database_origin": {"const": "v1_adopted"}}}, "then": {
+      "properties": {
+        "database": {"properties": {"create_database": {"const": false}, "source_owner": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"}, "ownership_executor": {"const": "external_root_provisioner"}, "template": {"type": "null"}}},
+        "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}, "login": {"const": true}}}, {}, {}, {}]},
+        "memberships": {"prefixItems": [{}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
+      },
+      "oneOf": [
+        {"properties": {
+          "database": {"properties": {"extension_owner": {"const": "harpy_legacy_extension_owner"}, "extension_owner_mode": {"const": "adopted_reassigned"}}},
+          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
+        }},
+        {"properties": {
+          "database": {"properties": {"extension_owner": {"$ref": "#/$defs/externalExtensionOwner"}, "extension_owner_mode": {"const": "adopted_retained_inventory"}}},
+          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
+        }}
+      ]
+    }}
+  ],
+  "$defs": {
+    "externalExtensionOwner": {
+      "allOf": [
+        {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"},
+        {"not": {"pattern": "^harpy_"}}
+      ]
+    },
+    "role": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "enabled", "credential_mode", "login", "inherit", "superuser", "createdb", "createrole", "replication", "bypassrls", "connection_limit"],
+      "properties": {
+        "name": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"}, "enabled": {"type": "boolean"},
+        "credential_mode": {"enum": ["permanent", "compatibility", "externally_provisioned", "coexistence", "leased", "adopted_only", "cutover_leased", "cutover_finalization_leased"]},
+        "login": {"type": "boolean"}, "inherit": {"type": "boolean"}, "superuser": {"type": "boolean"},
+        "createdb": {"type": "boolean"}, "createrole": {"type": "boolean"}, "replication": {"type": "boolean"},
+        "bypassrls": {"type": "boolean"}, "connection_limit": {"type": "integer", "minimum": -1}
+      }
+    },
+    "membership": {
+      "type": "object", "additionalProperties": false,
+      "required": ["member", "role", "enabled", "admin", "inherit", "set", "grantor"],
+      "properties": {
+        "member": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"}, "role": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"},
+        "enabled": {"type": "boolean"}, "admin": {"type": "boolean"}, "inherit": {"type": "boolean"}, "set": {"type": "boolean"},
+        "grantor": {"const": "harpy_cluster_admin"}
+      }
+    },
+    "lease": {
+      "type": "object", "additionalProperties": false,
+      "required": ["lease_id", "principal", "not_before", "expires_at", "max_duration_seconds", "max_connections", "cleanup_policy"],
+      "properties": {
+        "lease_id": {"type": "string", "format": "uuid"}, "principal": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"},
+        "not_before": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"}, "expires_at": {"$ref": "signed-receipt-defs.schema.json#/$defs/utcTimestamp"},
+        "max_duration_seconds": {"const": 900}, "max_connections": {"const": 1},
+        "cleanup_policy": {"const": "disable_login_clear_password_terminate_sessions"}
+      }
+    }
+  }
+}

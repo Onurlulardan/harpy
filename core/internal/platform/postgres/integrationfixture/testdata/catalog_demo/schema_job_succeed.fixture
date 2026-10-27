@@ -1,0 +1,4 @@
+UPDATE platform.catalog_demo_schema_jobs
+SET status='succeeded',receipt_sha256=pg_catalog.sha256(
+ pg_catalog.convert_to('catalog-demo-schema-receipt/'||job_id::text,'UTF8'))
+WHERE job_id=$1::uuid

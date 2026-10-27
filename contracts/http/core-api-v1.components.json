@@ -1,0 +1,93 @@
+{
+  "securitySchemes": {
+    "bearerAuth": {"$ref": "iam-auth-v1.schemas.json#/securitySchemes/bearerAuth"}
+  },
+  "schemas": {
+    "ErrorEnvelope": {"$ref": "../runtime/v1/error-envelope.schema.json"},
+    "JWK": {"$ref": "core-api-jwks-v1.schemas.json#/schemas/JWK"},
+    "JWKS": {"$ref": "core-api-jwks-v1.schemas.json#/schemas/JWKS"}
+  },
+  "headers": {
+    "ContentType": {"schema": {"type": "string", "const": "application/json; charset=utf-8"}},
+    "JWKContentType": {"schema": {"type": "string", "const": "application/jwk-set+json"}},
+    "JWKSCacheControl": {"schema": {"type": "string", "const": "public, max-age=300, must-revalidate"}},
+    "ETag": {"required": true, "schema": {"type": "string", "pattern": "^\"sha256-[A-Za-z0-9_-]{43}\"$"}},
+    "CorrelationID": {"description": "Validated inbound value or generated UUIDv4.", "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"}},
+    "CacheControl": {"schema": {"type": "string", "const": "no-store"}},
+    "ContentTypeOptions": {"schema": {"type": "string", "const": "nosniff"}}
+  },
+  "responses": {
+    "JWKSRead": {
+      "description": "Current and retained public Ed25519 verification keys.",
+      "headers": {
+        "Content-Type": {"$ref": "#/headers/JWKContentType"},
+        "Cache-Control": {"$ref": "#/headers/JWKSCacheControl"},
+        "ETag": {"$ref": "#/headers/ETag"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"}
+      },
+      "content": {"application/jwk-set+json": {"schema": {"$ref": "#/schemas/JWKS"}}}
+    },
+    "JWKSHead": {
+      "description": "JWKS metadata without a response body.",
+      "headers": {
+        "Content-Type": {"$ref": "#/headers/JWKContentType"},
+        "Cache-Control": {"$ref": "#/headers/JWKSCacheControl"},
+        "ETag": {"$ref": "#/headers/ETag"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"}
+      }
+    },
+    "JWKSNotModified": {
+      "description": "The current JWKS matches If-None-Match.",
+      "headers": {
+        "Cache-Control": {"$ref": "#/headers/JWKSCacheControl"},
+        "ETag": {"$ref": "#/headers/ETag"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"}
+      }
+    },
+    "RouteNotFound": {
+      "description": "No published route matches the canonical request path.",
+      "x-harpy-error-code": "ROUTE_NOT_FOUND",
+      "headers": {
+        "Content-Type": {"$ref": "#/headers/ContentType"},
+        "X-Correlation-ID": {"$ref": "#/headers/CorrelationID"},
+        "Cache-Control": {"$ref": "#/headers/CacheControl"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"}
+      },
+      "content": {"application/json": {"schema": {"$ref": "#/schemas/ErrorEnvelope"}}}
+    },
+    "ServiceUnavailable": {
+      "description": "Admission closed during startup, dependency loss, or drain.",
+      "x-harpy-error-code": "SERVICE_UNAVAILABLE",
+      "headers": {
+        "Content-Type": {"$ref": "#/headers/ContentType"},
+        "X-Correlation-ID": {"$ref": "#/headers/CorrelationID"},
+        "Cache-Control": {"$ref": "#/headers/CacheControl"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"}
+      },
+      "content": {"application/json": {"schema": {"$ref": "#/schemas/ErrorEnvelope"}}}
+    },
+    "MethodNotAllowed": {
+      "description": "The path exists but the HTTP method is not published.",
+      "x-harpy-error-code": "METHOD_NOT_ALLOWED",
+      "headers": {
+        "Content-Type": {"$ref": "#/headers/ContentType"},
+        "X-Correlation-ID": {"$ref": "#/headers/CorrelationID"},
+        "Cache-Control": {"$ref": "#/headers/CacheControl"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"},
+        "Allow": {"required": true, "schema": {"type": "string", "const": "GET, HEAD"}}
+      },
+      "content": {"application/json": {"schema": {"$ref": "#/schemas/ErrorEnvelope"}}}
+    },
+    "InternalError": {
+      "description": "Recovered panic before a response is committed.",
+      "x-harpy-error-code": "INTERNAL_ERROR",
+      "headers": {
+        "Content-Type": {"$ref": "#/headers/ContentType"},
+        "X-Correlation-ID": {"$ref": "#/headers/CorrelationID"},
+        "Cache-Control": {"$ref": "#/headers/CacheControl"},
+        "X-Content-Type-Options": {"$ref": "#/headers/ContentTypeOptions"}
+      },
+      "content": {"application/json": {"schema": {"$ref": "#/schemas/ErrorEnvelope"}}}
+    }
+  }
+}

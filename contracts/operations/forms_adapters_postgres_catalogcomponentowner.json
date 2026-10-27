@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/catalogcomponentowner",
+      "layer": "adapters/postgres",
+      "resource": "catalogcomponentowner",
+      "operation": "finalize",
+      "source": "core/internal/modules/forms/adapters/postgres/catalogcomponentowner/finalize_purge.go",
+      "test": "core/internal/modules/forms/adapters/postgres/catalogcomponentowner/finalize_purge_test.go",
+      "application_operation": "core/internal/modules/forms/application/catalogcomponentowner/finalize_component_purge.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/catalogcomponentowner",
+      "layer": "adapters/postgres",
+      "resource": "catalogcomponentowner",
+      "operation": "restore",
+      "source": "core/internal/modules/forms/adapters/postgres/catalogcomponentowner/restore.go",
+      "test": "core/internal/modules/forms/adapters/postgres/catalogcomponentowner/restore_test.go",
+      "application_operation": "core/internal/modules/forms/application/catalogcomponentowner/restore_component.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/catalogcomponentowner",
+      "layer": "adapters/postgres",
+      "resource": "catalogcomponentowner",
+      "operation": "retire",
+      "source": "core/internal/modules/forms/adapters/postgres/catalogcomponentowner/retire.go",
+      "test": "core/internal/modules/forms/adapters/postgres/catalogcomponentowner/retire_test.go",
+      "application_operation": "core/internal/modules/forms/application/catalogcomponentowner/retire_component.go"
+    }
+  ]
+}

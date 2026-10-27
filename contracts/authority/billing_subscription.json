@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "billing.subscription.cancel_at_period_end",
+      "owner": "billing",
+      "scope_source": "actor_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "billing.subscription.change_at_period_end",
+      "owner": "billing",
+      "scope_source": "actor_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "billing.subscription.claim_trial",
+      "owner": "billing",
+      "scope_source": "actor_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "billing.subscription.execute_due_boundary",
+      "owner": "billing",
+      "scope_source": "job_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+	  "id": "billing.subscription.platform_transition",
+	  "owner": "billing",
+	  "scope_source": "actor_tenant",
+	  "required_groups": ["billing+forms"],
+	  "ordered_domains": ["billing", "forms"],
+	  "participants": ["billing", "forms"]
+	},
+	{
+      "id": "billing.subscription.read",
+      "owner": "billing",
+      "scope_source": "actor_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "billing.subscription.resume_cancellation",
+      "owner": "billing",
+      "scope_source": "actor_tenant",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "billing.subscription.update_from_provider",
+      "owner": "billing",
+      "scope_source": "provider_mapping",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    }
+  ]
+}

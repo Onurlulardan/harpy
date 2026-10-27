@@ -1,0 +1,5 @@
+BEGIN;
+SET LOCAL ROLE harpy_extension_admin;
+CREATE EXTENSION vector WITH SCHEMA platform_ext;
+CREATE EXTENSION pg_trgm WITH SCHEMA platform_ext;
+COMMIT;

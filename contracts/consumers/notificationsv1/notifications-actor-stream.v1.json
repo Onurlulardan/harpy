@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "consumer": "notification-v1-actor-stream-edge",
+  "compatibility_contract": "notifications_actor_stream_v1",
+  "route": "/ws/notifications/{user_id}",
+  "final_route": "/ws/notifications",
+  "authority": "verified-session-actor",
+  "path_user_policy": "must-equal-verified-actor",
+  "ticket": "single-use-60-second-subprotocol-token",
+  "signature": {
+    "transport_headers": [
+      "X-Harpy-Consumer-Manifest",
+      "X-Harpy-Consumer-Signature"
+    ],
+    "verification": "required-before-ticket-consume",
+    "digest": "sha256-over-verified-canonical-manifest"
+  },
+  "retirement": {
+    "contract_key": "notifications_actor_stream_v1",
+    "minimum_zero_hit_window_days": 30,
+    "requires_zero_active_connections": true
+  }
+}

@@ -1,0 +1,13 @@
+ARG SOURCE_IMAGE
+ARG TARGET_IMAGE
+
+FROM ${SOURCE_IMAGE} AS pg15
+FROM ${TARGET_IMAGE}
+
+COPY --from=pg15 /usr/lib/postgresql/15 /usr/lib/postgresql/15
+COPY --from=pg15 /usr/share/postgresql/15 /usr/share/postgresql/15
+COPY pg-upgrade.sh /usr/local/bin/harpy-pg-upgrade
+
+RUN chmod 0755 /usr/local/bin/harpy-pg-upgrade
+
+ENTRYPOINT ["/usr/local/bin/harpy-pg-upgrade"]

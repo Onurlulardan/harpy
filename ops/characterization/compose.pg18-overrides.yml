@@ -1,0 +1,4 @@
+services:
+  characterizer:
+    environment:
+      CHARACTERIZATION_POSTGRES_IMAGE: ${PG18_GATE_POSTGRES_IMAGE:?PG18_GATE_POSTGRES_IMAGE is required}

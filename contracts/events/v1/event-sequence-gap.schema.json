@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/events/v1/event-sequence-gap.schema.json",
+  "title": "Harpy Event Sequence Gap Evidence v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "consumer", "consumer_version",
+    "expected_sequence", "received_sequence", "envelope"
+  ],
+  "properties": {
+    "contract_version": {"const": "event-sequence-gap.v1"},
+    "consumer": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "consumer_version": {"type": "integer", "minimum": 1},
+    "expected_sequence": {"type": "integer", "minimum": 1},
+    "received_sequence": {"type": "integer", "minimum": 2},
+    "envelope": {"$ref": "integration-event.schema.json"}
+  }
+}

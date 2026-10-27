@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "owner": "platform_backupreceipt",
+  "streams": [
+    {
+      "owner": "platform_backupreceipt",
+      "directory": "core/internal/platform/backupreceipt/migrations",
+      "scope": "platform",
+      "version_from": 20260718180010,
+      "version_to": 20260718180010,
+      "phase": "expand",
+      "target_database_generation": 9,
+      "next_minimum_runtime_generation": 1
+    }
+  ]
+}

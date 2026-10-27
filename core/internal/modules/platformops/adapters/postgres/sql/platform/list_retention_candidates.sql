@@ -1,0 +1,2 @@
+SELECT recovery_set_id,manifest_sha256,protected_at,legal_hold
+FROM platform.platformops_list_retention_candidates_v1($1)

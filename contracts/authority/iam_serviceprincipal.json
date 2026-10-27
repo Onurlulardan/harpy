@@ -1,0 +1,9 @@
+{"version":2,"authorities":[
+  {"id":"iam.serviceprincipal.create","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.serviceprincipal.disable","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.serviceprincipal.enable","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.serviceprincipal.grant","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.serviceprincipal.retire","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.serviceprincipal.revoke","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]}
+]}
+

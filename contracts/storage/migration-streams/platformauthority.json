@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "owner": "platformauthority",
+  "streams": [
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260722040000,
+      "version_to": 20260722040009,
+      "phase": "expand",
+      "target_database_generation": 15,
+      "next_minimum_runtime_generation": 13
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260722095000,
+      "version_to": 20260722095002,
+      "phase": "expand",
+      "target_database_generation": 15,
+      "next_minimum_runtime_generation": 13
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260722130000,
+      "version_to": 20260722130001,
+      "phase": "expand",
+      "target_database_generation": 15,
+      "next_minimum_runtime_generation": 13
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260722130002,
+      "version_to": 20260722130002,
+      "phase": "expand",
+      "target_database_generation": 15,
+      "next_minimum_runtime_generation": 13
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260723160000,
+      "version_to": 20260723160001,
+      "phase": "expand",
+      "target_database_generation": 18,
+      "next_minimum_runtime_generation": 15
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260725123700,
+      "version_to": 20260725123700,
+      "phase": "expand",
+      "target_database_generation": 31,
+      "next_minimum_runtime_generation": 15
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260729100030,
+      "version_to": 20260729100030,
+      "phase": "expand",
+      "target_database_generation": 70,
+      "next_minimum_runtime_generation": 23
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260729100032,
+      "version_to": 20260729100032,
+      "phase": "expand",
+      "target_database_generation": 70,
+      "next_minimum_runtime_generation": 23
+    },
+    {
+      "owner": "platformauthority",
+      "directory": "core/internal/modules/platformauthority/migrations/platform",
+      "scope": "platform",
+      "version_from": 20260729100044,
+      "version_to": 20260729100044,
+      "phase": "contract",
+      "target_database_generation": 71,
+      "next_minimum_runtime_generation": 24
+    }
+  ]
+}

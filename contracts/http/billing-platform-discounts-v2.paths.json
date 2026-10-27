@@ -1,0 +1,44 @@
+{
+  "pathItems": {
+    "collection": {
+      "get": {
+        "operationId": "billingListDiscounts", "security": [{"bearerAuth": []}],
+        "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "GET v1",
+        "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
+      },
+      "post": {
+        "operationId": "billingCreateDiscount", "security": [{"bearerAuth": []}],
+        "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
+        "x-harpy-permission": "platform.billing.manage",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/CreateDiscount"}}}},
+        "responses": {"201": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/Conflict"}}
+      }
+    },
+    "query": {"post": {
+      "operationId": "billingQueryDiscounts", "security": [{"bearerAuth": []}],
+      "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "POST v1",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
+    }},
+    "item": {"get": {
+      "operationId": "billingGetDiscount", "security": [{"bearerAuth": []}],
+      "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/DiscountID"}],
+      "x-harpy-permission": "platform.billing.read",
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "404": {"$ref": "billing-common-v2.schemas.json#/responses/NotFound"}}
+    }},
+    "versions": {"post": {
+      "operationId": "billingCreateDiscountVersion", "security": [{"bearerAuth": []}],
+      "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/DiscountID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
+      "x-harpy-permission": "platform.billing.manage", "x-harpy-cas": "expected_revision",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/DiscountVersionMutation"}}}},
+      "responses": {"201": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+    }},
+    "retire": {"post": {
+      "operationId": "billingRetireDiscount", "security": [{"bearerAuth": []}],
+      "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/DiscountID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
+      "x-harpy-permission": "platform.billing.manage", "x-harpy-cas": "expected_revision",
+      "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/Retire"}}}},
+      "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
+    }}
+  }
+}

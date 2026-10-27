@@ -1,0 +1,19 @@
+{"version": 2,"authorities":[
+  {"id":"billing.catalog.campaign.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.campaign.list","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.campaign.publish","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.campaign.read","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.campaign.retire","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.discount.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.discount.list","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.discount.publish","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.discount.read","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.discount.retire","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.get","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.list","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.offering.create","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.offering.list","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.offering.publish","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.offering.read","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]},
+  {"id":"billing.catalog.offering.retire","owner":"billing","scope_source":"environment_global","required_groups":["billing"],"ordered_domains":["billing"],"participants":["billing"]}
+]}

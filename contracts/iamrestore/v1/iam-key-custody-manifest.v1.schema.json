@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.local/contracts/iam-key-custody-manifest.v1.schema.json",
+  "title": "Harpy IAM key custody manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "environment_id", "provider", "keyring_handle", "rotations"],
+  "properties": {
+    "schema": {"const": "iam-key-custody-manifest.v1"},
+    "environment_id": {"type": "string", "format": "uuid"},
+    "provider": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@-]{0,254}$"},
+    "keyring_handle": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@-]{0,254}$"},
+    "rotations": {
+      "type": "array", "minItems": 1, "maxItems": 128,
+      "items": {"$ref": "#/$defs/rotation"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rotation": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "operation_id", "status", "generation",
+		"security_epoch", "result_sha256", "public_kids", "revoked_generations"
+      ],
+      "properties": {
+        "operation_id": {"type": "string", "format": "uuid"},
+        "status": {"const": "rotated"},
+        "generation": {"type": "integer", "minimum": 1},
+		"security_epoch": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+        "result_sha256": {"$ref": "#/$defs/sha256"},
+        "public_kids": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "string", "minLength": 22, "maxLength": 86}
+        },
+        "revoked_generations": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1}
+        }
+      }
+    }
+  }
+}

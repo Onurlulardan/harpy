@@ -1,0 +1,31 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$defs":{
+    "UUID":{"type":"string","format":"uuid"},
+    "PositiveRevision":{"type":"integer","minimum":1},
+    "TenantID":{"name":"X-Tenant-ID","in":"header","required":false,"schema":{"$ref":"#/$defs/UUID"}},
+    "TenantSlug":{"name":"X-Tenant-Slug","in":"header","required":false,"schema":{"type":"string","minLength":1,"maxLength":100}},
+    "IdempotencyKey":{"name":"Idempotency-Key","in":"header","required":true,"schema":{"type":"string","minLength":16,"maxLength":128}},
+    "BoardID":{"name":"board_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "ColumnID":{"name":"column_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "TaskID":{"name":"task_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "CommentID":{"name":"comment_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "LabelID":{"name":"label_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "ChecklistID":{"name":"checklist_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "EventID":{"name":"event_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "RuleID":{"name":"rule_id","in":"path","required":true,"schema":{"$ref":"#/$defs/UUID"}},
+    "Mutation":{"type":"object","additionalProperties":false,"required":["expected_version"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"}}},
+    "BoardWrite":{"type":"object","additionalProperties":false,"required":["name"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"},"name":{"type":"string","minLength":1,"maxLength":200},"description":{"type":"string","maxLength":4000}}},
+    "TaskWrite":{"type":"object","additionalProperties":false,"required":["board_id","column_id","title"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"},"board_id":{"$ref":"#/$defs/UUID"},"column_id":{"$ref":"#/$defs/UUID"},"title":{"type":"string","minLength":1,"maxLength":300},"description":{"type":"string","maxLength":16000},"task_kind":{"enum":["CUSTOM","FORM_FILL","FORM_REVIEW"]},"due_at":{"type":["string","null"],"format":"date-time"}}},
+    "MoveTask":{"type":"object","additionalProperties":false,"required":["expected_version","column_id","position"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"},"column_id":{"$ref":"#/$defs/UUID"},"position":{"type":"integer","minimum":1,"maximum":10000}}},
+    "AssignTask":{"type":"object","additionalProperties":false,"required":["expected_version","principals"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"},"principals":{"type":"array","maxItems":100,"items":{"type":"object","additionalProperties":false,"required":["kind","id"],"properties":{"kind":{"enum":["USER","ROLE","ORGANIZATION"]},"id":{"$ref":"#/$defs/UUID"}}}}}},
+    "CommentWrite":{"type":"object","additionalProperties":false,"required":["body"],"properties":{"body":{"type":"string","minLength":1,"maxLength":16000}}},
+    "CalendarWrite":{"type":"object","additionalProperties":false,"required":["title","time_kind","timezone"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"},"title":{"type":"string","minLength":1,"maxLength":300},"description":{"type":"string","maxLength":16000},"time_kind":{"enum":["TIMED","ALL_DAY"]},"timezone":{"type":"string","minLength":1,"maxLength":100},"starts_at":{"type":"string","format":"date-time"},"ends_at":{"type":"string","format":"date-time"},"starts_on":{"type":"string","format":"date"},"ends_on":{"type":"string","format":"date"}}},
+    "RecurrenceWrite":{"type":"object","additionalProperties":false,"required":["event_id","rrule","timezone","horizon_end"],"properties":{"expected_version":{"$ref":"#/$defs/PositiveRevision"},"event_id":{"$ref":"#/$defs/UUID"},"rrule":{"type":"string","minLength":1,"maxLength":2000},"timezone":{"type":"string","minLength":1,"maxLength":100},"horizon_end":{"type":"string","format":"date-time"}}},
+    "Board":{"type":"object","additionalProperties":false,"required":["id","name","row_version"],"properties":{"id":{"$ref":"#/$defs/UUID"},"name":{"type":"string"},"description":{"type":"string"},"row_version":{"$ref":"#/$defs/PositiveRevision"},"deleted_at":{"type":["string","null"],"format":"date-time"}}},
+    "Task":{"type":"object","additionalProperties":false,"required":["id","board_id","column_id","status","title","position","row_version"],"properties":{"id":{"$ref":"#/$defs/UUID"},"board_id":{"$ref":"#/$defs/UUID"},"column_id":{"$ref":"#/$defs/UUID"},"status":{"enum":["OPEN","IN_PROGRESS","IN_REVIEW","DONE","CANCELLED"]},"title":{"type":"string"},"description":{"type":"string"},"position":{"type":"integer","minimum":1},"row_version":{"$ref":"#/$defs/PositiveRevision"}}},
+    "Page":{"type":"object","additionalProperties":false,"required":["items","page"],"properties":{"items":{"type":"array","items":{"type":"object"}},"page":{"type":"object"}}},
+    "Success":{"type":"object","additionalProperties":false,"required":["success","data"],"properties":{"success":{"const":true},"data":{}}},
+    "Error":{"description":"Fail-closed error","content":{"application/json":{"schema":{"$ref":"core-api-v1.components.json#/schemas/ErrorEnvelope"}}}}
+  }
+}

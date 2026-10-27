@@ -1,0 +1,2 @@
+SELECT state,environment_id,restore_operation_id
+FROM platform.iam_post_restore_admission_v1(true)

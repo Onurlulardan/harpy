@@ -1,0 +1,8 @@
+INSERT INTO platform.release_generations VALUES(
+'78000000-0000-4700-8700-000000000003',
+'78000000-0000-4700-8700-000000000002',
+'78000000-0000-4700-8700-000000000001',$1,1,1,1,1,$2,
+'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',$3,
+'cluster_bootstrap','78100000-0000-4710-8710-000000000001',
+'extension_admin','78100000-0000-4710-8710-000000000002',
+'credential_cleanup','78100000-0000-4710-8710-000000000003')

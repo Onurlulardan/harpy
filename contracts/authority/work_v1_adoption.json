@@ -1,0 +1,6 @@
+{"version":2,"authorities":[
+  {"id":"work.v1_adoption.apply","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.v1_adoption.reconcile","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.v1_adoption.retire","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]},
+  {"id":"work.v1_adoption.reverse","owner":"work","scope_source":"actor_tenant","required_groups":["work"],"ordered_domains":["work"],"participants":["work"]}
+]}

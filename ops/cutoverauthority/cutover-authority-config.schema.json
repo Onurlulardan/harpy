@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/external-cutover-authority-config.v1.schema.json",
+  "title": "External cutover authority invocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "action", "environment", "deadline_seconds"],
+  "properties": {
+    "contract_version": { "const": "external-cutover-authority-config.v1" },
+    "action": { "enum": ["adopt_authority", "issue_finalizer", "authorize_finalization", "record_full_rollout"] },
+    "environment": { "enum": ["development", "test", "staging", "production"] },
+    "deadline_seconds": { "type": "integer", "minimum": 1, "maximum": 900 },
+    "adopt": { "$ref": "#/$defs/adopt" },
+    "issue_finalizer": { "$ref": "#/$defs/issue" },
+    "authorize_finalization": { "$ref": "#/$defs/authorize" },
+    "record_full_rollout": { "$ref": "#/$defs/fullRollout" }
+  },
+  "oneOf": [
+    {
+      "properties": { "action": { "const": "adopt_authority" } },
+      "required": ["adopt"],
+      "not": { "anyOf": [
+        { "required": ["issue_finalizer"] },
+        { "required": ["authorize_finalization"] },
+        { "required": ["record_full_rollout"] }
+      ] }
+    },
+    {
+      "properties": {
+        "action": { "const": "issue_finalizer" },
+        "deadline_seconds": { "maximum": 120 }
+      },
+      "required": ["issue_finalizer"],
+      "not": { "anyOf": [
+        { "required": ["adopt"] },
+        { "required": ["authorize_finalization"] },
+        { "required": ["record_full_rollout"] }
+      ] }
+    },
+    {
+      "properties": {
+        "action": { "const": "authorize_finalization" },
+        "deadline_seconds": { "maximum": 120 }
+      },
+      "required": ["authorize_finalization"],
+      "not": { "anyOf": [
+        { "required": ["adopt"] },
+        { "required": ["issue_finalizer"] },
+        { "required": ["record_full_rollout"] }
+      ] }
+    },
+    {
+      "properties": {
+        "action": { "const": "record_full_rollout" },
+        "deadline_seconds": { "maximum": 120 }
+      },
+      "required": ["record_full_rollout"],
+      "not": { "anyOf": [
+        { "required": ["adopt"] },
+        { "required": ["issue_finalizer"] },
+        { "required": ["authorize_finalization"] }
+      ] }
+    }
+  ],
+  "$defs": {
+    "absolutePath": { "type": "string", "minLength": 3 },
+    "authorityArtifacts": {
+      "type": "object",
+      "properties": {
+        "trust_root": { "$ref": "#/$defs/absolutePath" },
+        "release_manifest": { "$ref": "#/$defs/absolutePath" },
+        "release_signature": { "$ref": "#/$defs/absolutePath" },
+        "bootstrap_authority_manifest": { "$ref": "#/$defs/absolutePath" },
+        "bootstrap_authority_signature": { "$ref": "#/$defs/absolutePath" },
+        "authority_operation": { "$ref": "#/$defs/absolutePath" },
+        "authority_operation_signature": { "$ref": "#/$defs/absolutePath" }
+      },
+      "required": [
+        "trust_root", "release_manifest", "release_signature",
+        "bootstrap_authority_manifest", "bootstrap_authority_signature",
+        "authority_operation", "authority_operation_signature"
+      ]
+    },
+    "adopt": {
+      "allOf": [
+        { "$ref": "#/$defs/authorityArtifacts" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "trust_root": true,
+            "release_manifest": true,
+            "release_signature": true,
+            "bootstrap_authority_manifest": true,
+            "bootstrap_authority_signature": true,
+            "authority_operation": true,
+            "authority_operation_signature": true,
+            "root_dsn_file": { "$ref": "#/$defs/absolutePath" },
+            "signing_key_file": { "$ref": "#/$defs/absolutePath" },
+            "receipt_path": { "$ref": "#/$defs/absolutePath" },
+            "receipt_signature_path": { "$ref": "#/$defs/absolutePath" }
+          },
+          "required": [
+            "root_dsn_file", "signing_key_file", "receipt_path",
+            "receipt_signature_path"
+          ]
+        }
+      ]
+    },
+    "issue": {
+      "allOf": [
+        { "$ref": "#/$defs/authorityArtifacts" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "trust_root": true, "release_manifest": true, "release_signature": true,
+            "bootstrap_authority_manifest": true, "bootstrap_authority_signature": true,
+            "authority_operation": true, "authority_operation_signature": true,
+            "cluster_admin_dsn_file": { "$ref": "#/$defs/absolutePath" },
+            "finalizer_dsn_file": { "$ref": "#/$defs/absolutePath" },
+            "authority_receipt": { "$ref": "#/$defs/absolutePath" },
+            "authority_receipt_signature": { "$ref": "#/$defs/absolutePath" },
+            "credential_lease": { "$ref": "#/$defs/absolutePath" },
+            "credential_lease_signature": { "$ref": "#/$defs/absolutePath" },
+            "session_seal_receipt": { "$ref": "#/$defs/absolutePath" },
+            "credential_cleanup_receipt": { "$ref": "#/$defs/absolutePath" },
+            "terminal_evidence": { "$ref": "#/$defs/absolutePath" },
+            "signing_key_file": { "$ref": "#/$defs/absolutePath" },
+            "finalizer_lease_id": { "type": "string", "format": "uuid" },
+            "finalizer_lease_path": { "$ref": "#/$defs/absolutePath" },
+            "finalizer_lease_signature_path": { "$ref": "#/$defs/absolutePath" }
+          },
+          "required": [
+            "cluster_admin_dsn_file", "finalizer_dsn_file", "authority_receipt", "authority_receipt_signature",
+            "credential_lease", "credential_lease_signature", "session_seal_receipt",
+            "credential_cleanup_receipt", "terminal_evidence", "signing_key_file",
+            "finalizer_lease_id", "finalizer_lease_path", "finalizer_lease_signature_path"
+          ]
+        }
+      ]
+    },
+    "authorize": {
+      "allOf": [
+        { "$ref": "#/$defs/authorityArtifacts" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "trust_root": true,
+            "release_manifest": true,
+            "release_signature": true,
+            "bootstrap_authority_manifest": true,
+            "bootstrap_authority_signature": true,
+            "authority_operation": true,
+            "authority_operation_signature": true,
+            "cluster_admin_dsn_file": { "$ref": "#/$defs/absolutePath" },
+            "authority_receipt": { "$ref": "#/$defs/absolutePath" },
+            "authority_receipt_signature": { "$ref": "#/$defs/absolutePath" },
+            "credential_lease": { "$ref": "#/$defs/absolutePath" },
+            "credential_lease_signature": { "$ref": "#/$defs/absolutePath" },
+            "session_seal_receipt": { "$ref": "#/$defs/absolutePath" },
+            "credential_cleanup_receipt": { "$ref": "#/$defs/absolutePath" },
+            "finalizer_lease": { "$ref": "#/$defs/absolutePath" },
+            "finalizer_lease_signature": { "$ref": "#/$defs/absolutePath" },
+            "terminal_evidence": { "$ref": "#/$defs/absolutePath" }
+          },
+          "required": [
+            "cluster_admin_dsn_file", "authority_receipt",
+            "authority_receipt_signature", "credential_lease",
+            "credential_lease_signature", "session_seal_receipt",
+            "credential_cleanup_receipt", "finalizer_lease",
+            "finalizer_lease_signature", "terminal_evidence"
+          ]
+        }
+      ]
+    },
+    "fullRollout": {
+      "allOf": [
+        { "$ref": "#/$defs/authorityArtifacts" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "trust_root": true, "release_manifest": true, "release_signature": true,
+            "bootstrap_authority_manifest": true, "bootstrap_authority_signature": true,
+            "authority_operation": true, "authority_operation_signature": true,
+            "cluster_admin_dsn_file": { "$ref": "#/$defs/absolutePath" },
+            "completion_evidence": { "$ref": "#/$defs/absolutePath" },
+            "evidence_artifacts": {"type": "array", "minItems": 1, "maxItems": 128,
+              "uniqueItems": true, "items": { "$ref": "#/$defs/absolutePath" }}
+          },
+          "required": [
+            "cluster_admin_dsn_file", "completion_evidence", "evidence_artifacts"
+          ]
+        }
+      ]
+    }
+  }
+}

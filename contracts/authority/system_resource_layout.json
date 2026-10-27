@@ -1,0 +1,44 @@
+{"version":2,"authorities":[
+  {
+    "id":"system_resource_layout.create","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"system_resource_layout.delete","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"system_resource_layout.get","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"system_resource_layout.list","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"system_resource_layout.publish","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"system_resource_layout.resolve","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"system_resource_layout.update","owner":"system_resource_layout",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  }
+]}

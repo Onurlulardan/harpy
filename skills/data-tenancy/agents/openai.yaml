@@ -1,0 +1,4 @@
+interface:
+  display_name: "Data and Tenancy"
+  short_description: "Protect tenant data transactions and migrations"
+  default_prompt: "Use $data-tenancy for this backend-v2 database change."

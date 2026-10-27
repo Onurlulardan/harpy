@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      POSTGRES_DB: harpy_oracle
+      POSTGRES_USER: oracle
+      POSTGRES_INITDB_ARGS: >-
+        --encoding=UTF8
+        --locale=en_US.utf8
+        --auth-host=scram-sha-256
+    command: ["postgres", "-c", "max_connections=200"]
+    depends_on:
+      oracle-preflight:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oracle -d harpy_oracle -h 127.0.0.1"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    shm_size: 256mb
+    volumes:
+      - pg15-source:/var/lib/postgresql/data
+      - type: bind
+        source: ./pg15-replication-hba.sh
+        target: /docker-entrypoint-initdb.d/010-replication-hba.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks: [oracle]
+    restart: "no"
+
+networks:
+  oracle:
+    driver: bridge
+    internal: true

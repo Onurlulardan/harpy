@@ -1,0 +1,123 @@
+{
+  "pathItems": {
+    "webauthnEnrollments": {
+      "post": {
+        "operationId": "iamStartWebAuthnEnrollment", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.webauthn.enrollment.start",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/EnrollmentStartRequest"}}}},
+        "responses": {
+          "201": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ChallengeCreated"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"}, "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"}, "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "webauthnEnrollmentComplete": {
+      "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/AuthenticatorID"}],
+      "post": {
+        "operationId": "iamCompleteWebAuthnEnrollment", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.webauthn.enrollment.complete",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IfMatch"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/WebAuthnCompleteRequest"}}}},
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"}, "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"}, "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "totpEnrollments": {
+      "post": {
+        "operationId": "iamStartTOTPEnrollment", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.totp.enrollment.start",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/EnrollmentStartRequest"}}}},
+        "responses": {
+          "201": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/TOTPStarted"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"}, "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"}, "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "totpEnrollmentComplete": {
+      "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/AuthenticatorID"}],
+      "post": {
+        "operationId": "iamCompleteTOTPEnrollment", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.totp.enrollment.complete",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IfMatch"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/TOTPCompleteRequest"}}}},
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"}, "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"}, "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "recoveryCodes": {
+      "get": {
+        "operationId": "iamListRecoveryCodes", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.read",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}],
+        "responses": {
+          "200": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RecoveryCodes"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      },
+      "post": {
+        "operationId": "iamIssueRecoveryCodes", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.recovery_codes.issue",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/EnrollmentStartRequest"}}}},
+        "responses": {
+          "201": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RecoveryIssued"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"}, "413": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/BodyTooLarge"},
+          "415": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/MediaTypeUnsupported"}, "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "authenticators": {
+      "get": {
+        "operationId": "iamListAuthenticators", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.read",
+        "x-harpy-keyset-pair": ["after_time", "after_id"],
+        "parameters": [
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/Limit"},
+          {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/AfterTime"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/AfterID"}
+        ],
+        "responses": {
+          "200": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Authenticators"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "authenticatorSuspend": {
+      "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/ID"}],
+      "post": {
+        "operationId": "iamSuspendAuthenticator", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.authenticator.suspend",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IfMatch"}],
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"}, "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    },
+    "authenticatorRetire": {
+      "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/ID"}],
+      "post": {
+        "operationId": "iamRetireAuthenticator", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.authenticator.retire",
+        "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IfMatch"}],
+        "responses": {
+          "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
+          "401": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthenticationFailed"}, "403": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/AuthorizationDenied"},
+          "404": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/CredentialInvalid"}, "409": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Conflict"},
+          "503": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/Unavailable"}
+        }
+      }
+    }
+  }
+}

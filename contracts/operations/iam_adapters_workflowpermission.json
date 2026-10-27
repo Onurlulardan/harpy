@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/workflowpermission",
+      "layer": "adapters/postgres",
+      "resource": "workflowpermission",
+      "operation": "execute",
+      "source": "core/internal/modules/iam/adapters/postgres/workflowpermission/execute.go",
+      "test": "core/internal/modules/iam/adapters/postgres/workflowpermission/execute_test.go",
+      "application_operation": "core/internal/modules/iam/application/workflowpermission/execute.go"
+    }
+  ]
+}

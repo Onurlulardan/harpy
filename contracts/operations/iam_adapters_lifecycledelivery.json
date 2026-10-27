@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycledelivery",
+      "layer": "adapters/postgres",
+      "resource": "lifecycledelivery",
+      "operation": "claim",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/claim.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/claim_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycledelivery/claim.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycledelivery",
+      "layer": "adapters/postgres",
+      "resource": "lifecycledelivery",
+      "operation": "finalize",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/finalize.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/finalize_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycledelivery/finalize.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycledelivery",
+      "layer": "adapters/postgres",
+      "resource": "lifecycledelivery",
+      "operation": "mark",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/mark_unknown.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/mark_unknown_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycledelivery/mark_unknown.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/lifecycledelivery",
+      "layer": "adapters/postgres",
+      "resource": "lifecycledelivery",
+      "operation": "release",
+      "source": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/release.go",
+      "test": "core/internal/modules/iam/adapters/postgres/lifecycledelivery/release_test.go",
+      "application_operation": "core/internal/modules/iam/application/lifecycledelivery/release.go"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+SELECT *
+FROM platform.billing_subscription_snapshot_read_v1($1::uuid, $2::uuid)
+AS snapshot(
+    candidate_count bigint,
+    id uuid,
+    legacy_id uuid,
+    tenant_id uuid,
+    legacy_plan_id uuid,
+    provider_account_id uuid,
+    offering_version_id uuid,
+    price_version_id uuid,
+    provider_key text,
+    state text,
+    period_start timestamptz,
+    period_end timestamptz,
+    trial_ends_at timestamptz,
+    grace_ends_at timestamptz,
+    cancel_at_period_end boolean,
+    cancel_at timestamptz,
+    trial_started_at timestamptz,
+    cancelled_at timestamptz,
+    cancellation_reason text,
+    effective_minor_units bigint,
+    effective_currency text,
+    effective_registry_version bigint,
+    revision bigint,
+    created_at timestamptz,
+    updated_at timestamptz,
+    price_matches_offering boolean,
+    offering_matches boolean,
+    offering_document jsonb
+);

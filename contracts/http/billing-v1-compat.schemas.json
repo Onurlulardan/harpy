@@ -1,0 +1,71 @@
+{
+  "parameters": {
+    "ID": {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}}
+  },
+  "schemas": {
+    "ChangePlan": {"type": "object", "additionalProperties": false, "required": ["plan_id"], "properties": {"plan_id": {"type": "string", "format": "uuid"}}},
+    "Cancel": {"type": "object", "additionalProperties": false, "properties": {"reason": {"type": "string", "maxLength": 512}}},
+    "Empty": {"type": "object", "additionalProperties": false, "maxProperties": 0},
+    "ApplyCoupon": {"type": "object", "additionalProperties": false, "required": ["coupon_code"], "properties": {"coupon_code": {"type": "string", "minLength": 1, "maxLength": 64}}},
+    "ValidateCoupon": {
+      "type": "object", "additionalProperties": false, "required": ["code"],
+      "properties": {"code": {"type": "string", "minLength": 1, "maxLength": 64}, "plan_id": {"type": "string", "format": "uuid"}}
+    },
+    "PlanMutation": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "slug": {"type": "string", "minLength": 1, "maxLength": 127},
+        "description": {"type": "string", "maxLength": 2048},
+        "price_cents": {"type": "integer", "minimum": 0},
+        "annual_price_cents": {"type": "integer", "minimum": 0},
+        "billing_interval": {"enum": ["monthly", "annual"]},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "limits": {"type": "object"}, "features": {"type": "object"},
+        "sort_order": {"type": "integer"}, "is_active": {"type": "boolean"},
+        "is_public": {"type": "boolean"}, "highlight_label": {"type": "string"},
+        "color": {"type": "string"}, "trial_days": {"type": "integer", "minimum": 0}
+      },
+      "x-harpy-mapping": "complete current snapshot plus patch becomes a new immutable offering version"
+    },
+    "AdminSubscriptionUpdate": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"status": {"type": "string"}, "plan_id": {"type": "string", "format": "uuid"}},
+      "x-harpy-mapping": "legal named state only; arbitrary status and mutable plan assignment fail closed"
+    },
+    "CouponMutation": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "code": {"type": "string", "maxLength": 64}, "name": {"type": "string", "maxLength": 128},
+        "discount_type": {"enum": ["percentage", "fixed_amount"]},
+        "discount_value": {"type": "integer", "minimum": 0},
+        "max_uses": {"type": ["integer", "null"], "minimum": 1},
+        "max_uses_per_tenant": {"type": "integer", "minimum": 1},
+        "valid_from": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "valid_until": {"anyOf": [{"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"}, {"type": "null"}]},
+        "applicable_plan_ids": {"type": "array", "uniqueItems": true, "maxItems": 256, "items": {"type": "string", "format": "uuid"}},
+        "duration": {"enum": ["once", "repeating", "forever"]},
+        "duration_months": {"type": ["integer", "null"], "minimum": 1},
+        "is_active": {"type": "boolean"}, "campaign_id": {"type": ["string", "null"], "format": "uuid"}
+      },
+      "x-harpy-mapping": "empty applicable_plan_ids maps to all_offerings=true; nonempty resolves exact UUIDv7 offering versions"
+    },
+    "CampaignMutation": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "maxLength": 128}, "slug": {"type": "string", "maxLength": 127},
+        "description": {"type": "string", "maxLength": 2048},
+        "start_date": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "end_date": {"anyOf": [{"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"}, {"type": "null"}]},
+        "auto_apply": {"type": "boolean"}, "banner_text": {"type": "string", "maxLength": 512},
+        "is_active": {"type": "boolean"}
+      },
+      "x-harpy-mapping": "complete current snapshot plus patch becomes a new immutable campaign version"
+    }
+  },
+  "responses": {
+    "Success": {"description": "Legacy Billing V1 response wire preserved where characterized.", "content": {"application/json": {"schema": {}}}},
+    "Invalid": {"description": "Legacy request cannot be represented by a safe V2 command.", "content": {"application/json": {"schema": {"$ref": "billing-common-v2.schemas.json#/schemas/BillingErrorEnvelope"}}}},
+    "Conflict": {"description": "Immutable snapshot, transition, redemption, or revision conflict.", "content": {"application/json": {"schema": {"$ref": "billing-common-v2.schemas.json#/schemas/BillingErrorEnvelope"}}}}
+  }
+}

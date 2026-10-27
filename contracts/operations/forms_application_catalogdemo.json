@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/catalogdemo",
+      "layer": "application",
+      "resource": "catalogdemo",
+      "operation": "materialize",
+      "source": "core/internal/modules/forms/application/catalogdemo/materialize.go",
+      "test": "core/internal/modules/forms/application/catalogdemo/materialize_test.go",
+      "authority_id": "forms.catalog_demo.materialize"
+    }
+  ]
+}

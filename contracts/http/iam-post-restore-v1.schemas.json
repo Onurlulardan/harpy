@@ -1,0 +1,10 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$defs":{
+    "UUID":{"type":"string","format":"uuid"},
+    "ChallengeRequest":{"type":"object","additionalProperties":false,"required":["environment_id","restore_operation_id"],"properties":{"environment_id":{"$ref":"#/$defs/UUID"},"restore_operation_id":{"$ref":"#/$defs/UUID"}}},
+    "ChallengeEnvelope":{"type":"object","additionalProperties":false,"required":["success","data"],"properties":{"success":{"const":true},"data":{"type":"object","additionalProperties":false,"required":["operation_id","public_key","expires_at"],"properties":{"operation_id":{"$ref":"#/$defs/UUID"},"public_key":{"type":"object"},"expires_at":{"type":"string","format":"date-time"}}}}},
+    "ReactivateRequest":{"type":"object","additionalProperties":false,"required":["environment_id","restore_operation_id","operation_id","credential","new_password"],"properties":{"environment_id":{"$ref":"#/$defs/UUID"},"restore_operation_id":{"$ref":"#/$defs/UUID"},"operation_id":{"$ref":"#/$defs/UUID"},"credential":{"type":"object"},"new_password":{"type":"string","minLength":12,"maxLength":1024}}},
+    "ReactivateEnvelope":{"type":"object","additionalProperties":false,"required":["success","data"],"properties":{"success":{"const":true},"data":{"type":"object","additionalProperties":false,"required":["user_id","tenant_id","session_state","token","expires_at"],"properties":{"user_id":{"$ref":"#/$defs/UUID"},"tenant_id":{"$ref":"#/$defs/UUID"},"session_state":{"const":"active"},"token":{"type":"string","minLength":1},"expires_at":{"type":"string","format":"date-time"}}}}}
+  }
+}

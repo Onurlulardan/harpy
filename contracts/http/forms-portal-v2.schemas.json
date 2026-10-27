@@ -1,0 +1,21 @@
+{
+  "$defs": {
+    "TenantID": {"name":"X-Tenant-ID","in":"header","required":true,"schema":{"type":"string","format":"uuid"}},
+    "TenantSlug": {"name":"X-Tenant-Slug","in":"header","required":true,"schema":{"type":"string","pattern":"^[a-z0-9]+(?:-[a-z0-9]+)*$"}},
+    "Slug": {"name":"slug","in":"path","required":true,"schema":{"type":"string","pattern":"^[a-z0-9]+(?:-[a-z0-9]+)*$"}},
+    "Field": {"name":"field","in":"path","required":true,"schema":{"type":"string","minLength":1,"maxLength":100}},
+    "RecordID": {"name":"id","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+    "IdempotencyKey": {"name":"Idempotency-Key","in":"header","required":true,"schema":{"type":"string","minLength":1,"maxLength":128,"pattern":"^[A-Za-z0-9_.:-]+$"}},
+    "IfMatch": {"name":"If-Match","in":"header","required":true,"schema":{"type":"string","pattern":"^\"row-version-[1-9][0-9]*\"$"}},
+    "RecordDocument": {"type":"object","additionalProperties":true,"maxProperties":1000},
+    "SuccessEnvelope": {"type":"object","required":["success","data"],"properties":{"success":{"const":true},"data":{}},"additionalProperties":false},
+    "ErrorEnvelope": {"type":"object","required":["success","error"],"properties":{"success":{"const":false},"error":{"type":"object","required":["code","message","correlation_id"],"properties":{"code":{"type":"string"},"message":{"type":"string"},"correlation_id":{"type":"string","format":"uuid"}},"additionalProperties":false}},"additionalProperties":false}
+  },
+  "responses": {
+    "Success": {"description":"Portal operation succeeded","content":{"application/json":{"schema":{"$ref":"#/$defs/SuccessEnvelope"}}}},
+    "Created": {"description":"Portal record created","headers":{"Location":{"schema":{"type":"string"}},"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/$defs/SuccessEnvelope"}}}},
+    "Mutation": {"description":"Portal record mutation succeeded","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/$defs/SuccessEnvelope"}}}},
+    "Error": {"description":"Portal request failed closed","content":{"application/json":{"schema":{"$ref":"#/$defs/ErrorEnvelope"}}}},
+    "Gone": {"description":"V1-only portal route is intentionally retired","content":{"application/json":{"schema":{"$ref":"#/$defs/ErrorEnvelope"}}}}
+  }
+}

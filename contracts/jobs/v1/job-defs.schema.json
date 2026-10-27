@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/job-defs.schema.json",
+  "title": "Harpy Job Contract Definitions v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "x-maxUtf8Bytes": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": {"const": "00000000-0000-0000-0000-000000000000"}
+    },
+    "sha256": {"type": "string", "maxLength": 64, "x-maxUtf8Bytes": 64, "pattern": "^[0-9a-f]{64}$"},
+    "timestamp": {
+      "type": "string", "format": "date-time", "maxLength": 30, "x-maxUtf8Bytes": 30,
+      "pattern": "^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\\.[0-9]{0,8}[1-9])?Z$"
+    },
+    "domain": {"type": "string", "maxLength": 63, "x-maxUtf8Bytes": 63, "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+    "kind": {"type": "string", "maxLength": 128, "x-maxUtf8Bytes": 128, "pattern": "^[a-z][a-z0-9_.-]{2,127}$"},
+    "code": {"type": "string", "maxLength": 64, "x-maxUtf8Bytes": 64, "pattern": "^[A-Z][A-Z0-9_]{1,63}$"},
+    "key": {"type": "string", "minLength": 1, "maxLength": 512, "x-maxUtf8Bytes": 512, "pattern": "^\\S(?:[\\s\\S]*\\S)?$"},
+    "ticket": {"type": "string", "minLength": 1, "maxLength": 256, "x-maxUtf8Bytes": 256, "pattern": "^\\S(?:[\\s\\S]*\\S)?$"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 2048, "x-maxUtf8Bytes": 2048, "pattern": "^\\S(?:[\\s\\S]*\\S)?$"},
+    "reference": {"type": "string", "minLength": 1, "maxLength": 2048, "x-maxUtf8Bytes": 2048, "pattern": "^\\S(?:[\\s\\S]*\\S)?$"},
+    "nullableUuid": {
+      "anyOf": [{"type": "null"}, {"$ref": "#/$defs/uuid"}]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_kind", "scope_id", "domain", "cutover_generation", "writer_origin",
+        "group_id", "group_generation"
+      ],
+      "properties": {
+        "scope_kind": {"enum": ["tenant", "global"]},
+        "scope_id": {"$ref": "#/$defs/uuid"},
+        "domain": {"$ref": "#/$defs/domain"},
+        "cutover_generation": {"type": "integer", "minimum": 1},
+        "writer_origin": {"enum": ["v1", "v2"]},
+        "group_id": {"$ref": "#/$defs/domain"},
+        "group_generation": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "forms.field_registry.resolve",
+      "owner": "forms",
+      "scope_source": "environment_global",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    },
+    {
+      "id": "forms.field_registry.validate_role",
+      "owner": "forms",
+      "scope_source": "environment_global",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    }
+  ]
+}

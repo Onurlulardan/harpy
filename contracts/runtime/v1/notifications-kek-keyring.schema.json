@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "notifications-kek-keyring.schema.json",
+  "title": "Harpy Notifications KEK keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "current", "retained"],
+  "properties": {
+    "version": {"const": 1},
+    "current": {"$ref": "#/$defs/key"},
+    "retained": {
+      "type": "array",
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/key"}
+    }
+  },
+  "$defs": {
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "key"],
+      "properties": {
+        "revision": {"type": "integer", "minimum": 1},
+        "key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"}
+      }
+    }
+  }
+}

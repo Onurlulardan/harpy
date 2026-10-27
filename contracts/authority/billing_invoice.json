@@ -1,0 +1,3 @@
+{"version":2,"authorities":[
+  {"id":"billing.invoice.finalize","owner":"billing","scope_source":"job_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]}
+]}

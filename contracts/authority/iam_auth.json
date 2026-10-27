@@ -1,0 +1,82 @@
+{"version":2,"authorities":[
+  {
+    "id":"iam.authentication.complete","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.consume","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.initial.complete","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants":["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.initial.reject_policy","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants":["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.initial.start","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants":["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.initial.verify","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants":["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.issue","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.revoke","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.rotate","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.start","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authentication.validate","owner":"iam",
+    "scope_source":"credential_target","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {"id":"iam.authenticator.list","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.authenticator.retire","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {
+    "id":"iam.authorization.authorize","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  },
+  {
+    "id":"iam.authorization.resolve_pinned_actor","owner":"iam",
+    "scope_source":"actor_tenant","required_groups":["iam_system_resources"],
+    "ordered_domains":["iam","system_resource_layout"],
+    "participants": ["iam","system_resource_layout"]
+  }
+]}

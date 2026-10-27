@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/core-api-config.schema.json",
+  "title": "Harpy Core API Environment Snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile", "variables"],
+  "properties": {
+    "profile": {"const": "api"},
+    "variables": {"$ref": "phase14-api-worker-profile-defs.schema.json#/$defs/apiVariables"}
+  }
+}

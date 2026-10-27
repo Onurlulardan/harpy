@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "notifications-consumer-keyring.schema.json",
+  "title": "Harpy Notifications consumer keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "keys"],
+  "properties": {
+    "version": {"const": 1},
+    "keys": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/key"}
+    }
+  },
+  "$defs": {
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key_id", "consumer", "manifest_sha256", "public_key"],
+      "properties": {
+        "key_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"},
+        "consumer": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+        "manifest_sha256": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+        "public_key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"}
+      }
+    }
+  }
+}

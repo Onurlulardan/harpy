@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "owner": "system_resource_layout",
+  "streams": [
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260716013500,"version_to":20260716013599,"phase":"expand","target_database_generation":4,"next_minimum_runtime_generation":1},
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260722092000,"version_to":20260722092000,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260729100027,"version_to":20260729100027,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260729100036,"version_to":20260729100036,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260729100047,"version_to":20260729100047,"phase":"contract","target_database_generation":71,"next_minimum_runtime_generation":24},
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260730120100,"version_to":20260730120104,"phase":"expand","target_database_generation":79,"next_minimum_runtime_generation":24},
+    {"owner":"system_resource_layout","directory":"core/internal/modules/system_resource_layout/migrations/tenant","scope":"tenant","version_from":20260802232100,"version_to":20260802232102,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24}
+  ]
+}

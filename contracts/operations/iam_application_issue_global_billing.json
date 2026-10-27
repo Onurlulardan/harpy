@@ -1,0 +1,9 @@
+{"version":1,"operations":[
+  {
+    "package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application",
+    "layer":"application","resource":"iam","operation":"issue",
+    "source":"core/internal/modules/iam/application/issue_global_billing.go",
+    "test":"core/internal/modules/iam/application/issue_global_billing_test.go",
+    "authority_id":"iam.global_billing.issue"
+  }
+]}

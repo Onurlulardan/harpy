@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/iam-rbac-change-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["clock", "command", "result", "revision"],
+  "properties": {
+    "clock": {"type": "integer", "minimum": 1},
+    "command": {
+      "type": "string",
+      "pattern": "^iam\\.rbac\\.[a-z0-9_.]+$",
+      "maxLength": 100
+    },
+    "result": {
+      "type": "string",
+      "pattern": "^iam\\.rbac\\.[a-z0-9_.]+$",
+      "maxLength": 100
+    },
+    "revision": {"type": "integer", "minimum": 1}
+  }
+}

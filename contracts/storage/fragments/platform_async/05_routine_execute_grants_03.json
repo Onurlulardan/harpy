@@ -1,0 +1,22 @@
+
+{
+  "version": 1,
+  "owner": "platform_async",
+  "routine_execute_grants": [
+    {"routine":"platform.platform_async_park_stale_work_v2","identity_arguments":"uuid,text,uuid,bigint,uuid","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_purge_dead_letters_v2","identity_arguments":"integer","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_reconcile_event_gap_v2","identity_arguments":"uuid,uuid,uuid,bigint","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_record_v1_inventory_item_v1","identity_arguments":"uuid,text,text,text,text,text,integer,text,text,text,text,integer,text,text,timestamptz,integer,integer,text,text,timestamptz,text","role":"harpy_adopter","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_record_v1_restart_fence_v1","identity_arguments":"uuid,text,text,text,text,text,text,timestamptz,timestamptz,text","role":"harpy_cluster_admin","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_record_v1_zero_inventory_v1","identity_arguments":"uuid,text,bigint,bigint,bigint,bigint,timestamptz,text","role":"harpy_cluster_admin","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_redact_dead_letter_payloads_v2","identity_arguments":"integer","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_redact_outbox_payloads_v2","identity_arguments":"integer","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_release_job_retention_v1","identity_arguments":"uuid,uuid,text,bigint,text,bigint,bigint,text,timestamptz","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_run_retention_cycle_v1","identity_arguments":"","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_seal_v1_inventory_v1","identity_arguments":"uuid,text","role":"harpy_adopter","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_validate_job_attempt_v1","identity_arguments":"platform.job_attempts,platform.job_attempts,name,name","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_validate_job_attempt_v2","identity_arguments":"platform.job_attempts,platform.job_attempts,name,name","role":"harpy_runtime","contract":"ADR-0114"},
+    {"routine":"platform.platform_async_validate_job_transition_v1","identity_arguments":"platform.jobs,platform.jobs,name,name","role":"harpy_runtime","contract":"ADR-0056"},
+    {"routine":"platform.platform_async_validate_job_transition_v2","identity_arguments":"platform.jobs,platform.jobs,name,name","role":"harpy_runtime","contract":"ADR-0114"}
+  ]
+}

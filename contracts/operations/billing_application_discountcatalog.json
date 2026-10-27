@@ -1,0 +1,5 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discountcatalog","layer":"application","resource":"discountcatalog","operation":"create","source":"core/internal/modules/billing/application/discountcatalog/create.go","test":"core/internal/modules/billing/application/discountcatalog/create_test.go","authority_id":"billing.discount.create"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discountcatalog","layer":"application","resource":"discountcatalog","operation":"publish","source":"core/internal/modules/billing/application/discountcatalog/publish.go","test":"core/internal/modules/billing/application/discountcatalog/publish_test.go","authority_id":"billing.discount.version.create"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discountcatalog","layer":"application","resource":"discountcatalog","operation":"retire","source":"core/internal/modules/billing/application/discountcatalog/retire.go","test":"core/internal/modules/billing/application/discountcatalog/retire_test.go","authority_id":"billing.discount.retire"}
+]}

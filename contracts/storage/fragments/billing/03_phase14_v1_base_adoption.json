@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "owner": "billing",
+  "platform_routines": [
+    "platform.billing_v1_base_adoption_apply_and_record_v1",
+    "platform.billing_v1_base_adoption_apply_v1",
+    "platform.billing_v1_base_adoption_assert_v1",
+    "platform.billing_verify_v1_adoption_v1"
+  ]
+}

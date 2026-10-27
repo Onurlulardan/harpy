@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/effects/v1/effect-receipt.schema.json",
+  "title": "Harpy Effect Receipt v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "receipt_id", "effect_id", "effect_kind",
+    "effect_revision", "tenant_id", "authority", "provider", "operation",
+    "idempotency_key", "correlation_id", "causation_id", "status", "code",
+    "error_class", "provider_reference", "result_reference", "result_sha256",
+    "completed_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "effect-receipt.v1"},
+    "receipt_id": {"$ref": "#/$defs/uuid"},
+    "effect_id": {"$ref": "#/$defs/uuid"},
+    "effect_kind": {
+      "type": "string", "minLength": 3, "maxLength": 128, "x-maxUtf8Bytes": 128,
+      "pattern": "^[a-z][a-z0-9_.-]{2,127}$"
+    },
+    "effect_revision": {"type": "integer", "minimum": 1},
+    "tenant_id": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/uuid"}]
+    },
+    "authority": {"$ref": "#/$defs/authority"},
+    "provider": {
+      "type": "string", "minLength": 3, "maxLength": 128, "x-maxUtf8Bytes": 128,
+      "pattern": "^[a-z][a-z0-9_.-]{2,127}$"
+    },
+    "operation": {
+      "type": "string", "minLength": 3, "maxLength": 128, "x-maxUtf8Bytes": 128,
+      "pattern": "^[a-z][a-z0-9_.-]{2,127}$"
+    },
+    "idempotency_key": {
+      "type": "string", "minLength": 1, "maxLength": 512, "x-maxUtf8Bytes": 512,
+      "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+    },
+    "correlation_id": {"$ref": "#/$defs/correlation_id"},
+    "causation_id": {"$ref": "#/$defs/uuid"},
+    "status": {"enum": ["succeeded", "failed"]},
+    "code": {
+      "type": "string", "minLength": 2, "maxLength": 64, "x-maxUtf8Bytes": 64,
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$",
+      "not": {"const": "JOB_OUTCOME_UNKNOWN"}
+    },
+    "error_class": {
+      "type": ["string", "null"],
+      "enum": ["transient", "permanent", "conflict", "cancelled", null]
+    },
+    "provider_reference": {
+      "type": ["string", "null"], "minLength": 1, "maxLength": 512,
+      "x-maxUtf8Bytes": 512,
+      "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+    },
+    "result_reference": {
+      "type": ["string", "null"], "minLength": 1, "maxLength": 2048,
+      "x-maxUtf8Bytes": 2048,
+      "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+    },
+    "result_sha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]
+    },
+    "completed_at": {"$ref": "#/$defs/utc_timestamp"}
+  },
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "status": {"const": "succeeded"},
+            "error_class": {"type": "null"},
+            "result_reference": {
+              "type": "string", "minLength": 1, "maxLength": 2048,
+              "x-maxUtf8Bytes": 2048,
+              "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+            },
+            "result_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        {
+          "properties": {
+            "status": {"const": "failed"},
+            "error_class": {
+              "enum": ["transient", "permanent", "conflict", "cancelled"]
+            },
+            "result_reference": {"type": "null"},
+            "result_sha256": {"type": "null"}
+          }
+        }
+      ]
+    },
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "tenant_id": {"$ref": "#/$defs/uuid"},
+            "authority": {
+              "properties": {"scope_kind": {"const": "tenant"}}
+            }
+          }
+        },
+        {
+          "properties": {
+            "tenant_id": {"type": "null"},
+            "authority": {
+              "properties": {"scope_kind": {"const": "global"}}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": {"const": "00000000-0000-0000-0000-000000000000"}
+    },
+    "sha256": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$"},
+    "correlation_id": {
+      "type": "string", "minLength": 1, "maxLength": 64, "x-maxUtf8Bytes": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$"
+    },
+    "utc_timestamp": {
+      "type": "string", "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{0,8}[1-9])?Z$"
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_kind", "scope_id", "group_id", "group_generation", "domain",
+        "cutover_generation", "writer_origin"
+      ],
+      "properties": {
+        "scope_kind": {"enum": ["tenant", "global"]},
+        "scope_id": {"$ref": "#/$defs/uuid"},
+        "group_id": {
+          "type": "string", "minLength": 1, "maxLength": 63, "x-maxUtf8Bytes": 63,
+          "pattern": "^[a-z][a-z0-9_]{0,62}$"
+        },
+        "group_generation": {"type": "integer", "minimum": 1},
+        "domain": {
+          "type": "string", "minLength": 1, "maxLength": 63, "x-maxUtf8Bytes": 63,
+          "pattern": "^[a-z][a-z0-9_]{0,62}$"
+        },
+        "cutover_generation": {"type": "integer", "minimum": 1},
+        "writer_origin": {"enum": ["v1", "v2"]}
+      }
+    }
+  }
+}

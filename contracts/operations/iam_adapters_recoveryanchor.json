@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/recoveryanchor",
+      "layer": "adapters/postgres",
+      "resource": "recoveryanchor",
+      "operation": "create",
+      "source": "core/internal/modules/iam/adapters/postgres/recoveryanchor/create_options.go",
+      "test": "core/internal/modules/iam/adapters/postgres/recoveryanchor/create_options_test.go",
+      "application_operation": "core/internal/modules/iam/application/recoveryanchor/create_options.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/recoveryanchor",
+      "layer": "adapters/postgres",
+      "resource": "recoveryanchor",
+      "operation": "finalize",
+      "source": "core/internal/modules/iam/adapters/postgres/recoveryanchor/finalize_authority.go",
+      "test": "core/internal/modules/iam/adapters/postgres/recoveryanchor/finalize_authority_test.go",
+      "application_operation": "core/internal/modules/iam/application/recoveryanchor/finalize_authority.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/recoveryanchor",
+      "layer": "adapters/postgres",
+      "resource": "recoveryanchor",
+      "operation": "list",
+      "source": "core/internal/modules/iam/adapters/postgres/recoveryanchor/list.go",
+      "test": "core/internal/modules/iam/adapters/postgres/recoveryanchor/list_test.go",
+      "application_operation": "core/internal/modules/iam/application/recoveryanchor/list.go"
+    }
+  ]
+}

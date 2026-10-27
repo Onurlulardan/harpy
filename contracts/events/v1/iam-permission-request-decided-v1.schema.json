@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/iam-permission-request-decided-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authorization_clock", "decision", "result", "revision"],
+  "properties": {
+    "authorization_clock": {"type": "integer", "minimum": 1},
+    "decision": {"enum": ["APPROVE", "REJECT"]},
+    "result": {
+      "enum": [
+        "iam.permission_request.approved",
+        "iam.permission_request.rejected"
+      ]
+    },
+    "revision": {"type": "integer", "minimum": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"const": "APPROVE"}}},
+      "then": {
+        "properties": {
+          "result": {"const": "iam.permission_request.approved"}
+        }
+      },
+      "else": {
+        "properties": {
+          "result": {"const": "iam.permission_request.rejected"}
+        }
+      }
+    }
+  ]
+}

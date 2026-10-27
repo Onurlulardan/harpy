@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "billing.v1adoption.compile",
+      "owner": "billing",
+      "scope_source": "environment_global",
+      "required_groups": ["billing+forms"],
+      "ordered_domains": ["billing", "forms"],
+      "participants": ["billing", "forms"]
+    }
+  ]
+}

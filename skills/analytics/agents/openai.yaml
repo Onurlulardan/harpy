@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analytics"
+  short_description: "Build governed analytics and publication flows"
+  default_prompt: "Use $analytics for this backend-v2 analytics capability."

@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$defs":{
+    "UUID":{"type":"string","format":"uuid"},
+    "SHA256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "License":{"type":"object","additionalProperties":false,"required":["license_id","environment_id","snapshot_sequence","snapshot_sha256","state","release_channel","database_now"],"properties":{"license_id":{"$ref":"#/$defs/UUID"},"environment_id":{"$ref":"#/$defs/UUID"},"snapshot_sequence":{"type":"integer","minimum":1},"snapshot_sha256":{"$ref":"#/$defs/SHA256"},"state":{"enum":["valid","grace","build_off"]},"release_channel":{"type":"string","minLength":1},"features":{"type":"object","additionalProperties":{"type":"boolean"}},"limits":{"type":"object","additionalProperties":{"type":"object","required":["unlimited","value"],"properties":{"unlimited":{"type":"boolean"},"value":{"type":"integer","minimum":0}}}},"database_now":{"type":"string","format":"date-time"}}},
+    "LicenseEnvelope":{"type":"object","additionalProperties":false,"required":["success","data"],"properties":{"success":{"const":true},"data":{"$ref":"#/$defs/License"}}},
+    "RefreshAcceptedEnvelope":{"type":"object","additionalProperties":false,"required":["success","data"],"properties":{"success":{"const":true},"data":{"type":"object","additionalProperties":false,"required":["operation_id","state"],"properties":{"operation_id":{"$ref":"#/$defs/UUID"},"state":{"const":"accepted"}}}}},
+    "RefreshOperation":{"type":"object","additionalProperties":false,"required":["operation_id","state","created_at"],"properties":{"operation_id":{"$ref":"#/$defs/UUID"},"state":{"enum":["pending","leased","accepted","failed","fenced"]},"snapshot_sequence":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"snapshot_sha256":{"anyOf":[{"$ref":"#/$defs/SHA256"},{"type":"null"}]},"failure_code":{"anyOf":[{"type":"string"},{"type":"null"}]},"created_at":{"type":"string","format":"date-time"},"completed_at":{"anyOf":[{"type":"string","format":"date-time"},{"type":"null"}]}}},
+    "RefreshOperationEnvelope":{"type":"object","additionalProperties":false,"required":["success","data"],"properties":{"success":{"const":true},"data":{"$ref":"#/$defs/RefreshOperation"}}}
+  }
+}

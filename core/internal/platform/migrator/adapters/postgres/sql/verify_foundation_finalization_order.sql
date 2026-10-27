@@ -1,0 +1,58 @@
+SELECT contract_row.verified_at >= environment_row.created_at
+   AND contract_row.verified_at >= run_row.finished_at
+   AND contract_row.verified_at >= release_row.recorded_at
+   AND contract_row.verified_at >= bootstrap_row.recorded_at
+   AND contract_row.verified_at >= extension_row.recorded_at
+   AND contract_row.verified_at >= cleanup_row.recorded_at
+   AND contract_row.xmin::text = run_row.xmin::text
+   AND contract_row.xmin::text = release_row.xmin::text
+   AND contract_row.xmin::text = bootstrap_row.xmin::text
+   AND contract_row.xmin::text = extension_row.xmin::text
+   AND contract_row.xmin::text = cleanup_row.xmin::text
+   AND (
+       contract_row.revision > 1
+       OR contract_row.xmin::text = environment_row.xmin::text
+   )
+FROM platform.schema_contracts AS contract_row
+JOIN platform.environment_identity AS environment_row
+  ON environment_row.singleton = TRUE
+JOIN platform.migration_runs AS run_row
+  ON run_row.run_id = contract_row.verified_run_id
+ AND run_row.environment_id = environment_row.environment_id
+ AND run_row.database_origin = environment_row.database_origin
+ AND run_row.command = 'up'
+ AND run_row.state = 'succeeded'
+JOIN platform.release_generations AS release_row
+  ON release_row.migration_run_id = run_row.run_id
+ AND release_row.release_id = run_row.release_id
+ AND release_row.environment_id = run_row.environment_id
+ AND release_row.database_origin = run_row.database_origin
+ AND release_row.database_generation = contract_row.database_generation
+ AND release_row.minimum_runtime_generation = contract_row.minimum_runtime_generation
+ AND release_row.migration_manifest_sha256 = contract_row.migration_manifest_sha256
+ AND release_row.extension_manifest_sha256 = contract_row.extension_manifest_sha256
+JOIN platform.bootstrap_receipts AS bootstrap_row
+  ON bootstrap_row.kind = release_row.bootstrap_receipt_kind
+ AND bootstrap_row.run_id = release_row.bootstrap_receipt_run_id
+ AND bootstrap_row.release_id = release_row.release_id
+ AND bootstrap_row.environment_id = release_row.environment_id
+ AND bootstrap_row.database_origin = release_row.database_origin
+JOIN platform.bootstrap_receipts AS extension_row
+  ON extension_row.kind = release_row.extension_receipt_kind
+ AND extension_row.run_id = release_row.extension_receipt_run_id
+ AND extension_row.release_id = release_row.release_id
+ AND extension_row.environment_id = release_row.environment_id
+ AND extension_row.database_origin = release_row.database_origin
+JOIN platform.bootstrap_receipts AS cleanup_row
+  ON cleanup_row.kind = release_row.cleanup_receipt_kind
+ AND cleanup_row.run_id = release_row.cleanup_receipt_run_id
+ AND cleanup_row.release_id = release_row.release_id
+ AND cleanup_row.environment_id = release_row.environment_id
+ AND cleanup_row.database_origin = release_row.database_origin
+WHERE contract_row.component = 'core'
+  AND bootstrap_row.database_system_identifier = environment_row.database_system_identifier
+  AND extension_row.database_system_identifier = environment_row.database_system_identifier
+  AND cleanup_row.database_system_identifier = environment_row.database_system_identifier
+  AND bootstrap_row.database_oid = environment_row.database_oid
+  AND extension_row.database_oid = environment_row.database_oid
+  AND cleanup_row.database_oid = environment_row.database_oid;

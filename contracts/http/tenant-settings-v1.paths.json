@@ -1,0 +1,52 @@
+{
+  "parameters": {
+    "idempotency": {"name":"Idempotency-Key","in":"header","required":true,"schema":{"type":"string","minLength":16,"maxLength":128,"pattern":"^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "ifMatch": {"name":"If-Match","in":"header","required":true,"schema":{"type":"string","pattern":"^\"[1-9][0-9]*\"$"}}
+  },
+  "responses": {
+    "error": {"description":"Tenant settings request rejected","content":{"application/json":{"schema":{"$ref":"../runtime/v1/error-envelope.schema.json"}}}}
+  },
+  "pathItems": {
+    "settings": {
+      "get": {
+        "operationId":"tenancyGetTenantSettings",
+        "security":[{"bearerAuth":[]}],
+        "x-harpy-capability":"tenancy.settings.read",
+        "x-harpy-operation":"tenancy.settings.get",
+        "x-harpy-compat-policy":"typed-v1-edge-secret-redacted",
+        "responses": {
+          "200":{"description":"Current tenant settings and owner projections","headers":{"ETag":{"required":true,"schema":{"type":"string","pattern":"^\"[1-9][0-9]*\"$"}}},"content":{"application/json":{"schema":{"$ref":"tenant-settings-v1.schemas.json#/$defs/SettingsEnvelope"}}}},
+          "default":{"$ref":"#/responses/error"}
+        }
+      },
+      "put": {
+        "operationId":"tenancyUpdateTenantSettings",
+        "security":[{"bearerAuth":[]}],
+        "x-harpy-capability":"tenancy.settings.manage",
+        "x-harpy-operation":"tenancy.settings.update",
+        "x-harpy-compat-policy":"typed-v1-body-cas-and-idempotency-required",
+        "parameters":[{"$ref":"#/parameters/idempotency"},{"$ref":"#/parameters/ifMatch"}],
+        "requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"tenant-settings-v1.schemas.json#/$defs/UpdateRequest"}}}},
+        "responses": {
+          "200":{"description":"Tenant settings update applied or replayed","headers":{"ETag":{"required":true,"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"tenant-settings-v1.schemas.json#/$defs/MutationEnvelope"}}}},
+          "400":{"$ref":"#/responses/error"},"401":{"$ref":"#/responses/error"},"403":{"$ref":"#/responses/error"},"404":{"$ref":"#/responses/error"},"409":{"$ref":"#/responses/error"},"413":{"$ref":"#/responses/error"},"415":{"$ref":"#/responses/error"},"428":{"$ref":"#/responses/error"},"503":{"$ref":"#/responses/error"}
+        }
+      }
+    },
+    "testEmail": {
+      "post": {
+        "operationId":"tenancyTestTenantEmail",
+        "security":[{"bearerAuth":[]}],
+        "x-harpy-capability":"tenancy.settings.manage",
+        "x-harpy-operation":"tenancy.settings.test_email",
+        "x-harpy-effect-owner":"notifications",
+        "parameters":[{"$ref":"#/parameters/idempotency"},{"$ref":"#/parameters/ifMatch"}],
+        "requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"tenant-settings-v1.schemas.json#/$defs/TestEmailRequest"}}}},
+        "responses": {
+          "202":{"description":"Idempotent notification effect accepted","content":{"application/json":{"schema":{"$ref":"tenant-settings-v1.schemas.json#/$defs/TestEmailEnvelope"}}}},
+          "400":{"$ref":"#/responses/error"},"401":{"$ref":"#/responses/error"},"403":{"$ref":"#/responses/error"},"404":{"$ref":"#/responses/error"},"409":{"$ref":"#/responses/error"},"413":{"$ref":"#/responses/error"},"415":{"$ref":"#/responses/error"},"428":{"$ref":"#/responses/error"},"503":{"$ref":"#/responses/error"}
+        }
+      }
+    }
+  }
+}

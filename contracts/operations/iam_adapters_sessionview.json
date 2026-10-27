@@ -1,0 +1,9 @@
+{"version":1,"operations":[
+  {
+    "package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/sessionview",
+    "layer":"adapters/postgres","resource":"sessionview","operation":"read",
+    "source":"core/internal/modules/iam/adapters/postgres/sessionview/read.go",
+    "test":"core/internal/modules/iam/adapters/postgres/sessionview/read_test.go",
+    "application_operation":"core/internal/modules/iam/application/sessionview/read.go"
+  }
+]}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "billing.report.audit.list",
+      "owner": "billing",
+      "scope_source": "environment_global",
+      "required_groups": ["billing"],
+      "ordered_domains": ["billing"],
+      "participants": ["billing"]
+    },
+    {
+      "id": "billing.report.revenue.read",
+      "owner": "billing",
+      "scope_source": "environment_global",
+      "required_groups": ["billing"],
+      "ordered_domains": ["billing"],
+      "participants": ["billing"]
+    },
+    {
+      "id": "billing.report.subscription.list",
+      "owner": "billing",
+      "scope_source": "environment_global",
+      "required_groups": ["billing"],
+      "ordered_domains": ["billing"],
+      "participants": ["billing"]
+    },
+    {
+      "id": "billing.report.subscription.transition",
+      "owner": "billing",
+      "scope_source": "environment_global",
+      "required_groups": ["billing"],
+      "ordered_domains": ["billing"],
+      "participants": ["billing"]
+    }
+  ]
+}

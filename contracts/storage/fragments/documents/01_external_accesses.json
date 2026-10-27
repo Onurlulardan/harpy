@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "owner": "documents",
+  "external_accesses": [
+    {"access":"write","target_owner":"platform_cutover","target":"platform.applied_change_receipts","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_copy_checkpoints","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_async","target":"platform.cutover_job_bindings","contract":"ADR-0114"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operation_checkpoint_keys","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operations","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_prepare_batch_v1","contract":"ADR-0022"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_record_batch_v1","contract":"ADR-0022"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.domain_cutovers","contract":"ADR-0114"},
+    {"access":"read","target_owner":"platform_async","target":"platform.idempotency_receipts","contract":"ADR-0114"},
+    {"access":"read","target_owner":"platform_async","target":"platform.job_attempts","contract":"ADR-0114"},
+    {"access":"read","target_owner":"platform_async","target":"platform.jobs","contract":"ADR-0114"},
+    {"access":"read","target_owner":"platform_async","target":"platform.platform_async_enqueue_documents_cutover_copy_v1","contract":"ADR-0114"},
+    {"access":"read","target_owner":"platformops","target":"platform.platformops_import_recovery_snapshot_v1","contract":"ADR-0123"},
+    {"access":"read","target_owner":"tenancy","target":"tenancy_schema_identity","contract":"ADR-0034"}
+  ]
+}

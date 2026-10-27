@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/legalhold",
+      "layer": "application",
+      "resource": "legalhold",
+      "operation": "create",
+      "source": "core/internal/modules/billing/application/legalhold/create.go",
+      "test": "core/internal/modules/billing/application/legalhold/create_test.go",
+      "authority_id": "billing.legal_hold.place"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/legalhold",
+      "layer": "application",
+      "resource": "legalhold",
+      "operation": "release",
+      "source": "core/internal/modules/billing/application/legalhold/release.go",
+      "test": "core/internal/modules/billing/application/legalhold/release_test.go",
+      "authority_id": "billing.legal_hold.release"
+    }
+  ]
+}

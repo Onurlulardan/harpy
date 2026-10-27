@@ -1,0 +1,23 @@
+ARG CHARACTERIZER_GO_IMAGE=scratch
+ARG V1_DISTROLESS_IMAGE=scratch
+
+FROM ${CHARACTERIZER_GO_IMAGE} AS builder
+WORKDIR /src
+COPY go.* ./
+RUN go mod download
+COPY tools/ ./tools/
+COPY internal/ ./internal/
+COPY contracts/ ./contracts/
+RUN CGO_ENABLED=0 GOOS=linux go build \
+    -trimpath -o /out/v1characterize ./tools/v1characterize
+
+FROM ${V1_DISTROLESS_IMAGE}
+COPY --from=builder --chown=65532:65532 \
+    /out/v1characterize /v1characterize
+COPY --from=builder --chown=65532:65532 /src/contracts/ /contracts/
+COPY --from=builder --chown=65532:65532 /src/go.mod /attestation/backend-v2/go.mod
+COPY --from=builder --chown=65532:65532 /src/go.sum /attestation/backend-v2/go.sum
+COPY --from=builder --chown=65532:65532 /src/tools/ /attestation/backend-v2/tools/
+COPY --from=builder --chown=65532:65532 /src/internal/ /attestation/backend-v2/internal/
+USER 65532:65532
+ENTRYPOINT ["/v1characterize"]

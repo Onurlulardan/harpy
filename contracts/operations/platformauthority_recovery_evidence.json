@@ -1,0 +1,4 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/adapters/postgres/recoveryevidence","layer":"adapters/postgres","resource":"recoveryevidence","operation":"read","source":"core/internal/modules/platformauthority/adapters/postgres/recoveryevidence/read_head.go","test":"core/internal/modules/platformauthority/adapters/postgres/recoveryevidence/read_head_test.go","application_operation":"core/internal/modules/platformauthority/application/recoveryevidence/read_head.go"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/platformauthority/application/recoveryevidence","layer":"application","resource":"recoveryevidence","operation":"read","source":"core/internal/modules/platformauthority/application/recoveryevidence/read_head.go","test":"core/internal/modules/platformauthority/application/recoveryevidence/read_head_test.go","authority_id":"platformauthority.recovery_evidence.read"}
+]}

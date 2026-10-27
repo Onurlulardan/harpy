@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/job-retention-release.schema.json",
+  "title": "Harpy Job Retention Release v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "job_id", "tenant_id", "authority",
+    "retention_release_revision", "retain_until", "live_dependency_count",
+    "retry_child_count", "unfinished_attempt_count", "live_effect_receipt_count"
+  ],
+  "properties": {
+    "contract_version": {"const": "job-retention-release.v1"},
+    "job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "tenant_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "authority": {"$ref": "job-defs.schema.json#/$defs/authority"},
+    "retention_release_revision": {"type": "integer", "minimum": 1},
+    "retain_until": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+    "live_dependency_count": {"const": 0},
+    "retry_child_count": {"const": 0},
+    "unfinished_attempt_count": {"const": 0},
+    "live_effect_receipt_count": {"const": 0}
+  },
+  "allOf": [
+    {"properties": {"authority": {"properties": {"writer_origin": {"const": "v2"}}}}},
+    {"oneOf": [
+      {"properties": {
+        "tenant_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+        "authority": {"properties": {"scope_kind": {"const": "tenant"}}}
+      }},
+      {"properties": {
+        "tenant_id": {"type": "null"},
+        "authority": {"properties": {"scope_kind": {"const": "global"}}}
+      }}
+    ]}
+  ]
+}

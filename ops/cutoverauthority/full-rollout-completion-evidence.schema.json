@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/full-rollout-completion-evidence.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "receipt_id", "environment_id", "recorded_at", "steps",
+    "cohorts", "now", "last_legacy_hit_at", "legacy_route_hits", "v1_writers",
+    "v1_consumers", "v1_queue_messages", "v1_credentials", "shadow_read_sha256",
+    "logical_delta_sha256", "reconcile_sha256", "production_snapshot_sha256",
+    "v1_removal_sha256", "backup_restore_sha256", "frontend_contract_sha256",
+    "mcp_contract_sha256", "rollback_window_closure_sha256",
+    "rollback_window_closed_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "full-rollout-completion-evidence.v1"},
+    "receipt_id": {"$ref": "#/$defs/uuid"},
+    "environment_id": {"$ref": "#/$defs/uuid"},
+    "recorded_at": {"$ref": "#/$defs/time"},
+    "steps": {
+      "type": "array", "minItems": 9, "maxItems": 9,
+      "items": {"$ref": "#/$defs/step"}
+    },
+    "cohorts": {
+      "type": "array", "minItems": 6, "maxItems": 6,
+      "items": {"$ref": "#/$defs/cohort"}
+    },
+    "now": {"$ref": "#/$defs/time"},
+    "last_legacy_hit_at": {"$ref": "#/$defs/time"},
+    "legacy_route_hits": {"$ref": "#/$defs/count"},
+    "v1_writers": {"$ref": "#/$defs/count"},
+    "v1_consumers": {"$ref": "#/$defs/count"},
+    "v1_queue_messages": {"$ref": "#/$defs/count"},
+    "v1_credentials": {"$ref": "#/$defs/count"},
+    "shadow_read_sha256": {"$ref": "#/$defs/sha256"},
+    "logical_delta_sha256": {"$ref": "#/$defs/sha256"},
+    "reconcile_sha256": {"$ref": "#/$defs/sha256"},
+    "production_snapshot_sha256": {"$ref": "#/$defs/sha256"},
+    "v1_removal_sha256": {"$ref": "#/$defs/sha256"},
+    "backup_restore_sha256": {"$ref": "#/$defs/sha256"},
+    "frontend_contract_sha256": {"$ref": "#/$defs/sha256"},
+    "mcp_contract_sha256": {"$ref": "#/$defs/sha256"},
+    "rollback_window_closure_sha256": {"$ref": "#/$defs/sha256"},
+    "rollback_window_closed_at": {"$ref": "#/$defs/time"}
+  },
+  "$defs": {
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "time": {"type": "string", "format": "date-time"},
+    "count": {"type": "integer", "minimum": 0},
+    "step": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "scope", "domain", "scope_id", "requested_by", "approved_by", "generation",
+        "state", "writer", "acceptance_sha256", "reverse_rehearsal_sha256",
+        "source_count", "target_count", "source_sha256", "target_sha256",
+        "pending_jobs", "pending_outbox", "pending_effects"
+      ],
+      "properties": {
+        "scope": {"enum": ["global", "tenant"]},
+        "domain": {"type": "string", "minLength": 1},
+        "scope_id": {"$ref": "#/$defs/uuid"},
+        "requested_by": {"$ref": "#/$defs/uuid"},
+        "approved_by": {"$ref": "#/$defs/uuid"},
+        "generation": {"type": "integer", "minimum": 1},
+        "state": {"const": "v2"}, "writer": {"const": "v2"},
+        "acceptance_sha256": {"$ref": "#/$defs/sha256"},
+        "reverse_rehearsal_sha256": {"$ref": "#/$defs/sha256"},
+        "source_count": {"$ref": "#/$defs/count"},
+        "target_count": {"$ref": "#/$defs/count"},
+        "source_sha256": {"$ref": "#/$defs/sha256"},
+        "target_sha256": {"$ref": "#/$defs/sha256"},
+        "pending_jobs": {"$ref": "#/$defs/count"},
+        "pending_outbox": {"$ref": "#/$defs/count"},
+        "pending_effects": {"$ref": "#/$defs/count"}
+      }
+    },
+    "cohort": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "cohort", "started_at", "ended_at", "eligible_requests",
+        "compared_requests", "mismatch_count", "metrics"
+      ],
+      "properties": {
+        "cohort": {"enum": ["internal", "1_percent", "5_percent", "25_percent", "50_percent", "100_percent"]},
+        "started_at": {"$ref": "#/$defs/time"},
+        "ended_at": {"$ref": "#/$defs/time"},
+        "eligible_requests": {"$ref": "#/$defs/count"},
+        "compared_requests": {"$ref": "#/$defs/count"},
+        "mismatch_count": {"$ref": "#/$defs/count"},
+        "metrics": {"$ref": "#/$defs/metrics"}
+      }
+    },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "v2_error_basis_points", "baseline_error_basis_points",
+        "v2_p95_milliseconds", "baseline_p95_milliseconds",
+        "auth_success_basis_points", "baseline_auth_success_basis_points",
+        "oldest_due_job_lag_seconds", "baseline_job_lag_seconds",
+        "dlq_basis_points", "tenant_isolation_incidents", "authorization_bypasses",
+        "credential_leaks", "data_loss_incidents", "permanent_security_jobs"
+      ],
+      "properties": {
+        "v2_error_basis_points": {"$ref": "#/$defs/count"},
+        "baseline_error_basis_points": {"$ref": "#/$defs/count"},
+        "v2_p95_milliseconds": {"$ref": "#/$defs/count"},
+        "baseline_p95_milliseconds": {"$ref": "#/$defs/count"},
+        "auth_success_basis_points": {"$ref": "#/$defs/count"},
+        "baseline_auth_success_basis_points": {"$ref": "#/$defs/count"},
+        "oldest_due_job_lag_seconds": {"$ref": "#/$defs/count"},
+        "baseline_job_lag_seconds": {"$ref": "#/$defs/count"},
+        "dlq_basis_points": {"$ref": "#/$defs/count"},
+        "tenant_isolation_incidents": {"$ref": "#/$defs/count"},
+        "authorization_bypasses": {"$ref": "#/$defs/count"},
+        "credential_leaks": {"$ref": "#/$defs/count"},
+        "data_loss_incidents": {"$ref": "#/$defs/count"},
+        "permanent_security_jobs": {"$ref": "#/$defs/count"}
+      }
+    }
+  }
+}

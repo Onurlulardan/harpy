@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/work-mutation-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["operation", "result"],
+  "properties": {
+    "operation": {
+      "type": "string",
+      "enum": [
+        "work.board.archive",
+        "work.board.create",
+        "work.board.restore",
+        "work.board.update",
+        "work.calendar.change",
+        "work.checklist.change",
+        "work.column.create",
+        "work.column.update",
+        "work.comment.create",
+        "work.comment.redact",
+        "work.label.change",
+        "work.membership.change",
+        "work.projection.apply",
+        "work.projection.repair",
+        "work.recurrence.change",
+        "work.recurrence.materialize",
+        "work.task.archive",
+        "work.task.assign",
+        "work.task.create",
+        "work.task.move",
+        "work.task.restore",
+        "work.task.transition",
+        "work.task.update"
+      ]
+    },
+    "result": {}
+  }
+}

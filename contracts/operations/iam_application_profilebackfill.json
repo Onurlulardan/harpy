@@ -1,0 +1,5 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profilebackfill","layer":"application","resource":"profilebackfill","operation":"create","source":"core/internal/modules/iam/application/profilebackfill/create.go","test":"core/internal/modules/iam/application/profilebackfill/create_test.go","authority_id":"iam.profile.backfill"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profilebackfill","layer":"application","resource":"profilebackfill","operation":"read","source":"core/internal/modules/iam/application/profilebackfill/read.go","test":"core/internal/modules/iam/application/profilebackfill/read_test.go","authority_id":"iam.profile.publish"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profilebackfill","layer":"application","resource":"profilebackfill","operation":"start","source":"core/internal/modules/iam/application/profilebackfill/start_recovery.go","test":"core/internal/modules/iam/application/profilebackfill/start_recovery_test.go","authority_id":"iam.profile.publish"}
+]}

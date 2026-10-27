@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/billingv1adoption",
+      "layer": "application",
+      "resource": "billingv1adoption",
+      "operation": "compile",
+      "source": "core/internal/modules/billing/application/billingv1adoption/compile.go",
+      "test": "core/internal/modules/billing/application/billingv1adoption/compile_test.go",
+      "authority_id": "billing.v1adoption.compile"
+    }
+  ]
+}

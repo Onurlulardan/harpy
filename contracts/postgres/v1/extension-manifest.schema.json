@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/extension-manifest.schema.json",
+  "title": "Harpy PostgreSQL Extension Manifest v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "database_origin", "postgres_image_digest",
+    "postgres_engine_version", "control_path_policy", "extensions"
+  ],
+  "properties": {
+    "contract_version": {"const": "postgres-extension-manifest.v1"},
+    "database_origin": {
+      "$ref": "postgres-artifact-defs.schema.json#/$defs/databaseOrigin"
+    },
+    "postgres_image_digest": {
+      "const": "sha256:c8a919765f2ef63681329fa21021b830cd4d79d1165bdca730dd016014e4da84"
+    },
+    "postgres_engine_version": {"const": "18.4"},
+    "control_path_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["resolver", "relative_directory", "allow_absolute_paths", "allow_symlinks"],
+      "properties": {
+        "resolver": {"const": "pg_config_sharedir"},
+        "relative_directory": {"const": "extension"},
+        "allow_absolute_paths": {"const": false},
+        "allow_symlinks": {"const": false}
+      }
+    },
+    "extensions": {
+      "type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/extension"}
+    }
+  },
+  "$defs": {
+    "extension": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "name", "version", "install", "schema", "owner", "control_file",
+        "control_file_sha256", "capabilities"
+      ],
+      "properties": {
+        "name": {"enum": ["pg_trgm", "unaccent", "vector"]},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?$"},
+        "install": {"type": "boolean"},
+        "schema": {"$ref": "postgres-artifact-defs.schema.json#/$defs/postgresIdentifier"},
+        "owner": {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleName"},
+        "control_file": {"type": "string", "pattern": "^[a-z][a-z0-9_]*\\.control$"},
+        "control_file_sha256": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/sha256"
+        },
+        "capabilities": {
+          "type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true,
+          "items": {"enum": [
+            "trigram_search", "unaccent_normalization", "vector_similarity"
+          ]}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"name": {"const": "vector"}}},
+          "then": {"properties": {"version": {"const": "0.8.3"}}}
+        }
+      ]
+    }
+  }
+}

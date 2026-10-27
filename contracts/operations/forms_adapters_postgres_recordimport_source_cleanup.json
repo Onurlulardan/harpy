@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres",
+      "resource": "recordimport",
+      "operation": "claim",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/claim_source_cleanup.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/claim_source_cleanup_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/claim_source_cleanup.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres",
+      "resource": "recordimport",
+      "operation": "finalize",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/finalize_source_cleanup.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/finalize_source_cleanup_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/finalize_source_cleanup.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordimport",
+      "layer": "adapters/postgres",
+      "resource": "recordimport",
+      "operation": "retry",
+      "source": "core/internal/modules/forms/adapters/postgres/recordimport/retry_source_cleanup.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordimport/retry_source_cleanup_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordimport/retry_source_cleanup.go"
+    }
+  ]
+}

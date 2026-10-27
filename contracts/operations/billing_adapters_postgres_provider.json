@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/provider",
+      "layer": "adapters/postgres",
+      "resource": "provider",
+      "operation": "create",
+      "source": "core/internal/modules/billing/adapters/postgres/provider/create_command.go",
+      "test": "core/internal/modules/billing/adapters/postgres/provider/create_command_test.go",
+      "application_operation": "core/internal/modules/billing/application/provider/create_command.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/adapters/postgres/provider",
+      "layer": "adapters/postgres",
+      "resource": "provider",
+      "operation": "finalize",
+      "source": "core/internal/modules/billing/adapters/postgres/provider/finalize_command.go",
+      "test": "core/internal/modules/billing/adapters/postgres/provider/finalize_command_test.go",
+      "application_operation": "core/internal/modules/billing/application/provider/finalize_command.go"
+    }
+  ]
+}

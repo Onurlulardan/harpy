@@ -1,0 +1,4 @@
+interface:
+  display_name: "REST Query"
+  short_description: "Build typed authorized dynamic query features"
+  default_prompt: "Use $rest-query to design this backend-v2 query capability."

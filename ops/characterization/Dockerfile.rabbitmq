@@ -1,0 +1,19 @@
+ARG V1_RABBITMQ_BASE_IMAGE=scratch
+FROM ${V1_RABBITMQ_BASE_IMAGE}
+
+ARG V1_DELAYED_PLUGIN_URL
+ARG V1_DELAYED_PLUGIN_SHA256
+
+USER root
+COPY rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+RUN wget -q -O /plugins/rabbitmq_delayed_message_exchange.ez \
+    "${V1_DELAYED_PLUGIN_URL}" \
+    && printf '%s  %s\n' \
+      "${V1_DELAYED_PLUGIN_SHA256}" \
+      /plugins/rabbitmq_delayed_message_exchange.ez \
+      | sha256sum -c -
+RUN rabbitmq-plugins enable --offline \
+    rabbitmq_delayed_message_exchange \
+    rabbitmq_management \
+    rabbitmq_prometheus
+USER rabbitmq

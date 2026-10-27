@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/job-lease.schema.json",
+  "title": "Harpy Job Lease v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "job_id", "kind", "payload_revision", "tenant_id", "authority",
+    "state", "lease_owner", "lease_generation", "attempt_number", "leased_at",
+    "lease_expires_at", "heartbeat_seconds"
+  ],
+  "properties": {
+    "contract_version": {"const": "job-lease.v1"},
+    "job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "kind": {"$ref": "job-defs.schema.json#/$defs/kind"},
+    "payload_revision": {"type": "integer", "minimum": 1},
+    "tenant_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "authority": {"$ref": "job-defs.schema.json#/$defs/authority"},
+    "state": {"const": "running"},
+    "lease_owner": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "lease_generation": {"type": "integer", "minimum": 1},
+    "attempt_number": {"type": "integer", "minimum": 1, "maximum": 25},
+    "leased_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+    "lease_expires_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+    "heartbeat_seconds": {"const": 20}
+  },
+  "oneOf": [
+    {"properties": {
+      "tenant_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+      "authority": {"properties": {"scope_kind": {"const": "tenant"}}}
+    }},
+    {"properties": {
+      "tenant_id": {"type": "null"},
+      "authority": {"properties": {"scope_kind": {"const": "global"}}}
+    }}
+  ]
+}

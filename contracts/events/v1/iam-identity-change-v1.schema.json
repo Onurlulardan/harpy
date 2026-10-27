@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/iam-identity-change-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["clock", "command", "resource", "result", "revision"],
+  "properties": {
+    "clock": {"type": "integer", "minimum": 1},
+    "command": {"enum": [
+      "iam.identity.organization.create",
+      "iam.identity.organization.delete",
+      "iam.identity.organization.disable",
+      "iam.identity.organization.update",
+      "iam.identity.role.create",
+      "iam.identity.role.retire",
+      "iam.identity.role.update",
+      "iam.identity.user.create",
+      "iam.identity.user.delete",
+      "iam.identity.user.disable",
+      "iam.identity.user.update"
+    ]},
+    "resource": {"enum": ["organization", "role", "user"]},
+    "result": {"enum": [
+      "iam.identity.organization.create.succeeded",
+      "iam.identity.organization.delete.succeeded",
+      "iam.identity.organization.disable.succeeded",
+      "iam.identity.organization.update.succeeded",
+      "iam.identity.role.create.succeeded",
+      "iam.identity.role.retire.succeeded",
+      "iam.identity.role.update.succeeded",
+      "iam.identity.user.create.succeeded",
+      "iam.identity.user.delete.succeeded",
+      "iam.identity.user.disable.succeeded",
+      "iam.identity.user.update.succeeded"
+    ]},
+    "revision": {"type": "integer", "minimum": 1}
+  }
+}

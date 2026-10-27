@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/lifecycledelivery",
+      "layer": "application",
+      "resource": "lifecycledelivery",
+      "operation": "claim",
+      "source": "core/internal/modules/iam/application/lifecycledelivery/claim.go",
+      "test": "core/internal/modules/iam/application/lifecycledelivery/claim_test.go",
+      "authority_id": "iam.lifecycledelivery.claim"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/lifecycledelivery",
+      "layer": "application",
+      "resource": "lifecycledelivery",
+      "operation": "finalize",
+      "source": "core/internal/modules/iam/application/lifecycledelivery/finalize.go",
+      "test": "core/internal/modules/iam/application/lifecycledelivery/finalize_test.go",
+      "authority_id": "iam.lifecycledelivery.finalize"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/lifecycledelivery",
+      "layer": "application",
+      "resource": "lifecycledelivery",
+      "operation": "mark",
+      "source": "core/internal/modules/iam/application/lifecycledelivery/mark_unknown.go",
+      "test": "core/internal/modules/iam/application/lifecycledelivery/mark_unknown_test.go",
+      "authority_id": "iam.lifecycledelivery.mark"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/lifecycledelivery",
+      "layer": "application",
+      "resource": "lifecycledelivery",
+      "operation": "release",
+      "source": "core/internal/modules/iam/application/lifecycledelivery/release.go",
+      "test": "core/internal/modules/iam/application/lifecycledelivery/release_test.go",
+      "authority_id": "iam.lifecycledelivery.release"
+    }
+  ]
+}

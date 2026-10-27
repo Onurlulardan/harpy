@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "claim",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/claim.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/claim_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/claim.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "create",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/create.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/create_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "delete",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/delete.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/delete_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "finish",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/finish.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/finish_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/finish.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "get",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/get.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/get_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "read",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/read_active.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/read_active_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/read_active.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres",
+      "resource": "recordstore",
+      "operation": "resolve",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/resolve_exact.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/resolve_exact_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/resolve_exact.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/adapters/postgres/recordstore",
+      "layer": "adapters/postgres", "resource": "recordstore", "operation": "update",
+      "source": "core/internal/modules/forms/adapters/postgres/recordstore/update.go",
+      "test": "core/internal/modules/forms/adapters/postgres/recordstore/update_test.go",
+      "application_operation": "core/internal/modules/forms/application/recordstore/update.go"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+package offering
+
+const (
+	Owner        = "billing"
+	ResourceName = "billing.offerings"
+
+	resourceID         = "b2100000-0000-4000-8000-000000000001"
+	publishedVersionID = "b2110000-0000-4000-8000-000000000002"
+	lifecycleEnumID    = "b2120000-0000-4000-8000-000000000001"
+	publicationEnumID  = "b2130000-0000-4000-8000-000000000001"
+)
+
+const (
+	fieldID               = "b2000000-0000-4000-8000-000000000001"
+	fieldOfferingID       = "b2000000-0000-4000-8000-000000000002"
+	fieldOfferingKey      = "b2000000-0000-4000-8000-000000000003"
+	fieldName             = "b2000000-0000-4000-8000-000000000004"
+	fieldRevision         = "b2000000-0000-4000-8000-000000000005"
+	fieldLifecycle        = "b2000000-0000-4000-8000-000000000006"
+	fieldVersion          = "b2000000-0000-4000-8000-000000000007"
+	fieldBase             = "b2000000-0000-4000-8000-000000000008"
+	fieldPublic           = "b2000000-0000-4000-8000-000000000009"
+	fieldTrialDays        = "b2000000-0000-4000-8000-00000000000a"
+	fieldGraceDays        = "b2000000-0000-4000-8000-00000000000b"
+	fieldPriceCount       = "b2000000-0000-4000-8000-00000000000c"
+	fieldGrantCount       = "b2000000-0000-4000-8000-00000000000d"
+	fieldEffectiveStart   = "b2000000-0000-4000-8000-00000000000e"
+	fieldEffectiveEnd     = "b2000000-0000-4000-8000-00000000000f"
+	fieldPublicationState = "b2000000-0000-4000-8000-000000000010"
+	fieldPublishedAt      = "b2000000-0000-4000-8000-000000000011"
+	fieldDescription      = "b2000000-0000-4000-8000-000000000012"
+	fieldSortOrder        = "b2000000-0000-4000-8000-000000000013"
+	fieldHighlightLabel   = "b2000000-0000-4000-8000-000000000014"
+	fieldColor            = "b2000000-0000-4000-8000-000000000015"
+	fieldBillingInterval  = "b2000000-0000-4000-8000-000000000016"
+	fieldCreatedAt        = "b2000000-0000-4000-8000-000000000017"
+	fieldUpdatedAt        = "b2000000-0000-4000-8000-000000000018"
+	fieldAvailable        = "b2000000-0000-4000-8000-000000000019"
+)

@@ -1,0 +1,8 @@
+{
+  "version":1,
+  "consumer":"frontend-v3-legacy-work-client",
+  "compatibility_contract":"contracts/http/work-v1-compat.paths.json",
+  "resolution_contract":"work-v1-http.v1",
+  "production_admission":"exact-adoption-evidence-required",
+  "operations":["listLegacyWorkBoards","createLegacyWorkBoard","getLegacyWorkBoard","updateLegacyWorkBoard","archiveLegacyWorkBoard","listLegacyBoardTasks","createLegacyBoardTask","getLegacyBoardTask","updateLegacyBoardTask","archiveLegacyBoardTask","listLegacyCalendarEvents","createLegacyCalendarEvent","getLegacyCalendarEvent","updateLegacyCalendarEvent","archiveLegacyCalendarEvent"]
+}

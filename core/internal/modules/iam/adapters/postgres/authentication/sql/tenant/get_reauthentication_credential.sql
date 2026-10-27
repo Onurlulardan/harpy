@@ -1,0 +1,26 @@
+SELECT challenge_revision, attempt_count, challenge_state, hmac_key_id,
+       challenge_hmac, context_sha256, purpose_sha256, origin_sha256,
+       action_policy_version, expires_at, user_revision, token_version,
+       authorization_version, user_status, identity_kind, session_revision,
+       session_state, session_absolute_expires_at, access_mode_id,
+       access_mode, access_mode_state, access_mode_revision,
+       portal_binding_id, portal_binding_state, portal_binding_revision,
+       family_id, family_revision, family_state, family_absolute_expires_at,
+       token_id, token_revision, token_state, password_credential_version,
+       password_credential_revision, password_algorithm, password_salt,
+       password_tag, password_memory_kib, password_iterations,
+       password_parallelism, password_legacy_hash, password_created_at,
+       authenticator_id, authenticator_state, authenticator_kind,
+       authenticator_revision, webauthn_credential_id,
+       webauthn_public_key_cose, webauthn_rp_id, webauthn_rp_id_sha256,
+       webauthn_origin_policy_version, webauthn_sign_count,
+       webauthn_backup_eligible, webauthn_backup_state,
+       webauthn_uv_required, webauthn_revision, totp_profile,
+       totp_cipher_suite, totp_kms_key_id, totp_nonce,
+       totp_secret_ciphertext, totp_authentication_tag, totp_aad_sha256,
+       totp_last_accepted_time_step, totp_revision
+FROM iam_reauthentication_credential_v1(
+    (pg_catalog.current_schemas(false))[2]::name,
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+    $11, $12, $13, $14
+);

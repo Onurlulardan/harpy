@@ -1,0 +1,4 @@
+interface:
+  display_name: "Modular Architecture"
+  short_description: "Protect module ownership and dependency boundaries"
+  default_prompt: "Use $modular-architecture to design this backend-v2 module."

@@ -1,0 +1,7 @@
+{"version":2,"authorities":[
+  {"id":"iam.portal_user.create","owner":"iam","scope_source":"actor_tenant","required_groups":["billing+forms","iam_system_resources"],"ordered_domains":["billing","forms","iam","system_resource_layout"],"participants":["forms","iam"]},
+  {"id":"iam.portal_user.grant_console","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_user.read","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_user.revoke_console","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]},
+  {"id":"iam.portal_user.status","owner":"iam","scope_source":"actor_tenant","required_groups":["iam_system_resources"],"ordered_domains":["iam","system_resource_layout"],"participants":["iam","system_resource_layout"]}
+]}

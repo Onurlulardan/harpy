@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/postgres-artifact-defs.schema.json",
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ociDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "databaseOrigin": {"enum": ["fresh", "v1_adopted"]},
+    "databaseName": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+    "postgresIdentifier": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+    "roleName": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+    "principal": {
+      "oneOf": [
+        {"const": "PUBLIC"},
+        {"$ref": "#/$defs/roleName"}
+      ]
+    },
+    "moduleName": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$"},
+    "safeInteger": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "artifactPath": {
+      "type": "string", "minLength": 1, "maxLength": 512,
+      "pattern": "^[a-z0-9][a-z0-9_./-]*$",
+      "not": {"pattern": "(^|/)\\.\\.?(/|$)|//"}
+    },
+    "sqlPath": {
+      "allOf": [
+        {"$ref": "#/$defs/artifactPath"},
+        {"pattern": "\\.sql$"}
+      ]
+    },
+    "migrationVariant": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/sqlPath"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "roleEntry": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "name", "login", "inherit", "superuser", "createdb", "createrole",
+        "replication", "bypassrls", "connection_limit", "password_state",
+        "valid_until"
+      ],
+      "properties": {
+        "name": {"enum": [
+          "harpy_owner", "harpy_cutover_authority_owner",
+          "harpy_runtime", "forge_runtime", "harpy_forms_record_reader",
+          "harpy_forms_record_writer", "harpy_v2_runtime",
+          "harpy_migrator", "harpy_cluster_admin",
+          "harpy_extension_admin", "harpy_adopter",
+          "harpy_cutover_decoder", "harpy_cutover_finalizer",
+          "harpy_backup_reader", "harpy_backup", "harpy_restore",
+          "harpy_reactivation_observer", "harpy_tenant_migration_executor",
+          "harpy_v1_runtime", "harpy_legacy_extension_owner"
+        ]},
+        "login": {"type": "boolean"},
+        "inherit": {"const": false},
+        "superuser": {"type": "boolean"},
+        "createdb": {"type": "boolean"},
+        "createrole": {"type": "boolean"},
+        "replication": {"const": false},
+        "bypassrls": {"const": false},
+        "connection_limit": {"enum": [-1, 0, 1]},
+        "password_state": {"const": "null"},
+        "valid_until": {"const": "infinity"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"name": {"enum": [
+            "harpy_v2_runtime", "harpy_migrator", "harpy_backup",
+            "harpy_restore", "harpy_reactivation_observer",
+            "harpy_v1_runtime"
+          ]}}},
+          "then": {"properties": {"login": {"const": true}}},
+          "else": {"properties": {"login": {"const": false}}}
+        },
+        {
+          "if": {"properties": {"name": {"const": "harpy_extension_admin"}}},
+          "then": {"properties": {"superuser": {"const": true}}},
+          "else": {"properties": {"superuser": {"const": false}}}
+        },
+        {
+          "if": {"properties": {"name": {"const": "harpy_cluster_admin"}}},
+          "then": {"properties": {
+            "createdb": {"const": true}, "createrole": {"const": true}
+          }},
+          "else": {"properties": {
+            "createdb": {"const": false}, "createrole": {"const": false}
+          }}
+        },
+        {
+          "if": {"properties": {"name": {"enum": [
+            "harpy_cluster_admin", "harpy_extension_admin"
+          ]}}},
+          "then": {"properties": {"connection_limit": {"const": 1}}},
+          "else": {
+            "if": {"properties": {"name": {"enum": [
+              "harpy_adopter", "harpy_cutover_decoder", "harpy_cutover_finalizer"
+            ]}}},
+            "then": {"properties": {"connection_limit": {"const": 0}}},
+            "else": {"properties": {"connection_limit": {"const": -1}}}
+          }
+        }
+      ]
+    },
+    "membership": {
+      "type": "object", "additionalProperties": false,
+      "required": ["member", "role", "admin_option", "inherit_option", "set_option"],
+      "properties": {
+        "member": {"$ref": "#/$defs/roleName"},
+        "role": {"$ref": "#/$defs/roleName"},
+        "admin_option": {"type": "boolean"},
+        "inherit_option": {"type": "boolean"},
+        "set_option": {"type": "boolean"}
+      }
+    },
+    "catalogObject": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "database_name", "object_name"],
+      "properties": {
+        "kind": {"enum": [
+          "database", "schema", "table", "partitioned_table", "sequence",
+          "view", "materialized_view", "function", "procedure", "type", "extension"
+        ]},
+        "database_name": {"$ref": "#/$defs/databaseName"},
+        "schema_name": {"$ref": "#/$defs/postgresIdentifier"},
+        "object_name": {"$ref": "#/$defs/postgresIdentifier"},
+        "identity_arguments": {
+          "type": "array", "maxItems": 64,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9_ .\\[\\],]{0,127}$"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"enum": ["database", "schema"]}}},
+          "then": {"not": {"required": ["schema_name"]}},
+          "else": {"required": ["schema_name"]}
+        },
+        {
+          "if": {"properties": {"kind": {"enum": ["function", "procedure"]}}},
+          "then": {"required": ["identity_arguments"]},
+          "else": {"not": {"required": ["identity_arguments"]}}
+        }
+      ]
+    },
+    "aclEntry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["object", "grantor", "grantee", "privileges", "grant_option"],
+      "properties": {
+        "object": {"$ref": "#/$defs/catalogObject"},
+        "grantor": {"$ref": "#/$defs/roleName"},
+        "grantee": {"$ref": "#/$defs/principal"},
+        "privileges": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"enum": [
+            "CONNECT", "CREATE", "TEMP", "USAGE", "SELECT", "INSERT", "UPDATE",
+            "DELETE", "TRUNCATE", "REFERENCES", "TRIGGER", "EXECUTE"
+          ]}
+        },
+        "grant_option": {"type": "boolean"}
+      }
+    },
+    "defaultPrivilege": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "owner", "schema_name", "object_kind", "grantee", "privileges", "grant_option"
+      ],
+      "properties": {
+        "owner": {"$ref": "#/$defs/roleName"},
+        "schema_name": {"$ref": "#/$defs/postgresIdentifier"},
+        "object_kind": {"enum": ["table", "sequence", "function", "type", "schema"]},
+        "grantee": {"$ref": "#/$defs/principal"},
+        "privileges": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"enum": [
+            "USAGE", "SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE",
+            "REFERENCES", "TRIGGER", "EXECUTE"
+          ]}
+        },
+        "grant_option": {"type": "boolean"}
+      }
+    },
+    "ownershipObject": {
+      "type": "object", "additionalProperties": false,
+      "required": ["object", "owner", "classification", "executor"],
+      "properties": {
+        "object": {"$ref": "#/$defs/catalogObject"},
+        "owner": {"$ref": "#/$defs/roleName"},
+        "classification": {"enum": ["first_party", "extension"]},
+        "executor": {"enum": [
+          "cluster_bootstrap", "external_root_provisioner", "extension_admin", "normal_migrator"
+        ]}
+      }
+    }
+  }
+}

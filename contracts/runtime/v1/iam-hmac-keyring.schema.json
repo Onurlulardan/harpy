@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/iam-hmac-keyring.schema.json",
+  "title": "Harpy IAM HMAC Keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "purpose", "active", "retained"],
+  "properties": {
+    "version": {"const": 1},
+    "purpose": {"enum": [
+      "refresh_token_v1", "csrf_v1", "login_directory_v1", "auth_throttle_v1",
+      "session_network_v1", "one_time_token_v1", "recovery_code_v1"
+    ]},
+    "active": {"$ref": "#/$defs/active"},
+    "retained": {
+      "type": "array", "maxItems": 64,
+      "items": {"$ref": "#/$defs/retained"}
+    }
+  },
+  "x-harpy-reject-duplicate-members": true,
+  "x-harpy-canonical-oldest-first": true,
+  "x-harpy-runtime-validates-purpose-retention-and-uniqueness": true,
+  "$defs": {
+    "kid": {
+      "type": "string", "minLength": 16, "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_-]+$", "contentEncoding": "base64url-no-pad"
+    },
+    "material": {
+      "type": "string", "minLength": 43, "maxLength": 43,
+      "pattern": "^[A-Za-z0-9_-]{43}$", "contentEncoding": "base64url-no-pad",
+      "x-harpy-decoded-bytes": 32
+    },
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "active": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kid", "key", "activated_at", "issue_until"],
+      "properties": {
+        "kid": {"$ref": "#/$defs/kid"}, "key": {"$ref": "#/$defs/material"},
+        "activated_at": {"$ref": "#/$defs/timestamp"},
+        "issue_until": {"$ref": "#/$defs/timestamp"}
+      }
+    },
+    "retained": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kid", "key", "activated_at", "issue_until", "verify_until"],
+      "properties": {
+        "kid": {"$ref": "#/$defs/kid"}, "key": {"$ref": "#/$defs/material"},
+        "activated_at": {"$ref": "#/$defs/timestamp"},
+        "issue_until": {"$ref": "#/$defs/timestamp"},
+        "verify_until": {"oneOf": [{"$ref": "#/$defs/timestamp"}, {"type": "null"}]}
+      }
+    }
+  }
+}

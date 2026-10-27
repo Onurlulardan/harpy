@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/retention",
+      "layer": "application",
+      "resource": "retention",
+      "operation": "execute",
+      "source": "core/internal/modules/billing/application/retention/execute.go",
+      "test": "core/internal/modules/billing/application/retention/execute_test.go",
+      "authority_id": "billing.retention.purge.execute"
+    }
+  ]
+}

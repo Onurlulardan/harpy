@@ -1,0 +1,6 @@
+SELECT pg_catalog.count(*)::integer,
+       pg_catalog.count(*) FILTER (
+         WHERE registered_at IS NOT NULL AND released_at IS NULL
+       )::integer
+FROM catalog_a.analytics_forms_reference_bindings
+WHERE component_id=$1::uuid;

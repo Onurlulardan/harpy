@@ -1,0 +1,50 @@
+[
+  {
+    "name": "source defaults",
+    "raw_query": "",
+    "page": 1,
+    "limit": 10,
+    "predecessor_index": 0,
+    "has_predecessor": false
+  },
+  {
+    "name": "source zero page normalizes",
+    "raw_query": "page=0&limit=25",
+    "page": 1,
+    "limit": 25,
+    "predecessor_index": 0,
+    "has_predecessor": false
+  },
+  {
+    "name": "source negative page normalizes",
+    "raw_query": "page=-9&limit=25",
+    "page": 1,
+    "limit": 25,
+    "predecessor_index": 0,
+    "has_predecessor": false
+  },
+  {
+    "name": "page two becomes predecessor seek metadata",
+    "raw_query": "page=2&limit=25",
+    "page": 2,
+    "limit": 25,
+    "predecessor_index": 24,
+    "has_predecessor": true
+  },
+  {
+    "name": "deep page uses checked ordinal",
+    "raw_query": "page=40&limit=25",
+    "page": 40,
+    "limit": 25,
+    "predecessor_index": 974,
+    "has_predecessor": true
+  },
+  {
+    "name": "platform maximum remains accepted",
+    "raw_query": "page=1&limit=500",
+    "page": 1,
+    "limit": 500,
+    "predecessor_index": 0,
+    "has_predecessor": false
+  }
+]

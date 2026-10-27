@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/attestation-signing-key.schema.json",
+  "title": "Harpy Attestation Signing Key v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "key_id", "algorithm", "seed"],
+  "properties": {
+    "contract_version": {"const": "attestation-signing-key.v1"},
+    "key_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "algorithm": {"const": "Ed25519"},
+    "seed": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"}
+  }
+}

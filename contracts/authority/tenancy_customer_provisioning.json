@@ -1,0 +1,4 @@
+{"version":2,"authorities":[
+  {"id":"tenancy.customer_provisioning.create","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]},
+  {"id":"tenancy.customer_provisioning.read","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
+]}

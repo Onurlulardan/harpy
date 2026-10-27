@@ -1,0 +1,32 @@
+{
+  "openapi": "3.1.1",
+  "info": {"title": "Harpy Analytics V1 public compatibility edge", "version": "1.0.0"},
+  "paths": {
+    "/api/openapi/execute/{slug}": {"$ref": "#/components/pathItems/legacyExecute"},
+    "/api/analytics/execute/{slug}": {"$ref": "#/components/pathItems/legacyExecute"}
+  },
+  "components": {
+    "pathItems": {
+      "legacyExecute": {
+        "parameters": [
+          {"$ref": "analytics-common-v2.schemas.json#/$defs/LegacyTenantIDParameter"},
+          {"$ref": "analytics-common-v2.schemas.json#/$defs/LegacyTenantSlugParameter"},
+          {"$ref": "analytics-common-v2.schemas.json#/$defs/LegacySlugParameter"}
+        ],
+        "x-harpy-exactly-one-tenant-header": ["X-Tenant-ID", "X-Tenant-Slug"],
+        "x-harpy-exact-immutable-mapping": true,
+        "get": {
+          "security": [{}], "operationId": "executeLegacyAnalyticsGET",
+          "x-harpy-authority": "analytics.compatibility.resolve_exact",
+          "responses": {"200": {"description": "Approved V2 release result", "headers": {"Cache-Control": {"schema": {"const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicResult"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+        },
+        "post": {
+          "security": [{}], "operationId": "executeLegacyAnalyticsPOST",
+          "x-harpy-authority": "analytics.compatibility.resolve_exact",
+          "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicPOSTRequest"}}}},
+          "responses": {"200": {"description": "Approved V2 release result", "headers": {"Cache-Control": {"schema": {"const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "analytics-publication-v2.schemas.json#/$defs/PublicResult"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+        }
+      }
+    }
+  }
+}

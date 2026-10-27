@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "authorities": [
+    {"id":"catalog.menu.get","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.menu.update","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]}
+  ]
+}

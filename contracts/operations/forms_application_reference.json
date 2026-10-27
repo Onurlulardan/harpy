@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/reference",
+      "layer": "application", "resource": "reference", "operation": "create",
+      "source": "core/internal/modules/forms/application/reference/create.go",
+      "test": "core/internal/modules/forms/application/reference/create_test.go",
+      "authority_id": "forms.reference.register"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/reference",
+      "layer": "application", "resource": "reference", "operation": "list",
+      "source": "core/internal/modules/forms/application/reference/list.go",
+      "test": "core/internal/modules/forms/application/reference/list_test.go",
+      "authority_id": "forms.reference.list_blockers"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/reference",
+      "layer": "application", "resource": "reference", "operation": "release",
+      "source": "core/internal/modules/forms/application/reference/release.go",
+      "test": "core/internal/modules/forms/application/reference/release_test.go",
+      "authority_id": "forms.reference.release"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "authorization_clock", "revision", "replayed"],
+      "properties": {
+        "strategy": { "const": "versioned_transactional" },
+        "authorization_clock": { "type": "integer", "minimum": 1 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "replayed": { "type": "boolean" }
+      }
+    },
+    "Envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": { "const": true },
+        "data": { "$ref": "#/$defs/Result" }
+      }
+    }
+  }
+}

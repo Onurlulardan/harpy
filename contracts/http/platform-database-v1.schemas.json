@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "SHA256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "DiagnosticField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "value": {"type": "string"}
+      }
+    },
+    "DiagnosticSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "diagnostic_id", "output_schema_sha256", "observed_at",
+        "fields", "cached", "stale"
+      ],
+      "properties": {
+        "diagnostic_id": {
+          "enum": ["database_stats_v1", "schema_metadata_v1", "recovery_readiness_v1"]
+        },
+        "output_schema_sha256": {"$ref": "#/$defs/SHA256"},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "fields": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/DiagnosticField"}
+        },
+        "cached": {"type": "boolean"},
+        "stale": {"type": "boolean"}
+      }
+    },
+    "DiagnosticEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["success", "data"],
+      "properties": {
+        "success": {"const": true},
+        "data": {"$ref": "#/$defs/DiagnosticSnapshot"}
+      }
+    }
+  }
+}

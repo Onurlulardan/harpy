@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "authorize",
+      "source": "core/internal/modules/forms/application/recordkernel/authorize_mutation.go",
+      "test": "core/internal/modules/forms/application/recordkernel/authorize_mutation_test.go",
+      "authority_id": "forms.record_kernel.authorize_mutation"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "create",
+      "source": "core/internal/modules/forms/application/recordkernel/create.go",
+      "test": "core/internal/modules/forms/application/recordkernel/create_test.go",
+      "authority_id": "forms.record_kernel.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "delete",
+      "source": "core/internal/modules/forms/application/recordkernel/delete.go",
+      "test": "core/internal/modules/forms/application/recordkernel/delete_test.go",
+      "authority_id": "forms.record_kernel.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "get",
+      "source": "core/internal/modules/forms/application/recordkernel/get.go",
+      "test": "core/internal/modules/forms/application/recordkernel/get_test.go",
+      "authority_id": "forms.record_kernel.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "list",
+      "source": "core/internal/modules/forms/application/recordkernel/list.go",
+      "test": "core/internal/modules/forms/application/recordkernel/list_test.go",
+      "authority_id": "forms.record_kernel.list"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "materialize",
+      "source": "core/internal/modules/forms/application/recordkernel/materialize_catalog_demo_record.go",
+      "test": "core/internal/modules/forms/application/recordkernel/materialize_catalog_demo_record_test.go",
+      "authority_id": "forms.catalog_demo.materialize"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "read",
+      "source": "core/internal/modules/forms/application/recordkernel/read_authorization.go",
+      "test": "core/internal/modules/forms/application/recordkernel/read_authorization_test.go",
+      "authority_id": "forms.record_kernel.authorize_read"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordkernel",
+      "layer": "application",
+      "resource": "recordkernel",
+      "operation": "update",
+      "source": "core/internal/modules/forms/application/recordkernel/update.go",
+      "test": "core/internal/modules/forms/application/recordkernel/update_test.go",
+      "authority_id": "forms.record_kernel.update"
+    }
+  ]
+}

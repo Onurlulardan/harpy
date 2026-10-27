@@ -1,0 +1,35 @@
+package deadletterdelivery
+
+import "context"
+
+func (runner *Runner) Wait(ctx context.Context) error {
+	if ctx == nil {
+		return ErrDependencies
+	}
+	runner.lifecycle.mutex.Lock()
+	done := runner.lifecycle.done
+	runner.lifecycle.mutex.Unlock()
+	if done == nil {
+		return nil
+	}
+	select {
+	case <-done:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+
+func (runner *Runner) Force() error {
+	runner.lifecycle.mutex.Lock()
+	if runner.lifecycle.cancel != nil {
+		runner.lifecycle.cancel()
+	}
+	active := runner.lifecycle.active
+	runner.lifecycle.active = nil
+	runner.lifecycle.mutex.Unlock()
+	if active == nil {
+		return nil
+	}
+	return closeSession(active)
+}

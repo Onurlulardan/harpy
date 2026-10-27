@@ -1,0 +1,1 @@
+{"id":"92000000-0000-4000-8000-000000000001","type":"schedule.event","payload":{"frequency":"daily","scheduled_time":"2026-07-15T10:01:00Z","tenant_slug":"acme","trigger_type":"schedule","workflow_id":"92100000-0000-4000-8000-000000000001"},"priority":1,"retry_count":0,"published_at":"2026-07-15T10:01:00Z"}

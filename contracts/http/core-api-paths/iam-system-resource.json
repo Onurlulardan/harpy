@@ -1,0 +1,35 @@
+{
+  "/api/iam/system-resources/{resource}/record-exports": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-exports"
+  },
+  "/api/iam/system-resources/{resource}/record-exports/{export_id}": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-exports~1{export_id}"
+  },
+  "/api/iam/system-resources/{resource}/record-exports/{export_id}/content": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-exports~1{export_id}~1content"
+  },
+  "/api/iam/system-resources/{resource}/record-import-sources": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-import-sources"
+  },
+  "/api/iam/system-resources/{resource}/record-imports": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-imports"
+  },
+  "/api/iam/system-resources/{resource}/record-imports/{import_id}": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-imports~1{import_id}"
+  },
+  "/api/iam/system-resources/{resource}/record-imports/{import_id}/report": {
+    "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-imports~1{import_id}~1report"
+  },
+  "/api/system-resources/{resource}/layout-revisions": {
+    "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1layout-revisions"
+  },
+  "/api/system-resources/{resource}/layout-revisions/{revision_id}": {
+    "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1layout-revisions~1{revision_id}"
+  },
+  "/api/system-resources/{resource}/layout-revisions/{revision_id}/publication": {
+    "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1layout-revisions~1{revision_id}~1publication"
+  },
+  "/api/system-resources/{resource}/presentation": {
+    "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1presentation"
+  }
+}

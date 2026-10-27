@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "authorities": [
+    {"id":"catalog.adoption.verify","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.compatibility.acknowledge","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.compatibility.record_hit","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]},
+    {"id":"catalog.compatibility.retire","owner":"catalog","scope_source":"actor_tenant","required_groups":["catalog"],"ordered_domains":["catalog"],"participants":["catalog"]}
+  ]
+}

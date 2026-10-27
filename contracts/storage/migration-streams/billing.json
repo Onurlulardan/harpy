@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "owner": "billing",
+  "streams": [
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260717010000,"version_to":20260717010316,"phase":"expand","target_database_generation":5,"next_minimum_runtime_generation":1},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260718200050,"version_to":20260718200050,"phase":"expand","target_database_generation":11,"next_minimum_runtime_generation":1},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260718230400,"version_to":20260718230412,"phase":"expand","target_database_generation":13,"next_minimum_runtime_generation":13},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260722050000,"version_to":20260722050016,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260722060000,"version_to":20260722060004,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260722110000,"version_to":20260722110003,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260722141100,"version_to":20260722141100,"phase":"expand","target_database_generation":15,"next_minimum_runtime_generation":13},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260723113000,"version_to":20260723113006,"phase":"expand","target_database_generation":17,"next_minimum_runtime_generation":14},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260723114500,"version_to":20260723114505,"phase":"expand","target_database_generation":17,"next_minimum_runtime_generation":14},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260723140000,"version_to":20260723140003,"phase":"expand","target_database_generation":18,"next_minimum_runtime_generation":15},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260725121000,"version_to":20260725121000,"phase":"expand","target_database_generation":21,"next_minimum_runtime_generation":15},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260728110000,"version_to":20260728110000,"phase":"expand","target_database_generation":69,"next_minimum_runtime_generation":23},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260728110005,"version_to":20260728110009,"phase":"expand","target_database_generation":69,"next_minimum_runtime_generation":23},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260729100005,"version_to":20260729100008,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260729100016,"version_to":20260729100016,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260729100019,"version_to":20260729100020,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260729100026,"version_to":20260729100026,"phase":"expand","target_database_generation":70,"next_minimum_runtime_generation":23},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260729100039,"version_to":20260729100039,"phase":"contract","target_database_generation":71,"next_minimum_runtime_generation":24},
+    {"owner":"billing","directory":"core/internal/modules/billing/migrations/platform","scope":"platform","version_from":20260802232800,"version_to":20260802232805,"phase":"expand","target_database_generation":94,"next_minimum_runtime_generation":24}
+  ]
+}

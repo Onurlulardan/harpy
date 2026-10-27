@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Organization"
+  short_description: "Enforce small operation-focused backend files"
+  default_prompt: "Use $code-organization to structure this backend-v2 change."

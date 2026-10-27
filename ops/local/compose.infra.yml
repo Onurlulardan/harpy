@@ -1,0 +1,145 @@
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  postgres:
+    <<: *logging
+    image: pgvector/pgvector:0.8.3-pg18-bookworm@sha256:c8a919765f2ef63681329fa21021b830cd4d79d1165bdca730dd016014e4da84
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: local_bootstrap_admin
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-bootstrap-password.txt
+      POSTGRES_DB: postgres
+      POSTGRES_INITDB_ARGS: >-
+        --encoding=UTF8 --locale=en_US.utf8 --data-checksums
+        --auth-local=trust --auth-host=scram-sha-256
+    ports:
+      - "127.0.0.1:${LOCAL_POSTGRES_PORT}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - local-secret-postgres:/run/secrets:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U local_bootstrap_admin -d postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+    networks: [local]
+
+  rabbitmq:
+    <<: *logging
+    image: rabbitmq:4.3.2-management-alpine@sha256:0753b75ce99094c385483d89449d532a0544fb85e4942a478b21cc497ab66d33
+    restart: unless-stopped
+    environment:
+      RABBITMQ_CONFIG_FILE: /run/secrets/rabbitmq
+    ports:
+      - "127.0.0.1:${LOCAL_RABBITMQ_PORT}:5672"
+      - "127.0.0.1:${LOCAL_RABBITMQ_MANAGEMENT_PORT}:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - local-secret-rabbitmq:/run/secrets:ro
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 15s
+    networks: [local]
+
+  minio:
+    <<: *logging
+    image: minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
+    restart: unless-stopped
+    env_file: ./state/secrets/minio.env
+    command: ["server", "/data", "--address", ":9000"]
+    volumes:
+      - minio-data:/data
+    networks: [local]
+
+  s3-owner:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/s3-owner-proxy"]
+    environment:
+      S3_OWNER_PROXY_LISTEN_ADDR: 0.0.0.0:9000
+      S3_OWNER_PROXY_UPSTREAM_URL: http://minio:9000
+      S3_OWNER_EXPECTED_BUCKET_OWNER: "123456789012"
+    ports:
+      - "127.0.0.1:${LOCAL_S3_PORT}:9000"
+    depends_on:
+      minio:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/livez", "-timeout", "2s"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks: [local]
+
+  local-kms:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: unless-stopped
+    entrypoint: ["/app/kms-emulator"]
+    environment:
+      HARPY_KMS_SERVICE_PROFILE: local
+      HARPY_KMS_SERVICE_LISTEN_ADDR: 0.0.0.0:443
+      HARPY_KMS_SERVICE_TLS_CERT_FILE: /run/secrets/kms-server.crt
+      HARPY_KMS_SERVICE_TLS_KEY_FILE: /run/secrets/kms-server.key
+      HARPY_KMS_SERVICE_MASTER_KEY_FILE: /run/secrets/kms-master-key.bin
+    volumes:
+      - local-secret-kms:/run/secrets:ro
+    cap_add: [NET_BIND_SERVICE]
+    networks:
+      local:
+        aliases: [kms-emulator, sts.googleapis.com, cloudkms.googleapis.com]
+
+  mailpit:
+    <<: *logging
+    image: axllent/mailpit:v1.30.0@sha256:0059ef81e492a7192af3816281eed6859eb078bd7bdc58b76757c13e10e53a7d
+    restart: unless-stopped
+    user: "65532:65532"
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_DISABLE_VERSION_CHECK: "true"
+      MP_SMTP_TLS_CERT: /run/secrets/mailpit-server.crt
+      MP_SMTP_TLS_KEY: /run/secrets/mailpit-server.key
+      MP_SMTP_REQUIRE_STARTTLS: "true"
+      MP_SMTP_AUTH_FILE: /run/secrets/smtp-auth.txt
+    ports:
+      - "127.0.0.1:${LOCAL_MAILPIT_SMTP_PORT}:1025"
+      - "127.0.0.1:${LOCAL_MAILPIT_UI_PORT}:8025"
+    volumes:
+      - mailpit-data:/data
+      - local-secret-mailpit:/run/secrets:ro
+    networks: [local]
+
+  clamav-update:
+    image: clamav/clamav:1.4@sha256:e7ead98e7e07231b151bce988e0cfb0a3b46e6e7046d9dd44fd838c0df724a03
+    restart: "no"
+    command: ["/bin/sh", "/scripts/update-clamav.sh"]
+    volumes:
+      - clamav-data:/var/lib/clamav
+      - ./scripts:/scripts:ro
+    networks: [local]
+
+  clamav:
+    <<: *logging
+    image: clamav/clamav:1.4@sha256:e7ead98e7e07231b151bce988e0cfb0a3b46e6e7046d9dd44fd838c0df724a03
+    restart: unless-stopped
+    environment:
+      CLAMAV_NO_FRESHCLAMD: "true"
+    volumes:
+      - clamav-data:/var/lib/clamav
+    healthcheck:
+      test: ["CMD", "clamdscan", "--ping", "3:1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 15s
+    networks: [local]

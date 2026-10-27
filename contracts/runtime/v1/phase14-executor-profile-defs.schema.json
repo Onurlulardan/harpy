@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/phase14-executor-profile-defs.schema.json",
+  "$defs": {
+    "tenantMigrationVariables": {
+      "allOf": [
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/longRunning"},
+        {"$ref": "#/$defs/releaseInputs"},
+        {"type": "object", "properties": {"DEPLOYMENT_MODE": {"enum": ["onpremise", "saas"], "default": "onpremise"}}}
+      ],
+      "unevaluatedProperties": false
+    },
+    "databaseBackupVariables": {
+      "allOf": [
+        {"$ref": "#/$defs/dedicatedCommon"},
+        {"$ref": "#/$defs/releaseInputs"},
+        {
+          "type": "object",
+          "required": [
+            "HARPY_BACKUP_POSTGRES_DSN_FILE", "HARPY_RECOVERY_STORAGE_MANIFEST_PATH",
+            "HARPY_RECOVERY_TRUST_BUNDLE_PATH", "HARPY_RECOVERY_MANIFEST_SIGNING_KEY_FILE"
+          ],
+          "properties": {
+            "HARPY_BACKUP_POSTGRES_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_POSTGRES_MAX_CONNS": {"$ref": "config.schema.json#/$defs/integer", "default": "20"},
+            "HARPY_POSTGRES_MIN_CONNS": {"$ref": "config.schema.json#/$defs/integer", "default": "2"},
+            "HARPY_POSTGRES_MAX_CONN_LIFETIME": {"$ref": "config.schema.json#/$defs/duration", "default": "30m"},
+            "HARPY_POSTGRES_MAX_CONN_IDLE_TIME": {"$ref": "config.schema.json#/$defs/duration", "default": "5m"},
+            "HARPY_POSTGRES_HEALTH_CHECK_PERIOD": {"$ref": "config.schema.json#/$defs/duration", "default": "30s"},
+            "HARPY_READINESS_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "2s"},
+            "HARPY_MANAGEMENT_LISTEN_ADDR": {"$ref": "config.schema.json#/$defs/listenAddress", "default": "0.0.0.0:9090"},
+            "HARPY_DRAIN_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "30s"},
+            "HARPY_RECOVERY_STORAGE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RECOVERY_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RECOVERY_MANIFEST_SIGNING_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "databaseRestoreVariables": {
+      "allOf": [
+        {"$ref": "#/$defs/dedicatedCommon"},
+        {"$ref": "#/$defs/releaseInputs"},
+        {
+          "type": "object",
+          "required": [
+            "HARPY_RESTORE_CONTROL_POSTGRES_DSN_FILE", "HARPY_RESTORE_SCRATCH_POSTGRES_DSN_FILE",
+            "HARPY_RECOVERY_STORAGE_MANIFEST_PATH",
+            "HARPY_RECOVERY_TRUST_BUNDLE_PATH", "HARPY_RESTORE_PROGRESS_PATH",
+            "HARPY_RESTORE_ORCHESTRATOR_TRUST_BUNDLE_PATH",
+            "HARPY_RESTORE_DRAIN_ACK_PATH", "HARPY_RESTORE_SWITCH_ACK_PATH",
+            "HARPY_RESTORE_RECEIPT_PATH"
+          ],
+          "properties": {
+            "HARPY_RESTORE_CONTROL_POSTGRES_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_RESTORE_SCRATCH_POSTGRES_DSN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_RECOVERY_STORAGE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RECOVERY_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_ORCHESTRATOR_TRUST_BUNDLE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_PROGRESS_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_DRAIN_ACK_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_SWITCH_ACK_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RESTORE_PLAN_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_DR_KEK_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_RESTORE_RECEIPT_SIGNING_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_REHYDRATE_REQUEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+            "HARPY_RECOVERY_KIT_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+          },
+          "oneOf": [
+            {
+              "required": ["HARPY_RESTORE_PLAN_PATH", "HARPY_DR_KEK_KEYRING_FILE", "HARPY_RESTORE_RECEIPT_SIGNING_KEY_FILE"],
+              "not": {"anyOf": [{"required": ["HARPY_REHYDRATE_REQUEST_PATH"]}, {"required": ["HARPY_RECOVERY_KIT_FILE"]}]}
+            },
+            {
+              "required": ["HARPY_REHYDRATE_REQUEST_PATH", "HARPY_RECOVERY_KIT_FILE"],
+              "not": {"anyOf": [
+                {"required": ["HARPY_RESTORE_PLAN_PATH"]}, {"required": ["HARPY_DR_KEK_KEYRING_FILE"]},
+                {"required": ["HARPY_RESTORE_RECEIPT_SIGNING_KEY_FILE"]}
+              ]}
+            }
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "dedicatedCommon": {
+      "allOf": [
+        {
+          "type": "object",
+          "required": ["HARPY_ENVIRONMENT", "HARPY_POSTGRES_ENDPOINT_KIND"],
+          "properties": {
+            "HARPY_ENVIRONMENT": {"$ref": "config.schema.json#/$defs/environment"},
+            "HARPY_POSTGRES_ENDPOINT_KIND": {"$ref": "config.schema.json#/$defs/postgresEndpointKind"},
+            "HARPY_POSTGRES_CONNECT_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s"},
+            "HARPY_POSTGRES_CLEANUP_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "const": "5s"},
+            "HARPY_LOG_LEVEL": {"$ref": "config.schema.json#/$defs/logLevel", "default": "info"}
+          }
+        },
+        {"$ref": "runtime-profile-defs.schema.json#/$defs/oneShotTelemetryVariables"}
+      ]
+    },
+    "releaseInputs": {
+      "type": "object",
+      "required": ["HARPY_RELEASE_MANIFEST_PATH", "HARPY_RELEASE_SIGNATURE_PATH", "HARPY_RELEASE_TRUST_ROOT_PATH"],
+      "properties": {
+        "HARPY_RELEASE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RELEASE_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
+        "HARPY_RELEASE_TRUST_ROOT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
+      }
+    }
+  }
+}

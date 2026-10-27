@@ -1,0 +1,29 @@
+{
+  "pathItems": {
+    "register": {"post": {"deprecated": true, "operationId": "iamRetiredRegister", "security": [], "x-harpy-successor-version": "/api/invitations/accept", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "forgotPassword": {"post": {"deprecated": true, "operationId": "iamRetiredForgotPassword", "security": [], "x-harpy-successor-version": "/api/auth/password/reset", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "resetPassword": {"post": {"deprecated": true, "operationId": "iamRetiredResetPassword", "security": [], "x-harpy-successor-version": "/api/auth/password/reset/complete", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "portalLookup": {"post": {"deprecated": true, "operationId": "iamRetiredPortalLookup", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "portalSetupPassword": {"post": {"deprecated": true, "operationId": "iamRetiredPortalSetupPassword", "security": [], "x-harpy-successor-version": "/api/auth/portal/setup/complete", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "portalForgotPassword": {"post": {"deprecated": true, "operationId": "iamRetiredPortalForgotPassword", "security": [], "x-harpy-successor-version": "/api/auth/password/reset", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "portalUserUnlink": {"parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/RetiredID"}], "delete": {"deprecated": true, "operationId": "iamRetiredPortalUserUnlink", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "validate": {"post": {"deprecated": true, "operationId": "iamRetiredValidate", "security": [], "x-harpy-successor-version": "/api/auth/session", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "verifyEmail": {"parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/RetiredToken"}], "get": {"deprecated": true, "operationId": "iamRetiredVerifyEmail", "security": [], "x-harpy-successor-version": "/api/auth/identifiers/verify", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "createVerificationToken": {"post": {"deprecated": true, "operationId": "iamRetiredCreateVerificationToken", "security": [], "x-harpy-successor-version": "/api/iam/identifiers/{id}/verification", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "authChangePassword": {"post": {"deprecated": true, "operationId": "iamRetiredAuthChangePassword", "security": [], "x-harpy-successor-version": "/api/iam/password/change", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "profileChangePassword": {"post": {"deprecated": true, "operationId": "iamRetiredProfileChangePassword", "security": [], "x-harpy-successor-version": "/api/iam/password/change", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "authSessions": {
+      "get": {"deprecated": true, "operationId": "iamRetiredListSessions", "security": [], "x-harpy-successor-version": "/api/iam/sessions", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}},
+      "delete": {"deprecated": true, "operationId": "iamRetiredRevokeAllSessions", "security": [], "x-harpy-successor-version": "/api/iam/sessions", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}
+    },
+    "authSession": {"parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/RetiredID"}], "delete": {"deprecated": true, "operationId": "iamRetiredRevokeSession", "security": [], "x-harpy-successor-version": "/api/iam/sessions/{id}", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "terminateAll": {"post": {"deprecated": true, "operationId": "iamRetiredTerminateAllSessions", "security": [], "x-harpy-successor-version": "/api/iam/sessions", "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "loginHistory": {"get": {"deprecated": true, "operationId": "iamRetiredLoginHistory", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "adminSessions": {
+      "get": {"deprecated": true, "operationId": "iamRetiredAdminSessions", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}},
+      "delete": {"deprecated": true, "operationId": "iamRetiredAdminRevokeAllSessions", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}
+    },
+    "adminSession": {"parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/RetiredID"}], "delete": {"deprecated": true, "operationId": "iamRetiredAdminRevokeSession", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}},
+    "adminTerminateAll": {"post": {"deprecated": true, "operationId": "iamRetiredAdminTerminateAllSessions", "security": [], "responses": {"410": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/ClientUpgradeRequired"}}}}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/events/v1/event-consumer-policy.schema.json",
+  "title": "Harpy Event Consumer Policy v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "consumer", "consumer_version", "owner_domain", "event_type", "event_version", "queue_name",
+    "effect_class", "delivery_limit", "quorum_queue", "manual_ack", "inbox_retention_days",
+    "dead_letter_full_payload_days", "dead_letter_redacted_days", "broker_redelivery_horizon_days"
+  ],
+  "properties": {
+    "contract_version": {"const": "event-consumer-policy.v1"},
+    "consumer": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "consumer_version": {"type": "integer", "minimum": 1},
+    "owner_domain": {"$ref": "event-defs.schema.json#/$defs/domain"},
+    "event_type": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "event_version": {"type": "integer", "minimum": 1},
+    "queue_name": {"$ref": "event-defs.schema.json#/$defs/typeName"},
+    "effect_class": {"enum": ["database_transactional", "external"]},
+    "delivery_limit": {"type": "integer", "minimum": 1, "maximum": 25},
+    "quorum_queue": {"const": true},
+    "manual_ack": {"const": true},
+    "inbox_retention_days": {"const": 180},
+    "dead_letter_full_payload_days": {"const": 30},
+    "dead_letter_redacted_days": {"const": 365},
+    "broker_redelivery_horizon_days": {"const": 30}
+  }
+}

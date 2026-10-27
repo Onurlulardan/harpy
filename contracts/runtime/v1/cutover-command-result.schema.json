@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/cutover-command-result.schema.json",
+  "title": "Harpy Cutover Command Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "action", "operation_id", "run_id", "status", "exit_code"
+  ],
+  "properties": {
+    "contract_version": {"const": "cutover-command-result.v1"},
+    "action": {"enum": ["cutover_adoption", "cutover_finalization"]},
+    "operation_id": {"$ref": "#/$defs/uuid"},
+    "run_id": {"$ref": "#/$defs/uuid"},
+    "status": {"enum": ["succeeded", "failed", "cancelled"]},
+    "exit_code": {"enum": [0, 10]},
+    "batch_sha256": {"$ref": "#/$defs/sha256"},
+    "applied_count": {"type": "integer", "minimum": 0},
+    "key_state_sha256": {"$ref": "#/$defs/sha256"},
+    "state_sha256": {"$ref": "#/$defs/sha256"},
+    "terminal_state": {"enum": ["completed", "failed", "cancelled"]},
+    "terminal_evidence_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "action": {"const": "cutover_adoption"},
+        "status": {"const": "succeeded"},
+        "exit_code": {"const": 0}
+      },
+      "required": ["batch_sha256", "applied_count", "key_state_sha256", "state_sha256"],
+      "not": {"anyOf": [
+        {"required": ["terminal_state"]},
+        {"required": ["terminal_evidence_sha256"]}
+      ]}
+    },
+    {
+      "properties": {
+        "action": {"const": "cutover_finalization"},
+        "status": {"const": "succeeded"},
+        "exit_code": {"const": 0},
+        "terminal_state": {"const": "completed"}
+      },
+      "required": ["terminal_state", "terminal_evidence_sha256"],
+      "$ref": "#/$defs/noAdoptionFields"
+    },
+    {
+      "properties": {
+        "action": {"const": "cutover_finalization"},
+        "status": {"const": "failed"},
+        "exit_code": {"const": 10},
+        "terminal_state": {"const": "failed"}
+      },
+      "required": ["terminal_state", "terminal_evidence_sha256"],
+      "$ref": "#/$defs/noAdoptionFields"
+    },
+    {
+      "properties": {
+        "action": {"const": "cutover_finalization"},
+        "status": {"const": "cancelled"},
+        "exit_code": {"const": 10},
+        "terminal_state": {"const": "cancelled"}
+      },
+      "required": ["terminal_state", "terminal_evidence_sha256"],
+      "$ref": "#/$defs/noAdoptionFields"
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": {"const": "00000000-0000-0000-0000-000000000000"}
+    },
+    "noAdoptionFields": {
+      "not": {"anyOf": [
+        {"required": ["batch_sha256"]},
+        {"required": ["applied_count"]},
+        {"required": ["key_state_sha256"]},
+        {"required": ["state_sha256"]}
+      ]}
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/forms-import-source-config-fragment.schema.json",
+  "$defs": {
+    "common": {
+      "type": "object",
+      "required": [
+        "HARPY_FORMS_IMPORT_SOURCE_S3_ENDPOINT", "HARPY_FORMS_IMPORT_SOURCE_S3_REGION",
+        "HARPY_FORMS_IMPORT_SOURCE_S3_BUCKET", "HARPY_FORMS_IMPORT_SOURCE_S3_EXPECTED_BUCKET_OWNER",
+        "HARPY_FORMS_IMPORT_SOURCE_S3_PATH_STYLE", "HARPY_FORMS_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE",
+        "HARPY_FORMS_IMPORT_SOURCE_FCART_KEK_KEYRING_FILE"
+      ],
+      "properties": {
+        "HARPY_FORMS_IMPORT_SOURCE_S3_ENDPOINT": {"type": "string", "format": "uri", "pattern": "^https?://[^/\\s]+$"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_REGION": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_BUCKET": {"type": "string", "minLength": 3, "maxLength": 63, "pattern": "^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])$"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_EXPECTED_BUCKET_OWNER": {"type": "string", "pattern": "^[0-9]{12}$"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_PATH_STYLE": {"$ref": "config.schema.json#/$defs/boolean"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE": {"enum": ["workload_identity", "static_files"]},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_ACCESS_KEY_ID_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_SECRET_ACCESS_KEY_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_FORMS_IMPORT_SOURCE_S3_SESSION_TOKEN_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+        "HARPY_FORMS_IMPORT_SOURCE_FCART_KEK_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+      },
+      "allOf": [
+        {
+          "if": {"required": ["HARPY_FORMS_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE"], "properties": {"HARPY_FORMS_IMPORT_SOURCE_S3_CREDENTIAL_SOURCE": {"const": "static_files"}}},
+          "then": {"required": ["HARPY_FORMS_IMPORT_SOURCE_S3_ACCESS_KEY_ID_FILE", "HARPY_FORMS_IMPORT_SOURCE_S3_SECRET_ACCESS_KEY_FILE"]},
+          "else": {"not": {"anyOf": [
+            {"required": ["HARPY_FORMS_IMPORT_SOURCE_S3_ACCESS_KEY_ID_FILE"]},
+            {"required": ["HARPY_FORMS_IMPORT_SOURCE_S3_SECRET_ACCESS_KEY_FILE"]},
+            {"required": ["HARPY_FORMS_IMPORT_SOURCE_S3_SESSION_TOKEN_FILE"]}
+          ]}}
+        },
+        {
+          "if": {"required": ["HARPY_ENVIRONMENT"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}},
+          "then": {"properties": {"HARPY_FORMS_IMPORT_SOURCE_S3_ENDPOINT": {"pattern": "^https://"}}}
+        }
+      ]
+    },
+    "api": {
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {"type": "object", "required": ["HARPY_FORMS_IMPORT_SOURCE_STAGING_DIR"],
+          "properties": {"HARPY_FORMS_IMPORT_SOURCE_STAGING_DIR": {"$ref": "config.schema.json#/$defs/absolutePath"}}}
+      ]
+    }
+  }
+}

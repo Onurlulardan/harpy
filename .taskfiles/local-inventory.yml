@@ -1,0 +1,18 @@
+version: "3"
+
+vars:
+  COMPOSE: >-
+    docker compose --env-file .env.local
+    -f ops/local/compose.infra.yml
+    -f ops/local/compose.tools.yml
+    -f ops/local/compose.runtime.yml
+    -f ops/local/compose.recovery.yml -f ops/local/compose.inventory.yml
+    -f ops/local/compose.lifecycle.yml
+
+tasks:
+  verify:
+    desc: Fail before display if the temporary password escaped its owner-only file
+    cmds:
+      - >-
+        {{.COMPOSE}} logs --no-color |
+        {{.COMPOSE}} run --rm -T installation-secret-inventory

@@ -1,0 +1,85 @@
+{
+  "schemas": {
+    "Subscription": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "tenant_id", "offering_version_id", "price_version_id", "provider", "state", "period_start", "period_end", "cancel_at_period_end", "version"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"}, "tenant_id": {"type": "string", "format": "uuid"},
+        "offering_version_id": {"type": "string", "format": "uuid"},
+        "price_version_id": {"type": "string", "format": "uuid"},
+        "provider": {"type": "string", "minLength": 1, "maxLength": 64},
+        "state": {"enum": ["trialing", "active", "past_due", "paused", "cancelled", "expired"]},
+        "period_start": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "period_end": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "trial_ends_at": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "grace_ends_at": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "cancel_at_period_end": {"type": "boolean"},
+        "version": {"type": "integer", "format": "int64", "minimum": 1}
+      },
+      "x-harpy-period": "half-open [period_start,period_end)"
+    },
+    "ScheduleChange": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_offering_version_id", "target_price_version_id", "expected_version"],
+      "properties": {
+        "target_offering_version_id": {"type": "string", "format": "uuid"},
+        "target_price_version_id": {"type": "string", "format": "uuid"},
+        "expected_version": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "ScheduleCancellation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_version", "reason"],
+      "properties": {
+        "expected_version": {"type": "integer", "format": "int64", "minimum": 1},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "ResumeCancellation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_version"],
+      "properties": {
+        "expected_version": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "RedeemDiscount": {
+      "type": "object", "additionalProperties": false, "required": ["code"],
+      "properties": {"code": {"type": "string", "minLength": 1, "maxLength": 64}}
+    },
+    "ValidateDiscount": {
+      "type": "object", "additionalProperties": false, "required": ["code", "offering_version_id"],
+      "properties": {"code": {"type": "string", "minLength": 1, "maxLength": 64}, "offering_version_id": {"type": "string", "format": "uuid"}}
+    },
+    "TransitionSubscription": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_version", "target_state", "reason"],
+      "properties": {
+        "expected_version": {"type": "integer", "format": "int64", "minimum": 1},
+        "target_state": {"enum": ["trialing", "active", "past_due", "paused", "cancelled", "expired"]},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "UsageMeter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entitlement_key", "kind", "current", "unlimited", "reset_policy"],
+      "properties": {
+        "entitlement_key": {"type": "string", "minLength": 1, "maxLength": 128},
+        "kind": {"enum": ["boolean", "integer"]},
+        "current": {"type": "integer", "format": "int64", "minimum": 0},
+        "limit": {"type": "integer", "format": "int64", "minimum": 0},
+        "unlimited": {"type": "boolean"},
+        "period_start": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "period_end": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "reset_policy": {"enum": ["billing_period", "calendar_month_utc", "never"]}
+      }
+    },
+    "Usage": {
+      "type": "object", "additionalProperties": false, "required": ["meters"],
+      "properties": {"meters": {"type": "array", "maxItems": 512, "items": {"$ref": "#/schemas/UsageMeter"}}}
+    },
+    "WebhookAcceptance": {
+      "type": "object", "additionalProperties": false, "required": ["duplicate", "receipt_id"],
+      "properties": {"duplicate": {"type": "boolean"}, "receipt_id": {"type": "string", "format": "uuid"}}
+    }
+  }
+}

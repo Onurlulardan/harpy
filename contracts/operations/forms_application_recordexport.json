@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "authorize",
+      "source": "core/internal/modules/forms/application/recordexport/authorize.go",
+      "test": "core/internal/modules/forms/application/recordexport/authorize_test.go",
+      "authority_id": "forms.record_export.download"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "cancel",
+      "source": "core/internal/modules/forms/application/recordexport/cancel_attempt.go",
+      "test": "core/internal/modules/forms/application/recordexport/cancel_attempt_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "claim",
+      "source": "core/internal/modules/forms/application/recordexport/claim.go",
+      "test": "core/internal/modules/forms/application/recordexport/claim_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "complete",
+      "source": "core/internal/modules/forms/application/recordexport/complete_ready.go",
+      "test": "core/internal/modules/forms/application/recordexport/complete_ready_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "delete",
+      "source": "core/internal/modules/forms/application/recordexport/delete.go",
+      "test": "core/internal/modules/forms/application/recordexport/delete_test.go",
+      "authority_id": "forms.record_export.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "download",
+      "source": "core/internal/modules/forms/application/recordexport/download.go",
+      "test": "core/internal/modules/forms/application/recordexport/download_test.go",
+      "authority_id": "forms.record_export.download"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "execute",
+      "source": "core/internal/modules/forms/application/recordexport/execute.go",
+      "test": "core/internal/modules/forms/application/recordexport/execute_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "expire",
+      "source": "core/internal/modules/forms/application/recordexport/expire.go",
+      "test": "core/internal/modules/forms/application/recordexport/expire_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "finish",
+      "source": "core/internal/modules/forms/application/recordexport/finish_failure.go",
+      "test": "core/internal/modules/forms/application/recordexport/finish_failure_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "get",
+      "source": "core/internal/modules/forms/application/recordexport/get.go",
+      "test": "core/internal/modules/forms/application/recordexport/get_test.go",
+      "authority_id": "forms.record_export.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "list",
+      "source": "core/internal/modules/forms/application/recordexport/list_recovery_keks.go",
+      "test": "core/internal/modules/forms/application/recordexport/list_recovery_keks_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "mark",
+      "source": "core/internal/modules/forms/application/recordexport/mark_effect_started.go",
+      "test": "core/internal/modules/forms/application/recordexport/mark_effect_started_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "read",
+      "source": "core/internal/modules/forms/application/recordexport/read.go",
+      "test": "core/internal/modules/forms/application/recordexport/read_test.go",
+      "authority_id": "forms.record_export.read"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "record",
+      "source": "core/internal/modules/forms/application/recordexport/record_unknown.go",
+      "test": "core/internal/modules/forms/application/recordexport/record_unknown_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "resolve",
+      "source": "core/internal/modules/forms/application/recordexport/resolve_unknown_delete.go",
+      "test": "core/internal/modules/forms/application/recordexport/resolve_unknown_delete_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "rewrap",
+      "source": "core/internal/modules/forms/application/recordexport/rewrap.go",
+      "test": "core/internal/modules/forms/application/recordexport/rewrap_test.go",
+      "authority_id": "forms.record_export.rewrap"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "set",
+      "source": "core/internal/modules/forms/application/recordexport/set_quota_fence.go",
+      "test": "core/internal/modules/forms/application/recordexport/set_quota_fence_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "start",
+      "source": "core/internal/modules/forms/application/recordexport/start_dispatcher.go",
+      "test": "core/internal/modules/forms/application/recordexport/start_dispatcher_test.go",
+      "authority_id": "forms.record_export.execute"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/forms/application/recordexport",
+      "layer": "application", "resource": "recordexport", "operation": "submit",
+      "source": "core/internal/modules/forms/application/recordexport/submit.go",
+      "test": "core/internal/modules/forms/application/recordexport/submit_test.go",
+      "authority_id": "forms.record_export.submit"
+    }
+  ]
+}

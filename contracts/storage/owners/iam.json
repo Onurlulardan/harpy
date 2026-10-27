@@ -1,0 +1,150 @@
+{
+  "version": 2, "owner": {
+    "name": "iam",
+    "prefix": "iam_",
+    "scopes": ["platform", "tenant"],
+    "migration_dirs": [{"path":"core/internal/modules/iam/migrations/platform","scope":"platform"}, {"path":"core/internal/modules/iam/migrations/tenant","scope":"tenant"}],
+    "static_sql_dirs": [
+      {"path":"compat/iamactorv1/sql","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/actorbridgeissue/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/adoption/sql/tenant","scope":"tenant"},
+	  {"path":"core/internal/modules/iam/adapters/postgres/analyticsprincipal/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/authentication/sql/platform","scope":"platform"},
+      {"path":"core/internal/modules/iam/adapters/postgres/authentication/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/authorization/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/catalogowner/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/humantask/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/identity/assignment/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/identity/membership/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/identity/organization/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/identity/profile/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/identity/role/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/identity/user/sql/platform","scope":"platform"},
+      {"path":"core/internal/modules/iam/adapters/postgres/identity/user/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/identity/userrelation/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/identitychange/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/initialadminsetup/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/initialadminsetup/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/installationcredential/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/invitation/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/invitation/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/invitationaudit/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/invitationdelivery/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/lifecycle/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/lifecycledelivery/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/lifecycleevent/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/maintenance/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/maintenance/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/notificationaccess/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/passwordenrollment/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/permissioncache/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/permissionrequest/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/platformiam/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/portaluser/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/portaluser/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/postrestore/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/postrestore/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/profile/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/profilebackfill/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/rbac/action/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/rbac/assignment/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/rbac/implication/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/rbac/organizationbinding/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/rbac/permission/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/rbac/protectedadmin/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/rbac/resource/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/rbac/rolebinding/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/rbac/userbinding/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/rbacchange/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/recoveryanchor/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/recoveryanchor/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/recoveryevidence/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/restquery/policy/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/securityepoch/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/serviceprincipal/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/sessionview/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/systemtransfer/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/systemtransfercleanup/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/systemtransfercleanup/sql/tenant","scope":"tenant"},
+      {"path":"core/internal/modules/iam/adapters/postgres/v1authority/sql/platform","scope":"platform"},
+      {"path":"core/internal/modules/iam/adapters/postgres/workflowpermission/sql/tenant","scope":"tenant"}
+    ],
+    "platform_schemas": [], "schema_usage_grants": [{"schema":"platform","role":"harpy_backup_reader","contract":"ADR-0123"},{"schema":"platform","role":"harpy_runtime","contract":"ADR-0062"}],
+    "platform_routines": [],
+    "routine_execute_grants": [],
+    "platform_tables": [],
+    "foreign_keys": [
+      {
+        "constraint":"iam_auth_throttle_buckets_authority_fk", "source":"platform.iam_auth_throttle_buckets",
+        "source_columns":["authority_scope_kind","authority_scope_id","authority_domain"], "target_owner":"platform_cutover",
+        "target":"platform.domain_cutovers", "target_columns":["scope_kind","scope_id","domain"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint":"iam_auth_throttle_buckets_authority_group_fk", "source":"platform.iam_auth_throttle_buckets",
+        "source_columns":["authority_scope_kind","authority_scope_id","authority_group_id"], "target_owner":"platform_cutover",
+        "target":"platform.cutover_groups", "target_columns":["scope_kind","scope_id","group_id"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint":"iam_auth_throttle_buckets_authority_member_fk", "source":"platform.iam_auth_throttle_buckets",
+        "source_columns":["authority_scope_kind","authority_scope_id","authority_group_id","authority_domain"], "target_owner":"platform_cutover",
+        "target":"platform.cutover_group_members", "target_columns":["scope_kind","scope_id","group_id","domain"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint":"iam_auth_throttle_buckets_environment_fk", "source":"platform.iam_auth_throttle_buckets", "source_columns":["environment_id"],
+        "target_owner":"platform_migrator", "target":"platform.environment_identity", "target_columns":["environment_id"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint":"iam_auth_throttle_buckets_tenant_fk", "source":"platform.iam_auth_throttle_buckets", "source_columns":["tenant_id"],
+        "target_owner":"tenancy", "target":"platform.tenants", "target_columns":["id"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint":"iam_login_directory_tenant_fk", "source":"platform.iam_login_directory", "source_columns":["tenant_id"],
+        "target_owner":"tenancy", "target":"platform.tenants", "target_columns":["id"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0059"
+      },
+      {"constraint":"iam_platform_owner_policies_environment_fk","source":"platform.iam_platform_owner_policies","source_columns":["environment_id"],"target_owner":"tenancy","target":"platform.tenancy_deployment_policy","target_columns":["environment_id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0117"},
+      {"constraint":"iam_platform_roles_policy_fk","source":"platform.iam_platform_roles","source_columns":["environment_id"],"target_owner":"tenancy","target":"platform.tenancy_deployment_policy","target_columns":["environment_id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0117"},
+      {"constraint":"iam_platform_subjects_primary_binding_fk","source":"platform.iam_platform_subjects","source_columns":["environment_id","primary_tenant_id"],"target_owner":"tenancy","target":"platform.tenancy_tenant_bindings","target_columns":["environment_id","tenant_id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0117"},
+      {"constraint":"iam_recovery_anchor_operation_environment_fk","source":"platform.iam_recovery_anchor_operations","source_columns":["environment_id"],"target_owner":"tenancy","target":"platform.tenancy_deployment_policy","target_columns":["environment_id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0125"},
+      {"constraint":"iam_recovery_anchor_environment_fk","source":"platform.iam_recovery_anchors","source_columns":["environment_id"],"target_owner":"tenancy","target":"platform.tenancy_deployment_policy","target_columns":["environment_id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0125"},
+      {
+        "constraint": "iam_refresh_locators_authority_fk",
+        "source": "platform.iam_refresh_locators",
+        "source_columns": ["scope_kind","scope_id","authority_domain"],
+        "target_owner": "platform_cutover",
+        "target": "platform.domain_cutovers",
+        "target_columns": ["scope_kind","scope_id","domain"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint": "iam_refresh_locators_authority_group_fk",
+        "source": "platform.iam_refresh_locators",
+        "source_columns": ["scope_kind","scope_id","authority_group_id"],
+        "target_owner": "platform_cutover",
+        "target": "platform.cutover_groups",
+        "target_columns": ["scope_kind","scope_id","group_id"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint": "iam_refresh_locators_authority_member_fk",
+        "source": "platform.iam_refresh_locators",
+        "source_columns": ["scope_kind","scope_id","authority_group_id","authority_domain"],
+        "target_owner": "platform_cutover",
+        "target": "platform.cutover_group_members",
+        "target_columns": ["scope_kind","scope_id","group_id","domain"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {
+        "constraint": "iam_refresh_locators_tenant_fk",
+        "source": "platform.iam_refresh_locators",
+        "source_columns": ["tenant_id"],
+        "target_owner": "tenancy",
+        "target": "platform.tenants",
+        "target_columns": ["id"],
+        "match_type": "simple",
+        "on_update": "no_action", "on_delete": "restrict",
+        "deferrable": false, "initially_deferred": false,
+        "contract": "ADR-0062"
+      },
+      {"constraint":"iam_security_epochs_environment_fk","source":"platform.iam_security_epochs","source_columns":["environment_id"],"target_owner":"tenancy","target":"platform.tenancy_deployment_policy","target_columns":["environment_id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0125"}
+    ],
+    "external_accesses": [],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  },
+  "includes": ["contracts/storage/fragments/iam/01_external_accesses.json", "contracts/storage/fragments/iam/02_phase14_restore_authority.json"]
+}

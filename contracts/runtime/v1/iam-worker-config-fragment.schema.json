@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/iam-worker-config-fragment.schema.json",
+  "title": "Harpy IAM Worker Environment Fragment v1",
+  "type": "object",
+  "required": [
+    "HARPY_IAM_DELIVERY_KMS_KEY_ID",
+    "HARPY_IAM_INVITATION_SMTP_HOST",
+    "HARPY_IAM_INVITATION_SMTP_USERNAME",
+    "HARPY_IAM_INVITATION_SMTP_PASSWORD_FILE",
+    "HARPY_IAM_INVITATION_FROM_ADDRESS",
+    "HARPY_IAM_INVITATION_FROM_NAME",
+    "HARPY_IAM_INVITATION_PUBLIC_BASE_URL",
+    "HARPY_IAM_INVITATION_TEMPLATE_FILE"
+  ],
+  "properties": {
+    "HARPY_IAM_LOGIN_DIRECTORY_KEYRING": {
+      "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
+      "contentSchema": {"$ref": "iam-hmac-keyring.schema.json"}
+    },
+    "HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_ONE_TIME_TOKEN_KEYRING": {
+      "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
+      "contentSchema": {"$ref": "iam-hmac-keyring.schema.json"}
+    },
+    "HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_DELIVERY_KMS_KEY_ID": {"$ref": "config.schema.json#/$defs/kmsKeyID"},
+    "HARPY_IAM_INVITATION_SMTP_HOST": {"type": "string", "minLength": 1, "maxLength": 253},
+    "HARPY_IAM_INVITATION_SMTP_PORT": {"$ref": "config.schema.json#/$defs/integer", "default": "587", "x-harpy-minimum": "1", "x-harpy-maximum": "65535"},
+    "HARPY_IAM_INVITATION_SMTP_USERNAME": {"type": "string", "minLength": 1, "maxLength": 320},
+    "HARPY_IAM_INVITATION_SMTP_PASSWORD_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+    "HARPY_IAM_INVITATION_FROM_ADDRESS": {"type": "string", "minLength": 3, "maxLength": 320},
+    "HARPY_IAM_INVITATION_FROM_NAME": {"type": "string", "minLength": 1, "maxLength": 128},
+    "HARPY_IAM_INVITATION_PUBLIC_BASE_URL": {
+      "type": "string", "format": "uri", "pattern": "^https?://[^/\\s]+$"
+    },
+    "HARPY_IAM_INVITATION_TEMPLATE_FILE": {"$ref": "config.schema.json#/$defs/absolutePath"},
+    "HARPY_IAM_INVITATION_SMTP_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "10s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"}
+  },
+  "allOf": [
+    {"oneOf": [
+    {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING"], "not": {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"]}},
+    {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_LOGIN_DIRECTORY_KEYRING"]}}
+    ]},
+    {"oneOf": [
+      {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING"], "not": {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE"]}},
+      {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE"], "not": {"required": ["HARPY_IAM_ONE_TIME_TOKEN_KEYRING"]}}
+    ]}
+  ]
+}

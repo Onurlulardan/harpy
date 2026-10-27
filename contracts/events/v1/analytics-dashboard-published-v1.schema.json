@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/analytics-dashboard-published-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["dashboard_id", "dashboard_version_id", "root_revision", "manifest_sha256"],
+  "properties": {
+    "dashboard_id": {"type": "string", "format": "uuid"},
+    "dashboard_version_id": {"type": "string", "format": "uuid"},
+    "root_revision": {"type": "integer", "minimum": 1},
+    "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

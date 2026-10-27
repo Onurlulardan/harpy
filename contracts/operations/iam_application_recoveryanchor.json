@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/recoveryanchor",
+      "layer": "application",
+      "resource": "recoveryanchor",
+      "operation": "create",
+      "source": "core/internal/modules/iam/application/recoveryanchor/create_options.go",
+      "test": "core/internal/modules/iam/application/recoveryanchor/create_options_test.go",
+      "authority_id": "iam.recovery_anchor.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/recoveryanchor",
+      "layer": "application",
+      "resource": "recoveryanchor",
+      "operation": "delete",
+      "source": "core/internal/modules/iam/application/recoveryanchor/delete.go",
+      "test": "core/internal/modules/iam/application/recoveryanchor/delete_test.go",
+      "authority_id": "iam.recovery_anchor.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/recoveryanchor",
+      "layer": "application",
+      "resource": "recoveryanchor",
+      "operation": "finalize",
+      "source": "core/internal/modules/iam/application/recoveryanchor/finalize_authority.go",
+      "test": "core/internal/modules/iam/application/recoveryanchor/finalize_authority_test.go",
+      "authority_id": "iam.recovery_anchor.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/recoveryanchor",
+      "layer": "application",
+      "resource": "recoveryanchor",
+      "operation": "list",
+      "source": "core/internal/modules/iam/application/recoveryanchor/list.go",
+      "test": "core/internal/modules/iam/application/recoveryanchor/list_test.go",
+      "authority_id": "iam.recovery_anchor.list"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/recoveryanchor",
+      "layer": "application",
+      "resource": "recoveryanchor",
+      "operation": "reconcile",
+      "source": "core/internal/modules/iam/application/recoveryanchor/reconcile.go",
+      "test": "core/internal/modules/iam/application/recoveryanchor/reconcile_test.go",
+      "authority_id": "iam.recovery_anchor.reconcile"
+    }
+  ]
+}

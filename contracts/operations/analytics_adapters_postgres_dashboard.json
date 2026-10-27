@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/create.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/create_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "delete",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/delete.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/delete_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/get.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/get_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "grant",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/grant_acl.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/grant_acl_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/grant_acl.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/list.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/list_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "publish",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/publish.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/publish_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/publish.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "read",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/read_default.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/read_default_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/read_default.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "revoke",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/revoke_acl.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/revoke_acl_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/revoke_acl.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "set",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/set_default.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/set_default_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/set_default.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/dashboard",
+      "layer": "adapters/postgres",
+      "resource": "dashboard",
+      "operation": "update",
+      "source": "core/internal/modules/analytics/adapters/postgres/dashboard/update.go",
+      "test": "core/internal/modules/analytics/adapters/postgres/dashboard/update_test.go",
+      "application_operation": "core/internal/modules/analytics/application/dashboard/update.go"
+    }
+  ]
+}

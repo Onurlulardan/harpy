@@ -1,0 +1,101 @@
+x-tool-env: &tool-env
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_USER: oracle
+  DB_NAME: harpy_oracle
+  DB_SSLMODE: disable
+  DEPLOYMENT_MODE: saas
+  DEFAULT_TENANT_ID: 10000000-0000-4000-8000-000000000001
+  DEFAULT_TENANT_NAME: Oracle Tenant A
+  DEFAULT_TENANT_SLUG: oracle_a
+  SUPER_ADMIN_EMAIL: oracle-admin@example.invalid
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_USER: oracle
+  RABBITMQ_VHOST: oracle
+  MINIO_SERVER_URL: http://minio:9000
+  MINIO_ROOT_USER: oracleadmin
+  MINIO_USE_SSL: "false"
+  LOG_LEVEL: warn
+
+services:
+  db-migrate:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    build:
+      context: ../../../backend
+      dockerfile: ../backend-v2/ops/characterization/Dockerfile.v1-runtime
+      target: runtime
+      args:
+        V1_GO_IMAGE: ${V1_ORACLE_GO_IMAGE:?V1_ORACLE_GO_IMAGE is required}
+        V1_DISTROLESS_IMAGE: ${V1_ORACLE_DISTROLESS_IMAGE:?V1_ORACLE_DISTROLESS_IMAGE is required}
+        V1_POSTGRES_IMAGE: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+        V1_SOURCE_VERSION: ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *tool-env
+    command: ["/opt/harpy/bin/migrate", "up"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [oracle]
+    restart: "no"
+
+  db-seed:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *tool-env
+    command: ["/opt/harpy/bin/seed"]
+    depends_on:
+      db-migrate:
+        condition: service_completed_successfully
+    networks: [oracle]
+    restart: "no"
+
+  record-index-backfill:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-v1-runtime:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment: *tool-env
+    command:
+      - /opt/harpy/bin/backfill-form-record-index
+      - -tenant
+      - all
+    depends_on:
+      db-seed:
+        condition: service_completed_successfully
+    networks: [oracle]
+    restart: "no"
+
+  database-ready:
+    image: ${V1_ORACLE_POSTGRES_IMAGE:?V1_ORACLE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      PG_READY_HOST: postgres
+      PG_READY_USER: oracle
+      PG_READY_DATABASE: harpy_oracle
+      PG_READY_SERVER_VERSION_NUM: "150018"
+      PG_READY_DATA_CHECKSUMS: "off"
+      PG_READY_DATABASE_OWNER: oracle
+      PG_READY_ENCODING: UTF8
+      PG_READY_LOCALE_PROVIDER: c
+      PG_READY_COLLATION: en_US.utf8
+      PG_READY_CTYPE: en_US.utf8
+      PG_READY_VECTOR_VERSION: 0.8.3
+      PG_READY_VECTOR_SCHEMA: public
+      PG_READY_REQUIRE_SOURCE_IDENTITY: "false"
+    entrypoint: ["/bin/bash", "/oracle/database-ready.sh"]
+    depends_on:
+      record-index-backfill:
+        condition: service_completed_successfully
+    volumes:
+      - type: bind
+        source: ./database-ready.sh
+        target: /oracle/database-ready.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks: [oracle]
+    restart: "no"

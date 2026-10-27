@@ -1,0 +1,20 @@
+{
+  "variables": [
+    {"name": "HARPY_CUTOVER_LEASE_MANIFEST_PATH", "profiles": ["cutover_adoption", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_LEASE_SIGNATURE_PATH", "profiles": ["cutover_adoption", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_TRUST_ROOT_PATH", "profiles": ["cutover_adoption", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_SESSION_SEAL_RECEIPT_PATH", "profiles": ["cutover_adoption", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_BATCH_PATH", "profiles": ["cutover_adoption"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_CREDENTIAL_CLEANUP_RECEIPT_PATH", "profiles": ["cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_FINALIZER_LEASE_MANIFEST_PATH", "profiles": ["cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_FINALIZER_LEASE_SIGNATURE_PATH", "profiles": ["cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_AUTHORITY_OPERATION_PATH", "profiles": ["migrator_deploy", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_AUTHORITY_OPERATION_SIGNATURE_PATH", "profiles": ["migrator_deploy", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_AUTHORITY_RECEIPT_PATH", "profiles": ["migrator_deploy", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {"name": "HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH", "profiles": ["migrator_deploy", "cutover_finalization"], "kind": "absolute_path", "path_mode": "read", "required": true},
+    {
+      "name": "HARPY_ATTESTATION_SIGNING_KEY", "profiles": ["cluster_bootstrap", "extension_admin"], "kind": "secret", "semantic": "ed25519_signing_key",
+      "required": true, "minimum_bytes": 1, "maximum_bytes": 65536, "file_variant": "HARPY_ATTESTATION_SIGNING_KEY_FILE"
+    }
+  ]
+}

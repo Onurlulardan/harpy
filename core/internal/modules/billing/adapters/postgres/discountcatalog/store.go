@@ -1,0 +1,25 @@
+package discountcatalog
+
+import (
+	"context"
+
+	discountapp "github.com/Onurlulardan/harpy/core/internal/modules/billing/application/discountcatalog"
+)
+
+type row interface{ Scan(...any) error }
+type queryRow func(context.Context, string, ...any) row
+type execute func(context.Context, string, ...any) error
+type scopeCheck func(context.Context) bool
+
+type store struct {
+	queryRow queryRow
+	execute  execute
+	allowed  scopeCheck
+}
+
+var _ discountapp.Store = (*store)(nil)
+
+func (storage *store) usable(ctx context.Context) bool {
+	return storage != nil && storage.queryRow != nil && storage.execute != nil &&
+		storage.allowed != nil && ctx != nil && ctx.Err() == nil && storage.allowed(ctx)
+}

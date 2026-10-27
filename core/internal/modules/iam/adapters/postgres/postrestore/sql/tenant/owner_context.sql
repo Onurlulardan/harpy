@@ -1,0 +1,2 @@
+SELECT identifier_id,normalized_value,normalized_sha256,revision
+FROM iam_post_restore_owner_context_v1($1)

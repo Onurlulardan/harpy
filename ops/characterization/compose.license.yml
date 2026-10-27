@@ -1,0 +1,40 @@
+services:
+  license-cache-init:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-characterizer:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    pull_policy: never
+    build:
+      context: ../..
+      dockerfile: ops/characterization/Dockerfile.runner
+      args:
+        CHARACTERIZER_GO_IMAGE: ${CHARACTERIZER_GO_IMAGE:?CHARACTERIZER_GO_IMAGE is required}
+        V1_DISTROLESS_IMAGE: ${V1_ORACLE_DISTROLESS_IMAGE:?V1_ORACLE_DISTROLESS_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    command:
+      - license-cache
+      - -output
+      - /license-cache/state.json
+      - -v1-source-dir
+      - /v1-license-source
+      - -tenant-id
+      - 10000000-0000-4000-8000-000000000001
+      - -tenant-slug
+      - oracle_a
+      - -source-version
+      - ${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    depends_on:
+      oracle-preflight:
+        condition: service_completed_successfully
+    volumes:
+      - type: bind
+        source: ../../../backend/api-gateway/internal/license
+        target: /v1-license-source
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${V1_ORACLE_LICENSE_CACHE_DIR:?V1_ORACLE_LICENSE_CACHE_DIR is required}
+        target: /license-cache
+        bind:
+          create_host_path: false
+    network_mode: none
+    restart: "no"

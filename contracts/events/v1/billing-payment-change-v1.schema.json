@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/billing-payment-change-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider_command_id", "provider_command_revision"],
+  "properties": {
+    "provider_command_id": {"type": "string", "format": "uuid"},
+    "provider_command_revision": {"type": "integer", "minimum": 1}
+  }
+}

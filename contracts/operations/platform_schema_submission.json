@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/platform/schemasubmission/application",
+      "layer": "application",
+      "resource": "schemasubmission",
+      "operation": "submit",
+      "source": "core/internal/platform/schemasubmission/application/submit.go",
+      "test": "core/internal/platform/schemasubmission/application/submit_test.go",
+      "authority_id": "schemasubmission.submit"
+    }
+  ]
+}

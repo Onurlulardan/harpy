@@ -1,0 +1,7 @@
+{
+  "responses":{"error":{"description":"Post-restore request rejected with uniform public failure","content":{"application/json":{"schema":{"$ref":"../runtime/v1/error-envelope.schema.json"}}}}},
+  "pathItems":{
+    "challenge":{"post":{"operationId":"createPostRestoreOwnerChallenge","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"iam-post-restore-v1.schemas.json#/$defs/ChallengeRequest"}}}},"responses":{"200":{"description":"Five-minute, single-use recovery-only WebAuthn challenge","content":{"application/json":{"schema":{"$ref":"iam-post-restore-v1.schemas.json#/$defs/ChallengeEnvelope"}}}},"default":{"$ref":"#/responses/error"}}}},
+    "reactivateOwner":{"post":{"operationId":"reactivatePostRestoreOwner","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"iam-post-restore-v1.schemas.json#/$defs/ReactivateRequest"}}}},"responses":{"200":{"description":"First normal owner session after atomic credential replacement","content":{"application/json":{"schema":{"$ref":"iam-post-restore-v1.schemas.json#/$defs/ReactivateEnvelope"}}}},"default":{"$ref":"#/responses/error"}}}}
+  }
+}

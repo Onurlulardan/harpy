@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "owner": "billing",
+  "external_accesses": [
+    {"access":"write","target_owner":"platform_cutover","target":"platform.applied_change_receipts","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.contract_retirement_provision_v1","contract":"ADR-0055"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_group_members","contract":"ADR-0076"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_groups","contract":"ADR-0076"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_operations","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_prepare_batch_v1","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.cutover_record_batch_v1","contract":"ADR-0046"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.domain_cutovers","contract":"ADR-0076"},
+    {"access":"read","target_owner":"platform_migrator","target":"platform.environment_identity","contract":"ADR-0076"},
+    {"access":"read","target_owner":"platform_async","target":"platform.jobs","contract":"ADR-0079"},
+    {"access":"write","target_owner":"platform_async","target":"platform.jobs","contract":"ADR-0079"},
+    {"access":"write","target_owner":"platform_async","target":"platform.outbox","contract":"ADR-0079"},
+    {"access":"read","target_owner":"platform_async","target":"platform.platform_async_external_effect_evidence_v1","contract":"ADR-0087"},
+    {"access":"read","target_owner":"platform_cutover","target":"platform.platform_cutover_v1_adoption_plans","contract":"ADR-0022"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_assert_v2","contract":"ADR-0119"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_command_consume_v1","contract":"ADR-0122"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenancy_activation_step_consume_v1","contract":"ADR-0122"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenancy_authority_reconcile_scope_assert_v1","contract":"ADR-0118"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenancy_deployment_policy","contract":"ADR-0120"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_bindings","contract":"ADR-0116"},
+    {"access":"read","target_owner":"tenancy","target":"platform.tenants","contract":"ADR-0076"}
+  ]
+}

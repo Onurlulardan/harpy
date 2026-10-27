@@ -1,0 +1,141 @@
+{
+  "openapi": "3.1.1",
+  "info": {"title": "Harpy Analytics query API", "version": "2.0.0"},
+  "paths": {
+    "/api/analytics/query-executions": {
+      "parameters": [
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "post": {
+        "security": [{"bearerAuth": []}],
+        "operationId": "executeAnalyticsQueryBatch",
+        "x-harpy-permission": "analytics.query.execute",
+        "x-harpy-authority": "analytics.query.execute",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/BatchExecuteRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bounded dashboard query execution result",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/BatchExecutionEnvelope"}
+              }
+            }
+          },
+          "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}
+        }
+      }
+    },
+    "/api/analytics/queries": {
+      "parameters": [
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}
+      ],
+      "get": {
+        "security": [{"bearerAuth": []}],
+        "operationId": "listAnalyticsQueries",
+        "x-harpy-permission": "analytics.query.read",
+        "x-harpy-authority": "analytics.query.list",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/LimitParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/AfterParameter"}],
+        "responses": {"200": {"description": "Saved query page", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/PageEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "post": {
+        "security": [{"bearerAuth": []}],
+        "operationId": "createAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.create",
+        "x-harpy-authority": "analytics.query.create",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/CreateRequest"}}}},
+        "responses": {"201": {"description": "Saved query created", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/queries/{query_id}": {
+      "parameters": [
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"},
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/QueryIDParameter"}
+      ],
+      "get": {
+        "security": [{"bearerAuth": []}], "operationId": "getAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.read", "x-harpy-authority": "analytics.query.get",
+        "responses": {"200": {"description": "Exact saved query", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "patch": {
+        "security": [{"bearerAuth": []}], "operationId": "updateAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.update", "x-harpy-authority": "analytics.query.update",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/UpdateRequest"}}}},
+        "responses": {"200": {"description": "Saved query draft updated", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      },
+      "delete": {
+        "security": [{"bearerAuth": []}], "operationId": "deleteAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.delete", "x-harpy-authority": "analytics.query.delete",
+        "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/DeleteRequest"}}}},
+        "responses": {"200": {"description": "Saved query retired", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/queries/{query_id}/publications": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/QueryIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "publishAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.publish", "x-harpy-authority": "analytics.query.publish",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/PublishRequest"}}}},
+        "responses": {"201": {"description": "Immutable query version published", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/queries/{query_id}/versions/latest-published": {
+      "parameters": [
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"},
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"},
+        {"$ref": "analytics-common-v2.schemas.json#/$defs/QueryIDParameter"}
+      ],
+      "get": {
+        "security": [{"bearerAuth": []}],
+        "operationId": "getLatestPublishedAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.read",
+        "x-harpy-authority": "analytics.query.get",
+        "responses": {
+          "200": {
+            "description": "Latest immutable published query version and dependencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "analytics-query-v2.schemas.json#/$defs/PublishedEnvelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/analytics/queries/{query_id}/revalidations": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/QueryIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/IdempotencyKeyParameter"}],
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "revalidateAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.publish", "x-harpy-authority": "analytics.query.revalidate",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/PublishRequest"}}}},
+        "responses": {"201": {"description": "Revalidated immutable query version published", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/Envelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    },
+    "/api/analytics/queries/{query_id}/executions": {
+      "parameters": [{"$ref": "analytics-common-v2.schemas.json#/$defs/TenantIDParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/TenantSlugParameter"}, {"$ref": "analytics-common-v2.schemas.json#/$defs/QueryIDParameter"}],
+      "post": {
+        "security": [{"bearerAuth": []}], "operationId": "executeAnalyticsQuery",
+        "x-harpy-permission": "analytics.query.execute", "x-harpy-authority": "analytics.query.execute",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/ExecuteRequest"}}}},
+        "responses": {"200": {"description": "Canonical REST Query result", "content": {"application/json": {"schema": {"$ref": "analytics-query-v2.schemas.json#/$defs/ExecutionEnvelope"}}}}, "default": {"$ref": "analytics-common-v2.schemas.json#/$defs/ErrorResponse"}}
+      }
+    }
+  }
+}

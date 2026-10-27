@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "owner": {
+    "name": "platform_migrator",
+    "prefix": "platform_migrator_",
+    "scopes": ["platform"],
+    "migration_dirs": [{"path":"core/internal/platform/migrator/migrations","scope":"platform"}],
+    "static_sql_dirs": [{"path":"core/internal/platform/migrator/adapters/postgres/sql","scope":"platform"},{"path":"core/internal/platform/migrator/schemaexecutor/adapters/postgres/sql","scope":"platform"},{"path":"core/internal/platform/migrator/tenantmigrationexecutor/adapters/postgres/sql/platform","scope":"platform"}],
+    "platform_schemas": ["platform"],
+    "schema_usage_grants": [
+      {"schema":"platform","role":"harpy_backup_reader","contract":"ADR-0123"},
+      {"schema":"platform","role":"harpy_runtime","contract":"ADR-0010"}
+    ],
+    "platform_routines": [
+      "platform.platform_migration_history_reject_mutation", "platform.platform_migrator_assert_schema_submission_v1", "platform.platform_migrator_assert_schema_submission_v2", "platform.platform_migrator_backfill_forms_completion_v1", "platform.platform_migrator_backfill_forms_runtime_v1", "platform.platform_migrator_backfill_forms_runtime_v2", "platform.platform_migrator_claim_forms_runtime_v1", "platform.platform_migrator_claim_forms_runtime_v2", "platform.platform_migrator_enqueue_forms_completion_v1", "platform.platform_migrator_enqueue_forms_runtime_v1", "platform.platform_migrator_enqueue_forms_runtime_v2", "platform.platform_migrator_finish_forms_runtime_v1", "platform.platform_migrator_finish_forms_runtime_v2", "platform.platform_migrator_guard_schema_submission_identity_v2", "platform.platform_migrator_reject_mutation", "platform.platform_migrator_replay_schema_submission_v1", "platform.platform_migrator_replay_schema_submission_v2", "platform.platform_migrator_resolve_schema_result_v1", "platform.platform_migrator_schema_authority_current_v2", "platform.platform_migrator_submit_schema_plan_v1", "platform.platform_migrator_submit_schema_plan_v2",
+      "platform.platform_migrator_tenant_checkpoint_satisfies_v1", "platform.platform_migrator_tenant_checkpoint_satisfies_v2",
+      "platform.platform_migrator_validate_checkpoint_transition", "platform.platform_migrator_validate_checkpoint_transition_v2", "platform.platform_migrator_validate_checkpoint_transition_v3", "platform.platform_migrator_validate_checkpoint_transition_v4",
+      "platform.platform_migrator_validate_contract_transition", "platform.platform_migrator_validate_release_generation_finalization", "platform.platform_migrator_validate_release_generation_insert",
+      "platform.platform_migrator_validate_run_transition", "platform.platform_migrator_validate_schema_attempt_insert", "platform.platform_migrator_validate_schema_attempt_insert_v2",
+      "platform.platform_migrator_validate_schema_job_alignment", "platform.platform_migrator_validate_schema_job_plan", "platform.platform_migrator_validate_schema_job_revision",
+      "platform.platform_migrator_validate_schema_job_transition", "platform.platform_migrator_validate_schema_job_transition_v2", "platform.platform_migrator_validate_schema_step_transition",
+      "platform.platform_migrator_validate_schema_step_transition_v2", "platform.platform_migrator_validate_schema_step_transition_v3", "platform.platform_migrator_validate_submission_step_v1", "platform.platform_migrator_validate_submission_step_v2", "platform.platform_migrator_validate_tenant_checkpoint_attempt", "platform.platform_migrator_verify_new_tenant_v1", "platform.platform_migrator_verify_tenant_requirement_catalog_v1",
+      "platform.platform_migrator_verify_tenant_requirement_catalog_v2", "platform.platform_migrator_verify_tenant_requirement_catalog_v3", "platform.platform_migrator_verify_tenant_requirement_catalog_v4"
+    ],
+    "routine_execute_grants": [
+      {"routine":"platform.platform_migrator_claim_forms_runtime_v1","identity_arguments":"uuid,bigint,integer,uuid,uuid","role":"harpy_runtime","contract":"ADR-0010"},
+      {"routine":"platform.platform_migrator_claim_forms_runtime_v2","identity_arguments":"uuid,bigint,integer,uuid,uuid","role":"harpy_runtime","contract":"ADR-0010"},
+      {"routine":"platform.platform_migrator_finish_forms_runtime_v1","identity_arguments":"uuid,uuid,uuid,bigint,integer,bigint,boolean,timestamptz","role":"harpy_runtime","contract":"ADR-0010"},
+      {"routine":"platform.platform_migrator_finish_forms_runtime_v2","identity_arguments":"uuid,uuid,uuid,bigint,integer,bigint,boolean,timestamptz","role":"harpy_runtime","contract":"ADR-0010"}
+    ],
+    "platform_tables": [
+      "platform.bootstrap_receipts", "platform.database_generation_manifests", "platform.environment_identity", "platform.extension_registry",
+      "platform.migration_runs", "platform.platform_migration_history", "platform.release_generations", "platform.schema_contracts",
+      "platform.schema_job_step_attempts", "platform.schema_job_steps", "platform.schema_jobs", "platform.tenant_migration_checkpoint_attempts",
+      "platform.tenant_migration_checkpoints", "platform.tenant_migration_requirement_catalogs", "platform.tenant_migration_requirement_targets", "platform.tenant_migration_requirements",
+      "platform.tenant_migration_supersessions"
+    ],
+    "foreign_keys": [
+      {"constraint":"schema_jobs_tenant_fk","source":"platform.schema_jobs","source_columns":["tenant_id"],"target_owner":"tenancy","target":"platform.tenants","target_columns":["id"],"match_type":"simple","on_update":"no_action","on_delete":"restrict","deferrable":false,"initially_deferred":false,"contract":"ADR-0040"}
+    ],
+    "external_accesses": [
+      {"access": "read", "target_owner": "billing", "target": "platform.billing_resolve_current_tenant_authority_receipt_v1", "contract": "ADR-0095"},
+      {"access": "read", "target_owner": "billing", "target": "platform.billing_resolve_current_tenant_authority_v1", "contract": "ADR-0043"},
+      {"access": "read", "target_owner": "billing", "target": "platform.billing_tenant_authorities", "contract": "ADR-0076"},
+      {"access": "read", "target_owner": "platform_cutover", "target": "platform.cutover_group_members", "contract": "ADR-0076"},
+      {"access": "read", "target_owner": "platform_cutover", "target": "platform.cutover_groups", "contract": "ADR-0076"},
+      {"access": "read", "target_owner": "platform_cutover", "target": "platform.domain_cutovers", "contract": "ADR-0076"},
+      {"access": "read", "target_owner": "platform_async", "target": "platform.job_attempts", "contract": "ADR-0010"},
+      {"access": "read", "target_owner": "platform_async", "target": "platform.jobs", "contract": "ADR-0010"},
+      {"access": "read", "target_owner": "platform_async", "target": "platform.platform_async_enqueue_forms_schema_completion_v1", "contract": "ADR-0095"},
+      {"access": "read", "target_owner": "platform_async", "target": "platform.platform_async_enqueue_forms_schema_runtime_v1", "contract": "ADR-0010"},
+      {"access": "read", "target_owner": "platform_async", "target": "platform.platform_async_enqueue_forms_schema_runtime_v2", "contract": "ADR-0010"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_claim_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_complete_v2","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_complete_v3","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_fail_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_heartbeat_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_ready_heartbeat_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_ready_register_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_ready_retire_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_schema_inspect_v1","contract":"ADR-0118"},
+      {"access":"read","target_owner":"tenancy","target":"platform.tenancy_tenant_migration_schema_record_v1","contract":"ADR-0118"},
+      {"access": "read", "target_owner": "tenancy", "target": "platform.tenants", "contract": "ADR-0047"},
+      {"access": "read", "target_owner": "tenancy", "target": "tenancy_schema_identity", "contract": "ADR-0047"},
+      {"access": "write", "target_owner": "tenancy", "target": "tenancy_schema_identity", "contract": "ADR-0047"}
+    ],
+    "legacy_tables": [],
+    "dynamic_namespaces": []
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/config.schema.json",
+  "title": "Harpy Platform Runtime Config Catalog v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "contract_version", "profiles", "unknown_harpy_key", "secret_file", "variables"],
+  "properties": {
+    "version": {"const": 1},
+    "contract_version": {"const": "platform-runtime.v1"},
+    "profiles": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "prefixItems": [
+        {"const": "api"}, {"const": "worker"}, {"const": "migrator_deploy"},
+        {"const": "schema_executor"}, {"const": "cluster_bootstrap"}, {"const": "extension_admin"},
+        {"const": "cutover_adoption"}, {"const": "cutover_finalization"}
+      ],
+      "items": false
+    },
+    "unknown_harpy_key": {"const": "reject_per_profile"},
+    "secret_file": {"$ref": "#/$defs/secretFilePolicy"},
+    "variables": {
+      "type": "array", "minItems": 188, "maxItems": 188, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/catalogVariable"}
+    }
+  },
+  "$defs": {
+    "profile": {"enum": ["api", "worker", "migrator_deploy", "schema_executor", "cluster_bootstrap", "extension_admin", "cutover_adoption", "cutover_finalization"]},
+    "environment": {"type": "string", "enum": ["development", "production", "staging", "test"]},
+    "listenAddress": {"type": "string", "minLength": 3, "maxLength": 255, "pattern": "^.+:[0-9]{1,5}$", "format": "harpy-listen-address"},
+    "absolutePath": {"type": "string", "minLength": 1, "maxLength": 4096, "format": "harpy-absolute-clean-path"},
+    "secret": {"type": "string", "minLength": 1, "maxLength": 65536, "pattern": "^[^\\x00]+$"},
+    "secretFile": {"$ref": "#/$defs/absolutePath"},
+    "integer": {"type": "string", "pattern": "^(?:0|[1-9][0-9]*)$", "format": "harpy-bounded-base10-integer"},
+    "byteCount": {"type": "string", "pattern": "^[0-9]+(?:(?:[KMGT]i)?B)?$", "format": "harpy-bounded-go-byte-count"},
+    "duration": {"type": "string", "pattern": "^(?:0|[1-9][0-9]*(?:\\.[0-9]+)?)(?:ns|us|ms|s|m|h)(?:(?:[0-9]+(?:\\.[0-9]+)?)(?:ns|us|ms|s|m|h))*$", "format": "harpy-bounded-go-duration"},
+    "boolean": {"type": "string", "enum": ["false", "true"]},
+    "ratio": {"type": "string", "pattern": "^(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)$"},
+    "uuid": {"type": "string", "format": "uuid"},
+    "otlpEndpoint": {"type": "string", "format": "uri", "pattern": "^https?://[^\\s]+$"},
+    "logLevel": {"type": "string", "enum": ["debug", "error", "info", "warn"]},
+    "postgresEndpointKind": {"type": "string", "const": "direct_postgres"},
+    "postgresDSN": {"type": "string", "minLength": 1, "maxLength": 65536, "pattern": "^postgres(?:ql)?://[^\\s]+$", "format": "harpy-direct-postgres-dsn"},
+    "rabbitMQURL": {"type": "string", "minLength": 1, "maxLength": 65536, "pattern": "^amqps?://[^\\s]+$", "format": "uri"},
+    "kmsKeyID": {"type": "string", "minLength": 1, "maxLength": 512, "pattern": "^gcp-kms://projects/(?:[a-z][a-z0-9-]{4,28}[a-z0-9]|[0-9]{6,30})/locations/[a-z0-9][a-z0-9-]{0,62}/keyRings/[A-Za-z0-9_-]{1,63}/cryptoKeys/[A-Za-z0-9_-]{1,63}/cryptoKeyVersions/[1-9][0-9]{0,18}$", "format": "harpy-kms-key-id"},
+    "secretFilePolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "resolved_type", "resolve_symlink_chain", "posix_reject_write_mask", "maximum_bytes", "remove_one_trailing_newline", "reject_empty", "reject_nul", "read_once"],
+      "properties": {
+        "path": {"const": "absolute_clean"}, "resolved_type": {"const": "regular_file"},
+        "resolve_symlink_chain": {"const": true}, "posix_reject_write_mask": {"const": "0022"},
+        "maximum_bytes": {"const": 65536}, "remove_one_trailing_newline": {"const": true},
+        "reject_empty": {"const": true}, "reject_nul": {"const": true}, "read_once": {"const": true}
+      }
+    },
+    "schemeRequires": {
+      "type": "object", "additionalProperties": false, "required": ["http", "https"],
+      "properties": {
+        "http": {"type": "object", "additionalProperties": false, "required": ["HARPY_OTLP_INSECURE"], "properties": {"HARPY_OTLP_INSECURE": {"const": "true"}}},
+        "https": {"type": "object", "additionalProperties": false, "required": ["HARPY_OTLP_INSECURE"], "properties": {"HARPY_OTLP_INSECURE": {"const": "false"}}}
+      }
+    },
+    "catalogVariable": {
+      "type": "object", "additionalProperties": false, "required": ["name", "profiles", "kind"],
+      "properties": {
+        "name": {"type": "string", "anyOf": [
+          {"const": "DEPLOYMENT_MODE"},
+          {"const": "GOMEMLIMIT"},
+          {"pattern": "^HARPY_[A-Z0-9_]+$"}
+        ]},
+        "profiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/profile"}},
+        "kind": {"enum": ["absolute_http_uri", "absolute_path", "boolean", "byte_count", "canonical_cidr_list", "canonical_http_uri", "canonical_origin_json_array", "duration", "enum", "integer", "kms_key_id", "listen_address", "ratio", "secret", "secret_file", "text", "uuid"]},
+        "required": {"type": "boolean"}, "default": {"type": "string"},
+        "values": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "file_variant": {"type": "string", "pattern": "^HARPY_[A-Z0-9_]+_FILE$"},
+        "minimum_bytes": {"type": "integer", "minimum": 1},
+        "maximum_bytes": {"type": "integer", "minimum": 1, "maximum": 65536},
+        "minimum_items": {"type": "integer", "minimum": 1, "maximum": 32},
+        "maximum_items": {"type": "integer", "minimum": 1, "maximum": 32},
+        "separator": {"const": ","},
+        "reject_controls": {"type": "boolean"}, "minimum": {"type": "string"},
+        "maximum": {"type": "string"}, "maximum_ref": {"type": "string", "pattern": "^HARPY_[A-Z0-9_]+$"},
+        "semantic": {"enum": ["postgres_dsn", "rabbitmq_url", "ed25519_signing_key", "rest_query_cursor_keyring_v1", "catalog_package_public_keyring_v1", "iam_access_token_keyring_v1", "iam_hmac_keyring_v1", "iam_password_blocklists_v1", "analytics_dashboard_export_fcart_kek_keyring_v1", "forms_export_fcart_kek_keyring_v1", "forms_import_source_fcart_kek_keyring_v1", "iam_system_export_fcart_kek_keyring_v1", "iam_system_import_source_fcart_kek_keyring_v1", "documents_kek_keyring_v1", "iam_service_principal_uuidv7", "notifications_consumer_keyring_v1", "notifications_kek_keyring_v1"]},
+        "content_schema": {"enum": ["rest-query-cursor-keyring.schema.json", "catalog-package-public-keyring.schema.json", "iam-access-token-keyring.schema.json", "iam-hmac-keyring.schema.json", "iam-password-blocklists.schema.json", "analytics-dashboard-export-fcart-kek-keyring.schema.json", "forms-export-fcart-kek-keyring.schema.json", "forms-import-source-fcart-kek-keyring.schema.json", "iam-system-transfer-fcart-kek-keyring.schema.json", "documents-kek-keyring.schema.json", "notifications-consumer-keyring.schema.json", "notifications-kek-keyring.schema.json"]},
+        "key_purpose": {"enum": ["access_token_v1", "refresh_token_v1", "csrf_v1", "login_directory_v1", "auth_throttle_v1", "session_network_v1", "one_time_token_v1", "recovery_code_v1", "totp_kms_v1", "delivery_kms_v1"]},
+        "path_mode": {"enum": ["read", "write_new"]},
+        "profile_path_modes": {
+          "type": "object", "minProperties": 1,
+          "propertyNames": {"$ref": "#/$defs/profile"},
+          "additionalProperties": {"enum": ["read", "write_new"]}
+        },
+        "protocol": {"const": "otlp_http_protobuf"},
+        "allowed_schemes": {"type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{"const": "http"}, {"const": "https"}], "items": false},
+        "scheme_requires": {"$ref": "#/$defs/schemeRequires"},
+        "https_required_in_environments": {"type": "array", "items": {"$ref": "#/$defs/environment"}, "uniqueItems": true},
+        "required_in_environments": {"type": "array", "items": {"$ref": "#/$defs/environment"}, "uniqueItems": true},
+        "production_value": {"type": "string"}, "different_port_from": {"type": "string", "pattern": "^HARPY_[A-Z0-9_]+$"}
+      },
+      "allOf": [
+        {"if": {"properties": {"kind": {"const": "enum"}}, "required": ["kind"]}, "then": {"required": ["values"]}},
+        {"if": {"properties": {"kind": {"const": "secret"}}, "required": ["kind"]}, "then": {"required": ["file_variant", "minimum_bytes", "maximum_bytes"]}},
+        {"if": {"properties": {"semantic": {"enum": ["rest_query_cursor_keyring_v1", "catalog_package_public_keyring_v1", "iam_access_token_keyring_v1", "iam_hmac_keyring_v1", "iam_password_blocklists_v1", "analytics_dashboard_export_fcart_kek_keyring_v1", "forms_export_fcart_kek_keyring_v1", "forms_import_source_fcart_kek_keyring_v1", "iam_system_export_fcart_kek_keyring_v1", "iam_system_import_source_fcart_kek_keyring_v1", "documents_kek_keyring_v1", "notifications_consumer_keyring_v1", "notifications_kek_keyring_v1"]}}, "required": ["semantic"]}, "then": {"required": ["content_schema"]}},
+        {"if": {"properties": {"semantic": {"const": "iam_access_token_keyring_v1"}}, "required": ["semantic"]}, "then": {"required": ["key_purpose"], "properties": {"key_purpose": {"const": "access_token_v1"}}}},
+        {"if": {"properties": {"semantic": {"const": "iam_hmac_keyring_v1"}}, "required": ["semantic"]}, "then": {"required": ["key_purpose"], "properties": {"key_purpose": {"enum": ["refresh_token_v1", "csrf_v1", "login_directory_v1", "auth_throttle_v1", "session_network_v1", "one_time_token_v1", "recovery_code_v1"]}}}},
+        {"if": {"properties": {"kind": {"const": "kms_key_id"}}, "required": ["kind"]}, "then": {"required": ["key_purpose"], "properties": {"key_purpose": {"enum": ["totp_kms_v1", "delivery_kms_v1"]}}}},
+        {"if": {"properties": {"kind": {"const": "absolute_path"}}, "required": ["kind"]}, "then": {"oneOf": [{"required": ["path_mode"]}, {"required": ["profile_path_modes"]}]}},
+        {"if": {"properties": {"kind": {"enum": ["duration", "integer", "ratio"]}}, "required": ["kind"]}, "then": {"required": ["minimum"], "allOf": [{"anyOf": [{"required": ["maximum"]}, {"required": ["maximum_ref"]}]}, {"anyOf": [{"required": ["default"]}, {"required": ["required"], "properties": {"required": {"const": true}}}]}]}},
+        {"if": {"properties": {"kind": {"const": "byte_count"}}, "required": ["kind"]}, "then": {"required": ["minimum"]}},
+        {"if": {"properties": {"kind": {"const": "absolute_http_uri"}}, "required": ["kind"]}, "then": {"required": ["protocol", "allowed_schemes", "scheme_requires", "https_required_in_environments", "required_in_environments"]}},
+        {"if": {"properties": {"kind": {"const": "canonical_http_uri"}}, "required": ["kind"]}, "then": {"required": ["allowed_schemes", "https_required_in_environments"]}},
+        {"if": {"properties": {"kind": {"const": "canonical_cidr_list"}}, "required": ["kind"]}, "then": {"required": ["default", "maximum_items", "separator"]}},
+        {"if": {"properties": {"kind": {"const": "canonical_origin_json_array"}}, "required": ["kind"]}, "then": {"required": ["minimum_items", "maximum_items", "https_required_in_environments"]}}
+      ]
+    },
+    "runtimeDSNXor": {"oneOf": [
+      {"required": ["HARPY_POSTGRES_DSN"], "not": {"required": ["HARPY_POSTGRES_DSN_FILE"]}},
+      {"required": ["HARPY_POSTGRES_DSN_FILE"], "not": {"required": ["HARPY_POSTGRES_DSN"]}}
+    ]},
+    "cursorKeyringXor": {"oneOf": [
+      {"required": ["HARPY_REST_QUERY_CURSOR_KEYRING"], "not": {"required": ["HARPY_REST_QUERY_CURSOR_KEYRING_FILE"]}},
+      {"required": ["HARPY_REST_QUERY_CURSOR_KEYRING_FILE"], "not": {"required": ["HARPY_REST_QUERY_CURSOR_KEYRING"]}}
+    ]},
+    "catalogPackageKeyringXor": {"oneOf": [
+      {"required": ["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING"], "not": {"required": ["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE"]}},
+      {"required": ["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE"], "not": {"required": ["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING"]}}
+    ]},
+    "bootstrapMaintenanceDSNXor": {"oneOf": [
+      {"required": ["HARPY_BOOTSTRAP_MAINTENANCE_DSN"], "not": {"required": ["HARPY_BOOTSTRAP_MAINTENANCE_DSN_FILE"]}},
+      {"required": ["HARPY_BOOTSTRAP_MAINTENANCE_DSN_FILE"], "not": {"required": ["HARPY_BOOTSTRAP_MAINTENANCE_DSN"]}}
+    ]},
+    "bootstrapTargetDSNXor": {"oneOf": [
+      {"required": ["HARPY_BOOTSTRAP_TARGET_DSN"], "not": {"required": ["HARPY_BOOTSTRAP_TARGET_DSN_FILE"]}},
+      {"required": ["HARPY_BOOTSTRAP_TARGET_DSN_FILE"], "not": {"required": ["HARPY_BOOTSTRAP_TARGET_DSN"]}}
+    ]},
+    "extensionDSNXor": {"oneOf": [
+      {"required": ["HARPY_EXTENSION_ADMIN_POSTGRES_DSN"], "not": {"required": ["HARPY_EXTENSION_ADMIN_POSTGRES_DSN_FILE"]}},
+      {"required": ["HARPY_EXTENSION_ADMIN_POSTGRES_DSN_FILE"], "not": {"required": ["HARPY_EXTENSION_ADMIN_POSTGRES_DSN"]}}
+    ]},
+    "cutoverSourceDSNXor": {"oneOf": [
+      {"required": ["HARPY_CUTOVER_SOURCE_DSN"], "not": {"required": ["HARPY_CUTOVER_SOURCE_DSN_FILE"]}},
+      {"required": ["HARPY_CUTOVER_SOURCE_DSN_FILE"], "not": {"required": ["HARPY_CUTOVER_SOURCE_DSN"]}}
+    ]},
+    "cutoverTargetDSNXor": {"oneOf": [
+      {"required": ["HARPY_CUTOVER_TARGET_DSN"], "not": {"required": ["HARPY_CUTOVER_TARGET_DSN_FILE"]}},
+      {"required": ["HARPY_CUTOVER_TARGET_DSN_FILE"], "not": {"required": ["HARPY_CUTOVER_TARGET_DSN"]}}
+    ]},
+    "cutoverFinalizerDSNXor": {"oneOf": [
+      {"required": ["HARPY_CUTOVER_FINALIZER_DSN"], "not": {"required": ["HARPY_CUTOVER_FINALIZER_DSN_FILE"]}},
+      {"required": ["HARPY_CUTOVER_FINALIZER_DSN_FILE"], "not": {"required": ["HARPY_CUTOVER_FINALIZER_DSN"]}}
+    ]},
+    "signingKeyXor": {"oneOf": [
+      {"required": ["HARPY_ATTESTATION_SIGNING_KEY"], "not": {"required": ["HARPY_ATTESTATION_SIGNING_KEY_FILE"]}},
+      {"required": ["HARPY_ATTESTATION_SIGNING_KEY_FILE"], "not": {"required": ["HARPY_ATTESTATION_SIGNING_KEY"]}}
+    ]},
+    "otlpHeadersXor": {"not": {"required": ["HARPY_OTLP_HEADERS", "HARPY_OTLP_HEADERS_FILE"]}},
+    "otlpRules": {"allOf": [
+      {"if": {"required": ["HARPY_ENVIRONMENT"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"required": ["HARPY_OTLP_ENDPOINT"], "properties": {"HARPY_OTLP_ENDPOINT": {"pattern": "^https://"}, "HARPY_OTLP_INSECURE": {"const": "false"}}}},
+      {"if": {"required": ["HARPY_OTLP_ENDPOINT"], "properties": {"HARPY_OTLP_ENDPOINT": {"pattern": "^http://"}}}, "then": {"required": ["HARPY_OTLP_INSECURE"], "properties": {"HARPY_OTLP_INSECURE": {"const": "true"}}}},
+      {"if": {"required": ["HARPY_OTLP_ENDPOINT"], "properties": {"HARPY_OTLP_ENDPOINT": {"pattern": "^https://"}}}, "then": {"properties": {"HARPY_OTLP_INSECURE": {"const": "false"}}}},
+      {"if": {"anyOf": [{"required": ["HARPY_OTLP_HEADERS"]}, {"required": ["HARPY_OTLP_HEADERS_FILE"]}, {"required": ["HARPY_OTLP_INSECURE"], "properties": {"HARPY_OTLP_INSECURE": {"const": "true"}}}]}, "then": {"required": ["HARPY_OTLP_ENDPOINT"]}}
+    ]}
+  }
+}

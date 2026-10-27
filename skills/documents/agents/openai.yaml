@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documents"
+  short_description: "Build secure document and blob lifecycles"
+  default_prompt: "Use $documents for this backend-v2 document capability."

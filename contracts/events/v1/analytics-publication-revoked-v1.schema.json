@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/analytics-publication-revoked-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["release_id", "resource_kind", "resource_version_id", "audience", "generation"],
+  "properties": {
+    "release_id": {"type": "string", "format": "uuid"},
+    "resource_kind": {"enum": ["query", "dashboard"]},
+    "resource_version_id": {"type": "string", "format": "uuid"},
+    "audience": {"enum": ["tenant", "public", "capability"]},
+    "generation": {"type": "integer", "minimum": 1}
+  }
+}

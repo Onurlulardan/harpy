@@ -1,0 +1,70 @@
+services:
+  volume-catalog:
+    image: harpy/backend-v2-local:dev
+    profiles: [local-volume-catalog]
+    networks: [local]
+    volumes:
+      - postgres-data:/catalog/postgres:ro
+      - rabbitmq-data:/catalog/rabbitmq:ro
+      - minio-data:/catalog/minio:ro
+      - mailpit-data:/catalog/mailpit:ro
+      - clamav-data:/catalog/clamav:ro
+      - local-secret-postgres:/catalog/secret-postgres:ro
+      - local-secret-rabbitmq:/catalog/secret-rabbitmq:ro
+      - local-secret-s3-init:/catalog/secret-s3-init:ro
+      - local-secret-kms:/catalog/secret-kms:ro
+      - local-secret-mailpit:/catalog/secret-mailpit:ro
+      - local-secret-infra-check:/catalog/secret-infra-check:ro
+      - local-secret-local-release:/catalog/secret-local-release:ro
+      - local-secret-migrator:/catalog/secret-migrator:ro
+      - local-secret-schema:/catalog/secret-schema:ro
+      - local-secret-operator:/catalog/secret-operator:ro
+      - local-secret-api:/catalog/secret-api:ro
+      - local-secret-worker:/catalog/secret-worker:ro
+      - local-secret-mcp:/catalog/secret-mcp:ro
+      - local-secret-ai:/catalog/secret-ai:ro
+      - foundation-release-state:/catalog/foundation-release:ro
+      - release-state:/catalog/release:ro
+      - forms-export-spool:/catalog/forms-export:ro
+      - analytics-dashboard-export-spool:/catalog/analytics-dashboard-export:ro
+      - forms-import-staging:/catalog/forms-import:ro
+      - iam-transfer-spool:/catalog/iam-transfer:ro
+      - ai-system-knowledge:/catalog/ai-system-knowledge:ro
+      - local-installation-state:/catalog/installation:ro
+      - local-dev-authority:/catalog/dev-authority:ro
+      - local-recovery-signing:/catalog/recovery-signing:ro
+
+networks:
+  local:
+    name: ${COMPOSE_PROJECT_NAME}-network
+
+volumes:
+  postgres-data:
+  rabbitmq-data:
+  minio-data:
+  mailpit-data:
+  clamav-data:
+  local-secret-postgres:
+  local-secret-rabbitmq:
+  local-secret-s3-init:
+  local-secret-kms:
+  local-secret-mailpit:
+  local-secret-infra-check:
+  local-secret-local-release:
+  local-secret-migrator:
+  local-secret-schema:
+  local-secret-operator:
+  local-secret-api:
+  local-secret-worker:
+  local-secret-mcp:
+  local-secret-ai:
+  foundation-release-state:
+  release-state:
+  forms-export-spool:
+  analytics-dashboard-export-spool:
+  forms-import-staging:
+  iam-transfer-spool:
+  ai-system-knowledge:
+  local-installation-state:
+  local-dev-authority:
+  local-recovery-signing:

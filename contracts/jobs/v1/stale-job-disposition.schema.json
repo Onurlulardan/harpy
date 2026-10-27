@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/jobs/v1/stale-job-disposition.schema.json",
+  "title": "Harpy Stale Job Disposition v1",
+  "x-maxDocumentUtf8Bytes": 131072,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "evidence_root_id", "disposition_id", "source_job_id",
+    "decision", "result_job_id", "kind", "effect_class", "maximum_attempts",
+    "priority", "old_authority", "current_authority",
+    "source_payload", "result_payload", "source_run_at", "result_run_at",
+    "reason", "ticket_reference",
+    "actor_id", "causation_id", "occurred_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "stale-job-disposition.v1"},
+    "evidence_root_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "disposition_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "source_job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "decision": {"enum": ["adopt", "cancel"]},
+    "result_job_id": {"$ref": "job-defs.schema.json#/$defs/nullableUuid"},
+    "kind": {"$ref": "job-defs.schema.json#/$defs/kind"},
+    "effect_class": {"enum": ["database_transactional", "external"]},
+    "maximum_attempts": {"type": "integer", "minimum": 1, "maximum": 25},
+    "priority": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "old_authority": {"$ref": "job-defs.schema.json#/$defs/authority"},
+    "current_authority": {
+      "allOf": [
+        {"$ref": "job-defs.schema.json#/$defs/authority"},
+        {"properties": {"writer_origin": {"const": "v2"}}}
+      ]
+    },
+    "source_payload": {"$ref": "#/$defs/payloadIdentity"},
+    "result_payload": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/payloadIdentity"}]},
+    "source_run_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"},
+    "result_run_at": {
+      "anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/timestamp"}]
+    },
+    "reason": {"$ref": "job-defs.schema.json#/$defs/reason"},
+    "ticket_reference": {"$ref": "job-defs.schema.json#/$defs/ticket"},
+    "actor_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "causation_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+    "occurred_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"}
+  },
+  "$defs": {
+    "payloadIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "sha256", "reference", "dedupe_key", "effect_idempotency_key"],
+      "properties": {
+        "revision": {"type": "integer", "minimum": 1},
+        "sha256": {"$ref": "job-defs.schema.json#/$defs/sha256"},
+        "reference": {"$ref": "job-defs.schema.json#/$defs/reference"},
+        "dedupe_key": {"$ref": "job-defs.schema.json#/$defs/key"},
+        "effect_idempotency_key": {
+          "anyOf": [{"type": "null"}, {"$ref": "job-defs.schema.json#/$defs/key"}]
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "decision": {"const": "adopt"},
+        "result_job_id": {"$ref": "job-defs.schema.json#/$defs/uuid"},
+        "result_payload": {"$ref": "#/$defs/payloadIdentity"},
+        "result_run_at": {"$ref": "job-defs.schema.json#/$defs/timestamp"}
+      }
+    },
+    {
+      "properties": {
+        "decision": {"const": "cancel"},
+        "result_job_id": {"type": "null"},
+        "result_payload": {"type": "null"},
+        "result_run_at": {"type": "null"}
+      }
+    }
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"effect_class": {"const": "database_transactional"}}},
+      "then": {
+        "properties": {
+          "source_payload": {"properties": {"effect_idempotency_key": {"type": "null"}}},
+          "result_payload": {
+            "anyOf": [
+              {"type": "null"},
+              {"properties": {"effect_idempotency_key": {"type": "null"}}}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"effect_class": {"const": "external"}}},
+      "then": {
+        "properties": {
+          "source_payload": {
+            "properties": {"effect_idempotency_key": {"$ref": "job-defs.schema.json#/$defs/key"}}
+          },
+          "result_payload": {
+            "anyOf": [
+              {"type": "null"},
+              {"properties": {
+                "effect_idempotency_key": {"$ref": "job-defs.schema.json#/$defs/key"}
+              }}
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

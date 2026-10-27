@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "JsonObject": {"type": "object", "maxProperties": 500},
+    "Name": {"type": "string", "minLength": 1, "maxLength": 100},
+    "Widget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["widget_id", "query_version_id", "position", "parameters", "output"],
+      "properties": {
+        "widget_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "query_version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "position": {"type": "integer", "minimum": 0, "maximum": 29},
+        "parameters": {"$ref": "#/$defs/JsonObject"},
+        "output": {"$ref": "#/$defs/JsonObject"}
+      }
+    },
+    "CreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "visibility", "layout", "widgets"],
+      "properties": {
+        "name": {"$ref": "#/$defs/Name"},
+        "visibility": {"enum": ["private", "tenant"]},
+        "layout": {"$ref": "#/$defs/JsonObject"},
+        "widgets": {"type": "array", "maxItems": 30, "items": {"$ref": "#/$defs/Widget"}}
+      }
+    },
+    "UpdateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_root_revision", "expected_version_revision", "name", "visibility", "layout", "widgets"],
+      "properties": {
+        "expected_root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "expected_version_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "name": {"$ref": "#/$defs/Name"},
+        "visibility": {"enum": ["private", "tenant"]},
+        "layout": {"$ref": "#/$defs/JsonObject"},
+        "widgets": {"type": "array", "maxItems": 30, "items": {"$ref": "#/$defs/Widget"}}
+      }
+    },
+    "DeleteRequest": {"type": "object", "additionalProperties": false, "required": ["expected_root_revision"], "properties": {"expected_root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}}},
+    "PublishRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["draft_version_id", "expected_root_revision", "expected_draft_revision"],
+      "properties": {
+        "draft_version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "expected_root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "expected_draft_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}
+      }
+    },
+    "GrantRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principal_id", "principal_kind", "level", "expected_revision"],
+      "properties": {
+        "principal_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUID"},
+        "principal_kind": {"enum": ["user", "role"]},
+        "level": {"enum": ["read", "edit", "publish"]},
+        "expected_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}
+      }
+    },
+    "RevokeRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principal_id", "principal_kind", "expected_revision"],
+      "properties": {
+        "principal_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUID"},
+        "principal_kind": {"enum": ["user", "role"]},
+        "expected_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}
+      }
+    },
+    "Dashboard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dashboard_id", "version_id", "version_number", "root_revision", "version_revision", "lifecycle", "visibility", "published", "name", "layout", "layout_sha256", "manifest_sha256", "widgets", "created_at", "updated_at"],
+      "properties": {
+        "dashboard_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"},
+        "version_number": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "root_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "version_revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"},
+        "lifecycle": {"enum": ["active", "retired"]},
+        "visibility": {"enum": ["private", "tenant"]},
+        "published": {"type": "boolean"},
+        "name": {"$ref": "#/$defs/Name"},
+        "layout": {"$ref": "#/$defs/JsonObject"},
+        "layout_sha256": {"$ref": "analytics-common-v2.schemas.json#/$defs/SHA256"},
+        "manifest_sha256": {"$ref": "analytics-common-v2.schemas.json#/$defs/SHA256"},
+        "widgets": {"type": "array", "maxItems": 30, "items": {"$ref": "#/$defs/Widget"}},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Envelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/$defs/Dashboard"}}},
+    "PageEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "after"], "properties": {"items": {"type": "array", "items": {"$ref": "#/$defs/Dashboard"}}, "after": {"anyOf": [{"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"}, {"type": "null"}]}}}}},
+    "ACL": {"type": "object", "additionalProperties": false, "required": ["dashboard_id", "principal_id", "principal_kind", "level", "revision"], "properties": {"dashboard_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUIDv7"}, "principal_id": {"$ref": "analytics-common-v2.schemas.json#/$defs/UUID"}, "principal_kind": {"enum": ["user", "role"]}, "level": {"enum": ["read", "edit", "publish"]}, "revision": {"$ref": "analytics-common-v2.schemas.json#/$defs/PositiveRevision"}}},
+    "ACLEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/$defs/ACL"}}},
+    "RevokedEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["revoked"], "properties": {"revoked": {"const": true}}}}},
+    "DefaultEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["default"], "properties": {"default": {"const": true}}}}}
+  }
+}

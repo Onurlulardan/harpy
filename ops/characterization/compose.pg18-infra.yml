@@ -1,0 +1,92 @@
+services:
+  pgbouncer:
+    image: ${V1_ORACLE_PGBOUNCER_IMAGE:?V1_ORACLE_PGBOUNCER_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: oracle
+      DB_NAME: harpy_oracle
+      LISTEN_PORT: "6432"
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: "2000"
+      DEFAULT_POOL_SIZE: "80"
+      MIN_POOL_SIZE: "10"
+      RESERVE_POOL_SIZE: "20"
+      RESERVE_POOL_TIMEOUT: "3"
+      SERVER_IDLE_TIMEOUT: "300"
+      IGNORE_STARTUP_PARAMETERS: extra_float_digits,search_path
+      AUTH_TYPE: scram-sha-256
+      ADMIN_USERS: oracle
+    depends_on:
+      pg18-analyze:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 6432 -U oracle"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks: [oracle]
+    restart: "no"
+
+  redis:
+    image: ${V1_ORACLE_REDIS_IMAGE:?V1_ORACLE_REDIS_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - exec redis-server --appendonly no --save '' --requirepass "$$REDIS_PASSWORD"
+    depends_on:
+      database-ready:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "REDISCLI_AUTH=$$REDIS_PASSWORD redis-cli ping | grep -q PONG"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    tmpfs: [/data]
+    networks: [oracle]
+    restart: "no"
+
+  rabbitmq:
+    image: ${COMPOSE_PROJECT_NAME:?COMPOSE_PROJECT_NAME is required}-rabbitmq:${V1_ORACLE_SOURCE_VERSION:?V1_ORACLE_SOURCE_VERSION is required}
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbitmq
+      args:
+        V1_RABBITMQ_BASE_IMAGE: ${V1_ORACLE_RABBITMQ_BASE_IMAGE:?V1_ORACLE_RABBITMQ_BASE_IMAGE is required}
+        V1_DELAYED_PLUGIN_URL: ${V1_ORACLE_DELAYED_PLUGIN_URL:?V1_ORACLE_DELAYED_PLUGIN_URL is required}
+        V1_DELAYED_PLUGIN_SHA256: ${V1_ORACLE_DELAYED_PLUGIN_SHA256:?V1_ORACLE_DELAYED_PLUGIN_SHA256 is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      RABBITMQ_DEFAULT_USER: oracle
+      RABBITMQ_DEFAULT_VHOST: oracle
+    depends_on:
+      database-ready:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+    tmpfs: [/var/lib/rabbitmq]
+    networks: [oracle]
+    restart: "no"
+
+  minio:
+    image: ${V1_ORACLE_MINIO_IMAGE:?V1_ORACLE_MINIO_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      MINIO_ROOT_USER: oracleadmin
+      MINIO_SERVER_URL: http://minio:9000
+    command: ["server", "/data", "--console-address", ":9001"]
+    depends_on:
+      database-ready:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+    tmpfs: [/data]
+    networks: [oracle]
+    restart: "no"

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/catalogcomponentowner",
+      "layer": "application",
+      "resource": "catalogcomponentowner",
+      "operation": "finalize",
+      "source": "core/internal/modules/analytics/application/catalogcomponentowner/finalize_purge_v2.go",
+      "test": "core/internal/modules/analytics/application/catalogcomponentowner/finalize_purge_v2_test.go",
+      "authority_id": "analytics.catalog_owner.finalize"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/catalogcomponentowner",
+      "layer": "application",
+      "resource": "catalogcomponentowner",
+      "operation": "restore",
+      "source": "core/internal/modules/analytics/application/catalogcomponentowner/restore_component_v2.go",
+      "test": "core/internal/modules/analytics/application/catalogcomponentowner/restore_component_v2_test.go",
+      "authority_id": "analytics.catalog_owner.restore"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/catalogcomponentowner",
+      "layer": "application",
+      "resource": "catalogcomponentowner",
+      "operation": "retire",
+      "source": "core/internal/modules/analytics/application/catalogcomponentowner/retire_component_v2.go",
+      "test": "core/internal/modules/analytics/application/catalogcomponentowner/retire_component_v2_test.go",
+      "authority_id": "analytics.catalog_owner.retire"
+    }
+  ]
+}

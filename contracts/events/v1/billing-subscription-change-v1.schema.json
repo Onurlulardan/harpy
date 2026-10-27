@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/billing-subscription-change-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "subscription_id",
+    "provider_account_id",
+    "offering_version_id",
+    "price_version_id",
+    "currency",
+    "state",
+    "period_start",
+    "period_end",
+    "trial_ends_at",
+    "grace_ends_at",
+    "cancel_at_period_end",
+    "cancel_at",
+    "revision",
+    "change_kind"
+  ],
+  "properties": {
+    "subscription_id": {"type": "string", "format": "uuid"},
+    "provider_account_id": {"type": "string", "format": "uuid"},
+    "offering_version_id": {"type": "string", "format": "uuid"},
+    "price_version_id": {"type": "string", "format": "uuid"},
+    "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+    "state": {"enum": [
+      "pending",
+      "trialing",
+      "active",
+      "past_due",
+      "paused",
+      "cancelled",
+      "expired"
+    ]},
+    "period_start": {"type": ["string", "null"], "format": "date-time"},
+    "period_end": {"type": ["string", "null"], "format": "date-time"},
+    "trial_ends_at": {"type": ["string", "null"], "format": "date-time"},
+    "grace_ends_at": {"type": ["string", "null"], "format": "date-time"},
+    "cancel_at_period_end": {"type": "boolean"},
+    "cancel_at": {"type": ["string", "null"], "format": "date-time"},
+    "revision": {"type": "integer", "minimum": 1},
+    "change_kind": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._]{2,127}$"
+    }
+  }
+}
+

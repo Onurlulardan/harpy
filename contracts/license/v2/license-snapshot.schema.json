@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/license/v2/license-snapshot.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "kid", "algorithm", "canonicalization", "payload_sha256", "payload", "signature"],
+  "properties": {
+    "schema": {"const": "harpy-license-envelope.v2"},
+    "kid": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "algorithm": {"const": "Ed25519"},
+    "canonicalization": {"const": "RFC8785"},
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "signature": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"},
+    "payload": {"$ref": "#/$defs/payload"}
+  },
+  "$defs": {
+    "instant": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "issuer", "audience", "product", "license_id", "licensee_organization_id", "environment_id", "deployment_mode", "delivery_kind", "sequence", "status", "issued_at", "not_before", "refresh_after", "grant_valid_until", "grace_until", "commercial_expires_at", "features", "limits", "release_channel"],
+      "properties": {
+        "schema": {"const": "harpy-license-snapshot.v2"},
+        "issuer": {"type": "string", "minLength": 1, "maxLength": 256},
+        "audience": {"const": "harpy-billing"},
+        "product": {"const": "harpy"},
+        "license_id": {"$ref": "#/$defs/uuid"},
+        "licensee_organization_id": {"$ref": "#/$defs/uuid"},
+        "environment_id": {"$ref": "#/$defs/uuid"},
+        "deployment_mode": {"const": "onpremise"},
+        "delivery_kind": {"enum": ["connected", "airgap", "development"]},
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+        "status": {"enum": ["active", "suspended", "revoked", "expired"]},
+        "issued_at": {"$ref": "#/$defs/instant"},
+        "not_before": {"$ref": "#/$defs/instant"},
+        "refresh_after": {"$ref": "#/$defs/instant"},
+        "grant_valid_until": {"$ref": "#/$defs/instant"},
+        "grace_until": {"$ref": "#/$defs/instant"},
+        "commercial_expires_at": {"$ref": "#/$defs/instant"},
+        "release_channel": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+        "features": {
+          "type": "object", "additionalProperties": false,
+          "required": ["formBuilder", "workflowBuilder", "apiBuilder", "dashboardBuilder", "aiAssistant"],
+          "properties": {
+            "formBuilder": {"type": "boolean"}, "workflowBuilder": {"type": "boolean"},
+            "apiBuilder": {"type": "boolean"}, "dashboardBuilder": {"type": "boolean"},
+            "aiAssistant": {"type": "boolean"}
+          }
+        },
+        "limits": {
+          "type": "object", "additionalProperties": false,
+          "required": ["maxUsers", "maxForms", "maxWorkflows", "maxApiEndpoints", "maxDashboards", "maxTenants"],
+          "properties": {
+            "maxUsers": {"$ref": "#/$defs/limit"}, "maxForms": {"$ref": "#/$defs/limit"},
+            "maxWorkflows": {"$ref": "#/$defs/limit"}, "maxApiEndpoints": {"$ref": "#/$defs/limit"},
+            "maxDashboards": {"$ref": "#/$defs/limit"}, "maxTenants": {"$ref": "#/$defs/limit"}
+          }
+        }
+      }
+    },
+    "limit": {"type": "integer", "minimum": 0, "maximum": 9007199254740991}
+  }
+}

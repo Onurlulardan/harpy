@@ -1,0 +1,22 @@
+# Env. go.sum stays tracked.
+.env
+deploy/**/.env
+
+# Secrets written by setup.
+secrets
+**/secrets
+
+# Local ops state.
+ops/local/state/
+
+# Binaries.
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Dist.
+dist/

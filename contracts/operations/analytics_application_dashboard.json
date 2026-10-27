@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/application/dashboard/create.go",
+      "test": "core/internal/modules/analytics/application/dashboard/create_test.go",
+      "authority_id": "analytics.dashboard.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "delete",
+      "source": "core/internal/modules/analytics/application/dashboard/delete.go",
+      "test": "core/internal/modules/analytics/application/dashboard/delete_test.go",
+      "authority_id": "analytics.dashboard.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/application/dashboard/get.go",
+      "test": "core/internal/modules/analytics/application/dashboard/get_test.go",
+      "authority_id": "analytics.dashboard.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "grant",
+      "source": "core/internal/modules/analytics/application/dashboard/grant_acl.go",
+      "test": "core/internal/modules/analytics/application/dashboard/grant_acl_test.go",
+      "authority_id": "analytics.dashboard.grant"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/application/dashboard/list.go",
+      "test": "core/internal/modules/analytics/application/dashboard/list_test.go",
+      "authority_id": "analytics.dashboard.list"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "publish",
+      "source": "core/internal/modules/analytics/application/dashboard/publish.go",
+      "test": "core/internal/modules/analytics/application/dashboard/publish_test.go",
+      "authority_id": "analytics.dashboard.publish"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "read",
+      "source": "core/internal/modules/analytics/application/dashboard/read_default.go",
+      "test": "core/internal/modules/analytics/application/dashboard/read_default_test.go",
+      "authority_id": "analytics.dashboard.read"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "revoke",
+      "source": "core/internal/modules/analytics/application/dashboard/revoke_acl.go",
+      "test": "core/internal/modules/analytics/application/dashboard/revoke_acl_test.go",
+      "authority_id": "analytics.dashboard.revoke"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "set",
+      "source": "core/internal/modules/analytics/application/dashboard/set_default.go",
+      "test": "core/internal/modules/analytics/application/dashboard/set_default_test.go",
+      "authority_id": "analytics.dashboard.set"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard",
+      "layer": "application",
+      "resource": "dashboard",
+      "operation": "update",
+      "source": "core/internal/modules/analytics/application/dashboard/update.go",
+      "test": "core/internal/modules/analytics/application/dashboard/update_test.go",
+      "authority_id": "analytics.dashboard.update"
+    }
+  ]
+}

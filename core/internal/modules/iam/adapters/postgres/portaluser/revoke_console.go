@@ -1,0 +1,26 @@
+package portaluserpostgres
+
+import (
+	"context"
+
+	portaluser "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/portaluser"
+)
+
+func (storage *store) RevokeConsole(
+	ctx context.Context, scope tenantScope, command portaluser.RevisionCommand,
+) (portaluser.MutationResult, error) {
+	if !usable(ctx, scope, commandMode) || !command.Evidence.Valid() ||
+		scope.ActorID() != command.Evidence.ActorID {
+		return portaluser.MutationResult{}, portaluser.ErrInvalid
+	}
+	bound, err := storage.bind(scope)
+	if err != nil {
+		return portaluser.MutationResult{}, err
+	}
+	e := command.Evidence
+	return scanMutation(bound.database.QueryRow(ctx, revokeConsoleSQL,
+		scope.TenantID(), e.OperationID, e.RequestSHA256[:], command.UserID,
+		command.ExpectedRevision, e.ActorID, e.PermissionID,
+		e.ExpectedTokenVersion, e.ExpectedAuthorizationVersion,
+	))
+}

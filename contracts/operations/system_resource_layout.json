@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "create",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/create.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/create_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "delete",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/delete.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/delete_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "get",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/get.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/get_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "list",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/list.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/list_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "publish",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/publish.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/publish_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/publish.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "resolve",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/resolve.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/resolve_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/resolve.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/adapters/postgres",
+      "layer": "adapters/postgres", "resource": "system_resource_layout", "operation": "update",
+      "source": "core/internal/modules/system_resource_layout/adapters/postgres/update.go",
+      "test": "core/internal/modules/system_resource_layout/adapters/postgres/update_test.go",
+      "application_operation": "core/internal/modules/system_resource_layout/application/update.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "create",
+      "source": "core/internal/modules/system_resource_layout/application/create.go",
+      "test": "core/internal/modules/system_resource_layout/application/create_test.go",
+      "authority_id": "system_resource_layout.create"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "delete",
+      "source": "core/internal/modules/system_resource_layout/application/delete.go",
+      "test": "core/internal/modules/system_resource_layout/application/delete_test.go",
+      "authority_id": "system_resource_layout.delete"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "get",
+      "source": "core/internal/modules/system_resource_layout/application/get.go",
+      "test": "core/internal/modules/system_resource_layout/application/get_test.go",
+      "authority_id": "system_resource_layout.get"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "list",
+      "source": "core/internal/modules/system_resource_layout/application/list.go",
+      "test": "core/internal/modules/system_resource_layout/application/list_test.go",
+      "authority_id": "system_resource_layout.list"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "publish",
+      "source": "core/internal/modules/system_resource_layout/application/publish.go",
+      "test": "core/internal/modules/system_resource_layout/application/publish_test.go",
+      "authority_id": "system_resource_layout.publish"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "resolve",
+      "source": "core/internal/modules/system_resource_layout/application/resolve.go",
+      "test": "core/internal/modules/system_resource_layout/application/resolve_test.go",
+      "authority_id": "system_resource_layout.resolve"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout/application",
+      "layer": "application", "resource": "system_resource_layout", "operation": "update",
+      "source": "core/internal/modules/system_resource_layout/application/update.go",
+      "test": "core/internal/modules/system_resource_layout/application/update_test.go",
+      "authority_id": "system_resource_layout.update"
+    }
+  ]
+}

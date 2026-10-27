@@ -1,0 +1,4 @@
+interface:
+  display_name: "Impact Analysis"
+  short_description: "Trace cross-module contracts before changing code"
+  default_prompt: "Use $impact-analysis to map this backend-v2 change before implementation."

@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "authorities": [
+    {
+      "id": "cutover.full_rollout.record",
+      "owner": "cutover",
+      "scope_source": "credential_target",
+      "required_groups": [
+        "analytics", "billing+forms", "catalog", "documents",
+        "iam_system_resources", "notifications", "work", "workflow"
+      ],
+      "ordered_domains": [
+        "analytics", "billing", "catalog", "documents", "forms", "iam",
+        "notifications", "system_resource_layout", "work", "workflow"
+      ],
+      "participants": [
+        "analytics", "billing", "catalog", "documents", "forms", "iam",
+        "notifications", "system_resource_layout", "work", "workflow"
+      ]
+    }
+  ]
+}

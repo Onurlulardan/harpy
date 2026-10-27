@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/signed-receipt-defs.schema.json",
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ociDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "systemIdentifier": {"type": "string", "pattern": "^[1-9][0-9]{0,19}$"},
+    "utcTimestamp": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "databaseName": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+    "databaseOrigin": {"enum": ["fresh", "v1_adopted"]},
+    "databaseOwner": {"const": "harpy_owner"},
+    "databaseEncoding": {"const": "UTF8"},
+    "databaseLocaleProvider": {"const": "libc"},
+    "databaseCollation": {"const": "en_US.utf8"},
+    "databaseCType": {"const": "en_US.utf8"},
+    "dataChecksums": {"const": true},
+    "roleName": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,62}$"},
+    "extensionOwner": {
+      "oneOf": [
+        {"const": "harpy_extension_admin"},
+        {"const": "harpy_legacy_extension_owner"},
+        {"allOf": [
+          {"$ref": "#/$defs/roleName"},
+          {"not": {"pattern": "^harpy_"}}
+        ]}
+      ]
+    },
+    "signature": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "key_id", "value"],
+      "properties": {
+        "algorithm": {"const": "Ed25519"},
+        "key_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+        "value": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"}
+      }
+    }
+  }
+}

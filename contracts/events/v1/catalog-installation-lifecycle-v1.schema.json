@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/catalog-installation-lifecycle-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_id", "installation_id", "operation_id", "package_version",
+    "state", "reference_epoch", "plan_sha256"
+  ],
+  "properties": {
+    "package_id": {"type": "string", "format": "uuid"},
+    "installation_id": {"type": "string", "format": "uuid"},
+    "operation_id": {"type": "string", "format": "uuid"},
+    "package_version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$"},
+    "state": {"enum": ["ACTIVE", "DISABLED", "RETIRED", "PURGED"]},
+    "reference_epoch": {"type": "integer", "minimum": 1},
+    "plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

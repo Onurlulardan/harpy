@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/binary-schema-contract.schema.json",
+  "title": "Harpy Binary Database Compatibility Contract v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "component", "runtime_generation", "minimum_database_generation",
+    "migration_manifest_sha256", "extension_manifest_sha256", "postgres_image_digest"
+  ],
+  "properties": {
+    "contract_version": {"const": "database-schema-contract.v1"},
+    "component": {"const": "core"},
+    "runtime_generation": {"type": "integer", "minimum": 1},
+    "minimum_database_generation": {"type": "integer", "minimum": 1},
+    "migration_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "extension_manifest_sha256": {"$ref": "signed-receipt-defs.schema.json#/$defs/sha256"},
+    "postgres_image_digest": {"const": "sha256:c8a919765f2ef63681329fa21021b830cd4d79d1165bdca730dd016014e4da84"}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harpy://events/iam-permission-request-transitioned-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authorization_clock", "command", "from_state", "to_state", "revision"],
+  "properties": {
+    "authorization_clock": {"type": "integer", "minimum": 0},
+    "command": {
+      "enum": [
+        "iam.permission_request.create",
+        "iam.permission_request.review",
+        "iam.permission_request.cancel",
+        "iam.permission_request.expire"
+      ]
+    },
+    "from_state": {"enum": ["", "PENDING", "IN_REVIEW"]},
+    "to_state": {"enum": ["PENDING", "IN_REVIEW", "CANCELLED", "EXPIRED"]},
+    "revision": {"type": "integer", "minimum": 1}
+  }
+}

@@ -1,0 +1,4 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/customerprovisioning","layer":"application","resource":"customerprovisioning","operation":"create","source":"core/internal/modules/tenancy/application/customerprovisioning/create.go","test":"core/internal/modules/tenancy/application/customerprovisioning/create_test.go","authority_id":"tenancy.customer_provisioning.create"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/customerprovisioning","layer":"application","resource":"customerprovisioning","operation":"read","source":"core/internal/modules/tenancy/application/customerprovisioning/read.go","test":"core/internal/modules/tenancy/application/customerprovisioning/read_test.go","authority_id":"tenancy.customer_provisioning.read"}
+]}

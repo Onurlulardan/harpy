@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "create",
+      "source": "core/internal/modules/analytics/adapters/http/query/create.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/create_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/create.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "delete",
+      "source": "core/internal/modules/analytics/adapters/http/query/delete.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/delete_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/delete.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/adapters/http/query/execute.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/execute_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/execute.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "get",
+      "source": "core/internal/modules/analytics/adapters/http/query/get.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/get_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/get.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "list",
+      "source": "core/internal/modules/analytics/adapters/http/query/list.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/list_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/list.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "publish",
+      "source": "core/internal/modules/analytics/adapters/http/query/publish.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/publish_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/publish.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "read",
+      "source": "core/internal/modules/analytics/adapters/http/query/read_published.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/read_published_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/read_published.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "revalidate",
+      "source": "core/internal/modules/analytics/adapters/http/query/revalidate.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/revalidate_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/revalidate.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/query",
+      "layer": "adapters/http",
+      "resource": "query",
+      "operation": "update",
+      "source": "core/internal/modules/analytics/adapters/http/query/update.go",
+      "test": "core/internal/modules/analytics/adapters/http/query/update_test.go",
+      "application_operation": "core/internal/modules/analytics/application/query/update.go"
+    },
+    {
+      "package": "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/queryexecution",
+      "layer": "adapters/http",
+      "resource": "queryexecution",
+      "operation": "execute",
+      "source": "core/internal/modules/analytics/adapters/http/queryexecution/execute.go",
+      "test": "core/internal/modules/analytics/adapters/http/queryexecution/execute_test.go",
+      "application_operation": "core/internal/modules/analytics/application/queryexecution/execute.go"
+    }
+  ]
+}

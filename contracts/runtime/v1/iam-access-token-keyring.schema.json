@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/runtime/v1/iam-access-token-keyring.schema.json",
+  "title": "Harpy IAM Access Token Keyring v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "active", "retired_public"],
+  "properties": {
+    "version": {"const": 1},
+    "active": {"$ref": "#/$defs/active"},
+    "retired_public": {
+      "type": "array", "maxItems": 8,
+      "items": {"$ref": "#/$defs/retired"}
+    }
+  },
+  "x-harpy-reject-duplicate-members": true,
+  "x-harpy-canonical-oldest-first": true,
+  "x-harpy-runtime-validates-rotation-and-uniqueness": true,
+  "$defs": {
+    "kid": {
+      "type": "string", "minLength": 16, "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_-]+$", "contentEncoding": "base64url-no-pad"
+    },
+    "material": {
+      "type": "string", "minLength": 43, "maxLength": 43,
+      "pattern": "^[A-Za-z0-9_-]{43}$", "contentEncoding": "base64url-no-pad",
+      "x-harpy-decoded-bytes": 32
+    },
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "active": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kid", "seed", "activated_at", "sign_until"],
+      "properties": {
+        "kid": {"$ref": "#/$defs/kid"}, "seed": {"$ref": "#/$defs/material"},
+        "activated_at": {"$ref": "#/$defs/timestamp"},
+        "sign_until": {"$ref": "#/$defs/timestamp"}
+      }
+    },
+    "retired": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kid", "public_key", "sign_until", "publish_until"],
+      "properties": {
+        "kid": {"$ref": "#/$defs/kid"}, "public_key": {"$ref": "#/$defs/material"},
+        "sign_until": {"$ref": "#/$defs/timestamp"},
+        "publish_until": {"$ref": "#/$defs/timestamp"}
+      }
+    }
+  }
+}

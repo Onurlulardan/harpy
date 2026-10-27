@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "UUIDv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "UUID": {
+      "type": "string",
+      "format": "uuid",
+      "not": {"const": "00000000-0000-0000-0000-000000000000"}
+    },
+    "SHA256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "PositiveRevision": {"type": "integer", "minimum": 1},
+    "IdempotencyKey": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"
+    },
+    "TenantIDParameter": {
+      "name": "X-Tenant-ID",
+      "in": "header",
+      "required": false,
+      "schema": {"$ref": "#/$defs/UUIDv7"}
+    },
+    "TenantSlugParameter": {
+      "name": "X-Tenant-Slug",
+      "in": "header",
+      "required": false,
+      "schema": {"type": "string", "minLength": 1, "maxLength": 100}
+    },
+    "LegacyTenantIDParameter": {
+      "name": "X-Tenant-ID",
+      "in": "header",
+      "required": false,
+      "schema": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$"}
+    },
+    "LegacyTenantSlugParameter": {
+      "name": "X-Tenant-Slug",
+      "in": "header",
+      "required": false,
+      "schema": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$"}
+    },
+    "IdempotencyKeyParameter": {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": true,
+      "schema": {"$ref": "#/$defs/IdempotencyKey"}
+    },
+    "QueryIDParameter": {"name": "query_id", "in": "path", "required": true, "schema": {"$ref": "#/$defs/UUIDv7"}},
+    "DashboardIDParameter": {"name": "dashboard_id", "in": "path", "required": true, "schema": {"$ref": "#/$defs/UUIDv7"}},
+    "ReleaseIDParameter": {"name": "release_id", "in": "path", "required": true, "schema": {"$ref": "#/$defs/UUIDv7"}},
+    "PublicIDParameter": {
+      "name": "public_id",
+      "in": "path",
+      "required": true,
+      "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{22}$"}
+    },
+    "SlugParameter": {
+      "name": "slug",
+      "in": "path",
+      "required": true,
+      "schema": {"type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+    },
+    "LegacySlugParameter": {
+      "name": "slug",
+      "in": "path",
+      "required": true,
+      "schema": {"type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[A-Za-z0-9][A-Za-z0-9._~-]{0,99}$"}
+    },
+    "SurfaceParameter": {
+      "name": "surface",
+      "in": "path",
+      "required": true,
+      "schema": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-z][a-z0-9._-]{0,63}$"}
+    },
+    "LimitParameter": {"name": "limit", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50}},
+    "AfterParameter": {"name": "after", "in": "query", "required": false, "schema": {"$ref": "#/$defs/UUIDv7"}},
+    "CapabilityAuthScheme": {"type": "http", "scheme": "bearer", "bearerFormat": "opaque-base64url-256-bit"},
+    "ErrorResponse": {
+      "description": "Fail-closed Analytics error",
+      "content": {"application/json": {"schema": {"$ref": "core-api-v1.components.json#/schemas/ErrorEnvelope"}}}
+    }
+  }
+}

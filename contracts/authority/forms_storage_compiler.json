@@ -1,0 +1,3 @@
+{"version":2,"authorities":[
+  {"id":"forms.storage_compiler.compile","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]}
+]}

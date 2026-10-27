@@ -1,0 +1,54 @@
+package dashboardexport
+
+import _ "embed"
+
+var (
+	//go:embed sql/tenant/submit.sql
+	submitSQL string
+	//go:embed sql/tenant/get.sql
+	getSQL string
+	//go:embed sql/tenant/delete.sql
+	deleteSQL string
+	//go:embed sql/tenant/content.sql
+	contentSQL string
+	//go:embed sql/tenant/worker_claim.sql
+	workerClaimSQL string
+	//go:embed sql/tenant/worker_effect.sql
+	workerEffectSQL string
+	//go:embed sql/tenant/worker_complete.sql
+	workerCompleteSQL string
+	//go:embed sql/tenant/worker_restart.sql
+	workerRestartSQL string
+	//go:embed sql/tenant/worker_unknown.sql
+	workerUnknownSQL string
+	//go:embed sql/tenant/worker_fail.sql
+	workerFailSQL string
+	//go:embed sql/tenant/worker_delete_claim.sql
+	workerDeleteClaimSQL string
+	//go:embed sql/tenant/worker_delete_complete.sql
+	workerDeleteCompleteSQL string
+	//go:embed sql/tenant/worker_checkpoint.sql
+	workerCheckpointSQL string
+	//go:embed sql/tenant/worker_active_spool.sql
+	workerActiveSpoolSQL string
+	//go:embed sql/tenant/worker_expiry_control.sql
+	workerExpiryControlSQL string
+	//go:embed sql/tenant/worker_unknown_cleanup_claim.sql
+	workerUnknownCleanupClaimSQL string
+	//go:embed sql/tenant/worker_unknown_cleanup_checkpoint.sql
+	workerUnknownCleanupCheckpointSQL string
+	//go:embed sql/tenant/worker_unknown_cleanup_defer.sql
+	workerUnknownCleanupDeferSQL string
+	//go:embed sql/tenant/worker_unknown_cleanup_resolve.sql
+	workerUnknownCleanupResolveSQL string
+	//go:embed sql/tenant/worker_expired_finalize.sql
+	workerExpiredFinalizeSQL string
+	//go:embed sql/tenant/worker_maintenance_unknown_claim.sql
+	workerMaintenanceUnknownClaimSQL string
+	//go:embed sql/tenant/worker_maintenance_unknown_checkpoint.sql
+	workerMaintenanceUnknownCheckpointSQL string
+	//go:embed sql/tenant/worker_maintenance_unknown_defer.sql
+	workerMaintenanceUnknownDeferSQL string
+	//go:embed sql/tenant/worker_maintenance_unknown_resolve.sql
+	workerMaintenanceUnknownResolveSQL string
+)

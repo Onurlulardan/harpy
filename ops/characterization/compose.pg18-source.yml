@@ -1,0 +1,6 @@
+include:
+  - path: compose.preflight.yml
+  - path: compose.pg18-volumes.yml
+  - path: compose.pg18-source-db.yml
+  - path: compose.init.yml
+  - path: compose.pg18-backup.yml

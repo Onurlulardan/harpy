@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/recoverysigning/v1/recovery-trust-bundle.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [{
+    "if": {"properties": {"generation": {"const": 1}}},
+    "then": {"not": {"required": ["retired"]}},
+    "else": {"required": ["retired"]}
+  }],
+  "required": ["schema", "environment_id", "generation", "algorithm", "generated_at", "keys"],
+  "properties": {
+    "schema": {"const": "recovery-trust-bundle.v1"},
+    "environment_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "generation": {"type": "integer", "minimum": 1},
+    "algorithm": {"const": "Ed25519"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "keys": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["purpose", "key_id", "algorithm", "status", "public_key", "not_before", "sign_until", "verify_until"],
+        "properties": {
+          "purpose": {"enum": ["recovery_manifest_signer", "recovery_control_signer", "restore_receipt_signer"]},
+          "key_id": {"type": "string", "minLength": 20, "maxLength": 96},
+          "algorithm": {"const": "Ed25519"},
+          "status": {"const": "active"},
+          "public_key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+          "not_before": {"type": "string", "format": "date-time"},
+          "sign_until": {"type": "null"},
+          "verify_until": {"type": "null"}
+        }
+      }
+    },
+    "retired": {
+      "type": "array", "minItems": 3, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["purpose", "key_id", "algorithm", "status", "public_key", "not_before", "sign_until", "verify_until"],
+        "properties": {
+          "purpose": {"enum": ["recovery_manifest_signer", "recovery_control_signer", "restore_receipt_signer"]},
+          "key_id": {"type": "string", "minLength": 20, "maxLength": 96},
+          "algorithm": {"const": "Ed25519"},
+          "status": {"const": "verify_only"},
+          "public_key": {"type": "string", "pattern": "^[A-Za-z0-9_-]{43}$"},
+          "not_before": {"type": "string", "format": "date-time"},
+          "sign_until": {"type": "string", "format": "date-time"},
+          "verify_until": {"type": "null"}
+        }
+      }
+    }
+  }
+}

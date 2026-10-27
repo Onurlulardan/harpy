@@ -1,0 +1,126 @@
+version: "3"
+
+vars:
+  COMPOSE: >-
+    docker compose --env-file .env.local
+    -f ops/local/compose.infra.yml
+    -f ops/local/compose.tools.yml
+    -f ops/local/compose.runtime.yml
+    -f ops/local/compose.recovery.yml -f ops/local/compose.inventory.yml
+    -f ops/local/compose.lifecycle.yml
+  HANDOFF: "{{.ROOT_DIR}}/ops/local/state/recovery/handoff"
+  REACTIVATION_HANDOFF: "{{.HANDOFF}}/post-restore-reactivation-handoff.v1.json"
+  FRONTEND_BASE_URL: '{{default "http://localhost:5173" .LOCAL_PUBLIC_BASE_URL}}'
+
+tasks:
+  storage:
+    desc: Initialize the isolated local-only recovery Object Lock store
+    cmds:
+      - task: :local:prepare
+      - >-
+        {{.COMPOSE}} up -d --wait --wait-timeout 180
+        minio s3-owner recovery-minio recovery-s3-owner
+      - "{{.COMPOSE}} run --rm s3-init"
+      - "{{.COMPOSE}} run --rm recovery-s3-init"
+      - "{{.COMPOSE}} run --rm --no-deps recovery-infra-check"
+
+  backup:
+    desc: Start the long-running local database backup executor
+    cmds:
+      - task: storage
+      - >-
+        {{.COMPOSE}} up -d --wait --wait-timeout 180
+        database-backup-executor
+
+  restore:
+    desc: Restore a readable target from an exact signed restore plan
+    requires:
+      vars: [RESTORE_PLAN_FILE]
+    cmds:
+      - >-
+        go run ./ops/local/cmd/recovery-state stage-plan
+        -source "{{.RESTORE_PLAN_FILE}}" -target-directory "{{.HANDOFF}}"
+      - task: storage
+      - "{{.COMPOSE}} run --rm local-recovery-state reset-operation"
+      - "{{.COMPOSE}} rm -sf database-restore"
+      - "{{.COMPOSE}} up -d --force-recreate database-restore"
+      - "{{.COMPOSE}} run --rm local-recovery-state wait-ready"
+      - task: :local:frontend:stop
+      - "{{.COMPOSE}} stop core-api core-worker"
+      - "{{.COMPOSE}} run --rm local-recovery-state ack-drain"
+      - "{{.COMPOSE}} wait database-restore"
+      - "{{.COMPOSE}} run --rm local-recovery-state verify-completed"
+      - >-
+        {{.COMPOSE}} run --rm -T restore-identity-reconcile |
+        go run ./ops/local/cmd/recovery-state record-reactivation
+        -target-directory "{{.HANDOFF}}"
+        -frontend-base-url "{{.FRONTEND_BASE_URL}}"
+      - "{{.COMPOSE}} run --rm restore-license-reconcile"
+      - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api"
+      - task: :local:frontend
+      - >-
+        go run ./ops/local/cmd/recovery-state show-reactivation
+        -source "{{.REACTIVATION_HANDOFF}}"
+
+  rehydrate:
+    desc: Rehydrate the same environment into an empty local target
+    requires:
+      vars: [RECOVERY_SET_ID, RECOVERY_KIT_FILE]
+    cmds:
+      - >-
+        go run ./ops/local/cmd/recovery-state stage-kit
+        -source "{{.RECOVERY_KIT_FILE}}" -target-directory "{{.HANDOFF}}"
+      - task: storage
+      - "{{.COMPOSE}} run --rm local-recovery-state reset-operation"
+      - >-
+        {{.COMPOSE}} run --rm local-recovery-state prepare-empty
+        -recovery-set-id "{{.RECOVERY_SET_ID}}"
+      - task: :local:infra
+      - task: :local:bootstrap
+      - task: :local:migrate
+      - "{{.COMPOSE}} rm -sf database-rehydrate"
+      - "{{.COMPOSE}} up -d --force-recreate database-rehydrate"
+      - "{{.COMPOSE}} run --rm local-recovery-state wait-ready"
+      - task: :local:frontend:stop
+      - "{{.COMPOSE}} stop core-api core-worker"
+      - "{{.COMPOSE}} run --rm local-recovery-state ack-drain"
+      - "{{.COMPOSE}} wait database-rehydrate"
+      - "{{.COMPOSE}} run --rm local-recovery-state verify-completed"
+      - >-
+        {{.COMPOSE}} run --rm -T restore-identity-reconcile |
+        go run ./ops/local/cmd/recovery-state record-reactivation
+        -target-directory "{{.HANDOFF}}"
+        -frontend-base-url "{{.FRONTEND_BASE_URL}}"
+      - "{{.COMPOSE}} run --rm restore-license-reconcile"
+      - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api"
+      - task: :local:frontend
+      - >-
+        go run ./ops/local/cmd/recovery-state show-reactivation
+        -source "{{.REACTIVATION_HANDOFF}}"
+
+  resume:
+    desc: Resume worker and frontend after restricted owner reactivation
+    cmds:
+      - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api core-worker"
+      - task: :local:frontend
+
+  status:
+    desc: Show local recovery storage, executor and restore one-shots
+    cmds:
+      - >-
+        {{.COMPOSE}} ps recovery-minio recovery-s3-owner
+        database-backup-executor database-restore database-rehydrate
+
+  logs:
+    desc: Follow local backup and restore executor logs
+    cmds:
+      - >-
+        {{.COMPOSE}} logs --tail=200 --follow
+        database-backup-executor database-restore database-rehydrate
+
+  check:
+    desc: Validate the merged recovery model and recovery helper tests
+    cmds:
+      - task: :local:init
+      - "{{.COMPOSE}} config --quiet"
+      - go test ./ops/local/cmd/recovery-state

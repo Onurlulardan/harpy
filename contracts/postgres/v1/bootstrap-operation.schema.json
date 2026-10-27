@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harpy.io/contracts/postgres/v1/bootstrap-operation.schema.json",
+  "title": "Harpy PostgreSQL Bootstrap Operation v1",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "contract_version", "database_origin", "database_name", "input_hashes", "steps"
+  ],
+  "properties": {
+    "contract_version": {"const": "postgres-bootstrap-operation.v1"},
+    "database_origin": {
+      "$ref": "postgres-artifact-defs.schema.json#/$defs/databaseOrigin"
+    },
+    "database_name": {"$ref": "postgres-artifact-defs.schema.json#/$defs/databaseName"},
+    "input_hashes": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "roles_manifest_sha256", "privileges_manifest_sha256", "ownership_manifest_sha256"
+      ],
+      "properties": {
+        "roles_manifest_sha256": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/sha256"
+        },
+        "privileges_manifest_sha256": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/sha256"
+        },
+        "ownership_manifest_sha256": {
+          "$ref": "postgres-artifact-defs.schema.json#/$defs/sha256"
+        }
+      }
+    },
+    "steps": {"type": "array"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "database_origin": {"const": "fresh"},
+        "steps": {"$ref": "#/$defs/freshSteps"}
+      }
+    },
+    {
+      "properties": {
+        "database_origin": {"const": "v1_adopted"},
+        "steps": {"$ref": "#/$defs/adoptedSteps"}
+      }
+    }
+  ],
+  "$defs": {
+    "verifyArtifacts": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_artifact_hashes"}
+    }},
+    "verifyLease": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_credential_lease"}
+    }},
+    "verifyExternalAuthorityOwner": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_external_cutover_authority_owner"}
+    }},
+    "createDatabase": {"$ref": "#/$defs/autocommitStep", "properties": {
+      "step_id": {"const": "create_database"}
+    }},
+    "verifyAdoptedDatabase": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_adopted_database"}
+    }},
+    "reconcileRoles": {"$ref": "#/$defs/ddlStep", "properties": {
+      "step_id": {"const": "reconcile_roles"}
+    }},
+    "reconcileMemberships": {"$ref": "#/$defs/ddlStep", "properties": {
+      "step_id": {"const": "reconcile_memberships"}
+    }},
+    "reconcilePrivileges": {"$ref": "#/$defs/ddlStep", "properties": {
+      "step_id": {"const": "reconcile_privileges"}
+    }},
+    "verifyOwnership": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_ownership_inventory"}
+    }},
+    "verifyCatalog": {"$ref": "#/$defs/readStep", "properties": {
+      "step_id": {"const": "verify_final_catalog"}
+    }},
+    "publishReceipt": {"$ref": "#/$defs/receiptStep", "properties": {
+      "step_id": {"const": "publish_bootstrap_receipt"}
+    }},
+    "readStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "read_only_preflight"}}},
+    "autocommitStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "autocommit_ddl"}}},
+    "ddlStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "transactional_ddl"}}},
+    "receiptStep": {"$ref": "postgres-operation-defs.schema.json#/$defs/operationStep",
+      "properties": {"transaction_class": {"const": "receipt_publication"}}},
+    "freshSteps": {
+      "type": "array", "minItems": 10, "maxItems": 10, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/verifyArtifacts"}, {"$ref": "#/$defs/verifyLease"},
+        {"$ref": "#/$defs/verifyExternalAuthorityOwner"},
+        {"$ref": "#/$defs/createDatabase"}, {"$ref": "#/$defs/reconcileRoles"},
+        {"$ref": "#/$defs/reconcileMemberships"},
+        {"$ref": "#/$defs/reconcilePrivileges"}, {"$ref": "#/$defs/verifyOwnership"},
+        {"$ref": "#/$defs/verifyCatalog"}, {"$ref": "#/$defs/publishReceipt"}
+      ]
+    },
+    "adoptedSteps": {
+      "type": "array", "minItems": 10, "maxItems": 10, "items": false,
+      "prefixItems": [
+        {"$ref": "#/$defs/verifyArtifacts"}, {"$ref": "#/$defs/verifyLease"},
+        {"$ref": "#/$defs/verifyExternalAuthorityOwner"},
+        {"$ref": "#/$defs/verifyAdoptedDatabase"}, {"$ref": "#/$defs/reconcileRoles"},
+        {"$ref": "#/$defs/reconcileMemberships"},
+        {"$ref": "#/$defs/reconcilePrivileges"}, {"$ref": "#/$defs/verifyOwnership"},
+        {"$ref": "#/$defs/verifyCatalog"}, {"$ref": "#/$defs/publishReceipt"}
+      ]
+    }
+  }
+}

@@ -1,0 +1,83 @@
+services:
+  postgres:
+    image: ${PG18_GATE_POSTGRES_IMAGE:?PG18_GATE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      PGDATA: /var/lib/postgresql/18/docker
+    entrypoint: ["/bin/bash", "/oracle/pg18-target-entrypoint.sh"]
+    command: ["postgres", "-c", "max_connections=200"]
+    depends_on:
+      oracle-preflight:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oracle -d harpy_oracle -h 127.0.0.1"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    shm_size: 256mb
+    volumes:
+      - pg18-target:/var/lib/postgresql/18/docker
+      - type: bind
+        source: ./pg18-target-entrypoint.sh
+        target: /oracle/pg18-target-entrypoint.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks: [oracle]
+    restart: "no"
+
+  database-ready:
+    image: ${PG18_GATE_POSTGRES_IMAGE:?PG18_GATE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    environment:
+      PG_READY_HOST: postgres
+      PG_READY_USER: oracle
+      PG_READY_DATABASE: harpy_oracle
+      PG_READY_SERVER_VERSION_NUM: "180004"
+      PG_READY_DATA_CHECKSUMS: "on"
+      PG_READY_DATABASE_OWNER: oracle
+      PG_READY_ENCODING: UTF8
+      PG_READY_LOCALE_PROVIDER: c
+      PG_READY_COLLATION: en_US.utf8
+      PG_READY_CTYPE: en_US.utf8
+      PG_READY_VECTOR_VERSION: 0.8.3
+      PG_READY_VECTOR_SCHEMA: public
+      PG_READY_REQUIRE_SOURCE_IDENTITY: "true"
+      PG_READY_DIFFERENT_SYSTEM_IDENTIFIER: ${PG18_GATE_SOURCE_SYSTEM_IDENTIFIER:-}
+      PG_READY_EXPECTED_DATABASE_OID: ${PG18_GATE_SOURCE_DATABASE_OID:-}
+    entrypoint: ["/bin/bash", "/oracle/database-ready.sh"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./database-ready.sh
+        target: /oracle/database-ready.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks: [oracle]
+    restart: "no"
+
+  pg18-analyze:
+    image: ${PG18_GATE_POSTGRES_IMAGE:?PG18_GATE_POSTGRES_IMAGE is required}
+    env_file: ${V1_ORACLE_ENV_FILE:-.env}
+    entrypoint: ["/bin/bash", "-ec"]
+    command:
+      - >-
+        PGPASSWORD="$$POSTGRES_PASSWORD"
+        vacuumdb --host=postgres --port=5432 --username=oracle
+        --all --analyze-in-stages --missing-stats-only &&
+        PGPASSWORD="$$POSTGRES_PASSWORD"
+        vacuumdb --host=postgres --port=5432 --username=oracle
+        --all --analyze-only
+    depends_on:
+      database-ready:
+        condition: service_completed_successfully
+    networks: [oracle]
+    restart: "no"
+
+networks:
+  oracle:
+    driver: bridge
+    internal: true

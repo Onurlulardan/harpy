@@ -1,0 +1,4 @@
+INSERT INTO platform.schema_contracts VALUES(
+'core',1,1,$1,
+'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+'ready','78000000-0000-4700-8700-000000000003',1,pg_catalog.now())

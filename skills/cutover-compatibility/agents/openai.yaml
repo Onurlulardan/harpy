@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cutover Compatibility"
+  short_description: "Migrate V1 authority without dual writers"
+  default_prompt: "Use $cutover-compatibility for this backend-v2 migration edge."

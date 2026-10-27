@@ -1,0 +1,150 @@
+{
+  "schemas": {
+    "Money": {
+      "type": "object", "additionalProperties": false,
+      "required": ["minor_units", "currency", "currency_registry_version"],
+      "properties": {
+        "minor_units": {"type": "integer", "format": "int64", "minimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "currency_registry_version": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "PriceInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["cadence", "minor_units", "currency", "currency_registry_version"],
+      "properties": {
+        "cadence": {"enum": ["monthly", "annual"]},
+        "minor_units": {"type": "integer", "format": "int64", "minimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "currency_registry_version": {"type": "integer", "format": "int64", "minimum": 1}
+      }
+    },
+    "EntitlementInput": {
+      "type": "object", "additionalProperties": false, "required": ["key", "kind", "unlimited"],
+      "properties": {
+        "key": {"type": "string", "minLength": 1, "maxLength": 128},
+        "kind": {"enum": ["boolean", "integer"]},
+        "boolean": {"type": "boolean"},
+        "integer": {"type": "integer", "format": "int64", "minimum": 0},
+        "unlimited": {"type": "boolean"}
+      }
+    },
+    "OfferingVersionInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "public", "available", "base", "trial_days", "grace_days", "effective_start", "prices", "entitlements"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "public": {"type": "boolean"}, "available": {"type": "boolean"},
+        "base": {"type": "boolean"},
+        "trial_days": {"type": "integer", "minimum": 0}, "grace_days": {"type": "integer", "minimum": 0},
+        "effective_start": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "effective_end": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "prices": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"$ref": "#/schemas/PriceInput"}},
+        "entitlements": {"type": "array", "maxItems": 256, "items": {"$ref": "#/schemas/EntitlementInput"}}
+      },
+      "x-harpy-interval": "half-open [effective_start,effective_end)"
+    },
+    "OfferingVersionMutation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_revision", "name", "public", "available", "base", "trial_days", "grace_days", "effective_start", "prices", "entitlements"],
+      "properties": {
+        "expected_revision": {"$ref": "billing-common-v2.schemas.json#/schemas/PositiveRevision"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "public": {"type": "boolean"}, "available": {"type": "boolean"},
+        "base": {"type": "boolean"},
+        "trial_days": {"type": "integer", "minimum": 0}, "grace_days": {"type": "integer", "minimum": 0},
+        "effective_start": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "effective_end": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "prices": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"$ref": "#/schemas/PriceInput"}},
+        "entitlements": {"type": "array", "maxItems": 256, "items": {"$ref": "#/schemas/EntitlementInput"}}
+      },
+      "x-harpy-interval": "half-open [effective_start,effective_end)"
+    },
+    "CreateOffering": {
+      "type": "object", "additionalProperties": false, "required": ["key", "initial_version"],
+      "properties": {"key": {"type": "string", "minLength": 1, "maxLength": 127}, "initial_version": {"$ref": "#/schemas/OfferingVersionInput"}}
+    },
+    "DiscountVersionInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "kind", "duration", "priority", "all_offerings", "offering_version_ids", "valid_start"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 64},
+        "kind": {"enum": ["basis_points", "fixed"]},
+        "basis_points": {"type": "integer", "format": "int64", "minimum": 1, "maximum": 10000},
+        "fixed_amount": {"$ref": "#/schemas/Money"},
+        "duration": {"enum": ["once", "repeating", "forever"]},
+        "duration_cycles": {"type": "integer", "minimum": 1},
+        "priority": {"type": "integer"},
+        "all_offerings": {"type": "boolean"},
+        "offering_version_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}},
+        "valid_start": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "valid_end": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "global_use_limit": {"type": "integer", "format": "int64", "minimum": 1},
+        "per_tenant_use_limit": {"type": "integer", "format": "int64", "minimum": 1}
+      },
+      "oneOf": [
+        {"properties": {"all_offerings": {"const": true}, "offering_version_ids": {"maxItems": 0}}},
+        {"properties": {"all_offerings": {"const": false}, "offering_version_ids": {"minItems": 1}}}
+      ],
+      "x-harpy-interval": "half-open [valid_start,valid_end)",
+      "x-harpy-applicability": "exactly one: all_offerings=true and IDs empty; or false and 1..256 unique UUIDv7 IDs"
+    },
+    "DiscountVersionMutation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_revision", "code", "kind", "duration", "priority", "all_offerings", "offering_version_ids", "valid_start"],
+      "properties": {
+        "expected_revision": {"$ref": "billing-common-v2.schemas.json#/schemas/PositiveRevision"},
+        "code": {"type": "string", "minLength": 1, "maxLength": 64},
+        "kind": {"enum": ["basis_points", "fixed"]},
+        "basis_points": {"type": "integer", "format": "int64", "minimum": 1, "maximum": 10000},
+        "fixed_amount": {"$ref": "#/schemas/Money"},
+        "duration": {"enum": ["once", "repeating", "forever"]},
+        "duration_cycles": {"type": "integer", "minimum": 1},
+        "priority": {"type": "integer"},
+        "all_offerings": {"type": "boolean"},
+        "offering_version_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}},
+        "valid_start": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "valid_end": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "global_use_limit": {"type": "integer", "format": "int64", "minimum": 1},
+        "per_tenant_use_limit": {"type": "integer", "format": "int64", "minimum": 1}
+      },
+      "oneOf": [
+        {"properties": {"all_offerings": {"const": true}, "offering_version_ids": {"maxItems": 0}}},
+        {"properties": {"all_offerings": {"const": false}, "offering_version_ids": {"minItems": 1}}}
+      ]
+    },
+    "CreateDiscount": {"type": "object", "additionalProperties": false, "required": ["initial_version"], "properties": {"initial_version": {"$ref": "#/schemas/DiscountVersionInput"}}},
+    "CampaignVersionInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "banner_text", "priority", "starts_at", "discount_version_ids"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "banner_text": {"type": "string", "maxLength": 512}, "priority": {"type": "integer"},
+        "starts_at": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "ends_at": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "discount_version_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "format": "uuid"}}
+      },
+      "x-harpy-interval": "half-open [starts_at,ends_at)"
+    },
+    "CampaignVersionMutation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_revision", "name", "banner_text", "priority", "starts_at", "discount_version_ids"],
+      "properties": {
+        "expected_revision": {"$ref": "billing-common-v2.schemas.json#/schemas/PositiveRevision"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "banner_text": {"type": "string", "maxLength": 512}, "priority": {"type": "integer"},
+        "starts_at": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "ends_at": {"$ref": "billing-common-v2.schemas.json#/schemas/UTCMicrosecond"},
+        "discount_version_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "format": "uuid"}}
+      }
+    },
+    "CreateCampaign": {
+      "type": "object", "additionalProperties": false, "required": ["key", "initial_version"],
+      "properties": {"key": {"type": "string", "minLength": 1, "maxLength": 127}, "initial_version": {"$ref": "#/schemas/CampaignVersionInput"}}
+    },
+    "Retire": {
+      "type": "object", "additionalProperties": false, "required": ["expected_revision", "reason"],
+      "properties": {"expected_revision": {"$ref": "billing-common-v2.schemas.json#/schemas/PositiveRevision"}, "reason": {"type": "string", "minLength": 1, "maxLength": 512}}
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{"version":1,"operations":[
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/offering","layer":"application","resource":"offering","operation":"create","source":"core/internal/modules/billing/application/offering/create.go","test":"core/internal/modules/billing/application/offering/create_test.go","authority_id":"billing.offering.create"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/offering","layer":"application","resource":"offering","operation":"publish","source":"core/internal/modules/billing/application/offering/publish.go","test":"core/internal/modules/billing/application/offering/publish_test.go","authority_id":"billing.offering.version.create"},
+  {"package":"github.com/Onurlulardan/harpy/core/internal/modules/billing/application/offering","layer":"application","resource":"offering","operation":"retire","source":"core/internal/modules/billing/application/offering/retire.go","test":"core/internal/modules/billing/application/offering/retire_test.go","authority_id":"billing.offering.retire"}
+]}

@@ -1,0 +1,80 @@
+package recordkernel
+
+const RegistryContractVersion = "forms-field-registry.v1"
+
+type TypeID string
+type Role string
+type ValueProfile string
+type StorageLayout string
+type StorageType string
+type StorageFeature string
+type QueryType string
+type Gate string
+type Operator string
+type AggregateFunction string
+type CostClass string
+type BudgetDimension string
+
+const (
+	TypeText            TypeID = "text"
+	TypeInteger         TypeID = "integer"
+	TypeDecimal         TypeID = "decimal"
+	TypeBoolean         TypeID = "boolean"
+	TypeDate            TypeID = "date"
+	TypeTimestamp       TypeID = "timestamp"
+	TypeUUID            TypeID = "uuid"
+	TypeEnum            TypeID = "enum"
+	TypeRelation        TypeID = "relation"
+	TypeTextList        TypeID = "text_list"
+	TypeUUIDList        TypeID = "uuid_list"
+	TypeJSON            TypeID = "json"
+	TypeTime            TypeID = "time"
+	TypeDocumentRef     TypeID = "document_ref"
+	TypeDocumentRefList TypeID = "document_ref_list"
+	TypeEnumList        TypeID = "enum_list"
+)
+
+const (
+	RoleStored      Role = "stored"
+	RoleRelation    Role = "relation"
+	RoleCalculation Role = "calculation"
+)
+
+const (
+	ValueTextNFCV1                 ValueProfile = "text_nfc_v1"
+	ValueIntegerBase10V1           ValueProfile = "integer_base10_v1"
+	ValueDecimalBase10V1           ValueProfile = "decimal_base10_v1"
+	ValueBooleanV1                 ValueProfile = "boolean_v1"
+	ValueDateISO8601V1             ValueProfile = "date_iso8601_v1"
+	ValueTimestampUTCMicrosecondV1 ValueProfile = "timestamp_utc_microsecond_v1"
+	ValueUUIDRFC4122LowerV1        ValueProfile = "uuid_rfc4122_lower_v1"
+	ValueEnumCodeV1                ValueProfile = "enum_code_v1"
+	ValueRelationUUIDV1            ValueProfile = "relation_uuid_v1"
+	ValueTextListNFCV1             ValueProfile = "text_list_nfc_v1"
+	ValueUUIDListV1                ValueProfile = "uuid_list_v1"
+	ValueJSONRFC8785V1             ValueProfile = "json_rfc8785_v1"
+	ValueTimeMicrosecondV1         ValueProfile = "time_microsecond_v1"
+	ValueDocumentRefUUIDV1         ValueProfile = "document_ref_uuid_v1"
+	ValueDocumentRefListV1         ValueProfile = "document_ref_list_v1"
+	ValueEnumListCodesV1           ValueProfile = "enum_list_codes_v1"
+)
+
+type BudgetLimits struct {
+	DefinitionBytes            uint64
+	ActiveFields               uint64
+	RelationFields             uint64
+	CalculationFields          uint64
+	EnumOptionsPerField        uint64
+	ValidationRules            uint64
+	CalculationASTDepth        uint64
+	CalculationASTNodes        uint64
+	CalculationTotalASTNodes   uint64
+	DDLIRSteps                 uint64
+	PhysicalColumns            uint64
+	PhysicalIndexes            uint64
+	TenantFormTables           uint64
+	TenantFormIndexes          uint64
+	RecordInputBytes           uint64
+	RelationTargetsPerMutation uint64
+	CalculationInstructions    uint64
+}

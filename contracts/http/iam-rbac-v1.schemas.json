@@ -1,0 +1,83 @@
+{
+  "schemas": {
+    "UUID": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "Key": {"type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[a-z][a-z0-9]*([-_][a-z0-9]+)*(\\.[a-z][a-z0-9]*([-_][a-z0-9]+)*)*$"},
+    "Target": {"enum": ["USER", "ROLE", "ORGANIZATION"]},
+    "State": {"enum": ["active", "retired"]},
+    "CatalogCreate": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 255}, "slug": {"$ref": "#/schemas/Key"}, "description": {"type": "string", "maxLength": 2000}}
+    },
+    "CatalogUpdate": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 255}, "slug": {"$ref": "#/schemas/Key"}, "description": {"type": "string", "maxLength": 2000}}
+    },
+    "Resource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "slug", "description", "owner_domain", "resource_kind", "is_system", "state", "revision"],
+      "properties": {"id": {"$ref": "#/schemas/UUID"}, "name": {"type": "string"}, "slug": {"$ref": "#/schemas/Key"}, "description": {"type": "string"}, "owner_domain": {"type": "string"}, "resource_kind": {"type": "string"}, "is_system": {"type": "boolean"}, "state": {"$ref": "#/schemas/State"}, "revision": {"type": "integer", "format": "int64", "minimum": 1}}
+    },
+    "Action": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "slug", "description", "is_system", "state", "revision"],
+      "properties": {"id": {"$ref": "#/schemas/UUID"}, "name": {"type": "string"}, "slug": {"$ref": "#/schemas/Key"}, "description": {"type": "string"}, "is_system": {"type": "boolean"}, "state": {"$ref": "#/schemas/State"}, "revision": {"type": "integer", "format": "int64", "minimum": 1}}
+    },
+    "PermissionCreate": {
+      "type": "object", "additionalProperties": false, "required": ["resource_id", "target", "action_ids"],
+      "properties": {"resource_id": {"$ref": "#/schemas/UUID"}, "target": {"$ref": "#/schemas/Target"}, "user_id": {"$ref": "#/schemas/UUID"}, "role_id": {"$ref": "#/schemas/UUID"}, "organization_id": {"$ref": "#/schemas/UUID"}, "action_ids": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {"$ref": "#/schemas/UUID"}}},
+      "allOf": [{"if": {"properties": {"target": {"const": "USER"}}}, "then": {"required": ["user_id"]}}, {"if": {"properties": {"target": {"const": "ROLE"}}}, "then": {"required": ["role_id"]}}, {"if": {"properties": {"target": {"const": "ORGANIZATION"}}}, "then": {"required": ["organization_id"]}}]
+    },
+    "PermissionUpdate": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {"resource_id": {"$ref": "#/schemas/UUID"}, "target": {"$ref": "#/schemas/Target"}, "user_id": {"$ref": "#/schemas/UUID"}, "role_id": {"$ref": "#/schemas/UUID"}, "organization_id": {"$ref": "#/schemas/UUID"}, "action_ids": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {"$ref": "#/schemas/UUID"}}}
+    },
+    "Permission": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "target", "resource_id", "resource", "actions", "state", "revision"],
+      "properties": {"id": {"$ref": "#/schemas/UUID"}, "target": {"$ref": "#/schemas/Target"}, "resource_id": {"$ref": "#/schemas/UUID"}, "user_id": {"$ref": "#/schemas/UUID"}, "role_id": {"$ref": "#/schemas/UUID"}, "organization_id": {"$ref": "#/schemas/UUID"}, "resource": {"$ref": "#/schemas/Resource"}, "actions": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"$ref": "#/schemas/Action"}}, "state": {"$ref": "#/schemas/State"}, "revision": {"type": "integer", "format": "int64", "minimum": 1}}
+    },
+    "Check": {"type": "object", "additionalProperties": false, "required": ["resource_slug", "action_slug"], "properties": {"resource_slug": {"$ref": "#/schemas/Key"}, "action_slug": {"$ref": "#/schemas/Key"}}},
+    "BatchCheck": {"type": "object", "additionalProperties": false, "required": ["checks"], "properties": {"checks": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"$ref": "#/schemas/Check"}}}},
+    "Decision": {"type": "object", "additionalProperties": false, "required": ["allowed", "reason", "authorization_clock", "authorization_version"], "properties": {"allowed": {"type": "boolean"}, "reason": {"type": "string"}, "authorization_clock": {"type": "integer", "format": "int64", "minimum": 0}, "authorization_version": {"type": "integer", "format": "int64", "minimum": 0}}},
+    "BatchDecision": {"type": "object", "additionalProperties": false, "required": ["results"], "properties": {"results": {"type": "object", "additionalProperties": {"type": "boolean"}}}},
+    "Effective": {"type": "object", "additionalProperties": false, "required": ["permission_id", "match_kind", "resource_slug", "action_slug", "source", "source_id"], "properties": {"permission_id": {"$ref": "#/schemas/UUID"}, "match_kind": {"enum": ["exact", "resource_all_actions", "tenant_all"]}, "resource_id": {"$ref": "#/schemas/UUID"}, "resource_slug": {"type": "string"}, "action_id": {"$ref": "#/schemas/UUID"}, "action_slug": {"type": "string"}, "source": {"$ref": "#/schemas/Target"}, "source_id": {"$ref": "#/schemas/UUID"}}},
+    "Pagination": {"type": "object", "additionalProperties": false, "required": ["has_more"], "properties": {"has_more": {"type": "boolean"}, "next_after_id": {"$ref": "#/schemas/UUID"}}},
+    "ResourceEnvelope": {"$ref": "#/schemas/EnvelopeResource"},
+    "EnvelopeResource": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/Resource"}}},
+    "EnvelopeAction": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/Action"}}},
+    "EnvelopePermission": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/Permission"}}},
+    "EnvelopeDecision": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/Decision"}}},
+    "EnvelopeBatchDecision": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"$ref": "#/schemas/BatchDecision"}}},
+    "ResourcePage": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "pagination"], "properties": {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Resource"}}, "pagination": {"$ref": "#/schemas/Pagination"}}}}},
+    "ActionPage": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "pagination"], "properties": {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Action"}}, "pagination": {"$ref": "#/schemas/Pagination"}}}}},
+    "PermissionPage": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "pagination"], "properties": {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Permission"}}, "pagination": {"$ref": "#/schemas/Pagination"}}}}},
+    "EffectivePage": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["items", "pagination"], "properties": {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/schemas/Effective"}}, "pagination": {"$ref": "#/schemas/Pagination"}}}}},
+    "DeleteEnvelope": {"type": "object", "additionalProperties": false, "required": ["success", "data"], "properties": {"success": {"const": true}, "data": {"type": "object", "additionalProperties": false, "required": ["deleted_count"], "properties": {"deleted_count": {"const": 1}}}}}
+  },
+  "parameters": {
+    "ID": {"name": "id", "in": "path", "required": true, "schema": {"$ref": "#/schemas/UUID"}},
+    "Idempotency": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$"}},
+    "Revision": {"name": "If-Match", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^\\\"revision-[1-9][0-9]*\\\"$"}},
+    "State": {"name": "state", "in": "query", "schema": {"enum": ["active", "retired", "all"], "default": "active"}},
+    "Limit": {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 100}},
+    "AfterID": {"name": "after_id", "in": "query", "schema": {"$ref": "#/schemas/UUID"}}
+    ,"UserID": {"name": "user_id", "in": "path", "required": true, "schema": {"$ref": "#/schemas/UUID"}}
+    ,"RoleID": {"name": "role_id", "in": "path", "required": true, "schema": {"$ref": "#/schemas/UUID"}}
+    ,"OrganizationID": {"name": "org_id", "in": "path", "required": true, "schema": {"$ref": "#/schemas/UUID"}}
+    ,"TenantID": {"name": "tenant_id", "in": "path", "required": true, "schema": {"$ref": "#/schemas/UUID"}}
+  },
+  "responses": {
+    "Resource": {"description": "Canonical resource catalog record.", "headers": {"ETag": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/EnvelopeResource"}}}},
+    "Action": {"description": "Canonical action catalog record.", "headers": {"ETag": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/EnvelopeAction"}}}},
+    "Permission": {"description": "V1 assignment group projected from exact permissions and typed bindings.", "headers": {"ETag": {"schema": {"type": "string"}}}, "content": {"application/json": {"schema": {"$ref": "#/schemas/EnvelopePermission"}}}},
+    "ResourcePage": {"description": "Resource catalog page.", "content": {"application/json": {"schema": {"$ref": "#/schemas/ResourcePage"}}}},
+    "ActionPage": {"description": "Action catalog page.", "content": {"application/json": {"schema": {"$ref": "#/schemas/ActionPage"}}}},
+    "PermissionPage": {"description": "Compatibility assignment page.", "content": {"application/json": {"schema": {"$ref": "#/schemas/PermissionPage"}}}},
+    "EffectivePage": {"description": "Effective exact and protected wildcard permission evidence.", "content": {"application/json": {"schema": {"$ref": "#/schemas/EffectivePage"}}}},
+    "Decision": {"description": "Fail-closed decision for the verified token subject.", "content": {"application/json": {"schema": {"$ref": "#/schemas/EnvelopeDecision"}}}},
+    "BatchDecision": {"description": "Fail-closed decisions for the verified token subject.", "content": {"application/json": {"schema": {"$ref": "#/schemas/EnvelopeBatchDecision"}}}},
+    "Delete": {"description": "Revisioned retirement committed.", "content": {"application/json": {"schema": {"$ref": "#/schemas/DeleteEnvelope"}}}},
+    "Error": {"description": "Stable error envelope.", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}},
+    "CacheRetired": {"description": "The V1 cache control plane is permanently retired.", "x-harpy-error-code": "PERMISSION_CACHE_RETIRED", "content": {"application/json": {"schema": {"$ref": "../runtime/v1/error-envelope.schema.json"}}}}
+  }
+}
