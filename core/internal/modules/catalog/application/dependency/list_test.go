@@ -26,7 +26,7 @@ func (testAuthorizer) Authorize(
 }
 
 func TestListReturnsSortedSignedManifestDependencies(t *testing.T) {
-	manifest := []byte(`{"contract":"catalog-package.v1","package_id":"e3000000-0000-0000-0000-000000000001","slug":"sales","version":"1.2.3","platform_contract":"harpy.catalog","profile":"business","dependencies":[{"package_id":"e3000000-0000-0000-0000-000000000003","range":"^2.0.0","kind":"optional"},{"package_id":"e3000000-0000-0000-0000-000000000002","range":"=1.0.0","kind":"required"}],"components":[{"ID":"e3100000-0000-0000-0000-000000000001","kind":"FORM","Owner":"forms","Contract":"forms.definition.v1","content_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}],"menu":[]}`)
+	manifest := []byte(`{"contract":"catalog-package.v1","package_id":"e3000000-0000-0000-0000-000000000001","slug":"sales","version":"1.2.3","platform_contract":"harpy.catalog","profile":"business","dependencies":[{"package_id":"e3000000-0000-0000-0000-000000000003","range":"^2.0.0","kind":"optional"},{"package_id":"e3000000-0000-0000-0000-000000000002","range":"=1.0.0","kind":"required"}],"components":[{"ID":"e3100000-0000-0000-0000-000000000001","kind":"IAM_TEMPLATE","Owner":"iam","Contract":"iam.template.v1","content_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}],"menu":[]}`)
 	values, err := declarations(packageregistry.SealedVersion{
 		PackageID: "e3000000-0000-0000-0000-000000000001", Slug: "sales",
 		Version: "1.2.3", Manifest: manifest,

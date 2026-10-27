@@ -117,7 +117,7 @@ func cleanupOperation(t *testing.T, operationID uuid.UUID, kind catalogdomain.Op
 	componentID, _ := packagecontract.ParseComponentID("018f4000-0000-7000-8000-000000000005")
 	version, _ := packagecontract.ParseVersion("1.0.0")
 	plan, err := catalogdomain.NewPlan(packageID, version, nil, []catalogdomain.ComponentPin{{
-		ComponentID: componentID, Owner: "forms", OwnerGeneration: 1, Contract: "forms.v2",
+		ComponentID: componentID, Owner: "catalog", OwnerGeneration: 1, Contract: "catalog.v2",
 		ContentSHA256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 	}})
 	if err != nil {

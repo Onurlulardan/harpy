@@ -124,8 +124,8 @@ func signedPublication(t *testing.T) (packageregistry.SealedVersion, ed25519.Pub
 	document := []byte(fmt.Sprintf(
 		`{"contract":"catalog-package.v1","package_id":"%s","slug":"catalog-test",`+
 			`"version":"1.0.0","platform_contract":"harpy.v2","profile":"business",`+
-			`"dependencies":[],"components":[{"ID":"%s","Owner":"forms",`+
-			`"Contract":"forms.v2","kind":"FORM","content_sha256":"%s"}],"menu":[]}`,
+			`"dependencies":[],"components":[{"ID":"%s","Owner":"iam",`+
+			`"Contract":"iam.template.v1","kind":"IAM_TEMPLATE","content_sha256":"%s"}],"menu":[]}`,
 		publicationPackageID, publicationComponentID, payloadDigestHex,
 	))
 	canonical, err := canonicaljsonv1.CanonicalizeObject(
@@ -146,8 +146,8 @@ func signedPublication(t *testing.T) (packageregistry.SealedVersion, ed25519.Pub
 		ReleaseID:    publicationReleaseID,
 		RegisteredAt: time.Date(2026, 7, 30, 12, 0, 0, 123000, time.UTC),
 		OwnerPayloads: []catalogpackagev1.OwnerPayload{{
-			ComponentID: publicationComponentID, Owner: "forms",
-			Contract: "forms.v2", ContentSHA256: payloadDigestHex,
+			ComponentID: publicationComponentID, Owner: "iam",
+			Contract: "iam.template.v1", ContentSHA256: payloadDigestHex,
 			Document: payloadDocument,
 		}},
 	}, publicKey
