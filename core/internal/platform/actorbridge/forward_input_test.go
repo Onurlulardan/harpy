@@ -14,7 +14,7 @@ func TestForwardInputBindsMethodTargetQueryAndExactReplayBody(t *testing.T) {
 		http.MethodPost, "/api/v1/forms/records?sort=id", bytes.NewReader([]byte("first")),
 	)
 	input, err := NewForwardInput(
-		actorassertionv1.DomainForms, "forms.records", "create", 7, 19, request,
+		actorassertionv1.DomainDocuments, "forms.records", "create", 7, 19, request,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -45,7 +45,7 @@ func TestForwardInputRequiresReplayableBoundedBody(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodPost, "/records", bytes.NewReader([]byte("body")))
 	request.GetBody = nil
 	if _, err := NewForwardInput(
-		actorassertionv1.DomainForms, "forms.records", "create", 1, 1, request,
+		actorassertionv1.DomainDocuments, "forms.records", "create", 1, 1, request,
 	); !FaultIs(err, FaultInvalid) {
 		t.Fatalf("non-replayable body error = %v", err)
 	}

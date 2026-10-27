@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	analyticsforms "github.com/Onurlulardan/harpy/core/internal/modules/analytics/api/formsreference"
 	analyticspublication "github.com/Onurlulardan/harpy/core/internal/modules/analytics/domain/publication"
 	analyticsquery "github.com/Onurlulardan/harpy/core/internal/modules/analytics/domain/query"
 	billingapi "github.com/Onurlulardan/harpy/core/internal/modules/billing/api"
@@ -89,7 +88,7 @@ func (clock queryFixtureClock) Now() time.Time { return clock.value }
 
 func queryFixtureApplication(ids ...uuid.UUID) *Application {
 	return &Application{ids: &queryFixtureIDs{values: ids}, clock: queryFixtureClock{queryFixtureNow},
-		references: queryFixtureReferences{}, entitlements: &queryFixtureEntitlements{}}
+		entitlements: &queryFixtureEntitlements{}}
 }
 
 func queryFixtureMutationDecision(
@@ -143,21 +142,6 @@ func (fixture *queryFixtureEntitlements) DecideMeteredResourceMutation(
 	return decision, nil
 }
 
-type queryFixtureReferences struct{}
-
-func (queryFixtureReferences) BindVersion(
-	context.Context, platformtx.TenantScope, analyticsforms.Source,
-	[]analyticsforms.Target, time.Time,
-) error {
-	return nil
-}
-
-func (queryFixtureReferences) DecommissionSource(
-	context.Context, platformtx.TenantScope, analyticsforms.ID,
-	*analyticsforms.ID, time.Time,
-) error {
-	return nil
-}
 func queryFixtureIdentity() ScopeIdentity {
 	return ScopeIdentity{queryFixtureActor, queryFixtureTenant}
 }

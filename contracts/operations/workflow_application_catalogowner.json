@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "operations": [
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/catalogowner","layer":"application","resource":"catalogowner","operation":"finalize","source":"core/internal/modules/workflow/application/catalogowner/finalize.go","test":"core/internal/modules/workflow/application/catalogowner/finalize_test.go","authority_id":"workflow.catalog_owner.finalize"},
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/catalogowner","layer":"application","resource":"catalogowner","operation":"restore","source":"core/internal/modules/workflow/application/catalogowner/restore.go","test":"core/internal/modules/workflow/application/catalogowner/restore_test.go","authority_id":"workflow.catalog_owner.restore"},
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/catalogowner","layer":"application","resource":"catalogowner","operation":"retire","source":"core/internal/modules/workflow/application/catalogowner/retire.go","test":"core/internal/modules/workflow/application/catalogowner/retire_test.go","authority_id":"workflow.catalog_owner.retire"}
-  ]
-}

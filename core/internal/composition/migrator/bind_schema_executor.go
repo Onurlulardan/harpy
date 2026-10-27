@@ -11,7 +11,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemaexecutor"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
 )
 
@@ -21,7 +20,7 @@ func bindSchemaExecutor(
 	info buildinfo.Info,
 	pool *postgres.Pool,
 	monitor *health.Monitor,
-	executor *schemaexecutor.Executor,
+	executor schemaLoop,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 ) processcode.Code {

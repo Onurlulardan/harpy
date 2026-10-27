@@ -41,7 +41,7 @@ func runtimeCredential(t *testing.T, now time.Time) actorassertionv1.Credential 
 		TenantID:     uuid.MustParse("10000000-0000-4000-8000-000000000001"),
 		SubjectID:    uuid.MustParse("20000000-0000-4000-8000-000000000002"),
 		PermissionID: uuid.MustParse("30000000-0000-4000-8000-000000000003"),
-		TargetDomain: actorassertionv1.DomainForms,
+		TargetDomain: actorassertionv1.DomainDocuments,
 		ResourceKey:  "forms.records", ActionKey: "create",
 		TargetBindingSHA256: target, IAMGroupGeneration: 11,
 		IAMGeneration: 12, TargetGeneration: 13, TokenVersion: 7,

@@ -2,10 +2,10 @@ package iam
 
 import "fmt"
 
-type AnalyticsAccessRuntime struct{ shared *FormsRecordAccessRuntime }
+type AnalyticsAccessRuntime struct{ shared *accessRequestDependencies }
 
 func NewAnalyticsAccessRuntime(
-	shared *FormsRecordAccessRuntime,
+	shared *accessRequestDependencies,
 ) (*AnalyticsAccessRuntime, error) {
 	if shared == nil || shared.pool == nil || shared.coordinator == nil ||
 		shared.security == nil || shared.clock == nil {

@@ -91,7 +91,7 @@ func TestActorBridgeCloseWipesStartupSigningKey(t *testing.T) {
 	}
 }
 
-func TestActorBridgeRequiresExactEightTargetsAndMatchingPublicKey(t *testing.T) {
+func TestActorBridgeRequiresExactTargetsAndMatchingPublicKey(t *testing.T) {
 	entries := validAPIEnvironment()
 	targetPath := environmentValue(entries, iamActorBridgeTargetsFileKey)
 	if err := os.WriteFile(targetPath, []byte(`{"version":1,"targets":[]}`), 0o600); err != nil {

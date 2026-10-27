@@ -66,15 +66,13 @@ func startUsageDatabase(t *testing.T, ctx context.Context) *sql.DB {
 	return database
 }
 
-func resetAndApplyUsage(t *testing.T, ctx context.Context,
-	database *sql.DB, origin string,
-) {
+func resetAndApplyUsage(t *testing.T, ctx context.Context, database *sql.DB) {
 	t.Helper()
 	if _, err := database.ExecContext(ctx, `DROP SCHEMA IF EXISTS platform CASCADE;
 CREATE SCHEMA platform; GRANT USAGE ON SCHEMA platform TO harpy_runtime,harpy_adopter`); err != nil {
 		t.Fatal(err)
 	}
-	directory := filepath.Join("..", "..", "..", "migrations", "platform", origin)
+	directory := filepath.Join("..", "..", "..", "migrations", "platform", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)

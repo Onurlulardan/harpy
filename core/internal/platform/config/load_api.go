@@ -14,9 +14,6 @@ type API struct {
 	deploymentMode        DeploymentMode
 	authority             APIAuthority
 	iam                   IAMAPI
-	formsExport           FormsExportArtifacts
-	formsImportSource     FormsImportSourceArtifacts
-	formsImportStaging    AbsolutePath
 	analyticsExports      AnalyticsDashboardExportArtifacts
 	iamTransferArtifacts  IAMSystemTransferArtifacts
 	catalogPackageKeys    CatalogPackageKeyring
@@ -76,19 +73,6 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 	if err != nil {
 		return API{}, err
 	}
-	formsExport, err := loadOptionalFormsExport(values, runtimeConfig.Environment())
-	if err != nil {
-		return API{}, err
-	}
-	formsImport, err := loadOptionalFormsImport(values,
-		runtimeConfig.Environment(), formsExport)
-	if err != nil {
-		return API{}, err
-	}
-	formsImportStaging, err := loadOptionalFormsStaging(values, runtimeConfig.Environment())
-	if err != nil {
-		return API{}, err
-	}
 	analyticsExports, err := loadAnalyticsDashboardExportArtifacts(
 		values, runtimeConfig.Environment(),
 	)
@@ -96,12 +80,12 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 		return API{}, err
 	}
 	iamTransferArtifacts, err := loadIAMSystemTransferArtifacts(values,
-		runtimeConfig.Environment(), formsExport, formsImport)
+		runtimeConfig.Environment())
 	if err != nil {
 		return API{}, err
 	}
 	if err = validateAnalyticsDashboardExportSeparation(
-		analyticsExports, formsExport, formsImport, iamTransferArtifacts,
+		analyticsExports, iamTransferArtifacts,
 	); err != nil {
 		return API{}, err
 	}
@@ -122,9 +106,7 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 		http: httpConfig, restQueryCursorKeys: cursorKeys,
 		analyticsProxies: analyticsProxies,
 		deploymentMode:   deploymentMode, authority: authority,
-		iam: iamConfig, formsExport: formsExport,
-		formsImportSource: formsImport, formsImportStaging: formsImportStaging,
-		analyticsExports:      analyticsExports,
+		iam: iamConfig, analyticsExports: analyticsExports,
 		iamTransferArtifacts:  iamTransferArtifacts,
 		catalogPackageKeys:    catalogKeys,
 		documents:             documents,

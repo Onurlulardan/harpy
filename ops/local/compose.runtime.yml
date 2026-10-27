@@ -70,7 +70,6 @@ services:
       - local-dev-authority:/run/dev-authority:ro
       - local-recovery-signing:/run/recovery-signing:ro
       - forms-import-staging:/var/lib/harpy/forms-import-staging
-      - ai-system-knowledge:/var/lib/harpy/ai-system-knowledge:ro
       - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
     depends_on:
       postgres:

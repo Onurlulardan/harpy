@@ -81,13 +81,13 @@ ENABLE ALWAYS TRIGGER system_resource_layout_installation_baselines_write_guard;
 
 func applyLayoutMigrationExpectErrorPG18(
 	t *testing.T, ctx context.Context, database *sql.DB,
-	origin, schema, name string,
+	schema, name string,
 ) error {
 	t.Helper()
 	connection, transaction := beginLayoutOwnerTx(t, ctx, database, schema)
 	defer connection.Close()
 	_, err := transaction.ExecContext(ctx, string(readLayoutMigration(
-		t, origin, name,
+		t, name,
 	)))
 	if err != nil {
 		_ = transaction.Rollback()

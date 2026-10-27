@@ -24,6 +24,9 @@ func runnerIntegrationCatalogForOrigin(
 	origin postgresv1.DatabaseOrigin,
 ) (fstest.MapFS, []postgresv1.SelectedMigration) {
 	t.Helper()
+	if origin != postgresv1.DatabaseOriginFresh {
+		t.Fatal("fresh platform migrations did not load")
+	}
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		t.Fatal("resolve runner integration source path")

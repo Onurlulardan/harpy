@@ -1,7 +1,6 @@
 package platformauthority
 
 import (
-	"bytes"
 	"os"
 	"strings"
 	"testing"
@@ -14,15 +13,6 @@ func TestInstallationHeadPinUsesAdditiveCapabilitySuccessor(t *testing.T) {
 	)
 	if err != nil {
 		t.Fatal(err)
-	}
-	adopted, err := os.ReadFile(
-		"migrations/platform/v1_adopted/" + base + ".v1_adopted.sql",
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("installation head capability migration origins differ")
 	}
 	source := string(fresh)
 	for _, marker := range []string{

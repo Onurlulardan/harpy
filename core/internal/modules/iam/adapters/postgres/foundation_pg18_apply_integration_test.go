@@ -77,9 +77,6 @@ INSERT INTO platform.tenants (id, schema_name) VALUES
 		t.Fatalf("prepare IAM schemas: %v", err)
 	}
 	prepareIAMPlatformAuthPrerequisites(t, ctx, db)
-	if origin == "v1_adopted" {
-		seedIAMV1AdoptedSnapshot(t, ctx, db)
-	}
 }
 
 func loadIAMFoundationDocuments(
@@ -88,7 +85,7 @@ func loadIAMFoundationDocuments(
 	scope string,
 ) []iamFoundationDocument {
 	t.Helper()
-	if origin != "fresh" && origin != "v1_adopted" {
+	if origin != "fresh" {
 		t.Fatalf("unsupported IAM migration origin: %s", origin)
 	}
 	workingDirectory, err := os.Getwd()

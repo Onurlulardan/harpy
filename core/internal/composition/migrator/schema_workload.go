@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"sync"
 
+	"time"
+
 	"github.com/Onurlulardan/harpy/core/internal/platform/admission"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processhost"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemaexecutor"
 )
 
 type schemaLoop interface {
-	Run(context.Context, schemaexecutor.Admission) error
+	Run(context.Context, *admission.Gate) error
 }
 
 type schemaWorkload struct {
@@ -75,5 +76,25 @@ func (workload *schemaWorkload) wait(ctx context.Context) error {
 		return workload.drainError
 	case <-ctx.Done():
 		return ctx.Err()
+	}
+}
+
+type idleSchemaLoop struct{}
+
+func (idleSchemaLoop) Run(ctx context.Context, gate *admission.Gate) error {
+	if gate == nil {
+		return fmt.Errorf("schema executor admission is unavailable")
+	}
+	ticker := time.NewTicker(50 * time.Millisecond)
+	defer ticker.Stop()
+	for {
+		if gate.Draining() {
+			return nil
+		}
+		select {
+		case <-ctx.Done():
+			return nil
+		case <-ticker.C:
+		}
 	}
 }

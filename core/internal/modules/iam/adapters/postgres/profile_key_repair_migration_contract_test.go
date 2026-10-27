@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 
@@ -11,9 +10,8 @@ import (
 func TestIAMProfileKeyRepairMigrationIsPairedAndStable(t *testing.T) {
 	const name = "20260730120000_repair_iam_profile_keys_and_initialize_v3"
 	fresh := readIAMIdentityMigration(t, "fresh", name)
-	adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("IAM profile key repair migration origins differ")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("IAM profile key repair migration is invalid: %v", err)
@@ -59,9 +57,8 @@ func TestIAMProfileKeyRepairMigrationIsPairedAndStable(t *testing.T) {
 	}
 	const successor = "20260730120001_create_iam_installation_initialize_v3"
 	v3Fresh := readIAMIdentityMigration(t, "fresh", successor)
-	v3Adopted := readIAMIdentityMigration(t, "v1_adopted", successor)
-	if !bytes.Equal(v3Fresh, v3Adopted) {
-		t.Fatal("IAM installation v3 migration origins differ")
+	if len(v3Fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	v3Source := string(v3Fresh)
 	for _, marker := range []string{
@@ -87,9 +84,8 @@ func TestIAMInstallationBindingUsesStableProfileKeySuccessor(t *testing.T) {
 func TestIAMLegacyProfileWriterIsNormalizedAtDatabaseBoundary(t *testing.T) {
 	const name = "20260730120002_normalize_iam_legacy_profile_writes_v1"
 	fresh := readIAMIdentityMigration(t, "fresh", name)
-	adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("IAM legacy profile writer normalizer origins differ")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("IAM legacy profile writer normalizer is invalid: %v", err)

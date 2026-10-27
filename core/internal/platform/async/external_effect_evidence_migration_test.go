@@ -13,20 +13,15 @@ func TestExternalEffectEvidenceMigrationFreezesOwnerBoundary(t *testing.T) {
 		t.Fatal(err)
 	}
 	const migration = "20260715022010_create_external_effect_evidence_v1"
-	var fresh, adopted []byte
+	var fresh []byte
 	for _, document := range documents {
-		if !strings.Contains(document.Path(), migration) {
-			continue
-		}
-		switch {
-		case strings.Contains(document.Path(), "/fresh/"):
+		if strings.Contains(document.Path(), "/fresh/") &&
+			strings.Contains(document.Path(), migration) {
 			fresh = document.Content()
-		case strings.Contains(document.Path(), "/v1_adopted/"):
-			adopted = document.Content()
 		}
 	}
-	if len(fresh) == 0 || len(adopted) == 0 || !bytes.Equal(fresh, adopted) {
-		t.Fatal("external effect evidence migration pair is missing or drifted")
+	if len(fresh) == 0 {
+		t.Fatal("fresh external effect evidence migration did not load")
 	}
 	if lines := bytes.Count(fresh, []byte{'\n'}) + 1; lines > 200 {
 		t.Fatalf("external effect evidence migration has %d lines", lines)

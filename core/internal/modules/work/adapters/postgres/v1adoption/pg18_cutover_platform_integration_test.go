@@ -65,19 +65,18 @@ CREATE SCHEMA platform AUTHORIZATION harpy_owner;`)
 }
 
 func prepareWorkTenantIdentity(t *testing.T, ctx context.Context, database *sql.DB,
-	schema, origin string,
+	schema, identityOrigin string,
 ) {
 	t.Helper()
 	directory := filepath.Join("..", "..", "..", "..", "tenancy", "migrations",
-		"tenant", origin)
-	name := "20260714011000_create_tenancy_schema_identity." + origin + ".sql"
+		"tenant", "fresh")
+	name := "20260714011000_create_tenancy_schema_identity.fresh.sql"
 	document, err := os.ReadFile(filepath.Join(directory, name))
 	if err != nil {
 		t.Fatal(err)
 	}
-	identityOrigin := "new"
-	if origin == "v1_adopted" {
-		identityOrigin = origin
+	if len(document) == 0 {
+		t.Fatal("fresh tenancy identity migration is empty")
 	}
 	workInSchema(t, ctx, database, schema, func(transaction *sql.Tx) {
 		if _, execErr := transaction.ExecContext(ctx, string(document)); execErr != nil {

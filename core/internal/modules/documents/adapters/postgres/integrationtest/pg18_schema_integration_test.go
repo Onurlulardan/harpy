@@ -27,8 +27,6 @@ func TestDocumentsMigrationsAgainstPostgreSQL184(t *testing.T) {
 	assertDocumentsReferenceSQL(t, ctx, database)
 	assertDocumentsPurgeSQL(t, ctx, database)
 	for _, schema := range []string{"documents_fresh_a", "documents_adopted_a"} {
-		assertDocumentsFormRecordLinks(t, ctx, database, schema)
-		assertDocumentsFormsCleanupSQL(t, ctx, database, schema)
 		assertDocumentsKnowledgeFileSQL(t, ctx, database, schema)
 	}
 }
@@ -46,8 +44,8 @@ func assertDocumentsSchema(t *testing.T, ctx context.Context, database *sql.DB,
 	if err != nil {
 		t.Fatal(err)
 	}
-	if tables != 30 || functions != 50 {
-		t.Fatalf("%s tables/functions = %d/%d, want 30/50", schema, tables, functions)
+	if tables != 27 || functions != 45 {
+		t.Fatalf("%s tables/functions = %d/%d, want 27/45", schema, tables, functions)
 	}
 	insertDocumentsFolder(t, ctx, database, schema,
 		"018f0000-0000-7000-8000-000000000101")

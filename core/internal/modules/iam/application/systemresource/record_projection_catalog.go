@@ -1,9 +1,9 @@
 package systemresource
 
 import (
+	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 	fieldregistry "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/fieldregistry"
 	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
-	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 )
 
 type recordProjectionField struct {

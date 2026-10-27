@@ -64,7 +64,7 @@ func assertSMTPSettingsTenantIsolation(t *testing.T, ctx context.Context,
 		_ = tx.Rollback(ctx)
 		if err != nil || count != 1 || len(digest) != 32 {
 			t.Fatalf("%s receipt count=%d digest=%x err=%v",
-				track.origin, count, digest, err)
+				track.schema, count, digest, err)
 		}
 		digests = append(digests, digest)
 	}

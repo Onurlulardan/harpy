@@ -8,14 +8,11 @@ import (
 
 func TestSuccessorFinalizationMigrationsArePairedAndForwardOnly(t *testing.T) {
 	for _, version := range []string{"20260729100011", "20260729100012"} {
-		pair := successorFinalizationMigrationPair(t, version)
-		if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-			t.Fatalf("%s migration is not byte-identical and paired", version)
-		}
-		if strings.Count(pair["fresh"], "-- +goose Up") != 1 ||
-			strings.Contains(pair["fresh"], "-- +goose Down") ||
-			strings.Contains(pair["fresh"], "CREATE OR REPLACE") {
-			t.Fatalf("%s migration is not immutable and forward-only", version)
+		source := successorFinalizationMigrationPair(t, version)["fresh"]
+		if strings.Count(source, "-- +goose Up") != 1 ||
+			strings.Contains(source, "-- +goose Down") ||
+			strings.Contains(source, "CREATE OR REPLACE") {
+			t.Fatalf("%s fresh migration is not immutable and forward-only", version)
 		}
 	}
 }
@@ -92,14 +89,12 @@ func successorFinalizationMigrationPair(
 	pair := map[string]string{}
 	for _, document := range documents {
 		name := path.Base(document.Path())
-		if !strings.HasPrefix(name, version+"_") {
-			continue
+		if strings.HasPrefix(name, version+"_") && strings.HasSuffix(name, ".fresh.sql") {
+			pair["fresh"] = string(document.Content())
 		}
-		origin := "fresh"
-		if strings.Contains(name, ".v1_adopted.sql") {
-			origin = "v1_adopted"
-		}
-		pair[origin] = string(document.Content())
+	}
+	if pair["fresh"] == "" {
+		t.Fatalf("fresh migration %s did not load", version)
 	}
 	return pair
 }

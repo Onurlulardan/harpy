@@ -14,22 +14,6 @@ type WorkerAuthorizationRuntime struct {
 	authorizer iamauthorization.Authorizer
 }
 
-func NewFormsWorkerAuthorizationRuntime() (*WorkerAuthorizationRuntime, error) {
-	evidence, err := authorizationpostgres.NewFormsAuthorizer()
-	if err != nil {
-		return nil, fmt.Errorf("build Forms IAM evidence: %w", err)
-	}
-	return newWorkerAuthorizationRuntime(evidence)
-}
-
-func NewFormsSnapshotAuthorizationRuntime() (*WorkerAuthorizationRuntime, error) {
-	evidence, err := authorizationpostgres.NewFormsSnapshotAuthorizer()
-	if err != nil {
-		return nil, fmt.Errorf("build Forms snapshot IAM evidence: %w", err)
-	}
-	return newWorkerAuthorizationRuntime(evidence)
-}
-
 func NewAnalyticsWorkerAuthorizationRuntime() (*WorkerAuthorizationRuntime, error) {
 	evidence, err := authorizationpostgres.NewAnalyticsAuthorizer()
 	if err != nil {

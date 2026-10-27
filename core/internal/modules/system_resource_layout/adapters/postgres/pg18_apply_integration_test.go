@@ -65,7 +65,6 @@ func applyLayoutMigrations(
 	t *testing.T,
 	ctx context.Context,
 	database *sql.DB,
-	origin string,
 ) {
 	t.Helper()
 	for _, schema := range layoutTenantSchemas {
@@ -85,7 +84,7 @@ func applyLayoutMigrations(
 				schema+", pg_catalog").Scan(&bound)
 			if err == nil {
 				_, err = transaction.ExecContext(ctx,
-					string(readLayoutMigration(t, origin, name)))
+					string(readLayoutMigration(t, name)))
 			}
 			if err != nil {
 				_ = transaction.Rollback()
@@ -95,10 +94,6 @@ func applyLayoutMigrations(
 			if err := transaction.Commit(); err != nil {
 				_ = connection.Close()
 				t.Fatal(err)
-			}
-			if origin == "v1_adopted" && schema == "layout_a" &&
-				name == "20260716013527_create_system_resource_layout_resolve_v2" {
-				seedLegacyLayoutRevision(t, ctx, database)
 			}
 		}
 		_ = connection.Close()

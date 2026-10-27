@@ -88,11 +88,8 @@ func stateTargets() []targetSpec {
 	return []targetSpec{
 		{name: "foundation-release", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "release", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
-		{name: "forms-export", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "analytics-dashboard-export", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
-		{name: "forms-import", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "iam-transfer", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
-		{name: "ai-system-knowledge", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "mailpit-data", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "installation", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "dev-authority", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},

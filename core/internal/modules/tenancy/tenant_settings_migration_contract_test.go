@@ -9,7 +9,7 @@ import (
 
 func TestTenantSettingsMigrationPairsSecureRuntimeRoutines(t *testing.T) {
 	const base = "20260801020000_create_tenancy_settings_runtime_v1"
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		path := filepath.Join("migrations", "platform", origin,
 			base+"."+origin+".sql")
 		document, err := os.ReadFile(path)

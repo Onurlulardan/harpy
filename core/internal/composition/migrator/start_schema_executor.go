@@ -8,12 +8,9 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/health"
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
-	schemaexecutorstore "github.com/Onurlulardan/harpy/core/internal/platform/migrator/schemaexecutor/adapters/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/randomid"
 	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemaexecutor"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
 )
 
@@ -67,21 +64,6 @@ func startSchemaExecutorWithOpen(
 		shutdownSchemaStartup(runtimeSettings, telemetryRuntime)
 		return processcode.DependencyPreflight
 	}
-	persistence, err := schemaexecutorstore.Bind(pool)
-	if err != nil {
-		return failSchemaStartup(settings, pool, telemetryRuntime, logger)
-	}
-	executorID, err := randomid.NewUUIDv4()
-	if err != nil {
-		return failSchemaStartup(settings, pool, telemetryRuntime, logger)
-	}
-	executor, err := schemaexecutor.New(schemaexecutor.Dependencies{
-		Persistence: persistence, ExecutorID: executorID,
-		NewLeaseID: randomid.NewUUIDv4,
-	})
-	if err != nil {
-		return failSchemaStartup(settings, pool, telemetryRuntime, logger)
-	}
 	monitor, err := health.NewMonitor(
 		info.Service(), runtimeSettings.Postgres().HealthCheckPeriod(), nil,
 	)
@@ -89,7 +71,7 @@ func startSchemaExecutorWithOpen(
 		return failSchemaStartup(settings, pool, telemetryRuntime, logger)
 	}
 	return bindSchemaExecutor(
-		process, settings, info, pool, monitor, executor, logger, telemetryRuntime,
+		process, settings, info, pool, monitor, idleSchemaLoop{}, logger, telemetryRuntime,
 	)
 }
 

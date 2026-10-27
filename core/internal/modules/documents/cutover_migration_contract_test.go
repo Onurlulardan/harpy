@@ -9,48 +9,52 @@ import (
 )
 
 func TestDocumentsCutoverMigrationRangeAndAuthority(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		directory := filepath.Join("migrations", "tenant", origin)
-		entries, err := os.ReadDir(directory)
-		if err != nil {
-			t.Fatal(err)
-		}
-		var names []string
-		var adopterGrants int
-		for _, entry := range entries {
-			if !strings.HasPrefix(entry.Name(), "202607182307") {
-				continue
-			}
-			names = append(names, entry.Name())
-			document, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
-			if readErr != nil {
-				t.Fatal(readErr)
-			}
-			body := string(document)
-			adopterGrants += strings.Count(body, "TO harpy_adopter")
-			for _, forbidden := range []string{
-				"INSERT INTO platform.jobs", "INSERT INTO platform.cutover_job_bindings",
-			} {
-				if strings.Contains(body, forbidden) {
-					t.Fatalf("%s crosses platform owner with %q", entry.Name(), forbidden)
-				}
-			}
-		}
-		if len(names) != 20 {
-			t.Fatalf("%s cutover migration count=%d", origin, len(names))
-		}
-		for index, name := range names {
-			want := fmt.Sprintf("202607182307%02d_", index+10)
-			if !strings.HasPrefix(name, want) {
-				t.Fatalf("%s migration[%d]=%s want %s", origin, index, name, want)
-			}
-		}
-		if adopterGrants != 1 {
-			t.Fatalf("%s adopter grants=%d want sole composite grant", origin, adopterGrants)
-		}
-		assertDocumentsHardeningMigration(t, directory, names[17])
-		assertDocumentsFinalGrant(t, directory, names[19])
+	directory := filepath.Join("migrations", "tenant", "fresh")
+	entries, err := os.ReadDir(directory)
+	if err != nil {
+		t.Fatal(err)
 	}
+	var names []string
+	var adopterGrants int
+	for _, entry := range entries {
+		if strings.Contains(entry.Name(), "v1_adopted") {
+			t.Fatalf("adopted migration path %s", entry.Name())
+		}
+		if !strings.HasPrefix(entry.Name(), "202607182307") {
+			continue
+		}
+		names = append(names, entry.Name())
+		document, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
+		if readErr != nil {
+			t.Fatal(readErr)
+		}
+		if !strings.HasSuffix(entry.Name(), ".fresh.sql") || len(document) == 0 {
+			t.Fatalf("fresh migration %s is empty", entry.Name())
+		}
+		body := string(document)
+		adopterGrants += strings.Count(body, "TO harpy_adopter")
+		for _, forbidden := range []string{
+			"INSERT INTO platform.jobs", "INSERT INTO platform.cutover_job_bindings",
+		} {
+			if strings.Contains(body, forbidden) {
+				t.Fatalf("%s crosses platform owner with %q", entry.Name(), forbidden)
+			}
+		}
+	}
+	if len(names) != 20 {
+		t.Fatalf("fresh cutover migration count=%d", len(names))
+	}
+	for index, name := range names {
+		want := fmt.Sprintf("202607182307%02d_", index+10)
+		if !strings.HasPrefix(name, want) || !strings.HasSuffix(name, ".fresh.sql") {
+			t.Fatalf("fresh migration[%d]=%s want %s", index, name, want)
+		}
+	}
+	if adopterGrants != 1 {
+		t.Fatalf("fresh adopter grants=%d want sole composite grant", adopterGrants)
+	}
+	assertDocumentsHardeningMigration(t, directory, names[17])
+	assertDocumentsFinalGrant(t, directory, names[19])
 }
 
 func assertDocumentsHardeningMigration(t *testing.T, directory, name string) {

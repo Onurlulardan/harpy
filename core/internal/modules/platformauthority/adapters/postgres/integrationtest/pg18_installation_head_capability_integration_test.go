@@ -26,14 +26,10 @@ func TestInstallationHeadCapabilityAgainstPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 	database := startPlatformAuthorityDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetPlatformSchema(t, ctx, database)
-			applyAuthorityOrigin(t, ctx, database, origin)
-			prepareAuthorityActivationStepFixture(t, ctx, database)
-			exerciseInstallationHeadCapability(t, ctx, database)
-		})
-	}
+	resetPlatformSchema(t, ctx, database)
+	applyAuthorityFreshDocuments(t, ctx, database)
+	prepareAuthorityActivationStepFixture(t, ctx, database)
+	exerciseInstallationHeadCapability(t, ctx, database)
 }
 
 func exerciseInstallationHeadCapability(

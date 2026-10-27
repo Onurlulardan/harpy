@@ -8,11 +8,11 @@ import (
 )
 
 type NotificationsAccessRuntime struct {
-	shared   *FormsRecordAccessRuntime
+	shared   *accessRequestDependencies
 	sessions notificationapp.SessionReader
 }
 
-func NewNotificationsAccessRuntime(shared *FormsRecordAccessRuntime) (
+func NewNotificationsAccessRuntime(shared *accessRequestDependencies) (
 	*NotificationsAccessRuntime, error,
 ) {
 	if shared == nil || shared.pool == nil || shared.coordinator == nil ||

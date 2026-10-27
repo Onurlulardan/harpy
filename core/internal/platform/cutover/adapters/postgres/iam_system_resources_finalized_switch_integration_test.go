@@ -9,7 +9,7 @@ import (
 )
 
 func TestIAMSystemResourcesProtectedSwitchAgainstPostgreSQL184(t *testing.T) {
-	for index, origin := range []string{"fresh", "v1_adopted"} {
+	for index, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 12*time.Minute)
 			defer cancel()

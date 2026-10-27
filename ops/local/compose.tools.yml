@@ -26,7 +26,6 @@ services:
       - analytics-dashboard-export-spool:/targets/analytics-dashboard-export
       - forms-import-staging:/targets/forms-import
       - iam-transfer-spool:/targets/iam-transfer
-      - ai-system-knowledge:/targets/ai-system-knowledge
       - mailpit-data:/targets/mailpit-data
       - local-installation-state:/targets/installation
       - local-dev-authority:/targets/dev-authority

@@ -1,7 +1,6 @@
 package async
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 )
@@ -12,31 +11,28 @@ func TestTerminalJobDeadLetterMigrationsFreezeAtomicEvidence(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	versions := map[string]map[string][]byte{
-		"20260715021900": {},
-		"20260715021910": {},
-		"20260715021920": {},
+	versions := map[string][]byte{
+		"20260715021900": nil,
+		"20260715021910": nil,
+		"20260715021920": nil,
 	}
 	for _, document := range documents {
 		version := migrationVersion(t, document.Path())
 		if _, wanted := versions[version]; !wanted {
 			continue
 		}
-		origin := "fresh"
-		if strings.Contains(document.Path(), "/v1_adopted/") {
-			origin = "v1_adopted"
+		if !strings.Contains(document.Path(), "/fresh/") {
+			continue
 		}
-		versions[version][origin] = document.Content()
+		versions[version] = document.Content()
 	}
-	for version, origins := range versions {
-		fresh, freshOK := origins["fresh"]
-		adopted, adoptedOK := origins["v1_adopted"]
-		if !freshOK || !adoptedOK || !bytes.Equal(fresh, adopted) {
-			t.Fatalf("terminal DLQ migration %s origin pair differs", version)
+	for version, fresh := range versions {
+		if len(fresh) == 0 {
+			t.Fatalf("fresh terminal DLQ migration %s did not load", version)
 		}
 	}
 
-	index := string(versions["20260715021900"]["fresh"])
+	index := string(versions["20260715021900"])
 	for _, marker := range []string{
 		"CREATE UNIQUE INDEX dead_letters_terminal_job_root_unique",
 		"WHERE record_kind = 'root' AND source_kind = 'job'",
@@ -50,7 +46,7 @@ func TestTerminalJobDeadLetterMigrationsFreezeAtomicEvidence(t *testing.T) {
 		t.Fatal("terminal DLQ unique migration captured stale-generation evidence")
 	}
 
-	recorder := string(versions["20260715021910"]["fresh"])
+	recorder := string(versions["20260715021910"])
 	for _, marker := range []string{
 		"SECURITY DEFINER", "SET search_path = pg_catalog",
 		"SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'",
@@ -69,7 +65,7 @@ func TestTerminalJobDeadLetterMigrationsFreezeAtomicEvidence(t *testing.T) {
 	}
 	assertTerminalPayloadJCSOrder(t, recorder)
 
-	binding := string(versions["20260715021920"]["fresh"])
+	binding := string(versions["20260715021920"])
 	for _, marker := range []string{
 		"AFTER UPDATE OF state ON platform.jobs",
 		"OLD.state IS DISTINCT FROM 'dead' AND NEW.state = 'dead'",

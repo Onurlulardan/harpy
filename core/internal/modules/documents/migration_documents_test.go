@@ -10,8 +10,8 @@ func TestMigrationDocumentsEmbedFreshSQL(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(documents) != 59 {
-		t.Fatalf("migration document count = %d, want 59", len(documents))
+	if len(documents) != 54 {
+		t.Fatalf("migration document count = %d, want 54", len(documents))
 	}
 	seen := make(map[string]struct{}, len(documents))
 	for _, document := range documents {

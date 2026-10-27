@@ -139,19 +139,3 @@ func serviceURL(scheme, user, password string, port int, path, rawQuery string) 
 func rabbitConfig(in answers) string {
 	return fmt.Sprintf("default_user = %s\ndefault_pass = %s\n", in.RabbitUser, in.RabbitPassword)
 }
-
-func writePrivate(path string, data []byte) error {
-	tmp := path + ".tmp"
-	if err := os.WriteFile(tmp, data, 0o600); err != nil {
-		return err
-	}
-	if err := os.Remove(path); err != nil && !errors.Is(err, os.ErrNotExist) {
-		_ = os.Remove(tmp)
-		return err
-	}
-	if err := os.Rename(tmp, path); err != nil {
-		_ = os.Remove(tmp)
-		return err
-	}
-	return nil
-}

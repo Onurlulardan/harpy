@@ -1,7 +1,6 @@
 package async
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 )
@@ -12,9 +11,7 @@ func TestEventGapMigrationsArePairedAndFreezeRecoveryContract(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	byOrigin := map[string]map[string][]byte{
-		"fresh": {}, "v1_adopted": {},
-	}
+	freshDocuments := map[string][]byte{}
 	expectedNames := []string{
 		"20260715021800_expand_event_gap_recovery_v1",
 		"20260715021810_create_event_gap_job_readiness_v1",
@@ -49,8 +46,10 @@ func TestEventGapMigrationsArePairedAndFreezeRecoveryContract(t *testing.T) {
 	}
 	for _, document := range documents {
 		name := document.Path()[strings.LastIndex(document.Path(), "/")+1:]
+		if !strings.HasSuffix(name, ".fresh.sql") {
+			t.Fatalf("event gap migration is not fresh: %s", document.Path())
+		}
 		name = strings.TrimSuffix(name, ".fresh.sql")
-		name = strings.TrimSuffix(name, ".v1_adopted.sql")
 		_, expectedName := expected[name]
 		if len(name) >= 14 && name[:14] >= "20260715021800" &&
 			name[:14] <= "20260715021950" && !expectedName {
@@ -59,24 +58,16 @@ func TestEventGapMigrationsArePairedAndFreezeRecoveryContract(t *testing.T) {
 		if !expectedName {
 			continue
 		}
-		for origin := range byOrigin {
-			if strings.Contains(document.Path(), "/"+origin+"/") {
-				byOrigin[origin][name] = document.Content()
-			}
-		}
+		freshDocuments[name] = document.Content()
 	}
-	if len(byOrigin["fresh"]) != len(expected) ||
-		len(byOrigin["v1_adopted"]) != len(expected) {
-		t.Fatalf("event gap migration counts = fresh %d adopted %d",
-			len(byOrigin["fresh"]), len(byOrigin["v1_adopted"]))
+	if len(freshDocuments) != len(expected) {
+		t.Fatalf("fresh event gap migrations = %d, want %d",
+			len(freshDocuments), len(expected))
 	}
-	for name, fresh := range byOrigin["fresh"] {
-		adopted, ok := byOrigin["v1_adopted"][name]
-		if !ok || !bytes.Equal(fresh, adopted) {
-			t.Fatalf("event gap migration pair drifted: %s", name)
-		}
+	disposition := string(freshDocuments["20260715021858_create_stale_job_disposition_v1"])
+	if disposition == "" {
+		t.Fatal("fresh stale job disposition migration did not load")
 	}
-	disposition := string(byOrigin["fresh"]["20260715021858_create_stale_job_disposition_v1"])
 	for _, marker := range []string{
 		"PERFORM platform.platform_async_assert_current_authority_v1(",
 		"WHERE job.id = p_job_id FOR UPDATE;",
@@ -85,7 +76,7 @@ func TestEventGapMigrationsArePairedAndFreezeRecoveryContract(t *testing.T) {
 			t.Fatalf("stale disposition lost transaction revalidation %q", marker)
 		}
 	}
-	combined := migrationOriginSource(byOrigin["fresh"])
+	combined := migrationOriginSource(freshDocuments)
 	for _, marker := range []string{
 		"'sequence_gap'", "platform_async_event_gap_job_ready_v1",
 		"platform_async_is_gap_requeue_v1", "action.recorded_at = p_new.next_attempt_at",

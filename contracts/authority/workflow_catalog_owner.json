@@ -1,5 +1,0 @@
-{"version":2,"authorities":[
-  {"id":"workflow.catalog_owner.finalize","owner":"workflow","scope_source":"actor_tenant","required_groups":["billing+forms","workflow"],"ordered_domains":["billing","forms","workflow"],"participants":["forms","workflow"]},
-  {"id":"workflow.catalog_owner.restore","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
-  {"id":"workflow.catalog_owner.retire","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]}
-]}

@@ -1,3 +1,0 @@
-{"version":2,"authorities":[
-  {"id":"workflow.publication.publish","owner":"workflow","scope_source":"actor_tenant","required_groups":["billing+forms","workflow"],"ordered_domains":["billing","forms","workflow"],"participants":["forms","workflow"]}
-]}

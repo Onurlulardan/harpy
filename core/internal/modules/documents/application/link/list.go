@@ -39,14 +39,3 @@ func (application *Application) ListReferenceBlockers(ctx context.Context,
 	}
 	return page, nil
 }
-
-func listFormRecordLinks(
-	ctx context.Context,
-	store Store,
-	source Source,
-) ([]domain.Link, error) {
-	if ctx == nil || ctx.Err() != nil || store == nil {
-		return nil, ErrInvalid
-	}
-	return store.SourceLinks(ctx, SourceQuery{Source: source, Limit: 1001})
-}

@@ -19,7 +19,7 @@ jobs:
       - name: Setup Go 1.26
         uses: actions/setup-go@v5
         with:
-          go-version: "1.26"
+          go-version: "1.26.5"
       - name: Test
         run: go test ./...
 
@@ -32,7 +32,7 @@ jobs:
       - name: Setup Go 1.26
         uses: actions/setup-go@v5
         with:
-          go-version: "1.26"
+          go-version: "1.26.5"
       - name: fileguard
         run: go run ./tools/fileguard
 
@@ -45,6 +45,6 @@ jobs:
       - name: Setup Go 1.26
         uses: actions/setup-go@v5
         with:
-          go-version: "1.26"
+          go-version: "1.26.5"
       - name: archguard
         run: go run ./tools/archguard

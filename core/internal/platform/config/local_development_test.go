@@ -6,13 +6,9 @@ import (
 	"time"
 )
 
-func TestDevelopmentOmitsFormsClamAVOwnerAndKMS(t *testing.T) {
+func TestDevelopmentOmitsClamAVOwnerAndKMS(t *testing.T) {
 	now := time.Date(2026, 7, 16, 0, 0, 0, 0, time.UTC)
 	entries := validAPIEnvironmentAt(now)
-	for _, key := range append(formsExportArtifactKeys(), formsImportSourceArtifactKeys()...) {
-		entries = withoutEnvironmentKey(entries, key)
-	}
-	entries = withoutEnvironmentKey(entries, formsImportSourceStagingKey)
 	entries = withoutEnvironmentKey(entries, documentsOwnerKey)
 	entries = withoutEnvironmentKey(entries, documentsClamAVAddressKey)
 	entries = withoutEnvironmentKey(entries, iamTOTPKMSKeyIDEnvironmentKey)
@@ -43,13 +39,6 @@ func TestProductionStillRequiresIAMKMSAndBucketOwner(t *testing.T) {
 	_, optional, err := resolveBucketOwner(environmentValues{}, documentsOwnerKey, EnvironmentDevelopment, true)
 	if err != nil || !optional {
 		t.Fatalf("development owner = %t, %v", optional, err)
-	}
-	_, err = loadOptionalFormsExport(environmentValues{}, EnvironmentProduction)
-	if err == nil || !strings.Contains(err.Error(), "HARPY_FORMS_") {
-		t.Fatalf("production forms error = %v", err)
-	}
-	if _, err := loadOptionalFormsExport(environmentValues{}, EnvironmentDevelopment); err != nil {
-		t.Fatal(err)
 	}
 }
 

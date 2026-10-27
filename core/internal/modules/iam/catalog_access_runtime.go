@@ -2,10 +2,10 @@ package iam
 
 import "fmt"
 
-type CatalogAccessRuntime struct{ shared *FormsRecordAccessRuntime }
+type CatalogAccessRuntime struct{ shared *accessRequestDependencies }
 
 func NewCatalogAccessRuntime(
-	shared *FormsRecordAccessRuntime,
+	shared *accessRequestDependencies,
 ) (*CatalogAccessRuntime, error) {
 	if shared == nil || shared.pool == nil || shared.coordinator == nil ||
 		shared.security == nil || shared.clock == nil {

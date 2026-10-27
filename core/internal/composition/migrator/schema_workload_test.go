@@ -7,14 +7,13 @@ import (
 	"time"
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/admission"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemaexecutor"
 )
 
-type schemaLoopFunc func(context.Context, schemaexecutor.Admission) error
+type schemaLoopFunc func(context.Context, *admission.Gate) error
 
 func (run schemaLoopFunc) Run(
 	ctx context.Context,
-	gate schemaexecutor.Admission,
+	gate *admission.Gate,
 ) error {
 	return run(ctx, gate)
 }
@@ -22,7 +21,7 @@ func (run schemaLoopFunc) Run(
 func TestSchemaWorkloadFinishesGracefullyAfterDrain(t *testing.T) {
 	gate := &admission.Gate{}
 	started := make(chan struct{})
-	loop := schemaLoopFunc(func(_ context.Context, admission schemaexecutor.Admission) error {
+	loop := schemaLoopFunc(func(_ context.Context, admission *admission.Gate) error {
 		close(started)
 		for !admission.Draining() {
 			time.Sleep(time.Millisecond)
@@ -47,7 +46,7 @@ func TestSchemaWorkloadFinishesGracefullyAfterDrain(t *testing.T) {
 func TestSchemaWorkloadForwardsUnexpectedFailure(t *testing.T) {
 	expected := errors.New("executor failed")
 	workload, err := startSchemaWorkload(
-		schemaLoopFunc(func(context.Context, schemaexecutor.Admission) error {
+		schemaLoopFunc(func(context.Context, *admission.Gate) error {
 			return expected
 		}),
 		&admission.Gate{},
@@ -64,7 +63,7 @@ func TestSchemaWorkloadRejectsCleanStopBeforeDrain(t *testing.T) {
 	gate := &admission.Gate{}
 	gate.Open()
 	workload, err := startSchemaWorkload(
-		schemaLoopFunc(func(context.Context, schemaexecutor.Admission) error {
+		schemaLoopFunc(func(context.Context, *admission.Gate) error {
 			return nil
 		}),
 		gate,
@@ -80,7 +79,7 @@ func TestSchemaWorkloadRejectsCleanStopBeforeDrain(t *testing.T) {
 func TestSchemaWorkloadForceCancelsLoop(t *testing.T) {
 	started := make(chan struct{})
 	workload, err := startSchemaWorkload(
-		schemaLoopFunc(func(ctx context.Context, _ schemaexecutor.Admission) error {
+		schemaLoopFunc(func(ctx context.Context, _ *admission.Gate) error {
 			close(started)
 			<-ctx.Done()
 			return ctx.Err()

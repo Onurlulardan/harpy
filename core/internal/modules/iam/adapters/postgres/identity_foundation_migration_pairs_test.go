@@ -30,9 +30,8 @@ func TestIAMIdentityMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamIdentityMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted migration content differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			assertIAMIdentityMigrationSource(t, fresh)
 		})

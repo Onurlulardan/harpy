@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "operations": [
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/adapters/postgres/runtime","layer":"adapters/postgres","resource":"runtime","operation":"cancel","source":"core/internal/modules/workflow/adapters/postgres/runtime/cancel.go","test":"core/internal/modules/workflow/adapters/postgres/runtime/cancel_test.go","application_operation":"core/internal/modules/workflow/application/runtime/cancel.go"},
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/adapters/postgres/runtime","layer":"adapters/postgres","resource":"runtime","operation":"get","source":"core/internal/modules/workflow/adapters/postgres/runtime/get.go","test":"core/internal/modules/workflow/adapters/postgres/runtime/get_test.go","application_operation":"core/internal/modules/workflow/application/runtime/get.go"},
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/adapters/postgres/runtime","layer":"adapters/postgres","resource":"runtime","operation":"start","source":"core/internal/modules/workflow/adapters/postgres/runtime/start.go","test":"core/internal/modules/workflow/adapters/postgres/runtime/start_test.go","application_operation":"core/internal/modules/workflow/application/runtime/start.go"}
-  ]
-}

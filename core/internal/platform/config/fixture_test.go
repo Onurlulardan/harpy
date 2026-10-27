@@ -40,8 +40,6 @@ func validWorkerEnvironmentAt(now time.Time) []string {
 		cursorKeyringEnvironmentEntry(),
 		catalogPackageKeyringEnvironmentEntry(),
 	)
-	entries = append(entries, validFormsExportEnvironment(true)...)
-	entries = append(entries, validFormsImportSourceEnvironment(false)...)
 	entries = append(entries, validAnalyticsDashboardExportEnvironment(true)...)
 	entries = append(entries, validIAMSystemTransferEnvironment()...)
 	entries = append(entries, validDocumentsEnvironment(true)...)
@@ -82,8 +80,6 @@ func validAPIEnvironmentAt(now time.Time) []string {
 	entries := append(validEnvironment(), cursorKeyringEnvironmentEntry(),
 		catalogPackageKeyringEnvironmentEntry(),
 		deploymentModeEnvironmentKey+"=saas")
-	entries = append(entries, validFormsExportEnvironment(false)...)
-	entries = append(entries, validFormsImportSourceEnvironment(true)...)
 	entries = append(entries, validAnalyticsDashboardExportEnvironment(false)...)
 	entries = append(entries, validIAMSystemTransferEnvironment()...)
 	entries = append(entries, validDocumentsEnvironment(false)...)

@@ -12,18 +12,13 @@ import (
 func TestProtectedCutoverMigrationsArePairedBoundedAndSealed(t *testing.T) {
 	root := filepath.Join("..", "..", "..", "migrations", "platform")
 	fresh := billingProtectedPaths(t, filepath.Join(root, "fresh"), ".fresh.sql")
-	adopted := billingProtectedPaths(
-		t, filepath.Join(root, "v1_adopted"), ".v1_adopted.sql",
-	)
-	if len(fresh) != 13 || len(adopted) != len(fresh) {
-		t.Fatalf("Billing protected migration count fresh=%d adopted=%d",
-			len(fresh), len(adopted))
+	if len(fresh) != 13 {
+		t.Fatalf("Billing protected fresh migration count=%d", len(fresh))
 	}
 	for index := range fresh {
 		left := readBillingProtectedMigration(t, fresh[index])
-		right := readBillingProtectedMigration(t, adopted[index])
-		if !bytes.Equal(left, right) {
-			t.Fatalf("paired Billing migration differs: %s", filepath.Base(fresh[index]))
+		if len(left) == 0 {
+			t.Fatalf("Billing protected migration is empty: %s", filepath.Base(fresh[index]))
 		}
 		if lines := bytes.Count(left, []byte("\n")) + 1; lines > 200 {
 			t.Fatalf("Billing migration has %d lines: %s", lines, filepath.Base(fresh[index]))

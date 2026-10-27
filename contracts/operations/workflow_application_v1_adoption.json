@@ -1,7 +1,0 @@
-{
-  "version": 1,
-  "operations": [
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/v1cutover","layer":"application","resource":"v1cutover","operation":"copy","source":"core/internal/modules/workflow/application/v1cutover/copy.go","test":"core/internal/modules/workflow/application/v1cutover/copy_test.go","authority_id":"workflow.v1adoption.copy"},
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/v1cutover","layer":"application","resource":"v1cutover","operation":"reconcile","source":"core/internal/modules/workflow/application/v1cutover/reconcile.go","test":"core/internal/modules/workflow/application/v1cutover/reconcile_test.go","authority_id":"workflow.v1adoption.reconcile"}
-  ]
-}

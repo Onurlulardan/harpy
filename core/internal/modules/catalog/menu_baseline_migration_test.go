@@ -13,11 +13,7 @@ const (
 )
 
 func TestEmptyMenuBaselineMigrationIsPairedAndDataPreserving(t *testing.T) {
-	pair := catalogMenuMigrationPair(t, emptyMenuBaselineVersion)
-	if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-		t.Fatal("Catalog empty menu baseline migration is not byte-identical and paired")
-	}
-	source := pair["fresh"]
+	source := catalogMenuMigration(t, emptyMenuBaselineVersion)
 	for _, marker := range []string{
 		"ON CONFLICT (definition_id) DO NOTHING",
 		"definition.active_version_id IS NULL",
@@ -41,11 +37,7 @@ func TestEmptyMenuBaselineMigrationIsPairedAndDataPreserving(t *testing.T) {
 }
 
 func TestEmptyMenuV1TargetRepairIsPairedAndFailClosed(t *testing.T) {
-	pair := catalogMenuMigrationPair(t, emptyMenuRepairVersion)
-	if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-		t.Fatal("Catalog empty menu target repair is not byte-identical and paired")
-	}
-	source := pair["fresh"]
+	source := catalogMenuMigration(t, emptyMenuRepairVersion)
 	for _, marker := range []string{
 		"CREATE FUNCTION catalog_retract_empty_menu_from_v1_target_v1(",
 		"p_expected_owner IS DISTINCT FROM 'harpy_owner'::name",
@@ -78,7 +70,7 @@ func TestEmptyMenuV1TargetRepairIsPairedAndFailClosed(t *testing.T) {
 	}
 }
 
-func catalogMenuMigrationPair(t *testing.T, version string) map[string]string {
+func catalogMenuMigration(t *testing.T, version string) string {
 	t.Helper()
 	matches, err := filepath.Glob(filepath.Join(
 		"migrations", "tenant", "fresh", version+"_*.fresh.sql",
@@ -88,16 +80,8 @@ func catalogMenuMigrationPair(t *testing.T, version string) map[string]string {
 			version, len(matches), err)
 	}
 	fresh, err := os.ReadFile(matches[0])
-	if err != nil {
-		t.Fatal(err)
+	if err != nil || len(fresh) == 0 {
+		t.Fatalf("catalog menu migration %s did not load: %v", version, err)
 	}
-	adoptedName := strings.TrimSuffix(filepath.Base(matches[0]), ".fresh.sql") +
-		".v1_adopted.sql"
-	adopted, err := os.ReadFile(filepath.Join(
-		"migrations", "tenant", "v1_adopted", adoptedName,
-	))
-	if err != nil {
-		t.Fatal(err)
-	}
-	return map[string]string{"fresh": string(fresh), "v1_adopted": string(adopted)}
+	return string(fresh)
 }

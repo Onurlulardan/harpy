@@ -6,7 +6,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
 	"testing"
 	"time"
 
@@ -85,12 +84,9 @@ func applyAuditOrigin(
 	if err != nil {
 		t.Fatal(err)
 	}
-	needle := "/migrations/tenant/" + origin + "/"
 	for _, document := range documents {
-		if strings.Contains(document.Path(), needle) {
-			if _, err = connection.ExecContext(ctx, string(document.Content())); err != nil {
-				t.Fatalf("apply %s: %v", document.Path(), err)
-			}
+		if _, err = connection.ExecContext(ctx, string(document.Content())); err != nil {
+			t.Fatalf("apply %s: %v", document.Path(), err)
 		}
 	}
 	return connection, schema

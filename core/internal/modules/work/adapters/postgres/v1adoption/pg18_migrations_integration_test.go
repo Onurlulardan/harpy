@@ -17,26 +17,29 @@ type workMigrationDocument struct {
 	content []byte
 }
 
-func loadWorkMigrations(t *testing.T, origin string) []workMigrationDocument {
+func loadWorkMigrations(t *testing.T) []workMigrationDocument {
 	t.Helper()
 	workingDirectory, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
 	}
 	directory := filepath.Join(workingDirectory, "..", "..", "..",
-		"migrations", "tenant", origin)
+		"migrations", "tenant", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)
 	}
 	documents := make([]workMigrationDocument, 0, 32)
 	for _, entry := range entries {
-		if !entry.Type().IsRegular() || !strings.HasSuffix(entry.Name(), ".sql") {
+		if !entry.Type().IsRegular() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
 			continue
 		}
 		content, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
 		if readErr != nil {
 			t.Fatal(readErr)
+		}
+		if len(content) == 0 {
+			t.Fatalf("fresh migration empty: %s", entry.Name())
 		}
 		documents = append(documents, workMigrationDocument{entry.Name(), content})
 	}
@@ -44,7 +47,7 @@ func loadWorkMigrations(t *testing.T, origin string) []workMigrationDocument {
 		return documents[left].name < documents[right].name
 	})
 	if len(documents) != 32 {
-		t.Fatalf("Work %s migration count = %d, want 32", origin, len(documents))
+		t.Fatalf("Work fresh migration count = %d, want 32", len(documents))
 	}
 	return documents
 }
@@ -70,11 +73,10 @@ func prepareWorkSchemas(t *testing.T, ctx context.Context,
 		"work_adopted_a": seedLegacyWork(t, ctx, database, "work_adopted_a", "Adopted A", 21),
 		"work_adopted_b": seedLegacyWork(t, ctx, database, "work_adopted_b", "Adopted B", 22),
 	}
-	tracks := map[string]string{"work_fresh_a": "fresh", "work_fresh_b": "fresh",
-		"work_adopted_a": "v1_adopted", "work_adopted_b": "v1_adopted"}
-	for schema, origin := range tracks {
-		prepareWorkTenantIdentity(t, ctx, database, schema, origin)
-		for _, document := range loadWorkMigrations(t, origin) {
+	documents := loadWorkMigrations(t)
+	for _, schema := range []string{"work_fresh_a", "work_fresh_b", "work_adopted_a", "work_adopted_b"} {
+		prepareWorkTenantIdentity(t, ctx, database, schema, workIdentityOrigin(schema))
+		for _, document := range documents {
 			workInSchema(t, ctx, database, schema, func(transaction *sql.Tx) {
 				if _, err := transaction.ExecContext(ctx, string(document.content)); err != nil {
 					t.Fatalf("apply %s to %s: %v", document.name, schema, err)
@@ -83,6 +85,13 @@ func prepareWorkSchemas(t *testing.T, ctx context.Context,
 		}
 	}
 	return fixtures
+}
+
+func workIdentityOrigin(schema string) string {
+	if schema == "work_adopted_a" || schema == "work_adopted_b" {
+		return "v1_adopted"
+	}
+	return "new"
 }
 
 func workInSchema(t *testing.T, ctx context.Context, database *sql.DB,

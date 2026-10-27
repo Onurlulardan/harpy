@@ -18,9 +18,8 @@ func TestIAMSelfProfileMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamSelfProfileMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("self profile migration differs by origin")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("self profile migration exceeds 200 lines")

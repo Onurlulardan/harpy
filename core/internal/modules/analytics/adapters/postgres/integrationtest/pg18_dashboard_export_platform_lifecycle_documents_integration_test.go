@@ -14,9 +14,6 @@ import (
 
 func analyticsDashboardExportOrigin(t *testing.T) string {
 	t.Helper()
-	if strings.Contains(t.Name(), "v1_adopted") {
-		return "v1_adopted"
-	}
 	return "fresh"
 }
 
@@ -69,6 +66,9 @@ func selectAnalyticsDashboardExportPlatformDocuments(t *testing.T, origin string
 	wanted map[string]bool,
 ) []platformmigration.Document {
 	t.Helper()
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Platform Analytics export origin %q is unsupported", origin)
+	}
 	documents, err := platformasync.MigrationDocuments()
 	if err != nil {
 		t.Fatal(err)
@@ -77,7 +77,7 @@ func selectAnalyticsDashboardExportPlatformDocuments(t *testing.T, origin string
 	for _, document := range documents {
 		name := path.Base(document.Path())
 		stamp := strings.SplitN(name, "_", 2)[0]
-		if strings.Contains(document.Path(), "/"+origin+"/") && wanted[stamp] {
+		if strings.Contains(document.Path(), "/fresh/") && wanted[stamp] {
 			selected = append(selected, document)
 			delete(wanted, stamp)
 		}

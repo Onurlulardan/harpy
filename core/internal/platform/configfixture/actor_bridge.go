@@ -21,8 +21,7 @@ const actorBridgeKeyID = "edge-2026-07"
 var actorBridgeDomains = []actorassertionv1.Domain{
 	actorassertionv1.DomainAnalytics, actorassertionv1.DomainBilling,
 	actorassertionv1.DomainCatalog, actorassertionv1.DomainDocuments,
-	actorassertionv1.DomainForms, actorassertionv1.DomainNotifications,
-	actorassertionv1.DomainWork, actorassertionv1.DomainWorkflow,
+	actorassertionv1.DomainNotifications, actorassertionv1.DomainWork,
 }
 
 func actorBridgeFixture(directory string, now time.Time) ([]entry, error) {

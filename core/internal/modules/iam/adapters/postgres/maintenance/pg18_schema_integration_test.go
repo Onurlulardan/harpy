@@ -69,9 +69,6 @@ func prepareMaintenancePG18Schemas(
 	if _, err := database.ExecContext(ctx, maintenancePG18SchemaSQL); err != nil {
 		t.Fatalf("prepare maintenance schemas: %v", err)
 	}
-	if origin == "v1_adopted" {
-		seedMaintenancePG18V1Snapshot(t, ctx, database)
-	}
 }
 
 func execMaintenancePG18Tenant(

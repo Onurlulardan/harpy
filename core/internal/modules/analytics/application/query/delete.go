@@ -5,7 +5,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	analyticsforms "github.com/Onurlulardan/harpy/core/internal/modules/analytics/api/formsreference"
 	analyticsquery "github.com/Onurlulardan/harpy/core/internal/modules/analytics/domain/query"
 	billingapi "github.com/Onurlulardan/harpy/core/internal/modules/billing/api"
 	platformtx "github.com/Onurlulardan/harpy/core/internal/platform/transaction"
@@ -66,11 +65,6 @@ func (application *Application) deleteBound(
 		result.Lifecycle != analyticsquery.LifecycleRetired || (!replay &&
 		result.RootRevision != request.ExpectedRootRevision+1) || replay != decision.Replay {
 		return Snapshot{}, ErrUnavailable
-	}
-	if err = application.references.DecommissionSource(
-		ctx, scope, analyticsforms.ID(result.QueryID), nil, now,
-	); err != nil {
-		return Snapshot{}, fmt.Errorf("release Analytics Forms references: %w", err)
 	}
 	application.invalidate(ctx, request.QueryID)
 	return result, nil

@@ -11,30 +11,25 @@ func TestV1EnvironmentAdoptionMigrationsBindSignedCompositeContracts(t *testing.
 	if err != nil {
 		t.Fatal(err)
 	}
-	versions := map[string]map[string]string{}
+	versions := map[string]string{}
 	for _, document := range documents {
-		path := document.Path()
+		documentPath := document.Path()
+		if !strings.Contains(documentPath, "/fresh/") {
+			continue
+		}
 		for _, version := range []string{"20260723114004", "20260723114005", "20260723114006"} {
-			if !strings.Contains(path, version) {
-				continue
+			if strings.Contains(documentPath, version) {
+				versions[version] = string(document.Content())
 			}
-			origin := "fresh"
-			if strings.Contains(path, "/v1_adopted/") {
-				origin = "v1_adopted"
-			}
-			if versions[version] == nil {
-				versions[version] = map[string]string{}
-			}
-			versions[version][origin] = string(document.Content())
 		}
 	}
-	for version, origins := range versions {
-		if len(origins) != 2 || origins["fresh"] != origins["v1_adopted"] {
-			t.Fatalf("migration %s is not an exact origin pair", version)
+	for _, version := range []string{"20260723114004", "20260723114005", "20260723114006"} {
+		if versions[version] == "" {
+			t.Fatalf("fresh migration %s did not load", version)
 		}
 	}
-	combined := versions["20260723114004"]["fresh"] +
-		versions["20260723114005"]["fresh"] + versions["20260723114006"]["fresh"]
+	combined := versions["20260723114004"] +
+		versions["20260723114005"] + versions["20260723114006"]
 	for _, token := range []string{
 		"platform-v1-environment-adoption.v1",
 		"platform-v1-environment-completion.v1",

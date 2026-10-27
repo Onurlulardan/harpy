@@ -5,7 +5,6 @@ package integrationtest
 import (
 	"context"
 	"database/sql"
-	"strings"
 	"testing"
 	"time"
 
@@ -66,7 +65,7 @@ func startUsageDatabase(t *testing.T, ctx context.Context) *sql.DB {
 	return database
 }
 
-func resetAndApplyUsage(t *testing.T, ctx context.Context, database *sql.DB, origin string) {
+func resetAndApplyUsage(t *testing.T, ctx context.Context, database *sql.DB) {
 	t.Helper()
 	if _, err := database.ExecContext(ctx, `DROP SCHEMA IF EXISTS platform CASCADE;
 CREATE SCHEMA platform; GRANT USAGE ON SCHEMA platform TO harpy_runtime,harpy_adopter`); err != nil {
@@ -76,12 +75,9 @@ CREATE SCHEMA platform; GRANT USAGE ON SCHEMA platform TO harpy_runtime,harpy_ad
 	if err != nil {
 		t.Fatal(err)
 	}
-	needle := "/migrations/platform/" + origin + "/"
 	for _, document := range documents {
-		if strings.Contains(document.Path(), needle) {
-			if _, err = database.ExecContext(ctx, string(document.Content())); err != nil {
-				t.Fatalf("apply %s: %v", document.Path(), err)
-			}
+		if _, err = database.ExecContext(ctx, string(document.Content())); err != nil {
+			t.Fatalf("apply %s: %v", document.Path(), err)
 		}
 	}
 }
@@ -90,7 +86,5 @@ func TestUsageMigrationsApplyOnPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 	database := startUsageDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) { resetAndApplyUsage(t, ctx, database, origin) })
-	}
+	resetAndApplyUsage(t, ctx, database)
 }

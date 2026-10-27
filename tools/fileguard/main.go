@@ -24,7 +24,7 @@ var forbiddenGoNames = map[string]bool{
 }
 
 var ignoredDirectories = map[string]bool{
-	".git": true, "vendor": true, "node_modules": true,
+	".git": true, "vendor": true, "node_modules": true, "bin": true,
 }
 
 func main() {

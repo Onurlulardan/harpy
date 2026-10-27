@@ -44,8 +44,8 @@ func verifyContractRetirementAdoptedMigrations(
 	if _, err := migrator.Exec(ctx, "SET ROLE harpy_owner; CREATE SCHEMA platform"); err != nil {
 		t.Fatal(err)
 	}
-	prepareReadinessSurfaces(t, ctx, migrator, "v1_adopted")
-	applyContractRetirementMigrationVariant(t, ctx, migrator, "v1_adopted")
+	prepareReadinessSurfaces(t, ctx, migrator, "fresh")
+	applyContractRetirementMigrationVariant(t, ctx, migrator, "fresh")
 	assertCutoverFunctionAuthority(t, ctx, admin)
 }
 
@@ -53,7 +53,10 @@ func applyContractRetirementMigrationVariant(
 	t *testing.T, ctx context.Context, connection *pgx.Conn, variant string,
 ) {
 	t.Helper()
-	directory := filepath.Join("..", "..", "migrations", variant)
+	if variant != "fresh" {
+		t.Fatal("fresh contract retirement migrations did not load")
+	}
+	directory := filepath.Join("..", "..", "migrations", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)

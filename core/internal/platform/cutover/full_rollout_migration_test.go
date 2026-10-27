@@ -14,30 +14,25 @@ func TestFullRolloutCompletionMigrationsArePairedAndForwardOnly(t *testing.T) {
 	versions := []string{
 		"20260718230000", "20260718230001", "20260718230002", "20260718230003",
 	}
-	pairs := make(map[string]map[string]string, len(versions))
+	fresh := make(map[string]string, len(versions))
 	for _, document := range documents {
 		name := path.Base(document.Path())
+		if !strings.HasSuffix(name, ".fresh.sql") {
+			continue
+		}
 		for _, version := range versions {
-			if !strings.HasPrefix(name, version+"_") {
-				continue
+			if strings.HasPrefix(name, version+"_") {
+				fresh[version] = string(document.Content())
 			}
-			origin := "fresh"
-			if strings.Contains(name, ".v1_adopted.sql") {
-				origin = "v1_adopted"
-			}
-			if pairs[version] == nil {
-				pairs[version] = map[string]string{}
-			}
-			pairs[version][origin] = string(document.Content())
 		}
 	}
 	for _, version := range versions {
-		pair := pairs[version]
-		if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-			t.Fatalf("full rollout migration %s is not byte-identical and paired", version)
+		source := fresh[version]
+		if source == "" {
+			t.Fatalf("fresh full rollout migration %s did not load", version)
 		}
-		if strings.Count(pair["fresh"], "-- +goose Up") != 1 ||
-			strings.Contains(pair["fresh"], "-- +goose Down") {
+		if strings.Count(source, "-- +goose Up") != 1 ||
+			strings.Contains(source, "-- +goose Down") {
 			t.Fatalf("full rollout migration %s is not one forward-only Goose block", version)
 		}
 	}

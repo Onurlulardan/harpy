@@ -23,39 +23,6 @@ const (
 	publicationTargetV3ID   = "41000000-0000-4000-8000-000000000003"
 )
 
-func seedPublicationV1Snapshot(
-	t *testing.T, ctx context.Context, db publicationDatabase,
-) {
-	t.Helper()
-	if db.tenant.origin != "v1_adopted" {
-		return
-	}
-	const sql = `SET ROLE harpy_owner;
-SET search_path TO t_profile_publication,pg_catalog;
-CREATE TABLE organizations_form_table(
- id uuid PRIMARY KEY,tenant_id uuid NOT NULL,name varchar(255) NOT NULL,
- slug varchar(255) NOT NULL,status varchar(255),parent_id varchar(255));
-CREATE TABLE roles_form_table(
- id uuid PRIMARY KEY,tenant_id uuid NOT NULL,name varchar(255) NOT NULL,
- organization_id varchar(255),is_default boolean);
-CREATE TABLE users_form_table(
- id uuid PRIMARY KEY,tenant_id uuid NOT NULL,email varchar(255) NOT NULL,
- password varchar(255),role_ids text[],organization_id varchar(255),status varchar(255),
- token_version integer NOT NULL,account_type varchar(30) NOT NULL,
- portal_subject_type varchar(100),portal_subject_id uuid,
- portal_profile_form_slug varchar(255),portal_login_identifier varchar(100),
- portal_identifier_field varchar(255),portal_setup_required boolean NOT NULL,
- portal_setup_completed_at timestamp,workflow_status varchar(50));
-CREATE TABLE refresh_tokens(
- id uuid PRIMARY KEY,user_id uuid NOT NULL,token_hash varchar(255) NOT NULL,
- expires_at timestamp NOT NULL);
-RESET search_path;
-RESET ROLE;`
-	if _, err := db.admin.Exec(ctx, sql); err != nil {
-		t.Fatalf("seed v1 adopted publication snapshot: %v", err)
-	}
-}
-
 func publicationSourceSchema(t *testing.T) profileapp.Schema {
 	t.Helper()
 	field, err := profileapp.NewField(profileapp.FieldInput{

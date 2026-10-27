@@ -14,11 +14,8 @@ func TestIAMTenantObservabilityAuthorityMigrationContract(t *testing.T) {
 	fresh := readIAMIdentityMigration(
 		t, "fresh", iamTenantObservabilityAuthorityMigration,
 	)
-	adopted := readIAMIdentityMigration(
-		t, "v1_adopted", iamTenantObservabilityAuthorityMigration,
-	)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("IAM tenant observability authority migration origin pair differs")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 		t.Fatal("IAM tenant observability authority migration exceeds 200 lines")

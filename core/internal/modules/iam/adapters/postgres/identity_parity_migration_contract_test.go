@@ -41,9 +41,8 @@ func TestIAMIdentityParityMigrationsArePairedAndBounded(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", test.name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", test.name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted migrations differ")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("IAM identity parity migration exceeds 200 lines")

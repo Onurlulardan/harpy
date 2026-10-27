@@ -30,31 +30,20 @@ func notificationRepositoryRoot(t *testing.T) string {
 
 func assertNotificationMigrationPairs(t *testing.T, root, scope string, want int) {
 	t.Helper()
-	base := filepath.Join(root, "core", "internal", "modules", "notifications", "migrations", scope)
-	fresh, err := os.ReadDir(filepath.Join(base, "fresh"))
+	base := filepath.Join(root, "core", "internal", "modules", "notifications", "migrations", scope, "fresh")
+	fresh, err := os.ReadDir(base)
 	if err != nil || len(fresh) != want {
 		t.Fatalf("%s fresh migrations=%d want=%d err=%v", scope, len(fresh), want, err)
 	}
-	adopted, err := os.ReadDir(filepath.Join(base, "v1_adopted"))
-	if err != nil || len(adopted) != want {
-		t.Fatalf("%s adopted migrations=%d want=%d err=%v", scope, len(adopted), want, err)
-	}
-	byVersion := make(map[string]string, len(adopted))
-	for _, entry := range adopted {
-		byVersion[strings.SplitN(entry.Name(), "_", 2)[0]] = entry.Name()
-	}
 	for _, entry := range fresh {
-		version := strings.SplitN(entry.Name(), "_", 2)[0]
-		other, found := byVersion[version]
-		if !found {
-			t.Fatalf("%s migration %s lacks adopted pair", scope, entry.Name())
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
+			t.Fatalf("%s fresh entry %s is not .fresh.sql", scope, entry.Name())
 		}
-		left, leftErr := os.ReadFile(filepath.Join(base, "fresh", entry.Name()))
-		right, rightErr := os.ReadFile(filepath.Join(base, "v1_adopted", other))
-		if leftErr != nil || rightErr != nil || !bytes.Equal(left, right) {
-			t.Fatalf("%s migration pair %s differs: %v/%v", scope, version, leftErr, rightErr)
+		body, readErr := os.ReadFile(filepath.Join(base, entry.Name()))
+		if readErr != nil || len(body) == 0 {
+			t.Fatalf("%s migration %s did not load: %v", scope, entry.Name(), readErr)
 		}
-		if bytes.Count(left, []byte("-- +goose StatementBegin")) > 1 {
+		if bytes.Count(body, []byte("-- +goose StatementBegin")) > 1 {
 			t.Fatalf("%s migration %s has multiple StatementBegin blocks", scope, entry.Name())
 		}
 	}

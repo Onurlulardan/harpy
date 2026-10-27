@@ -25,9 +25,8 @@ func TestIAMRBACMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamRBACMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and V1-adopted RBAC migration differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			assertIAMRBACMigrationSource(t, fresh)
 		})

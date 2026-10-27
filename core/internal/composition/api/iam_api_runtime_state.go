@@ -23,10 +23,7 @@ type iamAPIRuntime struct {
 	tenantSettingsAccess       *iammodule.TenantSettingsAccessRuntime
 	platformAccess             *iammodule.PlatformAccessRuntime
 	customerProvisioningAccess *iammodule.CustomerProvisioningAccessRuntime
-	formsRecordAccess          *iammodule.FormsRecordAccessRuntime
 	portalAccess               *iammodule.PortalAccessRuntime
-	formsLifecycleAccess       *iammodule.FormsLifecycleAccessRuntime
-	workflowAccess             *iammodule.WorkflowAccessRuntime
 	analyticsAccess            *iammodule.AnalyticsAccessRuntime
 	catalogAccess              *iammodule.CatalogAccessRuntime
 	documentsAccess            *iammodule.DocumentsAccessRuntime
@@ -35,7 +32,6 @@ type iamAPIRuntime struct {
 	workAccess                 *iammodule.WorkAccessRuntime
 	analyticsPrincipals        *iammodule.AnalyticsPrincipalPermissionRuntime
 	servicePrincipals          *iammodule.ServicePrincipalRuntime
-	humanTaskAccess            *iammodule.HumanTaskAccessRuntime
 	systemLayoutAccess         *iammodule.SystemLayoutAccessRuntime
 	authApplication            iammodule.AuthHTTPApplication
 	identityApplication        iammodule.IdentityHTTPApplication

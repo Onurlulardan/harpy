@@ -5,6 +5,7 @@ package integrationtest
 import (
 	"context"
 	"database/sql"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -109,8 +110,10 @@ func catalogMenuRepairBody(t *testing.T) string {
 		t.Fatal(err)
 	}
 	for _, document := range documents {
-		if strings.Contains(document.Path(), "20260728105100_") &&
-			strings.Contains(document.Path(), ".v1_adopted.sql") {
+		path := filepath.ToSlash(document.Path())
+		if strings.Contains(path, "20260728105100_") &&
+			strings.Contains(path, "/tenant/fresh/") &&
+			strings.HasSuffix(path, ".fresh.sql") {
 			return string(document.Content())
 		}
 	}

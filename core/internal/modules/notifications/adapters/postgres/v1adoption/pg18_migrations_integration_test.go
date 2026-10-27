@@ -36,7 +36,7 @@ CREATE TABLE platform.jobs (
 }
 
 func prepareNotificationTenant(t *testing.T, ctx context.Context, connection *pgx.Conn,
-	origin, schema string, source bool,
+	schema string, source bool,
 ) {
 	t.Helper()
 	if _, err := connection.Exec(ctx, "CREATE SCHEMA "+schema+" AUTHORIZATION harpy_owner"); err != nil {
@@ -45,7 +45,7 @@ func prepareNotificationTenant(t *testing.T, ctx context.Context, connection *pg
 	if source {
 		createV1NotificationSource(t, ctx, connection, schema)
 	}
-	applyNotificationMigrations(t, ctx, connection, origin, schema)
+	applyNotificationMigrations(t, ctx, connection, schema)
 	_, err := connection.Exec(ctx, `GRANT USAGE ON SCHEMA `+schema+` TO harpy_adopter;
 GRANT SELECT ON ALL TABLES IN SCHEMA `+schema+` TO harpy_adopter;`)
 	if err != nil {
@@ -70,22 +70,24 @@ func createV1NotificationSource(t *testing.T, ctx context.Context,
 }
 
 func applyNotificationMigrations(t *testing.T, ctx context.Context,
-	connection *pgx.Conn, origin, schema string,
+	connection *pgx.Conn, schema string,
 ) {
 	t.Helper()
-	directory := filepath.Join("..", "..", "..", "migrations", "tenant", origin)
+	directory := filepath.Join("..", "..", "..", "migrations", "tenant", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)
 	}
+	applied := 0
 	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), "."+origin+".sql") {
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
 			continue
 		}
 		document, err := os.ReadFile(filepath.Join(directory, entry.Name()))
-		if err != nil {
-			t.Fatal(err)
+		if err != nil || len(document) == 0 {
+			t.Fatalf("fresh migration %s did not load: %v", entry.Name(), err)
 		}
+		applied++
 		transaction, err := connection.Begin(ctx)
 		if err == nil {
 			_, err = transaction.Exec(ctx,
@@ -101,5 +103,8 @@ func applyNotificationMigrations(t *testing.T, ctx context.Context,
 		if err = transaction.Commit(ctx); err != nil {
 			t.Fatal(err)
 		}
+	}
+	if applied == 0 {
+		t.Fatal("tenant fresh migrations were not applied")
 	}
 }

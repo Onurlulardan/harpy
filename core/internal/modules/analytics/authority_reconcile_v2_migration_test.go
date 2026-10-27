@@ -1,7 +1,6 @@
 package analytics
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 
@@ -11,11 +10,8 @@ import (
 func TestAnalyticsAuthorityReconcileV2IsPairedAndCapabilityScoped(t *testing.T) {
 	const name = "20260729100018_create_analytics_authority_reconcile_v2"
 	fresh := readAnalyticsAuthorityReconcile(t, "fresh", name+".fresh.sql")
-	adopted := readAnalyticsAuthorityReconcile(
-		t, "v1_adopted", name+".v1_adopted.sql",
-	)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("analytics authority reconcile v2 variants differ")
+	if len(fresh) == 0 {
+		t.Fatal("analytics authority reconcile v2 migration is empty")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("analytics authority reconcile v2 is invalid: %v", err)

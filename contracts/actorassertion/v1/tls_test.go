@@ -25,7 +25,7 @@ func TestMutualTLSRequiresExactCoreAndDomainPeerIdentity(t *testing.T) {
 	server.StartTLS()
 	defer server.Close()
 	clientTLS, err := NewClientTLSConfig(fixture.client, fixture.roots,
-		"v1.forms.internal", DomainForms, func() time.Time { return fixture.now })
+		"v1.forms.internal", DomainDocuments, func() time.Time { return fixture.now })
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -72,7 +72,7 @@ func assertTLSFailure(t *testing.T, fixture tlsFixture, serverCertificate,
 		return
 	}
 	clientTLS, err := NewClientTLSConfig(clientCertificate, clientRoots,
-		"v1.forms.internal", DomainForms, func() time.Time { return fixture.now })
+		"v1.forms.internal", DomainDocuments, func() time.Time { return fixture.now })
 	if err != nil {
 		t.Fatal(err)
 	}

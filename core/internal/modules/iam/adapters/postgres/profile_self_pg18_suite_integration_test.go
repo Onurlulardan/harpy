@@ -9,7 +9,7 @@ import (
 )
 
 func TestIAMSelfProfileAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
 			defer cancel()
@@ -27,9 +27,6 @@ func TestIAMSelfProfileAgainstPostgreSQL184(t *testing.T) {
 			applyIAMSelfProfile(t, ctx, database, origin)
 			assertIAMSelfProfileACL(t, ctx, database)
 			assertIAMSelfProfileRuntime(t, ctx, database)
-			if origin == "v1_adopted" {
-				assertIAMV1SnapshotUnchanged(t, ctx, database)
-			}
 		})
 	}
 }

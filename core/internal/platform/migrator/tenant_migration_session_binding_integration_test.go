@@ -22,7 +22,7 @@ func TestTenantMigrationSessionPostgreSQL184RequiresExistingTargetSchema(t *test
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	fixture := newTenantMigrationFixture(t, ctx)
-	runner := fixture.runner(t, postgresv1.DatabaseOriginV1Adopted)
+	runner := fixture.runner(t, postgresv1.DatabaseOriginFresh)
 	insertTenantTarget(t, ctx, fixture.database, tenantSessionBindingTarget)
 	qualifiedSchema := pgx.Identifier{tenantSessionBindingTarget.SchemaName}.Sanitize()
 	if _, err := fixture.database.ExecContext(ctx, "DROP SCHEMA "+qualifiedSchema); err != nil {
@@ -53,6 +53,6 @@ FROM platform.tenant_migration_checkpoints WHERE tenant_id=$1`,
 		t.Fatalf("bind existing target schema: %v", err)
 	}
 	assertTenantMigrationApplied(
-		t, ctx, fixture.database, tenantSessionBindingTarget, "v1_adopted",
+		t, ctx, fixture.database, tenantSessionBindingTarget, "fresh",
 	)
 }

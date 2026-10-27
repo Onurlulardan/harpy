@@ -26,7 +26,7 @@ func seedDocumentsRecoveryUpload(t *testing.T, ctx context.Context,
  '018f0000-0000-7000-8000-000000000a32',$2,$3,$4,7,117,
  'pending.pdf','application/pdf',
  '018f0000-0000-7000-8000-000000000a33',0,'CREATED',false,
- $5,$6,$6)`, formLinkActor, documentsRecoveryFolder,
+ $5,$6,$6)`, documentsRecoveryOwner, documentsRecoveryFolder,
 			request[:], content[:], now.Add(time.Hour), now)
 		if err != nil {
 			t.Fatal(err)
@@ -51,7 +51,7 @@ func seedDocumentsRecoveryArchives(t *testing.T, ctx context.Context,
  VALUES ('018f0000-0000-7000-8000-000000000a40',$1,1,
  '018f0000-0000-7000-8000-000000000a41',$2,$3,
  '018f0000-0000-7000-8000-000000000a42','PENDING',0,0,$4,$4)`,
-			formLinkActor, pending[:], []byte("{}"), now)
+			documentsRecoveryOwner, pending[:], []byte("{}"), now)
 		if err == nil {
 			_, err = tx.ExecContext(ctx, `INSERT INTO documents_archives(
  id,actor_id,authorization_revision,job_id,request_sha256,request_document,
@@ -64,7 +64,7 @@ func seedDocumentsRecoveryArchives(t *testing.T, ctx context.Context,
  '018f0000-0000-7000-8000-000000000a45','READY',1,$4,7,117,
  $5,7,$6,'FCDOC1',$7,'archive-source-version',1,'documents-kek-1',
  $8,$9,$10,$9,$9)`,
-				formLinkActor, ready[:], []byte("{}"), entries[:],
+				documentsRecoveryOwner, ready[:], []byte("{}"), entries[:],
 				artifact[:], cipher[:], "tenants/"+fixture.tenantID+
 					"/document-archives/recovery/content", make([]byte, 115),
 				now, now.Add(24*time.Hour))

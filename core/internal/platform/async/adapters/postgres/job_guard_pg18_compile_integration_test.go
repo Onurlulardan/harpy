@@ -16,7 +16,7 @@ import (
 const asyncJobGuardLastVersion int64 = 20260715020910
 
 func TestJobGuardMigrationsCompileOnPostgreSQL18(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx := context.Background()
 			database := startAsyncMigrationDatabase(t, ctx, "job_guard_"+origin)

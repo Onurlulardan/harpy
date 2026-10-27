@@ -12,7 +12,7 @@ import (
 const iamFieldClassificationAuthorityMigration = "20260730113200_provision_iam_field_classification_authority_v1"
 
 func TestIAMFieldClassificationAuthorityAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 7*time.Minute)
 			defer cancel()

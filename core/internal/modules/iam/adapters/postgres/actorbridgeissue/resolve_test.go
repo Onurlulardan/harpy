@@ -14,7 +14,7 @@ func TestResolveRejectsUnownedScope(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := configured.Resolve(context.Background(),
-		actorbridgeissueapp.TenantScope{}, actorassertionv1.DomainForms); err == nil {
+		actorbridgeissueapp.TenantScope{}, actorassertionv1.DomainDocuments); err == nil {
 		t.Fatal("actor bridge issue store accepted an unowned scope")
 	}
 }

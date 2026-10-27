@@ -32,26 +32,39 @@ func TestSecretFileResolvesSymlinkAndOneNewline(t *testing.T) {
 	directory := t.TempDir()
 	target := filepath.Join(directory, "target")
 	link := filepath.Join(directory, "projected-secret")
-	if err := os.WriteFile(target, []byte("postgresql://user@example.invalid/db?sslmode=disable\r\n"), 0o600); err != nil {
+	const secret = "postgresql://user@example.invalid/db?sslmode=disable"
+	if err := os.WriteFile(target, []byte(secret+"\r\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.Symlink(target, link); err != nil {
 		t.Skipf("symlink unavailable: %v", err)
 	}
-	entries := []string{
-		"HARPY_ENVIRONMENT=development",
-		"HARPY_POSTGRES_ENDPOINT_KIND=direct_postgres",
-		"HARPY_POSTGRES_DSN_FILE=" + link,
-		cursorKeyringEnvironmentEntry(),
+	entries := secretFileEnvironment(link)
+	if !environmentHasKey(entries, ackTrustBundleKey) {
+		t.Fatalf("fixture missing %s", ackTrustBundleKey)
 	}
 	loaded, err := loadAPI(entries)
 	if err != nil {
 		t.Fatal(err)
 	}
-	value := loaded.LongRunning().Runtime().Postgres().DSN().Value()
-	if value != "postgresql://user@example.invalid/db?sslmode=disable" {
-		t.Fatalf("unexpected loaded secret: %q", value)
+	if loaded.LongRunning().Runtime().Postgres().DSN().Value() != secret {
+		t.Fatalf("unexpected loaded secret: %q", loaded.LongRunning().Runtime().Postgres().DSN().Value())
 	}
+}
+
+func secretFileEnvironment(path string) []string {
+	entries := withoutEnvironmentKey(validAPIEnvironment(), "HARPY_POSTGRES_DSN")
+	return append(entries, "HARPY_POSTGRES_DSN_FILE="+path)
+}
+
+func environmentHasKey(entries []string, key string) bool {
+	prefix := key + "="
+	for _, entry := range entries {
+		if strings.HasPrefix(entry, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
 func TestSecretFileRejectsNULAndDoesNotLeakPath(t *testing.T) {

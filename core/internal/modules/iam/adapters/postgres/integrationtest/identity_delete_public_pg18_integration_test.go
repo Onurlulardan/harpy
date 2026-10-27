@@ -9,14 +9,13 @@ import (
 )
 
 func TestIAMSystemResourcePublicUserDeleteAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 			defer cancel()
 
 			db := startPublicationPG18(t, ctx, origin)
 			preparePublicationCatalog(t, ctx, db)
-			seedPublicationV1Snapshot(t, ctx, db)
 			applyPublicationDocuments(t, ctx, db,
 				publicationIAMDocuments(t, origin, "tenant", "foundation"), true)
 			seedPublicationSource(t, ctx, db, publicationSourceSchema(t))

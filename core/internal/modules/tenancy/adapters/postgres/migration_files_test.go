@@ -27,26 +27,22 @@ const (
 	customerLifecycleLast   = int64(20260802232305)
 )
 
-func TestPlatformMigrationOriginsStayPaired(t *testing.T) {
+func TestPlatformMigrationFreshDocumentsLoad(t *testing.T) {
 	fresh := platformMigrationNames(t, "fresh")
-	adopted := platformMigrationNames(t, "v1_adopted")
-	if len(fresh) != 127 || len(adopted) != 127 {
-		t.Fatalf("migration counts fresh=%d adopted=%d, want 127 each", len(fresh), len(adopted))
+	if len(fresh) != 127 {
+		t.Fatalf("fresh migration count = %d, want 127", len(fresh))
 	}
-	for index := range fresh {
-		freshLogical := strings.TrimSuffix(fresh[index], ".fresh.sql")
-		adoptedLogical := strings.TrimSuffix(adopted[index], ".v1_adopted.sql")
-		if freshLogical != adoptedLogical {
-			t.Fatalf("origin pair mismatch: %q != %q", fresh[index], adopted[index])
+	for _, name := range fresh {
+		if !strings.HasSuffix(name, ".fresh.sql") || strings.Contains(name, "v1_adopted") {
+			t.Fatalf("migration %s is not fresh-only", name)
 		}
-		assertTenancyMigrationVersion(t, fresh[index])
-		assertMigrationSourcePolicy(t, "fresh", fresh[index])
-		assertMigrationSourcePolicy(t, "v1_adopted", adopted[index])
+		assertTenancyMigrationVersion(t, name)
+		assertMigrationSourcePolicy(t, "fresh", name)
 	}
 }
 
 func TestRuntimeTenantIdentityReadUsesOwnerRoutine(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		name := "20260725125320_create_tenancy_runtime_identity_resolver_v1"
 		content, err := os.ReadFile(filepath.Join(platformMigrationDirectory(origin),
 			name+"."+origin+".sql"))
@@ -67,7 +63,7 @@ func TestRuntimeTenantIdentityReadUsesOwnerRoutine(t *testing.T) {
 }
 
 func TestRuntimeTenantIdentityResolverReturnsName(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		name := "20260725125340_create_tenancy_runtime_identity_resolver_v2"
 		content, err := os.ReadFile(filepath.Join(platformMigrationDirectory(origin),
 			name+"."+origin+".sql"))
@@ -88,7 +84,7 @@ func TestRuntimeTenantIdentityResolverReturnsName(t *testing.T) {
 }
 
 func TestRuntimeTenantIdentityResolverReturnsExactTypes(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		name := "20260725125350_create_tenancy_runtime_identity_resolver_v3"
 		content, err := os.ReadFile(filepath.Join(platformMigrationDirectory(origin),
 			name+"."+origin+".sql"))
@@ -115,7 +111,7 @@ func TestActivationAssertionUsesCanonicalTenantStatus(t *testing.T) {
 		"20260725123400_fix_tenancy_activation_status_case",
 		"20260725123600_fix_legacy_tenancy_activation_status_case",
 	} {
-		for _, origin := range []string{"fresh", "v1_adopted"} {
+		for _, origin := range []string{"fresh"} {
 			content, err := os.ReadFile(filepath.Join(platformMigrationDirectory(origin),
 				name+"."+origin+".sql"))
 			if err != nil {

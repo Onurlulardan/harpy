@@ -11,7 +11,7 @@ import (
 )
 
 func TestGen70ActivationFenceAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(
 				context.Background(), 3*time.Minute,
@@ -52,7 +52,7 @@ platform.billing_installation_assign_v3(
 }
 
 func TestGen71ActivationContractAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(
 				context.Background(), 3*time.Minute,

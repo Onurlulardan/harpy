@@ -33,24 +33,6 @@ func (c Worker) IAM() (IAMWorker, error) {
 	return c.iam, nil
 }
 
-func (c Worker) FormsExportArtifacts() (FormsExportArtifacts, error) {
-	if err := c.formsExport.Validate(); err != nil {
-		return FormsExportArtifacts{}, err
-	}
-	return c.formsExport, nil
-}
-
-func (c Worker) FormsExportSpoolDirectory() AbsolutePath {
-	return c.formsExportSpool
-}
-
-func (c Worker) FormsImportSourceArtifacts() (FormsImportSourceArtifacts, error) {
-	if err := c.formsImportSource.Validate(); err != nil {
-		return FormsImportSourceArtifacts{}, err
-	}
-	return c.formsImportSource, nil
-}
-
 func (c Worker) AnalyticsDashboardExportArtifacts() (
 	AnalyticsDashboardExportArtifacts, error,
 ) {

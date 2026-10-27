@@ -9,18 +9,13 @@ import (
 )
 
 func TestIAMFoundationAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 7*time.Minute)
 			defer cancel()
 			database := startIAMFoundationPG18(t, ctx, origin)
 			applyIAMFoundation(t, ctx, database, origin)
 			seedIAMFoundationBase(t, ctx, database)
-			if origin == "v1_adopted" {
-				t.Run("legacy_coexistence", func(t *testing.T) {
-					assertIAMV1SnapshotUnchanged(t, ctx, database)
-				})
-			}
 			t.Run("catalog", func(t *testing.T) {
 				assertIAMFoundationCatalog(t, ctx, database)
 			})

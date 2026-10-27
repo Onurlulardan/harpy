@@ -1,6 +1,0 @@
-{
-  "version": 1,
-  "operations": [
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/v1httpresolution","layer":"application","resource":"v1httpresolution","operation":"resolve","source":"core/internal/modules/workflow/application/v1httpresolution/resolve_source.go","test":"core/internal/modules/workflow/application/v1httpresolution/resolve_source_test.go","authority_id":"workflow.v1adoption.compile"}
-  ]
-}

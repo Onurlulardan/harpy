@@ -18,14 +18,10 @@ func TestPlatformAuthorityMigrationsAndCASPG18(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 	database := startPlatformAuthorityDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetPlatformSchema(t, ctx, database)
-			applyAuthorityOrigin(t, ctx, database, origin)
-			exerciseAuthorityCAS(t, ctx, database)
-			exerciseDeliveryQueue(t, ctx, database)
-		})
-	}
+	resetPlatformSchema(t, ctx, database)
+	applyAuthorityFreshDocuments(t, ctx, database)
+	exerciseAuthorityCAS(t, ctx, database)
+	exerciseDeliveryQueue(t, ctx, database)
 }
 
 func resetPlatformSchema(t *testing.T, ctx context.Context, database *sql.DB) {
@@ -38,18 +34,18 @@ GRANT USAGE ON SCHEMA platform TO harpy_runtime`); err != nil {
 	}
 }
 
-func applyAuthorityOrigin(
-	t *testing.T, ctx context.Context, database *sql.DB, origin string,
+func applyAuthorityFreshDocuments(
+	t *testing.T, ctx context.Context, database *sql.DB,
 ) {
 	t.Helper()
 	documents, err := platformauthority.MigrationDocuments()
 	if err != nil {
 		t.Fatal(err)
 	}
-	needle := "/migrations/platform/" + origin + "/"
+	applied := 0
 	for _, document := range documents {
-		if !strings.Contains(document.Path(), needle) {
-			continue
+		if !strings.Contains(document.Path(), "/fresh/") {
+			t.Fatalf("migration path = %s", document.Path())
 		}
 		if _, err := database.ExecContext(ctx, string(document.Content())); err != nil {
 			var pgError *pgconn.PgError
@@ -60,5 +56,9 @@ func applyAuthorityOrigin(
 			}
 			t.Fatalf("apply %s: %v", document.Path(), err)
 		}
+		applied++
+	}
+	if applied == 0 {
+		t.Fatal("no fresh platformauthority migrations")
 	}
 }

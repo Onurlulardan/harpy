@@ -16,29 +16,24 @@ func TestSystemResourceLayoutDomainMigrationsArePaired(t *testing.T) {
 		"20260716005830", "20260716005840", "20260716005850",
 		"20260716005855",
 	}
-	byVersion := make(map[string]map[string]string, len(versions))
+	fresh := make(map[string]string, len(versions))
 	for _, document := range documents {
 		name := path.Base(document.Path())
+		if !strings.HasSuffix(name, ".fresh.sql") {
+			continue
+		}
 		for _, version := range versions {
-			if !strings.HasPrefix(name, version+"_") {
-				continue
+			if strings.HasPrefix(name, version+"_") {
+				fresh[version] = string(document.Content())
 			}
-			origin := "fresh"
-			if strings.Contains(name, ".v1_adopted.sql") {
-				origin = "v1_adopted"
-			}
-			if byVersion[version] == nil {
-				byVersion[version] = map[string]string{}
-			}
-			byVersion[version][origin] = string(document.Content())
 		}
 	}
 	for _, version := range versions {
-		pair := byVersion[version]
-		if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-			t.Fatalf("migration %s is not byte-identical and paired", version)
+		source := fresh[version]
+		if source == "" {
+			t.Fatalf("fresh migration %s did not load", version)
 		}
-		if strings.Contains(pair["fresh"], "-- +goose Down") {
+		if strings.Contains(source, "-- +goose Down") {
 			t.Fatalf("migration %s contains a destructive down section", version)
 		}
 	}

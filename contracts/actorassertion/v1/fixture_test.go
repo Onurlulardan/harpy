@@ -29,7 +29,7 @@ func newAssertionFixture(t *testing.T) assertionFixture {
 		TenantID:     uuid.MustParse("10000000-0000-4000-8000-000000000001"),
 		SubjectID:    uuid.MustParse("20000000-0000-4000-8000-000000000002"),
 		PermissionID: uuid.MustParse("30000000-0000-4000-8000-000000000003"),
-		TargetDomain: DomainForms, ResourceKey: "form.record", ActionKey: "create",
+		TargetDomain: DomainDocuments, ResourceKey: "form.record", ActionKey: "create",
 		TargetBindingSHA256: target, IAMGroupGeneration: 11, IAMGeneration: 12,
 		TargetGeneration: 13, TokenVersion: 7, AuthorizationVersion: 19,
 		AuthorizationClock: 23,

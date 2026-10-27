@@ -8,7 +8,7 @@ import (
 )
 
 func TestPublicationReadsAreActorBoundAndTableLocked(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		create := readProfileBackfillMigration(t, origin,
 			"20260716015937_create_iam_profile_backfill_publication_reads_v1")
 		grant := readProfileBackfillMigration(t, origin,
@@ -64,7 +64,7 @@ func TestStaticPublicationReadsOnlyCallGuardedRoutines(t *testing.T) {
 }
 
 func TestLineagePlanCreateUsesForwardCumulativeRoutines(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		draft := readProfileBackfillMigration(t, origin,
 			"20260716015950_create_iam_profile_backfill_draft_create_v2")
 		source := readProfileBackfillMigration(t, origin,

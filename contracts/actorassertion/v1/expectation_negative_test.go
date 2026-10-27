@@ -17,7 +17,7 @@ func TestVerifierRejectsWrongRequestAndAuthorityBinding(t *testing.T) {
 	mutations := []Expectation{fixture.expectation, fixture.expectation, fixture.expectation,
 		fixture.expectation, fixture.expectation, fixture.expectation}
 	mutations[0].TenantID[0] ^= 1
-	mutations[1].TargetDomain = DomainWorkflow
+	mutations[1].TargetDomain = DomainBilling
 	mutations[2].ResourceKey = "workflow.instance"
 	mutations[3].ActionKey = "update"
 	mutations[4].TargetBindingSHA256[0] ^= 1

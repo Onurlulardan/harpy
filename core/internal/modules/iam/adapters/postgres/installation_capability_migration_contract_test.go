@@ -44,9 +44,8 @@ func TestIAMInstallationCapabilityMigrationsStayPairedAndAdditive(t *testing.T) 
 	for _, test := range tests {
 		t.Run(test.scope, func(t *testing.T) {
 			fresh := readIAMCapabilityMigration(t, test.scope, "fresh", test.name)
-			adopted := readIAMCapabilityMigration(t, test.scope, "v1_adopted", test.name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted capability migrations differ")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("IAM installation capability migration exceeds 200 lines")

@@ -21,9 +21,8 @@ var iamRBACHTTPMigrationNames = []string{
 func TestIAMRBACHTTPMigrationsStayPairedAndBounded(t *testing.T) {
 	for _, name := range iamRBACHTTPMigrationNames {
 		fresh := readIAMIdentityMigration(t, "fresh", name)
-		adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-		if !bytes.Equal(fresh, adopted) {
-			t.Fatalf("fresh and v1_adopted RBAC HTTP migration differs: %s", name)
+		if len(fresh) == 0 {
+			t.Fatal("fresh migration is empty")
 		}
 		if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 			t.Fatalf("RBAC HTTP migration exceeds 200 lines: %s", name)

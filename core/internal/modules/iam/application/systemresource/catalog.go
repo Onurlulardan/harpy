@@ -1,9 +1,9 @@
 package systemresource
 
 import (
-	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/restquery/catalog"
+	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 )
 
 func BuildFieldCatalog(

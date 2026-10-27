@@ -13,8 +13,8 @@ import (
 
 func TestPhase9ModuleGate(t *testing.T) {
 	repository := catalogRepositoryRoot(t)
-	assertCatalogMigrationPairs(t, repository, "tenant", 44)
-	assertCatalogMigrationPairs(t, repository, "platform", 9)
+	assertCatalogFreshMigrations(t, repository, "tenant", 44)
+	assertCatalogFreshMigrations(t, repository, "platform", 9)
 	assertCatalogFileBudget(t, repository)
 	assertCatalogFragments(t, repository)
 }
@@ -28,31 +28,21 @@ func catalogRepositoryRoot(t *testing.T) string {
 	return filepath.Clean(filepath.Join(filepath.Dir(filename), "..", "..", "..", ".."))
 }
 
-func assertCatalogMigrationPairs(t *testing.T, root, scope string, want int) {
+func assertCatalogFreshMigrations(t *testing.T, root, scope string, want int) {
 	t.Helper()
-	base := filepath.Join(root, "core", "internal", "modules", "catalog", "migrations", scope)
-	fresh, err := os.ReadDir(filepath.Join(base, "fresh"))
+	base := filepath.Join(root, "core", "internal", "modules", "catalog",
+		"migrations", scope, "fresh")
+	fresh, err := os.ReadDir(base)
 	if err != nil || len(fresh) != want {
 		t.Fatalf("%s fresh migrations=%d want=%d err=%v", scope, len(fresh), want, err)
 	}
-	adopted, err := os.ReadDir(filepath.Join(base, "v1_adopted"))
-	if err != nil || len(adopted) != want {
-		t.Fatalf("%s adopted migrations=%d want=%d err=%v", scope, len(adopted), want, err)
-	}
-	byVersion := make(map[string]string, len(adopted))
-	for _, entry := range adopted {
-		byVersion[strings.SplitN(entry.Name(), "_", 2)[0]] = entry.Name()
-	}
 	for _, entry := range fresh {
-		version := strings.SplitN(entry.Name(), "_", 2)[0]
-		other, found := byVersion[version]
-		if !found {
-			t.Fatalf("%s migration %s lacks adopted pair", scope, entry.Name())
+		if !strings.HasSuffix(entry.Name(), ".fresh.sql") {
+			t.Fatalf("%s migration %s is not fresh", scope, entry.Name())
 		}
-		left, leftErr := os.ReadFile(filepath.Join(base, "fresh", entry.Name()))
-		right, rightErr := os.ReadFile(filepath.Join(base, "v1_adopted", other))
-		if leftErr != nil || rightErr != nil || !bytes.Equal(left, right) {
-			t.Fatalf("%s migration pair %s differs: %v/%v", scope, version, leftErr, rightErr)
+		body, readErr := os.ReadFile(filepath.Join(base, entry.Name()))
+		if readErr != nil || len(body) == 0 {
+			t.Fatalf("%s fresh migration %s did not load: %v", scope, entry.Name(), readErr)
 		}
 	}
 }

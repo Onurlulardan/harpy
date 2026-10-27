@@ -18,7 +18,7 @@ func TestIssueAndForwardNeverOpensNetworkWhenIAMDenies(t *testing.T) {
 	fixture := newRuntimeTLSFixtureForServer(t, "localhost")
 	var requests atomic.Int64
 	serverTLS, err := LoadServerTLSConfig(
-		fixture.server, actorassertionv1.DomainForms,
+		fixture.server, actorassertionv1.DomainDocuments,
 		func() time.Time { return fixture.now },
 	)
 	if err != nil {
@@ -61,7 +61,7 @@ func TestIssueAndForwardNeverOpensNetworkWhenIAMDenies(t *testing.T) {
 	defer forwarder.Close()
 	request, _ := http.NewRequest(http.MethodPost, "/records", bytes.NewReader([]byte("body")))
 	input, err := NewForwardInput(
-		actorassertionv1.DomainForms, "forms.records", "create", 1, 1, request,
+		actorassertionv1.DomainDocuments, "forms.records", "create", 1, 1, request,
 	)
 	if err != nil {
 		t.Fatal(err)

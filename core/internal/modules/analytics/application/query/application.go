@@ -17,18 +17,16 @@ type Application struct {
 	ids          IDSource
 	clock        Clock
 	effects      Effects
-	references   FormsReferenceCoordinator
 }
 
 func NewApplication(
 	binder StoreBinder, authorizer Authorizer,
 	entitlements billingapi.MeteredResourceMutationDecider, dependencies DependencyResolver,
 	contracts ContractPort, cache Cache, ids IDSource, clock Clock, effects Effects,
-	references FormsReferenceCoordinator,
 ) (*Application, error) {
 	for _, value := range []any{
 		binder, authorizer, entitlements, dependencies, contracts, cache, ids, clock,
-		effects, references,
+		effects,
 	} {
 		if nilPort(value) {
 			return nil, fmt.Errorf("analytics query dependencies are invalid")
@@ -36,7 +34,7 @@ func NewApplication(
 	}
 	return &Application{binder: binder, authorizer: authorizer, entitlements: entitlements,
 		dependencies: dependencies, contracts: contracts, cache: cache,
-		ids: ids, clock: clock, effects: effects, references: references}, nil
+		ids: ids, clock: clock, effects: effects}, nil
 }
 
 func nilPort(value any) bool {

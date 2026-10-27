@@ -16,14 +16,14 @@ func TestRuntimeTLSLoadsExactClientAndServerSPIFFEIdentities(t *testing.T) {
 		t.Fatalf("client identity load failed: %v", err)
 	}
 	server, err := LoadServerTLSConfig(
-		fixture.server, actorassertionv1.DomainForms, func() time.Time { return fixture.now },
+		fixture.server, actorassertionv1.DomainDocuments, func() time.Time { return fixture.now },
 	)
 	if err != nil || server.MinVersion != tls.VersionTLS13 ||
 		server.MaxVersion != tls.VersionTLS13 || server.ClientAuth != tls.RequireAndVerifyClientCert {
 		t.Fatalf("server TLS config = %#v err=%v", server, err)
 	}
 	if _, err := LoadServerTLSConfig(
-		fixture.server, actorassertionv1.DomainWorkflow, func() time.Time { return fixture.now },
+		fixture.server, actorassertionv1.DomainWork, func() time.Time { return fixture.now },
 	); !FaultIs(err, FaultUnavailable) {
 		t.Fatalf("wrong server SPIFFE error = %v", err)
 	}
@@ -42,7 +42,7 @@ func TestRuntimeTLSFailsStartupOnMalformedMaterial(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := LoadServerTLSConfig(
-		fixture.server, actorassertionv1.DomainForms, func() time.Time { return fixture.now },
+		fixture.server, actorassertionv1.DomainDocuments, func() time.Time { return fixture.now },
 	); !FaultIs(err, FaultUnavailable) {
 		t.Fatalf("malformed client CA error = %v", err)
 	}

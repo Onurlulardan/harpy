@@ -2,10 +2,10 @@ package systemresource
 
 import (
 	restquery "github.com/Onurlulardan/harpy/core/internal/capabilities/restquery/api"
-	fieldregistry "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/fieldregistry"
-	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/restquery/catalog"
+	fieldregistry "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/fieldregistry"
+	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 )
 
 func presentationField(

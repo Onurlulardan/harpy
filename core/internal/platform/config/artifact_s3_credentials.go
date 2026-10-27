@@ -76,8 +76,8 @@ func (credentials ArtifactS3Credentials) Validate() error {
 		return nil
 	}
 	if credentials.source != ArtifactStaticFiles ||
-		!validFormsExportCredential(credentials.accessKeyID.Value()) ||
-		!validFormsExportCredential(credentials.secretKey.Value()) ||
+		!validArtifactCredential(credentials.accessKeyID.Value()) ||
+		!validArtifactCredential(credentials.secretKey.Value()) ||
 		credentials.hasSession != (credentials.sessionToken.Value() != "") {
 		return errInvalidArtifactCredentials
 	}
@@ -127,7 +127,7 @@ func loadOptionalArtifactCredentialFile(values environmentValues, key string,
 		return Secret{}, false, nil
 	}
 	value, err := readSecretFile(key, path, maximum)
-	if err != nil || !validFormsExportCredential(value) {
+	if err != nil || !validArtifactCredential(value) {
 		return Secret{}, false, configError(key, "is invalid")
 	}
 	return Secret{value: value}, true, nil

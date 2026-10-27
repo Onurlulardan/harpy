@@ -23,7 +23,7 @@ type runtimeTLSFixture struct {
 }
 
 func newRuntimeTLSFixture(t *testing.T) runtimeTLSFixture {
-	return newRuntimeTLSFixtureForServer(t, "v1-forms.fixture.invalid")
+	return newRuntimeTLSFixtureForServer(t, "v1-documents.fixture.invalid")
 }
 
 func newRuntimeTLSFixtureForServer(t *testing.T, serverName string) runtimeTLSFixture {
@@ -54,7 +54,7 @@ func newRuntimeTLSFixtureForServer(t *testing.T, serverName string) runtimeTLSFi
 		x509.ExtKeyUsageClientAuth)
 	serverCert, serverKey := issueRuntimeLeaf(t, root, rootPrivate, now, 3,
 		serverName, actorassertionv1.V1EdgePeerURI(
-			actorassertionv1.DomainForms,
+			actorassertionv1.DomainDocuments,
 		), x509.ExtKeyUsageServerAuth)
 	rootPath := filepath.Join(directory, "root.crt")
 	clientCertPath := filepath.Join(directory, "client.crt")

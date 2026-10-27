@@ -29,29 +29,15 @@ func TestAuthorizerConstructorsSealExactTransactionOwner(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	formsPort, err := NewFormsAuthorizer()
-	if err != nil {
-		t.Fatal(err)
-	}
-	formsSnapshotPort, err := NewFormsSnapshotAuthorizer()
-	if err != nil {
-		t.Fatal(err)
-	}
 	analyticsPort, err := NewAnalyticsAuthorizer()
 	if err != nil {
 		t.Fatal(err)
 	}
 	iam, iamOK := iamPort.(*authorizer)
-	forms, formsOK := formsPort.(*authorizer)
-	formsSnapshot, snapshotOK := formsSnapshotPort.(*authorizer)
 	analytics, analyticsOK := analyticsPort.(*authorizer)
-	if !iamOK || !formsOK || iam.binder.Owner() != "iam" ||
-		!snapshotOK || forms.binder.Owner() != "forms" ||
-		formsSnapshot.binder.Owner() != "forms" ||
+	if !iamOK || iam.binder.Owner() != "iam" ||
 		!analyticsOK || analytics.binder.Owner() != "analytics" ||
-		analytics.mode != "" ||
-		forms.mode != platformtx.Command ||
-		formsSnapshot.mode != platformtx.SnapshotQuery {
+		analytics.mode != "" {
 		t.Fatal("authorization ports do not seal their exact transaction owners")
 	}
 }

@@ -15,7 +15,7 @@ import (
 )
 
 func TestEventGapLifecycleOnPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 6*time.Minute)
 			defer cancel()

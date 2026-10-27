@@ -1,6 +1,7 @@
 package tenancy
 
 import (
+	"path"
 	"strings"
 	"testing"
 )
@@ -25,4 +26,33 @@ func TestMigrationDocumentsReturnFreshSQL(t *testing.T) {
 		len(counts) != 2 {
 		t.Fatalf("migration documents = %d, scopes %#v", len(documents), counts)
 	}
+}
+
+func freshMigrationDocument(t *testing.T, versionPrefix string) string {
+	t.Helper()
+	documents, err := MigrationDocuments()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var source string
+	matches := 0
+	for _, document := range documents {
+		name := path.Base(document.Path())
+		if !strings.HasPrefix(name, versionPrefix+"_") {
+			continue
+		}
+		if !strings.HasSuffix(name, ".fresh.sql") ||
+			strings.Contains(document.Path(), "v1_adopted") {
+			t.Fatalf("migration %s is not fresh-only", document.Path())
+		}
+		if len(document.Content()) == 0 {
+			t.Fatalf("fresh migration %s is empty", document.Path())
+		}
+		matches++
+		source = string(document.Content())
+	}
+	if matches != 1 {
+		t.Fatalf("fresh migration %s count = %d", versionPrefix, matches)
+	}
+	return source
 }

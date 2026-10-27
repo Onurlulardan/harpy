@@ -68,9 +68,8 @@ func TestIAMLifecycleRuntimeMigrationsStayPairedAndFrozen(t *testing.T) {
 	for _, name := range iamLifecycleRuntimeMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and V1-adopted IAM lifecycle runtime differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("IAM lifecycle runtime migration exceeds 200 lines")
@@ -96,9 +95,8 @@ func TestIAMLifecycleMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamLifecycleMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and V1-adopted IAM lifecycle differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("IAM lifecycle migration exceeds 200 lines")

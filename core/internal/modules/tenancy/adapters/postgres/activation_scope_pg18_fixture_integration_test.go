@@ -48,9 +48,6 @@ func prepareActivationScopeDatabaseThrough(
 ) {
 	t.Helper()
 	resetTenantMigrationCatalog(t, ctx, database)
-	if origin == "v1_adopted" {
-		prepareV1TenantRegistry(t, ctx, database)
-	}
 	runPlatformMigrationsThrough(t, ctx, database, origin, maxVersion)
 	insertDeploymentPolicy(t, ctx, database, "saas")
 	for _, statement := range activationScopeFixtureSQL {

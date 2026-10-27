@@ -27,8 +27,8 @@ CREATE TABLE platform.jobs (
 	path := filepath.Join("..", "..", "..", "migrations", "platform", "fresh",
 		"20260718220200_create_notification_projections_v1.fresh.sql")
 	document, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatal(err)
+	if err != nil || len(document) == 0 {
+		t.Fatalf("fresh migration %s did not load: %v", path, err)
 	}
 	if _, err = connection.Exec(ctx, string(document)); err != nil {
 		t.Fatal(err)
@@ -44,19 +44,21 @@ func prepareCutoverTenant(t *testing.T, ctx context.Context, connection *pgx.Con
 	if _, err := connection.Exec(ctx, "CREATE SCHEMA "+schema+" AUTHORIZATION harpy_owner"); err != nil {
 		t.Fatal(err)
 	}
-	directory := filepath.Join("..", "..", "..", "migrations", "tenant", "v1_adopted")
+	directory := filepath.Join("..", "..", "..", "migrations", "tenant", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)
 	}
+	applied := 0
 	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".v1_adopted.sql") {
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
 			continue
 		}
 		document, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
-		if readErr != nil {
-			t.Fatal(readErr)
+		if readErr != nil || len(document) == 0 {
+			t.Fatalf("fresh migration %s did not load: %v", entry.Name(), readErr)
 		}
+		applied++
 		transaction, beginErr := connection.Begin(ctx)
 		if beginErr == nil {
 			_, beginErr = transaction.Exec(ctx,
@@ -72,5 +74,8 @@ func prepareCutoverTenant(t *testing.T, ctx context.Context, connection *pgx.Con
 		if beginErr = transaction.Commit(ctx); beginErr != nil {
 			t.Fatal(beginErr)
 		}
+	}
+	if applied == 0 {
+		t.Fatal("tenant fresh migrations were not applied")
 	}
 }

@@ -5,7 +5,6 @@ import (
 	"reflect"
 
 	contract "github.com/Onurlulardan/harpy/contracts/catalogcomponent/v1"
-	analyticsforms "github.com/Onurlulardan/harpy/core/internal/modules/analytics/api/formsreference"
 	"github.com/Onurlulardan/harpy/core/internal/modules/catalog/api/componentowner"
 )
 
@@ -19,19 +18,15 @@ type BaseOwner interface {
 
 type Owner struct {
 	BaseOwner
-	references analyticsforms.Coordinator
 }
 
-func New(
-	base BaseOwner,
-	references analyticsforms.Coordinator,
-) (*Owner, error) {
-	if nilPort(base) || nilPort(references) {
+func New(base BaseOwner) (*Owner, error) {
+	if nilPort(base) {
 		return nil, fmt.Errorf(
 			"Analytics legacy Catalog owner dependencies are invalid",
 		)
 	}
-	return &Owner{BaseOwner: base, references: references}, nil
+	return &Owner{BaseOwner: base}, nil
 }
 
 func nilPort(value any) bool {

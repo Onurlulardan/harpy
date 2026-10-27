@@ -1,7 +1,6 @@
 package async
 
 import (
-	"os"
 	"strings"
 	"testing"
 )
@@ -30,50 +29,30 @@ func TestStaleJobForwardMigrationsFreezeDiscoveryAndLeastPrivilege(t *testing.T)
 		"ERRCODE = 'P5678'",
 		"GRANT EXECUTE ON FUNCTION\n    platform.platform_async_finalize_stale_external_unknown_v1(",
 	}
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		var source strings.Builder
-		var finalizer string
-		for _, document := range documents {
-			if !strings.Contains(document.Path(), "/fresh/202607150217") {
-				continue
-			}
-			content := document.Content()
-			if origin == "v1_adopted" {
-				content = readStaleJobAdoptedTwin(t, document.Path())
-			}
-			source.Write(content)
-			if strings.Contains(document.Path(), "20260715021750_") {
-				finalizer = string(content)
-			}
+	var source strings.Builder
+	var finalizer string
+	for _, document := range documents {
+		if !strings.Contains(document.Path(), "/fresh/202607150217") {
+			continue
 		}
-		for _, marker := range markers {
-			if !strings.Contains(source.String(), marker) {
-				t.Fatalf("%s stale job migrations lack %q", origin, marker)
-			}
-		}
-		if finalizer == "" || strings.Contains(finalizer, "INSERT INTO platform.dead_letters") {
-			t.Fatalf("%s stale unknown finalizer duplicated terminal DLQ ownership", origin)
-		}
-		if strings.Contains(source.String(), "CREATE OR REPLACE FUNCTION") {
-			t.Fatalf("%s stale migration replaced an applied routine", origin)
+		content := document.Content()
+		source.Write(content)
+		if strings.Contains(document.Path(), "20260715021750_") {
+			finalizer = string(content)
 		}
 	}
-}
-
-func readStaleJobAdoptedTwin(t *testing.T, freshPath string) []byte {
-	t.Helper()
-	const prefix = "core/internal/platform/async/"
-	if !strings.HasPrefix(freshPath, prefix) ||
-		!strings.Contains(freshPath, "/fresh/") ||
-		!strings.HasSuffix(freshPath, ".fresh.sql") {
-		t.Fatalf("stale job fresh path is invalid: %s", freshPath)
+	if source.Len() == 0 || finalizer == "" {
+		t.Fatal("fresh stale job migrations did not load")
 	}
-	relative := strings.TrimPrefix(freshPath, prefix)
-	relative = strings.Replace(relative, "/fresh/", "/v1_adopted/", 1)
-	relative = strings.TrimSuffix(relative, ".fresh.sql") + ".v1_adopted.sql"
-	content, err := os.ReadFile(relative)
-	if err != nil {
-		t.Fatal(err)
+	for _, marker := range markers {
+		if !strings.Contains(source.String(), marker) {
+			t.Fatalf("fresh stale job migrations lack %q", marker)
+		}
 	}
-	return content
+	if strings.Contains(finalizer, "INSERT INTO platform.dead_letters") {
+		t.Fatal("fresh stale unknown finalizer duplicated terminal DLQ ownership")
+	}
+	if strings.Contains(source.String(), "CREATE OR REPLACE FUNCTION") {
+		t.Fatal("fresh stale migration replaced an applied routine")
+	}
 }

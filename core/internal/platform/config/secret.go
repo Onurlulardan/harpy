@@ -75,7 +75,7 @@ func readSecretFile(key, path string, maximum int) (string, error) {
 	if err != nil || !info.Mode().IsRegular() {
 		return "", configError(key, "secret file must resolve to a regular file")
 	}
-	if runtime.GOOS != "windows" && info.Mode().Perm()&0o022 != 0 {
+	if runtime.GOOS != "windows" && info.Mode().Perm()&0o077 != 0 {
 		return "", configError(key, "secret file permissions are too broad")
 	}
 	limit := min(maximum, secretFileLimit)

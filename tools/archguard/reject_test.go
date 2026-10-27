@@ -81,6 +81,32 @@ func TestInspectRejectsRemovedModuleSources(t *testing.T) {
 	}
 }
 
+func TestInspectRejectsRemovedContractResidue(t *testing.T) {
+	root := t.TempDir()
+	files := []string{
+		"core/internal/platform/config/forms_export.go",
+		"contracts/runtime/v1/ai-runtime.json",
+		"contracts/runtime/v1/mcp-runtime.json",
+		"contracts/aiinference/v1/types.go",
+		"contracts/aiprovidercontext/v2/context.go",
+		"contracts/aicredential/v1/seal.go",
+		"contracts/http/workflow-v2.paths.json",
+		"contracts/authority/workflow_runtime.json",
+		"contracts/operations/workflow_definition.json",
+		"contracts/events/v1/workflow-instance-changed-v1.schema.json",
+		"contracts/consumers/workflowv2/contract.go",
+	}
+	for _, path := range files {
+		writeFixture(t, root, path, "package residue\n")
+	}
+	violations := inspectFixture(t, root)
+	for _, path := range files {
+		if !containsViolation(violations, path) {
+			t.Fatalf("missing rejection for %s in %v", path, violations)
+		}
+	}
+}
+
 func TestInspectRejectsMalformedGo(t *testing.T) {
 	root := t.TempDir()
 	writeFixture(t, root, "internal/platform/http/edge.go", "package http\nimport (\n")

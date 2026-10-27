@@ -71,7 +71,22 @@ func moduleRef(importPath string) (string, string, bool) {
 }
 
 func removedTree(path string) string {
-	parts := strings.Split(path, "/")
+	normalized := strings.ReplaceAll(path, "\\", "/")
+	if message := removedContract(normalized); message != "" {
+		return message
+	}
+	base := normalized
+	if slash := strings.LastIndex(normalized, "/"); slash >= 0 {
+		base = normalized[slash+1:]
+	}
+	if strings.HasPrefix(base, "forms_") {
+		return "forms_ filename prefix is forbidden"
+	}
+	switch base {
+	case "ai-runtime.json", "mcp-runtime.json":
+		return "ai-runtime.json and mcp-runtime.json are forbidden"
+	}
+	parts := strings.Split(normalized, "/")
 	for index := 0; index+1 < len(parts); index++ {
 		switch parts[index] {
 		case "modules":
@@ -86,6 +101,25 @@ func removedTree(path string) string {
 			case "ai", "mcp":
 				return "services/ai and services/mcp are forbidden"
 			}
+		}
+	}
+	return ""
+}
+
+func removedContract(path string) string {
+	markers := []struct{ fragment, message string }{
+		{"contracts/aiinference", "contracts/aiinference is forbidden"},
+		{"contracts/aiprovidercontext", "contracts/aiprovidercontext is forbidden"},
+		{"contracts/aicredential", "contracts/aicredential is forbidden"},
+		{"contracts/http/workflow-", "workflow contract paths are forbidden"},
+		{"contracts/authority/workflow_", "workflow contract paths are forbidden"},
+		{"contracts/operations/workflow_", "workflow contract paths are forbidden"},
+		{"contracts/events/v1/workflow-", "workflow contract paths are forbidden"},
+		{"contracts/consumers/workflowv2", "workflow contract paths are forbidden"},
+	}
+	for _, marker := range markers {
+		if strings.Contains(path, marker.fragment) {
+			return marker.message
 		}
 	}
 	return ""

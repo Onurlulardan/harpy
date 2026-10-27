@@ -141,11 +141,14 @@ func assertCatalogQueryCount(
 
 func billingRESTQueryDocuments(t *testing.T, origin string) []billingDocument {
 	t.Helper()
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Billing migration origin %q is unsupported", origin)
+	}
 	workingDirectory, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
 	}
-	directory := filepath.Join(workingDirectory, "..", "..", "..", "migrations", "platform", origin)
+	directory := filepath.Join(workingDirectory, "..", "..", "..", "migrations", "platform", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)

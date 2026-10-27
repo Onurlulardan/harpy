@@ -75,9 +75,9 @@ WHERE tenant_id=$1 AND logical_version=$2`, tenantTargetRetry.TenantID,
 		TenantID: "eeeeeeee-0000-4000-8000-000000000005", SchemaName: "tenant_v1",
 	}
 	insertTenantTarget(t, ctx, fixture.database, v1Target)
-	v1Runner := fixture.runner(t, postgresv1.DatabaseOriginV1Adopted)
+	v1Runner := fixture.runner(t, postgresv1.DatabaseOriginFresh)
 	if _, err := v1Runner.executeTenantTarget(ctx, v1Target, tenantRunV1); err != nil {
 		t.Fatal(err)
 	}
-	assertTenantMigrationApplied(t, ctx, fixture.database, v1Target, "v1_adopted")
+	assertTenantMigrationApplied(t, ctx, fixture.database, v1Target, "fresh")
 }

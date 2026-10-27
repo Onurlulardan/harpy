@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	analyticsforms "github.com/Onurlulardan/harpy/core/internal/modules/analytics/api/formsreference"
 	platformtx "github.com/Onurlulardan/harpy/core/internal/platform/transaction"
 	"github.com/google/uuid"
 )
@@ -70,13 +69,6 @@ type PublishEffect struct {
 
 type Effects interface {
 	QueryPublished(context.Context, platformtx.TenantScope, PublishEffect) error
-}
-
-type FormsReferenceCoordinator interface {
-	BindVersion(context.Context, platformtx.TenantScope,
-		analyticsforms.Source, []analyticsforms.Target, time.Time) error
-	DecommissionSource(context.Context, platformtx.TenantScope,
-		analyticsforms.ID, *analyticsforms.ID, time.Time) error
 }
 
 type CacheRequest struct {

@@ -51,33 +51,27 @@ func (runtime *iamAPIRuntime) buildHTTPAccess(
 	if err != nil {
 		return fmt.Errorf("build IAM customer provisioning access runtime: %w", err)
 	}
-	runtime.formsRecordAccess, err = iammodule.NewFormsRecordAccessRuntime(
-		pool, coordinator, runtime.security, time.Now,
-	)
-	if err != nil {
-		return fmt.Errorf("build IAM record access runtime: %w", err)
-	}
 	runtime.portalAccess, err = iammodule.NewPortalAccessRuntime(
 		pool, coordinator, runtime.security, time.Now,
 	)
 	if err != nil {
 		return fmt.Errorf("build IAM portal access runtime: %w", err)
 	}
-	runtime.analyticsAccess, err = iammodule.NewAnalyticsAccessRuntime(
-		runtime.formsRecordAccess,
+	shared, err := iammodule.NewSharedAccessDependencies(
+		pool, coordinator, runtime.security, time.Now,
 	)
+	if err != nil {
+		return fmt.Errorf("build IAM shared access dependencies: %w", err)
+	}
+	runtime.analyticsAccess, err = iammodule.NewAnalyticsAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Analytics access runtime: %w", err)
 	}
-	runtime.catalogAccess, err = iammodule.NewCatalogAccessRuntime(
-		runtime.formsRecordAccess,
-	)
+	runtime.catalogAccess, err = iammodule.NewCatalogAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Catalog access runtime: %w", err)
 	}
-	runtime.documentsAccess, err = iammodule.NewDocumentsAccessRuntime(
-		runtime.formsRecordAccess,
-	)
+	runtime.documentsAccess, err = iammodule.NewDocumentsAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Documents access runtime: %w", err)
 	}
@@ -87,13 +81,11 @@ func (runtime *iamAPIRuntime) buildHTTPAccess(
 	if err != nil {
 		return fmt.Errorf("build IAM Documents archive access runtime: %w", err)
 	}
-	runtime.notificationsAccess, err = iammodule.NewNotificationsAccessRuntime(
-		runtime.formsRecordAccess,
-	)
+	runtime.notificationsAccess, err = iammodule.NewNotificationsAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Notifications access runtime: %w", err)
 	}
-	runtime.workAccess, err = iammodule.NewWorkAccessRuntime(runtime.formsRecordAccess)
+	runtime.workAccess, err = iammodule.NewWorkAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Work access runtime: %w", err)
 	}

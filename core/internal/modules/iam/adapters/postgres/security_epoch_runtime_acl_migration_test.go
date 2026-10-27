@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 
@@ -11,9 +10,8 @@ import (
 func TestIAMSecurityEpochRuntimeACLUsesCurrentRole(t *testing.T) {
 	const name = "20260725125100_repair_iam_security_epoch_runtime_acl"
 	fresh := readIAMIdentityMigration(t, "fresh", name)
-	adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("fresh and v1_adopted security epoch ACL migration differs")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("security epoch ACL migration is invalid: %v", err)

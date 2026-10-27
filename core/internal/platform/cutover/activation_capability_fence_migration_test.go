@@ -7,11 +7,7 @@ import (
 
 func TestGen70ActivationCapabilityFenceIsPairedAndForwardOnly(t *testing.T) {
 	const version = "20260729100034"
-	pair := successorFinalizationMigrationPair(t, version)
-	if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-		t.Fatal("Gen70 activation capability fence is not paired byte-identically")
-	}
-	source := pair["fresh"]
+	source := successorFinalizationMigrationPair(t, version)["fresh"]
 	if strings.Count(source, "-- +goose Up") != 1 ||
 		strings.Contains(source, "-- +goose Down") ||
 		strings.Contains(source, "CREATE OR REPLACE") ||
@@ -123,11 +119,7 @@ func TestGen70ActivationCapabilityFencePreservesGen23ABI(t *testing.T) {
 
 func TestGen71ActivationContractIsPairedAndForwardOnly(t *testing.T) {
 	const version = "20260729100045"
-	pair := successorFinalizationMigrationPair(t, version)
-	if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-		t.Fatal("Gen71 activation contract is not paired byte-identically")
-	}
-	source := pair["fresh"]
+	source := successorFinalizationMigrationPair(t, version)["fresh"]
 	if strings.Count(source, "-- +goose Up") != 1 ||
 		strings.Contains(source, "-- +goose Down") ||
 		strings.Contains(source, "CREATE OR REPLACE") ||

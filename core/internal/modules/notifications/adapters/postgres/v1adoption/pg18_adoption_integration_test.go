@@ -15,9 +15,9 @@ func TestNotificationsPG18BothOriginsCrashResumeIsolationAndImmutableAttempt(t *
 	ctx := context.Background()
 	connection := startNotificationPG18(t, ctx)
 	prepareNotificationDatabase(t, ctx, connection)
-	prepareNotificationTenant(t, ctx, connection, "fresh", "notification_fresh", false)
-	prepareNotificationTenant(t, ctx, connection, "v1_adopted", "notification_a", true)
-	prepareNotificationTenant(t, ctx, connection, "v1_adopted", "notification_b", true)
+	prepareNotificationTenant(t, ctx, connection, "notification_fresh", false)
+	prepareNotificationTenant(t, ctx, connection, "notification_a", true)
+	prepareNotificationTenant(t, ctx, connection, "notification_b", true)
 	var freshTemplates int
 	if err := connection.QueryRow(ctx, `SELECT count(*) FROM notification_fresh.notifications_templates`).Scan(&freshTemplates); err != nil || freshTemplates != 1 {
 		t.Fatalf("fresh template count=%d err=%v", freshTemplates, err)

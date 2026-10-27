@@ -4,9 +4,9 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 
+	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 	fieldregistry "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/fieldregistry"
 	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
-	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 )
 
 func fixtureMutationResult(

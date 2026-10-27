@@ -20,7 +20,7 @@ func TestCustomerLifecycleAgainstPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Minute)
 	defer cancel()
 	database := startTenantMigrationDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			resetTenantMigrationCatalog(t, ctx, database)
 			prepareLifecycleOrigin(t, ctx, database, origin)

@@ -19,10 +19,7 @@ const globalBillingAuthorityVersion = int64(20260716020103)
 func TestRunnerPersistsIdentityBeforeGlobalBillingAuthorityOnPostgreSQL184(
 	t *testing.T,
 ) {
-	for _, origin := range []postgresv1.DatabaseOrigin{
-		postgresv1.DatabaseOriginFresh,
-		postgresv1.DatabaseOriginV1Adopted,
-	} {
+	for _, origin := range []postgresv1.DatabaseOrigin{postgresv1.DatabaseOriginFresh} {
 		t.Run(string(origin), func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 			defer cancel()

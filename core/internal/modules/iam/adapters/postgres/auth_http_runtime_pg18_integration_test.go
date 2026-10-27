@@ -20,7 +20,7 @@ const authHTTPThrottleBlockedSQL = `SELECT platform.iam_auth_throttle_blocked_v2
 $1,$2,$3,$4,$5,$6,$7,$8)`
 
 func TestIAMAuthHTTPThrottlePostgreSQL18(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx := context.Background()
 			database := startIAMPlatformGuardPG18(t, ctx, origin)

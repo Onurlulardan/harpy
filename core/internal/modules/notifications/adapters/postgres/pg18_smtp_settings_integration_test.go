@@ -24,7 +24,7 @@ func TestNotificationsPG18SMTPSettingsFreshAndAdopted(t *testing.T) {
 	tracks := prepareSMTPSettingsDatabase(t, ctx, connection)
 	for _, track := range tracks {
 		track := track
-		t.Run(track.origin, func(t *testing.T) {
+		t.Run(track.schema, func(t *testing.T) {
 			testSMTPSettingsCrashRetry(t, ctx, connection, track)
 			testSMTPSettingsConflictAndEncryptedIntent(t, ctx, connection, track)
 			testSMTPSettingsDirectTableDenial(t, ctx, connection, track)
@@ -37,7 +37,7 @@ func testSMTPSettingsCrashRetry(t *testing.T, ctx context.Context,
 	connection *pgx.Conn, track smtpSettingsTrack,
 ) {
 	t.Helper()
-	digest := sha256.Sum256([]byte("smtp settings " + track.origin))
+	digest := sha256.Sum256([]byte("smtp settings " + track.schema))
 	applySMTPSettingsAttempt(t, ctx, connection, track.schema, digest, true)
 	assertSMTPSettingsMutationCount(t, ctx, connection, track.schema, 1, 0, 0)
 	applySMTPSettingsAttempt(t, ctx, connection, track.schema, digest, false)

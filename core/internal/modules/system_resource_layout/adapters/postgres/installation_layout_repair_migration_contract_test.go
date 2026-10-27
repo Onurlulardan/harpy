@@ -7,7 +7,7 @@ import (
 
 func TestInstallationLayoutRepairPublishesImmutableCuratedSuccessors(t *testing.T) {
 	repair := string(readLayoutMigration(
-		t, "fresh",
+		t,
 		"20260730120104_repair_installation_layout_publications_v1",
 	))
 	for _, marker := range []string{
@@ -46,7 +46,7 @@ func TestInstallationLayoutRepairPublishesImmutableCuratedSuccessors(t *testing.
 
 func TestInstallationLayoutValidatorV2IsOrderIndependentAndExact(t *testing.T) {
 	validator := string(readLayoutMigration(
-		t, "fresh",
+		t,
 		"20260730120104_repair_installation_layout_publications_v1",
 	))
 	for _, marker := range []string{
@@ -74,7 +74,7 @@ func TestInstallationLayoutValidatorV2IsOrderIndependentAndExact(t *testing.T) {
 
 func TestInstallationLayoutRepairValidatesExactPredecessorEvidence(t *testing.T) {
 	validator := string(readLayoutMigration(
-		t, "fresh",
+		t,
 		"20260730120103_create_layout_installation_evidence_validator_v1",
 	))
 	for _, marker := range []string{
@@ -94,7 +94,7 @@ func TestInstallationLayoutRepairValidatesExactPredecessorEvidence(t *testing.T)
 
 func TestCuratedDefinitionCarriesHumanLabelsAndRelationFields(t *testing.T) {
 	definition := string(readLayoutMigration(
-		t, "fresh",
+		t,
 		"20260730120101_create_layout_curated_definition_v1",
 	))
 	for _, marker := range []string{
@@ -112,7 +112,7 @@ func TestCuratedDefinitionCarriesHumanLabelsAndRelationFields(t *testing.T) {
 
 func TestCuratedParitySuccessorIsExactAndPreservesCustomLayouts(t *testing.T) {
 	definition := string(readLayoutMigration(
-		t, "fresh", "20260802232100_create_layout_curated_definition_v2",
+		t, "20260802232100_create_layout_curated_definition_v2",
 	))
 	for _, marker := range []string{
 		"system_resource_layout_curated_definition_v2(",
@@ -134,7 +134,7 @@ func TestCuratedParitySuccessorIsExactAndPreservesCustomLayouts(t *testing.T) {
 	}
 
 	evidence := string(readLayoutMigration(
-		t, "fresh", "20260802232101_create_layout_curated_successor_evidence_v1",
+		t, "20260802232101_create_layout_curated_successor_evidence_v1",
 	))
 	for _, marker := range []string{
 		"system_resource_layout_curated_successor_catalog_v1(",
@@ -150,7 +150,7 @@ func TestCuratedParitySuccessorIsExactAndPreservesCustomLayouts(t *testing.T) {
 	}
 
 	repair := string(readLayoutMigration(
-		t, "fresh", "20260802232102_repair_layout_curated_parity_v2",
+		t, "20260802232102_repair_layout_curated_parity_v2",
 	))
 	for _, marker := range []string{
 		"system_resource_layout_repair_curated_defaults_v3(",

@@ -1,8 +1,8 @@
 package systemresource
 
 import (
-	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
+	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 )
 
 func installationOrganizationLayoutCatalog(

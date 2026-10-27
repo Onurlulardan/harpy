@@ -45,16 +45,14 @@ func applyDocumentsMigrations(t *testing.T, ctx context.Context, database *sql.D
 		return documents[left].Path() < documents[right].Path()
 	})
 	for _, schema := range documentsSchemas {
-		origin := "fresh"
-		if strings.Contains(schema, "adopted") {
-			origin = "v1_adopted"
-		}
 		for _, document := range documents {
-			if !strings.Contains(document.Path(), "/"+origin+"/") {
-				continue
+			path := document.Path()
+			if strings.Contains(path, "v1_adopted") ||
+				!strings.HasSuffix(path, ".fresh.sql") ||
+				len(document.Content()) == 0 {
+				t.Fatalf("fresh migration %s", path)
 			}
-			applyDocumentsMigration(t, ctx, database, schema,
-				document.Path(), document.Content())
+			applyDocumentsMigration(t, ctx, database, schema, path, document.Content())
 		}
 	}
 }

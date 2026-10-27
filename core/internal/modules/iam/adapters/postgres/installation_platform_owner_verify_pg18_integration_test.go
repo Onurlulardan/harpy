@@ -27,7 +27,7 @@ const ownerVerifierCall = `SELECT platform.iam_installation_instance_owner_verif
     $6::uuid,$7::uuid,$8::uuid,$9::bigint,$10::text)`
 
 func TestIAMInstallationPlatformOwnerVerifyPG18(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 			defer cancel()

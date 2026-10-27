@@ -13,7 +13,6 @@
       {"path":"core/internal/modules/documents/adapters/postgres/deletion/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/documents/adapters/postgres/download/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/documents/adapters/postgres/folder/sql/tenant","scope":"tenant"},
-      {"path":"core/internal/modules/documents/adapters/postgres/formscleanup/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/documents/adapters/postgres/item/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/documents/adapters/postgres/legalhold/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/documents/adapters/postgres/link/sql/tenant","scope":"tenant"},

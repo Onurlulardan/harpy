@@ -49,7 +49,7 @@ func newTenantMigrationFixture(
 	applyTenantConsumerFoundation(t, ctx, database)
 	for _, run := range []struct{ id, origin string }{
 		{tenantRunOne, "fresh"}, {tenantRunTwo, "fresh"},
-		{tenantRunV1, "v1_adopted"},
+		{tenantRunV1, "fresh"},
 	} {
 		insertTenantMigrationRun(t, ctx, database, run.id, run.origin)
 	}
@@ -78,8 +78,11 @@ func tenantMigrationSources(
 	origin postgresv1.DatabaseOrigin,
 ) (fs.FS, []postgresv1.SelectedMigration) {
 	t.Helper()
+	if origin != postgresv1.DatabaseOriginFresh {
+		t.Fatal("fresh tenant migrations did not load")
+	}
 	directory := filepath.Join(
-		"..", "..", "modules", "tenancy", "migrations", "tenant", string(origin),
+		"..", "..", "modules", "tenancy", "migrations", "tenant", "fresh",
 	)
 	entries, err := os.ReadDir(directory)
 	if err != nil {

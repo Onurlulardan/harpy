@@ -38,7 +38,7 @@ func TestActorBridgeIssueDatabaseUsesNarrowBoundQuery(t *testing.T) {
 		t.Fatal(err)
 	}
 	authority, err := database.ResolveIssueAuthority(
-		context.Background(), tenantID, actorassertionv1.DomainForms,
+		context.Background(), tenantID, actorassertionv1.DomainDocuments,
 	)
 	if err != nil || authority.IAMGroupGeneration() != 11 ||
 		authority.IAMGeneration() != 12 || authority.TargetGeneration() != 13 {

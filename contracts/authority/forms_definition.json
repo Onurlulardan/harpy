@@ -1,8 +1,0 @@
-{"version":2,"authorities":[
-  {"id":"forms.definition.create","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"forms.definition.create_version","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"forms.definition.get","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"forms.definition.list","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"forms.definition.retire","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]},
-  {"id":"forms.definition.update_draft","owner":"forms","scope_source":"actor_tenant","required_groups":["billing+forms"],"ordered_domains":["billing","forms"],"participants":["billing","forms"]}
-]}

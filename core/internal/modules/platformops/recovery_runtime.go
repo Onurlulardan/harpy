@@ -21,16 +21,16 @@ import (
 	recoverysnapshot "github.com/Onurlulardan/harpy/core/internal/modules/platformops/application/recoveryexecution/snapshot"
 	recoveryverify "github.com/Onurlulardan/harpy/core/internal/modules/platformops/application/recoveryexecution/verify"
 	recovery "github.com/Onurlulardan/harpy/core/internal/modules/platformops/application/recoveryorchestration"
+	"github.com/Onurlulardan/harpy/core/internal/platform/admission"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/randomid"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemaexecutor"
 )
 
 type RecoveryFactories = recovery.RecoveryFactories
 type RestoreFailureKind = recovery.RestoreFailureKind
 
 type RecoveryExecutor interface {
-	Run(context.Context, schemaexecutor.Admission) error
+	Run(context.Context, *admission.Gate) error
 	Close()
 }
 
@@ -149,7 +149,7 @@ func NewDatabaseBackupExecutor(
 
 func (executor *backupRecoveryExecutor) Run(
 	ctx context.Context,
-	gate schemaexecutor.Admission,
+	gate *admission.Gate,
 ) error {
 	if executor == nil || executor.executor == nil || gate == nil {
 		return fmt.Errorf("database backup executor is unavailable")

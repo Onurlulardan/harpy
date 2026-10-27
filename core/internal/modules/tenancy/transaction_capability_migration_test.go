@@ -1,7 +1,6 @@
 package tenancy
 
 import (
-	"bytes"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,8 +9,8 @@ import (
 	postgresv1 "github.com/Onurlulardan/harpy/contracts/postgres/v1"
 )
 
-func TestTenancyTransactionCapabilitiesArePairedAndFailClosed(t *testing.T) {
-	capability := pairedTenancyMigration(
+func TestTenancyTransactionCapabilitiesLoadFreshAndFailClosed(t *testing.T) {
+	capability := freshTenancyMigration(
 		t, "20260729100013_create_tenancy_transaction_capabilities_v1",
 	)
 	for _, marker := range []string{
@@ -28,7 +27,7 @@ func TestTenancyTransactionCapabilitiesArePairedAndFailClosed(t *testing.T) {
 			t.Fatalf("tenancy capability migration lacks %q", marker)
 		}
 	}
-	activation := pairedTenancyMigration(
+	activation := freshTenancyMigration(
 		t, "20260729100014_create_tenancy_onboarding_activate_v2",
 	)
 	for _, marker := range []string{
@@ -46,7 +45,7 @@ func TestTenancyTransactionCapabilitiesArePairedAndFailClosed(t *testing.T) {
 		"REVOKE EXECUTE ON FUNCTION platform.tenancy_onboarding_activate_v1(") {
 		t.Fatal("gen70 activation migration revokes the gen23 ABI")
 	}
-	reconcile := pairedTenancyMigration(
+	reconcile := freshTenancyMigration(
 		t, "20260729100015_create_tenancy_authority_reconcile_v1",
 	)
 	for _, marker := range []string{
@@ -65,7 +64,7 @@ func TestTenancyTransactionCapabilitiesArePairedAndFailClosed(t *testing.T) {
 	}
 }
 
-func pairedTenancyMigration(t *testing.T, name string) string {
+func freshTenancyMigration(t *testing.T, name string) string {
 	t.Helper()
 	fresh, err := os.ReadFile(filepath.Join(
 		"migrations", "platform", "fresh", name+".fresh.sql",
@@ -73,14 +72,8 @@ func pairedTenancyMigration(t *testing.T, name string) string {
 	if err != nil {
 		t.Fatal(err)
 	}
-	adopted, err := os.ReadFile(filepath.Join(
-		"migrations", "platform", "v1_adopted", name+".v1_adopted.sql",
-	))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatalf("%s migration variants differ", name)
+	if len(fresh) == 0 {
+		t.Fatalf("%s fresh migration is empty", name)
 	}
 	if _, err = postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("%s migration is invalid: %v", name, err)

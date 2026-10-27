@@ -27,9 +27,8 @@ func TestIAMAuthenticationMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamAuthenticationMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMAuthenticationMigration(t, "fresh", name)
-			adopted := readIAMAuthenticationMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted migration content differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			assertIAMAuthenticationMigrationSource(t, fresh)
 		})

@@ -1,6 +1,0 @@
-{
-  "version": 1,
-  "operations": [
-    {"package":"github.com/Onurlulardan/harpy/core/internal/modules/workflow/application/scheduler","layer":"application","resource":"scheduler","operation":"read","source":"core/internal/modules/workflow/application/scheduler/read_claim.go","test":"core/internal/modules/workflow/application/scheduler/read_claim_test.go","authority_id":"workflow.runtime.start"}
-  ]
-}

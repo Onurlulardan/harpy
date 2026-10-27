@@ -16,7 +16,7 @@ import (
 )
 
 type smtpSettingsTrack struct {
-	origin, schema string
+	schema string
 }
 
 func prepareSMTPSettingsDatabase(t *testing.T, ctx context.Context,
@@ -29,9 +29,8 @@ CREATE SCHEMA platform AUTHORIZATION harpy_owner;`)
 	if err != nil {
 		t.Fatal(err)
 	}
-	applySMTPSettingsMigrations(t, ctx, connection, "platform", "fresh", "")
-	tracks := []smtpSettingsTrack{{"fresh", "notifications_smtp_fresh"},
-		{"v1_adopted", "notifications_smtp_adopted"}}
+	applySMTPSettingsMigrations(t, ctx, connection, "platform", "")
+	tracks := []smtpSettingsTrack{{"notifications_smtp_a"}, {"notifications_smtp_b"}}
 	for _, track := range tracks {
 		_, err = connection.Exec(ctx, "CREATE SCHEMA "+track.schema+
 			" AUTHORIZATION harpy_owner; GRANT USAGE ON SCHEMA "+track.schema+
@@ -39,31 +38,31 @@ CREATE SCHEMA platform AUTHORIZATION harpy_owner;`)
 		if err != nil {
 			t.Fatal(err)
 		}
-		applySMTPSettingsMigrations(t, ctx, connection, "tenant", track.origin,
-			track.schema)
+		applySMTPSettingsMigrations(t, ctx, connection, "tenant", track.schema)
 		seedSMTPSettingsProvider(t, ctx, connection, track.schema)
 	}
 	return tracks
 }
 
 func applySMTPSettingsMigrations(t *testing.T, ctx context.Context,
-	connection *pgx.Conn, scope, origin, schema string,
+	connection *pgx.Conn, scope, schema string,
 ) {
 	t.Helper()
-	directory := filepath.Join("..", "..", "migrations", scope, origin)
+	directory := filepath.Join("..", "..", "migrations", scope, "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)
 	}
-	suffix := "." + origin + ".sql"
+	applied := 0
 	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), suffix) {
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
 			continue
 		}
 		document, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
-		if readErr != nil {
-			t.Fatal(readErr)
+		if readErr != nil || len(document) == 0 {
+			t.Fatalf("fresh migration %s did not load: %v", entry.Name(), readErr)
 		}
+		applied++
 		tx, beginErr := connection.Begin(ctx)
 		if beginErr == nil && schema != "" {
 			_, beginErr = tx.Exec(ctx,
@@ -79,6 +78,9 @@ func applySMTPSettingsMigrations(t *testing.T, ctx context.Context,
 		if err = tx.Commit(ctx); err != nil {
 			t.Fatal(err)
 		}
+	}
+	if applied == 0 {
+		t.Fatalf("%s fresh migrations were not applied", scope)
 	}
 }
 

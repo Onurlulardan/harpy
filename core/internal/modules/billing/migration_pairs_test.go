@@ -1,14 +1,13 @@
 package billing
 
 import (
-	"bytes"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 )
 
-func TestPlatformMigrationsAreForwardOnlyExactOriginPairs(t *testing.T) {
+func TestPlatformMigrationsAreForwardOnlyFresh(t *testing.T) {
 	freshPaths, err := filepath.Glob(filepath.Join(
 		"migrations", "platform", "fresh", "*.fresh.sql",
 	))
@@ -16,7 +15,7 @@ func TestPlatformMigrationsAreForwardOnlyExactOriginPairs(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(freshPaths) != 208 {
-		t.Fatalf("billing migration pair count = %d, want 208", len(freshPaths))
+		t.Fatalf("billing fresh migration count = %d, want 208", len(freshPaths))
 	}
 	seen := make(map[string]struct{}, len(freshPaths))
 	for _, freshPath := range freshPaths {
@@ -26,21 +25,10 @@ func TestPlatformMigrationsAreForwardOnlyExactOriginPairs(t *testing.T) {
 		}
 		seen[key] = struct{}{}
 		fresh, readErr := os.ReadFile(freshPath)
-		if readErr != nil {
-			t.Fatal(readErr)
-		}
-		adoptedPath := filepath.Join(
-			"migrations", "platform", "v1_adopted", key+".v1_adopted.sql",
-		)
-		adopted, readErr := os.ReadFile(adoptedPath)
-		if readErr != nil {
-			t.Fatal(readErr)
-		}
-		if !bytes.Equal(fresh, adopted) {
-			t.Errorf("billing migration %s is not an exact origin pair", key)
+		if readErr != nil || len(fresh) == 0 {
+			t.Fatalf("billing fresh migration %s did not load: %v", key, readErr)
 		}
 		assertBillingMigrationShape(t, freshPath, fresh)
-		assertBillingMigrationShape(t, adoptedPath, adopted)
 	}
 }
 

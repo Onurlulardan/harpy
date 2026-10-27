@@ -36,6 +36,9 @@ func applyBillingCutoverPlatformMigrations(
 	t *testing.T, ctx context.Context, database *sql.DB, origin string,
 ) {
 	t.Helper()
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Billing cutover origin %q is unsupported", origin)
+	}
 	documents, err := platformcutover.MigrationDocuments()
 	if err != nil {
 		t.Fatal(err)
@@ -45,7 +48,7 @@ func applyBillingCutoverPlatformMigrations(
 			filepath.Base(documents[right].Path())
 	})
 	applied := 0
-	suffix := "." + origin + ".sql"
+	suffix := ".fresh.sql"
 	for _, document := range documents {
 		name := filepath.Base(document.Path())
 		if !strings.HasSuffix(name, suffix) ||

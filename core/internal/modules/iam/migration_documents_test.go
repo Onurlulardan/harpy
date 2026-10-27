@@ -10,8 +10,8 @@ func TestMigrationDocumentsEmbedFreshSQL(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(documents) != 743 {
-		t.Fatalf("migration document count = %d, want 743", len(documents))
+	if len(documents) != 729 {
+		t.Fatalf("migration document count = %d, want 729", len(documents))
 	}
 	counts := map[string]int{}
 	seen := map[string]struct{}{}
@@ -26,7 +26,7 @@ func TestMigrationDocumentsEmbedFreshSQL(t *testing.T) {
 		seen[path] = struct{}{}
 		counts[document.Scope()]++
 	}
-	if counts["platform"] != 103 || counts["tenant"] != 640 {
+	if counts["platform"] != 103 || counts["tenant"] != 626 {
 		t.Fatalf("scope counts = platform %d tenant %d",
 			counts["platform"], counts["tenant"])
 	}

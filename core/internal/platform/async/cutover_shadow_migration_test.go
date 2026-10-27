@@ -15,40 +15,33 @@ func TestDocumentsCutoverShadowMigrationsFreezeProtectedAuthority(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	pairs := map[string]map[string][]byte{}
+	freshDocuments := map[string][]byte{}
 	for _, document := range documents {
 		name := path.Base(document.Path())
+		if !strings.HasSuffix(name, ".fresh.sql") {
+			continue
+		}
 		version, parseErr := strconv.ParseInt(name[:14], 10, 64)
 		if parseErr != nil || version < 20260718230700 || version > 20260718230709 {
 			continue
 		}
-		for _, origin := range []string{"fresh", "v1_adopted"} {
-			suffix := "." + origin + ".sql"
-			if !strings.HasSuffix(name, suffix) {
-				continue
-			}
-			logical := strings.TrimSuffix(name, suffix)
-			if pairs[logical] == nil {
-				pairs[logical] = map[string][]byte{}
-			}
-			pairs[logical][origin] = document.Content()
-		}
+		freshDocuments[strings.TrimSuffix(name, ".fresh.sql")] = document.Content()
 	}
-	if len(pairs) != 10 {
-		t.Fatalf("Documents cutover shadow pairs=%d, want 10", len(pairs))
+	if len(freshDocuments) != 10 {
+		t.Fatalf("fresh Documents cutover shadow migrations=%d, want 10", len(freshDocuments))
 	}
 	combined := make([]byte, 0, 32_000)
-	for logical, pair := range pairs {
-		if !bytes.Equal(pair["fresh"], pair["v1_adopted"]) {
-			t.Fatalf("Documents cutover shadow pair differs: %s", logical)
+	for logical, fresh := range freshDocuments {
+		if len(fresh) == 0 {
+			t.Fatalf("fresh Documents cutover shadow migration did not load: %s", logical)
 		}
-		if bytes.Count(pair["fresh"], []byte("\n"))+1 > 200 {
+		if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 			t.Fatalf("Documents cutover shadow migration exceeds 200 lines: %s", logical)
 		}
-		if _, err := postgresv1.InspectMigrationSource(pair["fresh"]); err != nil {
+		if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 			t.Fatalf("inspect Documents cutover shadow migration %s: %v", logical, err)
 		}
-		combined = append(combined, pair["fresh"]...)
+		combined = append(combined, fresh...)
 	}
 	source := string(combined)
 	for _, marker := range []string{

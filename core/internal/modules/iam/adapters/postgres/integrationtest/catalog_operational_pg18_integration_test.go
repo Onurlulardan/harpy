@@ -18,14 +18,13 @@ import (
 const iamCatalogComponentID = "018f0000-0004-7000-8000-000000000001"
 
 func TestIAMCatalogMaterializesOperationalRBACAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 7*time.Minute)
 			defer cancel()
 			db := startPublicationPG18(t, ctx, origin)
 			preparePublicationCatalog(t, ctx, db)
 			grantPublicationRuntimeAccess(t, ctx, db)
-			seedPublicationV1Snapshot(t, ctx, db)
 			applyPublicationDocuments(t, ctx, db,
 				publicationIAMDocuments(t, origin, "tenant", "foundation"), true)
 			seedIAMCatalogRoleSchema(t, ctx, db)

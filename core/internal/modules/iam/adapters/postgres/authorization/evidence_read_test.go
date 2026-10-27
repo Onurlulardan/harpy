@@ -95,17 +95,3 @@ func TestReadEvidenceFailsClosedOnDatabaseError(t *testing.T) {
 		t.Fatalf("error = %v", err)
 	}
 }
-
-func TestFormsReadEvidencePassesTenantToV2Routine(t *testing.T) {
-	tenantID, actorID := uuid.New(), uuid.New()
-	stub := &authorizationQueryStub{row: authorizationRowStub{err: errors.New("stop")}}
-	request, _ := authorization.NewRequest("forms.records", "create", 1, 1)
-	_, _ = (&boundAuthorizer{
-		database: stub, query: authorizeFormsSQL, includesTenant: true,
-	}).readEvidence(context.Background(), tenantID, actorID, request)
-	if stub.statement != authorizeFormsSQL || len(stub.arguments) != 4 ||
-		stub.arguments[0] != tenantID || stub.arguments[1] != actorID ||
-		stub.arguments[2] != "forms.records" || stub.arguments[3] != "create" {
-		t.Fatalf("unexpected Forms evidence invocation: %#v", stub.arguments)
-	}
-}

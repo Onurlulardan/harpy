@@ -1,9 +1,0 @@
-{"version":2,"authorities":[
-  {"id":"workflow.human_task.cancel","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","system_resource_layout","workflow"]},
-  {"id":"workflow.human_task.claim","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","system_resource_layout","workflow"]},
-  {"id":"workflow.human_task.decide","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","system_resource_layout","workflow"]},
-  {"id":"workflow.human_task.expire","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","system_resource_layout","workflow"]},
-  {"id":"workflow.human_task.get","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
-  {"id":"workflow.human_task.list","owner":"workflow","scope_source":"actor_tenant","required_groups":["workflow"],"ordered_domains":["workflow"],"participants":["workflow"]},
-  {"id":"workflow.human_task.reassign","owner":"workflow","scope_source":"actor_tenant","required_groups":["iam_system_resources","workflow"],"ordered_domains":["iam","system_resource_layout","workflow"],"participants":["iam","system_resource_layout","workflow"]}
-]}

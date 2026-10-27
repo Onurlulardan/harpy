@@ -17,7 +17,7 @@ func TestTenantMigrationExecutorLifecycleAgainstPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	database := startTenantMigrationDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin+"/complete", func(t *testing.T) {
 			_, fixture, claim := prepareTenantExecutorScenario(
 				t, ctx, database, origin,
@@ -125,9 +125,6 @@ func prepareTenantExecutorPendingScenario(
 ) (uuid.UUID, onboardingFixture, uuid.UUID) {
 	t.Helper()
 	resetTenantMigrationCatalog(t, ctx, database)
-	if origin == "v1_adopted" {
-		prepareV1TenantRegistry(t, ctx, database)
-	}
 	runPlatformMigrations(t, ctx, database, origin)
 	prepareTenantExecutorFoundation(t, ctx, database, origin)
 	profileID := uuid.New()

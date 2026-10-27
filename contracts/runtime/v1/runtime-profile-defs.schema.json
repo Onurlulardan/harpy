@@ -65,8 +65,6 @@
         }},
         {"$ref": "config.schema.json#/$defs/cursorKeyringXor"},
         {"$ref": "config.schema.json#/$defs/catalogPackageKeyringXor"},
-        {"$ref": "forms-export-artifact-config-fragment.schema.json#/$defs/common"},
-        {"$ref": "forms-import-source-config-fragment.schema.json#/$defs/api"},
         {"$ref": "iam-system-transfer-config-fragment.schema.json"},
         {"$ref": "iam-api-config-fragment.schema.json"}
       ]
@@ -93,8 +91,6 @@
         {"$ref": "#/$defs/rabbitMQTLSRules"},
         {"$ref": "config.schema.json#/$defs/cursorKeyringXor"},
         {"$ref": "config.schema.json#/$defs/catalogPackageKeyringXor"},
-        {"$ref": "forms-export-artifact-config-fragment.schema.json#/$defs/worker"},
-        {"$ref": "forms-import-source-config-fragment.schema.json#/$defs/common"},
         {"$ref": "iam-system-transfer-config-fragment.schema.json"},
         {"$ref": "iam-worker-config-fragment.schema.json"}
       ]

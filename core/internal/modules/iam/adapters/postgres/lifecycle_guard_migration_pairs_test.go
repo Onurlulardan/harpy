@@ -22,9 +22,8 @@ func TestIAMLifecycleGuardMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamLifecycleGuardMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and V1-adopted lifecycle guard differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			assertIAMLifecycleGuardSource(t, fresh)
 		})

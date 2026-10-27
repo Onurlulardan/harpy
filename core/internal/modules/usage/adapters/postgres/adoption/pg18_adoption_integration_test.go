@@ -15,18 +15,14 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestUsageAdoptionOnFreshAndAdoptedPostgreSQL184(t *testing.T) {
+func TestUsageAdoptionOnFreshPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 	defer cancel()
 	database := startUsageDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetAndApplyUsage(t, ctx, database, origin)
-			exerciseLegacyCrashResume(t, ctx, database)
-			exerciseManifestDriftFence(t, ctx, database)
-			exerciseZeroSource(t, ctx, database)
-		})
-	}
+	resetAndApplyUsage(t, ctx, database)
+	exerciseLegacyCrashResume(t, ctx, database)
+	exerciseManifestDriftFence(t, ctx, database)
+	exerciseZeroSource(t, ctx, database)
 }
 
 func createLegacyTraceSource(t *testing.T, ctx context.Context, database *sql.DB) (

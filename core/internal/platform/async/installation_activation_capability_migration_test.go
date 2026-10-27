@@ -12,11 +12,7 @@ import (
 
 func TestInstallationActivationCapabilityMigrationIsPairedAndAdditive(t *testing.T) {
 	const name = "20260729100029_create_installation_activation_capability_entrypoints_v1"
-	fresh := readInstallationActivationMigration(t, "fresh", name)
-	adopted := readInstallationActivationMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("fresh and v1_adopted activation capability migrations differ")
-	}
+	fresh := readInstallationActivationMigration(t, name)
 	if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 		t.Fatal("activation capability migration exceeds 200 lines")
 	}
@@ -53,12 +49,10 @@ func TestInstallationActivationCapabilityMigrationIsPairedAndAdditive(t *testing
 	}
 }
 
-func readInstallationActivationMigration(
-	t *testing.T, origin, name string,
-) []byte {
+func readInstallationActivationMigration(t *testing.T, name string) []byte {
 	t.Helper()
 	body, err := os.ReadFile(filepath.Join(
-		"migrations", origin, name+"."+origin+".sql",
+		"migrations", "fresh", name+".fresh.sql",
 	))
 	if err != nil {
 		t.Fatal(err)

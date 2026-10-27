@@ -1,14 +1,11 @@
 {
   "version": 2,
   "includes": [
-    "contracts/storage/owners/ai.json",
     "contracts/storage/owners/analytics.json",
     "contracts/storage/owners/billing.json",
     "contracts/storage/owners/catalog.json",
     "contracts/storage/owners/documents.json",
-    "contracts/storage/owners/forms.json",
     "contracts/storage/owners/iam.json",
-    "contracts/storage/owners/mcp.json",
     "contracts/storage/owners/notifications.json",
     "contracts/storage/owners/platform_async.json",
     "contracts/storage/owners/platform_backupreceipt.json",
@@ -19,7 +16,6 @@
     "contracts/storage/owners/platformops.json",
     "contracts/storage/owners/system_resource_layout.json",
     "contracts/storage/owners/tenancy.json",
-    "contracts/storage/owners/work.json",
-    "contracts/storage/owners/workflow.json"
+    "contracts/storage/owners/work.json"
   ]
 }

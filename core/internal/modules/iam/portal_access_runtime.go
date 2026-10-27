@@ -12,7 +12,8 @@ import (
 )
 
 type PortalAccessPlatform interface {
-	FormsRecordAccessPlatform
+	IdentityHTTPPlatform
+	tenantSlugResolver
 }
 
 type PortalAccessRuntime struct {

@@ -23,7 +23,6 @@ func prepareRecoveryPG18Scenario(
 	t.Helper()
 	db := startPublicationPG18(t, ctx, origin)
 	preparePublicationCatalog(t, ctx, db)
-	seedPublicationV1Snapshot(t, ctx, db)
 	applyPublicationDocuments(t, ctx, db,
 		publicationIAMDocuments(t, origin, "tenant", "foundation"), true)
 	seedPublicationSource(t, ctx, db, publicationSourceSchema(t))

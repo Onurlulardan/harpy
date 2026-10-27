@@ -10,7 +10,7 @@ import (
 )
 
 func TestIAMUserRelationReplaceAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 9*time.Minute)
 			defer cancel()
@@ -31,9 +31,6 @@ func TestIAMUserRelationReplaceAgainstPostgreSQL184(t *testing.T) {
 			t.Run("tenant_isolation", func(t *testing.T) {
 				assertIAMUserRelationTenantIsolation(t, ctx, database)
 			})
-			if origin == "v1_adopted" {
-				assertIAMV1SnapshotUnchanged(t, ctx, database)
-			}
 		})
 	}
 }

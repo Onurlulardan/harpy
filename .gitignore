@@ -6,6 +6,9 @@ deploy/**/.env
 secrets
 **/secrets
 
+# Local access note. Contains secrets.
+local/ACCESS.md
+
 # Local ops state.
 ops/local/state/
 

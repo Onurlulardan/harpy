@@ -18,11 +18,14 @@ func analyticsDocuments(
 	t *testing.T, origin, scope string,
 ) []platformmigration.Document {
 	t.Helper()
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Analytics migration origin %q is unsupported", origin)
+	}
 	documents, err := analyticsmodule.MigrationDocuments()
 	if err != nil {
 		t.Fatal(err)
 	}
-	needle := "/" + origin + "/"
+	needle := "/fresh/"
 	selected := make([]platformmigration.Document, 0, len(documents)/2)
 	for _, document := range documents {
 		if document.Scope() == scope && strings.Contains(document.Path(), needle) {
@@ -33,7 +36,7 @@ func analyticsDocuments(
 		return selected[left].Path() < selected[right].Path()
 	})
 	if len(selected) == 0 {
-		t.Fatalf("Analytics %s %s migration stream is empty", origin, scope)
+		t.Fatalf("Analytics fresh %s migration stream is empty", scope)
 	}
 	return selected
 }

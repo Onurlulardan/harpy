@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 )
@@ -9,9 +8,8 @@ import (
 func TestIAMPasswordEnrollmentMigrationIsAtomicAndSecretFree(t *testing.T) {
 	const name = "20260716014700_create_iam_identity_password_enroll_v1"
 	fresh := readIAMIdentityMigration(t, "fresh", name)
-	adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("password enrollment migration differs by origin")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	source := string(fresh)
 	for _, required := range []string{

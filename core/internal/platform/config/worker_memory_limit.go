@@ -3,11 +3,12 @@ package config
 import (
 	"math"
 	"strconv"
-
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 )
 
-const workerMemoryLimitKey = "GOMEMLIMIT"
+const (
+	workerMemoryLimitKey          = "GOMEMLIMIT"
+	workerMinimumMemoryLimitBytes = 512 * 1024 * 1024
+)
 
 type WorkerMemoryLimit struct{ bytes int64 }
 
@@ -17,7 +18,7 @@ func loadWorkerMemoryLimit(values environmentValues) (WorkerMemoryLimit, error) 
 		return WorkerMemoryLimit{}, configError(workerMemoryLimitKey, "is required")
 	}
 	bytes, valid := parseWorkerMemoryBytes(raw)
-	if !valid || bytes < runtimev1.WorkerMinimumMemoryLimitBytes {
+	if !valid || bytes < workerMinimumMemoryLimitBytes {
 		return WorkerMemoryLimit{}, configError(
 			workerMemoryLimitKey, "must be at least 512MiB",
 		)
@@ -77,8 +78,8 @@ func parseWorkerMemoryInteger(raw string, multiplier int64) (int64, bool) {
 func (limit WorkerMemoryLimit) Bytes() int64 { return limit.bytes }
 
 func (limit WorkerMemoryLimit) ValidateRuntime(actualBytes int64) error {
-	if limit.bytes < runtimev1.WorkerMinimumMemoryLimitBytes ||
-		actualBytes < runtimev1.WorkerMinimumMemoryLimitBytes {
+	if limit.bytes < workerMinimumMemoryLimitBytes ||
+		actualBytes < workerMinimumMemoryLimitBytes {
 		return configError(workerMemoryLimitKey, "runtime memory limit is below 512MiB")
 	}
 	return nil

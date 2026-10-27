@@ -26,16 +26,12 @@ func (database retentionIntegrationDatabase) QueryRow(
 	return database.connection.QueryRowContext(ctx, statement, arguments...)
 }
 
-func TestUsageRetentionAndLegalHoldOnBothOrigins(t *testing.T) {
+func TestUsageRetentionAndLegalHoldOnFreshPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 	defer cancel()
 	database := startUsageDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetAndApplyUsage(t, ctx, database, origin)
-			exerciseRetentionHold(t, ctx, database)
-		})
-	}
+	resetAndApplyUsage(t, ctx, database)
+	exerciseRetentionHold(t, ctx, database)
 }
 
 func exerciseRetentionHold(t *testing.T, ctx context.Context, database *sql.DB) {

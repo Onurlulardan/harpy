@@ -12,9 +12,6 @@ type Worker struct {
 	memoryLimit          WorkerMemoryLimit
 	rabbitMQ             RabbitMQ
 	iam                  IAMWorker
-	formsExport          FormsExportArtifacts
-	formsExportSpool     AbsolutePath
-	formsImportSource    FormsImportSourceArtifacts
 	analyticsExports     AnalyticsDashboardExportArtifacts
 	analyticsExportSpool AbsolutePath
 	restQueryCursorKeys  CursorKeyring
@@ -61,19 +58,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 	if err != nil {
 		return Worker{}, err
 	}
-	formsExport, err := loadOptionalFormsExport(values, runtimeConfig.Environment())
-	if err != nil {
-		return Worker{}, err
-	}
-	spool, err := loadOptionalFormsSpool(values, runtimeConfig.Environment())
-	if err != nil {
-		return Worker{}, err
-	}
-	formsImport, err := loadOptionalFormsImport(values,
-		runtimeConfig.Environment(), formsExport)
-	if err != nil {
-		return Worker{}, err
-	}
 	analyticsExports, err := loadAnalyticsDashboardExportArtifacts(
 		values, runtimeConfig.Environment(),
 	)
@@ -89,12 +73,12 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 		return Worker{}, err
 	}
 	iamTransferArtifacts, err := loadIAMSystemTransferArtifacts(values,
-		runtimeConfig.Environment(), formsExport, formsImport)
+		runtimeConfig.Environment())
 	if err != nil {
 		return Worker{}, err
 	}
 	if err = validateAnalyticsDashboardExportSeparation(
-		analyticsExports, formsExport, formsImport, iamTransferArtifacts,
+		analyticsExports, iamTransferArtifacts,
 	); err != nil {
 		return Worker{}, err
 	}
@@ -114,9 +98,7 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 		longRunning: longRunning, deploymentMode: deploymentMode,
 		authority: authority, memoryLimit: memoryLimit,
 		rabbitMQ: rabbitMQ, iam: iamConfig,
-		formsExport: formsExport, formsExportSpool: spool,
-		formsImportSource: formsImport,
-		analyticsExports:  analyticsExports, analyticsExportSpool: analyticsExportSpool,
+		analyticsExports: analyticsExports, analyticsExportSpool: analyticsExportSpool,
 		restQueryCursorKeys:  cursorKeys,
 		iamTransferArtifacts: iamTransferArtifacts,
 		catalogPackageKeys:   catalogKeys,

@@ -54,17 +54,15 @@ func TestFinalizerUsesVersionedTenantRequirementAuthority(t *testing.T) {
 
 func cutoverMigrationDocuments(t *testing.T, base string) map[string]string {
 	t.Helper()
-	documents := make(map[string]string, 2)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		path := filepath.Join("..", "..", "migrations", origin,
-			base+"."+origin+".sql")
-		document, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		documents[path] = string(document)
+	path := filepath.Join("..", "..", "migrations", "fresh", base+".fresh.sql")
+	document, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
 	}
-	return documents
+	if len(document) == 0 {
+		t.Fatalf("fresh migration %s did not load", base)
+	}
+	return map[string]string{path: string(document)}
 }
 
 func assertNoDirectTenantRequirementRead(

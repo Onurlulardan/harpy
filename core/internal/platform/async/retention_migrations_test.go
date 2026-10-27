@@ -21,11 +21,7 @@ func TestRetentionMigrationsFreezePairedPolicies(t *testing.T) {
 	}
 	sources := make(map[string]string, len(files))
 	for _, name := range files {
-		fresh := readRetentionMigration(t, "fresh", name)
-		adopted := readRetentionMigration(t, "v1_adopted", name)
-		if !bytes.Equal(fresh, adopted) {
-			t.Fatalf("migration %s origin pair differs", name)
-		}
+		fresh := readRetentionMigration(t, name)
 		if bytes.Count(fresh, []byte("\n")) > 200 {
 			t.Fatalf("migration %s exceeds 200 lines", name)
 		}
@@ -94,9 +90,9 @@ func TestRetentionMigrationsFreezePairedPolicies(t *testing.T) {
 		"DELETE FROM platform.dead_letters AS root")
 }
 
-func readRetentionMigration(t *testing.T, origin, name string) []byte {
+func readRetentionMigration(t *testing.T, name string) []byte {
 	t.Helper()
-	path := "migrations/" + origin + "/" + name + "." + origin + ".sql"
+	path := "migrations/fresh/" + name + ".fresh.sql"
 	content, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)

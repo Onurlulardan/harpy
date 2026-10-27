@@ -30,9 +30,8 @@ func TestIAMProfileRevisionMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamProfileRevisionMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and V1-adopted profile revision migration differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			assertIAMProfileRevisionMigrationSource(t, fresh)
 		})

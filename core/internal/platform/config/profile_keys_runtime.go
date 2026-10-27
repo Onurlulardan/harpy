@@ -29,9 +29,6 @@ func apiKeys() []string {
 		catalogPackageKeyringEnvironmentKey, catalogPackageKeyringEnvironmentKey + "_FILE",
 		notificationsConsumerKeyringFileKey,
 	}
-	keys = append(keys, formsExportArtifactKeys()...)
-	keys = append(keys, formsImportSourceArtifactKeys()...)
-	keys = append(keys, formsImportSourceStagingKey)
 	keys = append(keys, analyticsDashboardExportArtifactKeys()...)
 	keys = append(keys, iamSystemTransferArtifactKeys()...)
 	keys = append(keys, documentsArtifactKeys()...)
@@ -57,9 +54,6 @@ func workerKeys() []string {
 		"HARPY_IAM_INVITATION_TEMPLATE_FILE",
 		"HARPY_IAM_INVITATION_SMTP_TIMEOUT",
 	}
-	keys = append(keys, formsExportArtifactKeys()...)
-	keys = append(keys, formsImportSourceArtifactKeys()...)
-	keys = append(keys, "HARPY_FORMS_EXPORT_SPOOL_DIR")
 	keys = append(keys, analyticsDashboardExportArtifactKeys()...)
 	keys = append(keys, analyticsExportSpoolKey)
 	keys = append(keys, iamSystemTransferArtifactKeys()...)
@@ -67,21 +61,4 @@ func workerKeys() []string {
 	keys = append(keys, documentsLegacyArtifactKeys()...)
 	keys = append(keys, documentsClamAVAddressKey)
 	return append(keys, iamWorkerKeys()...)
-}
-
-func formsImportSourceArtifactKeys() []string {
-	return []string{formsImportSourceEndpointKey, formsImportSourceRegionKey,
-		formsImportSourceBucketKey, formsImportSourceOwnerKey,
-		formsImportSourcePathStyleKey, formsImportSourceCredentialSourceKey,
-		formsImportSourceAccessKeyFileKey, formsImportSourceSecretKeyFileKey,
-		formsImportSourceSessionTokenFileKey, formsImportSourceFCARTKeyringFileKey}
-}
-
-func formsExportArtifactKeys() []string {
-	return []string{
-		formsExportEndpointKey, formsExportRegionKey, formsExportBucketKey,
-		formsExportOwnerKey, formsExportPathStyleKey, formsExportCredentialSourceKey,
-		formsExportAccessKeyFileKey, formsExportSecretKeyFileKey,
-		formsExportSessionTokenFileKey, formsExportFCARTKeyringFileKey,
-	}
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestEvaluateAppliesOnlyNamedActiveCompatibilityEdge(t *testing.T) {
+func TestEvaluateDoesNotGrantFormsParentImplication(t *testing.T) {
 	sourceResource := uuid.MustParse("21000000-0000-4000-8000-000000000001")
 	sourceAction := uuid.MustParse("22000000-0000-4000-8000-000000000001")
 	sourcePermission := uuid.MustParse("23000000-0000-4000-8000-000000000001")
@@ -27,8 +27,9 @@ func TestEvaluateAppliesOnlyNamedActiveCompatibilityEdge(t *testing.T) {
 	decision := evaluate(
 		testRequest(t), testSnapshot(t, []BindingFact{binding}, []ImplicationFact{edge}),
 	)
-	if !decision.Allowed() || decision.Reason() != ReasonRoleCompatibility {
-		t.Fatalf("decision = %t/%s", decision.Allowed(), decision.Reason())
+	if decision.Allowed() || decision.Reason() != ReasonNoEffectivePermission {
+		t.Fatalf("forms parent implication granted access: %t/%s",
+			decision.Allowed(), decision.Reason())
 	}
 	edge.State = "retired"
 	decision = evaluate(
@@ -60,21 +61,13 @@ func TestEvaluateDoesNotChainOrInventHierarchy(t *testing.T) {
 	}
 }
 
-func TestEvaluateAppliesFormsRecordOperationForEverySubjectPath(t *testing.T) {
-	tests := []struct {
-		path   SubjectPath
-		reason Reason
-	}{
-		{SubjectUser, ReasonUserFormsRecordOperation},
-		{SubjectRole, ReasonRoleFormsRecordOperation},
-		{SubjectOrganization, ReasonOrganizationFormsRecordOperation},
-	}
-	for _, test := range tests {
-		t.Run(string(test.path), func(t *testing.T) {
+func TestEvaluateDoesNotGrantFormsRecordOperation(t *testing.T) {
+	for _, path := range []SubjectPath{SubjectUser, SubjectRole, SubjectOrganization} {
+		t.Run(string(path), func(t *testing.T) {
 			sourceResource := uuid.MustParse("27000000-0000-4000-8000-000000000001")
 			sourceAction := uuid.MustParse("27000000-0000-4000-8000-000000000002")
 			sourcePermission := uuid.MustParse("27000000-0000-4000-8000-000000000003")
-			binding := testExactBinding(test.path)
+			binding := testExactBinding(path)
 			binding.PermissionID = sourcePermission
 			binding.PermissionResource = uuidPointer(sourceResource)
 			binding.PermissionAction = uuidPointer(sourceAction)
@@ -91,8 +84,8 @@ func TestEvaluateAppliesFormsRecordOperationForEverySubjectPath(t *testing.T) {
 			}
 			decision := evaluate(testRequest(t),
 				testSnapshot(t, []BindingFact{binding}, []ImplicationFact{edge}))
-			if !decision.Allowed() || decision.Reason() != test.reason {
-				t.Fatalf("decision = %t/%s", decision.Allowed(), decision.Reason())
+			if decision.Allowed() {
+				t.Fatalf("forms record implication granted %s", path)
 			}
 		})
 	}

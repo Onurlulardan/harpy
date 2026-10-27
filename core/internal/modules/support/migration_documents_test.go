@@ -22,8 +22,7 @@ func TestMigrationDocumentsEmbedFreshSQL(t *testing.T) {
 		if _, duplicate := seen[path]; duplicate {
 			t.Fatalf("duplicate migration path %s", path)
 		}
-		if strings.Contains(path, "v1_adopted") ||
-			!strings.HasSuffix(path, ".fresh.sql") ||
+		if !strings.HasSuffix(path, ".fresh.sql") ||
 			!strings.Contains(path, "/migrations/platform/fresh/") ||
 			len(document.Content()) == 0 {
 			t.Fatalf("migration path = %s", path)

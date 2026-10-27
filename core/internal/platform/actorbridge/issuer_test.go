@@ -85,7 +85,7 @@ func TestIssuerOrdersCurrentIAMAuthorityAndReturnsOnlyAfterCommit(t *testing.T) 
 	)
 	authority, _ := NewAuthority(11, 12, 13)
 	target, _ := actorassertionv1.TargetBindingSHA256("POST", "/records", "record-17")
-	input := IssueInput{TargetDomain: actorassertionv1.DomainForms,
+	input := IssueInput{TargetDomain: actorassertionv1.DomainDocuments,
 		ResourceKey: "forms.records", ActionKey: "create", TargetBinding: target,
 		TokenVersion: 7, AuthorizationVersion: 19}
 	order := []string{}
@@ -130,7 +130,7 @@ func TestIssuerStopsBeforeAuthorityWhenIAMDenies(t *testing.T) {
 		authorityStub{order: &order}, signer, time.Now)
 	target, _ := actorassertionv1.TargetBindingSHA256("POST", "/records")
 	_, err := issuer.Issue(context.Background(), platformtx.ScopeRequest{}, IssueInput{
-		TargetDomain: actorassertionv1.DomainForms, ResourceKey: "forms.records",
+		TargetDomain: actorassertionv1.DomainDocuments, ResourceKey: "forms.records",
 		ActionKey: "create", TargetBinding: target, TokenVersion: 1,
 		AuthorizationVersion: 1,
 	})

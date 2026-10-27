@@ -20,12 +20,15 @@ type billingDocument struct {
 
 func loadBillingDocuments(t *testing.T, origin string) []billingDocument {
 	t.Helper()
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Billing migration origin %q is unsupported", origin)
+	}
 	workingDirectory, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
 	}
 	directory := filepath.Join(
-		workingDirectory, "..", "..", "..", "migrations", "platform", origin,
+		workingDirectory, "..", "..", "..", "migrations", "platform", "fresh",
 	)
 	entries, err := os.ReadDir(directory)
 	if err != nil {
@@ -47,7 +50,7 @@ func loadBillingDocuments(t *testing.T, origin string) []billingDocument {
 		return documents[left].path < documents[right].path
 	})
 	if len(documents) != 208 {
-		t.Fatalf("Billing %s migration count = %d, want 208", origin, len(documents))
+		t.Fatalf("Billing fresh migration count = %d, want 208", len(documents))
 	}
 	return documents
 }

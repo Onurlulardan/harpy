@@ -10,7 +10,7 @@ import (
 )
 
 func TestIAMV1AdoptionRehearsalAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 7*time.Minute)
 			defer cancel()
@@ -53,9 +53,6 @@ func TestIAMV1AdoptionRehearsalAgainstPostgreSQL184(t *testing.T) {
 			}
 			assertIAMV1AdoptionIsolation(t, ctx, database)
 			assertIAMV1AdoptionPrivileges(t, ctx, database)
-			if origin == "v1_adopted" {
-				assertIAMV1SnapshotUnchanged(t, ctx, database)
-			}
 		})
 	}
 }

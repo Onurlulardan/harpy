@@ -11,6 +11,7 @@ import (
 )
 
 const (
+	documentsRecoveryOwner       = "22222222-2222-4222-8222-222222222222"
 	documentsRecoveryEnvironment = "018f0000-0000-7000-8000-000000000a10"
 	documentsRecoverySet         = "018f0000-0000-7000-8000-000000000a11"
 	documentsRecoveryFolder      = "018f0000-0000-7000-8000-000000000a12"
@@ -50,14 +51,10 @@ func prepareDocumentsRecoveryIdentity(t *testing.T, ctx context.Context,
 	if _, err := database.ExecContext(ctx, createStatement); err != nil {
 		t.Fatal(err)
 	}
-	origin := "fresh"
-	if fixture.schema == "documents_adopted_a" {
-		origin = "v1_adopted"
-	}
 	insertStatement := "INSERT INTO " + fixture.schema +
 		".tenancy_schema_identity VALUES (true,$1,$2,$3)"
 	if _, err := database.ExecContext(ctx, insertStatement,
-		fixture.tenantID, fixture.schema, origin); err != nil {
+		fixture.tenantID, fixture.schema, "fresh"); err != nil {
 		t.Fatal(err)
 	}
 	grantStatement := "GRANT USAGE ON SCHEMA " + fixture.schema +
@@ -78,13 +75,13 @@ func seedDocumentsRecoveryVersion(t *testing.T, ctx context.Context,
  id,parent_id,owner_id,display_name,lifecycle_state,row_version,
  created_at,updated_at,trashed_at)
  VALUES ($1,NULL,$2,'Recovery','ACTIVE',1,$3,$3,NULL)`,
-			documentsRecoveryFolder, formLinkActor, now)
+			documentsRecoveryFolder, documentsRecoveryOwner, now)
 		if err == nil {
 			_, err = tx.ExecContext(ctx, `INSERT INTO documents_items(
  id,folder_id,owner_id,current_version_id,lifecycle_state,row_version,
  created_at,updated_at)
  VALUES ($1,$2,$3,$4,'ACTIVE',1,$5,$5)`,
-				documentsRecoveryItem, documentsRecoveryFolder, formLinkActor,
+				documentsRecoveryItem, documentsRecoveryFolder, documentsRecoveryOwner,
 				documentsRecoveryVersion, now)
 		}
 		if err == nil {

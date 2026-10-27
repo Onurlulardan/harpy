@@ -44,11 +44,11 @@ func newTLSFixture(t *testing.T) tlsFixture {
 	roots.AddCert(root)
 	return tlsFixture{now: now, roots: roots,
 		server: issueLeaf(t, root, rootPrivate, now, 2, "v1.forms.internal",
-			V1EdgePeerURI(DomainForms), x509.ExtKeyUsageServerAuth),
+			V1EdgePeerURI(DomainDocuments), x509.ExtKeyUsageServerAuth),
 		client: issueLeaf(t, root, rootPrivate, now, 3, "core-api.internal",
 			CoreAPIPeerURI, x509.ExtKeyUsageClientAuth),
 		wrongServerURI: issueLeaf(t, root, rootPrivate, now, 4, "v1.forms.internal",
-			V1EdgePeerURI(DomainWorkflow), x509.ExtKeyUsageServerAuth),
+			V1EdgePeerURI(DomainBilling), x509.ExtKeyUsageServerAuth),
 		wrongClientURI: issueLeaf(t, root, rootPrivate, now, 5, "core-api.internal",
 			"spiffe://harpy.internal/not-core-api", x509.ExtKeyUsageClientAuth)}
 }

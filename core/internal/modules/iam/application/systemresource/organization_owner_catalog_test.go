@@ -3,9 +3,9 @@ package systemresource
 import (
 	"testing"
 
-	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profile"
+	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 )
 
 func TestOrganizationOwnerFieldIsEditableAndRequiredAtSystemResourceBoundary(

@@ -1,7 +1,6 @@
 package billing
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 
@@ -186,11 +185,8 @@ func TestBillingFinalizedSuccessorIsNarrowAndEvidenceBound(t *testing.T) {
 func pairedBillingAuthorityMigration(t *testing.T, name string) string {
 	t.Helper()
 	fresh := readBillingSnapshotMigration(t, "fresh", name+".fresh.sql")
-	adopted := readBillingSnapshotMigration(
-		t, "v1_adopted", name+".v1_adopted.sql",
-	)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatalf("%s migration variants differ", name)
+	if len(fresh) == 0 {
+		t.Fatalf("%s fresh migration is empty", name)
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("%s migration is invalid: %v", name, err)

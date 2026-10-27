@@ -12,15 +12,12 @@ import (
 )
 
 func TestGen71TenancyContractAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 			defer cancel()
 			database := startTenantMigrationDatabase(t, ctx)
 			resetTenantMigrationCatalog(t, ctx, database)
-			if origin == "v1_adopted" {
-				prepareV1TenantRegistry(t, ctx, database)
-			}
 			runPlatformMigrations(t, ctx, database, origin)
 			insertDeploymentPolicy(t, ctx, database, "saas")
 			assertGen71TenancyACL(t, ctx, database)

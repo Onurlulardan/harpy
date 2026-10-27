@@ -10,7 +10,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processhost"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemaexecutor"
 )
 
 func serveSchemaExecutor(
@@ -18,7 +17,7 @@ func serveSchemaExecutor(
 	settings config.SchemaExecutor,
 	pool *postgres.Pool,
 	monitor *health.Monitor,
-	executor *schemaexecutor.Executor,
+	executor schemaLoop,
 	runtime schemaRuntime,
 	management *httpserver.Bound,
 	logger *slog.Logger,

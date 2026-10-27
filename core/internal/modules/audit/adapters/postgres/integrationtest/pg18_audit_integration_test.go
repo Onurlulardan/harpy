@@ -8,7 +8,6 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"errors"
-	"strings"
 	"testing"
 	"time"
 
@@ -20,18 +19,10 @@ func TestAuditFreshAndAdoptedRoutinesAgainstPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 	database := startAuditDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			connection, _ := applyAuditOrigin(t, ctx, database, origin)
-			exerciseAuditLifecycle(t, ctx, connection)
-			if origin == "v1_adopted" {
-				exerciseAuditAdoption(t, ctx, connection)
-			} else {
-				exerciseEmptyAuditAdoption(t, ctx, connection)
-			}
-			assertAuditRuntimeBoundary(t, ctx, connection)
-		})
-	}
+	connection, _ := applyAuditOrigin(t, ctx, database, "fresh")
+	exerciseAuditLifecycle(t, ctx, connection)
+	exerciseEmptyAuditAdoption(t, ctx, connection)
+	assertAuditRuntimeBoundary(t, ctx, connection)
 }
 
 func exerciseEmptyAuditAdoption(t *testing.T, ctx context.Context, connection *sql.Conn) {
@@ -48,75 +39,6 @@ func exerciseEmptyAuditAdoption(t *testing.T, ctx context.Context, connection *s
 	}
 	if _, err = connection.ExecContext(ctx, `RESET ROLE`); err != nil {
 		t.Fatal(err)
-	}
-}
-
-func exerciseAuditAdoption(t *testing.T, ctx context.Context, connection *sql.Conn) {
-	t.Helper()
-	createLegacyAuditFixture(t, ctx, connection)
-	runID, firstOperation := uuid.Must(uuid.NewV7()), uuid.Must(uuid.NewV7())
-	secondOperation := uuid.Must(uuid.NewV7())
-	now := time.Date(2026, 8, 1, 18, 0, 0, 123456000, time.UTC)
-	if _, err := connection.ExecContext(ctx, `SET ROLE harpy_adopter`); err != nil {
-		t.Fatal(err)
-	}
-	var first, replay []byte
-	query := `SELECT audit_v1_adopt_batch_v1($1,$2,$3,$4)`
-	if err := connection.QueryRowContext(ctx, query, firstOperation, runID, 2, now).Scan(&first); err != nil ||
-		!containsAll(string(first), `"status": "applying"`, `"adopted_count": 2`) {
-		t.Fatalf("first adoption = %s, err = %v", first, err)
-	}
-	if err := connection.QueryRowContext(ctx, query, firstOperation, runID, 2, now).Scan(&replay); err != nil ||
-		string(first) != string(replay) {
-		t.Fatalf("adoption replay differs: %s / %s, err=%v", first, replay, err)
-	}
-	err := connection.QueryRowContext(ctx, query, firstOperation, runID, 1, now).Scan(&replay)
-	assertAuditSQLState(t, err, "P6802")
-	if _, err = connection.ExecContext(ctx, `RESET ROLE`); err != nil {
-		t.Fatal(err)
-	}
-	if _, err = connection.ExecContext(ctx,
-		`UPDATE change_logs SET old_data='{"password":"drift"}' WHERE entity_id='user-1'`); err != nil {
-		t.Fatal(err)
-	}
-	if _, err = connection.ExecContext(ctx, `SET ROLE harpy_adopter`); err != nil {
-		t.Fatal(err)
-	}
-	err = connection.QueryRowContext(ctx, query, secondOperation, runID, 2,
-		now.Add(time.Microsecond)).Scan(&replay)
-	assertAuditSQLState(t, err, "P6803")
-	if _, err = connection.ExecContext(ctx, `RESET ROLE`); err != nil {
-		t.Fatal(err)
-	}
-	if _, err = connection.ExecContext(ctx,
-		`UPDATE change_logs SET old_data='{"password":"old"}' WHERE entity_id='user-1'`); err != nil {
-		t.Fatal(err)
-	}
-	if _, err = connection.ExecContext(ctx, `SET ROLE harpy_adopter`); err != nil {
-		t.Fatal(err)
-	}
-	var completed []byte
-	if err = connection.QueryRowContext(ctx, query, secondOperation, runID, 2,
-		now.Add(2*time.Microsecond)).Scan(&completed); err != nil ||
-		!containsAll(string(completed), `"status": "completed"`, `"adopted_count": 3`) {
-		t.Fatalf("completed adoption = %s, err = %v", completed, err)
-	}
-	_, err = connection.ExecContext(ctx, `SELECT source_id FROM audit_v1_adoption_mappings`)
-	assertAuditSQLState(t, err, "42501")
-	if _, err = connection.ExecContext(ctx, `RESET ROLE`); err != nil {
-		t.Fatal(err)
-	}
-	var count int
-	var actor uuid.UUID
-	var changes []byte
-	if err = connection.QueryRowContext(ctx, `SELECT count(*),min(actor_id::text)::uuid,
-		min(field_changes::text)::jsonb FROM audit_entries WHERE reason_code='v1_adopted'`).
-		Scan(&count, &actor, &changes); err != nil || count != 3 {
-		t.Fatalf("adopted count=%d actor=%s changes=%s err=%v", count, actor, changes, err)
-	}
-	if strings.Contains(string(changes), `"old"`) || strings.Contains(string(changes), `"new"`) ||
-		!strings.Contains(string(changes), `"classification": "confidential"`) {
-		t.Fatalf("legacy values were not safely redacted: %s", changes)
 	}
 }
 

@@ -53,9 +53,6 @@ GRANT USAGE ON SCHEMA platform,t_iam_a,t_iam_b,
 		t.Fatal(err)
 	}
 	prepareIAMPlatformAuthPrerequisites(t, ctx, database.migrator)
-	if origin == "v1_adopted" {
-		seedIAMV1AdoptedSnapshot(t, ctx, database.migrator)
-	}
 	applyIAMPlatformDocuments(t, ctx, database.migrator,
 		loadIAMFoundationDocuments(t, origin, "platform"))
 	tenantFoundation := loadIAMFoundationDocuments(t, origin, "tenant")

@@ -37,33 +37,3 @@ func (storage *store) ListBlockers(ctx context.Context,
 	}
 	return items, nil
 }
-
-func (storage *store) SourceLinks(
-	ctx context.Context,
-	query linkapp.SourceQuery,
-) ([]domain.Link, error) {
-	source := query.Source
-	if !storage.usable(ctx) || source.Owner != "FORMS" ||
-		source.Kind != "form_record" || !source.ID.Valid() ||
-		!source.VersionID.Valid() || query.Limit < 1 || query.Limit > 1001 {
-		return nil, linkapp.ErrInvalid
-	}
-	rows, err := storage.query(ctx, listSourceSQL, source.Owner, source.Kind,
-		source.ID.String(), source.VersionID.String(), query.Limit)
-	if err != nil {
-		return nil, linkapp.ErrUnavailable
-	}
-	defer rows.Close()
-	result := make([]domain.Link, 0, query.Limit)
-	for rows.Next() {
-		value, _, scanErr := storage.scan(rows)
-		if scanErr != nil {
-			return nil, scanErr
-		}
-		result = append(result, value)
-	}
-	if rows.Err() != nil {
-		return nil, linkapp.ErrUnavailable
-	}
-	return result, nil
-}

@@ -22,7 +22,7 @@ func TestCatalogOwnedOpenAPIFragmentIsExact(t *testing.T) {
 	for key, expected := range want {
 		parts := strings.SplitN(key, " ", 2)
 		item := resolveFormsPathItem(t, directory, paths[parts[1]])
-		assertFormsTenantHeaders(t, parts[1], item)
+		assertFormsTenantHeaders(t, directory, parts[1], item)
 		operation, ok := item[strings.ToLower(expected.method)].(map[string]any)
 		if !ok || operation["x-harpy-permission"] != expected.permission ||
 			operation["x-harpy-authority"] != expected.authority {

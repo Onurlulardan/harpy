@@ -3,11 +3,11 @@ package iam
 import "fmt"
 
 type WorkAccessRuntime struct {
-	shared *FormsRecordAccessRuntime
+	shared *accessRequestDependencies
 }
 
 func NewWorkAccessRuntime(
-	shared *FormsRecordAccessRuntime,
+	shared *accessRequestDependencies,
 ) (*WorkAccessRuntime, error) {
 	if shared == nil || shared.pool == nil || shared.coordinator == nil ||
 		shared.security == nil || shared.clock == nil {

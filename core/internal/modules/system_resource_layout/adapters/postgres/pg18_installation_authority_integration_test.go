@@ -26,21 +26,21 @@ var layoutContractTime = time.Date(
 )
 
 func assertLayoutInstallationAuthorityContractPG18(
-	t *testing.T, ctx context.Context, database *sql.DB, origin string,
+	t *testing.T, ctx context.Context, database *sql.DB,
 ) {
 	t.Helper()
 	prepareLayoutInstallationCapabilityPG18(t, ctx, database)
 	const authorityContract = "20260729100047_contract_system_resource_layout_installation_authority_v1"
 	gen70, gen71 := layoutMigrationRange(t, authorityContract, authorityContract)
 	applyLayoutMigrationSetPG18(
-		t, ctx, database, origin, layoutContractSchema, gen70,
+		t, ctx, database, layoutContractSchema, gen70,
 	)
 	createAndPublishLayoutContractRevisionsPG18(t, ctx, database)
 	if _, err := callLayoutInstallationRecordV1PG18(ctx, database); err != nil {
 		t.Fatalf("Gen70 layout installation record: %v", err)
 	}
 	assertLayoutContractBaselineCountPG18(t, ctx, database, 1)
-	applyLayoutMigrationSetPG18(t, ctx, database, origin,
+	applyLayoutMigrationSetPG18(t, ctx, database,
 		layoutContractSchema, gen71)
 	_, err := callLayoutInstallationRecordV1PG18(ctx, database)
 	assertLayoutSQLState(t, err, "42501")

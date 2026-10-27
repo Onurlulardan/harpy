@@ -3,10 +3,10 @@ package systemresource
 import (
 	"testing"
 
-	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 	publicresource "github.com/Onurlulardan/harpy/core/internal/modules/iam/api/systemresource"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profile"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/restquery/catalog"
+	formpresentation "github.com/Onurlulardan/harpy/core/internal/platform/fieldcatalog/presentation"
 	"github.com/google/uuid"
 )
 

@@ -13,8 +13,6 @@
         "arn:aws:s3:::harpy-documents",
         "arn:aws:s3:::harpy-documents-legacy",
         "arn:aws:s3:::harpy-analytics-dashboard-exports",
-        "arn:aws:s3:::harpy-form-exports",
-        "arn:aws:s3:::harpy-form-import-sources",
         "arn:aws:s3:::harpy-iam-system-exports",
         "arn:aws:s3:::harpy-iam-system-import-sources"
       ]
@@ -34,8 +32,6 @@
         "arn:aws:s3:::harpy-documents/*",
         "arn:aws:s3:::harpy-documents-legacy/*",
         "arn:aws:s3:::harpy-analytics-dashboard-exports/*",
-        "arn:aws:s3:::harpy-form-exports/*",
-        "arn:aws:s3:::harpy-form-import-sources/*",
         "arn:aws:s3:::harpy-iam-system-exports/*",
         "arn:aws:s3:::harpy-iam-system-import-sources/*"
       ]

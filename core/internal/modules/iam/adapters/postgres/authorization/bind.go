@@ -33,30 +33,10 @@ func NewAuthorizer() (authorization.EvidencePort, error) {
 	return newAuthorizer("iam", authorizeSQL, false, "")
 }
 
-// NewFormsAuthorizer reads IAM-owned evidence through the exact V2 routine while
-// remaining inside the caller's Forms transaction capability.
-func NewFormsAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer("forms", authorizeFormsSQL, true, platformtx.Command)
-}
-
 // NewWorkAuthorizer reads current IAM-owned permission evidence while remaining
 // inside the caller's Work-owned tenant command transaction.
 func NewWorkAuthorizer() (authorization.EvidencePort, error) {
 	return newAuthorizer("work", authorizeWorkSQL, true, platformtx.Command)
-}
-
-// NewWorkflowHumanTaskAuthorizer reads current IAM evidence through the exact
-// Workflow-bound routine inside the caller's actor-bound command scope.
-func NewWorkflowHumanTaskAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer("workflow", authorizeWorkflowHumanTaskSQL, true, platformtx.Command)
-}
-
-// NewFormsSnapshotAuthorizer reads delegated IAM evidence without row locks
-// and is sealed to a read-only repeatable-read Forms snapshot transaction.
-func NewFormsSnapshotAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer(
-		"forms", authorizeFormsSnapshotSQL, true, platformtx.SnapshotQuery,
-	)
 }
 
 // NewPortalAuthorizer restricts evidence to roles owned by the active portal binding.

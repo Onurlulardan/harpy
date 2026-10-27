@@ -82,8 +82,11 @@ func applyActorBridgeIAMDocuments(
 	t *testing.T, ctx context.Context, migrator *pgx.Conn, origin, schema string,
 ) {
 	t.Helper()
+	if origin != "fresh" {
+		t.Fatalf("fresh IAM actor bridge migrations did not load")
+	}
 	directory := filepath.Join("..", "..", "..", "..", "modules", "iam",
-		"migrations", "tenant", origin)
+		"migrations", "tenant", "fresh")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)

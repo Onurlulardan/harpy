@@ -46,24 +46,6 @@ func (c API) AnalyticsTrustedProxies() AnalyticsTrustedProxies {
 	return c.analyticsProxies
 }
 
-func (c API) FormsExportArtifacts() (FormsExportArtifacts, error) {
-	if err := c.formsExport.Validate(); err != nil {
-		return FormsExportArtifacts{}, err
-	}
-	return c.formsExport, nil
-}
-
-func (c API) FormsImportSourceArtifacts() (FormsImportSourceArtifacts, error) {
-	if err := c.formsImportSource.Validate(); err != nil {
-		return FormsImportSourceArtifacts{}, err
-	}
-	return c.formsImportSource, nil
-}
-
-func (c API) FormsImportSourceStagingDirectory() AbsolutePath {
-	return c.formsImportStaging
-}
-
 func (c API) AnalyticsDashboardExportArtifacts() (
 	AnalyticsDashboardExportArtifacts, error,
 ) {

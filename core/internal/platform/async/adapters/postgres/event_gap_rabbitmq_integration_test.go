@@ -16,7 +16,7 @@ func TestRabbitEventGapReplaysSameEventWithSingleEffect(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
 	defer cancel()
 	rabbit := startPipelineRabbit(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			fixture := newEventGapPGFixtureWithRabbit(t, ctx, origin, rabbit.url)
 			assertRabbitEventGapReplay(t, ctx, &fixture)

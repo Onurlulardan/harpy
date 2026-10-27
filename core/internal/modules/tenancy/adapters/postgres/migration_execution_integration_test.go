@@ -40,22 +40,6 @@ func TestTenantRegistryMigrationsAgainstPostgreSQL184(t *testing.T) {
 		assertAdoptionIssuesAreAppendOnly(t, ctx, database)
 	})
 	resetTenantMigrationCatalog(t, ctx, database)
-	t.Run("v1_adopted", func(t *testing.T) {
-		originalOID := prepareV1TenantRegistry(t, ctx, database)
-		runPlatformMigrations(t, ctx, database, "v1_adopted")
-		assertAdoptedTenant(t, ctx, database, originalOID)
-		insertDeploymentPolicy(t, ctx, database, "onpremise")
-		mustInsertTenantBinding(t, ctx, database, adoptedTenantID, "onpremise_primary")
-		assertRuntimeDeploymentPolicy(t, ctx, database, "onpremise")
-		assertRuntimePrimaryTenantTarget(
-			t, ctx, database, "onpremise", "onpremise_primary",
-		)
-		assertRuntimeTenantResolver(t, ctx, database, adoptedTenantID)
-		assertTenantRegistryCatalog(t, ctx, database)
-		assertTenantRegistryWrites(t, ctx, database, adoptedTenantID)
-		assertAdoptionIssuesAreAppendOnly(t, ctx, database)
-	})
-	resetTenantMigrationCatalog(t, ctx, database)
 	t.Run("saas", func(t *testing.T) {
 		runPlatformMigrations(t, ctx, database, "fresh")
 		insertFreshTenant(t, ctx, database)

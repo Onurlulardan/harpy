@@ -40,11 +40,6 @@ type BlockerQuery struct {
 	Limit       uint16
 }
 
-type SourceQuery struct {
-	Source Source
-	Limit  uint16
-}
-
 type BlockerPage struct {
 	Items      []domain.Link
 	NextLinkID domain.ID

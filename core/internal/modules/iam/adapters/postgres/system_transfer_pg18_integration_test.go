@@ -10,12 +10,12 @@ import (
 )
 
 func TestIAMSystemTransferAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 7*time.Minute)
 			defer cancel()
 			database := startIAMFoundationPG18(t, ctx, "system_transfer_"+origin)
-			prepareIAMFormsRecordAuthority(t, ctx, database, origin)
+			prepareIAMSystemTransferBase(t, ctx, database, origin)
 			applyIAMSystemTransferAsyncPlatform(t, ctx, database, origin)
 			grantIAMSystemTransferSchemaUsage(t, ctx, database)
 			applyIAMSystemTransferDependencies(t, ctx, database, origin)
@@ -39,9 +39,6 @@ func applyIAMSystemTransferDependencies(t *testing.T, ctx context.Context,
 	}
 	for _, tenant := range iamFoundationTenants {
 		sentinelOrigin := "new"
-		if origin == "v1_adopted" {
-			sentinelOrigin = origin
-		}
 		mustExecIAMTenant(t, ctx, database, tenant.schema, `
 CREATE TABLE tenancy_schema_identity(
  singleton boolean PRIMARY KEY CHECK(singleton),tenant_id uuid NOT NULL UNIQUE,

@@ -5,17 +5,8 @@ import _ "embed"
 //go:embed sql/tenant/authorize.sql
 var authorizeSQL string
 
-//go:embed sql/tenant/authorize_forms.sql
-var authorizeFormsSQL string
-
 //go:embed sql/tenant/authorize_work.sql
 var authorizeWorkSQL string
-
-//go:embed sql/tenant/authorize_forms_snapshot.sql
-var authorizeFormsSnapshotSQL string
-
-//go:embed sql/tenant/authorize_workflow_human_task.sql
-var authorizeWorkflowHumanTaskSQL string
 
 //go:embed sql/tenant/authorize_analytics.sql
 var authorizeAnalyticsSQL string

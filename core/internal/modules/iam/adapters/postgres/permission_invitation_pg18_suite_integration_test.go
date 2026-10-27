@@ -9,7 +9,7 @@ import (
 )
 
 func TestIAMPermissionInvitationRuntimeAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 7*time.Minute)
 			defer cancel()
@@ -19,10 +19,8 @@ func TestIAMPermissionInvitationRuntimeAgainstPostgreSQL184(t *testing.T) {
 			applyIAMLifecycleGuards(t, ctx, database, origin)
 			applyIAMRBAC(t, ctx, database, origin)
 			applyIAMPermissionInvitation(t, ctx, database, origin)
-			applyIAMWorkflowPermission(t, ctx, database, origin)
 			prepareIAMAtomicRuntimeRole(t, ctx, database)
 			seedIAMFoundationBase(t, ctx, database)
-			seedIAMWorkflowPermissionAuthority(t, ctx, database, origin)
 			for index, tenant := range iamFoundationTenants {
 				seedIAMRBACCatalog(t, ctx, database, tenant.schema)
 				seedIAMRBACProtectedPolicy(t, ctx, database, tenant)
@@ -49,9 +47,6 @@ func TestIAMPermissionInvitationRuntimeAgainstPostgreSQL184(t *testing.T) {
 					marker = "8b"
 				}
 				assertIAMInvitationRegistrationV2(t, ctx, database, tenant, marker)
-			}
-			for index, tenant := range iamFoundationTenants {
-				assertIAMWorkflowPermissionDecision(t, ctx, database, tenant, index)
 			}
 		})
 	}

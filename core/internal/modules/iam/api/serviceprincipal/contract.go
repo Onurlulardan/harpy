@@ -43,35 +43,3 @@ type EvidenceVerifier interface {
 		VerificationRequest,
 	) (VerificationEvidence, error)
 }
-
-type PublicationAuthorityEvidence struct {
-	ActorID                      [16]byte
-	ExpectedTokenVersion         int64
-	ExpectedAuthorizationVersion int64
-	PurposeSHA256                [32]byte
-	AuthenticatedAt              time.Time
-	AMRPassword                  bool
-	AMRWebAuthn                  bool
-	AMRTOTP                      bool
-}
-
-type PublicationAuthorityRequest struct {
-	DefinitionID     [16]byte
-	ManifestSHA256   [32]byte
-	IdempotencyKey   string
-	MutationEvidence PublicationAuthorityEvidence
-}
-
-type PublicationAuthority struct {
-	ServicePrincipalID [16]byte
-	GrantID            [16]byte
-	GrantRevision      int64
-}
-
-type PublicationAuthorityProvisioner interface {
-	ProvisionWorkflowPublicationAuthority(
-		context.Context,
-		platformtx.TenantScope,
-		PublicationAuthorityRequest,
-	) (PublicationAuthority, error)
-}

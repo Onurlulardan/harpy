@@ -28,17 +28,17 @@ type ArtifactS3 struct {
 
 func loadArtifactS3(values environmentValues, environment Environment,
 	keys artifactStorageKeys) (ArtifactS3, error) {
-	endpoint, err := requiredFormsExportText(values, keys.endpoint, 2048)
-	if err != nil || !validFormsExportEndpoint(endpoint, !environment.productionLike()) {
+	endpoint, err := requiredArtifactText(values, keys.endpoint, 2048)
+	if err != nil || !validArtifactEndpoint(endpoint, !environment.productionLike()) {
 		return ArtifactS3{}, configError(keys.endpoint,
 			"must be a canonical permitted endpoint")
 	}
-	region, err := requiredFormsExportText(values, keys.region, 63)
-	if err != nil || !validFormsExportRegion(region) {
+	region, err := requiredArtifactText(values, keys.region, 63)
+	if err != nil || !validArtifactRegion(region) {
 		return ArtifactS3{}, configError(keys.region, "must be a canonical region")
 	}
-	bucket, err := requiredFormsExportText(values, keys.bucket, 63)
-	if err != nil || !validFormsExportBucket(bucket) {
+	bucket, err := requiredArtifactText(values, keys.bucket, 63)
+	if err != nil || !validArtifactBucket(bucket) {
 		return ArtifactS3{}, configError(keys.bucket, "must be a DNS-compatible bucket")
 	}
 	if _, found := values.lookup(keys.pathStyle); !found {
@@ -64,9 +64,9 @@ func loadArtifactS3(values environmentValues, environment Environment,
 
 func (settings ArtifactS3) Validate() error {
 	if !settings.valid ||
-		!validFormsExportEndpoint(settings.endpoint, settings.allowPlainHTTP) ||
-		!validFormsExportRegion(settings.region) ||
-		!validFormsExportBucket(settings.bucket) ||
+		!validArtifactEndpoint(settings.endpoint, settings.allowPlainHTTP) ||
+		!validArtifactRegion(settings.region) ||
+		!validArtifactBucket(settings.bucket) ||
 		!bucketOwnerAccepted(settings.expectedOwner, settings.ownerOptional) ||
 		settings.credentials.Validate() != nil {
 		return errInvalidArtifactS3

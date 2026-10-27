@@ -10,7 +10,7 @@ import (
 
 func applyLayoutMigrationSetPG18(
 	t *testing.T, ctx context.Context, database *sql.DB,
-	origin, schema string, names []string,
+	schema string, names []string,
 ) {
 	t.Helper()
 	connection, err := database.Conn(ctx)
@@ -29,7 +29,7 @@ func applyLayoutMigrationSetPG18(
 			schema+", pg_catalog").Scan(&bound)
 		if err == nil {
 			_, err = transaction.ExecContext(ctx,
-				string(readLayoutMigration(t, origin, name)))
+				string(readLayoutMigration(t, name)))
 		}
 		if err != nil {
 			_ = transaction.Rollback()

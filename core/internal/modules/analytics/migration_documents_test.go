@@ -21,7 +21,7 @@ func TestMigrationDocumentsReturnFreshSQL(t *testing.T) {
 		}
 		counts[document.Scope()]++
 	}
-	if len(documents) != 204 || counts["platform"] != 26 || counts["tenant"] != 178 ||
+	if len(documents) != 197 || counts["platform"] != 26 || counts["tenant"] != 171 ||
 		len(counts) != 2 {
 		t.Fatalf("migration documents = %d, scopes %#v", len(documents), counts)
 	}

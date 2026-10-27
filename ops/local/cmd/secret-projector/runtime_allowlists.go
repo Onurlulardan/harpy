@@ -5,8 +5,6 @@ func sharedRuntimeSecretNames() []string {
 		"catalog-package-public-keyring.json",
 		"documents-kek-keyring.json",
 		"analytics-dashboard-export-fcart-kek-keyring.json",
-		"forms-export-fcart-kek-keyring.json",
-		"forms-import-source-fcart-kek-keyring.json",
 		"gcp-subject-token.jwt",
 		"gcp-wif.json",
 		"iam-login-directory-keyring.json",
@@ -40,8 +38,6 @@ func apiSecretNames() []string {
 		"iam-refresh-token-keyring.json",
 		"iam-session-network-keyring.json",
 		"notifications-consumer-keyring.json",
-		"ai-runtime.json",
-		"mcp-runtime.json",
 	)
 }
 
@@ -53,7 +49,5 @@ func workerSecretNames() []string {
 		"notifications-kek-keyring.json",
 		"rabbitmq-url.txt",
 		"smtp-password.txt",
-		"ai-runtime.json",
-		"mcp-runtime.json",
 	)
 }

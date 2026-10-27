@@ -12,18 +12,16 @@ import (
 func TestCutoverMigrationsArePairedBoundedAndSealed(t *testing.T) {
 	root := filepath.Join("..", "..", "..", "migrations", "tenant")
 	fresh := workCutoverPaths(t, filepath.Join(root, "fresh"), ".fresh.sql")
-	adopted := workCutoverPaths(t, filepath.Join(root, "v1_adopted"), ".v1_adopted.sql")
-	if len(fresh) != 14 || len(adopted) != len(fresh) {
-		t.Fatalf("Work cutover migration count fresh=%d adopted=%d", len(fresh), len(adopted))
+	if len(fresh) != 14 {
+		t.Fatalf("Work cutover fresh migration count = %d, want 14", len(fresh))
 	}
-	for index := range fresh {
-		left := readWorkCutoverMigration(t, fresh[index])
-		right := readWorkCutoverMigration(t, adopted[index])
-		if !bytes.Equal(left, right) {
-			t.Fatalf("paired Work cutover migration differs: %s", filepath.Base(fresh[index]))
+	for _, path := range fresh {
+		body := readWorkCutoverMigration(t, path)
+		if len(body) == 0 || !strings.HasSuffix(path, ".fresh.sql") {
+			t.Fatalf("Work cutover fresh migration empty: %s", filepath.Base(path))
 		}
-		if lines := bytes.Count(left, []byte("\n")) + 1; lines > 200 {
-			t.Fatalf("Work cutover migration has %d lines: %s", lines, filepath.Base(fresh[index]))
+		if lines := bytes.Count(body, []byte("\n")) + 1; lines > 200 {
+			t.Fatalf("Work cutover migration has %d lines: %s", lines, filepath.Base(path))
 		}
 	}
 }

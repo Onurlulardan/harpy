@@ -39,7 +39,7 @@ func TestLayoutMigrationContractIsPresentationOnly(t *testing.T) {
 	}
 	for index, expected := range markers {
 		content := string(readLayoutMigration(
-			t, "fresh", layoutMigrationNames[index],
+			t, layoutMigrationNames[index],
 		))
 		for _, marker := range expected {
 			if !strings.Contains(content, marker) {

@@ -8,14 +8,14 @@ import (
 	"testing"
 )
 
-func expectedCorePathCount(t *testing.T) int {
+func coreFragmentPaths(t *testing.T) map[string]struct{} {
 	t.Helper()
 	directory := filepath.Join("..", "..", "http", "core-api-paths")
 	entries, err := os.ReadDir(directory)
 	if err != nil {
 		t.Fatal(err)
 	}
-	count := 0
+	paths := map[string]struct{}{}
 	for _, entry := range entries {
 		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".json") {
 			continue
@@ -24,14 +24,19 @@ func expectedCorePathCount(t *testing.T) int {
 		if readErr != nil {
 			t.Fatal(readErr)
 		}
-		var paths map[string]json.RawMessage
-		if err = json.Unmarshal(content, &paths); err != nil || paths == nil {
+		var fragment map[string]json.RawMessage
+		if err = json.Unmarshal(content, &fragment); err != nil || fragment == nil {
 			t.Fatalf("core path fragment %s is invalid: %v", entry.Name(), err)
 		}
-		count += len(paths)
+		for path := range fragment {
+			if _, exists := paths[path]; exists {
+				t.Fatalf("core path %s is owned twice", path)
+			}
+			paths[path] = struct{}{}
+		}
 	}
-	if count == 0 {
+	if len(paths) == 0 {
 		t.Fatal("core path fragment catalog is empty")
 	}
-	return count
+	return paths
 }

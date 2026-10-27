@@ -14,18 +14,14 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-func TestSupportFreshAndAdoptedCommandsOnPostgreSQL184(t *testing.T) {
+func TestSupportFreshCommandsOnPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 	database := startSupportDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetAndApplySupport(t, ctx, database, origin)
-			exerciseContactLifecycle(t, ctx, database)
-			exerciseBugIsolation(t, ctx, database)
-			assertRuntimePrivileges(t, ctx, database)
-		})
-	}
+	resetAndApplySupport(t, ctx, database)
+	exerciseContactLifecycle(t, ctx, database)
+	exerciseBugIsolation(t, ctx, database)
+	assertRuntimePrivileges(t, ctx, database)
 }
 
 func exerciseContactLifecycle(t *testing.T, ctx context.Context, database *sql.DB) {

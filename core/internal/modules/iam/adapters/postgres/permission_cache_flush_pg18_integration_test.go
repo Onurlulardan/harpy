@@ -17,7 +17,7 @@ FROM iam_permission_cache_flush_v1(
     $1::uuid,$2::bytea,$3::uuid,$4::bigint,$5::bigint,$6::bigint)`
 
 func TestIAMPermissionCacheFlushAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 			defer cancel()

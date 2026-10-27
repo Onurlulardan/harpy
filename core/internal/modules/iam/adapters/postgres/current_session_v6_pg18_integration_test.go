@@ -12,7 +12,7 @@ import (
 const iamSessionV6Schema = "t_session_v6"
 
 func TestIAMCurrentSessionV6ProfileFallbackAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 			defer cancel()

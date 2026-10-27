@@ -25,9 +25,8 @@ func ParseServicePrincipalCapabilityKey(raw string) (ServicePrincipalCapabilityK
 }
 
 type ServicePrincipalRuntime struct {
-	commands  *serviceapp.Commands
-	verifier  serviceapp.Verifier
-	authority *serviceapp.PublicationAuthorityApplication
+	commands *serviceapp.Commands
+	verifier serviceapp.Verifier
 }
 
 func NewServicePrincipalRuntime(
@@ -53,16 +52,6 @@ func NewServicePrincipalRuntime(
 	if err != nil {
 		return nil, err
 	}
-	authorityStore, err := servicepostgres.NewPublicationAuthorityStore()
-	if err != nil {
-		return nil, err
-	}
-	authority, err := serviceapp.NewPublicationAuthorityApplication(
-		commands, authorityStore,
-	)
-	if err != nil {
-		return nil, err
-	}
 	evidence, err := servicepostgres.NewEvidenceReader()
 	if err != nil {
 		return nil, err
@@ -72,10 +61,10 @@ func NewServicePrincipalRuntime(
 		return nil, err
 	}
 	return &ServicePrincipalRuntime{
-		commands: commands, verifier: verifier, authority: authority,
+		commands: commands, verifier: verifier,
 	}, nil
 }
 
 func (runtime *ServicePrincipalRuntime) Valid() bool {
-	return runtime != nil && runtime.commands != nil && runtime.authority != nil
+	return runtime != nil && runtime.commands != nil && runtime.verifier.Ready()
 }

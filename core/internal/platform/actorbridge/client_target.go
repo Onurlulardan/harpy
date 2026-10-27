@@ -12,8 +12,7 @@ import (
 var exactTargetDomains = []actorassertionv1.Domain{
 	actorassertionv1.DomainAnalytics, actorassertionv1.DomainBilling,
 	actorassertionv1.DomainCatalog, actorassertionv1.DomainDocuments,
-	actorassertionv1.DomainForms, actorassertionv1.DomainNotifications,
-	actorassertionv1.DomainWork, actorassertionv1.DomainWorkflow,
+	actorassertionv1.DomainNotifications, actorassertionv1.DomainWork,
 }
 
 type Target struct {

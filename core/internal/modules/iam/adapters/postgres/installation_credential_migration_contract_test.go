@@ -34,9 +34,8 @@ func TestInstallationCredentialMigrationsStayPairedAndHardened(t *testing.T) {
 	for _, name := range installationCredentialMigrations {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("installation credential migration differs by origin")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("installation credential migration exceeds 200 lines")

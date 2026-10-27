@@ -3,11 +3,9 @@ package analytics
 import (
 	"context"
 	"fmt"
-	"time"
 
 	analyticscache "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/cache"
 	querypostgres "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/postgres/query"
-	analyticsforms "github.com/Onurlulardan/harpy/core/internal/modules/analytics/api/formsreference"
 	analyticsentitlement "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/entitlement"
 	queryapp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query"
 	billingapi "github.com/Onurlulardan/harpy/core/internal/modules/billing/api"
@@ -38,7 +36,7 @@ func buildPlatformQueryApplication(
 	contracts := closedQueryContracts{}
 	queries, err := queryapp.NewApplication(querypostgres.NewBinder(), queryAuthorizer{},
 		analyticsentitlement.MutationDecider(dependencies.Entitlements), contracts,
-		contracts, cache, values, values, effects, contracts)
+		contracts, cache, values, values, effects)
 	if err != nil {
 		return nil, fmt.Errorf("build Analytics query application: %w", err)
 	}
@@ -67,16 +65,6 @@ func (closedQueryContracts) BindExecution(context.Context, platformtx.TenantScop
 func (closedQueryContracts) Run(context.Context, platformtx.TenantScope, queryapp.Snapshot,
 	[]queryapp.DependencySnapshot, queryapp.Document) (queryapp.ExecutionResult, error) {
 	return queryapp.ExecutionResult{}, errClosedQueryContracts
-}
-
-func (closedQueryContracts) BindVersion(context.Context, platformtx.TenantScope,
-	analyticsforms.Source, []analyticsforms.Target, time.Time) error {
-	return errClosedQueryContracts
-}
-
-func (closedQueryContracts) DecommissionSource(context.Context, platformtx.TenantScope,
-	analyticsforms.ID, *analyticsforms.ID, time.Time) error {
-	return errClosedQueryContracts
 }
 
 var errClosedQueryContracts = fmt.Errorf("analytics forms queries are unavailable")

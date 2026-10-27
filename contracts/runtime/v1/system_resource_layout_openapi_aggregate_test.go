@@ -21,7 +21,7 @@ func TestSystemResourceLayoutOpenAPIAggregateIsExact(t *testing.T) {
 	}
 	for path, methods := range wanted {
 		item := resolveFormsPathItem(t, directory, paths[path])
-		assertFormsTenantHeaders(t, path, item)
+		assertFormsTenantHeaders(t, directory, path, item)
 		var found []string
 		for _, method := range []string{"delete", "get", "patch", "post", "put"} {
 			operation, exists := item[method].(map[string]any)

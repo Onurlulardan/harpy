@@ -23,6 +23,8 @@ func NewVerifier(port EvidencePort, clock Clock) (Verifier, error) {
 	return Verifier{port: port, clock: clock, valid: true}, nil
 }
 
+func (verifier Verifier) Ready() bool { return verifier.valid }
+
 func (verifier Verifier) Verify(
 	ctx context.Context,
 	scope transaction.TenantScope,

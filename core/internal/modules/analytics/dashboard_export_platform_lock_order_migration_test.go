@@ -51,9 +51,8 @@ func TestDashboardExportPlatformWrappersUseOnePlatformFirstLockOrder(t *testing.
 		source, exists := files[wrapper.file]
 		if !exists {
 			source = readDashboardExportPlatformMigration(t, "fresh", wrapper.file)
-			adopted := readDashboardExportPlatformMigration(t, "v1_adopted", wrapper.file)
-			if !bytes.Equal(source, adopted) {
-				t.Fatalf("dashboard export platform migration pair differs: %s", wrapper.file)
+			if len(source) == 0 {
+				t.Fatalf("dashboard export platform migration is empty: %s", wrapper.file)
 			}
 			lineCount := bytes.Count(source, []byte{'\n'})
 			if len(source) > 0 && source[len(source)-1] != '\n' {

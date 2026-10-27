@@ -19,11 +19,14 @@ func applyCatalogRuntimeFoundation(
 	t *testing.T, ctx context.Context, database *sql.DB, origin string,
 ) {
 	t.Helper()
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Catalog runtime foundation origin %q is unsupported", origin)
+	}
 	paths := []string{
 		filepath.Join("..", "..", "..", "..", "tenancy", "migrations", "platform",
-			origin, "20260718050600_create_tenancy_runtime_resolver_v1."+origin+".sql"),
+			"fresh", "20260718050600_create_tenancy_runtime_resolver_v1.fresh.sql"),
 		filepath.Join("..", "..", "..", "..", "..", "platform", "cutover", "migrations",
-			origin, "20260718050601_create_cutover_runtime_locks_v1."+origin+".sql"),
+			"fresh", "20260718050601_create_cutover_runtime_locks_v1.fresh.sql"),
 	}
 	for _, path := range paths {
 		document, err := os.ReadFile(path)
@@ -57,7 +60,10 @@ func applyCatalogScopeDocuments(t *testing.T, ctx context.Context, database *sql
 	documents []migration.Document, scope, origin, schema string,
 ) {
 	t.Helper()
-	needle := "/migrations/" + scope + "/" + origin + "/"
+	if origin != "fresh" && origin != "v1_adopted" {
+		t.Fatalf("Catalog migration origin %q is unsupported", origin)
+	}
+	needle := "/migrations/" + scope + "/fresh/"
 	count := 0
 	for _, document := range documents {
 		if !strings.Contains(filepath.ToSlash(document.Path()), needle) {

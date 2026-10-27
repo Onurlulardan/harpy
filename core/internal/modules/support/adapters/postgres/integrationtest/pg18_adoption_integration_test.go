@@ -14,28 +14,24 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestSupportAdoptionFreshAndAdoptedOnPostgreSQL184(t *testing.T) {
+func TestSupportAdoptionFreshOnPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 	database := startSupportDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetAndApplySupport(t, ctx, database, origin)
-			locators := createLegacySupportRelations(t, ctx, database)
-			store, adopter := adopterStore(t, ctx, database)
-			clock := &adoptionClock{value: time.Date(2026, 8, 1, 12, 0, 0, 123456000, time.UTC)}
-			exerciseContactCrashResume(t, ctx, store, clock, locators.contact)
-			exerciseBugTenantAdoption(t, ctx, store, clock, locators.bugA,
-				uuid.MustParse("30000000-0000-4000-8000-000000000001"))
-			exerciseBugTenantAdoption(t, ctx, store, clock, locators.bugB,
-				uuid.MustParse("40000000-0000-4000-8000-000000000001"))
-			assertAdoptionPartitions(t, ctx, database)
-			exerciseTargetChecksumMismatch(t, ctx, database, store, clock, locators.contact)
-			exerciseChecksumMismatch(t, ctx, store, clock, locators.contact)
-			exerciseLocatorMismatch(t, ctx, store, clock, locators.contact)
-			assertAdopterPrivileges(t, ctx, adopter)
-		})
-	}
+	resetAndApplySupport(t, ctx, database)
+	locators := createLegacySupportRelations(t, ctx, database)
+	store, adopter := adopterStore(t, ctx, database)
+	clock := &adoptionClock{value: time.Date(2026, 8, 1, 12, 0, 0, 123456000, time.UTC)}
+	exerciseContactCrashResume(t, ctx, store, clock, locators.contact)
+	exerciseBugTenantAdoption(t, ctx, store, clock, locators.bugA,
+		uuid.MustParse("30000000-0000-4000-8000-000000000001"))
+	exerciseBugTenantAdoption(t, ctx, store, clock, locators.bugB,
+		uuid.MustParse("40000000-0000-4000-8000-000000000001"))
+	assertAdoptionPartitions(t, ctx, database)
+	exerciseTargetChecksumMismatch(t, ctx, database, store, clock, locators.contact)
+	exerciseChecksumMismatch(t, ctx, store, clock, locators.contact)
+	exerciseLocatorMismatch(t, ctx, store, clock, locators.contact)
+	assertAdopterPrivileges(t, ctx, adopter)
 }
 
 type legacyLocators struct {

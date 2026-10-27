@@ -1,7 +1,6 @@
 package async
 
 import (
-	"bytes"
 	"path"
 	"strconv"
 	"strings"
@@ -11,50 +10,43 @@ import (
 const analyticsDashboardExportMigrationStart = int64(20260802020000)
 const analyticsDashboardExportMigrationEnd = int64(20260802020049)
 
-func analyticsDashboardExportMigrationPairs(t *testing.T) map[string]map[string][]byte {
+func analyticsDashboardExportFreshMigrations(t *testing.T) map[string][]byte {
 	t.Helper()
 	documents, err := MigrationDocuments()
 	if err != nil {
 		t.Fatal(err)
 	}
-	pairs := map[string]map[string][]byte{}
+	fresh := map[string][]byte{}
 	for _, document := range documents {
 		name := path.Base(document.Path())
+		if !strings.HasSuffix(name, ".fresh.sql") {
+			continue
+		}
 		version, parseErr := strconv.ParseInt(name[:14], 10, 64)
 		if parseErr != nil || version < analyticsDashboardExportMigrationStart ||
 			version > analyticsDashboardExportMigrationEnd {
 			continue
 		}
-		for _, origin := range []string{"fresh", "v1_adopted"} {
-			suffix := "." + origin + ".sql"
-			if !strings.HasSuffix(name, suffix) {
-				continue
-			}
-			logical := strings.TrimSuffix(name, suffix)
-			if pairs[logical] == nil {
-				pairs[logical] = map[string][]byte{}
-			}
-			pairs[logical][origin] = document.Content()
-		}
+		fresh[strings.TrimSuffix(name, ".fresh.sql")] = document.Content()
 	}
-	return pairs
+	return fresh
 }
 
-func TestAnalyticsDashboardExportPlatformMigrationsArePaired(t *testing.T) {
-	pairs := analyticsDashboardExportMigrationPairs(t)
-	if len(pairs) != 50 {
-		t.Fatalf("Analytics dashboard export migration pairs=%d, want 50", len(pairs))
+func TestAnalyticsDashboardExportPlatformMigrationsLoadFresh(t *testing.T) {
+	fresh := analyticsDashboardExportFreshMigrations(t)
+	if len(fresh) != 50 {
+		t.Fatalf("Analytics dashboard export fresh migrations=%d, want 50", len(fresh))
 	}
-	for logical, pair := range pairs {
-		if len(pair["fresh"]) == 0 || !bytes.Equal(pair["fresh"], pair["v1_adopted"]) {
-			t.Fatalf("Analytics dashboard export migration pair differs: %s", logical)
+	for logical, document := range fresh {
+		if len(document) == 0 {
+			t.Fatalf("fresh analytics dashboard export migration did not load: %s", logical)
 		}
 	}
 }
 
 func TestAnalyticsDashboardExportClaimAndTerminalContracts(t *testing.T) {
-	pairs := analyticsDashboardExportMigrationPairs(t)
-	claim := string(pairs["20260802020001_create_analytics_dashboard_export_claim_v1"]["fresh"])
+	fresh := analyticsDashboardExportFreshMigrations(t)
+	claim := string(fresh["20260802020001_create_analytics_dashboard_export_claim_v1"])
 	for _, token := range []string{"analytics.dashboard.export.render", "quota_wait",
 		"2147483648", "21474836480", "uuid_extract_version(p_lease_owner_id)",
 		"INSERT INTO platform.job_attempts"} {
@@ -66,7 +58,7 @@ func TestAnalyticsDashboardExportClaimAndTerminalContracts(t *testing.T) {
 		strings.Index(claim, "UPDATE platform.artifact_quota_counters") {
 		t.Fatal("quota wait occurs after claim mutation")
 	}
-	finish := string(pairs["20260802020005_create_analytics_dashboard_export_finish_v1"]["fresh"])
+	finish := string(fresh["20260802020005_create_analytics_dashboard_export_finish_v1"])
 	for _, token := range []string{"RETURNS TABLE(job_state text,effect_receipt_id uuid)",
 		"v_attempt.effect_started_at IS NULL", "cancellation cleanup is required",
 		"v_attempt.finished_at IS NOT NULL", "effect_receipt_id:=v_attempt.effect_receipt_id"} {
@@ -78,7 +70,7 @@ func TestAnalyticsDashboardExportClaimAndTerminalContracts(t *testing.T) {
 		strings.Index(finish, "UPDATE platform.artifact_quota_counters") {
 		t.Fatal("finish replay reaches quota mutation")
 	}
-	succeed := string(pairs["20260802020004_create_analytics_dashboard_export_succeed_v1"]["fresh"])
+	succeed := string(fresh["20260802020004_create_analytics_dashboard_export_succeed_v1"])
 	if strings.Index(succeed, "RETURN true;") >
 		strings.Index(succeed, "UPDATE platform.artifact_quota_counters") {
 		t.Fatal("success replay reaches quota mutation")
@@ -86,13 +78,13 @@ func TestAnalyticsDashboardExportClaimAndTerminalContracts(t *testing.T) {
 }
 
 func TestAnalyticsDashboardExportUnknownRecoveryContract(t *testing.T) {
-	pairs := analyticsDashboardExportMigrationPairs(t)
-	unknown := string(pairs["20260802020006_create_analytics_dashboard_export_unknown_v1"]["fresh"])
+	fresh := analyticsDashboardExportFreshMigrations(t)
+	unknown := string(fresh["20260802020006_create_analytics_dashboard_export_unknown_v1"])
 	if !strings.Contains(unknown, "JOB_OUTCOME_UNKNOWN") ||
 		strings.Contains(unknown, "artifact_quota_counters") {
 		t.Fatal("unknown terminal must retain quota")
 	}
-	resolve := string(pairs["20260802020024_create_analytics_dashboard_export_unknown_resolve_v2"]["fresh"])
+	resolve := string(fresh["20260802020024_create_analytics_dashboard_export_unknown_resolve_v2"])
 	for _, token := range []string{"resolution_kind NOT IN ('deleted','absent')",
 		"analytics_dashboard_export_unknown_resolutions", "JOB_OUTCOME_UNKNOWN",
 		"unknown_cleanup_claims", "p_cleanup_generation",
@@ -105,13 +97,13 @@ func TestAnalyticsDashboardExportUnknownRecoveryContract(t *testing.T) {
 		strings.Contains(resolve, "UPDATE platform.job_attempts") {
 		t.Fatal("unknown resolution reverses immutable terminal evidence")
 	}
-	owner := string(pairs["20260802020014_create_analytics_dashboard_export_cleanup_owner_v1"]["fresh"])
+	owner := string(fresh["20260802020014_create_analytics_dashboard_export_cleanup_owner_v1"])
 	if !strings.Contains(owner, "cleanup owner is not current") ||
 		strings.Contains(owner, "authority_group_generation") ||
 		strings.Contains(owner, "cutover_generation") {
 		t.Fatal("cleanup owner is not current-writer fenced independently of frozen generations")
 	}
-	candidate := string(pairs["20260802020011_create_analytics_dashboard_export_unknown_candidate_v1"]["fresh"])
+	candidate := string(fresh["20260802020011_create_analytics_dashboard_export_unknown_candidate_v1"])
 	for _, token := range []string{"group_row.state='v2'", "domain_row.state='v2'",
 		"cutover_group_members", "NOT EXISTS", "ORDER BY job.completed_at,job.id LIMIT 1"} {
 		if !strings.Contains(candidate, token) {
@@ -129,15 +121,15 @@ func TestAnalyticsDashboardExportUnknownRecoveryContract(t *testing.T) {
 }
 
 func TestAnalyticsDashboardExportCrashBoundaryContract(t *testing.T) {
-	pairs := analyticsDashboardExportMigrationPairs(t)
-	resolve := string(pairs["20260802020024_create_analytics_dashboard_export_unknown_resolve_v2"]["fresh"])
+	fresh := analyticsDashboardExportFreshMigrations(t)
+	resolve := string(fresh["20260802020024_create_analytics_dashboard_export_unknown_resolve_v2"])
 	marker := strings.Index(resolve,
 		"INSERT INTO platform.analytics_dashboard_export_unknown_resolutions")
 	quota := strings.Index(resolve, "UPDATE platform.artifact_quota_counters")
 	if marker < 0 || quota < 0 || marker > quota {
 		t.Fatal("unknown marker and quota release are not one ordered routine")
 	}
-	spool := string(pairs["20260802020009_create_analytics_dashboard_export_spool_v1"]["fresh"])
+	spool := string(fresh["20260802020009_create_analytics_dashboard_export_spool_v1"])
 	markerRead := strings.Index(spool,
 		"FROM platform.analytics_dashboard_export_unknown_resolutions")
 	runningRead := strings.Index(spool, "IF v_job.state='running'")

@@ -12,18 +12,16 @@ import (
 func TestV1AdoptionMigrationsArePairedBoundedAndOwnerOnly(t *testing.T) {
 	root := filepath.Join("..", "..", "..", "migrations", "tenant")
 	fresh := adoptionMigrationPaths(t, filepath.Join(root, "fresh"), ".fresh.sql")
-	adopted := adoptionMigrationPaths(t, filepath.Join(root, "v1_adopted"), ".v1_adopted.sql")
-	if len(fresh) != 15 || len(adopted) != len(fresh) {
-		t.Fatalf("IAM V1 adoption migration count fresh=%d adopted=%d", len(fresh), len(adopted))
+	if len(fresh) != 15 {
+		t.Fatalf("IAM V1 adoption migration count fresh=%d", len(fresh))
 	}
-	for index := range fresh {
-		left := readMigration(t, fresh[index])
-		right := readMigration(t, adopted[index])
-		if !bytes.Equal(left, right) {
-			t.Fatalf("paired IAM V1 adoption migration differs: %s", filepath.Base(fresh[index]))
+	for _, path := range fresh {
+		left := readMigration(t, path)
+		if len(left) == 0 {
+			t.Fatalf("IAM V1 adoption migration is empty: %s", filepath.Base(path))
 		}
 		if lines := bytes.Count(left, []byte("\n")) + 1; lines > 200 {
-			t.Fatalf("IAM V1 adoption migration has %d lines: %s", lines, filepath.Base(fresh[index]))
+			t.Fatalf("IAM V1 adoption migration has %d lines: %s", lines, filepath.Base(path))
 		}
 		upper := strings.ToUpper(string(left))
 		for _, legacy := range []string{
@@ -33,7 +31,7 @@ func TestV1AdoptionMigrationsArePairedBoundedAndOwnerOnly(t *testing.T) {
 			if strings.Contains(upper, "INSERT INTO "+legacy) ||
 				strings.Contains(upper, "UPDATE "+legacy) ||
 				strings.Contains(upper, "DELETE FROM "+legacy) {
-				t.Fatalf("IAM V1 source mutation found in %s", filepath.Base(fresh[index]))
+				t.Fatalf("IAM V1 source mutation found in %s", filepath.Base(path))
 			}
 		}
 	}
@@ -43,6 +41,9 @@ func TestV1AdoptionCompositeUsesGenericCutoverReceipts(t *testing.T) {
 	path := filepath.Join("..", "..", "..", "migrations", "tenant", "fresh",
 		"20260716013907_create_iam_v1_adoption_composite_v1.fresh.sql")
 	content := string(readMigration(t, path))
+	if content == "" {
+		t.Fatal("fresh migration is empty")
+	}
 	for _, fragment := range []string{
 		"platform.cutover_prepare_batch_v1", "platform.cutover_record_batch_v1",
 		"iam_v1_adoption_apply_v1", "SESSION_USER", "SET search_path FROM CURRENT",

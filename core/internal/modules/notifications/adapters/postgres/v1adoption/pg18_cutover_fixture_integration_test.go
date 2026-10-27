@@ -28,7 +28,7 @@ func prepareNotificationCutoverFixture(t *testing.T, ctx context.Context,
 		operationID: uuid.MustParse("31000000-0000-4000-8000-000000000002"),
 		runID:       uuid.MustParse("31000000-0000-4000-8000-000000000003"),
 	}
-	prepareNotificationTenant(t, ctx, db, "v1_adopted", "notification_cutover", true)
+	prepareNotificationTenant(t, ctx, db, "notification_cutover", true)
 	_, err := db.Exec(ctx, `GRANT USAGE ON SCHEMA notification_cutover TO harpy_runtime;
 CREATE TABLE notification_cutover.tenancy_schema_identity(
  singleton boolean,tenant_id uuid,schema_name text,origin text)`)

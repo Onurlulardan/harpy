@@ -65,24 +65,19 @@ var layoutMigrationNames = []string{
 func TestLayoutMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range layoutMigrationNames {
 		t.Run(name, func(t *testing.T) {
-			fresh := readLayoutMigration(t, "fresh", name)
-			adopted := readLayoutMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1-adopted layout migration differs")
-			}
+			fresh := readLayoutMigration(t, name)
 			assertLayoutMigrationSource(t, fresh)
 		})
 	}
 }
 
-func readLayoutMigration(t *testing.T, origin, name string) []byte {
+func readLayoutMigration(t *testing.T, name string) []byte {
 	t.Helper()
 	directory := filepath.Join("..", "..", "migrations", "tenant")
 	if name == "20260730120104_repair_installation_layout_publications_v1" {
 		directory = filepath.Join(directory, "supersessions", "v3")
 	}
-	path := filepath.Join(directory, origin,
-		name+"."+origin+".sql")
+	path := filepath.Join(directory, "fresh", name+".fresh.sql")
 	content, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
@@ -104,18 +99,15 @@ func TestPublishedLayoutRepairSourcesStayByteImmutable(t *testing.T) {
 			"cef35a91f7e9cffebc4a48a3c26d69b5edb90cbd27afae1e67dc606c58309972"},
 	}
 	for _, fixture := range fixtures {
-		for _, origin := range []string{"fresh", "v1_adopted"} {
-			path := filepath.Join("..", "..", "migrations", "tenant",
-				fixture.directory, origin, fixture.name+"."+origin+".sql")
-			content, err := os.ReadFile(path)
-			if err != nil {
-				t.Fatal(err)
-			}
-			digest := sha256.Sum256(content)
-			if got := hex.EncodeToString(digest[:]); got != fixture.hash {
-				t.Fatalf("%s %s SHA = %s, want %s",
-					origin, fixture.name, got, fixture.hash)
-			}
+		path := filepath.Join("..", "..", "migrations", "tenant",
+			fixture.directory, "fresh", fixture.name+".fresh.sql")
+		content, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		digest := sha256.Sum256(content)
+		if got := hex.EncodeToString(digest[:]); got != fixture.hash {
+			t.Fatalf("%s SHA = %s, want %s", fixture.name, got, fixture.hash)
 		}
 	}
 }

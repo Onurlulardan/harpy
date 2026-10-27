@@ -1,18 +1,13 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 )
 
 func TestLayoutInstallationCapabilityFenceIsPairedAndComplete(t *testing.T) {
 	const name = "20260729100036_assert_installation_capabilities_v1"
-	fresh := readLayoutMigration(t, "fresh", name)
-	adopted := readLayoutMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("layout installation capability fence origins differ")
-	}
+	fresh := readLayoutMigration(t, name)
 	assertLayoutMigrationSource(t, fresh)
 	source := string(fresh)
 	for _, marker := range []string{
@@ -36,11 +31,7 @@ func TestLayoutInstallationCapabilityFenceIsPairedAndComplete(t *testing.T) {
 
 func TestLayoutInstallationAuthorityContractIsPairedAndComplete(t *testing.T) {
 	const name = "20260729100047_contract_system_resource_layout_installation_authority_v1"
-	fresh := readLayoutMigration(t, "fresh", name)
-	adopted := readLayoutMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("layout installation authority contract origins differ")
-	}
+	fresh := readLayoutMigration(t, name)
 	assertLayoutMigrationSource(t, fresh)
 	source := string(fresh)
 	for _, marker := range []string{

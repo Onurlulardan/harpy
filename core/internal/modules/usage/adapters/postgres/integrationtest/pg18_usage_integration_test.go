@@ -14,19 +14,15 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestUsageLifecycleOnFreshAndAdoptedPostgreSQL184(t *testing.T) {
+func TestUsageLifecycleOnFreshPostgreSQL184(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 	defer cancel()
 	database := startUsageDatabase(t, ctx)
-	for _, origin := range []string{"fresh", "v1_adopted"} {
-		t.Run(origin, func(t *testing.T) {
-			resetAndApplyUsage(t, ctx, database, origin)
-			exerciseReplayAndConcurrency(t, ctx, database)
-			exerciseTenantAndPlatformReads(t, ctx, database)
-			exerciseAllReadShapes(t, ctx, database)
-			exerciseRuntimeBoundary(t, ctx, database)
-		})
-	}
+	resetAndApplyUsage(t, ctx, database)
+	exerciseReplayAndConcurrency(t, ctx, database)
+	exerciseTenantAndPlatformReads(t, ctx, database)
+	exerciseAllReadShapes(t, ctx, database)
+	exerciseRuntimeBoundary(t, ctx, database)
 }
 
 func exerciseReplayAndConcurrency(t *testing.T, ctx context.Context, database *sql.DB) {

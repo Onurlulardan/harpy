@@ -6,7 +6,7 @@ import (
 )
 
 func TestGen71TenancyContractRetiresOnlyLegacyWriters(t *testing.T) {
-	source := pairedTenancyMigration(
+	source := freshTenancyMigration(
 		t, "20260729100037_contract_gen71_tenancy_legacy_writers_v1",
 	)
 	retired := []string{

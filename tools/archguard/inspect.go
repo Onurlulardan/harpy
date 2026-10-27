@@ -36,7 +36,7 @@ func inspect(root string) ([]string, error) {
 			}
 			return nil
 		}
-		if !entry.Type().IsRegular() || !strings.HasSuffix(entry.Name(), ".go") {
+		if !entry.Type().IsRegular() {
 			return nil
 		}
 		relative, err := filepath.Rel(root, path)
@@ -44,10 +44,13 @@ func inspect(root string) ([]string, error) {
 			return err
 		}
 		sourcePath := filepath.ToSlash(relative)
-		source := classifySource(sourcePath)
 		if message := removedTree(sourcePath); message != "" {
 			violations = append(violations, sourcePath+": "+message)
 		}
+		if !strings.HasSuffix(entry.Name(), ".go") {
+			return nil
+		}
+		source := classifySource(sourcePath)
 		imports, parseErr := fileImports(path)
 		if parseErr != nil {
 			violations = append(violations, fmt.Sprintf("%s: cannot parse imports: %v", sourcePath, parseErr))

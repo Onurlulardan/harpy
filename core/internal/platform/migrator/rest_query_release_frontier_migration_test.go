@@ -18,11 +18,8 @@ func TestIAMRestQuerySearchReleaseFrontierRepairIsPairedAndFailClosed(
 	fresh := readIAMNamedPlatformMigration(
 		t, "fresh", iamRestQueryReleaseFrontierMigration,
 	)
-	adopted := readIAMNamedPlatformMigration(
-		t, "v1_adopted", iamRestQueryReleaseFrontierMigration,
-	)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("fresh and v1_adopted IAM search frontier migration differs")
+	if len(fresh) == 0 {
+		t.Fatal("fresh IAM search frontier migration did not load")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("invalid IAM search frontier migration: %v", err)
@@ -61,10 +58,10 @@ func TestIAMRestQuerySearchReleaseFrontierRepairIsPairedAndFailClosed(
 
 func readIAMNamedPlatformMigration(t *testing.T, origin, name string) []byte {
 	t.Helper()
-	path := filepath.Join(
-		"migrations", origin,
-		name+"."+origin+".sql",
-	)
+	if origin != "fresh" {
+		t.Fatalf("fresh migration %s did not load", name)
+	}
+	path := filepath.Join("migrations", "fresh", name+".fresh.sql")
 	content, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)

@@ -3,7 +3,7 @@ package cataloglegacyowner
 import "testing"
 
 func TestPurgeRejectsMissingDependencies(t *testing.T) {
-	if _, err := New(nil, nil); err == nil {
+	if _, err := New(nil); err == nil {
 		t.Fatal("purge accepted missing dependencies")
 	}
 }

@@ -24,7 +24,7 @@ func TestIssueAndForwardCommitsEvidenceBeforeExactMTLSRoute(t *testing.T) {
 	fixture := newRuntimeTLSFixtureForServer(t, "localhost")
 	observed := make(chan forwardedObservation, 1)
 	serverTLS, err := LoadServerTLSConfig(
-		fixture.server, actorassertionv1.DomainForms,
+		fixture.server, actorassertionv1.DomainDocuments,
 		func() time.Time { return fixture.now },
 	)
 	if err != nil {
@@ -64,7 +64,7 @@ func TestIssueAndForwardCommitsEvidenceBeforeExactMTLSRoute(t *testing.T) {
 	request.Header.Set("Authorization", "Bearer client-credential")
 	request.Header.Set("Cookie", "session=client")
 	input, err := NewForwardInput(
-		actorassertionv1.DomainForms, "forms.records", "create", 7, 19, request,
+		actorassertionv1.DomainDocuments, "forms.records", "create", 7, 19, request,
 	)
 	if err != nil {
 		t.Fatal(err)

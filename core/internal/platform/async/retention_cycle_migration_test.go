@@ -1,7 +1,6 @@
 package async
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 )
@@ -13,17 +12,14 @@ func TestRetentionCycleMigrationIsPairedSealedAndLeastPrivilege(t *testing.T) {
 		t.Fatal(err)
 	}
 	const logicalName = "20260715022000_create_async_retention_cycle_v1"
-	var fresh, adopted []byte
+	var fresh []byte
 	for _, document := range documents {
-		switch {
-		case strings.HasSuffix(document.Path(), logicalName+".fresh.sql"):
+		if strings.HasSuffix(document.Path(), logicalName+".fresh.sql") {
 			fresh = document.Content()
-		case strings.HasSuffix(document.Path(), logicalName+".v1_adopted.sql"):
-			adopted = document.Content()
 		}
 	}
-	if len(fresh) == 0 || !bytes.Equal(fresh, adopted) {
-		t.Fatal("retention cycle migration pair is missing or differs")
+	if len(fresh) == 0 {
+		t.Fatal("fresh retention cycle migration did not load")
 	}
 	source := string(fresh)
 	markers := []string{

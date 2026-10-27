@@ -1,7 +1,6 @@
 package async
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 )
@@ -11,31 +10,27 @@ func TestDeadLetterChainMigrationsFreezeActionAndRedactionGuards(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	versions := map[string]map[string][]byte{
-		"20260715021130": {},
-		"20260715021140": {},
+	versions := map[string][]byte{
+		"20260715021130": nil,
+		"20260715021140": nil,
 	}
 	for _, document := range documents {
 		version := migrationVersion(t, document.Path())
 		if _, wanted := versions[version]; !wanted {
 			continue
 		}
-		origin := "fresh"
-		if strings.Contains(document.Path(), "/v1_adopted/") {
-			origin = "v1_adopted"
+		if !strings.Contains(document.Path(), "/fresh/") {
+			continue
 		}
-		versions[version][origin] = document.Content()
+		versions[version] = document.Content()
 	}
-
-	for version, origins := range versions {
-		fresh, freshExists := origins["fresh"]
-		adopted, adoptedExists := origins["v1_adopted"]
-		if !freshExists || !adoptedExists || !bytes.Equal(fresh, adopted) {
-			t.Fatalf("migration %s does not have a byte-identical origin pair", version)
+	for version, fresh := range versions {
+		if len(fresh) == 0 {
+			t.Fatalf("fresh dead-letter migration %s did not load", version)
 		}
 	}
 
-	chain := string(versions["20260715021130"]["fresh"])
+	chain := string(versions["20260715021130"])
 	chainMarkers := []string{
 		"platform_async_validate_dead_letter_chain_v1",
 		"SECURITY DEFINER", "SET search_path = pg_catalog",
@@ -57,7 +52,7 @@ func TestDeadLetterChainMigrationsFreezeActionAndRedactionGuards(t *testing.T) {
 		}
 	}
 
-	redaction := string(versions["20260715021140"]["fresh"])
+	redaction := string(versions["20260715021140"])
 	redactionMarkers := []string{
 		"platform_async_guard_dead_letter_redaction_v1",
 		"CURRENT_USER IS DISTINCT FROM 'harpy_owner'",

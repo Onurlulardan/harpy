@@ -81,9 +81,6 @@ func readPermissionCacheMigration(t *testing.T, origin, stem string) string {
 		t.Fatal(err)
 	}
 	suffix := ".fresh.sql"
-	if origin == "v1_adopted" {
-		suffix = ".v1_adopted.sql"
-	}
 	path := filepath.Join(directory, "..", "..", "migrations", "tenant",
 		origin, stem+suffix)
 	document, err := os.ReadFile(path)

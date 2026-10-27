@@ -24,9 +24,8 @@ func TestIAMPlatformAuthMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range platformAuthMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMPlatformAuthMigration(t, "fresh", name)
-			adopted := readIAMPlatformAuthMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted migration content differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			assertIAMPlatformAuthMigrationSource(t, fresh)
 		})

@@ -79,13 +79,16 @@ func createProjection(
 			return err
 		}
 	}
+	if err := os.Rename(
+		filepath.Join(root, pendingMarker),
+		filepath.Join(root, completeMarker),
+	); err != nil {
+		return err
+	}
 	if err := os.Chmod(root, target.dir); err != nil {
 		return err
 	}
-	if err := chown(root, target.uid, target.gid); err != nil {
-		return err
-	}
-	return os.Rename(filepath.Join(root, pendingMarker), filepath.Join(root, completeMarker))
+	return chown(root, target.uid, target.gid)
 }
 
 func requireRealDirectory(path string) error {

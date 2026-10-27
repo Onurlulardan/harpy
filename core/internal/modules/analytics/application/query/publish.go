@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	analyticsforms "github.com/Onurlulardan/harpy/core/internal/modules/analytics/api/formsreference"
 	analyticspublication "github.com/Onurlulardan/harpy/core/internal/modules/analytics/domain/publication"
 	analyticsquery "github.com/Onurlulardan/harpy/core/internal/modules/analytics/domain/query"
 	billingapi "github.com/Onurlulardan/harpy/core/internal/modules/billing/api"
@@ -81,16 +80,6 @@ func (application *Application) publishBound(
 		(!replay && result.VersionID != request.DraftVersionID) {
 		return Snapshot{}, ErrUnavailable
 	}
-	targets, err := formsReferenceTargets(dependencies)
-	if err != nil {
-		return Snapshot{}, err
-	}
-	if err = application.references.BindVersion(ctx, scope, analyticsforms.Source{
-		Kind: "query", ID: analyticsforms.ID(result.QueryID),
-		VersionID: analyticsforms.ID(result.VersionID),
-	}, targets, now); err != nil {
-		return Snapshot{}, fmt.Errorf("bind Analytics Forms references: %w", err)
-	}
 	if !replay && application.effects.QueryPublished(ctx, scope, PublishEffect{
 		OperationID: decision.OperationID, ActorID: identity.ActorID, TenantID: identity.TenantID,
 		QueryID: result.QueryID, QueryVersionID: result.VersionID,
@@ -102,25 +91,6 @@ func (application *Application) publishBound(
 	}
 	application.invalidate(ctx, request.QueryID)
 	return result, nil
-}
-
-func formsReferenceTargets(
-	dependencies []DependencySnapshot,
-) ([]analyticsforms.Target, error) {
-	targets := make([]analyticsforms.Target, 0, len(dependencies))
-	for _, dependency := range dependencies {
-		if dependency.OwnerDomain != "forms" {
-			continue
-		}
-		if dependency.ResourceKind != "form" {
-			return nil, ErrUnavailable
-		}
-		targets = append(targets, analyticsforms.Target{
-			DefinitionID: analyticsforms.ID(dependency.ResourceID),
-			VersionID:    analyticsforms.ID(dependency.VersionID),
-		})
-	}
-	return targets, nil
 }
 
 func (application *Application) twoIDs() (first, second uuid.UUID, err error) {

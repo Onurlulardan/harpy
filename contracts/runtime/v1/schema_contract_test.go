@@ -128,9 +128,7 @@ func profileSnapshot(profile string) map[string]any {
 		variables["HARPY_REST_QUERY_CURSOR_KEYRING"] = validCursorKeyringContractValue()
 		variables["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING"] =
 			validCatalogPackageKeyringContractValue()
-		addFormsExportProfileSnapshot(variables, false)
 		addAnalyticsDashboardExportProfileSnapshot(variables, false)
-		addFormsImportSourceProfileSnapshot(variables, true)
 		addIAMSystemTransferProfileSnapshot(variables)
 		addIAMAPIProfileSnapshot(variables)
 	}
@@ -140,9 +138,7 @@ func profileSnapshot(profile string) map[string]any {
 		variables["HARPY_REST_QUERY_CURSOR_KEYRING"] = validCursorKeyringContractValue()
 		variables["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING"] =
 			validCatalogPackageKeyringContractValue()
-		addFormsExportProfileSnapshot(variables, true)
 		addAnalyticsDashboardExportProfileSnapshot(variables, true)
-		addFormsImportSourceProfileSnapshot(variables, false)
 		addIAMSystemTransferProfileSnapshot(variables)
 		addIAMWorkerProfileSnapshot(variables)
 	}

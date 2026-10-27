@@ -19,7 +19,7 @@ func TestActorBridgeIssueReadsExactAuthority(t *testing.T) {
 	}
 	tenantID := uuid.MustParse("10000000-0000-4000-8000-000000000001")
 	authority, err := database.ResolveIssueAuthority(context.Background(), tenantID,
-		actorassertionv1.DomainForms)
+		actorassertionv1.DomainDocuments)
 	if err != nil {
 		t.Fatal(err)
 	}

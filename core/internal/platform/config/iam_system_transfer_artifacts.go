@@ -22,8 +22,7 @@ type IAMSystemTransferArtifacts struct {
 	valid        bool
 }
 
-func loadIAMSystemTransferArtifacts(values environmentValues, environment Environment,
-	formsExport FormsExportArtifacts, formsImport FormsImportSourceArtifacts) (
+func loadIAMSystemTransferArtifacts(values environmentValues, environment Environment) (
 	IAMSystemTransferArtifacts, error,
 ) {
 	exportStorage, err := loadArtifactS3(values, environment, iamExportStorageKeys())
@@ -54,7 +53,7 @@ func loadIAMSystemTransferArtifacts(values environmentValues, environment Enviro
 		importSource: IAMTransferArtifactSettings{storage: importStorage,
 			keyring: importKeys, valid: true}, spool: spool, valid: true,
 	}
-	if err := validateIAMArtifactSeparation(settings, formsExport, formsImport); err != nil {
+	if err := validateIAMArtifactSeparation(settings); err != nil {
 		return IAMSystemTransferArtifacts{}, err
 	}
 	return settings, nil

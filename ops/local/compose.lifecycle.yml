@@ -29,7 +29,6 @@ services:
       - analytics-dashboard-export-spool:/catalog/analytics-dashboard-export:ro
       - forms-import-staging:/catalog/forms-import:ro
       - iam-transfer-spool:/catalog/iam-transfer:ro
-      - ai-system-knowledge:/catalog/ai-system-knowledge:ro
       - local-installation-state:/catalog/installation:ro
       - local-dev-authority:/catalog/dev-authority:ro
       - local-recovery-signing:/catalog/recovery-signing:ro
@@ -64,7 +63,6 @@ volumes:
   analytics-dashboard-export-spool:
   forms-import-staging:
   iam-transfer-spool:
-  ai-system-knowledge:
   local-installation-state:
   local-dev-authority:
   local-recovery-signing:

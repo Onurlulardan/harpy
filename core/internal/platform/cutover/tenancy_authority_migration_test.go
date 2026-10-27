@@ -14,14 +14,11 @@ func TestTenancyCutoverAuthorityMigrationsArePaired(t *testing.T) {
 		"20260802235007",
 	}
 	for _, version := range versions {
-		pair := tenantSingletonAuthorityMigrationPair(t, version)
-		if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-			t.Fatalf("%s tenancy cutover migration is not paired", version)
-		}
-		if strings.Contains(pair["fresh"], "-- +goose Down") {
+		source := tenantSingletonAuthorityMigrationPair(t, version)["fresh"]
+		if strings.Contains(source, "-- +goose Down") {
 			t.Fatalf("%s tenancy cutover migration has a down path", version)
 		}
-		if _, err := postgresv1.InspectMigrationSource([]byte(pair["fresh"])); err != nil {
+		if _, err := postgresv1.InspectMigrationSource([]byte(source)); err != nil {
 			t.Fatalf("%s tenancy cutover migration is not Goose-canonical: %v", version, err)
 		}
 	}

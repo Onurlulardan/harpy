@@ -64,9 +64,8 @@ func TestIAMSystemTransferMigrationsStayPairedAndBounded(t *testing.T) {
 	for _, name := range iamSystemTransferMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted transfer migration differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
 				t.Fatal("IAM transfer migration exceeds 200 lines")

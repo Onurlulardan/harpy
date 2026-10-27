@@ -14,11 +14,7 @@ var tenantSingletonAuthorityVersions = []string{
 
 func TestTenantSingletonAuthorityMigrationIsPairedAndForwardOnly(t *testing.T) {
 	for _, version := range tenantSingletonAuthorityVersions {
-		pair := tenantSingletonAuthorityMigrationPair(t, version)
-		if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-			t.Fatalf("%s migration is not byte-identical and paired", version)
-		}
-		source := pair["fresh"]
+		source := tenantSingletonAuthorityMigrationPair(t, version)["fresh"]
 		if strings.Count(source, "-- +goose Up") != 1 ||
 			strings.Contains(source, "-- +goose Down") ||
 			strings.Contains(source, "CREATE OR REPLACE") {
@@ -76,14 +72,12 @@ func tenantSingletonAuthorityMigrationPair(
 	pair := map[string]string{}
 	for _, document := range documents {
 		name := path.Base(document.Path())
-		if !strings.HasPrefix(name, version+"_") {
-			continue
+		if strings.HasPrefix(name, version+"_") && strings.HasSuffix(name, ".fresh.sql") {
+			pair["fresh"] = string(document.Content())
 		}
-		origin := "fresh"
-		if strings.Contains(name, ".v1_adopted.sql") {
-			origin = "v1_adopted"
-		}
-		pair[origin] = string(document.Content())
+	}
+	if pair["fresh"] == "" {
+		t.Fatalf("fresh migration %s did not load", version)
 	}
 	return pair
 }

@@ -1,33 +1,12 @@
 package tenancy
 
 import (
-	"path"
 	"strings"
 	"testing"
 )
 
-func TestTenantActivationV4MigrationIsPairedAndExpandCompatible(t *testing.T) {
-	const version = "20260729100004"
-	pair := map[string]string{}
-	documents, err := MigrationDocuments()
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, document := range documents {
-		name := path.Base(document.Path())
-		if !strings.HasPrefix(name, version+"_") {
-			continue
-		}
-		origin := "fresh"
-		if strings.Contains(name, ".v1_adopted.sql") {
-			origin = "v1_adopted"
-		}
-		pair[origin] = string(document.Content())
-	}
-	if len(pair) != 2 || pair["fresh"] != pair["v1_adopted"] {
-		t.Fatal("tenant activation v4 migration is not byte-identical and paired")
-	}
-	source := pair["fresh"]
+func TestTenantActivationV4MigrationLoadsFreshAndStaysExpandCompatible(t *testing.T) {
+	source := freshMigrationDocument(t, "20260729100004")
 	for _, marker := range []string{
 		"CREATE FUNCTION platform.tenancy_activation_initialize_v4(",
 		"p_operation_kind text",

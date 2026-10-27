@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 
@@ -11,9 +10,8 @@ import (
 func TestIAMTenantAuthorityAssertionIsReadOnlyTransactionSafe(t *testing.T) {
 	const name = "20260725125000_remove_iam_tenant_authority_read_lock"
 	fresh := readIAMPlatformAuthMigration(t, "fresh", name)
-	adopted := readIAMPlatformAuthMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("fresh and v1_adopted tenant authority migration differs")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("tenant authority migration is invalid: %v", err)

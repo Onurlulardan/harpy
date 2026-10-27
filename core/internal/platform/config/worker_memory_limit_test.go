@@ -3,8 +3,6 @@ package config
 import (
 	"strings"
 	"testing"
-
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 )
 
 func TestWorkerRequiresGoMemoryLimitAtOrAboveMemoryClass(t *testing.T) {
@@ -49,29 +47,18 @@ func TestWorkerRejectsMissingGoMemoryLimit(t *testing.T) {
 	}
 }
 
-func TestWorkerMemoryClassCoversFixedImportReservations(t *testing.T) {
-	allocation := runtimev1.FormsImportResourceAllocation()
-	if err := allocation.Validate(); err != nil {
-		t.Fatal(err)
-	}
-	if runtimev1.WorkerMinimumMemoryLimitBytes < 2*allocation.TotalBytes() {
-		t.Fatalf("memory class %d does not cover fixed import reservation %d",
-			runtimev1.WorkerMinimumMemoryLimitBytes, allocation.TotalBytes())
-	}
-}
-
 func TestWorkerMemoryClassRejectsLowerRuntimeLimit(t *testing.T) {
 	worker, err := loadWorker(validWorkerEnvironment())
 	if err != nil {
 		t.Fatal(err)
 	}
 	if err := worker.MemoryLimit().ValidateRuntime(
-		runtimev1.WorkerMinimumMemoryLimitBytes - 1,
+		workerMinimumMemoryLimitBytes - 1,
 	); err == nil {
 		t.Fatal("lower active runtime memory limit was accepted")
 	}
 	if err := worker.MemoryLimit().ValidateRuntime(
-		runtimev1.WorkerMinimumMemoryLimitBytes,
+		workerMinimumMemoryLimitBytes,
 	); err != nil {
 		t.Fatal(err)
 	}

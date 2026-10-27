@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 
@@ -63,9 +62,8 @@ func TestIAMPermissionInvitationMigrationsStayPairedAndClosed(t *testing.T) {
 	for _, name := range iamPermissionInvitationMigrationNames {
 		t.Run(name, func(t *testing.T) {
 			fresh := readIAMIdentityMigration(t, "fresh", name)
-			adopted := readIAMIdentityMigration(t, "v1_adopted", name)
-			if !bytes.Equal(fresh, adopted) {
-				t.Fatal("fresh and v1_adopted migration content differs")
+			if len(fresh) == 0 {
+				t.Fatal("fresh migration is empty")
 			}
 			if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 				t.Fatalf("permission/invitation migration is invalid: %v", err)
@@ -87,9 +85,8 @@ func TestIAMPermissionInvitationMigrationsStayPairedAndClosed(t *testing.T) {
 func TestIAMInvitationPlatformMigrationStaysPairedAndClosed(t *testing.T) {
 	const name = "20260716015300_create_iam_identity_directory_upsert_v2"
 	fresh := readIAMPlatformAuthMigration(t, "fresh", name)
-	adopted := readIAMPlatformAuthMigration(t, "v1_adopted", name)
-	if !bytes.Equal(fresh, adopted) {
-		t.Fatal("invitation platform fresh and v1_adopted migration differs")
+	if len(fresh) == 0 {
+		t.Fatal("fresh migration is empty")
 	}
 	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
 		t.Fatalf("invitation platform migration is invalid: %v", err)

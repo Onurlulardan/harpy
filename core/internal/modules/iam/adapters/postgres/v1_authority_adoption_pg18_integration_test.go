@@ -12,7 +12,7 @@ import (
 const v1AdoptionOperation = "71000000-0000-4000-8000-000000000009"
 
 func TestV1ProtectedAuthorityAdoptionAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 			defer cancel()

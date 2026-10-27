@@ -13,9 +13,6 @@ func prepareLifecycleOrigin(t *testing.T, ctx context.Context,
 	database *sql.DB, origin string,
 ) {
 	t.Helper()
-	if origin == "v1_adopted" {
-		prepareV1TenantRegistry(t, ctx, database)
-	}
 	runPlatformMigrations(t, ctx, database, origin)
 	insertTestTenant(t, ctx, database, lifecycleControlID)
 	insertTestTenant(t, ctx, database, lifecycleTargetID)

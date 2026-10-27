@@ -69,7 +69,7 @@ func startSupportDatabase(t *testing.T, ctx context.Context) *sql.DB {
 	return database
 }
 
-func resetAndApplySupport(t *testing.T, ctx context.Context, database *sql.DB, origin string) {
+func resetAndApplySupport(t *testing.T, ctx context.Context, database *sql.DB) {
 	t.Helper()
 	if _, err := database.ExecContext(ctx, `DROP SCHEMA IF EXISTS platform CASCADE`); err != nil {
 		t.Fatal(err)
@@ -82,10 +82,12 @@ func resetAndApplySupport(t *testing.T, ctx context.Context, database *sql.DB, o
 	if err != nil {
 		t.Fatal(err)
 	}
-	needle := "/migrations/platform/" + origin + "/"
+	if len(documents) == 0 {
+		t.Fatal("fresh support migration documents did not load")
+	}
 	for _, document := range documents {
-		if !strings.Contains(document.Path(), needle) {
-			continue
+		if !strings.Contains(document.Path(), "/migrations/platform/fresh/") {
+			t.Fatalf("migration path = %s", document.Path())
 		}
 		if _, err = database.ExecContext(ctx, string(document.Content())); err != nil {
 			t.Fatalf("apply %s: %v", document.Path(), err)

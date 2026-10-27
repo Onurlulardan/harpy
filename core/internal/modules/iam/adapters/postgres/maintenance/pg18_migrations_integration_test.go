@@ -22,7 +22,7 @@ func loadMaintenancePG18Migrations(
 	t *testing.T, origin, scope string, selected func(int64) bool, want int,
 ) []maintenancePG18Document {
 	t.Helper()
-	if origin != "fresh" && origin != "v1_adopted" {
+	if origin != "fresh" {
 		t.Fatalf("unsupported maintenance origin: %s", origin)
 	}
 	workingDirectory, err := os.Getwd()

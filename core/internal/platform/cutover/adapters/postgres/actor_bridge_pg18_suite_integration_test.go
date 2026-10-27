@@ -13,7 +13,7 @@ import (
 )
 
 func TestIAMV1ActorBridgeAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 			defer cancel()
@@ -62,7 +62,7 @@ func resolveActorBridgeAuthority(
 ) actorbridge.Authority {
 	t.Helper()
 	authority, err := issuer.ResolveIssueAuthority(
-		ctx, uuid.MustParse(tenantID), actorassertionv1.DomainForms,
+		ctx, uuid.MustParse(tenantID), actorassertionv1.DomainDocuments,
 	)
 	if err != nil {
 		t.Fatal(err)

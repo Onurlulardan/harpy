@@ -59,6 +59,9 @@ func TestInspectAllowsRemainingTree(t *testing.T) {
 		{"core/internal/modules/tenancy/application/open.go", goImports(
 			mod+"/core/internal/modules/tenancy/domain", mod+"/core/internal/modules/iam/api")},
 		{"internal/modules/formsetup/domain/name.go", goImports("strings")},
+		{"internal/modules/iam/domain/email.go", goImports("strings")},
+		{"internal/modules/iam/domain/claim.go", goImports("strings")},
+		{"internal/modules/notifications/application/workflow_action.go", goImports("context")},
 	} {
 		writeFixture(t, root, file.path, file.body)
 	}

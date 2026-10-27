@@ -1,14 +1,13 @@
 package tenancy
 
 import (
-	"bytes"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 )
 
-func TestCustomerLifecycleMigrationsStayPairedAndNarrow(t *testing.T) {
+func TestCustomerLifecycleMigrationsLoadFreshAndStayNarrow(t *testing.T) {
 	names := []string{
 		"20260802232300_create_customer_lifecycle_storage_v1",
 		"20260802232301_create_customer_lifecycle_reads_v1",
@@ -23,13 +22,8 @@ func TestCustomerLifecycleMigrationsStayPairedAndNarrow(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		adopted, err := os.ReadFile(filepath.Join("migrations", "platform", "v1_adopted",
-			name+".v1_adopted.sql"))
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !bytes.Equal(fresh, adopted) {
-			t.Fatalf("customer lifecycle origin pair differs: %s", name)
+		if len(fresh) == 0 {
+			t.Fatalf("fresh customer lifecycle migration is empty: %s", name)
 		}
 	}
 	storage := lifecycleMigrationText(t, names[0])

@@ -11,7 +11,7 @@ import (
 )
 
 func TestIAMAuthorizationRuntimeAgainstPostgreSQL184(t *testing.T) {
-	for _, origin := range []string{"fresh", "v1_adopted"} {
+	for _, origin := range []string{"fresh"} {
 		t.Run(origin, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 			defer cancel()
@@ -56,9 +56,6 @@ ALTER TABLE platform.domain_cutovers
 			"20260716012020_create_iam_tenant_authority_assertion_v1"),
 	}})
 	identityOrigin := "new"
-	if origin == "v1_adopted" {
-		identityOrigin = origin
-	}
 	for _, tenant := range iamFoundationTenants {
 		mustExecIAMTenant(t, ctx, database, tenant.schema, `
 CREATE TABLE tenancy_schema_identity (
