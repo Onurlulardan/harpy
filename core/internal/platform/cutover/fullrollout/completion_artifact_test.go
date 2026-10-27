@@ -15,7 +15,6 @@ func TestCompletionRequiresEveryFinalArtifactAndZeroLegacySurface(t *testing.T) 
 		"V1 removal":          func(v *CompletionEvidence) { v.V1RemovalSHA256 = [32]byte{} },
 		"backup restore":      func(v *CompletionEvidence) { v.BackupRestoreSHA256 = [32]byte{} },
 		"frontend contract":   func(v *CompletionEvidence) { v.FrontendContractSHA256 = [32]byte{} },
-		"MCP contract":        func(v *CompletionEvidence) { v.MCPContractSHA256 = [32]byte{} },
 		"rollback closure":    func(v *CompletionEvidence) { v.RollbackWindowClosureSHA256 = [32]byte{} },
 		"legacy route hit":    func(v *CompletionEvidence) { v.LegacyRouteHits = 1 },
 		"V1 writer":           func(v *CompletionEvidence) { v.V1Writers = 1 },

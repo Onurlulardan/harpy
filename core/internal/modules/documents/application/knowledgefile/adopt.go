@@ -80,7 +80,6 @@ func validAdoptScope(ctx context.Context, scope platformtx.TenantScope) bool {
 		platformtx.ContextOwnsScope(ctx, scope) &&
 		platformtx.RequireActive(scope, platformtx.Command) == nil &&
 		scope.OperationID() == OperationKnowledgeCreate &&
-		platformtx.RequireOwner(scope, "ai") == nil &&
 		platformtx.RequireOwner(scope, "documents") == nil
 }
 

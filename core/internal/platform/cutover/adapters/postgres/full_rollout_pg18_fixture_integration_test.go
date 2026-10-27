@@ -100,8 +100,8 @@ func fullRolloutCompletionFixture(
 		ShadowReadSHA256: digest, LogicalDeltaSHA256: digest, ReconcileSHA256: digest,
 		ProductionSnapshotSHA256: digest, V1RemovalSHA256: digest,
 		BackupRestoreSHA256: digest, FrontendContractSHA256: digest,
-		MCPContractSHA256: digest, RollbackWindowClosureSHA256: digest,
-		RollbackWindowClosedAt: now.Add(-30 * time.Minute)}
+		RollbackWindowClosureSHA256: digest,
+		RollbackWindowClosedAt:      now.Add(-30 * time.Minute)}
 	return fullrollout.PersistedCompletion{ReceiptID: receiptID,
 		EnvironmentID: environmentID, Evidence: evidence, RecordedAt: now}
 }

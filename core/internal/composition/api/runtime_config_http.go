@@ -13,7 +13,6 @@ import (
 type runtimeConfigSnapshot struct {
 	deploymentMode    config.DeploymentMode
 	primaryTenantSlug string
-	aiChatComposed    bool
 	workComposed      bool
 }
 
@@ -35,8 +34,7 @@ type runtimeConfigData struct {
 }
 
 type runtimeConfigServiceAvailability struct {
-	AIChat bool `json:"ai_chat"`
-	Work   bool `json:"work"`
+	Work bool `json:"work"`
 }
 
 func newRuntimeConfigHandler(
@@ -69,8 +67,7 @@ func newRuntimeConfigHandler(
 			DeploymentMode: string(snapshot.deploymentMode),
 			BackendVersion: version.Version, DefaultTenantSlug: slug,
 			ServiceAvailability: runtimeConfigServiceAvailability{
-				AIChat: snapshot.aiChatComposed,
-				Work:   snapshot.workComposed,
+				Work: snapshot.workComposed,
 			},
 		}},
 		report: report,

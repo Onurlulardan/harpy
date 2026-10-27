@@ -20,9 +20,6 @@ var authorizeWorkflowHumanTaskSQL string
 //go:embed sql/tenant/authorize_analytics.sql
 var authorizeAnalyticsSQL string
 
-//go:embed sql/tenant/authorize_ai.sql
-var authorizeAISQL string
-
 //go:embed sql/tenant/authorize_documents.sql
 var authorizeDocumentsSQL string
 

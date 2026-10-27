@@ -39,5 +39,5 @@ func (handler *IdentityHTTP) claims(
 }
 
 func identityHTTPClientAllowed(client accesstoken.ClientID) bool {
-	return client == accesstoken.ClientOperatorConsole || client == accesstoken.ClientMCP
+	return client == accesstoken.ClientOperatorConsole
 }

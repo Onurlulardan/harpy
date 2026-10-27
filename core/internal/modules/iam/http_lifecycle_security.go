@@ -21,7 +21,7 @@ func (handler *LifecycleHTTP) claims(r *http.Request) (accesstoken.Claims, bool)
 		return accesstoken.Claims{}, false
 	}
 	switch claims.Client() {
-	case accesstoken.ClientOperatorConsole, accesstoken.ClientMCP:
+	case accesstoken.ClientOperatorConsole:
 		if claims.AccessMode() != accesstoken.AccessModeOperator {
 			return accesstoken.Claims{}, false
 		}

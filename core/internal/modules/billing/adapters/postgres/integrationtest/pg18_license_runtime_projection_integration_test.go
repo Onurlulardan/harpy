@@ -89,7 +89,7 @@ FROM platform.billing_license_runtime_entitlements_v1($1)`, fixture.environmentI
 	if err = rows.Err(); err != nil {
 		t.Fatal(err)
 	}
-	if count != 14 {
+	if count != 13 {
 		t.Fatalf("runtime grant count=%d", count)
 	}
 	assertBillingTypedRuntimeRead(t, ctx, connection, fixture, expected)

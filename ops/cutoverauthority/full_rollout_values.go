@@ -33,8 +33,7 @@ func (document fullRolloutDocument) evidence() (corecutover.FullRolloutEvidence,
 		document.ShadowReadSHA256, document.LogicalDeltaSHA256,
 		document.ReconcileSHA256, document.ProductionSnapshotSHA256,
 		document.V1RemovalSHA256, document.BackupRestoreSHA256,
-		document.FrontendContractSHA256, document.MCPContractSHA256,
-		document.RollbackClosureSHA256,
+		document.FrontendContractSHA256, document.RollbackClosureSHA256,
 	})
 	if err != nil {
 		return corecutover.FullRolloutEvidence{}, err
@@ -46,9 +45,8 @@ func (document fullRolloutDocument) evidence() (corecutover.FullRolloutEvidence,
 		ShadowReadSHA256: digests[0], LogicalDeltaSHA256: digests[1],
 		ReconcileSHA256: digests[2], ProductionSnapshotSHA256: digests[3],
 		V1RemovalSHA256: digests[4], BackupRestoreSHA256: digests[5],
-		FrontendContractSHA256: digests[6], MCPContractSHA256: digests[7],
-		RollbackWindowClosureSHA256: digests[8],
-		RollbackWindowClosedAt:      closedAt}, nil
+		FrontendContractSHA256: digests[6], RollbackWindowClosureSHA256: digests[7],
+		RollbackWindowClosedAt: closedAt}, nil
 }
 
 func parseFullRolloutTime(value string) (time.Time, error) {

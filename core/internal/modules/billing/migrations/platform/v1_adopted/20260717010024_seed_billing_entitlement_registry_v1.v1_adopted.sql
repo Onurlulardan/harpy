@@ -5,8 +5,7 @@ INSERT INTO platform.billing_entitlement_registry_versions (
 )
 SELECT 1, authority_id, 'ADR-0082',
        pg_catalog.sha256(pg_catalog.convert_to(
-           'ai.chat|boolean||||false|ai|enabled\n'
-           || 'api.access|boolean||||false|platform_api|enabled\n'
+           'api.access|boolean||||false|platform_api|enabled\n'
            || 'documents.storage_bytes|integer|gauge|never|hard|true|documents|byte\n'
            || 'forms.active_forms|integer|gauge|never|hard|true|forms|count\n'
            || 'forms.submissions|integer|counter|calendar_month_utc|hard|true|forms|count\n'
@@ -14,7 +13,7 @@ SELECT 1, authority_id, 'ADR-0082',
            || 'workflow.enabled|boolean||||false|workflow|enabled',
            'UTF8'
        )),
-       7, '2026-07-17 00:00:00+00'::timestamptz
+       6, '2026-07-17 00:00:00+00'::timestamptz
 FROM platform.billing_global_authorities;
 
 INSERT INTO platform.billing_entitlement_definitions (
@@ -37,8 +36,6 @@ SELECT seed.id, registry.authority_id, registry.registry_version,
        registry.published_at
 FROM platform.billing_entitlement_registry_versions AS registry
 CROSS JOIN (VALUES
-    ('01900000-0000-7000-8000-000000000001'::uuid,
-     'ai.chat', 'boolean', NULL::text, NULL::text, NULL::text, false, 'ai', 'enabled'),
     ('01900000-0000-7000-8000-000000000002'::uuid,
      'api.access', 'boolean', NULL::text, NULL::text, NULL::text,
      false, 'platform_api', 'enabled'),

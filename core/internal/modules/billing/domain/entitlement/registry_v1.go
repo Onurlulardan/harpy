@@ -20,7 +20,6 @@ func RegistryV1() []RegistryEntry {
 		integerEntry("iam.active_users", Gauge, Never, "iam", UnitCount),
 		integerEntry("forms.active_forms", Gauge, Never, "forms", UnitCount),
 		integerEntry("documents.storage_bytes", Gauge, Never, "documents", UnitByte),
-		booleanEntry("ai.chat", "ai"),
 		booleanEntry("workflow.enabled", "workflow"),
 		booleanEntry("api.access", "platform"),
 	}

@@ -15,7 +15,6 @@ type ClientID string
 const (
 	ClientOperatorConsole ClientID = "harpy-operator-console-v1"
 	ClientPortal          ClientID = "harpy-portal-v1"
-	ClientMCP             ClientID = "harpy-mcp-v1"
 )
 
 type AccessMode string

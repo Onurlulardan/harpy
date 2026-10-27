@@ -76,10 +76,6 @@ func secretTargets() []targetSpec {
 			"local-authority-release-signing-seed"),
 		runtimeTarget("api", apiSecretNames()...),
 		runtimeTarget("worker", workerSecretNames()...),
-		runtimeTarget("mcp", "mcp-core-credential"),
-		runtimeTarget("ai",
-			"ai-core-credential", "ai-credential-private-key",
-			"ai-context-public-keys.json"),
 	}
 }
 

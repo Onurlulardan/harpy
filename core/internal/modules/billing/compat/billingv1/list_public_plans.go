@@ -36,7 +36,6 @@ func legacyComparisonFeatures() []comparisonFeature {
 		{"max_storage_mb", "Depolama", "Storage", "storage"},
 		{"max_forms", "Form Sayısı", "Form Count", "number"},
 		{"workflows", "İş Akışları", "Workflows", "boolean"},
-		{"ai_chat", "AI Sohbet", "AI Chat", "boolean"},
 		{"api_access", "API Erişimi", "API Access", "boolean"},
 		{"custom_domain", "Özel Domain", "Custom Domain", "boolean"},
 	}

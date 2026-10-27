@@ -117,11 +117,11 @@ func billingLicenseProjection() string {
 		Unlimited bool   `json:"unlimited"`
 	}
 	truth, ten := true, int64(10)
-	booleans := []string{"ai.chat", "analytics.dashboard_builder.enabled", "api.access",
+	booleans := []string{"analytics.dashboard_builder.enabled", "api.access",
 		"api.builder.enabled", "forms.builder.enabled", "workflow.builder.enabled", "workflow.enabled"}
 	limits := []string{"analytics.active_dashboards", "api.active_endpoints", "documents.storage_bytes",
 		"forms.active_forms", "forms.submissions", "iam.active_users", "workflow.active_definitions"}
-	grants := make([]grant, 0, 14)
+	grants := make([]grant, 0, 13)
 	for _, key := range booleans {
 		grants = append(grants, grant{Key: key, Type: "boolean", Boolean: &truth})
 	}

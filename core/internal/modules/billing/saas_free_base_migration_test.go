@@ -23,7 +23,7 @@ func TestSaaSFreeBaseMigrationHasNoTrialOrSubscriptionLifecycle(t *testing.T) {
 		}
 	}
 	for _, required := range []string{
-		"'saas_free_base_v1'", "true,false,true,0,0,1,14",
+		"'saas_free_base_v1'", "true,false,true,0,0,1,13",
 		"'monthly',0,'USD'", "'subscription',false,'trial',false",
 	} {
 		if !strings.Contains(seed, required) {

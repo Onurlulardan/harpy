@@ -26,8 +26,8 @@ func TestLoadStartupRegistryUsesFreshDocuments(t *testing.T) {
 		t.Fatalf("fresh entries = %d documents = %d digests = %d",
 			registry.FreshEntryCount(), len(documents), len(registry.Digests()))
 	}
-	if len(paths) != 2071 {
-		t.Fatalf("selected fresh entry count = %d, want 2071", len(paths))
+	if len(paths) != 2055 {
+		t.Fatalf("selected fresh entry count = %d, want 2055", len(paths))
 	}
 	versions := make(map[int64]string, len(paths))
 	owners := map[string]bool{}
@@ -58,7 +58,7 @@ func TestLoadStartupRegistryUsesFreshDocuments(t *testing.T) {
 	}
 	contract, err := runtimev1.ReadEmbeddedBinarySchemaContract()
 	if err != nil || !bytes.Equal(contract, encoded) {
-		t.Fatalf("embedded fresh contract differs from computed manifest hash")
+		t.Fatalf("embedded fresh contract differs from computed manifest hash\n%s", encoded)
 	}
 	embedded, loaded, err := schemacontract.LoadStartup(documents)
 	if err != nil || loaded == nil || !embedded.IsVerified() ||

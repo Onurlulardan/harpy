@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-var featureFields = []string{"ai_chat", "workflows", "api_access"}
+var featureFields = []string{"workflows", "api_access"}
 
 func decodeFeatures(document []byte) (map[string]bool, []MissingField, error) {
 	allowed := make(map[string]struct{}, len(featureFields))

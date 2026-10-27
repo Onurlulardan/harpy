@@ -161,7 +161,7 @@ REVOKE EXECUTE ON FUNCTION platform.platform_cutover_record_v1_adoption_plan_v1(
     uuid,uuid,text,text,uuid,uuid,text,text,jsonb,jsonb,timestamptz
 ) FROM harpy_adopter;
 REVOKE EXECUTE ON FUNCTION platform.platform_cutover_complete_v1_adoption_v1(
-    uuid,uuid,text,text,bigint,bigint,timestamptz,timestamptz
+    uuid,uuid,text,bigint,bigint,timestamptz,timestamptz
 ) FROM harpy_adopter;
 GRANT EXECUTE ON FUNCTION platform.platform_v1_environment_plan_apply_and_record_v1(
     uuid,uuid,text,uuid,smallint,text,text,pg_lsn,pg_lsn,pg_lsn,pg_lsn,xid8,

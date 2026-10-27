@@ -11,7 +11,6 @@ CREATE TABLE cutover_authority.full_rollout_completion_receipts (
     v1_removal_sha256 bytea NOT NULL,
     backup_restore_sha256 bytea NOT NULL,
     frontend_contract_sha256 bytea NOT NULL,
-    mcp_contract_sha256 bytea NOT NULL,
     legacy_route_hits bigint NOT NULL,
     v1_writers bigint NOT NULL,
     v1_consumers bigint NOT NULL,
@@ -36,8 +35,7 @@ CREATE TABLE cutover_authority.full_rollout_completion_receipts (
         pg_catalog.octet_length(production_snapshot_sha256) = 32 AND
         pg_catalog.octet_length(v1_removal_sha256) = 32 AND
         pg_catalog.octet_length(backup_restore_sha256) = 32 AND
-        pg_catalog.octet_length(frontend_contract_sha256) = 32 AND
-        pg_catalog.octet_length(mcp_contract_sha256) = 32
+        pg_catalog.octet_length(frontend_contract_sha256) = 32
     ),
     CONSTRAINT full_rollout_completion_zero_v1_check CHECK (
         legacy_route_hits = 0 AND v1_writers = 0 AND v1_consumers = 0 AND

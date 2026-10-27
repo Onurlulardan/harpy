@@ -72,12 +72,6 @@ func NewAnalyticsAuthorizer() (authorization.EvidencePort, error) {
 	return newAuthorizer("analytics", authorizeAnalyticsSQL, true, "")
 }
 
-// NewAIAuthorizer reads current IAM-owned actor evidence through the read-only
-// V3 routine while remaining inside an AI-owned command scope.
-func NewAIAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer("ai", authorizeAISQL, true, platformtx.Command)
-}
-
 // NewDocumentsAuthorizer reads current actor evidence inside a Documents-owned
 // snapshot used by long-running archive authorization refresh gates.
 func NewDocumentsAuthorizer() (authorization.EvidencePort, error) {

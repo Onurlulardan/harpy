@@ -4,8 +4,8 @@ ALTER TABLE platform.domain_cutovers
     DROP CONSTRAINT domain_cutovers_domain_check,
     ADD CONSTRAINT domain_cutovers_domain_check
         CHECK (domain IN (
-            'ai', 'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
-            'mcp', 'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
+            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
         )) NOT VALID;
 
 ALTER TABLE platform.domain_cutovers
@@ -15,8 +15,8 @@ ALTER TABLE platform.cutover_group_members
     DROP CONSTRAINT cutover_group_members_domain_check,
     ADD CONSTRAINT cutover_group_members_domain_check
         CHECK (domain IN (
-            'ai', 'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
-            'mcp', 'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
+            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
         )) NOT VALID;
 
 ALTER TABLE platform.cutover_group_members
@@ -27,8 +27,8 @@ ALTER TABLE platform.cutover_transition_events
     ADD CONSTRAINT cutover_transition_events_domain_check
         CHECK (
             domain IS NULL OR domain IN (
-                'ai', 'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
-                'mcp', 'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
+                'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+                'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
             )
         ) NOT VALID;
 
@@ -39,19 +39,12 @@ ALTER TABLE platform.contract_retirements
     DROP CONSTRAINT contract_retirements_domain_check,
     ADD CONSTRAINT contract_retirements_domain_check
         CHECK (domain IN (
-            'ai', 'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
-            'mcp', 'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
+            'analytics', 'billing', 'catalog', 'documents', 'forms', 'iam',
+            'notifications', 'system_resource_layout', 'tenancy', 'work', 'workflow'
         )) NOT VALID;
 
 ALTER TABLE platform.contract_retirements
     VALIDATE CONSTRAINT contract_retirements_domain_check;
-
-SELECT platform.cutover_ensure_mcp_ai_authority_v1(tenant.scope_id)
-FROM (
-    SELECT DISTINCT domain.scope_id
-    FROM platform.domain_cutovers AS domain
-    WHERE domain.scope_kind = 'tenant'
-) AS tenant;
 
 SELECT platform.cutover_ensure_tenancy_authority_v1(tenant.scope_id)
 FROM (

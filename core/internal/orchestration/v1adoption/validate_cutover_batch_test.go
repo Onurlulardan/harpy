@@ -56,8 +56,8 @@ func TestValidateCutoverBatchAcceptsThirtyDayCompletion(t *testing.T) {
 		ContractVersion: CompletionContractVersion, OperationID: cutoverOperationID,
 		EnvironmentID: uuid.MustParse("aaaaaaaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"),
 		PlanSHA256:    hash64("a"), FrontendContractSHA256: hash64("b"),
-		MCPContractSHA256: hash64("c"), ZeroHitSince: completedAt.Add(-30 * 24 * time.Hour),
-		CompletedAt: completedAt,
+		ZeroHitSince: completedAt.Add(-30 * 24 * time.Hour),
+		CompletedAt:  completedAt,
 	}
 	payload := atomicPayload(t, value.EnvironmentID, mustJSON(t, value))
 	if err := ValidateCutoverBatch(CompletionContractID, payload); err != nil {

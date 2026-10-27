@@ -12,7 +12,7 @@ func TestConvertPlanRejectsAmbiguousDocuments(t *testing.T) {
 		{"limit null", `{"submissions_per_month":null}`, `{}`},
 		{"limit string", `{"max_users":"3"}`, `{}`},
 		{"unknown limit", `{"custom":1}`, `{}`},
-		{"feature null", `{}`, `{"ai_chat":null}`},
+		{"feature null", `{}`, `{"workflows":null}`},
 		{"feature number", `{}`, `{"workflows":1}`},
 		{"unknown feature", `{}`, `{"custom":true}`},
 	}

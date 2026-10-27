@@ -65,12 +65,12 @@ func runtimeGrantFixture(
 ) []RuntimeGrant {
 	licenseID := uuid.New()
 	now := time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC)
-	booleans := []string{"ai.chat", "analytics.dashboard_builder.enabled", "api.access",
+	booleans := []string{"analytics.dashboard_builder.enabled", "api.access",
 		"api.builder.enabled", "forms.builder.enabled", "workflow.builder.enabled", "workflow.enabled"}
 	limits := []string{"analytics.active_dashboards", "api.active_endpoints",
 		"documents.storage_bytes", "forms.active_forms", "forms.submissions",
 		"iam.active_users", "workflow.active_definitions"}
-	grants := make([]RuntimeGrant, 0, 14)
+	grants := make([]RuntimeGrant, 0, 13)
 	for _, key := range booleans {
 		value := key == "workflow.enabled" || key == "api.access"
 		grants = append(grants, runtimeGrantHead(

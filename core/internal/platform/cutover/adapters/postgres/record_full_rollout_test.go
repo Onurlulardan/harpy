@@ -46,7 +46,7 @@ func TestRecordFullRolloutBindsProtectedReceiptInputs(t *testing.T) {
 			ShadowReadSHA256: digest, LogicalDeltaSHA256: digest,
 			ReconcileSHA256: digest, ProductionSnapshotSHA256: digest,
 			V1RemovalSHA256: digest, BackupRestoreSHA256: digest,
-			FrontendContractSHA256: digest, MCPContractSHA256: digest,
+			FrontendContractSHA256:      digest,
 			RollbackWindowClosureSHA256: digest,
 			LastLegacyHitAt:             now.Add(-30 * 24 * time.Hour),
 			RollbackWindowClosedAt:      now.Add(-time.Hour),

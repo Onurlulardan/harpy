@@ -45,7 +45,7 @@ var saaSPlatformCapabilities = stringSet(
 	"platform.billing.coupons.manage", "platform.billing.campaigns.manage",
 	"platform.analytics.usage.read", "platform.bug_reports.read",
 	"platform.bug_reports.manage", "platform.contact_messages.read",
-	"platform.contact_messages.manage", "platform.ai.analytics.read",
+	"platform.contact_messages.manage",
 	"platform.presence.read",
 )
 

@@ -49,7 +49,7 @@ func completeSourcePlan(created time.Time) SourcePlan {
 		Name: "Pro", Slug: "pro", Description: "Pro plan",
 		PriceCents: 9900, BillingInterval: "monthly", Currency: "USD",
 		LimitsJSON:   []byte(`{"submissions_per_month":500,"max_users":3,"max_forms":10,"max_storage_mb":100}`),
-		FeaturesJSON: []byte(`{"ai_chat":true,"workflows":false,"api_access":true}`),
+		FeaturesJSON: []byte(`{"workflows":false,"api_access":true}`),
 		SortOrder:    2, IsActive: true, IsPublic: true, TrialDays: 14,
 		CreatedAt: &created,
 	}

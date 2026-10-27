@@ -90,7 +90,7 @@ func fullRolloutFixture(t *testing.T) (fullRolloutDocument, []byte) {
 		ShadowReadSHA256: digest, LogicalDeltaSHA256: digest,
 		ReconcileSHA256: digest, ProductionSnapshotSHA256: digest,
 		V1RemovalSHA256: digest, BackupRestoreSHA256: digest,
-		FrontendContractSHA256: digest, MCPContractSHA256: digest,
+		FrontendContractSHA256: digest,
 		RollbackClosureSHA256:  digest,
 		RollbackWindowClosedAt: now.Add(-12 * time.Hour).Format(time.RFC3339Nano),
 	}, artifact

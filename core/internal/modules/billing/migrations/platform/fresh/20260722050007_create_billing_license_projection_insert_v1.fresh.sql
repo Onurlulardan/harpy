@@ -11,7 +11,7 @@ DECLARE
     v_count integer;
 BEGIN
     IF pg_catalog.jsonb_typeof(p_projection) <> 'array'
-       OR pg_catalog.jsonb_array_length(p_projection) <> 14
+       OR pg_catalog.jsonb_array_length(p_projection) <> 13
        OR EXISTS (
            SELECT 1
            FROM pg_catalog.jsonb_array_elements(p_projection) AS item
@@ -36,7 +36,7 @@ BEGIN
         integer_value bigint, unlimited boolean
     );
     IF v_keys IS DISTINCT FROM
-        'ai.chat,analytics.active_dashboards,analytics.dashboard_builder.enabled,' ||
+        'analytics.active_dashboards,analytics.dashboard_builder.enabled,' ||
         'api.access,api.active_endpoints,api.builder.enabled,documents.storage_bytes,' ||
         'forms.active_forms,forms.builder.enabled,forms.submissions,iam.active_users,' ||
         'workflow.active_definitions,workflow.builder.enabled,workflow.enabled' THEN
@@ -59,7 +59,7 @@ BEGIN
      AND definition.value_type = grant_row.value_type
      AND (NOT grant_row.unlimited OR definition.unlimited_allowed);
     GET DIAGNOSTICS v_count = ROW_COUNT;
-    IF v_count <> 14 THEN
+    IF v_count <> 13 THEN
         RAISE EXCEPTION USING ERRCODE = '23503',
             MESSAGE = 'billing license projection definitions are incomplete';
     END IF;

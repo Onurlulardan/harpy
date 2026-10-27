@@ -38,7 +38,7 @@ var authorityObjectOrder = [][4]string{
 	{"function", "cutover_authority", "verify_finalization_receipt_v1",
 		"uuid,uuid,uuid,text,text"},
 	{"function", "cutover_authority", "record_full_rollout_completion_v1",
-		"uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,text,timestampwithtimezone,timestampwithtimezone,timestampwithtimezone"},
+		"uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,timestampwithtimezone,timestampwithtimezone,timestampwithtimezone"},
 }
 
 func (value AuthorityAdoptionOperation) Validate() error {

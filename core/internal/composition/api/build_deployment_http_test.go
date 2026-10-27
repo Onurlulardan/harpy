@@ -51,7 +51,7 @@ func TestDeploymentHTTPUsesVerifiedPersistedAuthority(t *testing.T) {
 	if recorder.Code != http.StatusOK || response.Data.DeploymentMode != "onpremise" ||
 		response.Data.DefaultTenantSlug == nil ||
 		*response.Data.DefaultTenantSlug != "harpy" ||
-		response.Data.ServiceAvailability.AIChat {
+		!response.Data.ServiceAvailability.Work {
 		t.Fatalf("persisted runtime response = %#v", response)
 	}
 }

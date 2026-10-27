@@ -16,7 +16,6 @@ func TestRegistryV1ExactShape(t *testing.T) {
 		{"iam.active_users", Integer, Gauge, Never, Hard, UnitCount, "iam"},
 		{"forms.active_forms", Integer, Gauge, Never, Hard, UnitCount, "forms"},
 		{"documents.storage_bytes", Integer, Gauge, Never, Hard, UnitByte, "documents"},
-		{"ai.chat", Boolean, NoMeter, Never, NoEnforcement, UnitBoolean, "ai"},
 		{"workflow.enabled", Boolean, NoMeter, Never, NoEnforcement, UnitBoolean, "workflow"},
 		{"api.access", Boolean, NoMeter, Never, NoEnforcement, UnitBoolean, "platform"},
 	}

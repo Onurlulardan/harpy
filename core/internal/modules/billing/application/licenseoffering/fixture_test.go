@@ -58,7 +58,7 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 			Boolean: map[string]bool{
 				"forms.builder.enabled": true, "workflow.builder.enabled": true,
 				"api.builder.enabled": true, "analytics.dashboard_builder.enabled": false,
-				"ai.chat": false, "workflow.enabled": true, "api.access": true,
+				"workflow.enabled": true, "api.access": true,
 			},
 			Limits: map[string]billingapi.LicenseLimit{
 				"iam.active_users": {Value: 10}, "forms.active_forms": {Unlimited: true},

@@ -3,8 +3,8 @@ package platformiam
 import "testing"
 
 func TestCapabilityCatalogIsExactAndUnique(t *testing.T) {
-	if len(CapabilityCatalog) != 52 {
-		t.Fatalf("capability count=%d, want 52", len(CapabilityCatalog))
+	if len(CapabilityCatalog) != 49 {
+		t.Fatalf("capability count=%d, want 49", len(CapabilityCatalog))
 	}
 	seen := make(map[string]struct{}, len(CapabilityCatalog))
 	for _, capability := range CapabilityCatalog {

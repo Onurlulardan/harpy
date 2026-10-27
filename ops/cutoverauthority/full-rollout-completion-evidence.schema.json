@@ -9,7 +9,7 @@
     "v1_consumers", "v1_queue_messages", "v1_credentials", "shadow_read_sha256",
     "logical_delta_sha256", "reconcile_sha256", "production_snapshot_sha256",
     "v1_removal_sha256", "backup_restore_sha256", "frontend_contract_sha256",
-    "mcp_contract_sha256", "rollback_window_closure_sha256",
+    "rollback_window_closure_sha256",
     "rollback_window_closed_at"
   ],
   "properties": {
@@ -39,7 +39,6 @@
     "v1_removal_sha256": {"$ref": "#/$defs/sha256"},
     "backup_restore_sha256": {"$ref": "#/$defs/sha256"},
     "frontend_contract_sha256": {"$ref": "#/$defs/sha256"},
-    "mcp_contract_sha256": {"$ref": "#/$defs/sha256"},
     "rollback_window_closure_sha256": {"$ref": "#/$defs/sha256"},
     "rollback_window_closed_at": {"$ref": "#/$defs/time"}
   },

@@ -25,7 +25,7 @@ func TestRuntimeConfigHTTPReturnsPersistedOnPremiseSnapshot(t *testing.T) {
 	}
 	if !response.Success || response.Data.DeploymentMode != "onpremise" ||
 		response.Data.DefaultTenantSlug == nil || *response.Data.DefaultTenantSlug != "harpy" ||
-		response.Data.ServiceAvailability.AIChat || response.Data.ServiceAvailability.Work {
+		response.Data.ServiceAvailability.Work {
 		t.Fatalf("response=%+v", response)
 	}
 }
@@ -33,7 +33,6 @@ func TestRuntimeConfigHTTPReturnsPersistedOnPremiseSnapshot(t *testing.T) {
 func TestRuntimeConfigHTTPPublishesOnlyComposedServices(t *testing.T) {
 	handler := runtimeConfigFixture(t, runtimeConfigSnapshot{
 		deploymentMode: config.DeploymentOnPrem, primaryTenantSlug: "harpy",
-		aiChatComposed: true,
 	})
 	recorder := httptest.NewRecorder()
 	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/app/config", nil))
@@ -41,16 +40,13 @@ func TestRuntimeConfigHTTPPublishesOnlyComposedServices(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
 		t.Fatal(err)
 	}
-	if !response.Data.ServiceAvailability.AIChat {
-		t.Fatalf("service availability = %+v", response.Data.ServiceAvailability)
-	}
 	if response.Data.ServiceAvailability.Work {
 		t.Fatalf("Work stays unpublished until the snapshot marks it composed: %+v",
 			response.Data.ServiceAvailability)
 	}
 	composed := runtimeConfigFixture(t, runtimeConfigSnapshot{
 		deploymentMode: config.DeploymentOnPrem, primaryTenantSlug: "harpy",
-		aiChatComposed: true, workComposed: true,
+		workComposed: true,
 	})
 	composedRecorder := httptest.NewRecorder()
 	composed.ServeHTTP(composedRecorder, httptest.NewRequest(http.MethodGet, "/api/app/config", nil))
@@ -58,8 +54,7 @@ func TestRuntimeConfigHTTPPublishesOnlyComposedServices(t *testing.T) {
 	if err := json.Unmarshal(composedRecorder.Body.Bytes(), &composedResponse); err != nil {
 		t.Fatal(err)
 	}
-	if !composedResponse.Data.ServiceAvailability.AIChat ||
-		!composedResponse.Data.ServiceAvailability.Work {
+	if !composedResponse.Data.ServiceAvailability.Work {
 		t.Fatalf("composed services unpublished: %+v", composedResponse.Data.ServiceAvailability)
 	}
 }

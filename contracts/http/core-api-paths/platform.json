@@ -70,9 +70,8 @@
                       "service_availability": {
                         "type": "object",
                         "additionalProperties": false,
-                        "required": ["ai_chat", "work"],
+                        "required": ["work"],
                         "properties": {
-                          "ai_chat": { "type": "boolean" },
                           "work": { "const": false }
                         }
                       }

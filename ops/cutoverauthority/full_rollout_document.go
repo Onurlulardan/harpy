@@ -21,7 +21,6 @@ type fullRolloutDocument struct {
 	V1RemovalSHA256          string              `json:"v1_removal_sha256"`
 	BackupRestoreSHA256      string              `json:"backup_restore_sha256"`
 	FrontendContractSHA256   string              `json:"frontend_contract_sha256"`
-	MCPContractSHA256        string              `json:"mcp_contract_sha256"`
 	RollbackClosureSHA256    string              `json:"rollback_window_closure_sha256"`
 	RollbackWindowClosedAt   string              `json:"rollback_window_closed_at"`
 }

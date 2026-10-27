@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE FUNCTION platform.platform_cutover_complete_v1_adoption_v1(
-    p_operation_id uuid,p_environment_id uuid,p_frontend_sha256 text,p_mcp_sha256 text,
+    p_operation_id uuid,p_environment_id uuid,p_frontend_sha256 text,
     p_legacy_boolean_hits bigint,p_module_migration_hits bigint,
     p_zero_hit_since timestamptz,p_completed_at timestamptz
 )
@@ -19,7 +19,6 @@ BEGIN
        OR pg_catalog.current_setting('application_name',true)
             !~ '^harpy-cutover/[0-9a-f-]{36}$'
        OR p_frontend_sha256 !~ '^[0-9a-f]{64}$'
-       OR p_mcp_sha256 !~ '^[0-9a-f]{64}$'
        OR p_legacy_boolean_hits<>0 OR p_module_migration_hits<>0
        OR NOT pg_catalog.isfinite(p_zero_hit_since)
        OR NOT pg_catalog.isfinite(p_completed_at)
@@ -32,7 +31,6 @@ BEGIN
     IF FOUND THEN
         IF v_existing.environment_id IS DISTINCT FROM p_environment_id
            OR v_existing.frontend_contract_sha256 IS DISTINCT FROM p_frontend_sha256
-           OR v_existing.mcp_contract_sha256 IS DISTINCT FROM p_mcp_sha256
            OR v_existing.zero_hit_since IS DISTINCT FROM p_zero_hit_since
            OR v_existing.completed_at IS DISTINCT FROM p_completed_at THEN
             RAISE EXCEPTION USING ERRCODE='23505',
@@ -71,15 +69,15 @@ BEGIN
     END IF;
     INSERT INTO platform.platform_cutover_v1_adoption_completion_receipts(
         operation_id,environment_id,plan_sha256,frontend_contract_sha256,
-        mcp_contract_sha256,legacy_boolean_hits,module_migration_hits,
+        legacy_boolean_hits,module_migration_hits,
         zero_hit_since,completed_at,recorded_by
     ) VALUES (p_operation_id,p_environment_id,v_plan.plan_sha256,p_frontend_sha256,
-        p_mcp_sha256,0,0,p_zero_hit_since,p_completed_at,SESSION_USER);
+        0,0,p_zero_hit_since,p_completed_at,SESSION_USER);
     RETURN false;
 END;
 $function$;
 -- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_cutover_complete_v1_adoption_v1(
-    uuid,uuid,text,text,bigint,bigint,timestamptz,timestamptz
+    uuid,uuid,text,bigint,bigint,timestamptz,timestamptz
 ) FROM PUBLIC;

@@ -28,7 +28,6 @@ type planLimits struct {
 }
 
 type planFeatures struct {
-	AIChat    bool `json:"ai_chat"`
 	Workflows bool `json:"workflows"`
 	APIAccess bool `json:"api_access"`
 }

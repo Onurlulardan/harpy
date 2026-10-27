@@ -4,10 +4,10 @@ ALTER TABLE cutover_authority.full_rollout_completion_receipts
 	ADD CONSTRAINT full_rollout_completion_rollback_closure_check
 	CHECK (pg_catalog.octet_length(rollback_window_closure_sha256) = 32);
 REVOKE EXECUTE ON FUNCTION cutover_authority.record_full_rollout_completion_v1(
-    uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
+    uuid,uuid,uuid,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
 ) FROM harpy_cluster_admin;
 DROP FUNCTION cutover_authority.record_full_rollout_completion_v1(
-    uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
+    uuid,uuid,uuid,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
 );
 -- +goose StatementBegin
 CREATE FUNCTION cutover_authority.record_full_rollout_completion_v1(
@@ -16,7 +16,7 @@ CREATE FUNCTION cutover_authority.record_full_rollout_completion_v1(
     p_logical_delta_sha256 text, p_reconcile_sha256 text,
     p_production_snapshot_sha256 text, p_v1_removal_sha256 text,
     p_backup_restore_sha256 text, p_frontend_contract_sha256 text,
-    p_mcp_contract_sha256 text, p_rollback_window_closure_sha256 text,
+    p_rollback_window_closure_sha256 text,
 	p_last_legacy_hit_at timestamptz, p_rollback_window_closed_at timestamptz, p_recorded_at timestamptz
 )
 RETURNS text
@@ -46,7 +46,7 @@ BEGIN
         SELECT 1 FROM pg_catalog.unnest(ARRAY[
             p_evidence_sha256,p_shadow_read_sha256,p_logical_delta_sha256,
             p_reconcile_sha256,p_production_snapshot_sha256,p_v1_removal_sha256,
-            p_backup_restore_sha256,p_frontend_contract_sha256,p_mcp_contract_sha256,
+            p_backup_restore_sha256,p_frontend_contract_sha256,
             p_rollback_window_closure_sha256
         ]) AS supplied(value) WHERE supplied.value !~ '^[0-9a-f]{64}$'
     ) THEN
@@ -143,7 +143,7 @@ BEGIN
         receipt_id,environment_id,tenant_id,evidence_sha256,
         shadow_read_sha256,logical_delta_sha256,reconcile_sha256,
         production_snapshot_sha256,v1_removal_sha256,backup_restore_sha256,
-        frontend_contract_sha256,mcp_contract_sha256,rollback_window_closure_sha256,
+        frontend_contract_sha256,rollback_window_closure_sha256,
         legacy_route_hits,v1_writers,v1_consumers,v1_queue_messages,v1_credentials,
         last_legacy_hit_at,rollback_window_closed_at,recorded_at,recorded_by
     ) VALUES (
@@ -156,7 +156,6 @@ BEGIN
         pg_catalog.decode(p_v1_removal_sha256,'hex'),
         pg_catalog.decode(p_backup_restore_sha256,'hex'),
         pg_catalog.decode(p_frontend_contract_sha256,'hex'),
-        pg_catalog.decode(p_mcp_contract_sha256,'hex'),
         pg_catalog.decode(p_rollback_window_closure_sha256,'hex'),
         0,0,0,0,0,p_last_legacy_hit_at,p_rollback_window_closed_at,
         p_recorded_at,SESSION_USER
@@ -170,7 +169,7 @@ BEGIN
       AND ARRAY[receipt.shadow_read_sha256,receipt.logical_delta_sha256,
                 receipt.reconcile_sha256,receipt.production_snapshot_sha256,
                 receipt.v1_removal_sha256,receipt.backup_restore_sha256,
-                receipt.frontend_contract_sha256,receipt.mcp_contract_sha256,
+                receipt.frontend_contract_sha256,
                 receipt.rollback_window_closure_sha256] =
           ARRAY[pg_catalog.decode(p_shadow_read_sha256,'hex'),
                 pg_catalog.decode(p_logical_delta_sha256,'hex'),
@@ -179,7 +178,6 @@ BEGIN
                 pg_catalog.decode(p_v1_removal_sha256,'hex'),
                 pg_catalog.decode(p_backup_restore_sha256,'hex'),
                 pg_catalog.decode(p_frontend_contract_sha256,'hex'),
-                pg_catalog.decode(p_mcp_contract_sha256,'hex'),
                 pg_catalog.decode(p_rollback_window_closure_sha256,'hex')]
       AND receipt.last_legacy_hit_at=p_last_legacy_hit_at
       AND receipt.rollback_window_closed_at=p_rollback_window_closed_at
@@ -193,8 +191,8 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION cutover_authority.record_full_rollout_completion_v1(
-    uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
+    uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION cutover_authority.record_full_rollout_completion_v1(
-    uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
+    uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz
 ) TO harpy_cluster_admin;

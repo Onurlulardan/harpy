@@ -37,7 +37,7 @@ func fullRolloutArtifactDigests(
 		evidence.ShadowReadSHA256, evidence.LogicalDeltaSHA256,
 		evidence.ReconcileSHA256, evidence.ProductionSnapshotSHA256,
 		evidence.V1RemovalSHA256, evidence.BackupRestoreSHA256,
-		evidence.FrontendContractSHA256, evidence.MCPContractSHA256,
+		evidence.FrontendContractSHA256,
 		evidence.RollbackWindowClosureSHA256,
 	} {
 		result[value] = struct{}{}

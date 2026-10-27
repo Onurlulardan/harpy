@@ -92,7 +92,7 @@ func billingLicenseOfferingDocument(
 		Unlimited bool   `json:"unlimited"`
 	}
 	booleans := []booleanGrant{}
-	for _, key := range []string{"ai.chat", "analytics.dashboard_builder.enabled", "api.access",
+	for _, key := range []string{"analytics.dashboard_builder.enabled", "api.access",
 		"api.builder.enabled", "forms.builder.enabled", "workflow.builder.enabled", "workflow.enabled"} {
 		booleans = append(booleans, booleanGrant{Key: key, Value: true})
 	}

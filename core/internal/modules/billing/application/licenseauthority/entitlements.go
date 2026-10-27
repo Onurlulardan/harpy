@@ -15,7 +15,6 @@ func ProjectEntitlements(snapshot VerifiedSnapshot) EntitlementProjection {
 			"workflow.builder.enabled":            features.WorkflowBuilder,
 			"api.builder.enabled":                 features.APIBuilder,
 			"analytics.dashboard_builder.enabled": features.DashboardBuilder,
-			"ai.chat":                             features.AIAssistant,
 			"workflow.enabled":                    true,
 			"api.access":                          true,
 		},

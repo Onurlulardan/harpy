@@ -65,7 +65,6 @@ func TestCompletionDigestBindsEveryEvidenceFieldGroup(t *testing.T) {
 		"V1 removal artifact":          func(v *PersistedCompletion) { v.Evidence.V1RemovalSHA256[0] ^= 1 },
 		"backup restore artifact":      func(v *PersistedCompletion) { v.Evidence.BackupRestoreSHA256[0] ^= 1 },
 		"frontend contract artifact":   func(v *PersistedCompletion) { v.Evidence.FrontendContractSHA256[0] ^= 1 },
-		"MCP contract artifact":        func(v *PersistedCompletion) { v.Evidence.MCPContractSHA256[0] ^= 1 },
 		"rollback closure artifact": func(v *PersistedCompletion) {
 			v.Evidence.RollbackWindowClosureSHA256[0] ^= 1
 		},

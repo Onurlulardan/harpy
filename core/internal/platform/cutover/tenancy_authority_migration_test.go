@@ -44,7 +44,6 @@ func TestTenancyCutoverAuthoritySuccessorDelegatesToEnsure(t *testing.T) {
 		"DROP CONSTRAINT cutover_group_members_domain_check",
 		"DROP CONSTRAINT cutover_transition_events_domain_check",
 		"DROP CONSTRAINT contract_retirements_domain_check",
-		"platform.cutover_ensure_mcp_ai_authority_v1(",
 		"platform.cutover_ensure_tenancy_authority_v1(",
 		"'tenancy', 'work', 'workflow'",
 	} {

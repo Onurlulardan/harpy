@@ -25,7 +25,6 @@ CREATE TABLE platform.platform_cutover_v1_adoption_completion_receipts (
     plan_sha256 text NOT NULL CHECK (plan_sha256 ~ '^[0-9a-f]{64}$'),
     frontend_contract_sha256 text NOT NULL
         CHECK (frontend_contract_sha256 ~ '^[0-9a-f]{64}$'),
-    mcp_contract_sha256 text NOT NULL CHECK (mcp_contract_sha256 ~ '^[0-9a-f]{64}$'),
     legacy_boolean_hits bigint NOT NULL CHECK (legacy_boolean_hits=0),
     module_migration_hits bigint NOT NULL CHECK (module_migration_hits=0),
     zero_hit_since timestamptz NOT NULL,

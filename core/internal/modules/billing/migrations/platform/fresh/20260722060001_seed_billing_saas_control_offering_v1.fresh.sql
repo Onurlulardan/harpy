@@ -25,7 +25,7 @@ INSERT INTO platform.billing_offering_versions (
 ) SELECT
     '019b0000-0000-7000-8000-000000000101',authority_id,
     '019b0000-0000-7000-8000-000000000100',1,true,false,false,
-    0,0,1,14,effective_at,NULL,metadata,
+    0,0,1,13,effective_at,NULL,metadata,
     pg_catalog.sha256(pg_catalog.convert_to(metadata::text,'UTF8')),
     'published','019b0000-0000-7000-8000-000000000102',effective_at
 FROM (
@@ -81,7 +81,7 @@ FROM (
         'entitlements',pg_catalog.jsonb_build_object(
             'iam.active_users','unlimited','api.access',true,
             'forms.submissions',0,'forms.active_forms',0,
-            'documents.storage_bytes',0,'ai.chat',false,
+            'documents.storage_bytes',0,
             'workflow.enabled',false,'forms.builder.enabled',false,
             'workflow.builder.enabled',false,'api.builder.enabled',false,
             'analytics.dashboard_builder.enabled',false,

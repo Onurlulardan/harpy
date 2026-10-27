@@ -30,7 +30,6 @@ func (recorder *fullRolloutRecorder) Record(
 		encodeDigest(evidence.V1RemovalSHA256),
 		encodeDigest(evidence.BackupRestoreSHA256),
 		encodeDigest(evidence.FrontendContractSHA256),
-		encodeDigest(evidence.MCPContractSHA256),
 		encodeDigest(evidence.RollbackWindowClosureSHA256), evidence.LastLegacyHitAt,
 		evidence.RollbackWindowClosedAt, value.RecordedAt,
 	).Scan(&persisted)

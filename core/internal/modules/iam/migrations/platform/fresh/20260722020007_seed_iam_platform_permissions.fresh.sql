@@ -57,9 +57,6 @@ FROM (VALUES
 ('14020000-0000-4000-8000-000000000046','platform.operations.permission_cache.flush','platform.operations.permission_cache','flush','both',true,true,false),
 ('14020000-0000-4000-8000-000000000047','platform.license.read','platform.license','read','onpremise',true,false,false),
 ('14020000-0000-4000-8000-000000000048','platform.license.refresh','platform.license','refresh','onpremise',true,true,false),
-('14020000-0000-4000-8000-000000000049','platform.ai.system_knowledge.read','platform.ai.system_knowledge','read','both',true,false,false),
-('14020000-0000-4000-8000-000000000050','platform.ai.system_knowledge.reingest','platform.ai.system_knowledge','reingest','both',true,false,false),
-('14020000-0000-4000-8000-000000000051','platform.ai.analytics.read','platform.ai.analytics','read','saas',true,false,false),
 ('14020000-0000-4000-8000-000000000052','platform.presence.read','platform.presence','read','saas',true,false,false)
 ) AS expected(id, permission_key, resource_key, action_key, deployment_mode,
               delegable, step_up_required, owner_only)

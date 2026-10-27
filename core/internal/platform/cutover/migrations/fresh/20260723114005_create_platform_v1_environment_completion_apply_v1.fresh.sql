@@ -35,7 +35,7 @@ BEGIN
        OR (SELECT pg_catalog.array_agg(key ORDER BY key)
              FROM pg_catalog.jsonb_object_keys(v_after) AS key)
           IS DISTINCT FROM ARRAY['completed_at','contract_version','environment_id',
-              'frontend_contract_sha256','legacy_boolean_hits','mcp_contract_sha256',
+              'frontend_contract_sha256','legacy_boolean_hits',
               'module_migration_hits','operation_id','plan_sha256',
               'zero_hit_since']::text[]
        OR v_after->>'contract_version' IS DISTINCT FROM
@@ -52,7 +52,7 @@ BEGIN
     END IF;
     PERFORM platform.platform_cutover_complete_v1_adoption_v1(
         p_operation_id,p_scope_id,v_after->>'frontend_contract_sha256',
-        v_after->>'mcp_contract_sha256',(v_after->>'legacy_boolean_hits')::bigint,
+        (v_after->>'legacy_boolean_hits')::bigint,
         (v_after->>'module_migration_hits')::bigint,
         (v_after->>'zero_hit_since')::timestamptz,
         (v_after->>'completed_at')::timestamptz);

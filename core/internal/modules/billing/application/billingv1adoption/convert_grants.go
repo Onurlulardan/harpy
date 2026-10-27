@@ -27,7 +27,6 @@ func convertGrants(
 	if err != nil {
 		return nil, ErrLimits
 	}
-	values["ai.chat"] = entitlement.BooleanValue(features["ai_chat"])
 	values["workflow.enabled"] = entitlement.BooleanValue(features["workflows"])
 	values["api.access"] = entitlement.BooleanValue(features["api_access"])
 	registry := entitlement.RegistryV1()

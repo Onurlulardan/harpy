@@ -27,8 +27,7 @@ var CapabilityCatalog = []string{
 	"platform.operations.traces.read",
 	"platform.operations.permission_cache.flush",
 	"platform.license.read", "platform.license.refresh",
-	"platform.ai.system_knowledge.read", "platform.ai.system_knowledge.reingest",
-	"platform.ai.analytics.read", "platform.presence.read",
+	"platform.presence.read",
 }
 
 var capabilities = func() map[string]struct{} {

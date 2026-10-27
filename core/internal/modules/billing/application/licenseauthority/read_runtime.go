@@ -41,7 +41,7 @@ func assembleRuntimeEntitlements(
 	environmentID uuid.UUID,
 	grants []RuntimeGrant,
 ) (billingapi.LicenseRuntimeEntitlements, error) {
-	if len(grants) != 14 || !validRuntimeGrantHead(environmentID, grants[0]) {
+	if len(grants) != 13 || !validRuntimeGrantHead(environmentID, grants[0]) {
 		return billingapi.LicenseRuntimeEntitlements{}, ErrAuthorityState
 	}
 	first := grants[0]
@@ -59,7 +59,7 @@ func assembleRuntimeEntitlements(
 			return billingapi.LicenseRuntimeEntitlements{}, ErrAuthorityState
 		}
 	}
-	if len(result.Projection.Boolean) != 7 || len(result.Projection.Limits) != 7 {
+	if len(result.Projection.Boolean) != 6 || len(result.Projection.Limits) != 7 {
 		return billingapi.LicenseRuntimeEntitlements{}, ErrAuthorityState
 	}
 	return result, nil
@@ -112,7 +112,7 @@ func appendRuntimeGrant(
 
 func runtimeBooleanKey(key string) bool {
 	switch key {
-	case "ai.chat", "analytics.dashboard_builder.enabled", "api.access",
+	case "analytics.dashboard_builder.enabled", "api.access",
 		"api.builder.enabled", "forms.builder.enabled",
 		"workflow.builder.enabled", "workflow.enabled":
 		return true

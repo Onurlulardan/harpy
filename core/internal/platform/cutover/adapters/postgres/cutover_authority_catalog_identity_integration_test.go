@@ -44,7 +44,7 @@ var builtAuthorityObjectIdentities = []builtAuthorityIdentity{
 	{kind: "function", schema: "cutover_authority", name: "verify_finalization_receipt_v1",
 		arguments: "uuid,uuid,uuid,text,text"},
 	{kind: "function", schema: "cutover_authority", name: "record_full_rollout_completion_v1",
-		arguments: "uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,text,timestampwithtimezone,timestampwithtimezone,timestampwithtimezone"},
+		arguments: "uuid,uuid,uuid,text,text,text,text,text,text,text,text,text,timestampwithtimezone,timestampwithtimezone,timestampwithtimezone"},
 }
 
 var builtAuthorityDependencyIdentities = []builtAuthorityIdentity{

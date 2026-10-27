@@ -91,7 +91,7 @@
         "user_id": {"type": "string", "format": "uuid"},
         "tenant_id": {"type": "string", "format": "uuid"},
         "tenant_slug": {"type": "string", "minLength": 1, "maxLength": 128},
-        "client_id": {"enum": ["harpy-operator-console-v1", "harpy-portal-v1", "harpy-mcp-v1"]},
+        "client_id": {"enum": ["harpy-operator-console-v1", "harpy-portal-v1"]},
         "access_mode": {"enum": ["operator_console", "portal"]},
         "portal_binding_id": {"type": "string", "format": "uuid"},
         "token_version": {"type": "integer", "format": "int64", "minimum": 1},

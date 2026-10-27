@@ -37,7 +37,6 @@ func buildDeploymentHTTPFoundation(
 	handler, err := newRuntimeConfigHandler(info, runtimeConfigSnapshot{
 		deploymentMode:    config.DeploymentMode(policy.Mode()),
 		primaryTenantSlug: publicSlug,
-		aiChatComposed:    false,
 		workComposed:      true,
 	}, report)
 	if err != nil {

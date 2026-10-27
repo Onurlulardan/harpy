@@ -30,7 +30,7 @@ func validClientMode(client ClientID, mode AccessMode) bool {
 	switch client {
 	case ClientPortal:
 		return mode == AccessModePortal
-	case ClientOperatorConsole, ClientMCP:
+	case ClientOperatorConsole:
 		return mode == AccessModeOperator
 	default:
 		return false

@@ -74,8 +74,6 @@ func legacyPlanValues(
 			} else {
 				limits.MaxStorageMB = integer / (1024 * 1024)
 			}
-		case "ai.chat":
-			features.AIChat = boolean
 		case "workflow.enabled":
 			features.Workflows = boolean
 		case "api.access":

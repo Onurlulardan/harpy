@@ -41,9 +41,8 @@ func assertServiceAvailabilityContract(t *testing.T, operation map[string]any) {
 	}
 	availability := data["properties"].(map[string]any)["service_availability"].(map[string]any)
 	properties := availability["properties"].(map[string]any)
-	aiChat, ok := properties["ai_chat"].(map[string]any)
-	if !ok || aiChat["type"] != "boolean" {
-		t.Fatalf("AI chat availability contract = %v", aiChat)
+	if _, present := properties["ai_chat"]; present {
+		t.Fatal("AI chat availability remains in the runtime config contract")
 	}
 	work, ok := properties["work"].(map[string]any)
 	if !ok || work["const"] != false {

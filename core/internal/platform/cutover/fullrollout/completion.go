@@ -22,7 +22,6 @@ type CompletionEvidence struct {
 	V1RemovalSHA256                [32]byte
 	BackupRestoreSHA256            [32]byte
 	FrontendContractSHA256         [32]byte
-	MCPContractSHA256              [32]byte
 	RollbackWindowClosureSHA256    [32]byte
 	RollbackWindowClosedAt         time.Time
 }
@@ -41,7 +40,7 @@ func EvaluateCompletion(value CompletionEvidence) error {
 		value.ReconcileSHA256 == [32]byte{} || value.ProductionSnapshotSHA256 == [32]byte{} ||
 		value.V1RemovalSHA256 == [32]byte{} ||
 		value.BackupRestoreSHA256 == [32]byte{} ||
-		value.FrontendContractSHA256 == [32]byte{} || value.MCPContractSHA256 == [32]byte{} ||
+		value.FrontendContractSHA256 == [32]byte{} ||
 		value.RollbackWindowClosureSHA256 == [32]byte{} ||
 		!validEvidenceTime(value.RollbackWindowClosedAt) ||
 		value.RollbackWindowClosedAt.After(value.Now) ||

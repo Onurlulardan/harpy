@@ -40,7 +40,6 @@ func legacyEntitlements(
 		integerEntitlement("iam.active_users", limits.MaxUsers),
 		integerEntitlement("forms.active_forms", limits.MaxForms),
 		integerEntitlement("documents.storage_bytes", storageBytes(limits.MaxStorageMB)),
-		booleanEntitlement("ai.chat", features.AIChat),
 		booleanEntitlement("workflow.enabled", features.Workflows),
 		booleanEntitlement("api.access", features.APIAccess),
 	}

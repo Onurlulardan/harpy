@@ -59,7 +59,7 @@ func validAdoptionFixture() (AdoptionSnapshot, AdoptionMapping) {
 		Plans: []SourcePlan{{ID: planID, Name: "Base", Slug: "base-plan",
 			PriceCents: 1000, AnnualPriceCents: 10000, BillingInterval: "monthly",
 			Currency: "USD", LimitsJSON: []byte(`{"submissions_per_month":100,"max_users":10,"max_forms":20,"max_storage_mb":50}`),
-			FeaturesJSON: []byte(`{"ai_chat":true,"workflows":true,"api_access":true}`),
+			FeaturesJSON: []byte(`{"workflows":true,"api_access":true}`),
 			IsActive:     true, IsPublic: true, TrialDays: 0, CreatedAt: &created, UpdatedAt: &created}},
 		Campaigns: []SourceCampaign{{ID: campaignID, Name: "Launch", Slug: "launch-sale",
 			StartsAt: created, IsActive: true, CreatedAt: &created, UpdatedAt: &created}},

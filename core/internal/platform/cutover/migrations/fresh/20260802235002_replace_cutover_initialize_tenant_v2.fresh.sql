@@ -27,8 +27,7 @@ BEGIN
             MESSAGE = 'tenant cutover initialization v2 denied';
     END IF;
     IF (SELECT pg_catalog.count(*) FROM platform.domain_cutovers
-        WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
-          AND domain NOT IN ('ai','mcp')) <> 10
+        WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 10
        OR (SELECT pg_catalog.count(*) FROM platform.domain_cutovers
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND domain IN (
@@ -74,8 +73,7 @@ BEGIN
       )
     ON CONFLICT (scope_kind, scope_id, group_id, ordinal) DO NOTHING;
     IF (SELECT pg_catalog.count(*) FROM platform.cutover_groups
-        WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
-          AND group_id NOT IN ('ai','mcp')) <> 8
+        WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 8
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_groups
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND group_id IN (
@@ -88,8 +86,7 @@ BEGIN
              AND acceptance_digest = p_manifest_sha256
              AND change_reference = v_reference) <> 8
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_group_members
-           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
-             AND domain NOT IN ('ai','mcp')) <> 10
+           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 10
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_group_members
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND (group_id,ordinal,domain) IN (

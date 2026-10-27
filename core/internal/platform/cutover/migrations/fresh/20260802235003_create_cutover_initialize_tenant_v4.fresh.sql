@@ -37,7 +37,6 @@ BEGIN
         PERFORM platform.cutover_initialize_tenant_v2(
             p_operation_id, p_tenant_id, p_owner_user_id, p_manifest_sha256
         );
-        PERFORM platform.cutover_ensure_mcp_ai_authority_v1(p_tenant_id);
         RETURN;
     END IF;
     v_reference := 'customer-activation:' || p_operation_id::text;
@@ -62,8 +61,8 @@ BEGIN
             p_operation_id, p_owner_user_id, 'SaaS customer V2 activation',
             v_reference, p_manifest_sha256
         FROM pg_catalog.unnest(ARRAY[
-            'ai','analytics','billing','catalog','documents','forms','iam',
-            'mcp','notifications','system_resource_layout','work','workflow'
+            'analytics','billing','catalog','documents','forms','iam',
+            'notifications','system_resource_layout','work','workflow'
         ]) AS entry(domain);
         INSERT INTO platform.cutover_groups (
             scope_kind, scope_id, group_id, state, writer, generation,
@@ -74,13 +73,12 @@ BEGIN
             p_operation_id, p_owner_user_id, 'SaaS customer V2 activation',
             v_reference, p_manifest_sha256
         FROM pg_catalog.unnest(ARRAY[
-            'ai','analytics','billing_forms','catalog','documents',
-            'iam_system_resources','mcp','notifications','work','workflow'
+            'analytics','billing_forms','catalog','documents',
+            'iam_system_resources','notifications','work','workflow'
         ]) AS entry(group_id);
         INSERT INTO platform.cutover_group_members (
             scope_kind, scope_id, group_id, ordinal, domain
         ) VALUES
-            ('tenant',p_tenant_id,'ai',1,'ai'),
             ('tenant',p_tenant_id,'analytics',1,'analytics'),
             ('tenant',p_tenant_id,'billing_forms',1,'billing'),
             ('tenant',p_tenant_id,'billing_forms',2,'forms'),
@@ -88,49 +86,47 @@ BEGIN
             ('tenant',p_tenant_id,'documents',1,'documents'),
             ('tenant',p_tenant_id,'iam_system_resources',1,'iam'),
             ('tenant',p_tenant_id,'iam_system_resources',2,'system_resource_layout'),
-            ('tenant',p_tenant_id,'mcp',1,'mcp'),
             ('tenant',p_tenant_id,'notifications',1,'notifications'),
             ('tenant',p_tenant_id,'work',1,'work'),
             ('tenant',p_tenant_id,'workflow',1,'workflow');
     END IF;
-    PERFORM platform.cutover_ensure_mcp_ai_authority_v1(p_tenant_id);
     IF (SELECT pg_catalog.count(*) FROM platform.domain_cutovers
         WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
           AND domain IN (
-              'ai','analytics','billing','catalog','documents','forms','iam',
-              'mcp','notifications','system_resource_layout','work','workflow'
+              'analytics','billing','catalog','documents','forms','iam',
+              'notifications','system_resource_layout','work','workflow'
           )
           AND state = 'v2' AND writer = 'v2' AND generation = 1
           AND requested_by = p_operation_id AND approved_by = p_owner_user_id
           AND acceptance_digest = p_manifest_sha256
-          AND change_reference = v_reference) <> 12
+          AND change_reference = v_reference) <> 10
        OR (SELECT pg_catalog.count(*) FROM platform.domain_cutovers
-           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 12
+           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 10
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_groups
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND group_id IN (
-                 'ai','analytics','billing_forms','catalog','documents',
-                 'iam_system_resources','mcp','notifications','work','workflow'
+                 'analytics','billing_forms','catalog','documents',
+                 'iam_system_resources','notifications','work','workflow'
              )
              AND state = 'v2' AND writer = 'v2' AND generation = 1
              AND requested_by = p_operation_id AND approved_by = p_owner_user_id
              AND acceptance_digest = p_manifest_sha256
-             AND change_reference = v_reference) <> 10
+             AND change_reference = v_reference) <> 8
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_groups
-           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 10
+           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 8
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_group_members
-           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 12
+           WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id) <> 10
        OR (SELECT pg_catalog.count(*) FROM platform.cutover_group_members
            WHERE scope_kind = 'tenant' AND scope_id = p_tenant_id
              AND (group_id,ordinal,domain) IN (
-                 ('ai',1,'ai'),('analytics',1,'analytics'),
+                 ('analytics',1,'analytics'),
                  ('billing_forms',1,'billing'),('billing_forms',2,'forms'),
                  ('catalog',1,'catalog'),('documents',1,'documents'),
                  ('iam_system_resources',1,'iam'),
                  ('iam_system_resources',2,'system_resource_layout'),
-                 ('mcp',1,'mcp'),('notifications',1,'notifications'),
+                 ('notifications',1,'notifications'),
                  ('work',1,'work'),('workflow',1,'workflow')
-             )) <> 12 THEN
+             )) <> 10 THEN
         RAISE EXCEPTION USING ERRCODE = '23505',
             MESSAGE = 'tenant cutover initialization v4 authority conflict';
     END IF;

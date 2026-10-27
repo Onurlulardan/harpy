@@ -77,7 +77,7 @@ func fixtureUUID(last int) string {
 
 func validDerivedOfferingContract() map[string]any {
 	booleanKeys := []string{
-		"ai.chat", "analytics.dashboard_builder.enabled", "api.access",
+		"analytics.dashboard_builder.enabled", "api.access",
 		"api.builder.enabled", "forms.builder.enabled", "workflow.builder.enabled",
 		"workflow.enabled",
 	}

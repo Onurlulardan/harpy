@@ -9,7 +9,7 @@ import (
 
 func (contract Contract) Validate() error {
 	if contract.Version != 1 || contract.ContractID != "forms-record-list-consumers.v1" ||
-		!exactSorted(contract.Consumers, []string{"frontend-v3", "mcp"}) ||
+		!exactSorted(contract.Consumers, []string{"frontend-v3"}) ||
 		len(contract.Routes) != 2 || !sortedUnique(contract.QueryKeys) ||
 		len(contract.QueryKeys) == 0 || len(contract.SuccessPointers) == 0 {
 		return fmt.Errorf("Forms V1 consumer contract identity is invalid")

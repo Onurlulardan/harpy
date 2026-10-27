@@ -1,7 +1,7 @@
 {
   "version": 1,
   "contract_id": "forms-record-list-consumers.v1",
-  "consumers": ["frontend-v3", "mcp"],
+  "consumers": ["frontend-v3"],
   "routes": [
     {
       "id": "records.list",
