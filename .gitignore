@@ -8,6 +8,7 @@ secrets
 
 # Local access note. Contains secrets.
 local/ACCESS.md
+local/container.env
 
 # Local ops state.
 ops/local/state/
