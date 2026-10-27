@@ -4,9 +4,9 @@ CREATE FUNCTION platform.billing_guard_tenant_binding_v2() RETURNS trigger
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
-       OR SESSION_USER NOT IN ('forgecrud_v2_runtime', 'forgecrud_adopter',
-           'forgecrud_migrator', 'forgecrud_cutover_finalizer') THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
+       OR SESSION_USER NOT IN ('harpy_v2_runtime', 'harpy_adopter',
+           'harpy_migrator', 'harpy_cutover_finalizer') THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'billing tenant binding session is invalid';
     END IF;
     IF TG_OP IS DISTINCT FROM 'INSERT' THEN
@@ -77,8 +77,8 @@ DECLARE
     v_forms_generation bigint;
 BEGIN
     reconciled_count := 0;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true) IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'billing tenant authority reconciliation is denied';
     END IF;
@@ -197,4 +197,4 @@ $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1()
     FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() TO harpy_runtime;

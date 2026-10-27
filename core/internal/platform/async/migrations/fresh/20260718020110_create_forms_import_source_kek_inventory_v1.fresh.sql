@@ -9,8 +9,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Forms import-source KEK inventory authority is invalid';
     END IF;

@@ -25,7 +25,7 @@ DECLARE
     v_count integer;
     v_target_created boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

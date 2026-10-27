@@ -51,8 +51,8 @@ DECLARE
     v_installation catalog_installations%ROWTYPE;
     v_existing catalog_purge_approval_receipts_v2%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema::text IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT EXISTS (SELECT 1 FROM tenancy_schema_identity i WHERE i.singleton
            AND i.schema_name=pg_catalog.current_schema() AND i.tenant_id=p_tenant_id) OR
@@ -126,8 +126,8 @@ CREATE FUNCTION catalog_consume_purge_approval_v2(
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT AS $function$
 DECLARE v_receipt catalog_purge_approval_receipts_v2%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema::text IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT EXISTS (SELECT 1 FROM tenancy_schema_identity i WHERE i.singleton
            AND i.schema_name=pg_catalog.current_schema() AND i.tenant_id=p_tenant_id) OR
@@ -194,7 +194,7 @@ ALTER TABLE catalog_purge_approval_receipts_v2 ENABLE ALWAYS TRIGGER catalog_gua
 REVOKE ALL ON FUNCTION catalog_create_purge_approval_v2(name,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz,text) FROM PUBLIC;
 REVOKE ALL ON FUNCTION catalog_consume_purge_approval_v2(
     name,uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,text,timestamptz) FROM PUBLIC;
-GRANT SELECT ON TABLE catalog_purge_approval_receipts_v2 TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION catalog_create_purge_approval_v2(name,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz,text) TO forgecrud_runtime;
+GRANT SELECT ON TABLE catalog_purge_approval_receipts_v2 TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION catalog_create_purge_approval_v2(name,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,text,text,timestamptz,timestamptz,timestamptz,text) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION catalog_consume_purge_approval_v2(
-    name,uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,text,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,text,timestamptz) TO harpy_runtime;

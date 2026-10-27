@@ -27,8 +27,8 @@ DECLARE
     v_now timestamptz;
     v_job_id uuid;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
-       OR SESSION_USER NOT IN ('forgecrud_migrator', 'forgecrud_v2_runtime')
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
+       OR SESSION_USER NOT IN ('harpy_migrator', 'harpy_v2_runtime')
        OR pg_catalog.uuid_extract_version(p_schema_job_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_correlation_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_authority_id) IS DISTINCT FROM 7
@@ -51,7 +51,7 @@ BEGIN
       AND candidate.finished_at IS NOT NULL
     FOR SHARE;
 
-    IF SESSION_USER = 'forgecrud_migrator' THEN
+    IF SESSION_USER = 'harpy_migrator' THEN
         IF p_correlation_id IS DISTINCT FROM p_schema_job_id
            OR p_authority_id IS DISTINCT FROM
                 v_schema_job.submission_authority_id

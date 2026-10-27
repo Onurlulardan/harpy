@@ -18,8 +18,8 @@ DECLARE
     v_locked_group_generation bigint;
     v_locked_iam_generation bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_selector IS NULL OR
        pg_catalog.octet_length(p_selector) IS DISTINCT FROM 16 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

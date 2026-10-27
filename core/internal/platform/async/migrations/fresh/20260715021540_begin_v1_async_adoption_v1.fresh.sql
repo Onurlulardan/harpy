@@ -32,7 +32,7 @@ DECLARE
     v_domain_generation bigint;
     v_inserted boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5632',
             MESSAGE = 'V1 async adoption requires adopter authority';
     END IF;

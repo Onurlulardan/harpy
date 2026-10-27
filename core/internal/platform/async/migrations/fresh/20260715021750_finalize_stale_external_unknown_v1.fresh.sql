@@ -18,7 +18,7 @@ DECLARE
     v_domain_generation bigint;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_job_id IS NULL OR p_lease_owner_id IS NULL OR
        p_lease_generation < 1 OR p_attempt_id IS NULL OR
        p_effect_started_at IS NULL THEN
@@ -127,4 +127,4 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.platform_async_finalize_stale_external_unknown_v1(
         uuid,uuid,bigint,uuid,timestamptz
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;

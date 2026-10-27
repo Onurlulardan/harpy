@@ -11,8 +11,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_migrator'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_migrator'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.uuid_extract_version(p_tenant_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_authority_id) IS DISTINCT FROM 7
        OR p_authority_group_id IS DISTINCT FROM 'billing_forms'

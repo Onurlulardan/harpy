@@ -17,9 +17,9 @@ BEGIN
     END IF;
 
     IF NOT (
-        (SESSION_USER OPERATOR(pg_catalog.=) 'forgecrud_v2_runtime' AND
+        (SESSION_USER OPERATOR(pg_catalog.=) 'harpy_v2_runtime' AND
             NEW.writer_origin OPERATOR(pg_catalog.=) 'v2') OR
-        (SESSION_USER OPERATOR(pg_catalog.=) 'forgecrud_adopter' AND
+        (SESSION_USER OPERATOR(pg_catalog.=) 'harpy_adopter' AND
             NEW.writer_origin OPERATOR(pg_catalog.=) 'v1')
     ) THEN
         RAISE EXCEPTION USING ERRCODE = 'P5605',

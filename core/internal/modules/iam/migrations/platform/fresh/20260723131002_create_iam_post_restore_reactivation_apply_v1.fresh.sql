@@ -14,7 +14,7 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_owner_user_id IS NULL OR
        p_identifier_id IS NULL OR p_identifier_revision<1 OR
        p_directory_key_id !~ '^[a-z0-9][a-z0-9._-]{0,127}$' OR

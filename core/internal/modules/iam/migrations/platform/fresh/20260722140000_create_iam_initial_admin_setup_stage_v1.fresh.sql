@@ -70,8 +70,8 @@ AS $function$
 DECLARE
     v_existing platform.iam_initial_admin_setup_stages%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api'
        OR p_operation_id IS NULL OR p_tenant_id IS NULL
@@ -134,4 +134,4 @@ FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_initial_admin_setup_stage_v1(
     uuid,uuid,uuid,uuid,text,uuid,bytea,text,bytea,bytea,uuid,text,text,
     bytea,bytea,bytea,bytea,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

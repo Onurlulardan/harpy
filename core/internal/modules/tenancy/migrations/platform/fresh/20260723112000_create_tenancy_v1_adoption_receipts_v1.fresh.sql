@@ -8,7 +8,7 @@ CREATE TABLE platform.tenancy_v1_adoption_receipts (
     inventory_sha256 bytea NOT NULL CHECK (pg_catalog.octet_length(inventory_sha256)=32),
     plan_sha256 bytea NOT NULL CHECK (pg_catalog.octet_length(plan_sha256)=32),
     adopted_at timestamptz NOT NULL,
-    recorded_by name NOT NULL CHECK (recorded_by='forgecrud_adopter'),
+    recorded_by name NOT NULL CHECK (recorded_by='harpy_adopter'),
     CONSTRAINT tenancy_v1_adoption_policy_fk FOREIGN KEY (environment_id)
         REFERENCES platform.tenancy_deployment_policy (environment_id)
         ON UPDATE NO ACTION ON DELETE RESTRICT,

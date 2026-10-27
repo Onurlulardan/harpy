@@ -158,9 +158,9 @@ REVOKE ALL ON FUNCTION platform.platformops_commit_database_lineage_restore_v1(
     uuid,uuid,uuid,timestamptz
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_current_environment_identity_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_current_environment_identity_v1(uuid)
-TO forgecrud_restore;
+TO harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_commit_database_lineage_restore_v1(
     uuid,uuid,uuid,timestamptz
-) TO forgecrud_restore;
+) TO harpy_restore;

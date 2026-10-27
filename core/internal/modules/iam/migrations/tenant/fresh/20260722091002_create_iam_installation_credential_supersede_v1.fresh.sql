@@ -33,8 +33,8 @@ DECLARE
     v_replay iam_installation_password_credentials%ROWTYPE;
     v_credential_revision bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM credential supersede scope is invalid';
@@ -147,4 +147,4 @@ REVOKE ALL ON FUNCTION iam_installation_credential_supersede_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_installation_credential_supersede_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,bigint,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

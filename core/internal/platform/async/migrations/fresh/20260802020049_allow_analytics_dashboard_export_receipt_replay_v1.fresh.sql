@@ -19,8 +19,8 @@ DECLARE
     v_result_ref text;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_receipt.writer_origin IS DISTINCT FROM 'v2' OR
        p_receipt.effect_kind NOT IN ('analytics.dashboard.export.delete',
                                      'analytics.dashboard.export.expire') THEN
@@ -138,8 +138,8 @@ AS $function$
 DECLARE v_job platform.jobs%ROWTYPE;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_receipt.writer_origin IS DISTINCT FROM 'v2' OR
        p_receipt.effect_kind NOT IN ('analytics.dashboard.export.delete',
                                      'analytics.dashboard.export.expire') THEN

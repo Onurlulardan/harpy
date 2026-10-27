@@ -12,8 +12,8 @@ DECLARE
     v_authority_id uuid;
 BEGIN
     IF p_authority_group_id IS DISTINCT FROM 'billing'
-       OR SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+       OR SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing global authority resolver session is invalid';
     END IF;
@@ -70,8 +70,8 @@ DECLARE
 BEGIN
     IF p_authority_id IS NULL OR p_tenant_id IS NULL
        OR p_subscription_id IS NULL OR p_at IS NULL
-       OR SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+       OR SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_authority_id IS DISTINCT FROM
           platform.billing_resolve_current_tenant_authority_v1(p_tenant_id) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -147,8 +147,8 @@ REVOKE ALL ON FUNCTION
     ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
     platform.billing_resolve_current_global_authority_v1(text)
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION
     platform.billing_effective_subscription_price_snapshot_read_v1(
         uuid,uuid,uuid,timestamptz
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;

@@ -19,7 +19,7 @@ const pg18ExtensionDigest = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 func pg18PrepareFoundation(t *testing.T, ctx context.Context, admin *pgx.Conn) {
 	t.Helper()
 	pg18ExecuteSetup(t, ctx, admin, []string{
-		"SET ROLE forgecrud_owner",
+		"SET ROLE harpy_owner",
 		`CREATE TABLE platform.environment_identity(
 singleton boolean PRIMARY KEY,environment_id uuid,database_origin text,
 database_system_identifier text,database_oid bigint,release_id uuid)`,
@@ -78,7 +78,7 @@ VALUES('core',1,1,$1,$2,'ready',$3,1,pg_catalog.now())`, []any{
 			migrationDigest, pg18ExtensionDigest, runtimev1.PostgresImageDigest,
 		}},
 		{`INSERT INTO platform.extension_registry VALUES
-('vector','0.8.3','platform_ext','forgecrud_extension_admin','fresh',$1)`,
+('vector','0.8.3','platform_ext','harpy_extension_admin','fresh',$1)`,
 			[]any{pg18ExtensionRunID}},
 	}
 	for _, statement := range statements {

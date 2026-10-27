@@ -29,8 +29,8 @@ DECLARE
     v_user_status text;
     v_identity_kind text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
@@ -123,4 +123,4 @@ REVOKE ALL ON FUNCTION iam_installation_credential_initialize_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_installation_credential_initialize_v1(
     name,uuid,uuid,uuid,uuid,bigint,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

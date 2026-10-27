@@ -61,5 +61,5 @@ CREATE TABLE catalog_catalog_blocker_receipts (
     CHECK (date_trunc('microseconds', completed_at) = completed_at)
 );
 
-GRANT SELECT ON catalog_catalog_components TO forgecrud_runtime;
+GRANT SELECT ON catalog_catalog_components TO harpy_runtime;
 

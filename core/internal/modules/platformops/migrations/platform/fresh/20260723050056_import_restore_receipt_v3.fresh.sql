@@ -33,7 +33,7 @@ DECLARE
     v_existing platform.platformops_restore_receipt_imports%ROWTYPE;
     v_lineage_generation bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
        OR p_operation_id IS NULL OR p_recovery_set_id IS NULL
@@ -188,8 +188,8 @@ REVOKE ALL ON FUNCTION platform.platformops_import_restore_receipt_v3(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_import_restore_receipt_v2(
     uuid,uuid,uuid,text,text,text,bytea,uuid,uuid,text,text,text,jsonb
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_import_restore_receipt_v3(
     uuid,uuid,uuid,text,text,text,bytea,uuid,uuid,text,text,text,
     text,text,text,text,jsonb
-) TO forgecrud_restore;
+) TO harpy_restore;

@@ -11,15 +11,15 @@ DECLARE
     v_state text;
     v_writer text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR TG_OP IS DISTINCT FROM 'INSERT' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR TG_OP IS DISTINCT FROM 'INSERT' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'analytics tenant authority mutation is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         v_mode := 'runtime_v2'; v_state := 'v2'; v_writer := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         v_mode := 'adopter_shadow'; v_state := 'shadow'; v_writer := 'v1';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_cutover_finalizer' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_cutover_finalizer' THEN
         v_mode := 'runtime_v2'; v_state := 'v2'; v_writer := 'v2';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -89,8 +89,8 @@ DECLARE
     v_generation bigint;
     v_run_hash text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_cutover_finalizer' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer' OR
        pg_catalog.uuid_extract_version(p_operation_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_run_id) IS DISTINCT FROM 7 OR
        p_acceptance_digest IS NULL OR
@@ -182,4 +182,4 @@ REVOKE ALL ON FUNCTION platform.analytics_finalize_authority_successor_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_finalize_authority_successor_v1(
     uuid,uuid,text
-) TO forgecrud_cutover_authority_owner;
+) TO harpy_cutover_authority_owner;

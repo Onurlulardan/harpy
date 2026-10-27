@@ -14,8 +14,8 @@ DECLARE
     v_permission_id uuid;
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name',true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
@@ -132,4 +132,4 @@ REVOKE ALL ON FUNCTION platform.iam_installation_instance_owner_bind_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_installation_instance_owner_bind_v1(
     uuid,uuid,uuid,name,uuid,uuid,uuid,uuid,uuid,bigint,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

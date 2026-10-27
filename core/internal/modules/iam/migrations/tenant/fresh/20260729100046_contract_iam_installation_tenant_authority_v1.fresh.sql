@@ -8,29 +8,29 @@ REVOKE ALL ON FUNCTION iam_installation_initialize_v1(
 REVOKE EXECUTE ON FUNCTION iam_installation_initialize_v1(
     uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,uuid,uuid,
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION iam_installation_initialize_v1(
     uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,uuid,uuid,
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid
-) FROM forgecrud_v2_runtime;
+) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION iam_installation_credential_initialize_v1(
     name,uuid,uuid,uuid,uuid,bigint,bytea,bytea
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_installation_credential_initialize_v1(
     name,uuid,uuid,uuid,uuid,bigint,bytea,bytea
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION iam_installation_credential_initialize_v1(
     name,uuid,uuid,uuid,uuid,bigint,bytea,bytea
-) FROM forgecrud_v2_runtime;
+) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION iam_initial_admin_setup_finalize_v1(
     name,uuid,uuid,text
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_initial_admin_setup_finalize_v1(
     name,uuid,uuid,text
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION iam_initial_admin_setup_finalize_v1(
     name,uuid,uuid,text
-) FROM forgecrud_v2_runtime;
+) FROM harpy_v2_runtime;
 
 WITH retired(signature) AS (
     VALUES
@@ -47,7 +47,7 @@ WITH retired(signature) AS (
         ('platform.tenancy_activation_step_context_assert_v1(uuid,text,uuid,uuid,name,text)'),
         ('platform.tenancy_activation_step_consume_v1(uuid,text)')
 ), roles(role_name) AS (
-    VALUES ('forgecrud_runtime'), ('forgecrud_v2_runtime')
+    VALUES ('harpy_runtime'), ('harpy_v2_runtime')
 ), retired_resolved AS (
     SELECT signature, pg_catalog.to_regprocedure(signature) AS routine_oid
     FROM retired
@@ -73,7 +73,7 @@ SELECT 1 / CASE WHEN
           ON routine.oid = retained_resolved.routine_oid
         WHERE routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT COALESCE(routine.proconfig, ARRAY[]::text[])
               @> ARRAY[
@@ -81,10 +81,10 @@ SELECT 1 / CASE WHEN
                   pg_catalog.current_setting('search_path')
               ]::text[]
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (

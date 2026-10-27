@@ -85,4 +85,4 @@ REVOKE ALL ON FUNCTION platform.notifications_retention_purge_platform_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.notifications_retention_purge_platform_v1(
     uuid, timestamptz, integer
-) TO forgecrud_runtime;
+) TO harpy_runtime;

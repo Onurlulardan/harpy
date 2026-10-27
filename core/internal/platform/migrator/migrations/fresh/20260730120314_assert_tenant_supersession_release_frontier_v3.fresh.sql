@@ -120,7 +120,7 @@ SELECT 1 / CASE WHEN
            AND NOT role_record.rolcanlogin
            AND NOT role_record.rolbypassrls
         FROM pg_catalog.pg_roles AS role_record
-        WHERE role_record.rolname = 'forgecrud_runtime'
+        WHERE role_record.rolname = 'harpy_runtime'
     )
     AND (
         SELECT NOT role_record.rolsuper
@@ -130,7 +130,7 @@ SELECT 1 / CASE WHEN
            AND role_record.rolcanlogin
            AND NOT role_record.rolbypassrls
         FROM pg_catalog.pg_roles AS role_record
-        WHERE role_record.rolname = 'forgecrud_v2_runtime'
+        WHERE role_record.rolname = 'harpy_v2_runtime'
     )
 THEN 1 ELSE 0 END
 AS tenant_supersession_v3_release_frontier_assertion;

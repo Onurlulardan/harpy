@@ -20,9 +20,9 @@ CREATE UNIQUE INDEX catalog_menu_configs_one_active
     ON catalog_menu_configs (is_active)
     WHERE is_active;
 
-GRANT SELECT ON TABLE catalog_menu_configs TO forgecrud_runtime;
+GRANT SELECT ON TABLE catalog_menu_configs TO harpy_runtime;
 GRANT INSERT (
     config_id, name, config, is_active, created_by, updated_by, created_at, updated_at
-) ON catalog_menu_configs TO forgecrud_runtime;
+) ON catalog_menu_configs TO harpy_runtime;
 GRANT UPDATE (name, config, is_active, updated_by, updated_at)
-    ON catalog_menu_configs TO forgecrud_runtime;
+    ON catalog_menu_configs TO harpy_runtime;

@@ -10,8 +10,8 @@ DECLARE
     v_target_count bigint;
     v_public_counts jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
       RAISE EXCEPTION USING ERRCODE='42501',
         MESSAGE='Analytics V1 adoption readiness principal denied';
     END IF;

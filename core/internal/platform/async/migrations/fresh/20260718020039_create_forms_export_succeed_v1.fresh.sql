@@ -25,8 +25,8 @@ DECLARE
     v_attempt platform.job_attempts%ROWTYPE;
     v_receipt_id uuid;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_attempt_generation NOT BETWEEN 1 AND 3 OR
        pg_catalog.uuid_extract_version(p_effect_id) IS DISTINCT FROM 7 OR
        pg_catalog.octet_length(p_effect_request_sha256) IS DISTINCT FROM 32 OR

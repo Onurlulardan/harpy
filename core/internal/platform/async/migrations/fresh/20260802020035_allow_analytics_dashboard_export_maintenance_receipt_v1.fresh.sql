@@ -14,18 +14,18 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE='P5604',
             MESSAGE='async owner insert trigger target is invalid';
     END IF;
-    IF TG_TABLE_NAME='jobs' AND SESSION_USER='forgecrud_adopter'
+    IF TG_TABLE_NAME='jobs' AND SESSION_USER='harpy_adopter'
        AND NEW.writer_origin='v1' THEN
         PERFORM platform.platform_async_assert_v1_adopted_job_v1(NEW);
         RETURN NEW;
     END IF;
-    IF TG_TABLE_NAME='jobs' AND SESSION_USER='forgecrud_adopter'
+    IF TG_TABLE_NAME='jobs' AND SESSION_USER='harpy_adopter'
        AND NEW.writer_origin='v2'
        AND v_row->>'kind'='documents.adoption.copy' THEN
         PERFORM platform.platform_async_assert_job_row_authority_v1(NEW);
         RETURN NEW;
     END IF;
-    IF TG_TABLE_NAME='jobs' AND SESSION_USER='forgecrud_migrator'
+    IF TG_TABLE_NAME='jobs' AND SESSION_USER='harpy_migrator'
        AND NEW.writer_origin='v2' THEN
         IF v_row->>'kind'='forms.publication.apply-result' THEN
             PERFORM platform.platform_async_assert_forms_schema_completion_job_v1(NEW);
@@ -37,7 +37,7 @@ BEGIN
         END IF;
         RETURN NEW;
     END IF;
-    IF TG_TABLE_NAME='jobs' AND SESSION_USER='forgecrud_v2_runtime'
+    IF TG_TABLE_NAME='jobs' AND SESSION_USER='harpy_v2_runtime'
        AND NEW.writer_origin='v2' THEN
         IF v_row->>'kind'='forms.schema-evolution.runtime' THEN
             PERFORM platform.platform_async_assert_forms_schema_runtime_job_v2(NEW);
@@ -46,8 +46,8 @@ BEGIN
         RETURN NEW;
     END IF;
     IF TG_TABLE_NAME='idempotency_receipts'
-       AND CURRENT_USER='forgecrud_owner'
-       AND SESSION_USER='forgecrud_v2_runtime' AND NEW.writer_origin='v2'
+       AND CURRENT_USER='harpy_owner'
+       AND SESSION_USER='harpy_v2_runtime' AND NEW.writer_origin='v2'
        AND v_row->>'effect_kind' IN ('analytics.dashboard.export.delete',
                                      'analytics.dashboard.export.expire') THEN
         PERFORM platform.platform_async_assert_analytics_dashboard_export_maintenance_receipt_v1(
@@ -55,20 +55,20 @@ BEGIN
         RETURN NEW;
     END IF;
     IF TG_TABLE_NAME='idempotency_receipts'
-       AND SESSION_USER='forgecrud_v2_runtime' AND NEW.writer_origin='v2'
+       AND SESSION_USER='harpy_v2_runtime' AND NEW.writer_origin='v2'
        AND EXISTS (SELECT 1 FROM platform.cutover_job_bindings AS binding
                    WHERE binding.job_id=(v_row->>'causation_id')::uuid) THEN
         PERFORM platform.platform_async_assert_cutover_effect_receipt_v1(NEW);
         RETURN NEW;
     END IF;
-    IF TG_TABLE_NAME='dead_letters' AND SESSION_USER='forgecrud_v2_runtime'
+    IF TG_TABLE_NAME='dead_letters' AND SESSION_USER='harpy_v2_runtime'
        AND NEW.writer_origin='v2' AND v_row->>'source_kind'='job'
        AND EXISTS (SELECT 1 FROM platform.cutover_job_bindings AS binding
                    WHERE binding.job_id=(v_row->>'source_id')::uuid) THEN
         PERFORM platform.platform_async_assert_cutover_dead_letter_v1(NEW);
         RETURN NEW;
     END IF;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR NEW.writer_origin IS DISTINCT FROM 'v2' THEN
         RAISE EXCEPTION USING ERRCODE='P5605',
             MESSAGE='async owner insert authority is invalid';

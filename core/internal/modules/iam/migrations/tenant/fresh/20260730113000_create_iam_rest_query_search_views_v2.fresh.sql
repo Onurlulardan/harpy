@@ -50,8 +50,8 @@ LEFT JOIN LATERAL (
       AND profile_field.classification = 'public'
       AND profile_field.state = 'active'
 ) AS profile_display ON true
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW iam_rest_query_organizations_v2
 AS
@@ -86,8 +86,8 @@ SELECT
             COLLATE pg_catalog.pg_unicode_fast
     ), 'NFC') AS slug_folded
 FROM iam_organizations AS organization
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW iam_rest_query_roles_v2
 AS
@@ -120,9 +120,9 @@ SELECT
             COLLATE pg_catalog.pg_unicode_fast
     ), 'NFC') AS description_folded
 FROM iam_roles AS role
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
-GRANT SELECT ON iam_rest_query_users_v2 TO forgecrud_runtime;
-GRANT SELECT ON iam_rest_query_roles_v2 TO forgecrud_runtime;
-GRANT SELECT ON iam_rest_query_organizations_v2 TO forgecrud_runtime;
+GRANT SELECT ON iam_rest_query_users_v2 TO harpy_runtime;
+GRANT SELECT ON iam_rest_query_roles_v2 TO harpy_runtime;
+GRANT SELECT ON iam_rest_query_organizations_v2 TO harpy_runtime;

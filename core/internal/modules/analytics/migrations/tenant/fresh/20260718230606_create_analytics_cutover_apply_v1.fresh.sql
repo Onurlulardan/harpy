@@ -21,8 +21,8 @@ BEGIN
     v_applied:=0;
     v_now:=pg_catalog.date_trunc(
       'microseconds',pg_catalog.transaction_timestamp());
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_kind IS DISTINCT FROM 'tenant' OR p_relation_ordinal<>1 OR
        p_checkpoint_key IS DISTINCT FROM 'openapi_endpoints' OR
        p_batch_sha256!~'^[0-9a-f]{64}$' THEN

@@ -33,8 +33,8 @@ DECLARE
     v_existing iam_installation_identity_facts%ROWTYPE;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM installation initialization denied';
     END IF;
@@ -98,4 +98,4 @@ REVOKE ALL ON FUNCTION iam_installation_initialize_v1(
 GRANT EXECUTE ON FUNCTION iam_installation_initialize_v1(
     uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,uuid,uuid,
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

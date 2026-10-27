@@ -19,8 +19,8 @@ DECLARE
     v_existing platform.platformops_installation_recovery_identities%ROWTYPE;
     v_state text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
@@ -88,4 +88,4 @@ REVOKE ALL ON FUNCTION platform.platformops_installation_recovery_initialize_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_installation_recovery_initialize_v1(
     uuid,uuid,uuid,name,text,bigint,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

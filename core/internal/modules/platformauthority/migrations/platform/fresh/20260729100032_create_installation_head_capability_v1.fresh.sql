@@ -25,8 +25,8 @@ DECLARE
     v_purpose text;
     v_replayed boolean := false;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
        OR p_tenant_id IS NULL OR p_schema_name IS NULL
        OR p_registry_binding_id IS NULL OR p_scope_kind IS NULL
@@ -156,4 +156,4 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.platformauthority_installation_head_pin_v3(
         uuid,uuid,uuid,name,uuid,text,uuid,bigint,text,text,text,text,text
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;

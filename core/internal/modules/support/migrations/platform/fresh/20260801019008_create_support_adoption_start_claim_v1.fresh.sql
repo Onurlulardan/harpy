@@ -145,8 +145,8 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION platform.support_start_adoption_v1(uuid,uuid,text,uuid,text,text,oid,text,text,bytea,bytea,bytea,text,bigint,bytea,timestamp with time zone) FROM PUBLIC, forgecrud_runtime;
-REVOKE ALL ON FUNCTION platform.support_claim_adoption_v1(uuid,uuid,uuid,bigint,timestamp with time zone) FROM PUBLIC, forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_start_adoption_v1(uuid,uuid,text,uuid,text,text,oid,text,text,bytea,bytea,bytea,text,bigint,bytea,timestamp with time zone) TO forgecrud_adopter;
-GRANT EXECUTE ON FUNCTION platform.support_claim_adoption_v1(uuid,uuid,uuid,bigint,timestamp with time zone) TO forgecrud_adopter;
+REVOKE ALL ON FUNCTION platform.support_start_adoption_v1(uuid,uuid,text,uuid,text,text,oid,text,text,bytea,bytea,bytea,text,bigint,bytea,timestamp with time zone) FROM PUBLIC, harpy_runtime;
+REVOKE ALL ON FUNCTION platform.support_claim_adoption_v1(uuid,uuid,uuid,bigint,timestamp with time zone) FROM PUBLIC, harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_start_adoption_v1(uuid,uuid,text,uuid,text,text,oid,text,text,bytea,bytea,bytea,text,bigint,bytea,timestamp with time zone) TO harpy_adopter;
+GRANT EXECUTE ON FUNCTION platform.support_claim_adoption_v1(uuid,uuid,uuid,bigint,timestamp with time zone) TO harpy_adopter;
 -- +goose StatementEnd

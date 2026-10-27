@@ -96,8 +96,8 @@ REVOKE ALL ON FUNCTION platform.platformauthority_delivery_await_import_v1(
 REVOKE ALL ON FUNCTION platform.platformauthority_delivery_succeed_v1(
     uuid,uuid,bigint) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformauthority_delivery_retry_v1(
-    uuid,uuid,bigint,text,boolean) TO forgecrud_runtime;
+    uuid,uuid,bigint,text,boolean) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformauthority_delivery_await_import_v1(
-    uuid,uuid,bigint) TO forgecrud_runtime;
+    uuid,uuid,bigint) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformauthority_delivery_succeed_v1(
-    uuid,uuid,bigint) TO forgecrud_runtime;
+    uuid,uuid,bigint) TO harpy_runtime;

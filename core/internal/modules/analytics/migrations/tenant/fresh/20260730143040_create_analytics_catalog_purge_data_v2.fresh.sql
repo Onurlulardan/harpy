@@ -142,5 +142,5 @@ REVOKE ALL ON FUNCTION analytics_catalog_purge_data_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION analytics_catalog_purge_data_v2(
     text,uuid,uuid,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 -- +goose StatementEnd

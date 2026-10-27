@@ -16,8 +16,8 @@ DECLARE
     v_attempt_number bigint;
     v_now timestamptz := pg_catalog.clock_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_migrator'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_migrator'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='tenant migration completion authority is denied';
     END IF;
@@ -66,7 +66,7 @@ REVOKE ALL ON FUNCTION platform.tenancy_tenant_migration_complete_v3(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.tenancy_tenant_migration_complete_v2(
     uuid,integer,uuid,uuid,uuid,text,text
-) FROM forgecrud_tenant_migration_executor;
+) FROM harpy_tenant_migration_executor;
 REVOKE EXECUTE ON FUNCTION platform.tenancy_tenant_migration_complete_v3(
     uuid,integer,uuid,uuid,uuid,text,text
-) FROM forgecrud_tenant_migration_executor;
+) FROM harpy_tenant_migration_executor;

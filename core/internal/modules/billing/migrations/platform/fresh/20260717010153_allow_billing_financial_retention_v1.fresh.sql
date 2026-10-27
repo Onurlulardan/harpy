@@ -18,7 +18,7 @@ DECLARE
 BEGIN
     IF TG_OP IS NOT DISTINCT FROM 'INSERT' THEN
         IF NEW.revision IS DISTINCT FROM 1
-           OR (SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
+           OR (SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
                AND NEW.state IS DISTINCT FROM 'draft') THEN
             RAISE EXCEPTION USING ERRCODE = '23514',
                 MESSAGE = 'billing invoice initial state is invalid';

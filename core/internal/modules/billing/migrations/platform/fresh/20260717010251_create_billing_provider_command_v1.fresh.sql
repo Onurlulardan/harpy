@@ -138,5 +138,5 @@ REVOKE ALL ON FUNCTION platform.billing_create_provider_command_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_create_provider_command_v1(
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,text,text,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

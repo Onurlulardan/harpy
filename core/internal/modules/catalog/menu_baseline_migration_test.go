@@ -1,7 +1,8 @@
 package catalog
 
 import (
-	"path"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -79,21 +80,24 @@ func TestEmptyMenuV1TargetRepairIsPairedAndFailClosed(t *testing.T) {
 
 func catalogMenuMigrationPair(t *testing.T, version string) map[string]string {
 	t.Helper()
-	documents, err := MigrationDocuments()
+	matches, err := filepath.Glob(filepath.Join(
+		"migrations", "tenant", "fresh", version+"_*.fresh.sql",
+	))
+	if err != nil || len(matches) != 1 {
+		t.Fatalf("catalog menu migration %s fresh count = %d err=%v",
+			version, len(matches), err)
+	}
+	fresh, err := os.ReadFile(matches[0])
 	if err != nil {
 		t.Fatal(err)
 	}
-	pair := map[string]string{}
-	for _, document := range documents {
-		name := path.Base(document.Path())
-		if !strings.HasPrefix(name, version+"_") {
-			continue
-		}
-		origin := "fresh"
-		if strings.Contains(name, ".v1_adopted.sql") {
-			origin = "v1_adopted"
-		}
-		pair[origin] = string(document.Content())
+	adoptedName := strings.TrimSuffix(filepath.Base(matches[0]), ".fresh.sql") +
+		".v1_adopted.sql"
+	adopted, err := os.ReadFile(filepath.Join(
+		"migrations", "tenant", "v1_adopted", adoptedName,
+	))
+	if err != nil {
+		t.Fatal(err)
 	}
-	return pair
+	return map[string]string{"fresh": string(fresh), "v1_adopted": string(adopted)}
 }

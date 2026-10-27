@@ -97,5 +97,5 @@ REVOKE ALL ON FUNCTION platform.billing_create_campaign_version_v1(
 GRANT EXECUTE ON FUNCTION platform.billing_create_campaign_version_v1(
     uuid,uuid,uuid,uuid,uuid,text,bytea,bigint,integer,smallint,
     timestamptz,timestamptz,jsonb,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

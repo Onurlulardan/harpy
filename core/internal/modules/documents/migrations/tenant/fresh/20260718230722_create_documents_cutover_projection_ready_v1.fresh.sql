@@ -21,8 +21,8 @@ DECLARE
     v_binding_root text;
     v_effect_root text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Documents V1 projection principal denied';
     END IF;

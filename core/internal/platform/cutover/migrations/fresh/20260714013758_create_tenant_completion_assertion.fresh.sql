@@ -15,7 +15,7 @@ DECLARE
     v_release_run_id uuid;
     v_database_origin text;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_cluster_admin','forgecrud_cutover_finalizer') OR
+    IF SESSION_USER NOT IN ('harpy_cluster_admin','harpy_cutover_finalizer') OR
        p_operation_id IS NULL OR p_run_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='22023', MESSAGE='cutover tenant completion input is invalid';
     END IF;

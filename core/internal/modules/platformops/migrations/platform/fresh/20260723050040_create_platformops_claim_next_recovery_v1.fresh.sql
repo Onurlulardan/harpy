@@ -60,7 +60,7 @@ DECLARE
     v_generation bigint;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
        OR pg_catalog.substring(p_attempt_id::text,15,1)<>'7'
@@ -155,7 +155,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -173,5 +173,5 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.platformops_claim_next_recovery_set_v2(uuid,uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.platformops_heartbeat_recovery_execution_v1(uuid,uuid,uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.platformops_claim_next_recovery_set_v2(uuid,uuid) TO forgecrud_backup_reader;
-GRANT EXECUTE ON FUNCTION platform.platformops_heartbeat_recovery_execution_v1(uuid,uuid,uuid) TO forgecrud_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_claim_next_recovery_set_v2(uuid,uuid) TO harpy_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_heartbeat_recovery_execution_v1(uuid,uuid,uuid) TO harpy_backup_reader;

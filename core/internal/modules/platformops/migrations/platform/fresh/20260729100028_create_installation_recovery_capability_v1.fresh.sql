@@ -52,4 +52,4 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.platformops_installation_recovery_initialize_v2(
         uuid,uuid,uuid,name,text,bigint,text,text
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;

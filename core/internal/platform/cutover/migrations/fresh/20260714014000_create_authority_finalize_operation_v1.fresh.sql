@@ -23,7 +23,7 @@ DECLARE
     v_target_count integer;
     v_updated_state text;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_cutover_finalizer' THEN
+    IF SESSION_USER <> 'harpy_cutover_finalizer' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='cutover finalizer denied';
     END IF;
     SELECT result.already_finalized INTO STRICT v_already_finalized
@@ -72,7 +72,7 @@ BEGIN
        v_authorization.finalizer_expires_at<=pg_catalog.clock_timestamp() OR
        v_authorization.authorizer_valid_until<=pg_catalog.clock_timestamp() OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-          WHERE role.rolname='forgecrud_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
+          WHERE role.rolname='harpy_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
             AND NOT role.rolsuper AND NOT role.rolcreatedb AND NOT role.rolcreaterole
             AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=1
             AND role.rolvaliduntil IS NOT DISTINCT FROM v_authorization.finalizer_expires_at
@@ -80,7 +80,7 @@ BEGIN
               (SELECT 1 FROM pg_catalog.pg_auth_members AS membership
                WHERE membership.roleid=role.oid OR membership.member=role.oid)) OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-          WHERE role.rolname='forgecrud_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
+          WHERE role.rolname='harpy_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
             AND NOT role.rolsuper AND role.rolcreatedb AND role.rolcreaterole
             AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=1
             AND role.rolvaliduntil IS NOT DISTINCT FROM v_authorization.authorizer_valid_until
@@ -112,4 +112,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION cutover_authority.finalize_operation_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION cutover_authority.finalize_operation_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea) TO forgecrud_cutover_finalizer;
+GRANT EXECUTE ON FUNCTION cutover_authority.finalize_operation_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea) TO harpy_cutover_finalizer;

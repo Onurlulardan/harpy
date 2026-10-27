@@ -30,8 +30,8 @@ BEGIN
     v_application := pg_catalog.current_setting('application_name', true);
     v_now := pg_catalog.statement_timestamp();
     v_replayed := false;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR NOT (
            (p_operation_kind = 'environment_initialize'
             AND v_application = 'forgecrud-v2:core-operator-initialize')
@@ -151,4 +151,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_activation_initialize_v4(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_activation_initialize_v4(
     uuid,uuid,uuid,text,text,uuid,text,text,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

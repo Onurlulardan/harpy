@@ -35,8 +35,8 @@ DECLARE
     v_expires_at timestamptz;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v1_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v1_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_scope_schema IS NULL OR
        p_jti IS NULL OR p_subject_id IS NULL OR
        p_permission_id IS NULL OR p_target_domain IS NULL OR p_audience IS NULL OR

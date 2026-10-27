@@ -21,7 +21,7 @@ DECLARE
     v_generation bigint;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
        OR pg_catalog.substring(p_attempt_id::text,15,1)<>'7'

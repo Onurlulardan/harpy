@@ -89,4 +89,4 @@ REVOKE ALL ON FUNCTION analytics_reference_register_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_reference_register_v1(
     name,uuid,uuid,text,uuid,text,text,uuid,uuid,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

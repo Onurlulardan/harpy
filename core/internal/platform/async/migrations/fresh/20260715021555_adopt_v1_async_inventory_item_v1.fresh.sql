@@ -20,7 +20,7 @@ DECLARE
     v_item platform.async_v1_adoption_items%ROWTYPE;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5646',
             MESSAGE = 'V1 async item adoption requires adopter authority';
     END IF;

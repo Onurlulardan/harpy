@@ -186,5 +186,5 @@ REVOKE ALL ON FUNCTION platform.billing_metered_resource_record_v1(
 GRANT EXECUTE ON FUNCTION platform.billing_metered_resource_record_v1(
     uuid,uuid,uuid,text,text,uuid,uuid,text,bytea,boolean,boolean,bigint,bigint,
     bigint,boolean,uuid,uuid,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

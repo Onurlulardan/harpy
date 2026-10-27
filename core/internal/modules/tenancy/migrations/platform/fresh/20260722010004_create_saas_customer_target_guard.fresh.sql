@@ -10,8 +10,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-        OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
         OR p_environment_id IS NULL OR p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'SaaS customer target query denied';

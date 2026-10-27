@@ -4,7 +4,7 @@ ALTER FUNCTION analytics_dashboard_export_delete_claim_v1(
 ) RENAME TO analytics_dashboard_export_delete_claim_unfenced_v1;
 REVOKE ALL ON FUNCTION analytics_dashboard_export_delete_claim_unfenced_v1(
     name,uuid,uuid,uuid,timestamptz
-) FROM PUBLIC,forgecrud_runtime;
+) FROM PUBLIC,harpy_runtime;
 
 -- +goose StatementBegin
 CREATE FUNCTION analytics_dashboard_export_delete_claim_v1(
@@ -73,5 +73,5 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_delete_claim_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_delete_claim_v1(
     name,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

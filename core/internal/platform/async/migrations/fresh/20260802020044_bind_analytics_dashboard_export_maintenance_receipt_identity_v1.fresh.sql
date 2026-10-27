@@ -15,8 +15,8 @@ DECLARE
     v_code text;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_receipt.effect_kind NOT IN ('analytics.dashboard.export.delete',
                                      'analytics.dashboard.export.expire') THEN
         RAISE EXCEPTION USING ERRCODE='P6048',
@@ -120,8 +120,8 @@ BEGIN
     provider_code:=CASE p_job.kind WHEN 'analytics.dashboard.export.delete' THEN
         'ANALYTICS_EXPORT_DELETED' WHEN 'analytics.dashboard.export.expire' THEN
         'ANALYTICS_EXPORT_EXPIRY_COMPLETE' END;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR v_operation IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR v_operation IS NULL OR
        p_job.state IS DISTINCT FROM 'dead' OR
        p_job.last_error_code IS DISTINCT FROM 'JOB_OUTCOME_UNKNOWN' OR
        p_attempt.job_id IS DISTINCT FROM p_job.id OR

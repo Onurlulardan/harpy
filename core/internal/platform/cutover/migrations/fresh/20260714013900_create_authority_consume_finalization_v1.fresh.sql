@@ -16,7 +16,7 @@ DECLARE
     v_receipt cutover_authority.finalization_receipts%ROWTYPE;
     v_finalizer jsonb;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_cutover_finalizer' THEN
+    IF SESSION_USER <> 'harpy_cutover_finalizer' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='cutover finalization consumer denied';
     END IF;
     SELECT authorization_row.* INTO STRICT v_authorization
@@ -74,7 +74,7 @@ BEGIN
        v_finalizer->>'finalization_state_sha256' IS DISTINCT FROM v_authorization.finalization_state_sha256 OR
        (v_finalizer->>'expires_at')::timestamptz IS DISTINCT FROM v_authorization.finalizer_expires_at OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-          WHERE role.rolname='forgecrud_cutover_finalizer' AND role.rolcanlogin
+          WHERE role.rolname='harpy_cutover_finalizer' AND role.rolcanlogin
             AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
             AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls
             AND role.rolconnlimit=1 AND role.rolvaliduntil IS NOT DISTINCT FROM v_authorization.finalizer_expires_at

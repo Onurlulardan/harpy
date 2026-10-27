@@ -46,4 +46,4 @@ $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION iam_current_session_read_v5(name,uuid,uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_current_session_read_v5(name,uuid,uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

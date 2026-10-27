@@ -18,7 +18,7 @@ BEGIN
     IF TG_OP='INSERT' THEN
         PERFORM platform.platform_async_validate_job_attempt_v1(
             NULL::platform.job_attempts,NEW,CURRENT_USER,SESSION_USER);
-    ELSIF CURRENT_USER='forgecrud_owner' AND OLD.finished_at IS NULL AND
+    ELSIF CURRENT_USER='harpy_owner' AND OLD.finished_at IS NULL AND
           NEW.finished_at IS NOT NULL AND OLD.effect_started_at IS NOT NULL AND
           NEW.outcome='dead' AND NEW.error_code='JOB_OUTCOME_UNKNOWN' THEN
         SELECT job.* INTO STRICT v_job FROM platform.jobs AS job
@@ -74,10 +74,10 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE='P5610',
             MESSAGE='job transition invocation is invalid';
     END IF;
-    IF CURRENT_USER='forgecrud_owner' AND OLD.parked_at IS NULL AND
+    IF CURRENT_USER='harpy_owner' AND OLD.parked_at IS NULL AND
        NEW.parked_at IS NOT NULL THEN
         NULL;
-    ELSIF CURRENT_USER='forgecrud_owner' AND OLD.state='running' AND
+    ELSIF CURRENT_USER='harpy_owner' AND OLD.state='running' AND
           OLD.effect_started_at IS NOT NULL AND NEW.state='dead' AND
           NEW.last_error_code='JOB_OUTCOME_UNKNOWN' THEN
         v_authority_current := EXISTS (

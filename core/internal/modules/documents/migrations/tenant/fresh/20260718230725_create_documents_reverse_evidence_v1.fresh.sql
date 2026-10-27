@@ -15,8 +15,8 @@ AS $function$
 DECLARE
     v_receipt_sha text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cutover_finalizer' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Documents V1 reverse principal denied';
     END IF;

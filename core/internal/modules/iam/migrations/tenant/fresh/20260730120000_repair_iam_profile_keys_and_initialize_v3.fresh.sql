@@ -165,4 +165,4 @@ REVOKE ALL ON FUNCTION iam_profile_installation_legacy_document_v1(
     FROM PUBLIC;
 REVOKE ALL ON FUNCTION iam_profile_display_name_key_repair_v1(text) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_profile_display_name_key_repair_v1(text)
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;

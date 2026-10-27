@@ -17,8 +17,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api'
        OR p_tenant_id IS NULL THEN
@@ -56,8 +56,8 @@ AS $function$
 DECLARE
     v_outcome platform.tenancy_customer_provisioning_outcomes%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api'
        OR p_operation_id IS NULL OR p_reissue_operation_id IS NULL
@@ -110,8 +110,8 @@ RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -142,11 +142,11 @@ REVOKE ALL ON FUNCTION platform.tenancy_customer_setup_reissue_assert_v1(
     uuid,uuid,uuid,uuid,name
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_setup_reissue_target_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_setup_reissue_v1(
     uuid,uuid,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_setup_reissue_assert_v1(
     uuid,uuid,uuid,uuid,name
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

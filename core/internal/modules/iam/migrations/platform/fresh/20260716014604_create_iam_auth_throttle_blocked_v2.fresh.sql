@@ -15,8 +15,8 @@ DECLARE
     v_window integer; v_after integer; v_seconds integer;
     v_blocked_until timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_kind NOT IN ('tenant','environment') OR
        p_purpose NOT IN ('login','refresh') OR
        NOT platform.iam_hmac_key_id_valid_v1(p_key_id) OR

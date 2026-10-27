@@ -24,8 +24,8 @@ DECLARE
     attempt platform.tenancy_installation_credential_delivery_attempts%ROWTYPE;
     now_at timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='installation delivery recovery denied';
     END IF;
     IF p_expected_revision<1 OR p_next_attempt_id IS NULL OR p_next_credential_id IS NULL
@@ -88,4 +88,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_recover_v1(
     uuid,uuid,uuid,bigint,uuid,uuid,bigint,bigint,text,text,integer) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_recover_v1(
     uuid,uuid,uuid,bigint,uuid,uuid,bigint,bigint,text,text,integer)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

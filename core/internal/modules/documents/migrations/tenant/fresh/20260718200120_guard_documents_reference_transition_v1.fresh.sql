@@ -29,6 +29,6 @@ ALTER TABLE documents_legal_holds
     ENABLE ALWAYS TRIGGER documents_legal_holds_transition_guard;
 
 GRANT EXECUTE ON FUNCTION documents_guard_reference_transition_v1()
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION documents_guard_reference_transition_v1()
-TO forgecrud_adopter;
+TO harpy_adopter;

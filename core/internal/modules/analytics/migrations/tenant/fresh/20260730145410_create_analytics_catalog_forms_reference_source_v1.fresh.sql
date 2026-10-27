@@ -53,4 +53,4 @@ REVOKE ALL ON FUNCTION analytics_catalog_forms_reference_source_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_catalog_forms_reference_source_v1(
     name,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

@@ -25,8 +25,8 @@ BEGIN
     v_enqueued_at:=(p_record->>'enqueued_at')::timestamptz;
     v_source_sha:=pg_catalog.decode(p_record->>'source_sha256','hex');
     v_metadata_sha:=pg_catalog.decode(p_record->>'source_metadata_sha256','hex');
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Documents V1 checkpoint projection principal denied';
     END IF;

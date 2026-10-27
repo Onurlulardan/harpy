@@ -80,7 +80,7 @@ WITH public_routines(signature) AS (
            pg_catalog.to_regclass(relation_name) AS relation_oid
     FROM required_tables
 ), forbidden_roles(role_name) AS (
-    VALUES ('forgecrud_runtime'), ('forgecrud_v2_runtime')
+    VALUES ('harpy_runtime'), ('harpy_v2_runtime')
 ), forbidden_privileges(privilege_name) AS (
     VALUES
         ('SELECT'), ('INSERT'), ('UPDATE'), ('DELETE'),
@@ -94,17 +94,17 @@ SELECT 1 / CASE WHEN
           ON routine.oid = public_resolved.routine_oid
         WHERE routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT (
                COALESCE(routine.proconfig, ARRAY[]::text[])
                @> ARRAY['search_path=pg_catalog']::text[]
            )
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -114,17 +114,17 @@ SELECT 1 / CASE WHEN
           ON routine.oid = internal_resolved.routine_oid
         WHERE routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT (
                COALESCE(routine.proconfig, ARRAY[]::text[])
                @> ARRAY['search_path=pg_catalog']::text[]
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -132,7 +132,7 @@ SELECT 1 / CASE WHEN
         FROM legacy_resolved
         WHERE routine_oid IS NULL
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -143,7 +143,7 @@ SELECT 1 / CASE WHEN
         WHERE relation_oid IS NULL
            OR relation.relkind IS DISTINCT FROM 'r'
            OR relation.relowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
     )
     OR EXISTS (
         SELECT 1

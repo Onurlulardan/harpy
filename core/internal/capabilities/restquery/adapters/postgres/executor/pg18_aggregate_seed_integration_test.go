@@ -23,6 +23,6 @@ fld_amount numeric(12,6))`,
 ('63000000-0000-4000-8000-000000000009','SAFE','safe',1,NULL),
 ('63000000-0000-4000-8000-000000000010','OVER','over',9223372036854775807,NULL),
 ('63000000-0000-4000-8000-000000000011','OVER','over',1,NULL)`,
-		`GRANT SELECT ON tenant_a.frm_executor_aggregate TO forgecrud_runtime`,
+		`GRANT SELECT ON tenant_a.frm_executor_aggregate TO harpy_runtime`,
 	})
 }

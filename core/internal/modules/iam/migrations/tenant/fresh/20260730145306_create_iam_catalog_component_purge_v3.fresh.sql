@@ -176,4 +176,4 @@ REVOKE ALL ON FUNCTION iam_catalog_component_purge_v3(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_catalog_component_purge_v3(
     uuid,uuid,uuid,text,bigint,text,text,text,bigint,text,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;

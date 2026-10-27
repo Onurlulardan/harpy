@@ -14,8 +14,8 @@ BEGIN
     provider_code:=CASE p_job.kind WHEN 'analytics.dashboard.export.delete' THEN
         'ANALYTICS_EXPORT_DELETED' WHEN 'analytics.dashboard.export.expire' THEN
         'ANALYTICS_EXPORT_EXPIRY_COMPLETE' END;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR v_operation IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR v_operation IS NULL OR
        p_job.state IS DISTINCT FROM 'dead' OR
        p_job.last_error_code IS DISTINCT FROM 'JOB_OUTCOME_UNKNOWN' OR
        p_attempt.job_id IS DISTINCT FROM p_job.id OR
@@ -82,8 +82,8 @@ BEGIN
         p_claim.export_id::text||'/'||p_terminal_state;
     SELECT receipt.* INTO v_receipt FROM platform.idempotency_receipts receipt
     WHERE receipt.receipt_id=p_effect_receipt_id FOR SHARE;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_claim.job_id IS NULL OR p_resolution.job_id IS NULL OR
        p_resolution.kind IS DISTINCT FROM p_claim.kind OR
        p_resolution.tenant_id IS DISTINCT FROM p_claim.tenant_id OR

@@ -16,7 +16,7 @@ CREATE TABLE platform.billing_v1_base_adoption_receipts (
     subscription_evidence_sha256 text,
     plan_sha256 text NOT NULL CHECK (plan_sha256 ~ '^[0-9a-f]{64}$'),
     adopted_at timestamptz NOT NULL,
-    recorded_by name NOT NULL CHECK (recorded_by='forgecrud_adopter'),
+    recorded_by name NOT NULL CHECK (recorded_by='harpy_adopter'),
     CONSTRAINT billing_v1_base_adoption_pk PRIMARY KEY (operation_id,tenant_id),
     CONSTRAINT billing_v1_base_adoption_assignment_fk FOREIGN KEY (assignment_id)
         REFERENCES platform.billing_tenant_base_offerings (id)

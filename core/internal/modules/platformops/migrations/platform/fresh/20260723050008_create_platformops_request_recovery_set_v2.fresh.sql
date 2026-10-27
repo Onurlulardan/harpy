@@ -102,10 +102,10 @@ $function$;
 
 REVOKE EXECUTE ON FUNCTION platform.platformops_request_recovery_set_v1(
     uuid,uuid,uuid,uuid,text,uuid,bigint,uuid,bigint,text,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE ALL ON FUNCTION platform.platformops_request_recovery_set_v2(
     uuid,uuid,uuid,timestamptz
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_request_recovery_set_v2(
     uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

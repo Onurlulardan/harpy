@@ -20,8 +20,8 @@ AS $function$
 DECLARE
     v_replayed boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -45,4 +45,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_activation_initialize_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_activation_initialize_v2(
     uuid, uuid, uuid, text, text, uuid, text, text, text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

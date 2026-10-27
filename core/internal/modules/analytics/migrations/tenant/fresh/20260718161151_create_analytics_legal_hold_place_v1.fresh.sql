@@ -52,4 +52,4 @@ REVOKE ALL ON FUNCTION analytics_legal_hold_place_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_legal_hold_place_v1(
     name,uuid,uuid,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

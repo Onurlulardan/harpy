@@ -193,4 +193,4 @@ GRANT EXECUTE ON FUNCTION analytics_dashboard_export_maintenance_unknown_resolve
     uuid,uuid,bytea,timestamptz,bigint,uuid,bigint,uuid,uuid,bytea,text,
     bytea,text,bytea,timestamptz,text,text,text,bytea,timestamptz,
     timestamptz,text,bytea,bytea,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

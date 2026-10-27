@@ -32,8 +32,8 @@ DECLARE
     v_existing_digest bytea;
     v_existing_issued_at timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        pg_catalog.octet_length(p_selector) <> 16 OR
        pg_catalog.octet_length(p_secret_hmac) <> 32 OR
@@ -156,4 +156,4 @@ REVOKE ALL ON FUNCTION iam_mcp_refresh_rotate_v1(
 GRANT EXECUTE ON FUNCTION iam_mcp_refresh_rotate_v1(
     name,uuid,uuid,uuid,bigint,bytea,bytea,uuid,bytea,text,bytea,
     uuid,bytea,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

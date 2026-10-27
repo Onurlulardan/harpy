@@ -10,8 +10,8 @@ DECLARE
     v_tenant_id uuid;
 BEGIN
     v_schema := pg_catalog.current_schema()::text;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS NULL OR p_scope_schema::text IS DISTINCT FROM v_schema OR
        p_generation < 1 THEN
         RAISE EXCEPTION USING ERRCODE='42501',

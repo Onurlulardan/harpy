@@ -15,7 +15,7 @@ DECLARE
     v_existing documents_dr_holds%ROWTYPE;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR p_recovery_set_id IS NULL OR p_environment_id IS NULL
        OR p_tenant_id IS NULL
        OR pg_catalog.octet_length(p_tenant_set_sha256) <> 32 THEN

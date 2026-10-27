@@ -135,7 +135,7 @@ REVOKE ALL ON FUNCTION iam_catalog_authorization_record_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_catalog_grants_set_v2(
     uuid,boolean,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION iam_catalog_authorization_record_v2(
     uuid,uuid,text,text,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;

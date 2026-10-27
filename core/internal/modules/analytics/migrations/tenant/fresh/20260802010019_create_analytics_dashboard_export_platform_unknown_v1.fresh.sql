@@ -181,20 +181,20 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_platform_unknown_v1(
 REVOKE ALL ON FUNCTION analytics_dashboard_export_platform_spool_active_v1(
     name,uuid,uuid,bigint,uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_platform_unknown_v1(
-    name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_platform_spool_active_v1(
-    name,uuid,uuid,bigint,uuid) TO forgecrud_runtime;
+    name,uuid,uuid,bigint,uuid) TO harpy_runtime;
 
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_claim_v1(
-    name,uuid,uuid,uuid,timestamptz) FROM forgecrud_runtime;
+    name,uuid,uuid,uuid,timestamptz) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_effect_start_v1(
     name,uuid,uuid,bigint,text,text,bytea,bytea,bytea,bytea,bytea,
-    bigint,bigint,bigint,text,text,timestamptz) FROM forgecrud_runtime;
+    bigint,bigint,bigint,text,text,timestamptz) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_complete_v1(
-    name,uuid,uuid,bigint,text,text,timestamptz,timestamptz) FROM forgecrud_runtime;
+    name,uuid,uuid,bigint,text,text,timestamptz,timestamptz) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_restart_missing_v1(
-    name,uuid,uuid,bigint,timestamptz) FROM forgecrud_runtime;
+    name,uuid,uuid,bigint,timestamptz) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_outcome_unknown_v1(
-    name,uuid,uuid,bigint,timestamptz) FROM forgecrud_runtime;
+    name,uuid,uuid,bigint,timestamptz) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_fail_render_v1(
-    name,uuid,uuid,bigint,text,boolean,timestamptz) FROM forgecrud_runtime;
+    name,uuid,uuid,bigint,text,boolean,timestamptz) FROM harpy_runtime;

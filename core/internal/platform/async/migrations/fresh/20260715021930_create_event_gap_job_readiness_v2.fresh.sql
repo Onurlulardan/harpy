@@ -10,8 +10,8 @@ DECLARE
     v_job platform.jobs%ROWTYPE;
     v_event platform.outbox%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5690',
             MESSAGE = 'event gap readiness authority is invalid';
     END IF;

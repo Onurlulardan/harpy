@@ -95,5 +95,5 @@ REVOKE ALL ON FUNCTION platform.billing_release_legal_hold_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_release_legal_hold_v1(
     uuid,uuid,uuid,uuid,uuid,text,bytea,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

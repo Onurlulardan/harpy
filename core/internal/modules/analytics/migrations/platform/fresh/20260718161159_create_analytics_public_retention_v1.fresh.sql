@@ -9,7 +9,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_tenant_id IS NULL OR
        p_tenant_id = '00000000-0000-0000-0000-000000000000'::uuid OR
        pg_catalog.uuid_extract_version(p_release_id) IS DISTINCT FROM 7 OR
@@ -45,4 +45,4 @@ REVOKE ALL ON FUNCTION platform.analytics_public_retention_release_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_public_retention_release_v1(
     uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

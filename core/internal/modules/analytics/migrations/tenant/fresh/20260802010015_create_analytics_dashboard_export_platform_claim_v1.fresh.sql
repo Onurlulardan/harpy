@@ -133,4 +133,4 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_platform_claim_v1(
     name,uuid,uuid,uuid,bigint,uuid
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_platform_claim_v1(
-    name,uuid,uuid,uuid,bigint,uuid) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,bigint,uuid) TO harpy_runtime;

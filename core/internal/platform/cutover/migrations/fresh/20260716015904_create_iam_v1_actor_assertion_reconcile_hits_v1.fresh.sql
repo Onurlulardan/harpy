@@ -17,8 +17,8 @@ DECLARE
     v_receipt_jti uuid;
     v_receipt_consumed_at timestamptz;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_v2_runtime','forgecrud_migrator') OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER NOT IN ('harpy_v2_runtime','harpy_migrator') OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_limit IS NULL OR p_limit < 1 OR p_limit > 10000 THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'IAM V1 actor assertion hit reconcile input is invalid';
@@ -78,4 +78,4 @@ REVOKE ALL ON FUNCTION
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
     platform.iam_v1_actor_assertion_reconcile_hits_v1(integer)
-TO forgecrud_runtime;
+TO harpy_runtime;

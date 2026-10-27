@@ -16,7 +16,7 @@ DECLARE
     v_writer text;
     v_inserted boolean;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.uuid_extract_version(p_authority_id) IS DISTINCT FROM 7 OR
        p_tenant_id IS NULL OR p_tenant_id = '00000000-0000-0000-0000-000000000000'::uuid OR
        p_group_generation IS NULL OR p_group_generation < 1 OR
@@ -25,9 +25,9 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'analytics authority registration input is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         v_mode := 'runtime_v2'; v_state := 'v2'; v_writer := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         v_mode := 'adopter_shadow'; v_state := 'shadow'; v_writer := 'v1';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -90,8 +90,8 @@ REVOKE ALL ON FUNCTION platform.analytics_register_tenant_authority_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_register_tenant_authority_v1(
     uuid,uuid,bigint,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.analytics_register_tenant_authority_v1(
     uuid,uuid,bigint,bigint,timestamptz
-) TO forgecrud_adopter;
+) TO harpy_adopter;
 

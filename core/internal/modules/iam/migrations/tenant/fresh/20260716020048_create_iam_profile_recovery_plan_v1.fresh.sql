@@ -29,8 +29,8 @@ DECLARE
     v_receipt_request bytea;
     v_receipt_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_operation_id IS NULL OR
        pg_catalog.octet_length(p_request_sha256) <> 32 OR
        pg_catalog.octet_length(p_plan_sha256) <> 32 OR

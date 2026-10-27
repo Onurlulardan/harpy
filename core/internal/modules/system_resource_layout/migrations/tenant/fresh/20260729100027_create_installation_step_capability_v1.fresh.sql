@@ -82,10 +82,10 @@ REVOKE ALL ON FUNCTION system_resource_layout_installation_assert_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION system_resource_layout_installation_assert_v2(
     uuid,uuid,name
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION system_resource_layout_installation_record_v2(
     uuid,uuid,uuid,uuid,uuid,timestamptz,name
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION system_resource_layout_installation_record_v2(
     uuid,uuid,uuid,uuid,uuid,timestamptz,name
-) TO forgecrud_runtime;
+) TO harpy_runtime;

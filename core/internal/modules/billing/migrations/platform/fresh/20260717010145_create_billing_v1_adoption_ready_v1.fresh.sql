@@ -15,7 +15,7 @@ DECLARE
     v_rehearsal platform.billing_v1_adoption_rollback_rehearsals%ROWTYPE;
     v_target bytea;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
        OR p_observed_source_sha256 !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing V1 readiness assertion is denied';
@@ -61,5 +61,5 @@ REVOKE ALL ON FUNCTION platform.billing_assert_v1_adoption_ready_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_assert_v1_adoption_ready_v1(
     uuid, uuid, text
-) TO forgecrud_adopter;
+) TO harpy_adopter;
 -- +goose StatementEnd

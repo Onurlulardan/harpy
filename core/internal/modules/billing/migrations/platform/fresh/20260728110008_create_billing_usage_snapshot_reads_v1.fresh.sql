@@ -12,8 +12,8 @@ BEGIN
 RETURN QUERY
 WITH runtime_guard AS MATERIALIZED (
     SELECT 1
-    WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-      AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_owner'
+    WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+      AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_owner'
       AND p_authority_id IS NOT DISTINCT FROM
           platform.billing_resolve_current_tenant_authority_v1(p_tenant_id)
 ), base_candidates AS MATERIALIZED (
@@ -68,8 +68,8 @@ BEGIN
 RETURN QUERY
 WITH runtime_guard AS MATERIALIZED (
     SELECT 1
-    WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-      AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_owner'
+    WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+      AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_owner'
       AND p_authority_id IS NOT DISTINCT FROM
           platform.billing_resolve_current_tenant_authority_v1(p_tenant_id)
 ), periods AS MATERIALIZED (
@@ -151,7 +151,7 @@ REVOKE ALL ON FUNCTION
     platform.billing_usage_snapshot_read_v1(uuid,uuid,uuid,uuid,uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
     platform.billing_usage_context_snapshot_read_v1(uuid,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION
     platform.billing_usage_snapshot_read_v1(uuid,uuid,uuid,uuid,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

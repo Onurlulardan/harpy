@@ -17,8 +17,8 @@ DECLARE
     v_final_lsn pg_lsn;
     v_existing bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Work V1 projection readiness principal denied';
     END IF;

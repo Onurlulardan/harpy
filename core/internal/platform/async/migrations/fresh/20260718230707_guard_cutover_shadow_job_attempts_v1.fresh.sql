@@ -18,7 +18,7 @@ DECLARE
     v_owner_stale boolean := false;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE='P5620',
             MESSAGE='job attempt invocation is invalid';
     END IF;
@@ -122,7 +122,7 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE='P5624',
             MESSAGE='job attempt effect receipt is invalid';
     END IF;
-    v_owner_stale := p_current_user='forgecrud_owner'
+    v_owner_stale := p_current_user='harpy_owner'
         AND NEW.outcome='lease_expired' AND NEW.error_class='conflict'
         AND NEW.error_code='JOB_AUTHORITY_STALE';
     IF NOT v_owner_stale THEN

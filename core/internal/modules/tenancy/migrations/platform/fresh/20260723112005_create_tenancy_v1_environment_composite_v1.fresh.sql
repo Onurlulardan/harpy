@@ -21,8 +21,8 @@ DECLARE
     v_key_sha text;
     v_state_sha text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_batch_bytes IS DISTINCT FROM pg_catalog.octet_length(p_change_batch_bytes)
        OR p_batch_bytes NOT BETWEEN 1 AND 8388608
        OR pg_catalog.encode(pg_catalog.sha256(p_change_batch_bytes),'hex')
@@ -98,4 +98,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_v1_environment_apply_and_record_v1(
 GRANT EXECUTE ON FUNCTION platform.tenancy_v1_environment_apply_and_record_v1(
     uuid,uuid,text,uuid,smallint,text,text,pg_lsn,pg_lsn,pg_lsn,pg_lsn,xid8,
     integer,text,jsonb,bytea,text,bigint,text
-) TO forgecrud_adopter;
+) TO harpy_adopter;

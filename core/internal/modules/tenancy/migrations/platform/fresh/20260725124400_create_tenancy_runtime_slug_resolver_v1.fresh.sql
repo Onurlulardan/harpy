@@ -11,8 +11,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_slug IS NULL OR p_slug = '' OR pg_catalog.octet_length(p_slug) > 400 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Tenant runtime slug resolver denied';
@@ -32,4 +32,4 @@ REVOKE ALL ON FUNCTION
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
     platform.tenancy_runtime_resolve_slug_v1(text)
-TO forgecrud_runtime;
+TO harpy_runtime;

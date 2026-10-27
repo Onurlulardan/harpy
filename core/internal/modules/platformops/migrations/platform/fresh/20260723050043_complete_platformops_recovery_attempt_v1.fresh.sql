@@ -38,7 +38,7 @@ DECLARE
     v_now timestamptz;
 BEGIN
     v_now := pg_catalog.statement_timestamp();
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
        OR p_recovery_set_id IS NULL OR p_attempt_id IS NULL
@@ -176,4 +176,4 @@ REVOKE ALL ON FUNCTION platform.platformops_complete_recovery_execution_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_complete_recovery_execution_v1(
     uuid,uuid,uuid,text,bytea,uuid
-) TO forgecrud_backup_reader;
+) TO harpy_backup_reader;

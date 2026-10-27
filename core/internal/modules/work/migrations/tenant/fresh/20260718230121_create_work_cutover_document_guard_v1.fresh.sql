@@ -13,8 +13,8 @@ DECLARE
     v_keys text;
     v_expected text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.jsonb_typeof(p_record) IS DISTINCT FROM 'object' OR
        p_record = '{}'::jsonb THEN
         RETURN false;

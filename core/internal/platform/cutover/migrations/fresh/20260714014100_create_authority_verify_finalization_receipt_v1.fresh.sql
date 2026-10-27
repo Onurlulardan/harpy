@@ -17,7 +17,7 @@ DECLARE
     v_inventory_count bigint;
     v_valid_chain_count bigint;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_cutover_finalizer' OR p_operation_id IS NULL OR
+    IF SESSION_USER <> 'harpy_cutover_finalizer' OR p_operation_id IS NULL OR
        p_run_id IS NULL OR p_finalizer_lease_id IS NULL OR
        p_terminal_state NOT IN ('completed','failed','cancelled') OR
        p_terminal_evidence_sha256 IS NULL OR p_terminal_evidence_sha256!~'^[0-9a-f]{64}$' THEN
@@ -155,4 +155,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION cutover_authority.verify_finalization_receipt_v1(uuid,uuid,uuid,text,text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION cutover_authority.verify_finalization_receipt_v1(uuid,uuid,uuid,text,text) TO forgecrud_cutover_finalizer;
+GRANT EXECUTE ON FUNCTION cutover_authority.verify_finalization_receipt_v1(uuid,uuid,uuid,text,text) TO harpy_cutover_finalizer;

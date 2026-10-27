@@ -61,5 +61,5 @@ CREATE TABLE iam_catalog_blocker_receipts (
     CHECK (date_trunc('microseconds', completed_at) = completed_at)
 );
 
-GRANT SELECT ON iam_catalog_components TO forgecrud_runtime;
+GRANT SELECT ON iam_catalog_components TO harpy_runtime;
 

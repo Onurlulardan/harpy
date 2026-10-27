@@ -21,7 +21,7 @@ DECLARE
     v_member_count bigint;
     v_existing bigint;
 BEGIN
-    IF p_expected_owner IS DISTINCT FROM 'forgecrud_owner'::name
+    IF p_expected_owner IS DISTINCT FROM 'harpy_owner'::name
        OR CURRENT_USER IS DISTINCT FROM p_expected_owner THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Catalog V1 target repair owner denied';
@@ -178,6 +178,6 @@ $function$;
 REVOKE ALL ON FUNCTION catalog_retract_empty_menu_from_v1_target_v1(name)
 FROM PUBLIC;
 
-SELECT catalog_retract_empty_menu_from_v1_target_v1('forgecrud_owner'::name);
+SELECT catalog_retract_empty_menu_from_v1_target_v1('harpy_owner'::name);
 
 DROP FUNCTION catalog_retract_empty_menu_from_v1_target_v1(name);

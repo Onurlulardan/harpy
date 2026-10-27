@@ -12,7 +12,7 @@ AS $function$
 DECLARE
     v_stage jsonb;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_operation_id IS NULL OR p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='initial admin setup stage read is denied';

@@ -19,8 +19,8 @@ DECLARE
     v_attempt platform.job_attempts%ROWTYPE;
     v_transition_at timestamptz;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        pg_catalog.uuid_extract_version(p_attempt_id) IS DISTINCT FROM 7 OR
        p_lease_owner_id IS NULL OR p_lease_generation < 1 OR
        NOT pg_catalog.isfinite(p_observed_at) THEN

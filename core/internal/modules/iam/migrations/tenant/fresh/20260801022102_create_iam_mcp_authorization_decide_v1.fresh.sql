@@ -36,8 +36,8 @@ DECLARE
     v_security_epoch bytea;
     v_client_id text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_request_id IS NULL OR p_user_id IS NULL OR p_session_id IS NULL OR
        pg_catalog.octet_length(p_decision_sha256) IS DISTINCT FROM 32 OR
@@ -161,4 +161,4 @@ REVOKE ALL ON FUNCTION iam_mcp_authorization_decide_v1(
 GRANT EXECUTE ON FUNCTION iam_mcp_authorization_decide_v1(
     name,uuid,bigint,text,bytea,boolean,uuid,uuid,timestamptz,text,text[],
     uuid,bytea,text,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

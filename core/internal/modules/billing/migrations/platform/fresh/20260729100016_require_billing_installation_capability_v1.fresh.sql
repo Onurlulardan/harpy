@@ -126,8 +126,8 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'billing installation assignment profile is invalid';
     END IF;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_authority_id IS DISTINCT FROM
             platform.billing_installation_id_v1(
                 p_operation_id,'tenant-authority')
@@ -183,4 +183,4 @@ REVOKE ALL ON FUNCTION platform.billing_installation_assign_v3(uuid,uuid,uuid,
     uuid,uuid,text,uuid,bigint,text,timestamptz,
     bigint,text,text,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_installation_assign_v3(uuid,uuid,
-    uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) TO forgecrud_runtime;
+    uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) TO harpy_runtime;

@@ -71,7 +71,7 @@ SECURITY INVOKER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing revenue projection writer is invalid';
     END IF;

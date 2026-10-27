@@ -35,8 +35,8 @@ AS $function$
 DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        pg_catalog.octet_length(p_selector) <> 16 OR
        pg_catalog.octet_length(p_secret_hmac) <> 32 THEN
@@ -94,4 +94,4 @@ REVOKE ALL ON FUNCTION iam_mcp_refresh_snapshot_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_mcp_refresh_snapshot_v1(
     name,uuid,uuid,uuid,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

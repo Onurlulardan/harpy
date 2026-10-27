@@ -9,8 +9,8 @@ DECLARE
     v_package_id uuid;
     v_manifest_sha256 text;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_v2_runtime','forgecrud_adopter') OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER NOT IN ('harpy_v2_runtime','harpy_adopter') OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Catalog adoption registry authority denied';
     END IF;

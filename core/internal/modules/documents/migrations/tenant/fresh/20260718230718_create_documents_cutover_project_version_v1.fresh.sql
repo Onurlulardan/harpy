@@ -18,8 +18,8 @@ BEGIN
     v_plaintext_sha:=pg_catalog.decode(
         pg_catalog.substr(p_record->>'plaintext_sha256',3),'hex'
     );
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Documents V1 version projection principal denied';
     END IF;

@@ -21,8 +21,8 @@ DECLARE
     next_state text;
     now_at timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_receipt_kind NOT IN ('migration_claim_ready', 'migration_completed', 'failure')
        OR p_occurred_at > now_at THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'onboarding receipt denied';

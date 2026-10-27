@@ -14,8 +14,8 @@ AS $function$
 DECLARE
     environment_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing global registration session is invalid';
     END IF;
@@ -67,8 +67,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing tenant registration session is invalid';
     END IF;
@@ -112,11 +112,11 @@ REVOKE ALL ON FUNCTION platform.billing_register_tenant_authority_v1(
     uuid,uuid,bigint,bigint,bigint,timestamptz
 ) FROM PUBLIC;
 
-GRANT USAGE ON SCHEMA platform TO forgecrud_runtime;
+GRANT USAGE ON SCHEMA platform TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(
     uuid,bigint,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(
     uuid,uuid,bigint,bigint,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

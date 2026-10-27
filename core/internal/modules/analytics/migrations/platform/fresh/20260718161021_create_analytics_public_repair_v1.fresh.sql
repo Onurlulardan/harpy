@@ -13,7 +13,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_tenant_id IS NULL OR
        p_tenant_id = '00000000-0000-0000-0000-000000000000'::uuid OR
        pg_catalog.octet_length(p_public_id) IS DISTINCT FROM 16 OR
@@ -74,5 +74,5 @@ REVOKE ALL ON FUNCTION platform.analytics_public_repair_v1(
 GRANT EXECUTE ON FUNCTION platform.analytics_public_repair_v1(
     uuid,bytea,uuid,text,uuid,text,text,bigint,bytea,timestamptz,
     timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

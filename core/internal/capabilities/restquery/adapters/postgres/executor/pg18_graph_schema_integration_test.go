@@ -14,7 +14,7 @@ import (
 
 func pg18PrepareGraphSchema(t *testing.T, gate *pg18Gate) {
 	t.Helper()
-	statements := []string{"SET ROLE forgecrud_owner"}
+	statements := []string{"SET ROLE harpy_owner"}
 	for _, schema := range []string{"tenant_a", "tenant_b"} {
 		statements = append(statements, pg18GraphRecordDDL(schema)...)
 		statements = append(statements,
@@ -24,7 +24,7 @@ func pg18PrepareGraphSchema(t *testing.T, gate *pg18Gate) {
 		)
 	}
 	statements = append(statements, "RESET ROLE",
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA tenant_a,tenant_b TO forgecrud_runtime",
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA tenant_a,tenant_b TO harpy_runtime",
 	)
 	pg18ExecuteSetup(t, gate.ctx, gate.admin, statements)
 	for _, tenant := range []string{pg18TenantA, pg18TenantB} {

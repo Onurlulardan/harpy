@@ -24,7 +24,7 @@ DECLARE
     v_index integer;
     v_step_sha256 text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'schema submission replay role is invalid';
     END IF;

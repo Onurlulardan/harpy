@@ -120,4 +120,4 @@ REVOKE ALL ON FUNCTION catalog_demo_record_handoff_v1(
 GRANT EXECUTE ON FUNCTION catalog_demo_record_handoff_v1(
     name,bigint,uuid,uuid,uuid,uuid,uuid,uuid,bytea,
     integer,integer,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

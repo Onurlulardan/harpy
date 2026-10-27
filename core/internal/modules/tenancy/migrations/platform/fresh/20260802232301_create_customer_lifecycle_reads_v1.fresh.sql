@@ -11,8 +11,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_environment_id IS NULL OR p_limit NOT BETWEEN 1 AND 100 THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Customer tenant lifecycle list denied';
@@ -69,8 +69,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_environment_id IS NULL OR p_target_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Customer tenant lifecycle read denied';

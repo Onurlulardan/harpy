@@ -154,5 +154,5 @@ REVOKE ALL ON FUNCTION iam_catalog_blocker_snapshot_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_catalog_blocker_snapshot_v2(
     uuid,bigint,bigint
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 -- +goose StatementEnd

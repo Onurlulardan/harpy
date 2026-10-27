@@ -21,4 +21,4 @@ CREATE TRIGGER catalog_package_owner_payloads_immutable
 BEFORE UPDATE OR DELETE ON platform.catalog_package_owner_payloads
 FOR EACH STATEMENT EXECUTE FUNCTION platform.catalog_reject_registry_mutation_v1();
 
-GRANT SELECT ON TABLE platform.catalog_package_owner_payloads TO forgecrud_runtime;
+GRANT SELECT ON TABLE platform.catalog_package_owner_payloads TO harpy_runtime;

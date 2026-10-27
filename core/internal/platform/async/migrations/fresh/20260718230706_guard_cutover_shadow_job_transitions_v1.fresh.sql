@@ -15,13 +15,13 @@ DECLARE
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM platform.cutover_job_bindings AS binding
                    WHERE binding.job_id=OLD.id) OR
-       p_current_user='forgecrud_owner' THEN
+       p_current_user='harpy_owner' THEN
         PERFORM platform.platform_async_validate_job_transition_v1(
             OLD,NEW,p_current_user,p_session_user);
         RETURN;
     END IF;
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        NEW.updated_at<=OLD.updated_at THEN
         RAISE EXCEPTION USING ERRCODE='P5610',
             MESSAGE='cutover shadow job transition invocation is invalid';

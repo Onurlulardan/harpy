@@ -40,8 +40,8 @@ SET search_path = pg_catalog
 AS $function$
 BEGIN
     IF TG_OP <> 'INSERT' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        NOT EXISTS (
            SELECT 1 FROM platform.cutover_operations AS operation
            WHERE operation.operation_id = NEW.operation_id

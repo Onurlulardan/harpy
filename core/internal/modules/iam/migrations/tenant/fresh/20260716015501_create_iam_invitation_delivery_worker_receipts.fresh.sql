@@ -44,4 +44,4 @@ ALTER TABLE iam_invitation_delivery_worker_receipts ENABLE ALWAYS TRIGGER
     iam_invitation_delivery_worker_receipts_immutable_guard;
 
 GRANT SELECT
-ON TABLE iam_invitation_delivery_worker_receipts TO forgecrud_runtime;
+ON TABLE iam_invitation_delivery_worker_receipts TO harpy_runtime;

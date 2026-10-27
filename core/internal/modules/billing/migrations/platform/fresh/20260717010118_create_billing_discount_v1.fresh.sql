@@ -98,5 +98,5 @@ GRANT EXECUTE ON FUNCTION platform.billing_create_discount_v1(
     uuid,uuid,uuid,uuid,uuid,text,bytea,text,text,bigint,text,bigint,
     integer,text,bigint,integer,bigint,bigint,boolean,smallint,
     timestamptz,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

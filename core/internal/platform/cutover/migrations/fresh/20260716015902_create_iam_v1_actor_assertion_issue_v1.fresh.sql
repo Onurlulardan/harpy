@@ -14,8 +14,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM V1 actor assertion issue authority is denied';
     END IF;
@@ -31,7 +31,7 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.iam_v1_actor_assertion_issue_v1(uuid,text)
 FROM PUBLIC;
-GRANT USAGE ON SCHEMA platform TO forgecrud_runtime;
+GRANT USAGE ON SCHEMA platform TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_v1_actor_assertion_issue_v1(uuid,text)
-TO forgecrud_runtime;
+TO harpy_runtime;
 

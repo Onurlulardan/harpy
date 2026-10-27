@@ -50,7 +50,7 @@ SELECT 1 / CASE WHEN
           ON procedure_row.oid = resolved.procedure_oid
         WHERE resolved.procedure_oid IS NULL
            OR procedure_row.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT procedure_row.prosecdef
            OR NOT (
                COALESCE(procedure_row.proconfig, ARRAY[]::text[])
@@ -63,7 +63,7 @@ SELECT 1 / CASE WHEN
         SELECT 1
         FROM required_runtime
         WHERE NOT pg_catalog.has_function_privilege(
-            'forgecrud_runtime',
+            'harpy_runtime',
             pg_catalog.to_regprocedure(required_runtime.signature),
             'EXECUTE'
         )
@@ -72,7 +72,7 @@ SELECT 1 / CASE WHEN
         SELECT 1
         FROM owner_only
         WHERE pg_catalog.has_function_privilege(
-            'forgecrud_runtime',
+            'harpy_runtime',
             pg_catalog.to_regprocedure(owner_only.signature),
             'EXECUTE'
         )
@@ -89,7 +89,7 @@ SELECT 1 / CASE WHEN
                @> ARRAY['security_barrier=true']::text[]
            )
            OR NOT pg_catalog.has_table_privilege(
-               'forgecrud_runtime', relation.oid, 'SELECT'
+               'harpy_runtime', relation.oid, 'SELECT'
            )
     )
     OR EXISTS (
@@ -97,7 +97,7 @@ SELECT 1 / CASE WHEN
         FROM owner_tables
         WHERE pg_catalog.to_regclass(owner_tables.relation_name) IS NULL
            OR pg_catalog.has_table_privilege(
-               'forgecrud_runtime',
+               'harpy_runtime',
                pg_catalog.to_regclass(owner_tables.relation_name),
                'SELECT'
            )

@@ -32,5 +32,5 @@ SELECT
     principal.created_at,
     principal.updated_at
 FROM iam_users AS principal
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';

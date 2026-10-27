@@ -195,5 +195,5 @@ REVOKE ALL ON FUNCTION platform.billing_finalize_provider_command_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_finalize_provider_command_v1(
     uuid,uuid,uuid,bigint,integer,text,text,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

@@ -21,8 +21,8 @@ DECLARE
     v_layout_writer text;
     v_layout_generation bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_group_generation IS NULL OR
        p_cutover_generation IS NULL OR
        p_group_generation OPERATOR(pg_catalog.<) 1 OR

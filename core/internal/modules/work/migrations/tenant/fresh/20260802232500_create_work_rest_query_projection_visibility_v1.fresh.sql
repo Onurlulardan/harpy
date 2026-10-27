@@ -16,8 +16,8 @@ BEGIN
 END;
 $function$;
 REVOKE ALL ON FUNCTION work_projection_principals_valid_v1(text[], boolean) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION work_projection_principals_valid_v1(text[], boolean) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION work_projection_principals_valid_v1(text[], boolean) TO forgecrud_adopter;
+GRANT EXECUTE ON FUNCTION work_projection_principals_valid_v1(text[], boolean) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION work_projection_principals_valid_v1(text[], boolean) TO harpy_adopter;
 
 ALTER TABLE work_inbox_items ADD COLUMN visible_to_principals text[] NOT NULL DEFAULT ARRAY[]::text[];
 ALTER TABLE work_calendar_items ADD COLUMN visible_to_principals text[] NOT NULL DEFAULT ARRAY[]::text[];
@@ -33,7 +33,7 @@ RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER
 SET search_path FROM CURRENT AS $function$
 DECLARE v_keys text; v_expected text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.jsonb_typeof(p_record) IS DISTINCT FROM 'object' OR p_record='{}'::jsonb THEN RETURN false; END IF;
     SELECT pg_catalog.string_agg(key,',' ORDER BY key) INTO v_keys
       FROM pg_catalog.jsonb_object_keys(p_record) AS key;
@@ -66,7 +66,7 @@ RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER
 SET search_path FROM CURRENT AS $function$
 DECLARE v_matches bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR NEW.source_owner IS DISTINCT FROM 'WORKFLOW' THEN RETURN NEW; END IF;
     SELECT pg_catalog.array_agg(principal.value ORDER BY principal.value),
            pg_catalog.count(DISTINCT stage.run_id) INTO NEW.visible_to_principals,v_matches
@@ -103,7 +103,7 @@ SELECT board.id,board.name,pg_catalog.normalize(pg_catalog.casefold(
        (SELECT pg_catalog.count(*) FROM work_board_memberships AS member_row WHERE member_row.board_id=board.id AND member_row.active) AS member_count,
        board.created_at,board.updated_at,visibility.visibility_principals
 FROM work_boards AS board JOIN work_query_board_visibility_v1 AS visibility ON visibility.board_id=board.id
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW work_task_query_v1 AS
 SELECT task.id,task.board_id,task.column_id,task.title,pg_catalog.normalize(pg_catalog.casefold(
@@ -112,8 +112,8 @@ SELECT task.id,task.board_id,task.column_id,task.title,pg_catalog.normalize(pg_c
        task.creator_user_id AS creator_id,task.position,task.row_version,task.starts_at,task.due_at,
        task.created_at,task.updated_at,visibility.visibility_principals
 FROM work_tasks AS task JOIN work_query_board_visibility_v1 AS visibility ON visibility.board_id=task.board_id
-WHERE task.deleted_at IS NULL AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE task.deleted_at IS NULL AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW work_comment_query_v1 AS
 SELECT comment.id,comment.board_id,comment.task_id,comment.author_id,comment.body,
@@ -122,7 +122,7 @@ SELECT comment.id,comment.board_id,comment.task_id,comment.author_id,comment.bod
        comment.state,comment.redaction_kind,comment.row_version,comment.created_at,comment.redacted_at,
        visibility.visibility_principals
 FROM work_comments AS comment JOIN work_query_board_visibility_v1 AS visibility ON visibility.board_id=comment.board_id
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW work_calendar_event_query_v1 AS
 SELECT event.id,event.owner_id,event.audience,event.board_id,event.organization_id,event.title,
@@ -134,8 +134,8 @@ SELECT event.id,event.owner_id,event.audience,event.board_id,event.organization_
            WHEN 'ORGANIZATION' THEN ARRAY['ORGANIZATION:'||event.organization_id::text]::text[]
            ELSE COALESCE(visibility.visibility_principals,ARRAY[]::text[]) END AS visibility_principals
 FROM work_calendar_events AS event LEFT JOIN work_query_board_visibility_v1 AS visibility ON visibility.board_id=event.board_id
-WHERE event.deleted_at IS NULL AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE event.deleted_at IS NULL AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW work_inbox_query_v1 AS
 SELECT task.id,'WORK'::text AS source_owner,'TASK'::text AS source_kind,task.id AS source_id,
@@ -149,15 +149,15 @@ JOIN LATERAL (SELECT pg_catalog.array_agg(assignee_row.principal_kind||':'||assi
         ORDER BY assignee_row.principal_kind,assignee_row.principal_id) AS visibility_principals
     FROM work_task_assignees AS assignee_row WHERE assignee_row.task_id=task.id AND assignee_row.active) AS assignee
     ON pg_catalog.cardinality(assignee.visibility_principals)>0
-WHERE task.deleted_at IS NULL AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime'
+WHERE task.deleted_at IS NULL AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime'
 UNION ALL
 SELECT item.id,item.source_owner,item.source_kind,item.source_id,item.source_version_id,item.source_revision,
        item.permission_revision,item.summary,pg_catalog.normalize(pg_catalog.casefold(
        pg_catalog.normalize(item.summary,'NFC') COLLATE pg_catalog.pg_unicode_fast),'NFC') AS summary_folded,
        item.due_at,NULL::uuid,NULL::text,NULL::text,item.updated_at,item.visible_to_principals,item.visible_to_principals
 FROM work_inbox_items AS item WHERE item.state='VISIBLE'
-  AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+  AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 CREATE VIEW work_calendar_query_v1 AS
 SELECT inbox.*,'TASK_DEADLINE'::text AS item_kind,inbox.due_at AS starts_at,NULL::timestamptz AS ends_at,
@@ -174,19 +174,19 @@ SELECT item.id,item.source_owner,item.source_kind,item.source_id,item.source_ver
        COLLATE pg_catalog.pg_unicode_fast),'NFC'),NULL::timestamptz,NULL::uuid,NULL::text,NULL::text,item.updated_at,
        item.visible_to_principals,item.visible_to_principals,'PROJECTION'::text,item.starts_at,item.ends_at,
        item.start_date,item.end_date FROM work_calendar_items AS item WHERE item.state='VISIBLE'
-  AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+  AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON work_board_query_v1,work_task_query_v1,work_comment_query_v1,
-    work_calendar_event_query_v1,work_inbox_query_v1,work_calendar_query_v1 TO forgecrud_runtime;
-GRANT INSERT (creator_user_id,priority,starts_at) ON work_tasks TO forgecrud_runtime;
-GRANT UPDATE (priority,starts_at) ON work_tasks TO forgecrud_runtime;
-GRANT INSERT (color) ON work_board_columns TO forgecrud_runtime;
-GRANT UPDATE (color) ON work_board_columns TO forgecrud_runtime;
-GRANT INSERT (color) ON work_calendar_events TO forgecrud_runtime;
-GRANT UPDATE (color) ON work_calendar_events TO forgecrud_runtime;
-GRANT INSERT (visible_to_principals) ON work_inbox_items TO forgecrud_runtime;
-GRANT UPDATE (visible_to_principals) ON work_inbox_items TO forgecrud_runtime;
-GRANT INSERT (visible_to_principals) ON work_calendar_items TO forgecrud_runtime;
-GRANT UPDATE (visible_to_principals) ON work_calendar_items TO forgecrud_runtime;
+    work_calendar_event_query_v1,work_inbox_query_v1,work_calendar_query_v1 TO harpy_runtime;
+GRANT INSERT (creator_user_id,priority,starts_at) ON work_tasks TO harpy_runtime;
+GRANT UPDATE (priority,starts_at) ON work_tasks TO harpy_runtime;
+GRANT INSERT (color) ON work_board_columns TO harpy_runtime;
+GRANT UPDATE (color) ON work_board_columns TO harpy_runtime;
+GRANT INSERT (color) ON work_calendar_events TO harpy_runtime;
+GRANT UPDATE (color) ON work_calendar_events TO harpy_runtime;
+GRANT INSERT (visible_to_principals) ON work_inbox_items TO harpy_runtime;
+GRANT UPDATE (visible_to_principals) ON work_inbox_items TO harpy_runtime;
+GRANT INSERT (visible_to_principals) ON work_calendar_items TO harpy_runtime;
+GRANT UPDATE (visible_to_principals) ON work_calendar_items TO harpy_runtime;
 ALTER TABLE work_inbox_items ALTER COLUMN visible_to_principals DROP DEFAULT;
 ALTER TABLE work_calendar_items ALTER COLUMN visible_to_principals DROP DEFAULT;

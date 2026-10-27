@@ -42,9 +42,9 @@ $function$;
 REVOKE ALL ON FUNCTION platform.tenancy_tenant_migration_ready_current_v1()
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_tenant_migration_ready_current_v1()
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.tenancy_tenant_migration_enqueue_v1(
     uuid, uuid, uuid, bigint, bigint, text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.tenancy_tenant_migration_get_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

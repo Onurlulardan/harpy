@@ -13,8 +13,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Forms export candidate authority is invalid';
     END IF;
@@ -64,8 +64,8 @@ SET search_path = pg_catalog
 AS $function$
 DECLARE v_claimable boolean;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Forms export tenant preflight authority is invalid';
@@ -89,8 +89,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Forms export KEK inventory authority is invalid';
     END IF;
@@ -121,8 +121,8 @@ SET search_path = pg_catalog
 AS $function$
 DECLARE v_schema text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Forms export KEK schema authority is invalid';
     END IF;

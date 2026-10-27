@@ -20,7 +20,7 @@ DECLARE
     v_binding_count bigint;
     v_adopted_count bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cluster_admin' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5660',
             MESSAGE = 'V1 async acceptance requires cluster authority';
     END IF;

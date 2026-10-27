@@ -34,8 +34,8 @@ DECLARE
     v_claim_lease_until timestamptz;
     v_operation platform.tenancy_onboarding_operations%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'tenant activation capability mint denied';
     END IF;
@@ -104,4 +104,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_onboarding_activate_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_onboarding_activate_v2(
     uuid,text,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;

@@ -184,4 +184,4 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_expired_finalize_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_expired_finalize_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

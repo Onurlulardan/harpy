@@ -40,7 +40,7 @@ REVOKE ALL ON FUNCTION platform.billing_add_offering_price_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_add_offering_price_v1(
     uuid,uuid,uuid,text,bigint,text,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 
 CREATE FUNCTION platform.billing_add_offering_grant_v1(
     p_authority_id uuid, p_offering_version_id uuid,
@@ -80,6 +80,6 @@ REVOKE ALL ON FUNCTION platform.billing_add_offering_grant_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_add_offering_grant_v1(
     uuid,uuid,text,text,boolean,bigint,boolean,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd
 

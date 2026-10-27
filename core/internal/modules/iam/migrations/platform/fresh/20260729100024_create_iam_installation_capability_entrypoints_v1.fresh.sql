@@ -11,8 +11,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    RETURN SESSION_USER = 'forgecrud_v2_runtime'
-       AND CURRENT_USER = 'forgecrud_owner'
+    RETURN SESSION_USER = 'harpy_v2_runtime'
+       AND CURRENT_USER = 'harpy_owner'
        AND (
          platform.tenancy_activation_step_context_assert_v1(
             p_operation_id, 'iam.initialize_tenant_identity',
@@ -126,7 +126,7 @@ REVOKE ALL ON FUNCTION platform.iam_installation_activation_assert_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_installation_activation_assert_v2(
     uuid,uuid,uuid,name
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.iam_installation_security_epoch_initialize_v2(
         uuid,uuid,uuid,name,timestamptz
@@ -134,7 +134,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.iam_installation_security_epoch_initialize_v2(
         uuid,uuid,uuid,name,timestamptz
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.iam_installation_identity_directory_upsert_v1(
         uuid,uuid,uuid,name,bigint,bigint,uuid,uuid,text,bytea,bigint,bytea
@@ -142,10 +142,10 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.iam_installation_identity_directory_upsert_v1(
         uuid,uuid,uuid,name,bigint,bigint,uuid,uuid,text,bytea,bigint,bytea
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;
 REVOKE ALL ON FUNCTION platform.iam_installation_instance_owner_bind_v2(
     uuid,uuid,uuid,name,uuid,uuid,uuid,uuid,uuid,bigint,text
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_installation_instance_owner_bind_v2(
     uuid,uuid,uuid,name,uuid,uuid,uuid,uuid,uuid,bigint,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

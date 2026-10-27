@@ -14,8 +14,8 @@ DECLARE
     v_target_id text;
     v_semantic boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.jsonb_typeof(p_record) IS DISTINCT FROM 'object' OR
        p_record = '{}'::jsonb OR pg_catalog.octet_length(p_record::text) > 1048576 OR
        p_target_id = '00000000-0000-0000-0000-000000000000'::uuid THEN

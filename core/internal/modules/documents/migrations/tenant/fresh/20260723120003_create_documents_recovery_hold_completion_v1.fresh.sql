@@ -13,7 +13,7 @@ AS $function$
 DECLARE
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.octet_length(p_inventory_sha256) <> 32
        OR p_inventory_count < 0 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -47,7 +47,7 @@ AS $function$
 DECLARE
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'documents recovery release denied';
     END IF;
@@ -70,7 +70,7 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR p_failure_code !~ '^[a-z0-9_]{1,64}$' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'documents recovery failure denied';

@@ -30,8 +30,8 @@ DECLARE
     projection_revision_value bigint;
     projection_sha_value bytea;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
-       OR SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
+       OR SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR pg_catalog.uuid_extract_version(p_rebuild_id) <> 7
        OR p_actor_id = '00000000-0000-0000-0000-000000000000'::uuid
        OR p_rebuilt_at IS DISTINCT FROM
@@ -117,5 +117,5 @@ REVOKE ALL ON FUNCTION platform.billing_rebuild_revenue_projection_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_rebuild_revenue_projection_v1(
     uuid, uuid, uuid, timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

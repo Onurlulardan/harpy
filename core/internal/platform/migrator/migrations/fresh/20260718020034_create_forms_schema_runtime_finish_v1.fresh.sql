@@ -22,8 +22,8 @@ DECLARE
     v_next_executor text;
     v_job_generation bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.uuid_extract_version(p_schema_job_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_runtime_job_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_runtime_attempt_id) IS DISTINCT FROM 7
@@ -180,10 +180,10 @@ SELECT platform.platform_migrator_backfill_forms_runtime_v1(
 GRANT EXECUTE ON FUNCTION
 platform.platform_migrator_claim_forms_runtime_v1(
     uuid,bigint,integer,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 
 GRANT EXECUTE ON FUNCTION
 platform.platform_migrator_finish_forms_runtime_v1(
     uuid,uuid,uuid,bigint,integer,bigint,boolean,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

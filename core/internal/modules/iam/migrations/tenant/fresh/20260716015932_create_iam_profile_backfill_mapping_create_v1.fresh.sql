@@ -12,7 +12,7 @@ AS $function$
 DECLARE
     v_count integer;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_plan_id IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_plan_id IS NULL OR
        p_resource_kind NOT IN ('user','organization','role') OR
        p_source_schema_id IS NULL OR p_target_schema_id IS NULL OR
        pg_catalog.jsonb_typeof(p_mappings)<>'array' OR

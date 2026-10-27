@@ -54,8 +54,8 @@ DECLARE
     v_binding_revision bigint;
     v_binding_updated_at timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_token_id IS NULL OR p_family_id IS NULL OR p_session_id IS NULL OR
        p_user_id IS NULL OR p_access_mode_id IS NULL THEN

@@ -31,8 +31,8 @@ WHERE run.position = 1
   AND mapping.record_kind IN (
       'offering', 'discount', 'campaign', 'subscription'
   )
-  AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+  AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_legacy_identity_alias_v1
-TO forgecrud_runtime;
+TO harpy_runtime;

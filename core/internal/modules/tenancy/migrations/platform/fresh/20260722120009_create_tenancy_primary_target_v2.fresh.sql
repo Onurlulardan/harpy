@@ -15,8 +15,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-        OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+        OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Primary tenant target query denied';
     END IF;
@@ -63,4 +63,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.tenancy_get_primary_tenant_target_v2()
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_get_primary_tenant_target_v2()
-    TO forgecrud_runtime;
+    TO harpy_runtime;

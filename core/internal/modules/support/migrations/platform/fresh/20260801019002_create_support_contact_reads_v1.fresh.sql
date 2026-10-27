@@ -73,7 +73,7 @@ $function$;
 REVOKE ALL ON FUNCTION platform.support_list_contacts_v1(uuid,bigint,bigint,text,text,integer,integer) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.support_contact_stats_v1(uuid,bigint,bigint,timestamp with time zone) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.support_get_contact_v1(uuid,bigint,bigint,uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.support_list_contacts_v1(uuid,bigint,bigint,text,text,integer,integer) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_contact_stats_v1(uuid,bigint,bigint,timestamp with time zone) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_get_contact_v1(uuid,bigint,bigint,uuid) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_list_contacts_v1(uuid,bigint,bigint,text,text,integer,integer) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_contact_stats_v1(uuid,bigint,bigint,timestamp with time zone) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_get_contact_v1(uuid,bigint,bigint,uuid) TO harpy_runtime;
 -- +goose StatementEnd

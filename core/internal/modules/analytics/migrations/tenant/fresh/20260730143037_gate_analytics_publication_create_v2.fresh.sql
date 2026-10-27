@@ -134,5 +134,5 @@ REVOKE ALL ON FUNCTION analytics_publication_create_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_publication_create_v1(
     name,uuid,uuid,text,bytea,uuid,text,uuid,text,text,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

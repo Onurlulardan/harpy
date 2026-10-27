@@ -10,7 +10,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_runtime'
        OR NOT platform.iam_platform_current_owner_v1(
            p_tenant_id,p_actor_user_id
        ) THEN
@@ -48,7 +48,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_runtime'
        OR NOT platform.iam_platform_current_owner_v1(
            p_tenant_id,p_actor_user_id
        ) THEN
@@ -87,13 +87,13 @@ REVOKE ALL ON FUNCTION platform.platformops_claim_restore_plan_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_recovery_manifest_v1(
     uuid,uuid,uuid,uuid,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_restore_plan_v1(
     uuid,uuid,uuid,uuid,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_recovery_manifest_v2(
     uuid,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_restore_plan_v2(
     uuid,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

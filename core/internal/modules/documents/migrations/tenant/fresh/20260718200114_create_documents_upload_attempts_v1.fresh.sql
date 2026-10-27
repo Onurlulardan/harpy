@@ -59,17 +59,17 @@ CREATE INDEX documents_upload_attempts_cleanup_idx
     ON documents_upload_attempts(lifecycle_state, updated_at, upload_id, attempt_generation)
     WHERE lifecycle_state IN ('CLEANUP_PENDING','CLEANED');
 
-GRANT UPDATE (reference_epoch) ON documents_items TO forgecrud_runtime;
-GRANT INSERT (reference_epoch) ON documents_items TO forgecrud_adopter;
-GRANT UPDATE (reference_epoch) ON documents_items TO forgecrud_adopter;
+GRANT UPDATE (reference_epoch) ON documents_items TO harpy_runtime;
+GRANT INSERT (reference_epoch) ON documents_items TO harpy_adopter;
+GRANT UPDATE (reference_epoch) ON documents_items TO harpy_adopter;
 
-GRANT SELECT ON documents_upload_attempts TO forgecrud_runtime;
+GRANT SELECT ON documents_upload_attempts TO harpy_runtime;
 GRANT INSERT (upload_id, attempt_generation, effect_receipt_id, lifecycle_state, created_at, updated_at)
-ON documents_upload_attempts TO forgecrud_runtime;
+ON documents_upload_attempts TO harpy_runtime;
 GRANT UPDATE (lifecycle_state, object_key, object_version, object_generation, plaintext_bytes, ciphertext_bytes, plaintext_sha256, ciphertext_sha256, detected_mime, file_kind, key_id, wrapped_dek, scan_signature_revision, scanned_at, cleanup_deletion_id, cleanup_receipt_sha256, updated_at)
-ON documents_upload_attempts TO forgecrud_runtime;
-GRANT SELECT ON documents_upload_attempts TO forgecrud_adopter;
+ON documents_upload_attempts TO harpy_runtime;
+GRANT SELECT ON documents_upload_attempts TO harpy_adopter;
 GRANT INSERT (upload_id, attempt_generation, effect_receipt_id, lifecycle_state, object_key, object_version, object_generation, plaintext_bytes, ciphertext_bytes, plaintext_sha256, ciphertext_sha256, detected_mime, file_kind, key_id, wrapped_dek, scan_signature_revision, scanned_at, cleanup_deletion_id, cleanup_receipt_sha256, created_at, updated_at)
-ON documents_upload_attempts TO forgecrud_adopter;
+ON documents_upload_attempts TO harpy_adopter;
 GRANT UPDATE (lifecycle_state, object_key, object_version, object_generation, plaintext_bytes, ciphertext_bytes, plaintext_sha256, ciphertext_sha256, detected_mime, file_kind, key_id, wrapped_dek, scan_signature_revision, scanned_at, cleanup_deletion_id, cleanup_receipt_sha256, updated_at)
-ON documents_upload_attempts TO forgecrud_adopter;
+ON documents_upload_attempts TO harpy_adopter;

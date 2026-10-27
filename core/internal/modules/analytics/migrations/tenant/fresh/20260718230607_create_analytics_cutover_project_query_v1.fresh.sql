@@ -12,8 +12,8 @@ BEGIN
     v_query:=p_target->'query';
     v_published:=p_target->'published_version';
     v_draft:=p_target->'draft_version';
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        (SELECT pg_catalog.array_agg(key ORDER BY key)
         FROM pg_catalog.jsonb_object_keys(v_query) AS key)
        IS DISTINCT FROM ARRAY[

@@ -13,8 +13,8 @@ DECLARE
     v_revision bigint;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_migrator' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_migrator' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_expected_revision IS NULL OR p_expected_revision < 1 THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'IAM V1 actor bridge finalization input is invalid';

@@ -14,8 +14,8 @@ AS $function$
 DECLARE
     v_generation bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM tenant target input is invalid';

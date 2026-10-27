@@ -16,8 +16,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'async retention cycle requires the exact runtime authority';
     END IF;
@@ -58,26 +58,26 @@ $function$;
 REVOKE ALL ON FUNCTION
     platform.platform_async_run_retention_cycle_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
-    platform.platform_async_run_retention_cycle_v1() TO forgecrud_runtime;
+    platform.platform_async_run_retention_cycle_v1() TO harpy_runtime;
 
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_redact_job_payloads_v1(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_redact_outbox_payloads_v2(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_redact_dead_letter_payloads_v2(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_purge_inbox_v1(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_purge_idempotency_receipts_v1(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_purge_jobs_v1(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_purge_dead_letters_v2(integer)
-FROM forgecrud_runtime;
+FROM harpy_runtime;

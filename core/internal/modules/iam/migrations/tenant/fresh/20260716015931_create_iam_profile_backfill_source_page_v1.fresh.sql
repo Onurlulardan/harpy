@@ -19,7 +19,7 @@ DECLARE
 BEGIN
     v_evidence := ''::bytea;
     v_count := 0;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_resource_kind NOT IN ('user', 'organization', 'role') OR
        p_source_schema_id IS NULL OR p_through_resource_id IS NULL OR
        (p_after_resource_id IS NOT NULL AND

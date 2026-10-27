@@ -11,7 +11,7 @@ AS $function$
 DECLARE
     v_run_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
        p_job.writer_origin IS DISTINCT FROM 'v1' OR
        p_job.state IS DISTINCT FROM 'queued' OR
        p_job.attempts IS DISTINCT FROM 0 OR p_job.lease_generation IS DISTINCT FROM 0 OR

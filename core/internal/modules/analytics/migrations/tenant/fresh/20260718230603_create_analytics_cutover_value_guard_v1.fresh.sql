@@ -10,8 +10,8 @@ DECLARE
     v_source jsonb;
     v_target jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.jsonb_typeof(p_key) IS DISTINCT FROM 'object' OR
        pg_catalog.jsonb_typeof(p_value) IS DISTINCT FROM 'object' OR
        (SELECT pg_catalog.array_agg(key ORDER BY key)

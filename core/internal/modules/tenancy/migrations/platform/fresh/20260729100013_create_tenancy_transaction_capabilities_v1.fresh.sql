@@ -77,8 +77,8 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog AS $function$
 DECLARE
     v_consumed boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RETURN false;
     END IF;
     DELETE FROM platform.tenancy_activation_command_capabilities AS capability
@@ -110,8 +110,8 @@ CREATE FUNCTION platform.tenancy_authority_reconcile_scope_assert_v1(
 ) RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog AS $function$
 BEGIN
-    RETURN SESSION_USER = 'forgecrud_v2_runtime'
-       AND CURRENT_USER = 'forgecrud_owner'
+    RETURN SESSION_USER = 'harpy_v2_runtime'
+       AND CURRENT_USER = 'harpy_owner'
        AND p_owner_key IN ('billing', 'workflow', 'analytics')
        AND EXISTS (
             SELECT 1
@@ -166,22 +166,22 @@ REVOKE ALL ON FUNCTION platform.tenancy_activation_command_consume_v1(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.tenancy_activation_command_consume_v1(
     uuid,text,uuid,uuid,text,text,text,text,uuid,bigint,text,timestamptz,bigint,text
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.tenancy_authority_reconcile_scope_assert_v1(text)
     FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION
     platform.tenancy_authority_reconcile_scope_assert_v1(text)
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.tenancy_activation_capability_commit_guard_v1() FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION
     platform.tenancy_activation_capability_commit_guard_v1()
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.tenancy_authority_scope_commit_guard_v1() FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.tenancy_authority_scope_commit_guard_v1()
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;
 
 CREATE CONSTRAINT TRIGGER tenancy_activation_capability_commit_guard
 AFTER INSERT ON platform.tenancy_activation_command_capabilities

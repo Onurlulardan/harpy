@@ -36,4 +36,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.iam_recovery_anchor_finalize_authority_v1(uuid)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_finalize_authority_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

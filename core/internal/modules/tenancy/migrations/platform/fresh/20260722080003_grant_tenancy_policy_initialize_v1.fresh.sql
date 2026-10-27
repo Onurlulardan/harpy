@@ -4,4 +4,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_initialize_deployment_policy_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_initialize_deployment_policy_v1(
     uuid,uuid,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

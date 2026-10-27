@@ -117,4 +117,4 @@ REVOKE ALL ON FUNCTION analytics_catalog_owner_binding_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_catalog_owner_binding_v2(
     name,uuid,uuid,bigint,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

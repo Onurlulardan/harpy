@@ -33,7 +33,7 @@ DECLARE
     v_expected_sha256 text;
     v_persisted_sha256 text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
        p_generation < 1 OR NOT pg_catalog.isfinite(p_recorded_at) OR
        p_billing_source_count < 0 OR
        p_billing_source_count IS DISTINCT FROM p_billing_target_count OR

@@ -128,8 +128,8 @@ REVOKE ALL ON FUNCTION platform.platformops_get_recovery_protection_v1(uuid) FRO
 REVOKE ALL ON FUNCTION platform.platformops_get_recovery_control_operation_v1(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_request_recovery_control_v1(
     uuid,uuid,uuid,text,bytea,text,text,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_get_recovery_protection_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_get_recovery_control_operation_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

@@ -22,7 +22,7 @@ CREATE TABLE platform.cutover_change_journal (
         CHECK (scope_kind IN ('global', 'tenant')),
     CONSTRAINT cutover_change_journal_generation_check CHECK (cutover_generation > 0),
     CONSTRAINT cutover_change_journal_session_check
-        CHECK (source_session_user = 'forgecrud_v1_runtime')
+        CHECK (source_session_user = 'harpy_v1_runtime')
 );
 
 CREATE INDEX cutover_change_journal_operation_idx

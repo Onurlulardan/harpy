@@ -24,8 +24,8 @@ DECLARE
     v_state text;
     v_applied bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_batch_ordinal NOT BETWEEN 1 AND 2147483 OR
        p_batch_sha256 !~ '^[0-9a-f]{64}$' OR
        p_lease_manifest_sha256 !~ '^[0-9a-f]{64}$' THEN

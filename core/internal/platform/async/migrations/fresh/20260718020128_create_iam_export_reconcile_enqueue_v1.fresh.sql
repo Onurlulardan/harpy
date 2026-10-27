@@ -16,8 +16,8 @@ DECLARE
     v_dedupe text;
     v_effect_key text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        pg_catalog.uuid_extract_version(p_export_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_original_job_id) IS DISTINCT FROM 7 OR
        p_resource_kind NOT IN ('users','roles','organizations') OR

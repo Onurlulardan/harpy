@@ -9,7 +9,7 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'DOCUMENT_VERSION_IMMUTABLE';
     END IF;
-    IF SESSION_USER = 'forgecrud_restore'
+    IF SESSION_USER = 'harpy_restore'
        AND OLD.lifecycle_state = 'READY'
        AND NEW.lifecycle_state = OLD.lifecycle_state
        AND NEW.object_key = OLD.object_key
@@ -81,7 +81,7 @@ DECLARE
     v_live documents_versions%ROWTYPE;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR p_restore_operation_id IS NULL OR p_target_object_generation < 1
        OR p_target_object_version = '' OR p_target_object_key <> p_source_object_key
        OR pg_catalog.octet_length(p_ciphertext_sha256) <> 32

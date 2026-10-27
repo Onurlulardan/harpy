@@ -119,8 +119,8 @@ REVOKE ALL ON FUNCTION analytics_query_get_version_v1(name,uuid,uuid)
 REVOKE ALL ON FUNCTION analytics_query_dependencies_v1(name,uuid,uuid)
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_query_get_v1(name,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_query_get_version_v1(name,uuid,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_query_dependencies_v1(name,uuid,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

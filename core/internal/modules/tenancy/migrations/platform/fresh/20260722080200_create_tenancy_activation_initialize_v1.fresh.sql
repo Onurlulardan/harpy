@@ -35,8 +35,8 @@ DECLARE
     v_existing platform.tenancy_activation_facts%ROWTYPE;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'tenant activation initialization denied';
     END IF;
@@ -114,4 +114,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_activation_initialize_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_activation_initialize_v1(
     uuid, uuid, uuid, text, text, uuid, text, text, text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

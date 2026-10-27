@@ -19,8 +19,8 @@ AS $function$
 DECLARE
     v_existing platform.platformauthority_installation_owner_bindings%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
@@ -96,8 +96,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
        OR p_environment_id IS NULL THEN
@@ -136,11 +136,11 @@ REVOKE ALL ON FUNCTION platform.platformauthority_installation_owner_bind_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformauthority_installation_owner_bind_v2(
     uuid,uuid,uuid,name,text,uuid,uuid,uuid,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 
 REVOKE ALL ON FUNCTION
 platform.platformauthority_development_binding_input_v1(uuid)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
 platform.platformauthority_development_binding_input_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

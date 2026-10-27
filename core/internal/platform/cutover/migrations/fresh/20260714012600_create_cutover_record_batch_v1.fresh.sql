@@ -28,7 +28,7 @@ AS $function$
 DECLARE
     v_manifest_sha256 text;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_adopter' THEN
+    IF SESSION_USER <> 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'cutover batch receipt principal denied';
     END IF;
     IF p_applied_count < 0 OR p_applied_bytes < 1 OR p_batch_ordinal < 1 OR

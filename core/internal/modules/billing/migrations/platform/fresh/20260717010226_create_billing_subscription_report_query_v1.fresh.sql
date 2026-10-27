@@ -67,9 +67,9 @@ JOIN platform.billing_subscriptions AS subscription
  AND subscription.tenant_id = authority.tenant_id
 JOIN platform.billing_provider_accounts AS provider
   ON provider.id = subscription.provider_account_id
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_subscription_report_query_v1
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 

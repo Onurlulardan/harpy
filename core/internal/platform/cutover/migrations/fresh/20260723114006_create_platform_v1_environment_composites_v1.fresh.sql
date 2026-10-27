@@ -22,8 +22,8 @@ DECLARE
     v_key_sha text;
     v_state_sha text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_expected_contract NOT IN (
             'platform.v1_environment_plan.v1',
             'platform.v1_environment_completion.v1')
@@ -159,15 +159,15 @@ REVOKE ALL ON FUNCTION platform.platform_v1_environment_completion_apply_and_rec
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platform_cutover_record_v1_adoption_plan_v1(
     uuid,uuid,text,text,uuid,uuid,text,text,jsonb,jsonb,timestamptz
-) FROM forgecrud_adopter;
+) FROM harpy_adopter;
 REVOKE EXECUTE ON FUNCTION platform.platform_cutover_complete_v1_adoption_v1(
     uuid,uuid,text,text,bigint,bigint,timestamptz,timestamptz
-) FROM forgecrud_adopter;
+) FROM harpy_adopter;
 GRANT EXECUTE ON FUNCTION platform.platform_v1_environment_plan_apply_and_record_v1(
     uuid,uuid,text,uuid,smallint,text,text,pg_lsn,pg_lsn,pg_lsn,pg_lsn,xid8,
     integer,text,jsonb,bytea,text,bigint,text
-) TO forgecrud_adopter;
+) TO harpy_adopter;
 GRANT EXECUTE ON FUNCTION platform.platform_v1_environment_completion_apply_and_record_v1(
     uuid,uuid,text,uuid,smallint,text,text,pg_lsn,pg_lsn,pg_lsn,pg_lsn,xid8,
     integer,text,jsonb,bytea,text,bigint,text
-) TO forgecrud_adopter;
+) TO harpy_adopter;

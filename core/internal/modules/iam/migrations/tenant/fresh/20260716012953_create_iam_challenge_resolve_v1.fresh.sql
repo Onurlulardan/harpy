@@ -20,8 +20,8 @@ DECLARE
     v_expires_at timestamptz;
     v_next_attempt integer;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT (
            p_disposition OPERATOR(pg_catalog.=) 'consume' OR

@@ -194,7 +194,7 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_platform_effect_start_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,text,text,bytea,bytea,
     bytea,bytea,bytea,bigint,bigint,bigint,text,text,timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_platform_checkpoint_v1(
-    name,uuid,uuid,uuid,uuid,bigint,uuid,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,uuid,bigint,uuid,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_platform_effect_start_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,text,text,bytea,bytea,
-    bytea,bytea,bytea,bigint,bigint,bigint,text,text,timestamptz) TO forgecrud_runtime;
+    bytea,bytea,bytea,bigint,bigint,bigint,text,text,timestamptz) TO harpy_runtime;

@@ -13,8 +13,8 @@ AS $function$
 DECLARE
     v_operation_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_worker_id IS NULL OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_worker_id IS NULL OR
        p_now IS NULL OR p_lease_seconds NOT BETWEEN 30 AND 600 OR
        pg_catalog.abs(EXTRACT(EPOCH FROM
            (pg_catalog.transaction_timestamp()-p_now))) > 300 THEN
@@ -60,8 +60,8 @@ DECLARE
     v_operation platform.tenancy_customer_lifecycle_operations%ROWTYPE;
     v_revision bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_operation_id IS NULL OR p_worker_id IS NULL OR p_now IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Customer tenant offboard completion denied';
@@ -116,8 +116,8 @@ DECLARE
     v_operation platform.tenancy_customer_lifecycle_operations%ROWTYPE;
     v_revision bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_operation_id IS NULL OR p_worker_id IS NULL OR
        p_executor_receipt_id IS NULL OR p_executor_receipt_sha256 IS NULL OR
        pg_catalog.length(p_executor_receipt_sha256)<>32 OR p_now IS NULL THEN
@@ -172,8 +172,8 @@ RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_operation_id IS NULL OR p_worker_id IS NULL OR p_failure_code IS NULL OR
        p_failure_code !~ '^[A-Z0-9_]{3,64}$' OR p_now IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',

@@ -15,13 +15,13 @@ DECLARE
     v_state text;
     v_writer text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_tenant_id IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_tenant_id IS NULL OR
        p_tenant_id = '00000000-0000-0000-0000-000000000000'::uuid THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'analytics authority resolver input is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         v_mode := 'runtime_v2'; v_state := 'v2'; v_writer := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         v_mode := 'adopter_shadow'; v_state := 'shadow'; v_writer := 'v1';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'analytics authority resolver session is invalid';
@@ -74,8 +74,8 @@ DECLARE
     v_remaining integer;
 BEGIN
     v_reconciled := 0;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'analytics authority reconciliation is denied';
@@ -196,4 +196,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION platform.analytics_reconcile_current_tenant_authorities_v1() FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.analytics_reconcile_current_tenant_authorities_v1() TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.analytics_reconcile_current_tenant_authorities_v1() TO harpy_runtime;

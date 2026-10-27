@@ -94,8 +94,8 @@ CREATE TABLE platform.support_adoption_page_receipts (
         OR (state = 'advanced' AND advanced_at IS NOT NULL))
 );
 
-REVOKE ALL ON TABLE platform.support_adoption_runs FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON TABLE platform.support_adoption_mappings FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON TABLE platform.support_adoption_page_receipts FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON TABLE platform.support_bug_reports FROM forgecrud_adopter;
+REVOKE ALL ON TABLE platform.support_adoption_runs FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON TABLE platform.support_adoption_mappings FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON TABLE platform.support_adoption_page_receipts FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON TABLE platform.support_bug_reports FROM harpy_adopter;
 -- +goose StatementEnd

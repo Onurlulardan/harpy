@@ -79,7 +79,7 @@ BEGIN
     v_temporary := v_at_rest || '{"login":false,"connection_limit":0}'::jsonb;
     IF pg_catalog.jsonb_typeof(v_role_evidence) IS DISTINCT FROM 'object' OR
        (SELECT pg_catalog.count(*) FROM pg_catalog.jsonb_object_keys(v_role_evidence)) IS DISTINCT FROM 7::bigint OR
-       v_role_evidence->>'principal' IS DISTINCT FROM 'forgecrud_migrator' OR
+       v_role_evidence->>'principal' IS DISTINCT FROM 'harpy_migrator' OR
        (SELECT pg_catalog.count(*) FROM pg_catalog.jsonb_object_keys(v_at_rest)) IS DISTINCT FROM 11::bigint OR
        (v_at_rest-'password_state'::text) IS DISTINCT FROM '{"login":true,"inherit":false,"superuser":false,"createdb":false,"createrole":false,"replication":false,"bypassrls":false,"connection_limit":-1,"valid_until":"infinity","membership_count":1}'::jsonb OR
        v_at_rest->>'password_state' IS NULL OR v_at_rest->>'password_state' NOT IN ('null','scram_sha_256') OR
@@ -101,12 +101,12 @@ BEGIN
         JOIN pg_catalog.pg_auth_members AS membership ON membership.member=role.oid
         JOIN pg_catalog.pg_roles AS granted ON granted.oid=membership.roleid
         JOIN pg_catalog.pg_roles AS grantor ON grantor.oid=membership.grantor
-        WHERE role.rolname='forgecrud_migrator' AND role.rolcanlogin AND NOT role.rolinherit
+        WHERE role.rolname='harpy_migrator' AND role.rolcanlogin AND NOT role.rolinherit
           AND NOT role.rolsuper AND NOT role.rolcreatedb AND NOT role.rolcreaterole
           AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=-1
           AND (role.rolvaliduntil IS NULL OR
                role.rolvaliduntil='infinity'::timestamptz)
-          AND granted.rolname='forgecrud_owner'
+          AND granted.rolname='harpy_owner'
           AND grantor.rolname=v_receipt->>'executor_session_user'
           AND NOT membership.admin_option AND NOT membership.inherit_option AND membership.set_option
           AND (SELECT pg_catalog.count(*) FROM pg_catalog.pg_auth_members AS all_membership
@@ -115,7 +115,7 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE='55000', MESSAGE='authority migrator post-state differs';
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-        WHERE role.rolname='forgecrud_cutover_authority_owner' AND NOT role.rolcanlogin
+        WHERE role.rolname='harpy_cutover_authority_owner' AND NOT role.rolcanlogin
           AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
           AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls
           AND role.rolconnlimit=-1 AND role.rolvaliduntil IS NOT DISTINCT FROM 'infinity'::timestamptz
@@ -185,11 +185,11 @@ BEGIN
     END LOOP;
     SELECT pg_catalog.count(*) INTO v_count FROM (
         SELECT namespace.oid FROM pg_catalog.pg_namespace AS namespace
-        WHERE namespace.nspname='cutover_authority' AND pg_catalog.pg_get_userbyid(namespace.nspowner)='forgecrud_cutover_authority_owner'
+        WHERE namespace.nspname='cutover_authority' AND pg_catalog.pg_get_userbyid(namespace.nspowner)='harpy_cutover_authority_owner'
         UNION ALL SELECT relation.oid FROM pg_catalog.pg_class AS relation JOIN pg_catalog.pg_namespace AS namespace ON namespace.oid=relation.relnamespace
-        WHERE namespace.nspname='cutover_authority' AND relation.relkind IN ('r','p') AND pg_catalog.pg_get_userbyid(relation.relowner)='forgecrud_cutover_authority_owner'
+        WHERE namespace.nspname='cutover_authority' AND relation.relkind IN ('r','p') AND pg_catalog.pg_get_userbyid(relation.relowner)='harpy_cutover_authority_owner'
         UNION ALL SELECT procedure_row.oid FROM pg_catalog.pg_proc AS procedure_row JOIN pg_catalog.pg_namespace AS namespace ON namespace.oid=procedure_row.pronamespace
-        WHERE namespace.nspname='cutover_authority' AND pg_catalog.pg_get_userbyid(procedure_row.proowner)='forgecrud_cutover_authority_owner'
+        WHERE namespace.nspname='cutover_authority' AND pg_catalog.pg_get_userbyid(procedure_row.proowner)='harpy_cutover_authority_owner'
     ) AS live_object;
     IF v_count IS DISTINCT FROM v_inventory.object_count::bigint THEN
         RAISE EXCEPTION USING ERRCODE='55000', MESSAGE='authority live object set differs';

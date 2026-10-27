@@ -17,8 +17,8 @@ DECLARE
     v_changed jsonb;
 BEGIN
     IF pg_catalog.pg_trigger_depth() <> 1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        OLD.finished_at IS NOT NULL OR NEW.finished_at IS NULL OR
        OLD.effect_started_at IS NULL OR
        NEW.effect_started_at IS DISTINCT FROM OLD.effect_started_at OR
@@ -125,7 +125,7 @@ BEGIN
         PERFORM platform.platform_async_validate_job_attempt_v1(
             NULL::platform.job_attempts, NEW, CURRENT_USER, SESSION_USER
         );
-    ELSIF CURRENT_USER = 'forgecrud_owner' AND
+    ELSIF CURRENT_USER = 'harpy_owner' AND
           OLD.finished_at IS NULL AND NEW.finished_at IS NOT NULL AND
           OLD.effect_started_at IS NOT NULL AND NEW.outcome = 'dead' AND
           NEW.error_code = 'JOB_OUTCOME_UNKNOWN' THEN

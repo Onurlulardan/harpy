@@ -18,8 +18,8 @@ DECLARE
     v_current boolean;
     v_replayed boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema::text IS DISTINCT FROM pg_catalog.current_schema() OR
        p_tenant_id IS DISTINCT FROM (
            SELECT identity.tenant_id FROM tenancy_schema_identity AS identity

@@ -44,4 +44,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION analytics_query_latest_published_v1(name,uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_query_latest_published_v1(name,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

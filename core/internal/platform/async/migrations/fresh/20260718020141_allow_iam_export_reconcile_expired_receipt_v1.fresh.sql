@@ -10,8 +10,8 @@ DECLARE
     v_attempt platform.job_attempts%ROWTYPE;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        NEW.record_kind<>'effect' OR NEW.scope_kind<>'tenant' OR
        NEW.tenant_id IS NULL OR NEW.scope_id<>NEW.tenant_id OR
        NEW.authority_group_id<>'iam_system_resources' OR
@@ -79,11 +79,11 @@ BEGIN
             MESSAGE='async owner insert trigger target is invalid';
     END IF;
     IF TG_TABLE_NAME='jobs' THEN
-        IF SESSION_USER='forgecrud_adopter' AND NEW.writer_origin='v1' THEN
+        IF SESSION_USER='harpy_adopter' AND NEW.writer_origin='v1' THEN
             PERFORM platform.platform_async_assert_v1_adopted_job_v1(NEW);
             RETURN NEW;
         END IF;
-        IF SESSION_USER='forgecrud_migrator' AND NEW.writer_origin='v2' THEN
+        IF SESSION_USER='harpy_migrator' AND NEW.writer_origin='v2' THEN
             IF NEW.kind='forms.publication.apply-result' THEN
                 PERFORM platform.platform_async_assert_forms_schema_completion_job_v1(NEW);
             ELSIF NEW.kind='forms.schema-evolution.runtime' THEN
@@ -94,7 +94,7 @@ BEGIN
             END IF;
             RETURN NEW;
         END IF;
-        IF SESSION_USER='forgecrud_v2_runtime' AND NEW.writer_origin='v2'
+        IF SESSION_USER='harpy_v2_runtime' AND NEW.writer_origin='v2'
            AND NEW.kind='forms.schema-evolution.runtime' THEN
             PERFORM platform.platform_async_assert_forms_schema_runtime_job_v2(NEW);
             PERFORM platform.platform_async_assert_current_authority_v1(
@@ -112,7 +112,7 @@ BEGIN
             RETURN NEW;
         END IF;
     END IF;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR NEW.writer_origin IS DISTINCT FROM 'v2' THEN
         RAISE EXCEPTION USING ERRCODE='P5605',
             MESSAGE='async owner insert authority is invalid';

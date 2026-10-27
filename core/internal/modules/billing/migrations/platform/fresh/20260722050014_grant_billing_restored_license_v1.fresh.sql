@@ -4,5 +4,5 @@ GRANT EXECUTE ON FUNCTION platform.billing_commit_restored_license_v1(
     bigint, text, text, text, text, timestamptz, timestamptz, timestamptz,
     timestamptz, timestamptz, timestamptz, text, jsonb, jsonb,
     bytea, bytea, jsonb
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

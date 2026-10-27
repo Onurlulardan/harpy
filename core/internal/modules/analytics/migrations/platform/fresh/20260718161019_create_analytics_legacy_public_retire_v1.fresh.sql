@@ -17,8 +17,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cluster_admin' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.octet_length(p_evidence_sha256) IS DISTINCT FROM 32 OR
        p_observed_at IS NULL OR NOT pg_catalog.isfinite(p_observed_at) OR
        p_retired_at IS NULL OR NOT pg_catalog.isfinite(p_retired_at) OR

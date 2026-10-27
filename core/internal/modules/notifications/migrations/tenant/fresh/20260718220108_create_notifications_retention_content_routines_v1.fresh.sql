@@ -99,7 +99,7 @@ REVOKE ALL ON FUNCTION notifications_retention_redact_content_v1(timestamptz, in
 REVOKE ALL ON FUNCTION notifications_retention_purge_attempts_v1(timestamptz, integer) FROM PUBLIC;
 REVOKE ALL ON FUNCTION notifications_retention_purge_receipts_v1(timestamptz, integer) FROM PUBLIC;
 REVOKE ALL ON FUNCTION notifications_retention_purge_effects_v1(timestamptz, integer) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION notifications_retention_redact_content_v1(timestamptz, integer) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION notifications_retention_purge_attempts_v1(timestamptz, integer) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION notifications_retention_purge_receipts_v1(timestamptz, integer) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION notifications_retention_purge_effects_v1(timestamptz, integer) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION notifications_retention_redact_content_v1(timestamptz, integer) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION notifications_retention_purge_attempts_v1(timestamptz, integer) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION notifications_retention_purge_receipts_v1(timestamptz, integer) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION notifications_retention_purge_effects_v1(timestamptz, integer) TO harpy_runtime;

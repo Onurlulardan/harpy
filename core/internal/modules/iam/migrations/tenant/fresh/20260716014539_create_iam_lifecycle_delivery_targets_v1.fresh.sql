@@ -12,8 +12,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT iam_identity_actor_assert_v1(
            p_scope_schema, p_actor_id, p_permission_id,
@@ -49,8 +49,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_identifier_kind NOT IN ('email_v1', 'portal_v1') OR
        pg_catalog.octet_length(p_identifier_sha256) <> 32 THEN
@@ -88,8 +88,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT iam_identity_actor_assert_v1(
            p_scope_schema, p_actor_id, p_permission_id,

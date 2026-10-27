@@ -26,8 +26,8 @@ DECLARE
     v_now timestamptz;
 BEGIN
     v_now := pg_catalog.clock_timestamp();
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_operation_id IS NULL OR p_run_id IS NULL
        OR p_authority_id IS NULL
        OR p_plan_sha256 !~ '^[0-9a-f]{64}$'
@@ -163,5 +163,5 @@ REVOKE ALL ON FUNCTION platform.billing_register_v1_adoption_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_register_v1_adoption_v1(
     uuid, uuid, uuid, bytea, text, bytea, text
-) TO forgecrud_adopter;
+) TO harpy_adopter;
 -- +goose StatementEnd

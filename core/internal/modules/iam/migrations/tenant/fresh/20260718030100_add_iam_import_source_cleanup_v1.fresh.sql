@@ -70,8 +70,8 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
     IF TG_OP IS DISTINCT FROM 'UPDATE' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE='P6048',
             MESSAGE='IAM import source storage is immutable';
     END IF;

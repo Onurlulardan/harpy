@@ -1,6 +1,6 @@
 -- +goose Up
-REVOKE DELETE ON TABLE iam_lifecycle_delivery_worker_claims FROM forgecrud_runtime;
-REVOKE DELETE ON TABLE iam_lifecycle_delivery_artifacts FROM forgecrud_runtime;
+REVOKE DELETE ON TABLE iam_lifecycle_delivery_worker_claims FROM harpy_runtime;
+REVOKE DELETE ON TABLE iam_lifecycle_delivery_artifacts FROM harpy_runtime;
 
 -- +goose StatementBegin
 CREATE FUNCTION iam_lifecycle_delivery_release_claim_v1(
@@ -63,8 +63,8 @@ $function$;
 REVOKE ALL ON FUNCTION iam_lifecycle_delivery_release_claim_v1(text,uuid,text)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_lifecycle_delivery_release_claim_v1(text,uuid,text)
-TO forgecrud_runtime;
+TO harpy_runtime;
 REVOKE ALL ON FUNCTION iam_lifecycle_delivery_delete_artifact_v1(uuid,text,uuid,text)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_lifecycle_delivery_delete_artifact_v1(uuid,text,uuid,text)
-TO forgecrud_runtime;
+TO harpy_runtime;

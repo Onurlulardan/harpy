@@ -88,4 +88,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.platformauthority_delivery_claim_v1(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformauthority_delivery_claim_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

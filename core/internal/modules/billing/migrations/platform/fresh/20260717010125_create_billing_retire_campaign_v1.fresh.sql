@@ -74,5 +74,5 @@ REVOKE ALL ON FUNCTION platform.billing_retire_campaign_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_retire_campaign_v1(
     uuid,uuid,uuid,uuid,text,bytea,bigint,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

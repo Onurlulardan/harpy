@@ -42,8 +42,8 @@ DECLARE
     v_token_version bigint;
     v_authorization_version bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM initial password completion scope is invalid';
@@ -167,4 +167,4 @@ REVOKE ALL ON FUNCTION iam_initial_password_complete_v1(
 GRANT EXECUTE ON FUNCTION iam_initial_password_complete_v1(
     name,uuid,bytea,bytea,bytea,bigint,uuid,uuid,bigint,bigint,
     bytea,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

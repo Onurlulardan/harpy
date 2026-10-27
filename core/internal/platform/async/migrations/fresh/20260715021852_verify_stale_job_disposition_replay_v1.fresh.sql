@@ -20,8 +20,8 @@ DECLARE
     v_code text;
     v_error_sha256 text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_job.state <> 'cancelled' OR p_root_id IS NULL OR p_action_id IS NULL OR
        p_action NOT IN ('adopt','cancel') OR
        NOT ((p_action = 'adopt' AND p_result_job_id IS NOT NULL) OR

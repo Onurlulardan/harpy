@@ -12,7 +12,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_tenant_id IS NULL OR
        p_tenant_id = '00000000-0000-0000-0000-000000000000'::uuid OR
        pg_catalog.octet_length(p_public_id) IS DISTINCT FROM 16 OR

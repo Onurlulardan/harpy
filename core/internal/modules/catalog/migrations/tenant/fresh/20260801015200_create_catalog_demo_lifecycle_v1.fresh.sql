@@ -89,15 +89,15 @@ ALTER TABLE catalog_demo_receipts
 ALTER TABLE catalog_demo_receipts
     VALIDATE CONSTRAINT catalog_demo_receipts_operation_fk;
 
-GRANT SELECT, INSERT ON TABLE catalog_demo_operation_plans TO forgecrud_runtime;
-GRANT SELECT ON TABLE catalog_demo_states TO forgecrud_runtime;
-GRANT SELECT ON TABLE catalog_demo_payloads TO forgecrud_runtime;
+GRANT SELECT, INSERT ON TABLE catalog_demo_operation_plans TO harpy_runtime;
+GRANT SELECT ON TABLE catalog_demo_states TO harpy_runtime;
+GRANT SELECT ON TABLE catalog_demo_payloads TO harpy_runtime;
 GRANT INSERT (installation_id, component_id, package_id, release_id,
     source_run_id, content_sha256, state, record_ids, last_receipt_id,
-    revision, updated_at) ON catalog_demo_states TO forgecrud_runtime;
+    revision, updated_at) ON catalog_demo_states TO harpy_runtime;
 GRANT UPDATE (source_run_id, state, record_ids, last_receipt_id,
-    revision, updated_at) ON catalog_demo_states TO forgecrud_runtime;
-GRANT SELECT ON TABLE catalog_demo_receipts TO forgecrud_runtime;
+    revision, updated_at) ON catalog_demo_states TO harpy_runtime;
+GRANT SELECT ON TABLE catalog_demo_receipts TO harpy_runtime;
 GRANT INSERT (receipt_id, installation_id, operation_id, component_id,
     action, stable_ids, content_sha256, actor_id, idempotency_key,
-    completed_at) ON catalog_demo_receipts TO forgecrud_runtime;
+    completed_at) ON catalog_demo_receipts TO harpy_runtime;

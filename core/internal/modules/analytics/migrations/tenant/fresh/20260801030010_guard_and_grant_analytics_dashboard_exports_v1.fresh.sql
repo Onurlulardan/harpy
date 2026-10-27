@@ -104,29 +104,29 @@ REVOKE ALL ON FUNCTION analytics_guard_dashboard_export_attempt_receipt_v1() FRO
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_submit_v1(
     name,uuid,uuid,text,bytea,uuid,uuid,uuid,text,bytea,
     bigint,bigint,bigint,bigint,bigint,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_snapshot_v1(
-    name,uuid,uuid,uuid,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_delete_v1(
-    name,uuid,uuid,uuid,text,bytea,uuid,uuid,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,text,bytea,uuid,uuid,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_content_v1(
-    name,uuid,uuid,uuid,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_claim_v1(
-    name,uuid,uuid,uuid,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_effect_start_v1(
     name,uuid,uuid,bigint,text,text,bytea,bytea,bytea,bytea,bytea,
-    bigint,bigint,bigint,text,text,timestamptz) TO forgecrud_runtime;
+    bigint,bigint,bigint,text,text,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_complete_v1(
     name,uuid,uuid,bigint,text,text,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_restart_missing_v1(
-    name,uuid,uuid,bigint,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,bigint,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_outcome_unknown_v1(
-    name,uuid,uuid,bigint,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,bigint,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_fail_render_v1(
-    name,uuid,uuid,bigint,text,boolean,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,bigint,text,boolean,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_delete_claim_v1(
-    name,uuid,uuid,uuid,timestamptz) TO forgecrud_runtime;
+    name,uuid,uuid,uuid,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_delete_complete_v1(
     name,uuid,uuid,uuid,bigint,text,text,bytea,bytea,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

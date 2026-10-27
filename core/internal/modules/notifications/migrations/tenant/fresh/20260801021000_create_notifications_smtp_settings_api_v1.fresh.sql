@@ -78,16 +78,16 @@ FOR EACH ROW EXECUTE FUNCTION notifications_smtp_immutable_v1();
 
 REVOKE ALL ON FUNCTION notifications_smtp_immutable_v1() FROM PUBLIC;
 
-GRANT SELECT ON TABLE notifications_smtp_settings_lock TO forgecrud_runtime;
-GRANT UPDATE (singleton) ON notifications_smtp_settings_lock TO forgecrud_runtime;
-GRANT SELECT ON TABLE notifications_smtp_settings_receipts TO forgecrud_runtime;
+GRANT SELECT ON TABLE notifications_smtp_settings_lock TO harpy_runtime;
+GRANT UPDATE (singleton) ON notifications_smtp_settings_lock TO harpy_runtime;
+GRANT SELECT ON TABLE notifications_smtp_settings_receipts TO harpy_runtime;
 GRANT INSERT (
     idempotency_key, request_digest, expected_settings_revision,
     result_settings_revision, provider_config_id, provider_revision, created_at
-) ON notifications_smtp_settings_receipts TO forgecrud_runtime;
-GRANT SELECT ON TABLE notifications_smtp_test_intents TO forgecrud_runtime;
+) ON notifications_smtp_settings_receipts TO harpy_runtime;
+GRANT SELECT ON TABLE notifications_smtp_test_intents TO harpy_runtime;
 GRANT INSERT (
     operation_id, idempotency_key, request_digest, expected_settings_revision,
     provider_config_version_id, actor_id, target_ciphertext, target_nonce,
     target_wrapped_dek, target_kek_revision, target_digest, requested_at, created_at
-) ON notifications_smtp_test_intents TO forgecrud_runtime;
+) ON notifications_smtp_test_intents TO harpy_runtime;

@@ -38,7 +38,7 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'DOCUMENT_ARCHIVE_IMMUTABLE';
     END IF;
-    IF SESSION_USER = 'forgecrud_restore'
+    IF SESSION_USER = 'harpy_restore'
        AND OLD.lifecycle_state = 'PENDING'
        AND NEW.lifecycle_state = 'CANCELLED'
        AND NEW.updated_at >= OLD.updated_at

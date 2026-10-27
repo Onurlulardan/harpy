@@ -13,8 +13,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_effect_id IS NULL OR p_claimed_at IS NULL OR
        pg_catalog.char_length(p_effect_idempotency_key) NOT BETWEEN 1 AND 512 OR
@@ -64,8 +64,8 @@ RETURNS SETOF boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_effect_id IS NULL OR pg_catalog.char_length(p_artifact_ref) < 1 OR
        pg_catalog.char_length(p_effect_idempotency_key) NOT BETWEEN 1 AND 512 THEN
@@ -93,8 +93,8 @@ RETURNS SETOF boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_effect_id IS NULL OR p_outcome_unknown_at IS NULL OR
        pg_catalog.char_length(p_artifact_ref) < 1 OR
@@ -125,16 +125,16 @@ REVOKE ALL ON FUNCTION iam_invitation_delivery_worker_claim_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_invitation_delivery_worker_claim_v1(
     name,text,uuid,text,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION iam_invitation_delivery_worker_release_v1(
     name,text,uuid,text
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_invitation_delivery_worker_release_v1(
     name,text,uuid,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION iam_invitation_delivery_worker_mark_unknown_v1(
     name,text,uuid,text,timestamptz
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_invitation_delivery_worker_mark_unknown_v1(
     name,text,uuid,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

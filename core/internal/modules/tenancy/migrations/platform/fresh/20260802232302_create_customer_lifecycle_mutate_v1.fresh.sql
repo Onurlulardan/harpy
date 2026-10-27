@@ -20,8 +20,8 @@ DECLARE
     v_expected bigint;
     v_document jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_environment_id IS NULL OR p_control_tenant_id IS NULL OR
        p_actor_id IS NULL OR p_target_tenant_id IS NULL OR
        p_target_tenant_id=p_control_tenant_id OR

@@ -12,8 +12,8 @@ DECLARE
     delivery platform.tenancy_installation_credential_deliveries%ROWTYPE;
     now_at timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='installation delivery complete denied';
     END IF;
     SELECT * INTO delivery
@@ -49,4 +49,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_complete_v1(
     uuid,uuid,bigint) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_complete_v1(
-    uuid,uuid,bigint) TO forgecrud_runtime;
+    uuid,uuid,bigint) TO harpy_runtime;

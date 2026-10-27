@@ -15,8 +15,8 @@ DECLARE
     v_job platform.jobs%ROWTYPE;
     v_attempt platform.job_attempts%ROWTYPE;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        pg_catalog.uuid_extract_version(p_export_id) IS DISTINCT FROM 7 OR
        p_attempt_generation NOT BETWEEN 1 AND 3 OR p_lease_owner_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -67,8 +67,8 @@ SET search_path = pg_catalog
 AS $function$
 DECLARE v_tenant_id uuid;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        pg_catalog.uuid_extract_version(p_export_id) IS DISTINCT FROM 7 THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Forms export spool tenant authority is invalid';

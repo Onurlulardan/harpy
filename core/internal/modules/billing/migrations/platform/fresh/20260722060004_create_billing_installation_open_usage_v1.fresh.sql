@@ -13,8 +13,8 @@ DECLARE
     v_total_count integer;
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_manifest_sha256 !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE='22023',
             MESSAGE='billing installation usage input is invalid';
@@ -85,4 +85,4 @@ REVOKE ALL ON FUNCTION platform.billing_installation_open_usage_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_installation_open_usage_v1(
     uuid,uuid,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

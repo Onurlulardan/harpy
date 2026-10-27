@@ -48,7 +48,7 @@ CREATE TABLE cutover_authority.full_rollout_completion_receipts (
         rollback_window_closed_at <= recorded_at
     ),
     CONSTRAINT full_rollout_completion_actor_check CHECK (
-        recorded_by = 'forgecrud_cluster_admin'
+        recorded_by = 'harpy_cluster_admin'
     )
 );
 
@@ -59,8 +59,8 @@ ALTER TABLE cutover_authority.full_rollout_completion_receipts
     ENABLE ALWAYS TRIGGER full_rollout_completion_receipts_immutable;
 
 REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM PUBLIC;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_migrator;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_cluster_admin;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_cutover_finalizer;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_adopter;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_runtime;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_migrator;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_cluster_admin;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_cutover_finalizer;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_adopter;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_runtime;

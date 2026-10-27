@@ -9,8 +9,8 @@ DECLARE
     v_stage_count bigint;
     v_stage_root text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
       RAISE EXCEPTION USING ERRCODE='42501',
         MESSAGE='Analytics V1 adoption source inventory denied';
     END IF;
@@ -50,8 +50,8 @@ AS $function$
 DECLARE
     v_digest text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR EXISTS (
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR EXISTS (
       SELECT 1 FROM analytics_v1_adoption_stage AS stage
       LEFT JOIN analytics_v1_adoption_differentials AS differential
         ON differential.operation_id=stage.operation_id
@@ -99,8 +99,8 @@ AS $function$
 DECLARE
     v_digest text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_final_lsn IS NULL OR EXISTS (
         SELECT 1 FROM analytics_v1_adoption_stage AS stage
         WHERE stage.operation_id=p_operation_id AND stage.run_id=p_run_id

@@ -4,4 +4,4 @@ REVOKE ALL ON FUNCTION iam_identity_change_audit_write_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_identity_change_audit_write_v1(
     name,uuid,uuid,text,uuid,bytea,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

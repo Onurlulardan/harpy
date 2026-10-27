@@ -41,8 +41,8 @@ BEGIN
     );
     IF v_release_changed THEN
         v_rollforward :=
-            SESSION_USER = 'forgecrud_migrator'
-            AND CURRENT_USER = 'forgecrud_owner'
+            SESSION_USER = 'harpy_migrator'
+            AND CURRENT_USER = 'harpy_owner'
             AND OLD.state IN ('pending', 'failed', 'running')
             AND NEW.state = 'running'
             AND NEW.current_attempt = OLD.current_attempt + 1

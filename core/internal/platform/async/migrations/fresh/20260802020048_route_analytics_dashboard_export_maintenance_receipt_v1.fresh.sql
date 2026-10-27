@@ -9,8 +9,8 @@ AS $function$
 DECLARE v_state text;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_receipt.writer_origin IS DISTINCT FROM 'v2' OR
        p_receipt.effect_kind NOT IN ('analytics.dashboard.export.delete',
                                      'analytics.dashboard.export.expire') THEN
@@ -51,13 +51,13 @@ BEGIN
             NEW,CURRENT_USER,SESSION_USER);
         RETURN NEW;
     END IF;
-    IF SESSION_USER='forgecrud_v2_runtime' AND NEW.writer_origin='v2'
+    IF SESSION_USER='harpy_v2_runtime' AND NEW.writer_origin='v2'
        AND EXISTS (SELECT 1 FROM platform.cutover_job_bindings AS binding
                    WHERE binding.job_id=(v_row->>'causation_id')::uuid) THEN
         PERFORM platform.platform_async_assert_cutover_effect_receipt_v1(NEW);
         RETURN NEW;
     END IF;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        NEW.writer_origin IS DISTINCT FROM 'v2' THEN
         RAISE EXCEPTION USING ERRCODE='P5605',
             MESSAGE='async owner insert authority is invalid';

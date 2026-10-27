@@ -14,8 +14,8 @@ AS $function$
 DECLARE
     v_revision bigint;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_mode NOT IN ('unknown_reserved','expired_used') OR
        NOT pg_catalog.isfinite(p_observed_at) OR
        (p_mode='unknown_reserved' AND p_ciphertext_bytes<>2147483648) OR
@@ -62,8 +62,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Forms export quota read authority is invalid';
     END IF;
@@ -91,8 +91,8 @@ SET search_path = pg_catalog
 AS $function$
 DECLARE v_revision bigint;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_expected_revision<0 OR p_fenced<>(p_fence_code IS NOT NULL) OR
        (p_fence_code IS NOT NULL AND
         p_fence_code !~ '^[A-Z][A-Z0-9_]{1,63}$') OR

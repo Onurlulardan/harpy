@@ -54,4 +54,4 @@ REVOKE ALL ON FUNCTION analytics_reference_release_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_reference_release_v1(
     name,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

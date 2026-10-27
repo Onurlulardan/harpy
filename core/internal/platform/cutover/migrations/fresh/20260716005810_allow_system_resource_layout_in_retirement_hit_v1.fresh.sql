@@ -16,7 +16,7 @@ DECLARE
     v_found_count bigint;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_contract_keys IS NULL OR p_owner_module IS NULL OR p_domain IS NULL OR
        p_owner_module OPERATOR(pg_catalog.!~) '^[a-z][a-z0-9_]{0,62}$' OR
        NOT (p_domain OPERATOR(pg_catalog.=) ANY (
@@ -124,6 +124,6 @@ $function$;
 -- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.contract_retirement_hit_v1(jsonb,text,text) FROM PUBLIC;
-GRANT USAGE ON SCHEMA platform TO forgecrud_runtime;
+GRANT USAGE ON SCHEMA platform TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.contract_retirement_hit_v1(jsonb,text,text)
-TO forgecrud_runtime;
+TO harpy_runtime;

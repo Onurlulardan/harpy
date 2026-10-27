@@ -17,8 +17,8 @@ DECLARE
     v_effect_key text;
     v_document bytea;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.uuid_extract_version(p_adoption_run_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_source_version_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_job_id) IS DISTINCT FROM 7 OR

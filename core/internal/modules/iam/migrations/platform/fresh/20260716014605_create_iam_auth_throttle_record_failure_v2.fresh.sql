@@ -28,8 +28,8 @@ DECLARE
 BEGIN
 	 v_window := 300;
 	 v_seconds := 900;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_kind NOT IN ('tenant','environment') OR
        p_purpose NOT IN ('login','refresh') OR
        NOT platform.iam_hmac_key_id_valid_v1(p_key_id) OR

@@ -11,8 +11,8 @@ AS $function$
 DECLARE
     v_rows bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_identifier_id IS NULL OR
        p_source_revision IS NULL OR p_source_revision < 1 OR
        NOT EXISTS (
@@ -49,8 +49,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR NOT EXISTS (
            SELECT 1 FROM platform.tenants AS tenant
            WHERE tenant.id = p_tenant_id
@@ -74,10 +74,10 @@ FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION platform.iam_maintenance_directory_apply_v1(
     uuid,uuid,uuid,text,text,bigint,bytea,jsonb
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_maintenance_directory_purge_v1(
     uuid,uuid,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_maintenance_directory_snapshot_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 -- +goose StatementEnd

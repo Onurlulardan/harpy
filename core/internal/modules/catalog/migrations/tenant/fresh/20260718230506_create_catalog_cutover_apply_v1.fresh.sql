@@ -19,8 +19,8 @@ DECLARE
     v_state_sha text;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_kind IS DISTINCT FROM 'tenant' OR p_relation_ordinal<>1 OR
        p_batch_sha256 !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE='42501',

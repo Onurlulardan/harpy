@@ -27,8 +27,8 @@ DECLARE
     v_count integer;
 BEGIN
     v_count := pg_catalog.jsonb_array_length(p_batch->'changes');
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM V1 adoption batch evidence principal denied';
     END IF;

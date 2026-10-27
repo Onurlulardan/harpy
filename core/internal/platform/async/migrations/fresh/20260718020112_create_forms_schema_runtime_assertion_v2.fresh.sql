@@ -13,8 +13,8 @@ DECLARE
     v_step platform.schema_job_steps%ROWTYPE;
     v_payload_ref text;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_migrator','forgecrud_v2_runtime')
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER NOT IN ('harpy_migrator','harpy_v2_runtime')
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_job.id IS NULL
        OR pg_catalog.uuid_extract_version(p_job.id) IS DISTINCT FROM 7
        OR p_job.payload_ref IS NULL THEN

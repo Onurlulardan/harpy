@@ -26,6 +26,6 @@ ALTER TABLE documents_blob_copy_checkpoints
            target_wrapped_dek IS NOT NULL));
 
 GRANT INSERT (source_metadata_sha256, source_lsn, target_object_generation, target_ciphertext_sha256, target_key_id, target_wrapped_dek)
-ON documents_blob_copy_checkpoints TO forgecrud_adopter;
+ON documents_blob_copy_checkpoints TO harpy_adopter;
 GRANT UPDATE (source_metadata_sha256, source_lsn, target_object_generation, target_ciphertext_sha256, target_key_id, target_wrapped_dek)
-ON documents_blob_copy_checkpoints TO forgecrud_adopter;
+ON documents_blob_copy_checkpoints TO harpy_adopter;

@@ -2,4 +2,4 @@
 GRANT EXECUTE ON FUNCTION iam_catalog_project_v1(
     name,uuid,uuid,text,text,uuid,uuid,bigint,text,text,text,text,text,
     bytea,integer,integer,bytea,text,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

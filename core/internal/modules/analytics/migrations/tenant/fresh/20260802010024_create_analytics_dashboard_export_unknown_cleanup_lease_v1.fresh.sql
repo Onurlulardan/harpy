@@ -185,7 +185,7 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_unknown_resolution_evidence_va
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_unknown_cleanup_checkpoint_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,bigint,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_unknown_cleanup_defer_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,bigint,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

@@ -21,8 +21,8 @@ DECLARE
     v_exact_member_count bigint;
     v_retirement platform.contract_retirements%ROWTYPE;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_v1_runtime','forgecrud_v2_runtime') OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER NOT IN ('harpy_v1_runtime','harpy_v2_runtime') OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_target_domain IS NULL OR
        NOT (p_target_domain = ANY (ARRAY[
            'analytics','billing','catalog','documents','forms',

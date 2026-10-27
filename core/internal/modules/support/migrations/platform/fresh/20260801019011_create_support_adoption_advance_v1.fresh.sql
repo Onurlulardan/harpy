@@ -78,7 +78,7 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION platform.support_advance_adoption_v1(uuid,uuid,uuid,bigint,bigint,uuid,bytea,timestamp with time zone) FROM PUBLIC, forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_advance_adoption_v1(uuid,uuid,uuid,bigint,bigint,uuid,bytea,timestamp with time zone) TO forgecrud_adopter;
+REVOKE ALL ON FUNCTION platform.support_advance_adoption_v1(uuid,uuid,uuid,bigint,bigint,uuid,bytea,timestamp with time zone) FROM PUBLIC, harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_advance_adoption_v1(uuid,uuid,uuid,bigint,bigint,uuid,bytea,timestamp with time zone) TO harpy_adopter;
 -- +goose StatementEnd
 

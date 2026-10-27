@@ -14,7 +14,7 @@ DECLARE
     v_item_count bigint;
     v_inventory_sha256 text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5641',
             MESSAGE = 'V1 async inventory seal requires adopter authority';
     END IF;

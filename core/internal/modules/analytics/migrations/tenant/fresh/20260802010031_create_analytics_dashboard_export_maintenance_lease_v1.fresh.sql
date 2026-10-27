@@ -143,8 +143,8 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_maintenance_unknown_defer_v1(
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_maintenance_unknown_checkpoint_v1(
     name,text,uuid,name,uuid,text,bigint,bigint,uuid,uuid,integer,bigint,
     uuid,uuid,bytea,timestamptz,bigint,uuid,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_maintenance_unknown_defer_v1(
     name,text,uuid,name,uuid,text,bigint,bigint,uuid,uuid,integer,bigint,
     uuid,uuid,bytea,timestamptz,bigint,uuid,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

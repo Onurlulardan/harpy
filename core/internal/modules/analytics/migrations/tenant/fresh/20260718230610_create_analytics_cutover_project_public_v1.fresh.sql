@@ -12,8 +12,8 @@ DECLARE
 BEGIN
     v_pointer:=p_target->'public_pointer';
     v_route:=p_target->'legacy_route';
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        (SELECT pg_catalog.array_agg(key ORDER BY key)
         FROM pg_catalog.jsonb_object_keys(v_pointer) AS key)
        IS DISTINCT FROM ARRAY[

@@ -6,8 +6,8 @@ CREATE FUNCTION catalog_v1_adoption_project_core_v1(
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_kind NOT IN ('installation','binding','dependency') OR
        pg_catalog.jsonb_typeof(p_record) IS DISTINCT FROM 'object' THEN
         RAISE EXCEPTION USING ERRCODE='42501',

@@ -119,6 +119,6 @@ ON platform.tenancy_customer_lifecycle_operations(state,created_at,operation_id)
 WHERE state IN ('REQUESTED','RUNNING');
 
 REVOKE ALL ON TABLE platform.tenancy_customer_lifecycle_receipts
-FROM PUBLIC,forgecrud_runtime;
+FROM PUBLIC,harpy_runtime;
 REVOKE ALL ON TABLE platform.tenancy_customer_lifecycle_operations
-FROM PUBLIC,forgecrud_runtime;
+FROM PUBLIC,harpy_runtime;

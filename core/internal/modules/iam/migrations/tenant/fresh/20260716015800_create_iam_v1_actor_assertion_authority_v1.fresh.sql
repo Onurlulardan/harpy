@@ -20,8 +20,8 @@ DECLARE
     v_token_version bigint;
     v_authorization_version bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v1_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v1_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM V1 actor assertion scope is invalid';

@@ -20,7 +20,7 @@ BEGIN
       AND writer = 'v2'
       AND generation = expected_generation
     FOR SHARE;
-    IF matched IS DISTINCT FROM true OR session_user <> 'forgecrud_v2_runtime' THEN
+    IF matched IS DISTINCT FROM true OR session_user <> 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'catalog authority is not current';
     END IF;
@@ -30,4 +30,4 @@ $$;
 
 REVOKE ALL ON FUNCTION platform.catalog_assert_tenant_authority_v1(uuid,bigint) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.catalog_assert_tenant_authority_v1(uuid,bigint)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

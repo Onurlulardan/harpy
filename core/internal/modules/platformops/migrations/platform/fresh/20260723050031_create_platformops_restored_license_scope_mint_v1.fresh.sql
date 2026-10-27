@@ -23,7 +23,7 @@ DECLARE
     v_restore platform.platformops_restore_operations%ROWTYPE;
     v_grant platform.platformops_restored_license_grants%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR pg_catalog.current_setting('application_name', true)
             <> 'forgecrud-v2:core-operator-license-reconcile' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

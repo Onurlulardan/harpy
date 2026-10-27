@@ -170,25 +170,25 @@ REVOKE ALL ON FUNCTION platform.platformops_import_restore_receipt_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_complete_recovery_execution_v1(
     uuid,uuid,uuid,text,bytea,uuid
-) FROM forgecrud_backup_reader;
+) FROM harpy_backup_reader;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_next_recovery_set_v2(
     uuid,uuid
-) FROM forgecrud_backup_reader;
+) FROM harpy_backup_reader;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v2(
     uuid,uuid,uuid,text
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 REVOKE EXECUTE ON FUNCTION platform.platformops_import_restore_receipt_v1(
     uuid,uuid,uuid,text,text,text,bytea,uuid,uuid,text,text,text,jsonb
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_complete_recovery_execution_v2(
     uuid,uuid,uuid,text,bytea,uuid
-) TO forgecrud_backup_reader;
+) TO harpy_backup_reader;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_next_recovery_set_v3(
     uuid,uuid
-) TO forgecrud_backup_reader;
+) TO harpy_backup_reader;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v3(
     uuid,uuid,uuid,text
-) TO forgecrud_restore;
+) TO harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_import_restore_receipt_v2(
     uuid,uuid,uuid,text,text,text,bytea,uuid,uuid,text,text,text,jsonb
-) TO forgecrud_restore;
+) TO harpy_restore;

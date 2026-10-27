@@ -24,7 +24,7 @@ BEGIN
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'jobs' OR
        pg_catalog.pg_trigger_depth() IS DISTINCT FROM 1 OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        OLD.state IS NOT DISTINCT FROM 'dead' OR NEW.state IS DISTINCT FROM 'dead' OR
        NEW.completed_at IS NULL OR NEW.completed_at IS DISTINCT FROM NEW.updated_at OR
        NEW.payload_ref IS NULL OR NEW.last_error_code IS NULL THEN

@@ -153,10 +153,10 @@ REVOKE ALL ON FUNCTION platform.tenancy_onboarding_activate_v3(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_onboarding_activate_v3(
     uuid,text,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION platform.tenancy_activation_initialize_v5(
     uuid,uuid,uuid,text,text,uuid,text,text,text,text
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_activation_initialize_v5(
     uuid,uuid,uuid,text,text,uuid,text,text,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

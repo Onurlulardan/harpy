@@ -19,8 +19,8 @@ AS $function$
 DECLARE
     v_rows bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        pg_catalog.octet_length(p_scope_binding) IS DISTINCT FROM 32 OR
        pg_catalog.octet_length(p_code_hmac) IS DISTINCT FROM 32 OR

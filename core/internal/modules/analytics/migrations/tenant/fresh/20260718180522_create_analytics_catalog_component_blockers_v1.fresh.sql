@@ -64,4 +64,4 @@ REVOKE ALL ON FUNCTION analytics_catalog_component_blockers_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_catalog_component_blockers_v1(
     uuid,uuid,uuid,bigint,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

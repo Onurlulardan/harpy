@@ -180,19 +180,19 @@ FOR EACH ROW EXECUTE FUNCTION documents_guard_forms_cleanup_v1();
 ALTER TABLE documents_forms_cleanup_targets
     ENABLE ALWAYS TRIGGER documents_forms_cleanup_target_guard;
 
-GRANT SELECT ON documents_forms_cleanup_operations TO forgecrud_runtime;
+GRANT SELECT ON documents_forms_cleanup_operations TO harpy_runtime;
 GRANT INSERT (operation_id,definition_id,reference_epoch,lifecycle_state,
  catalog_version,source_owner,source_kind,usage,requested_at,updated_at)
-ON documents_forms_cleanup_operations TO forgecrud_runtime;
+ON documents_forms_cleanup_operations TO harpy_runtime;
 GRANT UPDATE (
     lifecycle_state, link_count, item_count, version_count, ciphertext_bytes,
     link_catalog_sha256, zero_blocker_sha256, receipt_sha256,
     updated_at, completed_at
-) ON documents_forms_cleanup_operations TO forgecrud_runtime;
-GRANT SELECT ON documents_forms_cleanup_targets TO forgecrud_runtime;
+) ON documents_forms_cleanup_operations TO harpy_runtime;
+GRANT SELECT ON documents_forms_cleanup_targets TO harpy_runtime;
 GRANT INSERT (operation_id, item_id, created_at)
-ON documents_forms_cleanup_targets TO forgecrud_runtime;
+ON documents_forms_cleanup_targets TO harpy_runtime;
 GRANT UPDATE (purge_job_id, purge_run_at, enqueued_at)
-ON documents_forms_cleanup_targets TO forgecrud_runtime;
+ON documents_forms_cleanup_targets TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION documents_guard_forms_cleanup_v1()
-TO forgecrud_runtime;
+TO harpy_runtime;

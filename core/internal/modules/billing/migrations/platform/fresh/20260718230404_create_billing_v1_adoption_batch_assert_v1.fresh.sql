@@ -20,8 +20,8 @@ BEGIN
     v_change_count := pg_catalog.jsonb_array_length(p_batch->'changes');
     v_group := CASE p_expected_scope
         WHEN 'global' THEN 'billing' ELSE 'billing_forms' END;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing V1 adoption evidence principal denied';
     END IF;

@@ -12,7 +12,7 @@ CREATE TABLE platform.iam_v1_protected_authority_adoption_receipts (
         CHECK (pg_catalog.octet_length(protected_mapping_sha256)=32),
     plan_sha256 bytea NOT NULL CHECK (pg_catalog.octet_length(plan_sha256)=32),
     adopted_at timestamptz NOT NULL,
-    recorded_by name NOT NULL CHECK (recorded_by='forgecrud_adopter'),
+    recorded_by name NOT NULL CHECK (recorded_by='harpy_adopter'),
     CONSTRAINT iam_v1_protected_authority_mutation_fk
         FOREIGN KEY (operation_id)
         REFERENCES platform.iam_platform_mutation_receipts (operation_id)

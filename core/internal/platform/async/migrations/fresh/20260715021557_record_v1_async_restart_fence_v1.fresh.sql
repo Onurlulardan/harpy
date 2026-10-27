@@ -22,7 +22,7 @@ DECLARE
     v_captured_at timestamptz;
     v_inserted boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cluster_admin' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5652',
             MESSAGE = 'V1 async restart fence requires cluster authority';
     END IF;

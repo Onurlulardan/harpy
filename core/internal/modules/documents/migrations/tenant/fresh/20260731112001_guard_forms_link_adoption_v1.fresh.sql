@@ -99,4 +99,4 @@ $function$;
 REVOKE ALL ON FUNCTION documents_form_record_adoption_load_v1(
     uuid,uuid,bigint,bytea,bytea,timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION documents_form_record_adoption_load_v1(
-    uuid,uuid,bigint,bytea,bytea,timestamptz) TO forgecrud_runtime;
+    uuid,uuid,bigint,bytea,bytea,timestamptz) TO harpy_runtime;

@@ -20,8 +20,8 @@ AS $function$
 DECLARE
     v_count bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_expected_source_revision IS NULL OR p_source_revision IS NULL OR
        p_source_revision OPERATOR(pg_catalog.<=) p_expected_source_revision THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

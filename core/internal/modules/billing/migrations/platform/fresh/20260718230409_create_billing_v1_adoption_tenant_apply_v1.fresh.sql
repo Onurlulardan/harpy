@@ -20,8 +20,8 @@ DECLARE
     v_source_sha text;
     v_lease_manifest text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_kind IS DISTINCT FROM 'tenant' OR
        p_checkpoint_key IS DISTINCT FROM 'billing' OR
        p_relation_ordinal IS DISTINCT FROM 1::smallint THEN

@@ -37,4 +37,4 @@ REVOKE ALL ON FUNCTION platform.iam_resolve_login_target_v3(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_resolve_login_target_v3(
     uuid,text,text,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

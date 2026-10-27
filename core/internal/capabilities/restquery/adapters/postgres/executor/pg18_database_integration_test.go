@@ -28,7 +28,7 @@ func pg18StartDatabase(t *testing.T, ctx context.Context) pg18Database {
 	t.Helper()
 	container, err := tcpostgres.Run(
 		ctx, pg18Image,
-		tcpostgres.WithDatabase("forgecrud_restquery"),
+		tcpostgres.WithDatabase("harpy_restquery"),
 		tcpostgres.WithUsername("postgres"),
 		tcpostgres.WithPassword("restquery-admin-integration-only"),
 		testcontainers.WithWaitStrategy(wait.ForAll(
@@ -69,7 +69,7 @@ func pg18StartDatabase(t *testing.T, ctx context.Context) pg18Database {
 	if err != nil {
 		t.Fatal(err)
 	}
-	parsed.User = url.UserPassword("forgecrud_v2_runtime", pg18RuntimePassword)
+	parsed.User = url.UserPassword("harpy_v2_runtime", pg18RuntimePassword)
 	return pg18Database{admin: admin, runtimeDSN: parsed.String()}
 }
 

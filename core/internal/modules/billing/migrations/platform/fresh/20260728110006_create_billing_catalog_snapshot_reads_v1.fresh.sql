@@ -65,6 +65,6 @@ WHERE campaign.authority_id =
       platform.billing_resolve_current_global_authority_v1('billing'::text);
 
 GRANT SELECT ON platform.billing_catalog_offering_snapshot_read_v1
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 GRANT SELECT ON platform.billing_catalog_campaign_snapshot_read_v1
-    TO forgecrud_runtime;
+    TO harpy_runtime;

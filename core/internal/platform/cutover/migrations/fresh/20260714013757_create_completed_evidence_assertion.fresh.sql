@@ -10,7 +10,7 @@ DECLARE
     v_terminal jsonb;
     v_invalid boolean;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_cluster_admin','forgecrud_cutover_finalizer') OR
+    IF SESSION_USER NOT IN ('harpy_cluster_admin','harpy_cutover_finalizer') OR
        p_operation_id IS NULL OR p_run_id IS NULL OR p_terminal_evidence_document IS NULL OR
        pg_catalog.octet_length(p_terminal_evidence_document) NOT BETWEEN 2 AND 16777216 THEN
         RAISE EXCEPTION USING ERRCODE='22023', MESSAGE='cutover completion evidence input is invalid';

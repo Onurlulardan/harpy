@@ -30,8 +30,8 @@ DECLARE
     v_ready platform.tenancy_tenant_migration_executor_readiness%ROWTYPE;
     v_request platform.tenancy_customer_provisioning_requests%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_operation_kind <> 'saas_customer_tenant_provision'
        OR p_deployment_mode <> 'saas' OR p_binding_purpose <> 'saas_customer'
        OR p_instance_owner_binding_id IS NOT NULL
@@ -132,4 +132,4 @@ GRANT EXECUTE ON FUNCTION platform.tenancy_customer_provision_accept_v1(
     uuid,uuid,text,text,text,text,text,text,uuid,name,text,uuid,uuid,uuid,uuid,
     uuid,bigint,text,timestamptz,bigint,text,bigint,text,uuid,text,uuid,bigint,
     text,text,text,timestamptz,uuid,uuid,text,text,text,text,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

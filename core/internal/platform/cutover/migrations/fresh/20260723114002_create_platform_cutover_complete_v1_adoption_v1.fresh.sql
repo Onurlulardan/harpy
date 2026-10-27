@@ -14,8 +14,8 @@ DECLARE
     v_tenant_count integer;
     v_billing_count integer;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name',true)
             !~ '^forgecrud-cutover/[0-9a-f-]{36}$'
        OR p_frontend_sha256 !~ '^[0-9a-f]{64}$'

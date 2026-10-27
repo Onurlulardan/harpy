@@ -130,4 +130,4 @@ REVOKE ALL ON FUNCTION catalog_record_purge_authority_v3(
 GRANT EXECUTE ON FUNCTION catalog_record_purge_authority_v3(
  uuid,uuid,uuid,text,uuid,uuid,uuid,uuid,text,uuid,text,text,text,text,text,
  bigint,bigint,bigint,bigint,uuid,text,text,timestamptz,timestamptz,
- timestamptz,timestamptz,timestamptz,timestamptz,text) TO forgecrud_runtime;
+ timestamptz,timestamptz,timestamptz,timestamptz,text) TO harpy_runtime;

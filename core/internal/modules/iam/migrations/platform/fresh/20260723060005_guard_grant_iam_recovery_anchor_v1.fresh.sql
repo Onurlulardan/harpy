@@ -83,20 +83,20 @@ ENABLE ALWAYS TRIGGER iam_recovery_anchor_operations_guard;
 
 REVOKE ALL ON FUNCTION platform.iam_recovery_anchor_guard_v1() FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.iam_recovery_anchor_operation_guard_v1() FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_list_v1(uuid,uuid,uuid) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_list_v1(uuid,uuid,uuid) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_options_v1(
     uuid,uuid,uuid,uuid,uuid,text,bytea,text,text,jsonb,bytea,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_registration_v1(uuid,uuid,uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_authority_context_v1(uuid,uuid,uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_stage_registration_v1(
     uuid,uuid,uuid,uuid,text,bytea,bytea,bytea,uuid,text,text,text,jsonb,bytea,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_stage_delete_v1(
-    uuid,uuid,uuid,uuid,uuid,text,bytea,timestamptz) TO forgecrud_runtime;
+    uuid,uuid,uuid,uuid,uuid,text,bytea,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_record_proposal_v1(
-    uuid,uuid,uuid,uuid,bigint,bytea,bytea,timestamptz) TO forgecrud_runtime;
+    uuid,uuid,uuid,uuid,bigint,bytea,bytea,timestamptz) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_anchor_commit_v1(uuid,uuid,uuid,timestamptz)
-TO forgecrud_runtime;
+TO harpy_runtime;

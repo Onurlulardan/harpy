@@ -29,6 +29,6 @@ FOR EACH ROW EXECUTE FUNCTION documents_guard_reference_target_v1();
 ALTER TABLE documents_legal_holds ENABLE ALWAYS TRIGGER documents_legal_holds_target_guard;
 
 GRANT EXECUTE ON FUNCTION documents_guard_reference_target_v1()
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION documents_guard_reference_target_v1()
-TO forgecrud_adopter;
+TO harpy_adopter;

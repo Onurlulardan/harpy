@@ -99,9 +99,9 @@ CREATE TABLE platform.support_adoption_runs (
     CHECK (target_sha256 IS NULL OR pg_catalog.octet_length(target_sha256) = 32)
 );
 
-REVOKE ALL ON TABLE platform.support_contact_messages FROM PUBLIC, forgecrud_runtime;
-REVOKE ALL ON TABLE platform.support_bug_reports FROM PUBLIC, forgecrud_runtime;
-REVOKE ALL ON TABLE platform.support_command_receipts FROM PUBLIC, forgecrud_runtime;
-REVOKE ALL ON TABLE platform.support_public_rate_leases FROM PUBLIC, forgecrud_runtime;
-REVOKE ALL ON TABLE platform.support_adoption_runs FROM PUBLIC, forgecrud_runtime;
+REVOKE ALL ON TABLE platform.support_contact_messages FROM PUBLIC, harpy_runtime;
+REVOKE ALL ON TABLE platform.support_bug_reports FROM PUBLIC, harpy_runtime;
+REVOKE ALL ON TABLE platform.support_command_receipts FROM PUBLIC, harpy_runtime;
+REVOKE ALL ON TABLE platform.support_public_rate_leases FROM PUBLIC, harpy_runtime;
+REVOKE ALL ON TABLE platform.support_adoption_runs FROM PUBLIC, harpy_runtime;
 -- +goose StatementEnd

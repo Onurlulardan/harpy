@@ -53,8 +53,8 @@ BEGIN
     v_stage_authentication_tag := (v_stage->>'authentication_tag')::bytea;
     v_stage_aad_sha256 := (v_stage->>'aad_sha256')::bytea;
     v_stage_ciphertext_sha256 := (v_stage->>'ciphertext_sha256')::bytea;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api'
        OR p_scope_schema IS DISTINCT FROM pg_catalog.current_schema()
@@ -153,4 +153,4 @@ REVOKE ALL ON FUNCTION iam_initial_admin_setup_reissue_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_initial_admin_setup_reissue_v1(
     name,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

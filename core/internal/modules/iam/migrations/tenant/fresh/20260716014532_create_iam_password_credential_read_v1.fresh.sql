@@ -33,5 +33,5 @@ REVOKE ALL ON FUNCTION iam_password_credential_read_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_password_credential_read_v1(
     name,uuid,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

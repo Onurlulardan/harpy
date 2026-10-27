@@ -10,8 +10,8 @@ DECLARE
     v_snapshot jsonb;
     v_material bytea;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
       RAISE EXCEPTION USING ERRCODE='42501',
         MESSAGE='Analytics V1 adoption zero-hit evidence denied';
     END IF;

@@ -98,5 +98,5 @@ REVOKE ALL ON FUNCTION platform.billing_create_offering_version_v1(
 GRANT EXECUTE ON FUNCTION platform.billing_create_offering_version_v1(
     uuid,uuid,uuid,uuid,uuid,text,bytea,bigint,text,boolean,boolean,
     integer,integer,smallint,smallint,timestamptz,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

@@ -146,6 +146,6 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.support_submit_contact_v1(uuid,text,text,text,text,text,text,text,text,bytea,text,bytea,timestamp with time zone) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.support_update_contact_v1(uuid,bigint,bigint,uuid,boolean,text,boolean,text,bigint,text,bytea,timestamp with time zone) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.support_submit_contact_v1(uuid,text,text,text,text,text,text,text,text,bytea,text,bytea,timestamp with time zone) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_update_contact_v1(uuid,bigint,bigint,uuid,boolean,text,boolean,text,bigint,text,bytea,timestamp with time zone) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_submit_contact_v1(uuid,text,text,text,text,text,text,text,text,bytea,text,bytea,timestamp with time zone) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_update_contact_v1(uuid,bigint,bigint,uuid,boolean,text,boolean,text,bigint,text,bytea,timestamp with time zone) TO harpy_runtime;
 -- +goose StatementEnd

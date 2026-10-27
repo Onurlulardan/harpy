@@ -12,7 +12,7 @@ type Row interface {
 }
 
 // Transaction is deliberately narrower than a connection. The V1 edge owns
-// begin/commit/rollback and must pass the same forgecrud_v1_runtime transaction
+// begin/commit/rollback and must pass the same harpy_v1_runtime transaction
 // to Consume and its business effect.
 type Transaction interface {
 	QueryRow(context.Context, string, ...any) Row

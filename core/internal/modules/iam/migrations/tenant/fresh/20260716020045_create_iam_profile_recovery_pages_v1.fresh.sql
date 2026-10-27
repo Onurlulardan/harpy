@@ -35,7 +35,7 @@ BEGIN
     v_source_evidence := pg_catalog.sha256(''::bytea);
     v_rolling := p_initial_rolling_sha256;
     v_total := 0;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_tenant_id IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_tenant_id IS NULL OR
        p_plan_id IS NULL OR p_resource_kind NOT IN ('user','organization','role') OR
        p_source_schema_id IS NULL OR p_target_schema_id IS NULL OR
        p_source_schema_id = p_target_schema_id OR p_remaining_count < 1 OR

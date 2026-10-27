@@ -11,7 +11,7 @@ AS $function$
 DECLARE
     v_epoch bytea;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='IAM tenant security epoch read is denied';

@@ -43,16 +43,16 @@ ALTER TABLE analytics_forms_reference_bindings
 REVOKE ALL ON FUNCTION analytics_forms_reference_guard_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_forms_reference_claim_v1(
     name,uuid,uuid,text,uuid,uuid,uuid,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_forms_reference_register_ack_v1(
     name,uuid,uuid,bigint,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_forms_reference_active_v1(
     name,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_forms_reference_release_claim_v1(
     name,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_forms_reference_release_ack_v1(
     name,uuid,uuid,bigint,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

@@ -19,8 +19,8 @@ DECLARE
     v_checkpoint_at timestamptz;
     v_max integer;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Analytics dashboard export maintenance checkpoint authority is invalid';
     END IF;

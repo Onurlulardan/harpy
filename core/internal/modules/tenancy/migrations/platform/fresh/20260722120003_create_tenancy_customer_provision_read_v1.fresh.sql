@@ -12,8 +12,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_operation_id IS NULL OR p_requested_by_subject_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='22023',
             MESSAGE='customer provisioning read is invalid';
@@ -43,4 +43,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.tenancy_customer_provision_read_v1(uuid,uuid)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_provision_read_v1(uuid,uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;

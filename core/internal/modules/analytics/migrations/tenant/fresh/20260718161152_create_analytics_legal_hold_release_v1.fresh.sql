@@ -55,4 +55,4 @@ REVOKE ALL ON FUNCTION analytics_legal_hold_release_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_legal_hold_release_v1(
     name,uuid,uuid,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

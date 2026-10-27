@@ -94,4 +94,4 @@ REVOKE ALL ON FUNCTION iam_system_record_import_worker_claim_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_system_record_import_worker_claim_v2(
     name,uuid,uuid,uuid,uuid,uuid,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;

@@ -28,8 +28,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_tenant_id IS NULL THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_tenant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='Tenant settings read denied';
     END IF;
     RETURN QUERY SELECT tenant.id, tenant.name::text, tenant.slug::text,
@@ -51,8 +51,8 @@ DECLARE
     v_expected bigint;
     v_result bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_tenant_id IS NULL OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_tenant_id IS NULL OR
        p_expected_revision < 1 OR p_request_sha256 IS NULL OR
        pg_catalog.length(p_request_sha256) <> 32 OR p_idempotency_key IS NULL OR
        p_idempotency_key !~ '^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$' OR
@@ -138,5 +138,5 @@ FOR EACH ROW EXECUTE FUNCTION platform.tenancy_v1_settings_fence_v1();
 
 REVOKE ALL ON FUNCTION platform.tenancy_settings_read_v1(uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.tenancy_settings_update_v1(uuid,text,bigint,text,bytea) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.tenancy_settings_read_v1(uuid) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.tenancy_settings_update_v1(uuid,text,bigint,text,bytea) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.tenancy_settings_read_v1(uuid) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.tenancy_settings_update_v1(uuid,text,bigint,text,bytea) TO harpy_runtime;

@@ -64,8 +64,8 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM RBAC query scope is invalid';
@@ -94,8 +94,8 @@ DECLARE
     v_token_version bigint;
     v_authorization_version bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM RBAC command scope is invalid';
@@ -150,8 +150,8 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'IAM RBAC mutation identity is invalid';
     END IF;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM RBAC mutation scope is invalid';

@@ -60,7 +60,7 @@ CREATE INDEX notifications_delivery_receipts_retention_idx
 CREATE INDEX notifications_realtime_hints_retention_idx
     ON notifications_realtime_hints (created_at, id);
 
-GRANT SELECT ON TABLE notifications_retention_checkpoints TO forgecrud_runtime;
-GRANT UPDATE (revision, last_job_id, last_attempt_id, last_completed_at) ON notifications_retention_checkpoints TO forgecrud_runtime;
-GRANT SELECT ON TABLE notifications_retention_receipts TO forgecrud_runtime;
-GRANT INSERT (job_id, attempt_id, tenant_id, payload_reference, payload_sha256, successor_job_id, successor_run_at, successor_dedupe_key, content_redacted, attempts_purged, receipts_purged, effects_purged, deliveries_purged, messages_purged, hints_purged, platform_records_purged, has_remaining, checkpoint_revision, receipt_sha256, completed_at) ON notifications_retention_receipts TO forgecrud_runtime;
+GRANT SELECT ON TABLE notifications_retention_checkpoints TO harpy_runtime;
+GRANT UPDATE (revision, last_job_id, last_attempt_id, last_completed_at) ON notifications_retention_checkpoints TO harpy_runtime;
+GRANT SELECT ON TABLE notifications_retention_receipts TO harpy_runtime;
+GRANT INSERT (job_id, attempt_id, tenant_id, payload_reference, payload_sha256, successor_job_id, successor_run_at, successor_dedupe_key, content_redacted, attempts_purged, receipts_purged, effects_purged, deliveries_purged, messages_purged, hints_purged, platform_records_purged, has_remaining, checkpoint_revision, receipt_sha256, completed_at) ON notifications_retention_receipts TO harpy_runtime;

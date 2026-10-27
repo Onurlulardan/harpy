@@ -7,7 +7,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $$
 BEGIN
-    IF session_user <> 'forgecrud_adopter' THEN
+    IF session_user <> 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='support adopter authority required';
     END IF;
 END;
@@ -118,10 +118,10 @@ AS $$
     FROM platform.support_bug_reports AS report WHERE report.id = p_id
 $$;
 
-REVOKE ALL ON FUNCTION platform.support_require_adopter_v1() FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON FUNCTION platform.support_adoption_run_document_v1(platform.support_adoption_runs) FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON FUNCTION platform.support_adoption_page_document_v1(platform.support_adoption_page_receipts) FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON FUNCTION platform.support_contact_adoption_document_v1(uuid) FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
-REVOKE ALL ON FUNCTION platform.support_bug_adoption_document_v1(uuid) FROM PUBLIC, forgecrud_runtime, forgecrud_adopter;
+REVOKE ALL ON FUNCTION platform.support_require_adopter_v1() FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON FUNCTION platform.support_adoption_run_document_v1(platform.support_adoption_runs) FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON FUNCTION platform.support_adoption_page_document_v1(platform.support_adoption_page_receipts) FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON FUNCTION platform.support_contact_adoption_document_v1(uuid) FROM PUBLIC, harpy_runtime, harpy_adopter;
+REVOKE ALL ON FUNCTION platform.support_bug_adoption_document_v1(uuid) FROM PUBLIC, harpy_runtime, harpy_adopter;
 -- +goose StatementEnd
 

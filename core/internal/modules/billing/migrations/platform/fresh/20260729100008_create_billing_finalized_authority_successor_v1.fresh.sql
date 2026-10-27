@@ -23,8 +23,8 @@ DECLARE
     v_locked_count integer;
     v_run_hash text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cutover_finalizer'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_operation_id IS NULL OR p_run_id IS NULL
        OR pg_catalog.uuid_extract_version(p_operation_id) IS DISTINCT FROM 7
        OR pg_catalog.uuid_extract_version(p_run_id) IS DISTINCT FROM 7
@@ -197,4 +197,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.billing_finalize_authority_successor_v1(
     uuid,uuid,uuid,uuid,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_finalize_authority_successor_v1(
-    uuid,uuid,uuid,uuid,text) TO forgecrud_cutover_authority_owner;
+    uuid,uuid,uuid,uuid,text) TO harpy_cutover_authority_owner;

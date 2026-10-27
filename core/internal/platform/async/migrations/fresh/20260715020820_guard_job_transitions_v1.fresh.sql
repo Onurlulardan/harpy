@@ -17,7 +17,7 @@ DECLARE
     v_owner boolean;
 BEGIN
     IF pg_catalog.pg_trigger_depth() <> 1 OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        NEW.updated_at <= OLD.updated_at THEN
         RAISE EXCEPTION USING ERRCODE = 'P5610',
             MESSAGE = 'job transition invocation is invalid';
@@ -133,7 +133,7 @@ BEGIN
         END IF;
         RETURN;
     END IF;
-    v_owner := p_current_user = 'forgecrud_owner';
+    v_owner := p_current_user = 'harpy_owner';
     IF v_owner AND OLD.state = 'running' AND NEW.state = 'queued' AND
        OLD.effect_started_at IS NULL AND NEW.parked_at = NEW.updated_at AND
        NEW.parked_code = 'JOB_AUTHORITY_STALE' AND

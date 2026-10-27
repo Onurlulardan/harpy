@@ -113,8 +113,8 @@ RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    RETURN SESSION_USER = 'forgecrud_v2_runtime'
-       AND CURRENT_USER = 'forgecrud_owner'
+    RETURN SESSION_USER = 'harpy_v2_runtime'
+       AND CURRENT_USER = 'harpy_owner'
        AND EXISTS (
         SELECT 1
         FROM platform.platform_async_installation_activation_receipts event
@@ -167,10 +167,10 @@ $function$;
 REVOKE ALL ON FUNCTION platform.platform_async_initial_admin_setup_enqueue_v2(
     uuid,uuid,uuid,uuid,text,name,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platform_async_initial_admin_setup_enqueue_v2(
-    uuid,uuid,uuid,uuid,text,name,text) TO forgecrud_runtime;
+    uuid,uuid,uuid,uuid,text,name,text) TO harpy_runtime;
 REVOKE ALL ON FUNCTION platform.platform_async_installation_activation_event_v2(
     uuid,uuid,uuid,uuid,name,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platform_async_installation_activation_event_v2(
-    uuid,uuid,uuid,uuid,name,text) TO forgecrud_runtime;
+    uuid,uuid,uuid,uuid,name,text) TO harpy_runtime;
 REVOKE ALL ON FUNCTION platform.platform_async_installation_activation_evidence_assert_v1(
     uuid,uuid) FROM PUBLIC;

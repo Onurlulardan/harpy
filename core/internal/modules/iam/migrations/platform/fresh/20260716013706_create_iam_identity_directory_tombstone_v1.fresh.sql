@@ -12,8 +12,8 @@ AS $function$
 DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_user_id IS NULL OR
        p_source_revision IS NULL OR p_source_revision < 1 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

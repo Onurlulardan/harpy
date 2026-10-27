@@ -124,4 +124,4 @@ REVOKE ALL ON FUNCTION iam_initial_admin_setup_accept_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_initial_admin_setup_accept_v1(
     name,uuid,uuid,bytea,bytea,text,bytea,bytea,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

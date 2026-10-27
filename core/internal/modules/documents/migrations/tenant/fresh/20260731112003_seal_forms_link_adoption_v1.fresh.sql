@@ -84,4 +84,4 @@ REVOKE ALL ON FUNCTION documents_form_record_adoption_seal_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION documents_form_record_adoption_seal_v1(
     uuid,uuid,bigint,uuid,bigint,bigint,bytea,bytea,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

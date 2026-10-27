@@ -40,4 +40,4 @@ REVOKE ALL ON FUNCTION analytics_dashboard_get_version_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_get_version_v1(
     name,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

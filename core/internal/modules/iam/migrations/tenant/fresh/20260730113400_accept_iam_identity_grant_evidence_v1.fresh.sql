@@ -21,8 +21,8 @@ DECLARE
     v_token_version bigint;
     v_authorization_version bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_actor_id IS NULL OR p_permission_id IS NULL OR
        p_expected_token_version < 1 OR p_expected_authorization_version < 1 THEN
@@ -53,8 +53,8 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_actor_id IS NULL OR p_permission_id IS NULL OR
        NOT EXISTS (
@@ -84,8 +84,8 @@ DECLARE
     v_token_version bigint;
     v_authorization_version bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM profile command scope is invalid';
@@ -128,8 +128,8 @@ DECLARE
     v_token_version bigint;
     v_authorization_version bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v1_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v1_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM V1 actor assertion scope is invalid';
@@ -182,4 +182,4 @@ REVOKE ALL ON FUNCTION iam_v1_actor_assertion_authority_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_v1_actor_assertion_authority_v1(
     name,uuid,uuid,bigint,bigint,bigint
-) TO forgecrud_owner;
+) TO harpy_owner;

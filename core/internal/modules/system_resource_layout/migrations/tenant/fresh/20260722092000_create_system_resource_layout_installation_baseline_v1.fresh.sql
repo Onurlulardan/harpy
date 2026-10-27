@@ -63,8 +63,8 @@ DECLARE
     v_role_presentation bytea;
     v_digest bytea;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_now IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'system resource installation baseline denied';
@@ -143,7 +143,7 @@ REVOKE ALL ON FUNCTION system_resource_layout_installation_record_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION system_resource_layout_installation_record_v1(
     uuid,uuid,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 
 CREATE TRIGGER system_resource_layout_installation_baselines_write_guard
 BEFORE UPDATE OR DELETE ON system_resource_layout_installation_baselines

@@ -52,10 +52,10 @@ CREATE TABLE platform.notification_legacy_connection_hits (
 CREATE INDEX notification_legacy_connection_hits_retirement_idx
     ON platform.notification_legacy_connection_hits (occurred_at DESC, id);
 
-GRANT SELECT ON TABLE platform.notification_realtime_tickets TO forgecrud_runtime;
-GRANT INSERT (id, tenant_id, user_id, token_hash, authorization_version, origin, created_at, expires_at, consumed_at) ON platform.notification_realtime_tickets TO forgecrud_runtime;
-GRANT UPDATE (consumed_at) ON platform.notification_realtime_tickets TO forgecrud_runtime;
-GRANT SELECT ON TABLE platform.notification_provider_locators TO forgecrud_runtime;
-GRANT INSERT (provider_kind, provider_account_digest, external_message_digest, tenant_id, delivery_id, accepted_at, expires_at) ON platform.notification_provider_locators TO forgecrud_runtime;
-GRANT SELECT ON TABLE platform.notification_legacy_connection_hits TO forgecrud_runtime;
-GRANT INSERT (id, tenant_id, user_id, consumer_manifest_digest, occurred_at) ON platform.notification_legacy_connection_hits TO forgecrud_runtime;
+GRANT SELECT ON TABLE platform.notification_realtime_tickets TO harpy_runtime;
+GRANT INSERT (id, tenant_id, user_id, token_hash, authorization_version, origin, created_at, expires_at, consumed_at) ON platform.notification_realtime_tickets TO harpy_runtime;
+GRANT UPDATE (consumed_at) ON platform.notification_realtime_tickets TO harpy_runtime;
+GRANT SELECT ON TABLE platform.notification_provider_locators TO harpy_runtime;
+GRANT INSERT (provider_kind, provider_account_digest, external_message_digest, tenant_id, delivery_id, accepted_at, expires_at) ON platform.notification_provider_locators TO harpy_runtime;
+GRANT SELECT ON TABLE platform.notification_legacy_connection_hits TO harpy_runtime;
+GRANT INSERT (id, tenant_id, user_id, consumer_manifest_digest, occurred_at) ON platform.notification_legacy_connection_hits TO harpy_runtime;

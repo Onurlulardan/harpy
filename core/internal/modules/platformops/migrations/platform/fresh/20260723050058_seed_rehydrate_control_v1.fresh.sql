@@ -15,7 +15,7 @@ DECLARE
     v_component_value jsonb;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
        OR p_trust_sha256<>pg_catalog.encode(pg_catalog.sha256(p_trust_bytes),'hex')
@@ -163,4 +163,4 @@ REVOKE ALL ON FUNCTION platform.platformops_seed_rehydrate_control_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_seed_rehydrate_control_v1(
     text,bytea,text,bytea,text,bytea
-) TO forgecrud_restore;
+) TO harpy_restore;

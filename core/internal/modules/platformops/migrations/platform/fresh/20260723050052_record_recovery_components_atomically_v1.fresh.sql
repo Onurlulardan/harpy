@@ -52,7 +52,7 @@ REVOKE ALL ON FUNCTION platform.platformops_record_recovery_components_v1(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_record_recovery_component_v3(
     uuid,uuid,uuid,text,text,text,text,bigint
-) FROM forgecrud_backup_reader;
+) FROM harpy_backup_reader;
 GRANT EXECUTE ON FUNCTION platform.platformops_record_recovery_components_v1(
     uuid,uuid,uuid,jsonb
-) TO forgecrud_backup_reader;
+) TO harpy_backup_reader;

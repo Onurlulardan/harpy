@@ -17,21 +17,21 @@ BEGIN
     END IF;
 
     IF TG_TABLE_NAME OPERATOR(pg_catalog.=) 'jobs'
-       AND SESSION_USER OPERATOR(pg_catalog.=) 'forgecrud_adopter'
+       AND SESSION_USER OPERATOR(pg_catalog.=) 'harpy_adopter'
        AND NEW.writer_origin OPERATOR(pg_catalog.=) 'v1' THEN
         PERFORM platform.platform_async_assert_v1_adopted_job_v1(NEW);
         RETURN NEW;
     END IF;
 
     IF TG_TABLE_NAME OPERATOR(pg_catalog.=) 'jobs'
-       AND SESSION_USER OPERATOR(pg_catalog.=) 'forgecrud_migrator'
+       AND SESSION_USER OPERATOR(pg_catalog.=) 'harpy_migrator'
        AND NEW.writer_origin OPERATOR(pg_catalog.=) 'v2' THEN
         PERFORM
             platform.platform_async_assert_forms_schema_completion_job_v1(NEW);
         RETURN NEW;
     END IF;
 
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR NEW.writer_origin IS DISTINCT FROM 'v2' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5605',
             MESSAGE = 'async owner insert authority is invalid';

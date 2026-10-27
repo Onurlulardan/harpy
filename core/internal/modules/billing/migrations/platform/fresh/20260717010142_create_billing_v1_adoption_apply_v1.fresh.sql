@@ -128,5 +128,5 @@ $function$;
 REVOKE ALL ON FUNCTION platform.billing_apply_v1_adoption_v1(uuid, uuid)
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_apply_v1_adoption_v1(uuid, uuid)
-    TO forgecrud_adopter;
+    TO harpy_adopter;
 -- +goose StatementEnd

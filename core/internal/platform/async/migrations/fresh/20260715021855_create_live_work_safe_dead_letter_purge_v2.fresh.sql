@@ -15,7 +15,7 @@ DECLARE
 BEGIN
     v_now := pg_catalog.clock_timestamp();
     v_count := 0;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'async retention session authority is invalid';
     END IF;

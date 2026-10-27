@@ -13,8 +13,8 @@ AS $function$
 DECLARE
     v_count bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_environment_id IS NULL
        OR p_deployment_mode NOT IN ('onpremise','saas') THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -52,4 +52,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.billing_installation_offering_read_v1(uuid,text)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_installation_offering_read_v1(uuid,text)
-TO forgecrud_runtime;
+TO harpy_runtime;

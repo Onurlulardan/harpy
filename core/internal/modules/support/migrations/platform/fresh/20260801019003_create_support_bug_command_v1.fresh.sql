@@ -77,5 +77,5 @@ END;
 $function$;
 
 REVOKE ALL ON FUNCTION platform.support_create_bug_v1(uuid,uuid,text,text,uuid,text,text,bigint,bigint,text,text,text,text,text,text,jsonb,jsonb,jsonb,text,text,bytea,timestamp with time zone) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.support_create_bug_v1(uuid,uuid,text,text,uuid,text,text,bigint,bigint,text,text,text,text,text,text,jsonb,jsonb,jsonb,text,text,bytea,timestamp with time zone) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_create_bug_v1(uuid,uuid,text,text,uuid,text,text,bigint,bigint,text,text,text,text,text,text,jsonb,jsonb,jsonb,text,text,bytea,timestamp with time zone) TO harpy_runtime;
 -- +goose StatementEnd

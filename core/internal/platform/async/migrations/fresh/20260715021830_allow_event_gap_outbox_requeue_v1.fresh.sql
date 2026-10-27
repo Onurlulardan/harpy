@@ -12,7 +12,7 @@ BEGIN
     IF TG_OP IS DISTINCT FROM 'UPDATE' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'outbox' OR
-       SESSION_USER OPERATOR(pg_catalog.<>) 'forgecrud_v2_runtime' THEN
+       SESSION_USER OPERATOR(pg_catalog.<>) 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5620',
             MESSAGE = 'async outbox mutation authority is invalid';
     END IF;
@@ -44,7 +44,7 @@ BEGIN
 
     NEW.updated_at := v_now;
 
-    IF CURRENT_USER OPERATOR(pg_catalog.=) 'forgecrud_owner' AND
+    IF CURRENT_USER OPERATOR(pg_catalog.=) 'harpy_owner' AND
        OLD.delivery_state OPERATOR(pg_catalog.=) 'delivered' AND
        NEW.delivery_state OPERATOR(pg_catalog.=) 'delivered' AND
        OLD.payload_canonical IS NOT NULL AND NEW.payload_canonical IS NULL AND
@@ -65,7 +65,7 @@ BEGIN
         RETURN NEW;
     END IF;
 
-    IF CURRENT_USER OPERATOR(pg_catalog.=) 'forgecrud_owner' AND
+    IF CURRENT_USER OPERATOR(pg_catalog.=) 'harpy_owner' AND
        platform.platform_async_is_gap_requeue_v1(OLD, NEW, v_now) THEN
         RETURN NEW;
     END IF;

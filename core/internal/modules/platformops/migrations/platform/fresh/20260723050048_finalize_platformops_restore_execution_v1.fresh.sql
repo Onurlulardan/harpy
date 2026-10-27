@@ -9,7 +9,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
        OR p_object_merkle_sha256 !~ '^[0-9a-f]{64}$'
@@ -54,7 +54,7 @@ DECLARE
     v_restore platform.platformops_restore_operations%ROWTYPE;
     v_recovery platform.platformops_recovery_sets%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
        OR p_receipt_sha256 !~ '^[0-9a-f]{64}$'
@@ -148,13 +148,13 @@ REVOKE ALL ON FUNCTION platform.platformops_complete_restore_execution_v1(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_advance_restore_v1(
     uuid,text,text,timestamptz
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 REVOKE EXECUTE ON FUNCTION platform.platformops_complete_restore_v1(
     uuid,text,bytea,uuid,timestamptz
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_mark_restore_switched_v1(
     uuid,uuid,uuid,text,text,text
-) TO forgecrud_restore;
+) TO harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_complete_restore_execution_v1(
     uuid,uuid,uuid,text,bytea
-) TO forgecrud_restore;
+) TO harpy_restore;

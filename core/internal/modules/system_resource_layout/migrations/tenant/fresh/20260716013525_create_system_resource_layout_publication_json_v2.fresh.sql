@@ -11,7 +11,7 @@ AS $function$
 DECLARE
     v_document jsonb;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_resource_kind NOT IN ('user', 'organization', 'role') THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'system resource layout publication read is invalid';

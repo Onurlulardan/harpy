@@ -92,5 +92,5 @@ REVOKE ALL ON FUNCTION platform.billing_rehearse_v1_adoption_rollback_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_rehearse_v1_adoption_rollback_v1(
     uuid, uuid, uuid, text, timestamptz
-) TO forgecrud_adopter;
+) TO harpy_adopter;
 -- +goose StatementEnd

@@ -17,8 +17,8 @@ BEGIN
 RETURN QUERY
 WITH runtime_guard AS MATERIALIZED (
     SELECT 1
-    WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-      AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_owner'
+    WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+      AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_owner'
       AND p_tenant_authority_id IS NOT DISTINCT FROM
           platform.billing_resolve_current_tenant_authority_v1(p_tenant_id)
       AND p_global_authority_id IS NOT DISTINCT FROM
@@ -116,8 +116,8 @@ SELECT offering_version_id
 FROM platform.billing_discount_offerings
 WHERE authority_id = p_authority_id
   AND discount_version_id = p_discount_version_id
-  AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_owner'
+  AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_owner'
   AND p_authority_id IS NOT DISTINCT FROM
       platform.billing_resolve_current_global_authority_v1('billing'::text)
 ORDER BY offering_version_id;
@@ -134,7 +134,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.billing_discount_eligibility_snapshot_read_v1(
         uuid,uuid,text,uuid,timestamptz,uuid
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION
     platform.billing_discount_offerings_snapshot_read_v1(uuid,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

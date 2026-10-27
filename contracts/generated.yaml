@@ -18,6 +18,12 @@
       "generator": "go run ./tools/currencyregistry",
       "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
       "output_sha256": "36c8bbcee3854ce345c2e2298d100c0824aadf331bb5f141f765f1807c713795"
+    },
+    {
+      "path": "core/internal/modules/billing/migrations/platform/v1_adopted/20260717010012_seed_billing_currency_exponents_v1.v1_adopted.sql",
+      "generator": "go run ./tools/currencyregistry",
+      "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
+      "output_sha256": "36c8bbcee3854ce345c2e2298d100c0824aadf331bb5f141f765f1807c713795"
     }
   ]
 }

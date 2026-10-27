@@ -10,7 +10,7 @@ BEGIN
     IF TG_OP IS DISTINCT FROM 'INSERT' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'inbox' OR
-       SESSION_USER OPERATOR(pg_catalog.<>) 'forgecrud_v2_runtime' OR
+       SESSION_USER OPERATOR(pg_catalog.<>) 'harpy_v2_runtime' OR
        NEW.consumer_writer_origin IS DISTINCT FROM 'v2' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5606',
             MESSAGE = 'async inbox consumer authority is invalid';

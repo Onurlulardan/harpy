@@ -32,7 +32,7 @@ DECLARE
     v_manifest_captured_at timestamptz;
     v_inserted boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5637',
             MESSAGE = 'V1 async inventory requires adopter authority';
     END IF;

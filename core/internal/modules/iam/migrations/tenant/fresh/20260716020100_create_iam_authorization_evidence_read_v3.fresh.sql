@@ -24,8 +24,8 @@ DECLARE
     v_iam_generation bigint;
     v_layout_generation bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_tenant_id IS NULL OR p_actor_id IS NULL OR
        p_resource_key IS NULL OR p_action_key IS NULL OR

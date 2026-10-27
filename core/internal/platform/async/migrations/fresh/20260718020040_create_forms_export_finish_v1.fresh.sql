@@ -28,8 +28,8 @@ DECLARE
     v_retry_at timestamptz;
     v_digest text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_attempt_generation NOT BETWEEN 1 AND 3 OR
        p_failure_class NOT IN ('transient','permanent','conflict','cancelled') OR
        p_failure_code !~ '^[A-Z][A-Z0-9_]{1,63}$' OR

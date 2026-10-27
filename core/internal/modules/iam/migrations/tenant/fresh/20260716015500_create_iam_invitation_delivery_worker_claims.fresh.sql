@@ -35,4 +35,4 @@ CREATE INDEX iam_invitation_delivery_worker_claims_state_idx
 ON iam_invitation_delivery_worker_claims (state, claimed_at);
 
 GRANT SELECT ON TABLE iam_invitation_delivery_worker_claims
-TO forgecrud_runtime;
+TO harpy_runtime;

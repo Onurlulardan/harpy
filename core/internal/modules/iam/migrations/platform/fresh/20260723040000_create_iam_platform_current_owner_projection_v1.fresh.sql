@@ -38,6 +38,6 @@ $function$;
 REVOKE ALL ON FUNCTION platform.iam_platform_current_owner_projection_v1(uuid)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_platform_current_owner_projection_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.iam_platform_current_owner_projection_v1(uuid)
-TO forgecrud_restore;
+TO harpy_restore;

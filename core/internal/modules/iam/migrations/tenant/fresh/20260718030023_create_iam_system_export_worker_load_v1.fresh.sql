@@ -17,8 +17,8 @@ BEGIN
     SELECT identity.tenant_id INTO STRICT v_tenant_id
     FROM tenancy_schema_identity AS identity
     WHERE identity.singleton AND identity.schema_name=pg_catalog.current_schema();
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema::text IS DISTINCT FROM pg_catalog.current_schema() OR
        v_tenant_id IS DISTINCT FROM p_tenant_id OR
        pg_catalog.uuid_extract_version(p_export_id) IS DISTINCT FROM 7 OR

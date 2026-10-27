@@ -59,4 +59,4 @@ REVOKE ALL ON FUNCTION analytics_catalog_owner_preflight_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_catalog_owner_preflight_v2(
     name,uuid,uuid,bigint,text,text,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;

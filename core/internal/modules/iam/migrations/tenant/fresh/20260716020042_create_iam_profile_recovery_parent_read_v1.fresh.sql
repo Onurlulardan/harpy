@@ -28,8 +28,8 @@ DECLARE
     v_target_snapshot jsonb;
     v_mappings jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_parent_plan_id IS NULL OR NOT iam_profile_actor_assert_v1(
            p_scope_schema, p_actor_id, p_manage_permission_id,

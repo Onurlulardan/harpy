@@ -27,8 +27,8 @@ DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
     v_existing platform.iam_mcp_authorization_requests%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_id IS NULL OR p_operation_id IS NULL OR
        pg_catalog.octet_length(p_request_sha256) IS DISTINCT FROM 32 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -75,4 +75,4 @@ REVOKE ALL ON FUNCTION platform.iam_mcp_authorization_request_create_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_mcp_authorization_request_create_v1(
     uuid,text,bytea,text,text,text,text,text,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

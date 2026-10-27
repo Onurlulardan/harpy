@@ -80,4 +80,4 @@ REVOKE ALL ON FUNCTION analytics_catalog_owner_purge_authority_v2(
 GRANT EXECUTE ON FUNCTION analytics_catalog_owner_purge_authority_v2(
     name,uuid,uuid,uuid,bigint,text,text,bigint,text,uuid,uuid,uuid,
     timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

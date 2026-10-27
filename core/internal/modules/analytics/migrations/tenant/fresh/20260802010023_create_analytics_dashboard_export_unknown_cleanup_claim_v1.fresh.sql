@@ -91,4 +91,4 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_unknown_cleanup_claim_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_unknown_cleanup_claim_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

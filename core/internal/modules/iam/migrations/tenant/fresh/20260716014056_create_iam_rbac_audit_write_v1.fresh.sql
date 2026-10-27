@@ -11,8 +11,8 @@ AS $function$
 DECLARE v_command text; v_request bytea; v_result text; v_aggregate uuid;
     v_revision bigint; v_clock bigint; v_actor_active boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'IAM RBAC audit scope is invalid';
     END IF;

@@ -24,7 +24,7 @@ DECLARE
     v_database_oid oid;
     v_database_origin text;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_cluster_admin','forgecrud_cutover_finalizer') OR
+    IF SESSION_USER NOT IN ('harpy_cluster_admin','harpy_cutover_finalizer') OR
        p_operation_id IS NULL OR p_run_id IS NULL OR p_finalizer_lease_id IS NULL OR
        p_terminal_state NOT IN ('completed','failed','cancelled') OR
        p_finalizer_lease_sha256 IS NULL OR p_finalizer_lease_sha256!~'^[0-9a-f]{64}$' OR
@@ -55,7 +55,7 @@ BEGIN
     SELECT operation.* INTO STRICT v_operation FROM platform.cutover_operations AS operation
     WHERE operation.operation_id=p_operation_id AND operation.run_id=p_run_id;
     SELECT role.* INTO STRICT v_cluster FROM pg_catalog.pg_roles AS role
-    WHERE role.rolname='forgecrud_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
+    WHERE role.rolname='harpy_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
       AND NOT role.rolsuper AND role.rolcreatedb AND role.rolcreaterole AND NOT role.rolreplication
       AND NOT role.rolbypassrls AND role.rolconnlimit=1 AND role.rolvaliduntil>pg_catalog.clock_timestamp()
       AND NOT EXISTS (SELECT 1 FROM pg_catalog.pg_auth_members AS membership
@@ -85,7 +85,7 @@ BEGIN
        v_finalizer->>'finalization_state_sha256' IS DISTINCT FROM v_state_sha256 OR
        v_finalizer->>'terminal_state' IS DISTINCT FROM p_terminal_state OR
        v_finalizer->>'terminal_evidence_sha256' IS DISTINCT FROM p_terminal_evidence_sha256 OR
-       v_finalizer->'role_lease' IS DISTINCT FROM '{"principal":"forgecrud_cutover_finalizer","login":true,"replication":false,"connection_limit":1,"password_state":"leased_secret"}'::jsonb OR
+       v_finalizer->'role_lease' IS DISTINCT FROM '{"principal":"harpy_cutover_finalizer","login":true,"replication":false,"connection_limit":1,"password_state":"leased_secret"}'::jsonb OR
        v_finalizer->'target' IS DISTINCT FROM v_target OR
        (v_finalizer->>'finalization_procedure_oid')::oid IS DISTINCT FROM v_live_oid OR
        v_finalizer->>'finalization_procedure_signature' IS DISTINCT FROM 'cutover_authority.finalize_operation_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea)' OR
@@ -97,7 +97,7 @@ BEGIN
        (v_finalizer->>'expires_at')::timestamptz-(v_finalizer->>'not_before')::timestamptz>interval '120 seconds' OR
        (v_finalizer->>'expires_at')::timestamptz>v_cluster.rolvaliduntil OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-          WHERE role.rolname='forgecrud_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
+          WHERE role.rolname='harpy_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
             AND NOT role.rolsuper AND NOT role.rolcreatedb AND NOT role.rolcreaterole
             AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=1
             AND role.rolvaliduntil IS NOT DISTINCT FROM (v_finalizer->>'expires_at')::timestamptz
@@ -180,7 +180,7 @@ BEGIN
        NOT EXISTS (SELECT 1 FROM platform.cutover_credential_receipts AS receipt WHERE receipt.receipt_id=(v_cleanup->'payload'->>'receipt_id')::uuid AND receipt.operation_id=p_operation_id AND receipt.run_id=p_run_id AND receipt.lease_id=v_operation.lease_id AND receipt.receipt_kind='credential_cleanup' AND receipt.lease_manifest_sha256=p_adoption_lease_sha256 AND receipt.seal_receipt_sha256=p_seal_receipt_sha256 AND receipt.receipt_sha256=p_cleanup_receipt_sha256 AND receipt.canonical_document IS NOT DISTINCT FROM v_cleanup) THEN
         RAISE EXCEPTION USING ERRCODE='22023', MESSAGE='cutover cleanup evidence differs';
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role WHERE role.rolname IN ('forgecrud_cutover_decoder','forgecrud_adopter')
+    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role WHERE role.rolname IN ('harpy_cutover_decoder','harpy_adopter')
         AND NOT role.rolcanlogin AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
         AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=0
         AND role.rolvaliduntil IS NOT DISTINCT FROM 'infinity'::timestamptz

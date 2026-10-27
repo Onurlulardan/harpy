@@ -1,5 +1,5 @@
 -- +goose Up
-GRANT USAGE ON SCHEMA platform TO forgecrud_runtime, forgecrud_backup_reader;
+GRANT USAGE ON SCHEMA platform TO harpy_runtime, harpy_backup_reader;
 
 GRANT SELECT ON TABLE
     platform.environment_identity,
@@ -9,4 +9,4 @@ GRANT SELECT ON TABLE
     platform.schema_contracts,
     platform.database_generation_manifests,
     platform.release_generations
-TO forgecrud_runtime, forgecrud_backup_reader;
+TO harpy_runtime, harpy_backup_reader;

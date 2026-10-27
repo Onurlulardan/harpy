@@ -29,8 +29,8 @@ DECLARE
     v_now timestamptz := pg_catalog.clock_timestamp();
 BEGIN
     v_applied := 0;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_batch_sha256 !~ '^[0-9a-f]{64}$' OR
        p_lease_manifest_sha256 !~ '^[0-9a-f]{64}$' OR NOT EXISTS (
            SELECT 1 FROM platform.cutover_operations AS operation

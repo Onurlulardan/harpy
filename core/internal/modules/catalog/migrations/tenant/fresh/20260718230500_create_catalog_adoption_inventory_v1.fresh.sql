@@ -5,8 +5,8 @@ RETURNS TABLE(side text, kind text, identity text, document text)
 LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_v2_runtime','forgecrud_adopter') OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR NOT EXISTS (
+    IF SESSION_USER NOT IN ('harpy_v2_runtime','harpy_adopter') OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR NOT EXISTS (
         SELECT 1 FROM tenancy_schema_identity AS tenant
         WHERE tenant.singleton AND tenant.tenant_id=p_tenant_id
           AND tenant.schema_name=pg_catalog.current_schema()
@@ -100,4 +100,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION catalog_adoption_inventory_v1(uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION catalog_adoption_inventory_root_v1(uuid,text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION catalog_adoption_inventory_v1(uuid) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION catalog_adoption_inventory_v1(uuid) TO harpy_runtime;

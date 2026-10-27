@@ -22,8 +22,8 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        pg_catalog.octet_length(p_access_token_sha256) <> 32 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -65,4 +65,4 @@ REVOKE ALL ON FUNCTION iam_mcp_access_validate_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_mcp_access_validate_v1(
     name,uuid,uuid,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

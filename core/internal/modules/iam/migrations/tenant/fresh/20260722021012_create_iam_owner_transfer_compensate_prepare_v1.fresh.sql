@@ -20,8 +20,8 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path FROM CURRENT
 AS $function$
 DECLARE v_tenant_id uuid; v_now timestamptz := pg_catalog.clock_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_operation_id IS NULL OR pg_catalog.octet_length(p_request_sha256) <> 32 OR
        p_actor_id IS NULL OR p_expected_token_version < 1 OR

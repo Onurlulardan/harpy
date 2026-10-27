@@ -25,7 +25,7 @@ DECLARE
     v_count bigint;
     v_manifest_sha256 text;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_adopter' THEN
+    IF SESSION_USER <> 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'cutover probe apply principal denied';
     END IF;
     IF p_operation_id IS NULL OR p_run_id IS NULL OR p_scope_kind IS NULL OR

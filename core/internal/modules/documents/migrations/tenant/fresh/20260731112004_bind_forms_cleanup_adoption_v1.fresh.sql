@@ -46,4 +46,4 @@ ALTER TABLE documents_forms_cleanup_operations
 
 REVOKE ALL ON FUNCTION documents_guard_cleanup_adoption_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION documents_guard_cleanup_adoption_v1()
-TO forgecrud_runtime;
+TO harpy_runtime;

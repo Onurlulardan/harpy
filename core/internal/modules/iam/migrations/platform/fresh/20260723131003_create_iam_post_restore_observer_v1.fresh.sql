@@ -15,7 +15,7 @@ DECLARE
     v_admission_state text;
     v_receipt_sha256 bytea;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_reactivation_observer'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_reactivation_observer'
        OR pg_catalog.current_setting('application_name') IS DISTINCT FROM
           'forgecrud-v2:core-operator-post-restore-reactivation-observer'
        OR p_environment_id IS NULL OR p_restore_operation_id IS NULL THEN
@@ -78,4 +78,4 @@ REVOKE ALL ON FUNCTION platform.iam_post_restore_observe_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_post_restore_observe_v1(
     uuid,uuid
-) TO forgecrud_reactivation_observer;
+) TO harpy_reactivation_observer;

@@ -162,4 +162,4 @@ REVOKE ALL ON FUNCTION analytics_execute_retention_cycle_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_execute_retention_cycle_v1(
     name,uuid,uuid,uuid,uuid,text,text,integer
-) TO forgecrud_runtime;
+) TO harpy_runtime;

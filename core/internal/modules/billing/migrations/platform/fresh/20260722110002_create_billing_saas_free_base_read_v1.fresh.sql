@@ -13,8 +13,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='SaaS free base read denied';
     END IF;
@@ -32,4 +32,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.billing_saas_free_base_read_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_saas_free_base_read_v1()
-TO forgecrud_v2_runtime;
+TO harpy_v2_runtime;

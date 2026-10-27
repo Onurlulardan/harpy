@@ -166,4 +166,4 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_platform_succeed_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_platform_succeed_v1(
     name,uuid,uuid,uuid,uuid,bigint,uuid,uuid,bytea,uuid,bytea,text,text,
-    timestamptz,timestamptz) TO forgecrud_runtime;
+    timestamptz,timestamptz) TO harpy_runtime;

@@ -11,8 +11,8 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        NOT work_v1_adoption_document_valid_v1(p_target_kind, p_record) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Work V1 board projection denied';

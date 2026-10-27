@@ -43,7 +43,7 @@ REVOKE ALL ON FUNCTION platform.platformops_get_alert_rule_v1(uuid,uuid) FROM PU
 REVOKE ALL ON FUNCTION platform.platformops_get_alert_event_v1(uuid,uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.platformops_get_trace_span_v1(uuid,text) FROM PUBLIC;
 
-GRANT EXECUTE ON FUNCTION platform.platformops_get_alert_rule_v1(uuid,uuid) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.platformops_get_alert_event_v1(uuid,uuid) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.platformops_get_trace_span_v1(uuid,text) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.platformops_get_alert_rule_v1(uuid,uuid) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.platformops_get_alert_event_v1(uuid,uuid) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.platformops_get_trace_span_v1(uuid,text) TO harpy_runtime;
 -- +goose StatementEnd

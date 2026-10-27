@@ -31,30 +31,30 @@ CREATE INDEX work_v1_adoption_stage_source_idx
 
 REVOKE UPDATE (
     state, run_id, generation, reverse_reconciliation_id, updated_by, updated_at
-) ON work_v1_writer_fence FROM forgecrud_runtime;
+) ON work_v1_writer_fence FROM harpy_runtime;
 REVOKE INSERT (
     run_id, cutover_generation, manifest_sha256, transform_version, state,
     source_count, target_count, source_sha256, target_sha256, final_lsn,
     applied_lsn, acceptance_sha256, created_at, updated_at
-) ON work_adoption_runs FROM forgecrud_runtime;
+) ON work_adoption_runs FROM harpy_runtime;
 REVOKE UPDATE (
     state, source_count, target_count, source_sha256, target_sha256,
     final_lsn, applied_lsn, acceptance_sha256, updated_at
-) ON work_adoption_runs FROM forgecrud_runtime;
+) ON work_adoption_runs FROM harpy_runtime;
 REVOKE INSERT (
     run_id, source_kind, source_id, target_kind, target_id, source_sha256,
     target_sha256, applied_lsn, state, issue_code, updated_at
-) ON work_adoption_objects FROM forgecrud_runtime;
+) ON work_adoption_objects FROM harpy_runtime;
 REVOKE UPDATE (
     source_sha256, target_sha256, applied_lsn, state, issue_code, updated_at
-) ON work_adoption_objects FROM forgecrud_runtime;
+) ON work_adoption_objects FROM harpy_runtime;
 REVOKE INSERT (
     run_id, issue_id, source_kind, source_id, issue_code, evidence_sha256, created_at
-) ON work_adoption_issues FROM forgecrud_runtime;
+) ON work_adoption_issues FROM harpy_runtime;
 REVOKE INSERT (
     reconciliation_id, source_generation, target_generation, source_count,
     target_count, source_sha256, target_sha256, state, requested_by, approved_by,
     created_at, decided_at
-) ON work_reverse_reconciliations FROM forgecrud_runtime;
+) ON work_reverse_reconciliations FROM harpy_runtime;
 REVOKE UPDATE (state, approved_by, decided_at)
-ON work_reverse_reconciliations FROM forgecrud_runtime;
+ON work_reverse_reconciliations FROM harpy_runtime;

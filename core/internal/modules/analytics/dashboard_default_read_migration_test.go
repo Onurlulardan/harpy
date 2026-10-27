@@ -2,6 +2,8 @@ package analytics
 
 import (
 	"bytes"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -10,20 +12,18 @@ const dashboardDefaultReadMigration = "20260728110003_" +
 	"create_analytics_dashboard_default_read_v1"
 
 func TestDashboardDefaultReadMigrationIsHardenedAndPaired(t *testing.T) {
-	documents, err := MigrationDocuments()
+	fresh, err := os.ReadFile(filepath.Join(
+		"migrations", "tenant", "fresh", dashboardDefaultReadMigration+".fresh.sql",
+	))
 	if err != nil {
 		t.Fatal(err)
 	}
-	var fresh, adopted []byte
-	for _, document := range documents {
-		if !strings.Contains(document.Path(), dashboardDefaultReadMigration) {
-			continue
-		}
-		if strings.Contains(document.Path(), "/fresh/") {
-			fresh = document.Content()
-		} else if strings.Contains(document.Path(), "/v1_adopted/") {
-			adopted = document.Content()
-		}
+	adopted, err := os.ReadFile(filepath.Join(
+		"migrations", "tenant", "v1_adopted",
+		dashboardDefaultReadMigration+".v1_adopted.sql",
+	))
+	if err != nil {
+		t.Fatal(err)
 	}
 	if len(fresh) == 0 || !bytes.Equal(fresh, adopted) {
 		t.Fatal("default dashboard owner-read migration pair is missing or differs")

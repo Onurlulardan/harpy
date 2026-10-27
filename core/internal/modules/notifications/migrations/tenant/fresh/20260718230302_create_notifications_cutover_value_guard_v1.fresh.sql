@@ -9,8 +9,8 @@ AS $function$
 DECLARE
     v_target_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.jsonb_typeof(p_key) IS DISTINCT FROM 'object' OR
        pg_catalog.jsonb_typeof(p_value) IS DISTINCT FROM 'object' THEN
         RETURN false;

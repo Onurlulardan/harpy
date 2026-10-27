@@ -21,7 +21,7 @@ DECLARE
     v_error_sha256 text;
     v_redacted_envelope jsonb;
 BEGIN
-    IF SESSION_USER OPERATOR(pg_catalog.<>) 'forgecrud_v2_runtime' OR
+    IF SESSION_USER OPERATOR(pg_catalog.<>) 'harpy_v2_runtime' OR
        p_job_id IS NULL OR p_dead_letter_id IS NULL OR
        NOT ((p_expected_state = 'queued' AND p_lease_owner_id IS NULL AND
              p_lease_generation >= 0) OR

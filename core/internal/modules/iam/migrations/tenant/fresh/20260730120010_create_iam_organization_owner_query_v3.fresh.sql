@@ -39,7 +39,7 @@ SELECT
           AND membership.state = 'active'
     ), ARRAY[]::uuid[]) AS owner_ids
 FROM iam_organizations AS organization
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
-GRANT SELECT ON iam_rest_query_organizations_v3 TO forgecrud_runtime;
+GRANT SELECT ON iam_rest_query_organizations_v3 TO harpy_runtime;

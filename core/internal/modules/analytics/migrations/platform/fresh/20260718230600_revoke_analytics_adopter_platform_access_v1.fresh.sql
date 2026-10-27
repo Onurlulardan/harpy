@@ -10,8 +10,8 @@ DECLARE
     v_route jsonb;
     v_snapshot jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_action NOT IN ('count','inspect','project') OR p_tenant_id IS NULL OR
        (p_action<>'count' AND p_legacy_endpoint_id IS NULL) OR
        (p_action='project' AND p_target IS NULL) THEN
@@ -105,7 +105,7 @@ REVOKE ALL ON FUNCTION platform.analytics_v1_adoption_public_bridge_v1(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.analytics_v1_adoption_public_bridge_v1(
     text,uuid,uuid,jsonb
-) FROM forgecrud_adopter;
+) FROM harpy_adopter;
 REVOKE EXECUTE ON FUNCTION platform.analytics_register_tenant_authority_v1(
     uuid,uuid,bigint,bigint,timestamptz
-) FROM forgecrud_adopter;
+) FROM harpy_adopter;

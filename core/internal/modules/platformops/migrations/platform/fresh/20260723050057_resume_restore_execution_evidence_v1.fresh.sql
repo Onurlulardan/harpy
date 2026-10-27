@@ -133,7 +133,7 @@ REVOKE ALL ON FUNCTION platform.platformops_claim_restore_execution_v5(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v4(
     uuid,uuid,uuid,text
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v5(
     uuid,uuid,uuid,text
-) TO forgecrud_restore;
+) TO harpy_restore;

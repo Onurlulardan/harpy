@@ -24,11 +24,11 @@ CREATE TABLE work_reminder_receipts (
         REFERENCES work_tasks(id) ON UPDATE NO ACTION ON DELETE RESTRICT
 );
 
-GRANT SELECT ON work_job_receipts, work_reminder_receipts TO forgecrud_runtime;
+GRANT SELECT ON work_job_receipts, work_reminder_receipts TO harpy_runtime;
 GRANT INSERT (job_id, job_kind, payload_sha256, lease_generation, state,
     outcome_sha256, started_at, completed_at)
-ON work_job_receipts TO forgecrud_runtime;
+ON work_job_receipts TO harpy_runtime;
 GRANT UPDATE (state, outcome_sha256, completed_at)
-ON work_job_receipts TO forgecrud_runtime;
+ON work_job_receipts TO harpy_runtime;
 GRANT INSERT (task_id, task_version, due_at, event_id, dispatched_at)
-ON work_reminder_receipts TO forgecrud_runtime;
+ON work_reminder_receipts TO harpy_runtime;

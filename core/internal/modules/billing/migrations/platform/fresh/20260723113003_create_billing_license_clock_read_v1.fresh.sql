@@ -7,8 +7,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing license clock read denied';
     END IF;
@@ -19,4 +19,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.billing_license_clock_read_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_license_clock_read_v1()
-TO forgecrud_runtime;
+TO harpy_runtime;

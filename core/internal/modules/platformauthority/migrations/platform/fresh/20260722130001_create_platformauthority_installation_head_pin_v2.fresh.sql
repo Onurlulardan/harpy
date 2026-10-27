@@ -16,8 +16,8 @@ DECLARE
     v_existing platform.platformauthority_installation_head_pins%ROWTYPE;
     v_purpose text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
        OR p_operation_id IS NULL OR p_environment_id IS NULL
@@ -124,4 +124,4 @@ REVOKE ALL ON FUNCTION platform.platformauthority_installation_head_pin_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformauthority_installation_head_pin_v2(
     uuid,uuid,uuid,name,uuid,text,uuid,bigint,text,text,text,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

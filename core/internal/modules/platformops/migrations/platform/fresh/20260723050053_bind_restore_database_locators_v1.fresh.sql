@@ -63,7 +63,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_changed boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR p_drain_ack_sha256 !~ '^[0-9a-f]{64}$'
        OR p_control_database_locator_sha256 !~ '^[0-9a-f]{64}$'
        OR p_scratch_database_locator_sha256 !~ '^[0-9a-f]{64}$'
@@ -118,13 +118,13 @@ REVOKE ALL ON FUNCTION platform.platformops_start_restore_apply_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v3(
     uuid,uuid,uuid,text
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 REVOKE EXECUTE ON FUNCTION platform.platformops_start_restore_apply_v1(
     uuid,uuid,uuid,text
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v4(
     uuid,uuid,uuid,text
-) TO forgecrud_restore;
+) TO harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_start_restore_apply_v2(
     uuid,uuid,uuid,text,text,text
-) TO forgecrud_restore;
+) TO harpy_restore;

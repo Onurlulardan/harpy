@@ -24,8 +24,8 @@ DECLARE
     v_step_generation bigint;
     v_step_attempt integer;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.uuid_extract_version(p_schema_job_id) IS DISTINCT FROM 7
        OR p_expected_job_generation < 1 OR p_expected_step_ordinal < 0
        OR pg_catalog.uuid_extract_version(p_runtime_job_id) IS DISTINCT FROM 7

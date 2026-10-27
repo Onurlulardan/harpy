@@ -14,8 +14,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR
        p_identifier_kind NOT IN ('email_v1','portal_v1') OR
        NOT platform.iam_hmac_key_id_valid_v1(p_key_id) OR
@@ -40,4 +40,4 @@ REVOKE ALL ON FUNCTION platform.iam_resolve_login_target_v7(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_resolve_login_target_v7(
     uuid,text,text,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

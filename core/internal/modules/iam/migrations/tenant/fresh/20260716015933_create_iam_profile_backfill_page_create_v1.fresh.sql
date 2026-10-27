@@ -30,7 +30,7 @@ DECLARE
 BEGIN
     v_source_evidence := ''::bytea;
     v_rolling := p_initial_rolling;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_tenant_id IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_tenant_id IS NULL OR
        p_plan_id IS NULL OR p_resource_kind NOT IN ('user','organization','role') OR
        p_source_schema_id IS NULL OR p_source_count<0 OR p_page_size NOT BETWEEN 1 AND 250 OR
        pg_catalog.octet_length(p_expected_source)<>32 OR

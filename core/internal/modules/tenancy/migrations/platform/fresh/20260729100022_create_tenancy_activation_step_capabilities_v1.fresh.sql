@@ -52,8 +52,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    RETURN SESSION_USER = 'forgecrud_v2_runtime'
-       AND CURRENT_USER = 'forgecrud_owner'
+    RETURN SESSION_USER = 'harpy_v2_runtime'
+       AND CURRENT_USER = 'harpy_owner'
        AND EXISTS (
             SELECT 1
             FROM platform.tenancy_activation_step_capabilities AS capability
@@ -165,25 +165,25 @@ REVOKE ALL ON FUNCTION platform.tenancy_activation_step_assert_v1(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.tenancy_activation_step_assert_v1(
     uuid,text
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE ALL ON FUNCTION platform.tenancy_activation_step_consume_v1(
     uuid,text
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.tenancy_activation_step_consume_v1(
     uuid,text
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 REVOKE ALL ON FUNCTION platform.tenancy_activation_step_context_assert_v1(
     uuid,text,uuid,uuid,name,text
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION
     platform.tenancy_activation_step_context_assert_v1(
         uuid,text,uuid,uuid,name,text
-    ) FROM forgecrud_runtime;
+    ) FROM harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.tenancy_activation_step_commit_guard_v1() FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION
     platform.tenancy_activation_step_commit_guard_v1()
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;
 
 CREATE CONSTRAINT TRIGGER tenancy_activation_step_commit_guard
 AFTER INSERT ON platform.tenancy_activation_step_capabilities

@@ -159,15 +159,15 @@ REVOKE ALL ON FUNCTION platform.platformops_claim_restore_plan_v1(
 ) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION platform.platformops_list_recovery_sets_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_request_restore_v2(
     uuid,uuid,uuid,text,text,bytea,uuid,text,text,text,boolean,timestamptz,
     uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_recovery_manifest_v1(
     uuid,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_restore_plan_v1(
     uuid,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

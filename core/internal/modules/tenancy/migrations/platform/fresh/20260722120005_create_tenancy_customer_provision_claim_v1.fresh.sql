@@ -30,8 +30,8 @@ DECLARE
     v_revision bigint;
     v_lease_until timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_attempt_id IS NULL OR pg_catalog.octet_length(p_lease_owner) NOT BETWEEN 1 AND 128
        OR p_lease_token_sha256 !~ '^[0-9a-f]{64}$'
        OR p_lease_seconds NOT BETWEEN 1 AND 300 THEN
@@ -109,5 +109,5 @@ REVOKE ALL ON FUNCTION platform.tenancy_customer_provision_claim_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_provision_claim_v1(
     uuid,text,text,integer
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

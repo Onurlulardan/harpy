@@ -20,8 +20,8 @@ DECLARE
     v_outcome text;
     v_current boolean;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_lease_generation NOT BETWEEN 1 AND 8 OR
        pg_catalog.uuid_extract_version(p_effect_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_receipt_id) IS DISTINCT FROM 7 OR

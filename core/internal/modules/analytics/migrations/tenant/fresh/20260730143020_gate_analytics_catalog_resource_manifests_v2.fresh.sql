@@ -82,7 +82,7 @@ REVOKE ALL ON FUNCTION analytics_resource_manifest_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_resource_manifest_v1(
     name,text,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION analytics_catalog_resource_manifest_v2(
     name,text,uuid
 ) FROM PUBLIC;

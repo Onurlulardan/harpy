@@ -48,5 +48,5 @@ REVOKE ALL ON FUNCTION iam_authenticator_retire_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_authenticator_retire_v2(
     name,uuid,uuid,bytea,uuid,bigint,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

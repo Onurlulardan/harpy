@@ -12,8 +12,8 @@ DECLARE
     v_deleted bigint;
     v_cutoff timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_limit IS NULL OR p_limit < 1 OR p_limit > 10000 THEN
         RAISE EXCEPTION USING ERRCODE = '22023',
             MESSAGE = 'IAM V1 actor assertion purge input is invalid';
@@ -41,5 +41,5 @@ $function$;
 REVOKE ALL ON FUNCTION platform.iam_v1_actor_assertion_purge_v1(integer)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_v1_actor_assertion_purge_v1(integer)
-TO forgecrud_runtime;
+TO harpy_runtime;
 

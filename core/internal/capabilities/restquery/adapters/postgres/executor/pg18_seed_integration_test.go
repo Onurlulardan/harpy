@@ -18,9 +18,9 @@ func pg18SeedTenants(t *testing.T, ctx context.Context, admin *pgx.Conn) {
 	}
 	pg18SeedRecordRows(t, ctx, admin)
 	pg18ExecuteSetup(t, ctx, admin, []string{
-		"GRANT USAGE ON SCHEMA platform,tenant_a,tenant_b TO forgecrud_runtime",
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA platform TO forgecrud_runtime",
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA tenant_a,tenant_b TO forgecrud_runtime",
+		"GRANT USAGE ON SCHEMA platform,tenant_a,tenant_b TO harpy_runtime",
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA platform TO harpy_runtime",
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA tenant_a,tenant_b TO harpy_runtime",
 	})
 }
 

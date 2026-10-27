@@ -85,5 +85,5 @@ $function$;
 REVOKE EXECUTE ON FUNCTION analytics_dashboard_export_submit_v1(
     name,uuid,uuid,text,bytea,uuid,uuid,uuid,text,bytea,
     bigint,bigint,bigint,bigint,bigint,timestamptz,timestamptz
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 

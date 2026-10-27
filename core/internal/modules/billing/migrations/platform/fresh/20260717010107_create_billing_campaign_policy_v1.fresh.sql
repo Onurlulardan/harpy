@@ -115,7 +115,7 @@ REVOKE ALL ON FUNCTION platform.billing_select_active_campaign_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_select_active_campaign_v1(
     uuid, timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 
 CREATE TRIGGER billing_campaigns_transition_guard
 BEFORE INSERT OR UPDATE OR DELETE ON platform.billing_campaigns

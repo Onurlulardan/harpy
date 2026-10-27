@@ -12,8 +12,8 @@ AS $function$
 DECLARE
     v_permission_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_resource_kind NOT IN ('users','roles','organizations') OR
        p_action NOT IN ('import','export') OR p_command IS NULL THEN

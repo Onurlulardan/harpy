@@ -83,4 +83,4 @@ REVOKE ALL ON FUNCTION documents_v1_reverse_accept_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION documents_v1_reverse_accept_v1(
     uuid,uuid,bigint,bigint,bigint,bigint,bytea,bytea,uuid,uuid,timestamptz
-) TO forgecrud_cutover_finalizer;
+) TO harpy_cutover_finalizer;

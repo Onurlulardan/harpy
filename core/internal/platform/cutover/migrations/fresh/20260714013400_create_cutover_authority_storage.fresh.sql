@@ -52,7 +52,7 @@ CREATE TABLE cutover_authority.finalization_authorizations (
     authorizer_valid_until timestamptz NOT NULL,
     authorized_at timestamptz NOT NULL DEFAULT pg_catalog.clock_timestamp(),
     authorized_by text NOT NULL DEFAULT SESSION_USER
-        CHECK (authorized_by = 'forgecrud_cluster_admin'),
+        CHECK (authorized_by = 'harpy_cluster_admin'),
     PRIMARY KEY (operation_id, run_id, finalizer_lease_id),
     CHECK (finalizer_lease_sha256 =
         pg_catalog.encode(pg_catalog.sha256(finalizer_lease_document), 'hex')),
@@ -98,7 +98,7 @@ CREATE TABLE cutover_authority.finalization_receipts (
     tenant_target_count integer,
     finalized_at timestamptz NOT NULL DEFAULT pg_catalog.clock_timestamp(),
     finalized_by text NOT NULL DEFAULT SESSION_USER
-        CHECK (finalized_by = 'forgecrud_cutover_finalizer'),
+        CHECK (finalized_by = 'harpy_cutover_finalizer'),
     PRIMARY KEY (operation_id, run_id),
     CHECK (finalizer_lease_sha256 =
         pg_catalog.encode(pg_catalog.sha256(finalizer_lease_document), 'hex')),
@@ -136,12 +136,12 @@ CREATE TABLE cutover_authority.finalization_receipts (
 );
 
 REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM PUBLIC;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_migrator;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_cluster_admin;
-REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM forgecrud_cutover_finalizer;
-GRANT USAGE ON SCHEMA cutover_authority TO forgecrud_cluster_admin;
-GRANT USAGE ON SCHEMA cutover_authority TO forgecrud_cutover_finalizer;
-GRANT USAGE ON SCHEMA platform TO forgecrud_cutover_authority_owner;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_migrator;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_cluster_admin;
+REVOKE ALL ON ALL TABLES IN SCHEMA cutover_authority FROM harpy_cutover_finalizer;
+GRANT USAGE ON SCHEMA cutover_authority TO harpy_cluster_admin;
+GRANT USAGE ON SCHEMA cutover_authority TO harpy_cutover_finalizer;
+GRANT USAGE ON SCHEMA platform TO harpy_cutover_authority_owner;
 GRANT SELECT ON platform.cutover_operations,
     platform.cutover_operation_relations, platform.cutover_operation_checkpoint_keys,
     platform.cutover_operation_columns,
@@ -154,7 +154,7 @@ GRANT SELECT ON platform.cutover_operations,
     platform.tenant_migration_requirement_targets,
     platform.tenant_migration_checkpoints, platform.tenants,
     platform.release_generations, platform.schema_contracts
-    TO forgecrud_cutover_authority_owner;
+    TO harpy_cutover_authority_owner;
 GRANT MAINTAIN ON platform.cutover_operations,
     platform.cutover_operation_relations, platform.cutover_operation_checkpoint_keys,
     platform.cutover_operation_columns,
@@ -167,10 +167,10 @@ GRANT MAINTAIN ON platform.cutover_operations,
     platform.tenant_migration_requirement_targets,
     platform.tenant_migration_checkpoints, platform.tenants,
     platform.release_generations, platform.schema_contracts
-    TO forgecrud_cutover_authority_owner;
+    TO harpy_cutover_authority_owner;
 GRANT UPDATE (state, blocked_reason, updated_at) ON platform.cutover_operations
-    TO forgecrud_cutover_authority_owner;
+    TO harpy_cutover_authority_owner;
 GRANT INSERT (receipt_id,operation_id,run_id,lease_id,receipt_kind,contract_version,
     lease_manifest_sha256,seal_receipt_sha256,receipt_sha256,canonical_document,
     issued_at,verified_at) ON platform.cutover_credential_receipts
-    TO forgecrud_cutover_authority_owner;
+    TO harpy_cutover_authority_owner;

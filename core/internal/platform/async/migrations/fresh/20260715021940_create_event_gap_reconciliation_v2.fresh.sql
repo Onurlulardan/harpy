@@ -20,8 +20,8 @@ DECLARE
     v_count bigint;
 BEGIN
     v_now := pg_catalog.clock_timestamp();
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5690',
             MESSAGE = 'event gap reconciliation authority is invalid';
     END IF;

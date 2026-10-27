@@ -43,4 +43,4 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
     platform.platformauthority_installation_owner_bind_v3(
         uuid,uuid,uuid,name,text,uuid,uuid,uuid,text
-    ) TO forgecrud_runtime;
+    ) TO harpy_runtime;

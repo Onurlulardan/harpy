@@ -14,8 +14,8 @@ DECLARE
     v_existing platform.billing_installation_base_assignments%ROWTYPE;
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_deployment_mode NOT IN ('onpremise','saas')
        OR p_offering_revision < 1
        OR p_offering_sha256 !~ '^[0-9a-f]{64}$'
@@ -99,4 +99,4 @@ REVOKE ALL ON FUNCTION platform.billing_installation_assign_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_installation_assign_v1(
     uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

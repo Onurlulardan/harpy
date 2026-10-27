@@ -16,7 +16,7 @@ DECLARE
     v_finalizer_expires_at timestamptz;
     v_authorizer_valid_until timestamptz;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_cluster_admin' THEN
+    IF SESSION_USER <> 'harpy_cluster_admin' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='cutover finalization authorizer denied';
     END IF;
     PERFORM cutover_authority.validate_finalization_envelope_v1(
@@ -39,13 +39,13 @@ BEGIN
     v_finalizer:=pg_catalog.convert_from(p_finalizer_lease_document,'UTF8')::jsonb;
     v_finalizer_expires_at:=(v_finalizer->>'expires_at')::timestamptz;
     SELECT role.rolvaliduntil INTO STRICT v_authorizer_valid_until FROM pg_catalog.pg_roles AS role
-    WHERE role.rolname='forgecrud_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
+    WHERE role.rolname='harpy_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
       AND NOT role.rolsuper AND role.rolcreatedb AND role.rolcreaterole AND NOT role.rolreplication
       AND NOT role.rolbypassrls AND role.rolconnlimit=1 AND role.rolvaliduntil>pg_catalog.clock_timestamp()
       AND NOT EXISTS (SELECT 1 FROM pg_catalog.pg_auth_members AS membership
           WHERE membership.roleid=role.oid OR membership.member=role.oid);
     IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-        WHERE role.rolname='forgecrud_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
+        WHERE role.rolname='harpy_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
           AND NOT role.rolsuper AND NOT role.rolcreatedb AND NOT role.rolcreaterole
           AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=1
           AND role.rolvaliduntil IS NOT DISTINCT FROM v_finalizer_expires_at
@@ -97,4 +97,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION cutover_authority.authorize_finalization_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION cutover_authority.authorize_finalization_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea) TO forgecrud_cluster_admin;
+GRANT EXECUTE ON FUNCTION cutover_authority.authorize_finalization_v1(uuid,uuid,uuid,text,bytea,text,bytea,text,bytea,text,bytea,text,bytea,text,text,bytea) TO harpy_cluster_admin;

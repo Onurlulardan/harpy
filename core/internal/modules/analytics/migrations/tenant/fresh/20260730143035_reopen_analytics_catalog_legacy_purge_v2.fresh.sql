@@ -133,5 +133,5 @@ REVOKE ALL ON FUNCTION analytics_catalog_internal_widget_peer_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION analytics_catalog_internal_widget_peer_v2(
     uuid,text,uuid,uuid
-) FROM forgecrud_runtime;
+) FROM harpy_runtime;
 -- +goose StatementEnd

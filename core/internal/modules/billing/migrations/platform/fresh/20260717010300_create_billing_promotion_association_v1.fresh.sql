@@ -196,5 +196,5 @@ REVOKE ALL ON FUNCTION platform.billing_replace_discount_campaign_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_replace_discount_campaign_v1(
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

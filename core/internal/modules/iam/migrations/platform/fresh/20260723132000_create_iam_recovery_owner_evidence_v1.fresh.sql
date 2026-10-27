@@ -17,7 +17,7 @@ RETURNS TABLE(
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
        OR p_environment_id IS NULL THEN
@@ -57,4 +57,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.iam_recovery_owner_anchor_evidence_v1(uuid)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_recovery_owner_anchor_evidence_v1(uuid)
-TO forgecrud_backup_reader;
+TO harpy_backup_reader;

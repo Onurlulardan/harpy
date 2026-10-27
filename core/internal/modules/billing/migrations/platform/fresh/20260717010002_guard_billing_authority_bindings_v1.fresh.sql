@@ -7,9 +7,9 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR SESSION_USER NOT IN (
-           'forgecrud_v2_runtime', 'forgecrud_adopter', 'forgecrud_migrator'
+           'harpy_v2_runtime', 'harpy_adopter', 'harpy_migrator'
        ) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing global binding session is invalid';
@@ -56,9 +56,9 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR SESSION_USER NOT IN (
-           'forgecrud_v2_runtime', 'forgecrud_adopter', 'forgecrud_migrator'
+           'harpy_v2_runtime', 'harpy_adopter', 'harpy_migrator'
        ) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing tenant binding session is invalid';

@@ -18,8 +18,8 @@ DECLARE
     existing platform.tenancy_onboarding_receipts%ROWTYPE;
     now_at timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'tenant activation completion denied';
     END IF;
     SELECT * INTO operation

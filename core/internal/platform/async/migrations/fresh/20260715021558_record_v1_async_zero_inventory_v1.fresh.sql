@@ -25,7 +25,7 @@ DECLARE
     v_disposition_count bigint;
     v_inserted boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cluster_admin' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5655',
             MESSAGE = 'V1 zero inventory requires cluster authority';
     END IF;

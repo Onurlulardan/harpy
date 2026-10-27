@@ -19,8 +19,8 @@ DECLARE
     v_attempt_count integer; v_blocked_until timestamptz;
     v_revision bigint; v_retain_until timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_purpose IS NULL OR
        NOT (p_purpose OPERATOR(pg_catalog.=) ANY (ARRAY['login','refresh',
            'password_reset','email_verification','portal_setup','invitation','reauth']::text[])) OR

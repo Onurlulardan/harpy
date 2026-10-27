@@ -12,7 +12,7 @@ BEGIN
     IF TG_OP IS DISTINCT FROM 'UPDATE' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'async_v1_adoption_runs' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5630',
             MESSAGE = 'V1 async adoption run mutation is forbidden';
     END IF;

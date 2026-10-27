@@ -32,7 +32,7 @@ DECLARE
     v_now timestamptz;
     v_released boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_job_id IS NULL OR p_scope_id IS NULL OR
        p_expected_revision IS NULL OR p_expected_revision < 0 OR
        p_release_sha256 IS NULL OR

@@ -8,8 +8,8 @@ RETURNS void
 LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_scope_kind IS DISTINCT FROM 'tenant' OR p_scope_id IS NULL OR
        p_authority_group_id !~ '^[a-z][a-z0-9_]{0,62}$' OR
        p_authority_domain IS DISTINCT FROM 'analytics' THEN

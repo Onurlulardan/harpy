@@ -167,7 +167,7 @@ REVOKE ALL ON FUNCTION analytics_catalog_canonical_json_v1(jsonb)
 GRANT EXECUTE ON FUNCTION analytics_catalog_project_v1(
     name,uuid,uuid,text,text,uuid,uuid,bigint,text,text,text,text,text,
     bytea,integer,integer,bytea,bytea,bytea,uuid,text,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_catalog_component_apply_v1(
     uuid,uuid,uuid,text,bigint,text,text,text,bigint,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

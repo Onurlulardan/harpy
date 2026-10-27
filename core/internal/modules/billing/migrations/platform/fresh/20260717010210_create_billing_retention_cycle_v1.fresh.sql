@@ -196,5 +196,5 @@ REVOKE ALL ON FUNCTION platform.billing_execute_retention_cycle_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_execute_retention_cycle_v1(
     uuid,uuid,uuid,uuid,uuid,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

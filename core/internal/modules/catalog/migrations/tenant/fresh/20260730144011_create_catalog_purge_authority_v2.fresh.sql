@@ -149,8 +149,8 @@ REVOKE ALL ON FUNCTION catalog_record_purge_authority_v2(
     bigint,timestamptz,timestamptz,timestamptz,timestamptz,timestamptz,
     timestamptz,text) FROM PUBLIC;
 REVOKE ALL ON FUNCTION catalog_purge_authority_immutable_v2() FROM PUBLIC;
-GRANT SELECT ON TABLE catalog_purge_authorities_v2 TO forgecrud_runtime;
+GRANT SELECT ON TABLE catalog_purge_authorities_v2 TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION catalog_record_purge_authority_v2(
     uuid,uuid,uuid,text,uuid,uuid,uuid,uuid,text,uuid,text,text,text,text,text,
     bigint,timestamptz,timestamptz,timestamptz,timestamptz,timestamptz,
-    timestamptz,text) TO forgecrud_runtime;
+    timestamptz,text) TO harpy_runtime;

@@ -16,8 +16,8 @@ AS $function$
 DECLARE
     v_count bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_kind NOT IN ('retry_action','repair_action') OR
        p_job.payload_ref IS DISTINCT FROM
            'deadletter:event-gap:' || p_root.id::text OR

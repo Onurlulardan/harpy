@@ -16,8 +16,8 @@ DECLARE
     delivery platform.tenancy_installation_credential_deliveries%ROWTYPE;
     now_at timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='installation delivery record denied';
     END IF;
     IF p_expected_revision<1 OR p_cause NOT IN ('claim_lease_expired','outcome_unknown')
@@ -76,4 +76,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_record_v1(
     uuid,uuid,uuid,bigint,uuid,uuid,bigint,bigint,text,text,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_record_v1(
     uuid,uuid,uuid,bigint,uuid,uuid,bigint,bigint,text,text,text)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

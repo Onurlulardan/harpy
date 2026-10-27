@@ -25,5 +25,5 @@ $function$;
 REVOKE ALL ON FUNCTION platform.billing_convert_v1_storage_megabytes_v1(bigint)
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_convert_v1_storage_megabytes_v1(bigint)
-    TO forgecrud_adopter;
+    TO harpy_adopter;
 -- +goose StatementEnd

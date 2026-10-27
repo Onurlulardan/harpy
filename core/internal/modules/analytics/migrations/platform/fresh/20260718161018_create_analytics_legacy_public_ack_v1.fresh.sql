@@ -16,8 +16,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cluster_admin' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.octet_length(p_inventory_sha256) IS DISTINCT FROM 32 OR
        p_acked_at IS NULL OR NOT pg_catalog.isfinite(p_acked_at) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

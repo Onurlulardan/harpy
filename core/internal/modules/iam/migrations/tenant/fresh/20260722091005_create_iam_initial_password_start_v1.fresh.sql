@@ -27,8 +27,8 @@ DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
     v_existing iam_initial_password_continuations%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'IAM initial password start scope is invalid';
@@ -123,4 +123,4 @@ REVOKE ALL ON FUNCTION iam_initial_password_start_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_initial_password_start_v1(
     name,uuid,uuid,uuid,uuid,bigint,bigint,bytea,text,bytea,text,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

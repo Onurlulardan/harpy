@@ -18,8 +18,8 @@ DECLARE
     v_prefix text;
 BEGIN
     v_prefix := 'platform_async.event_gap_reconcile.';
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5680',
             MESSAGE = 'stale event gap reissue authority is invalid';
     END IF;

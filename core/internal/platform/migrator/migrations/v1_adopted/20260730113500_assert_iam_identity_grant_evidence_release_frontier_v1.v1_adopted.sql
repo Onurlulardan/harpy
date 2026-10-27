@@ -1,0 +1,28 @@
+-- +goose Up
+-- The tenant identity grant-evidence repair owns database generation 77.
+-- Advance the platform frontier to 78 while retaining the production role fence.
+SELECT 1 / CASE WHEN
+    pg_catalog.current_setting('server_version_num')::integer
+        BETWEEN 180000 AND 189999
+    AND (
+        SELECT NOT role_record.rolsuper
+           AND NOT role_record.rolinherit
+           AND NOT role_record.rolcreaterole
+           AND NOT role_record.rolcreatedb
+           AND NOT role_record.rolcanlogin
+           AND NOT role_record.rolbypassrls
+        FROM pg_catalog.pg_roles AS role_record
+        WHERE role_record.rolname = 'harpy_runtime'
+    )
+    AND (
+        SELECT NOT role_record.rolsuper
+           AND NOT role_record.rolinherit
+           AND NOT role_record.rolcreaterole
+           AND NOT role_record.rolcreatedb
+           AND role_record.rolcanlogin
+           AND NOT role_record.rolbypassrls
+        FROM pg_catalog.pg_roles AS role_record
+        WHERE role_record.rolname = 'harpy_v2_runtime'
+    )
+THEN 1 ELSE 0 END
+AS iam_identity_grant_evidence_release_frontier_assertion;

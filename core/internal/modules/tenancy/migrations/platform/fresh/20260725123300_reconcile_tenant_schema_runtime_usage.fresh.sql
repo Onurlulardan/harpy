@@ -11,8 +11,8 @@ DECLARE
     v_required boolean;
     v_applied bigint := 0;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_migrator'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_migrator'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='tenant schema runtime ACL authority is denied';
     END IF;
@@ -52,23 +52,23 @@ BEGIN
             END IF;
             CONTINUE;
         END IF;
-        IF v_owner IS DISTINCT FROM 'forgecrud_owner' THEN
+        IF v_owner IS DISTINCT FROM 'harpy_owner' THEN
             RAISE EXCEPTION USING ERRCODE='55000',
                 MESSAGE='tenant schema runtime ACL ownership is invalid';
         END IF;
         EXECUTE pg_catalog.format(
-            'REVOKE CREATE ON SCHEMA %I FROM PUBLIC, forgecrud_runtime, forgecrud_v2_runtime',
+            'REVOKE CREATE ON SCHEMA %I FROM PUBLIC, harpy_runtime, harpy_v2_runtime',
             v_schema
         );
         EXECUTE pg_catalog.format(
-            'GRANT USAGE ON SCHEMA %I TO forgecrud_runtime',v_schema
+            'GRANT USAGE ON SCHEMA %I TO harpy_runtime',v_schema
         );
         IF NOT pg_catalog.has_schema_privilege(
-                'forgecrud_runtime',v_namespace,'USAGE')
+                'harpy_runtime',v_namespace,'USAGE')
            OR pg_catalog.has_schema_privilege(
-                'forgecrud_runtime',v_namespace,'CREATE')
+                'harpy_runtime',v_namespace,'CREATE')
            OR pg_catalog.has_schema_privilege(
-                'forgecrud_v2_runtime',v_namespace,'CREATE')
+                'harpy_v2_runtime',v_namespace,'CREATE')
            OR EXISTS (
                 SELECT 1
                 FROM pg_catalog.pg_namespace AS namespace

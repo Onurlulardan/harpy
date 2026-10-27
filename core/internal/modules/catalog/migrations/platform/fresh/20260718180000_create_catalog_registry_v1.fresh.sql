@@ -44,4 +44,4 @@ CREATE TRIGGER catalog_package_versions_immutable
 BEFORE UPDATE OR DELETE ON platform.catalog_package_versions
 FOR EACH STATEMENT EXECUTE FUNCTION platform.catalog_reject_registry_mutation_v1();
 
-GRANT SELECT ON TABLE platform.catalog_packages, platform.catalog_package_versions TO forgecrud_runtime;
+GRANT SELECT ON TABLE platform.catalog_packages, platform.catalog_package_versions TO harpy_runtime;

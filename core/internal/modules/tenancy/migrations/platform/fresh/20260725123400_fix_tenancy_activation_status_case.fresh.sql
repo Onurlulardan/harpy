@@ -17,8 +17,8 @@ DECLARE
     v_tenant_id uuid;
     v_schema_name text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-operator-initialize'
        OR p_operation_id IS NULL OR p_tenant_id IS NULL
@@ -63,5 +63,5 @@ REVOKE ALL ON FUNCTION platform.tenancy_activation_assert_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_activation_assert_v2(
     uuid,uuid,name
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

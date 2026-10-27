@@ -60,4 +60,4 @@ REVOKE ALL ON FUNCTION iam_identity_password_enroll_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_identity_password_enroll_v1(
     name,uuid,bytea,uuid,bytea,bytea,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;

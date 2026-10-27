@@ -19,7 +19,7 @@ DECLARE
     v_cleanup_issued_at timestamptz;
     v_invalid boolean;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_cluster_admin' OR p_operation_id IS NULL OR p_run_id IS NULL OR
+    IF SESSION_USER <> 'harpy_cluster_admin' OR p_operation_id IS NULL OR p_run_id IS NULL OR
        p_seal_receipt_sha256 IS NULL OR p_seal_receipt_sha256!~'^[0-9a-f]{64}$' OR
        p_cleanup_receipt_sha256 IS NULL OR p_cleanup_receipt_sha256!~'^[0-9a-f]{64}$' OR
        p_seal_receipt_document IS NULL OR pg_catalog.octet_length(p_seal_receipt_document) NOT BETWEEN 2 AND 65536 OR
@@ -33,7 +33,7 @@ BEGIN
     ORDER BY inventory.catalog_generation DESC LIMIT 1;
     PERFORM cutover_authority.assert_adopted_catalog_v1(v_authority_receipt_sha256);
     IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-        WHERE role.rolname='forgecrud_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
+        WHERE role.rolname='harpy_cluster_admin' AND role.rolcanlogin AND NOT role.rolinherit
           AND NOT role.rolsuper AND role.rolcreatedb AND role.rolcreaterole AND NOT role.rolreplication
           AND NOT role.rolbypassrls AND role.rolconnlimit=1 AND role.rolvaliduntil>pg_catalog.clock_timestamp()
           AND NOT EXISTS (SELECT 1 FROM pg_catalog.pg_auth_members AS membership
@@ -70,7 +70,7 @@ BEGIN
        v_seal->'payload'->>'run_id' IS DISTINCT FROM p_run_id::text OR
        v_seal->'payload'->'source' IS DISTINCT FROM v_target OR v_seal->'payload'->'target' IS DISTINCT FROM v_target OR
        v_seal->'payload'->'credentials' IS DISTINCT FROM
-         '[{"principal":"forgecrud_cutover_decoder","can_login":false,"password_state":null,"replication":false,"connection_limit":0},{"principal":"forgecrud_adopter","can_login":false,"password_state":null,"replication":false,"connection_limit":0}]'::jsonb OR
+         '[{"principal":"harpy_cutover_decoder","can_login":false,"password_state":null,"replication":false,"connection_limit":0},{"principal":"harpy_adopter","can_login":false,"password_state":null,"replication":false,"connection_limit":0}]'::jsonb OR
        pg_catalog.jsonb_typeof(v_seal->'payload'->'source_sessions') IS DISTINCT FROM 'array' OR
        pg_catalog.jsonb_array_length(v_seal->'payload'->'source_sessions') NOT BETWEEN 2 AND 32 OR
        pg_catalog.jsonb_typeof(v_seal->'payload'->'target_sessions') IS DISTINCT FROM 'array' OR
@@ -96,7 +96,7 @@ BEGIN
              OR pg_catalog.jsonb_typeof(session_row->'pid') IS DISTINCT FROM 'number' OR session_row->>'pid'!~'^[1-9][0-9]*$'
              OR pg_catalog.jsonb_typeof(session_row->'backend_start') IS DISTINCT FROM 'string'
              OR session_row->>'backend_start'!~'(Z|[+]00:00)$' OR (session_row->>'backend_start')::timestamptz>v_seal_issued_at
-             OR session_row->>'session_user' IS DISTINCT FROM 'forgecrud_cutover_decoder'
+             OR session_row->>'session_user' IS DISTINCT FROM 'harpy_cutover_decoder'
              OR session_row->>'application_name' IS DISTINCT FROM 'forgecrud-cutover/'||p_run_id::text) OR
        EXISTS (SELECT 1 FROM pg_catalog.jsonb_array_elements(v_seal->'payload'->'target_sessions') AS session_row
           WHERE (SELECT pg_catalog.count(*) FROM pg_catalog.jsonb_object_keys(session_row)) IS DISTINCT FROM 4::bigint
@@ -104,7 +104,7 @@ BEGIN
              OR pg_catalog.jsonb_typeof(session_row->'pid') IS DISTINCT FROM 'number' OR session_row->>'pid'!~'^[1-9][0-9]*$'
              OR pg_catalog.jsonb_typeof(session_row->'backend_start') IS DISTINCT FROM 'string'
              OR session_row->>'backend_start'!~'(Z|[+]00:00)$' OR (session_row->>'backend_start')::timestamptz>v_seal_issued_at
-             OR session_row->>'session_user' IS DISTINCT FROM 'forgecrud_adopter'
+             OR session_row->>'session_user' IS DISTINCT FROM 'harpy_adopter'
              OR session_row->>'application_name' IS DISTINCT FROM 'forgecrud-cutover/'||p_run_id::text) THEN
         RAISE EXCEPTION USING ERRCODE='22023', MESSAGE='cutover sealed session set differs';
     END IF;
@@ -132,9 +132,9 @@ BEGIN
        pg_catalog.jsonb_typeof(v_cleanup->'payload'->'principals') IS DISTINCT FROM 'array' OR
        pg_catalog.jsonb_array_length(v_cleanup->'payload'->'principals') IS DISTINCT FROM 2 OR
        ((v_cleanup->'payload'->'principals'->0)-'cleaned_at'::text) IS DISTINCT FROM
-         '{"principal":"forgecrud_cutover_decoder","can_login":false,"password_state":null,"replication":false,"connection_limit":0,"active_sessions":0,"membership_count":0,"dynamic_grants_revoked":true}'::jsonb OR
+         '{"principal":"harpy_cutover_decoder","can_login":false,"password_state":null,"replication":false,"connection_limit":0,"active_sessions":0,"membership_count":0,"dynamic_grants_revoked":true}'::jsonb OR
        ((v_cleanup->'payload'->'principals'->1)-'cleaned_at'::text) IS DISTINCT FROM
-         '{"principal":"forgecrud_adopter","can_login":false,"password_state":null,"replication":false,"connection_limit":0,"active_sessions":0,"membership_count":0,"dynamic_grants_revoked":true}'::jsonb OR
+         '{"principal":"harpy_adopter","can_login":false,"password_state":null,"replication":false,"connection_limit":0,"active_sessions":0,"membership_count":0,"dynamic_grants_revoked":true}'::jsonb OR
        pg_catalog.jsonb_typeof(v_cleanup->'signature') IS DISTINCT FROM 'object' OR
        (SELECT pg_catalog.count(*) FROM pg_catalog.jsonb_object_keys(v_cleanup->'signature')) IS DISTINCT FROM 3::bigint OR
        (v_cleanup->'signature' ?& ARRAY['algorithm','key_id','value']) IS DISTINCT FROM true OR
@@ -152,7 +152,7 @@ BEGIN
           WHERE pg_catalog.jsonb_typeof(principal->'cleaned_at') IS DISTINCT FROM 'string'
              OR principal->>'cleaned_at'!~'(Z|[+]00:00)$' OR
              (principal->>'cleaned_at')::timestamptz NOT BETWEEN v_seal_issued_at AND v_cleanup_issued_at) OR
-       NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role WHERE role.rolname IN ('forgecrud_cutover_decoder','forgecrud_adopter')
+       NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role WHERE role.rolname IN ('harpy_cutover_decoder','harpy_adopter')
           AND NOT role.rolcanlogin AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
           AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=0
           AND role.rolvaliduntil IS NOT DISTINCT FROM 'infinity'::timestamptz
@@ -160,7 +160,7 @@ BEGIN
              WHERE membership.roleid=role.oid OR membership.member=role.oid)
           HAVING pg_catalog.count(*)=2) OR
        EXISTS (SELECT 1 FROM pg_catalog.pg_stat_activity AS activity
-          WHERE activity.usename IN ('forgecrud_cutover_decoder','forgecrud_adopter')) THEN
+          WHERE activity.usename IN ('harpy_cutover_decoder','harpy_adopter')) THEN
         RAISE EXCEPTION USING ERRCODE='55000', MESSAGE='cutover live credential cleanup state differs';
     END IF;
     INSERT INTO platform.cutover_credential_receipts (receipt_id,operation_id,run_id,lease_id,receipt_kind,
@@ -193,4 +193,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION cutover_authority.record_credential_receipts_v1(uuid,uuid,text,bytea,text,bytea) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION cutover_authority.record_credential_receipts_v1(uuid,uuid,text,bytea,text,bytea) TO forgecrud_cluster_admin;
+GRANT EXECUTE ON FUNCTION cutover_authority.record_credential_receipts_v1(uuid,uuid,text,bytea,text,bytea) TO harpy_cluster_admin;

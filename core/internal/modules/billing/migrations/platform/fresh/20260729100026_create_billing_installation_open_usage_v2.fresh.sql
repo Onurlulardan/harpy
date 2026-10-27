@@ -9,8 +9,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR platform.tenancy_activation_step_consume_v1(
            p_operation_id, 'billing.open_tenant_usage'
        ) IS DISTINCT FROM TRUE THEN
@@ -31,4 +31,4 @@ REVOKE ALL ON FUNCTION platform.billing_installation_open_usage_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_installation_open_usage_v2(
     uuid,uuid,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

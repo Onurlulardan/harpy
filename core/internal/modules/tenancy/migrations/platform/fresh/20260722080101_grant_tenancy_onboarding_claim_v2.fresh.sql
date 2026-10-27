@@ -4,4 +4,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_onboarding_claim_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_onboarding_claim_v2(
     uuid, uuid, text, text, bigint, integer
-) TO forgecrud_runtime;
+) TO harpy_runtime;

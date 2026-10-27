@@ -30,7 +30,7 @@ SELECT 1 / CASE WHEN
           ON routine.oid = public_resolved.routine_oid
         WHERE routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT (
                COALESCE(routine.proconfig, ARRAY[]::text[])
@@ -40,10 +40,10 @@ SELECT 1 / CASE WHEN
                ]::text[]
            )
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -51,10 +51,10 @@ SELECT 1 / CASE WHEN
         FROM internal_resolved
         WHERE routine_oid IS NULL
            OR pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -62,7 +62,7 @@ SELECT 1 / CASE WHEN
         FROM legacy_resolved
         WHERE routine_oid IS NULL
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
     )
 THEN 0 ELSE 1 END;

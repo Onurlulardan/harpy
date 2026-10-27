@@ -60,7 +60,7 @@ REVOKE ALL ON FUNCTION analytics_catalog_owner_purge_authority_read_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_catalog_owner_purge_authority_read_v2(
     name,uuid,uuid,uuid,bigint,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION
     analytics_catalog_owner_purge_authority_guard_v2() FROM PUBLIC;
 

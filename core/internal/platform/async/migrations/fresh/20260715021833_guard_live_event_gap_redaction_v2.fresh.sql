@@ -16,8 +16,8 @@ BEGIN
             MESSAGE = 'dead-letter redaction trigger target is invalid';
     END IF;
 
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        OLD.record_kind IS DISTINCT FROM 'root' OR
        NEW.record_kind IS DISTINCT FROM 'root' OR
        OLD.payload_canonical IS NULL OR

@@ -28,7 +28,7 @@ DECLARE
     v_member_count integer;
     v_persisted_sha256 text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cluster_admin' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cluster_admin' OR
        p_receipt_id IS NULL OR p_environment_id IS NULL OR p_tenant_id IS NULL OR
        p_environment_id=p_tenant_id OR
        p_environment_id='00000000-0000-0000-0000-000000000000'::uuid OR

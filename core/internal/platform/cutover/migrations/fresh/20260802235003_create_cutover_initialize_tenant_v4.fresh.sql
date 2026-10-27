@@ -19,8 +19,8 @@ DECLARE
     v_existing integer;
 BEGIN
     v_application := pg_catalog.current_setting('application_name', true);
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR NOT (
            (p_operation_kind = 'environment_initialize'
             AND v_application = 'forgecrud-v2:core-operator-initialize')

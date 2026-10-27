@@ -30,6 +30,6 @@ $$;
 -- +goose StatementEnd
 
 GRANT EXECUTE ON FUNCTION documents_item_response_v1(uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION documents_item_response_v1(uuid)
-TO forgecrud_adopter;
+TO harpy_adopter;

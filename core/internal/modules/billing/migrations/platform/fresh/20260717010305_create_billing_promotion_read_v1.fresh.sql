@@ -84,11 +84,11 @@ JOIN LATERAL (
     ORDER BY candidate.version DESC, candidate.id ASC
     LIMIT 1
 ) AS version_row ON true
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_promotion_discount_read_v1
-TO forgecrud_runtime;
+TO harpy_runtime;
 
 CREATE VIEW platform.billing_promotion_campaign_read_v1
 WITH (security_barrier = true)
@@ -126,8 +126,8 @@ JOIN LATERAL (
     ORDER BY candidate.version DESC, candidate.id ASC
     LIMIT 1
 ) AS version_row ON true
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_promotion_campaign_read_v1
-TO forgecrud_runtime;
+TO harpy_runtime;

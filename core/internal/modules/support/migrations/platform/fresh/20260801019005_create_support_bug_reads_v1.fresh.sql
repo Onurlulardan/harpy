@@ -95,7 +95,7 @@ $function$;
 REVOKE ALL ON FUNCTION platform.support_list_bugs_v1(uuid,bigint,bigint,boolean,uuid,uuid,text,text,text,integer,integer) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.support_bug_stats_v1(uuid,bigint,bigint,boolean,uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.support_get_bug_v1(uuid,bigint,bigint,uuid,uuid,uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.support_list_bugs_v1(uuid,bigint,bigint,boolean,uuid,uuid,text,text,text,integer,integer) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_bug_stats_v1(uuid,bigint,bigint,boolean,uuid) TO forgecrud_runtime;
-GRANT EXECUTE ON FUNCTION platform.support_get_bug_v1(uuid,bigint,bigint,uuid,uuid,uuid) TO forgecrud_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_list_bugs_v1(uuid,bigint,bigint,boolean,uuid,uuid,text,text,text,integer,integer) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_bug_stats_v1(uuid,bigint,bigint,boolean,uuid) TO harpy_runtime;
+GRANT EXECUTE ON FUNCTION platform.support_get_bug_v1(uuid,bigint,bigint,uuid,uuid,uuid) TO harpy_runtime;
 -- +goose StatementEnd

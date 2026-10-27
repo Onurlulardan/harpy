@@ -38,9 +38,9 @@ FROM current_global AS authority
 JOIN platform.billing_revenue_projection AS projection
   ON projection.authority_id = authority.authority_id
 WHERE projection.state IN ('active', 'past_due')
-  AND SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+  AND SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_revenue_report_query_v1
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 

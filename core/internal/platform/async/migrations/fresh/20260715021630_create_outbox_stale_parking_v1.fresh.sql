@@ -16,7 +16,7 @@ DECLARE
     v_now timestamptz := pg_catalog.clock_timestamp();
     v_error_sha256 text;
 BEGIN
-    IF SESSION_USER OPERATOR(pg_catalog.<>) 'forgecrud_v2_runtime' OR
+    IF SESSION_USER OPERATOR(pg_catalog.<>) 'harpy_v2_runtime' OR
        p_event_id IS NULL OR p_dead_letter_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = 'P5653',
             MESSAGE = 'stale outbox park input is invalid';
@@ -148,5 +148,5 @@ REVOKE ALL ON FUNCTION platform.platform_async_park_stale_outbox_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platform_async_park_stale_outbox_v1(
     uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

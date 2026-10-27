@@ -20,6 +20,6 @@ ALTER TABLE documents_archives
          AND cipher_format = 'FCDOC1')
     );
 
-GRANT INSERT (request_document) ON documents_archives TO forgecrud_runtime;
+GRANT INSERT (request_document) ON documents_archives TO harpy_runtime;
 GRANT UPDATE (artifact_plaintext_bytes, ciphertext_sha256, cipher_format)
-ON documents_archives TO forgecrud_runtime;
+ON documents_archives TO harpy_runtime;

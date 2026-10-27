@@ -10,8 +10,8 @@ DECLARE
     v_count integer; v_authority_id uuid;
     v_billing_operation_id uuid; v_billing_run_id uuid; v_forms_operation_id uuid; v_forms_run_id uuid;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
-       OR SESSION_USER IS DISTINCT FROM 'forgecrud_cutover_finalizer'
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
+       OR SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer'
        OR p_acceptance_digest !~ '^[0-9a-f]{64}$'
        OR (p_companion_operation_id IS NULL) IS DISTINCT FROM
           (p_companion_run_id IS NULL) THEN
@@ -197,4 +197,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,uuid,uuid,text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,uuid,uuid,text) TO forgecrud_cutover_authority_owner;
+GRANT EXECUTE ON FUNCTION platform.cutover_finalize_successor_group_v1(uuid,uuid,uuid,uuid,text) TO harpy_cutover_authority_owner;

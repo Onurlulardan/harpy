@@ -18,8 +18,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Forms import job read authority is invalid';
     END IF;
@@ -56,4 +56,4 @@ REVOKE ALL ON FUNCTION platform.platform_async_forms_import_read_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platform_async_forms_import_read_v1(
     uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

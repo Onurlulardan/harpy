@@ -15,7 +15,7 @@ DECLARE
     v_distinct_count bigint;
     v_found_count bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_contract_keys IS NULL OR p_owner_module IS NULL OR p_domain IS NULL OR
        p_owner_module OPERATOR(pg_catalog.!~) '^[a-z][a-z0-9_]{0,62}$' OR
        NOT (p_domain OPERATOR(pg_catalog.=) ANY (
@@ -111,4 +111,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.contract_retirement_admit_v1(jsonb,text,text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.contract_retirement_admit_v1(jsonb,text,text)
-TO forgecrud_runtime;
+TO harpy_runtime;

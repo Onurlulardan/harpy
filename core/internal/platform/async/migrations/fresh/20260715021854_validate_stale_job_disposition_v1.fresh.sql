@@ -17,8 +17,8 @@ DECLARE
     v_document jsonb;
     v_expected jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_root_id IS NULL OR p_action_id IS NULL OR
        p_root_id IN (p_action_id,p_job.id) OR p_action_id = p_job.id OR
        p_action NOT IN ('adopt','cancel') OR p_job.payload_ref IS NULL OR

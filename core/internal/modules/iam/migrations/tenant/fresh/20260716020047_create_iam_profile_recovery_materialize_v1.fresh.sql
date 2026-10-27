@@ -39,7 +39,7 @@ DECLARE
     v_target_count bigint;
     v_actual_target_sha bytea;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR p_tenant_id IS NULL OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR p_tenant_id IS NULL OR
        pg_catalog.octet_length(p_plan_sha256) <> 32 OR
        pg_catalog.octet_length(p_plan_document) NOT BETWEEN 2 AND 16777216 OR
        pg_catalog.sha256(p_plan_document) <> p_plan_sha256 OR

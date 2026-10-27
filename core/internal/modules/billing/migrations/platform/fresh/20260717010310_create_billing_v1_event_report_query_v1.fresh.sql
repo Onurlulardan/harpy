@@ -14,13 +14,13 @@ DECLARE
     expected_state text;
 BEGIN
     IF p_authority_id IS NULL OR p_tenant_id IS NULL
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing retained tenant authority input is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         expected_writer := 'v2'; expected_state := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         expected_writer := 'v1'; expected_state := 'shadow';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -156,8 +156,8 @@ LEFT JOIN platform.billing_legacy_identity_alias_v1 AS alias
  AND alias.scope_id = audit.tenant_id
  AND alias.record_kind = 'subscription'
  AND alias.canonical_id = audit.subscription_id
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_v1_event_report_query_v1
-    TO forgecrud_runtime;
+    TO harpy_runtime;

@@ -102,5 +102,5 @@ REVOKE ALL ON FUNCTION iam_permission_cache_flush_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_permission_cache_flush_v1(
     name,uuid,uuid,bytea,uuid,bigint,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

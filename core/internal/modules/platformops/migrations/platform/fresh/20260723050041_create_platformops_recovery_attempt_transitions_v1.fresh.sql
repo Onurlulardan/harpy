@@ -35,7 +35,7 @@ CREATE FUNCTION platform.platformops_start_recovery_snapshot_v1(
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -53,7 +53,7 @@ CREATE FUNCTION platform.platformops_start_recovery_copy_v1(
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -71,7 +71,7 @@ CREATE FUNCTION platform.platformops_start_recovery_verify_v1(
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -91,7 +91,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
        OR p_hold_sha256 !~ '^[0-9a-f]{64}$' OR p_inventory_count<0 THEN
@@ -123,7 +123,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-backup-executor'
        OR p_failure_code !~ '^[a-z0-9_]{1,64}$' THEN
@@ -155,8 +155,8 @@ REVOKE ALL ON FUNCTION platform.platformops_start_recovery_copy_v1(uuid,uuid,uui
 REVOKE ALL ON FUNCTION platform.platformops_start_recovery_verify_v1(uuid,uuid,uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.platformops_attest_documents_hold_v1(uuid,uuid,uuid,text,bigint) FROM PUBLIC;
 REVOKE ALL ON FUNCTION platform.platformops_fail_recovery_execution_v1(uuid,uuid,uuid,text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform.platformops_start_recovery_snapshot_v1(uuid,uuid,uuid) TO forgecrud_backup_reader;
-GRANT EXECUTE ON FUNCTION platform.platformops_start_recovery_copy_v1(uuid,uuid,uuid) TO forgecrud_backup_reader;
-GRANT EXECUTE ON FUNCTION platform.platformops_start_recovery_verify_v1(uuid,uuid,uuid) TO forgecrud_backup_reader;
-GRANT EXECUTE ON FUNCTION platform.platformops_attest_documents_hold_v1(uuid,uuid,uuid,text,bigint) TO forgecrud_backup_reader;
-GRANT EXECUTE ON FUNCTION platform.platformops_fail_recovery_execution_v1(uuid,uuid,uuid,text) TO forgecrud_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_start_recovery_snapshot_v1(uuid,uuid,uuid) TO harpy_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_start_recovery_copy_v1(uuid,uuid,uuid) TO harpy_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_start_recovery_verify_v1(uuid,uuid,uuid) TO harpy_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_attest_documents_hold_v1(uuid,uuid,uuid,text,bigint) TO harpy_backup_reader;
+GRANT EXECUTE ON FUNCTION platform.platformops_fail_recovery_execution_v1(uuid,uuid,uuid,text) TO harpy_backup_reader;

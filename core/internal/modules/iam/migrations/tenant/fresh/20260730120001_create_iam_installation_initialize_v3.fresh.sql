@@ -39,4 +39,4 @@ REVOKE ALL ON FUNCTION iam_installation_initialize_v3(
 GRANT EXECUTE ON FUNCTION iam_installation_initialize_v3(
     uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,uuid,uuid,
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;

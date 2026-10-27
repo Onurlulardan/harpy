@@ -10,7 +10,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    RETURN SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
+    RETURN SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
        AND selected_authority IS NOT NULL
        AND selected_tenant IS NOT NULL
        AND EXISTS (

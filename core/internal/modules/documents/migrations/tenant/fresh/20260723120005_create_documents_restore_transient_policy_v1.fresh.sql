@@ -7,7 +7,7 @@ BEGIN
     IF TG_OP = 'DELETE' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'DOCUMENT_UPLOAD_IMMUTABLE';
     END IF;
-    IF SESSION_USER = 'forgecrud_restore'
+    IF SESSION_USER = 'harpy_restore'
        AND OLD.lifecycle_state NOT IN ('READY','CANCELLED','EXPIRED')
        AND NEW.lifecycle_state = 'CANCELLED'
        AND NEW.lease_owner_id IS NULL AND NEW.lease_expires_at IS NULL
@@ -81,7 +81,7 @@ AS $function$
 DECLARE
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR p_restore_operation_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'documents transient restore policy denied';

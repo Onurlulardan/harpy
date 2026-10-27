@@ -13,8 +13,8 @@ DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
     v_revision bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_grant_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -64,4 +64,4 @@ $function$;
 
 REVOKE ALL ON FUNCTION iam_mcp_grant_revoke_v1(name,uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_mcp_grant_revoke_v1(name,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

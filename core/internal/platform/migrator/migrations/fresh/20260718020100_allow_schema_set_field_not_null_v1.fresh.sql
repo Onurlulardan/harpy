@@ -44,7 +44,7 @@ DECLARE
     v_executor text;
     v_transaction_class text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_plan_sha256 !~ '^[0-9a-f]{64}$'
        OR p_resource_kind NOT IN ('form_storage','form_purge')
        OR p_expected_ordinal NOT BETWEEN 0 AND 1999

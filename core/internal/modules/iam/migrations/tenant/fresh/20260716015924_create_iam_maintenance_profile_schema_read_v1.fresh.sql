@@ -20,8 +20,8 @@ AS $function$
 DECLARE
     v_resource_kind text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT iam_maintenance_claim_assert_v1(
            p_scope_schema, p_tenant_id, p_job_id, p_attempt_id,

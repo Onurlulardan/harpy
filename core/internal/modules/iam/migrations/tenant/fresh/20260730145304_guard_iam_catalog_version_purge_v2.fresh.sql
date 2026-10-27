@@ -51,9 +51,9 @@ REVOKE ALL ON FUNCTION iam_catalog_purge_context_matches_v2(uuid)
 REVOKE ALL ON FUNCTION iam_catalog_version_evidence_guard_v3()
     FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION iam_catalog_purge_context_matches_v2(uuid)
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION iam_catalog_version_evidence_guard_v3()
-    FROM forgecrud_runtime;
+    FROM harpy_runtime;
 
 CREATE OR REPLACE TRIGGER iam_catalog_version_evidence_immutable
 BEFORE UPDATE OR DELETE ON iam_catalog_version_evidence

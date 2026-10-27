@@ -48,4 +48,4 @@ $function$;
 REVOKE ALL ON FUNCTION analytics_dashboard_get_default_v1(name,uuid,text)
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_get_default_v1(name,uuid,text)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

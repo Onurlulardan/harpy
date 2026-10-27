@@ -39,8 +39,8 @@ DECLARE
     v_errors bigint;
     v_terminal boolean := false;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_scanned_count < 0 OR p_converted_count < 0 OR
        p_converted_count > p_scanned_count OR

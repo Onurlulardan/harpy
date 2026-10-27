@@ -167,14 +167,14 @@ $function$;
 
 REVOKE ALL ON FUNCTION analytics_dashboard_export_delete_claim_legacy_v1(
     name,uuid,uuid,uuid,timestamptz
-) FROM PUBLIC,forgecrud_runtime;
+) FROM PUBLIC,harpy_runtime;
 REVOKE ALL ON FUNCTION analytics_dashboard_export_expiry_control_v1(
     name,uuid,uuid,uuid,timestamptz
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_expiry_control_v1(
     name,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_delete_claim_v1(
     name,uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

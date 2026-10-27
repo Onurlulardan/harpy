@@ -11,7 +11,7 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR pg_catalog.octet_length(p_inventory_sha256) <> 32
        OR p_inventory_count < 0 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -57,7 +57,7 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'documents recovery release denied';
     END IF;
@@ -89,7 +89,7 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR p_failure_code !~ '^[a-z0-9_]{1,64}$' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'documents recovery failure denied';
@@ -126,7 +126,7 @@ AS $function$
 DECLARE
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR p_restore_operation_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'documents transient restore policy denied';
@@ -190,11 +190,11 @@ BEGIN
 END;
 $function$;
 REVOKE ALL ON FUNCTION documents_recovery_seal_hold_v2(uuid,bytea,bigint) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION documents_recovery_seal_hold_v2(uuid,bytea,bigint) TO forgecrud_backup_reader;
+GRANT EXECUTE ON FUNCTION documents_recovery_seal_hold_v2(uuid,bytea,bigint) TO harpy_backup_reader;
 REVOKE ALL ON FUNCTION documents_recovery_release_hold_v2(uuid,bytea) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION documents_recovery_release_hold_v2(uuid,bytea) TO forgecrud_backup_reader;
+GRANT EXECUTE ON FUNCTION documents_recovery_release_hold_v2(uuid,bytea) TO harpy_backup_reader;
 REVOKE ALL ON FUNCTION documents_recovery_fail_hold_v2(uuid,text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION documents_recovery_fail_hold_v2(uuid,text) TO forgecrud_backup_reader;
+GRANT EXECUTE ON FUNCTION documents_recovery_fail_hold_v2(uuid,text) TO harpy_backup_reader;
 REVOKE ALL ON FUNCTION documents_recovery_terminalize_transients_v2(uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION documents_recovery_terminalize_transients_v2(uuid) TO forgecrud_restore;
+GRANT EXECUTE ON FUNCTION documents_recovery_terminalize_transients_v2(uuid) TO harpy_restore;
 -- +goose StatementEnd

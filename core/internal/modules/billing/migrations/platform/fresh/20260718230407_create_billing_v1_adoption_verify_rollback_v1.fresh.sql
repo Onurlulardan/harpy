@@ -23,8 +23,8 @@ DECLARE
     v_receipt_id uuid;
     v_now timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_source_sha256 !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing V1 adoption verification principal denied';

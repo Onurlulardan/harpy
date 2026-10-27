@@ -28,8 +28,8 @@ BEGIN
             p_attempt.effect_id,p_job.kind);
     SELECT receipt.* INTO v_receipt FROM platform.idempotency_receipts receipt
     WHERE receipt.receipt_id=p_effect_receipt_id FOR SHARE;
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_claim.job_id IS NULL OR p_resolution.job_id IS NULL OR
        p_job.kind IS DISTINCT FROM p_claim.kind OR
        p_attempt.effect_id IS DISTINCT FROM p_claim.effect_id OR

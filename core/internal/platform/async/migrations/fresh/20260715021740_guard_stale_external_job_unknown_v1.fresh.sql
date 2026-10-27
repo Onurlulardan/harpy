@@ -17,8 +17,8 @@ DECLARE
     v_changed jsonb;
 BEGIN
     IF pg_catalog.pg_trigger_depth() <> 1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        OLD.state IS DISTINCT FROM 'running' OR
        OLD.effect_class IS DISTINCT FROM 'external' OR
        OLD.effect_started_at IS NULL OR NEW.state IS DISTINCT FROM 'dead' OR
@@ -124,10 +124,10 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE = 'P5610',
             MESSAGE = 'job transition invocation is invalid';
     END IF;
-    IF CURRENT_USER = 'forgecrud_owner' AND OLD.parked_at IS NULL AND
+    IF CURRENT_USER = 'harpy_owner' AND OLD.parked_at IS NULL AND
        NEW.parked_at IS NOT NULL THEN
         NULL;
-    ELSIF CURRENT_USER = 'forgecrud_owner' AND OLD.state = 'running' AND
+    ELSIF CURRENT_USER = 'harpy_owner' AND OLD.state = 'running' AND
        OLD.effect_started_at IS NOT NULL AND NEW.state = 'dead' AND
        NEW.last_error_code = 'JOB_OUTCOME_UNKNOWN' THEN
         PERFORM platform.platform_async_validate_stale_external_job_unknown_v1(

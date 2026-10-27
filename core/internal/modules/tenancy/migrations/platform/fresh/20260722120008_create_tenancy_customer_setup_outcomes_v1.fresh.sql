@@ -9,8 +9,8 @@ AS $function$
 DECLARE
     v_current text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-worker'
        OR p_tenant_id IS NULL OR p_artifact_id IS NULL
@@ -53,8 +53,8 @@ AS $function$
 DECLARE
     v_current text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name', true)
             IS DISTINCT FROM 'forgecrud-v2:core-api'
        OR p_operation_id IS NULL OR p_tenant_id IS NULL
@@ -98,8 +98,8 @@ REVOKE ALL ON FUNCTION platform.tenancy_customer_setup_accepted_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_setup_delivery_outcome_v1(
     uuid,uuid,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.tenancy_customer_setup_accepted_v1(
     uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

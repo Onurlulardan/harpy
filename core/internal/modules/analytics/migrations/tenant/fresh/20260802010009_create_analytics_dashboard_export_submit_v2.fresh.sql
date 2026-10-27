@@ -73,5 +73,5 @@ REVOKE ALL ON FUNCTION analytics_dashboard_export_submit_v2(
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_submit_v2(
     name,uuid,uuid,text,bytea,uuid,uuid,uuid,uuid,text,bytea,
     bigint,bigint,bigint,bigint,bigint,timestamptz,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

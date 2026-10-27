@@ -17,8 +17,8 @@ DECLARE
     v_receipt_revision bigint; v_receipt_clock bigint; v_receipt_created timestamptz;
     v_revision bigint; v_clock bigint; v_sequence bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        p_resource_kind NOT IN ('user', 'role', 'organization') OR
        p_command_key NOT LIKE 'iam.identity.' || p_resource_kind || '.%' OR

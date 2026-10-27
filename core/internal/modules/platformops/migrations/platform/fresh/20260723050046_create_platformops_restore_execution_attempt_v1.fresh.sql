@@ -52,7 +52,7 @@ DECLARE
     v_now timestamptz := pg_catalog.statement_timestamp();
     v_components jsonb;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
        OR pg_catalog.substring(p_attempt_id::text,15,1)<>'7'
@@ -167,7 +167,7 @@ REVOKE ALL ON FUNCTION platform.platformops_claim_restore_execution_v2(
 ) FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION platform.platformops_claim_restore_v1(
     uuid,timestamptz
-) FROM forgecrud_restore;
+) FROM harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_restore_execution_v2(
     uuid,uuid,uuid,text
-) TO forgecrud_restore;
+) TO harpy_restore;

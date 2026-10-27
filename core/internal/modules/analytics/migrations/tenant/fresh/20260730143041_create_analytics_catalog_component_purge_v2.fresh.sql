@@ -196,5 +196,5 @@ BEGIN
 END;
 $function$;
 REVOKE ALL ON FUNCTION analytics_catalog_component_purge_v2(uuid,uuid,uuid,text,bigint,text,text,text,bigint,text,timestamptz) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION analytics_catalog_component_purge_v2(uuid,uuid,uuid,text,bigint,text,text,text,bigint,text,timestamptz) FROM forgecrud_runtime;
+REVOKE EXECUTE ON FUNCTION analytics_catalog_component_purge_v2(uuid,uuid,uuid,text,bigint,text,text,text,bigint,text,timestamptz) FROM harpy_runtime;
 -- +goose StatementEnd

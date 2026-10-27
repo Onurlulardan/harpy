@@ -20,8 +20,8 @@ DECLARE
     v_existing platform.tenancy_customer_lifecycle_operations%ROWTYPE;
     v_tenant platform.tenants%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_environment_id IS NULL OR p_control_tenant_id IS NULL OR
        p_actor_id IS NULL OR p_target_tenant_id IS NULL OR
        p_target_tenant_id=p_control_tenant_id OR
@@ -133,8 +133,8 @@ RETURNS TABLE (
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_control_tenant_id IS NULL OR p_operation_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501',
             MESSAGE='Customer tenant lifecycle operation read denied';

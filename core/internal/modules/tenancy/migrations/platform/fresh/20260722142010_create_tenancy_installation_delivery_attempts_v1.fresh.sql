@@ -13,8 +13,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='installation delivery attempts denied';
     END IF;
     RETURN QUERY SELECT attempt.attempt_id,attempt.credential_id,attempt.credential_version,
@@ -31,4 +31,4 @@ $function$;
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_attempts_v1(uuid)
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_attempts_v1(uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

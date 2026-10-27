@@ -12,8 +12,8 @@ AS $function$
 DECLARE
     v_revision_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR p_scope_schema IS DISTINCT FROM pg_catalog.current_schema()
        OR p_resource_kind NOT IN ('user', 'organization', 'role') THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

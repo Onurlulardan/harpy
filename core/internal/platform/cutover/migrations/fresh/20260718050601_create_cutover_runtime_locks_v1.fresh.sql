@@ -11,8 +11,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Cutover runtime group lock denied';
     END IF;
@@ -37,8 +37,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Cutover runtime group member lock denied';
     END IF;
@@ -62,8 +62,8 @@ SECURITY DEFINER
 SET search_path TO pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'Cutover runtime domain lock denied';
     END IF;
@@ -82,12 +82,12 @@ $function$;
 REVOKE ALL ON FUNCTION
     platform.cutover_runtime_lock_group_v1(text, uuid, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
-    platform.cutover_runtime_lock_group_v1(text, uuid, text) TO forgecrud_runtime;
+    platform.cutover_runtime_lock_group_v1(text, uuid, text) TO harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.cutover_runtime_lock_group_members_v1(text, uuid, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
-    platform.cutover_runtime_lock_group_members_v1(text, uuid, text) TO forgecrud_runtime;
+    platform.cutover_runtime_lock_group_members_v1(text, uuid, text) TO harpy_runtime;
 REVOKE ALL ON FUNCTION
     platform.cutover_runtime_lock_domain_v1(text, uuid, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
-    platform.cutover_runtime_lock_domain_v1(text, uuid, text) TO forgecrud_runtime;
+    platform.cutover_runtime_lock_domain_v1(text, uuid, text) TO harpy_runtime;

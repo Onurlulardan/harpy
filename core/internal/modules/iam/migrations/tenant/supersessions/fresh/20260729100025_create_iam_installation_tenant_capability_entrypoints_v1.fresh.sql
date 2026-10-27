@@ -109,16 +109,16 @@ REVOKE ALL ON FUNCTION iam_installation_initialize_v2(
 GRANT EXECUTE ON FUNCTION iam_installation_initialize_v2(
     uuid,uuid,uuid,uuid,uuid,uuid,text,text,text,text,uuid,uuid,
     uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION iam_installation_credential_initialize_v2(
     name,uuid,uuid,uuid,uuid,uuid,bigint,bytea,bytea
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_installation_credential_initialize_v2(
     name,uuid,uuid,uuid,uuid,uuid,bigint,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 REVOKE ALL ON FUNCTION iam_initial_admin_setup_finalize_v2(
     name,uuid,uuid,uuid,text
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_initial_admin_setup_finalize_v2(
     name,uuid,uuid,uuid,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;

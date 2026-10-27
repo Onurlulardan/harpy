@@ -60,5 +60,5 @@ REVOKE ALL ON FUNCTION analytics_publication_repair_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_publication_repair_v1(
     name,uuid,bigint,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 

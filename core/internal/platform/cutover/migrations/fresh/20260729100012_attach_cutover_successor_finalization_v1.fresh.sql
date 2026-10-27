@@ -106,7 +106,7 @@ $function$;
 
 REVOKE ALL ON FUNCTION platform.cutover_successor_finalize_transition_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.cutover_successor_finalize_transition_v1()
-    TO forgecrud_cutover_authority_owner;
+    TO harpy_cutover_authority_owner;
 CREATE TRIGGER cutover_operations_successor_finalized_switch
 AFTER UPDATE OF state ON platform.cutover_operations FOR EACH ROW
 EXECUTE FUNCTION platform.cutover_successor_finalize_transition_v1();

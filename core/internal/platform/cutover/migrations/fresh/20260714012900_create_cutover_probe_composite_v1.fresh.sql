@@ -24,7 +24,7 @@ DECLARE
     v_actual_batch_bytes bigint;
     v_change_count integer;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_adopter' THEN
+    IF SESSION_USER <> 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'cutover composite principal denied';
     END IF;
     v_actual_batch_bytes := pg_catalog.octet_length(p_change_batch_bytes);
@@ -101,7 +101,7 @@ BEGIN
        v_operation.state NOT IN ('copying', 'shadow', 'quiescing') OR
        v_operation.lease_expires_at <= pg_catalog.clock_timestamp() OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-           WHERE role.rolname = 'forgecrud_adopter' AND NOT role.rolcanlogin
+           WHERE role.rolname = 'harpy_adopter' AND NOT role.rolcanlogin
              AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
              AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls
              AND role.rolconnlimit = 0
@@ -110,7 +110,7 @@ BEGIN
               AND NOT EXISTS (SELECT 1 FROM pg_catalog.pg_auth_members AS membership
                   WHERE membership.roleid = role.oid OR membership.member = role.oid)) OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-           WHERE role.rolname = 'forgecrud_cutover_decoder' AND NOT role.rolcanlogin
+           WHERE role.rolname = 'harpy_cutover_decoder' AND NOT role.rolcanlogin
              AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
              AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls
              AND role.rolconnlimit = 0
@@ -177,4 +177,4 @@ REVOKE ALL ON FUNCTION platform.cutover_probe_apply_and_record_v1(
 GRANT EXECUTE ON FUNCTION platform.cutover_probe_apply_and_record_v1(
     uuid, uuid, text, uuid, smallint, text, text, pg_lsn, pg_lsn, pg_lsn,
     pg_lsn, xid8, integer, text, jsonb, bytea, text, bigint, text
-) TO forgecrud_adopter;
+) TO harpy_adopter;

@@ -99,9 +99,9 @@ ALTER TABLE documents_knowledge_file_leases
     ENABLE ALWAYS TRIGGER documents_knowledge_file_lease_transition_guard;
 
 REVOKE ALL ON TABLE documents_knowledge_file_leases FROM PUBLIC;
-GRANT SELECT, INSERT ON documents_knowledge_file_leases TO forgecrud_runtime;
+GRANT SELECT, INSERT ON documents_knowledge_file_leases TO harpy_runtime;
 GRANT UPDATE (
     reference_id, source_id, detected_mime, scan_signature_revision, scanned_at,
     lifecycle_state, adopted_at, released_at, expired_at, updated_at
-) ON documents_knowledge_file_leases TO forgecrud_runtime;
+) ON documents_knowledge_file_leases TO harpy_runtime;
 

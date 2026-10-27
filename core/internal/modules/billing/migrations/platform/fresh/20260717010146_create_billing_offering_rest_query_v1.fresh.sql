@@ -52,7 +52,7 @@ JOIN platform.billing_offerings AS root
 JOIN platform.billing_offering_versions AS version_row
   ON version_row.authority_id = authority.authority_id
  AND version_row.offering_id = root.id
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
-GRANT SELECT ON platform.billing_offering_query_v1 TO forgecrud_runtime;
+GRANT SELECT ON platform.billing_offering_query_v1 TO harpy_runtime;

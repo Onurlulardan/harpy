@@ -31,7 +31,7 @@ DECLARE
     v_requirement_count integer;
     v_authority_receipt_sha256 text;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_cluster_admin' OR p_operation_id IS NULL OR p_run_id IS NULL THEN
+    IF SESSION_USER <> 'harpy_cluster_admin' OR p_operation_id IS NULL OR p_run_id IS NULL THEN
         RAISE EXCEPTION USING ERRCODE='42501', MESSAGE='cutover finalizer authority observer denied';
     END IF;
     SELECT inventory.receipt_sha256 INTO STRICT v_authority_receipt_sha256
@@ -39,7 +39,7 @@ BEGIN
     ORDER BY inventory.catalog_generation DESC LIMIT 1;
     PERFORM cutover_authority.assert_adopted_catalog_v1(v_authority_receipt_sha256);
     SELECT role.* INTO STRICT v_finalizer_role FROM pg_catalog.pg_roles AS role
-    WHERE role.rolname='forgecrud_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
+    WHERE role.rolname='harpy_cutover_finalizer' AND role.rolcanlogin AND NOT role.rolinherit
       AND NOT role.rolsuper AND NOT role.rolcreatedb AND NOT role.rolcreaterole
       AND NOT role.rolreplication AND NOT role.rolbypassrls AND role.rolconnlimit=1
       AND role.rolvaliduntil>pg_catalog.clock_timestamp()
@@ -76,4 +76,4 @@ END;
 $function$;
 -- +goose StatementEnd
 REVOKE ALL ON FUNCTION cutover_authority.observe_finalizer_authority_v1(uuid,uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION cutover_authority.observe_finalizer_authority_v1(uuid,uuid) TO forgecrud_cluster_admin;
+GRANT EXECUTE ON FUNCTION cutover_authority.observe_finalizer_authority_v1(uuid,uuid) TO harpy_cluster_admin;

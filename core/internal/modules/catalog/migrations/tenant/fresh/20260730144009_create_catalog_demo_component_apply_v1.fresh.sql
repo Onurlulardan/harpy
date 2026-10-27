@@ -197,4 +197,4 @@ REVOKE ALL ON FUNCTION catalog_demo_component_apply_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION catalog_demo_component_apply_v1(
     uuid,uuid,uuid,text,bigint,text,text,text,bigint,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

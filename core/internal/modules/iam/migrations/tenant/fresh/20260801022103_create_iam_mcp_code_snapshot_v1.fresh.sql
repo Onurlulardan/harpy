@@ -31,8 +31,8 @@ AS $function$
 DECLARE
     v_tenant_id uuid;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        pg_catalog.octet_length(p_code_selector) IS DISTINCT FROM 16 OR
        pg_catalog.octet_length(p_code_secret_hmac) IS DISTINCT FROM 32 THEN
@@ -84,4 +84,4 @@ REVOKE ALL ON FUNCTION iam_mcp_code_exchange_snapshot_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_mcp_code_exchange_snapshot_v1(
     name,uuid,uuid,bytea,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

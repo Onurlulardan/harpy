@@ -18,8 +18,8 @@ DECLARE
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
     v_projected := 0;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS DISTINCT FROM pg_catalog.current_schema() OR
        NOT EXISTS (
            SELECT 1 FROM iam_v1_adoption_runs AS run

@@ -176,8 +176,8 @@ JOIN LATERAL platform.billing_effective_subscription_price_v1(
     subscription.id,
     CURRENT_TIMESTAMP
 ) AS effective ON true
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_subscription_report_query_v2
-    TO forgecrud_runtime;
+    TO harpy_runtime;

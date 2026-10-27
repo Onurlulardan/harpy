@@ -94,4 +94,4 @@ REVOKE ALL ON FUNCTION platform.tenancy_onboarding_complete_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_onboarding_complete_v2(
     uuid,uuid,text,text,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;

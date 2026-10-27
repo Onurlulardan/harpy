@@ -32,7 +32,7 @@ DECLARE
     v_receipt platform.cutover_batch_receipts%ROWTYPE;
     v_live_signature text;
 BEGIN
-    IF SESSION_USER <> 'forgecrud_adopter' THEN
+    IF SESSION_USER <> 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = '42501', MESSAGE = 'cutover batch prepare principal denied';
     END IF;
     SELECT operation.* INTO STRICT v_operation
@@ -50,7 +50,7 @@ BEGIN
              AND checkpoint_key.relation_ordinal = p_relation_ordinal
              AND checkpoint_key.checkpoint_key = p_checkpoint_key) OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-           WHERE role.rolname = 'forgecrud_adopter' AND NOT role.rolcanlogin
+           WHERE role.rolname = 'harpy_adopter' AND NOT role.rolcanlogin
              AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
              AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls
              AND role.rolconnlimit = 0
@@ -59,7 +59,7 @@ BEGIN
              AND NOT EXISTS (SELECT 1 FROM pg_catalog.pg_auth_members AS membership
                  WHERE membership.roleid = role.oid OR membership.member = role.oid)) OR
        NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles AS role
-           WHERE role.rolname = 'forgecrud_cutover_decoder' AND NOT role.rolcanlogin
+           WHERE role.rolname = 'harpy_cutover_decoder' AND NOT role.rolcanlogin
              AND NOT role.rolinherit AND NOT role.rolsuper AND NOT role.rolcreatedb
              AND NOT role.rolcreaterole AND NOT role.rolreplication AND NOT role.rolbypassrls
              AND role.rolconnlimit = 0
@@ -118,4 +118,4 @@ REVOKE ALL ON FUNCTION platform.cutover_prepare_batch_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.cutover_prepare_batch_v1(
     uuid, uuid, text, uuid, smallint, text, integer, pg_lsn, xid8, text, text
-) TO forgecrud_adopter;
+) TO harpy_adopter;

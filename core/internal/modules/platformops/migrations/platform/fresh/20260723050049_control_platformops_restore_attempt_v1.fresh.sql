@@ -7,7 +7,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore' THEN
         RAISE EXCEPTION USING ERRCODE='42501',
@@ -30,7 +30,7 @@ LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
 AS $function$
 DECLARE v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_restore'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_restore'
        OR pg_catalog.current_setting('application_name')
           IS DISTINCT FROM 'forgecrud-v2:core-database-restore'
        OR p_failure_code !~ '^[a-z0-9_]{1,64}$' THEN
@@ -68,7 +68,7 @@ REVOKE ALL ON FUNCTION platform.platformops_fail_restore_execution_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_heartbeat_restore_execution_v1(
     uuid,uuid,uuid
-) TO forgecrud_restore;
+) TO harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.platformops_fail_restore_execution_v1(
     uuid,uuid,uuid,text,boolean
-) TO forgecrud_restore;
+) TO harpy_restore;

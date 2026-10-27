@@ -59,8 +59,8 @@ JOIN current_tenants AS authority ON TRUE
 JOIN platform.billing_subscription_audit AS audit
   ON audit.authority_id = authority.authority_id
  AND audit.tenant_id = authority.tenant_id
-WHERE SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime'
-  AND CURRENT_USER IS NOT DISTINCT FROM 'forgecrud_runtime';
+WHERE SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime'
+  AND CURRENT_USER IS NOT DISTINCT FROM 'harpy_runtime';
 
 GRANT SELECT ON platform.billing_audit_report_query_v1
-    TO forgecrud_runtime;
+    TO harpy_runtime;

@@ -10,13 +10,13 @@ DECLARE
     expected_writer text;
     expected_state text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing global authority owner is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         expected_writer := 'v2'; expected_state := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         expected_writer := 'v1'; expected_state := 'shadow';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501',
@@ -62,13 +62,13 @@ DECLARE
     expected_writer text;
     expected_state text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'billing tenant authority owner is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         expected_writer := 'v2'; expected_state := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         expected_writer := 'v1'; expected_state := 'shadow';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501',

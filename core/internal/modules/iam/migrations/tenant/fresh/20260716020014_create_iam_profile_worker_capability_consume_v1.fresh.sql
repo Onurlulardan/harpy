@@ -13,8 +13,8 @@ AS $function$
 DECLARE
     v_consumed boolean;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_plan_id IS NULL OR
        p_resource_kind NOT IN ('user','organization','role') OR
        p_resource_id IS NULL OR p_actual_source_schema_id IS NULL OR

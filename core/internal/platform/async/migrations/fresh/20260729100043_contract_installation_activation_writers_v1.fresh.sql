@@ -7,11 +7,11 @@ REVOKE ALL ON FUNCTION platform.platform_async_initial_admin_setup_enqueue_v1(
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_initial_admin_setup_enqueue_v1(
         uuid,uuid,uuid,text,name,text
-    ) FROM forgecrud_runtime;
+    ) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_initial_admin_setup_enqueue_v1(
         uuid,uuid,uuid,text,name,text
-    ) FROM forgecrud_v2_runtime;
+    ) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION
     platform.platform_async_installation_activation_event_v1(
         uuid,uuid,uuid,uuid,name,text
@@ -19,11 +19,11 @@ REVOKE ALL ON FUNCTION
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_installation_activation_event_v1(
         uuid,uuid,uuid,uuid,name,text
-    ) FROM forgecrud_runtime;
+    ) FROM harpy_runtime;
 REVOKE EXECUTE ON FUNCTION
     platform.platform_async_installation_activation_event_v1(
         uuid,uuid,uuid,uuid,name,text
-    ) FROM forgecrud_v2_runtime;
+    ) FROM harpy_v2_runtime;
 
 WITH retired(signature) AS (
     VALUES
@@ -38,7 +38,7 @@ WITH retired(signature) AS (
         'platform.platform_async_installation_activation_evidence_assert_v1(uuid,uuid)'
     )
 ), roles(role_name) AS (
-    VALUES ('forgecrud_runtime'), ('forgecrud_v2_runtime')
+    VALUES ('harpy_runtime'), ('harpy_v2_runtime')
 ), retained_resolved(signature, routine_oid) AS (
     SELECT signature, pg_catalog.to_regprocedure(signature)
     FROM retained
@@ -65,15 +65,15 @@ SELECT 1 / CASE WHEN
           ON routine.oid = retained_resolved.routine_oid
         WHERE retained_resolved.routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT COALESCE(routine.proconfig, ARRAY[]::text[])
               @> ARRAY['search_path=pg_catalog']::text[]
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine.oid, 'EXECUTE'
+               'harpy_runtime', routine.oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine.oid, 'EXECUTE'
+               'harpy_v2_runtime', routine.oid, 'EXECUTE'
            )
     )
     OR EXISTS (

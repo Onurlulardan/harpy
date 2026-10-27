@@ -40,7 +40,7 @@ LEFT JOIN platform.billing_legacy_identity_alias_v1 AS identity
  AND identity.canonical_id = base.discount_id;
 
 GRANT SELECT ON platform.billing_promotion_discount_read_v2
-TO forgecrud_runtime;
+TO harpy_runtime;
 
 CREATE VIEW platform.billing_promotion_campaign_read_v2
 WITH (security_barrier = true)
@@ -57,4 +57,4 @@ LEFT JOIN platform.billing_legacy_identity_alias_v1 AS identity
  AND identity.canonical_id = base.campaign_id;
 
 GRANT SELECT ON platform.billing_promotion_campaign_read_v2
-TO forgecrud_runtime;
+TO harpy_runtime;

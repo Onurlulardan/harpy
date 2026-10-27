@@ -15,8 +15,8 @@ SET search_path TO pg_catalog
 AS $function$
 BEGIN
     IF NOT (
-        SESSION_USER = 'forgecrud_backup' AND p_purpose = 'backup'
-        OR SESSION_USER = 'forgecrud_restore' AND p_purpose = 'restore'
+        SESSION_USER = 'harpy_backup' AND p_purpose = 'backup'
+        OR SESSION_USER = 'harpy_restore' AND p_purpose = 'restore'
     ) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'tenancy recovery target denied';
@@ -58,9 +58,9 @@ $function$;
 -- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_get_recovery_target_v1(text) FROM PUBLIC;
-GRANT USAGE ON SCHEMA platform TO forgecrud_backup_reader;
-GRANT USAGE ON SCHEMA platform TO forgecrud_restore;
+GRANT USAGE ON SCHEMA platform TO harpy_backup_reader;
+GRANT USAGE ON SCHEMA platform TO harpy_restore;
 GRANT EXECUTE ON FUNCTION platform.tenancy_get_recovery_target_v1(text)
-TO forgecrud_backup_reader;
+TO harpy_backup_reader;
 GRANT EXECUTE ON FUNCTION platform.tenancy_get_recovery_target_v1(text)
-TO forgecrud_restore;
+TO harpy_restore;

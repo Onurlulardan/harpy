@@ -19,8 +19,8 @@ DECLARE
     v_run_at timestamptz;
     v_job_id uuid;
 BEGIN
-    IF SESSION_USER NOT IN ('forgecrud_migrator','forgecrud_v2_runtime')
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER NOT IN ('harpy_migrator','harpy_v2_runtime')
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.uuid_extract_version(p_schema_job_id) IS DISTINCT FROM 7
        OR p_schema_job_generation < 1 THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

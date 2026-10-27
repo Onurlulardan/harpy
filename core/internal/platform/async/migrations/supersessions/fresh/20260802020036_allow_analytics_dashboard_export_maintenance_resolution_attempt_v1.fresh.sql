@@ -14,8 +14,8 @@ DECLARE
     v_changed jsonb;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        OLD.finished_at IS NULL OR OLD.outcome IS DISTINCT FROM 'dead' OR
        OLD.error_class IS NOT NULL OR
        OLD.error_code IS DISTINCT FROM 'JOB_OUTCOME_UNKNOWN' OR
@@ -120,7 +120,7 @@ BEGIN
                              'analytics.dashboard.export.expire') THEN
                 PERFORM platform.platform_async_validate_analytics_dashboard_export_maintenance_unknown_attempt_v1(
                     OLD,NEW,CURRENT_USER,SESSION_USER);
-            ELSIF CURRENT_USER='forgecrud_owner' THEN
+            ELSIF CURRENT_USER='harpy_owner' THEN
                 PERFORM platform.platform_async_validate_stale_external_attempt_unknown_v1(
                     OLD,NEW,CURRENT_USER,SESSION_USER);
             ELSE

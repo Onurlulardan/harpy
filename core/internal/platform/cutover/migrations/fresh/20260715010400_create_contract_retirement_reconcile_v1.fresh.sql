@@ -14,7 +14,7 @@ DECLARE
     v_now timestamptz;
     v_revision bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_migrator' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_migrator' OR
        p_contract_key IS NULL OR p_owner_module IS NULL OR p_domain IS NULL OR
        p_contract_key OPERATOR(pg_catalog.!~) '^rq[.]alias[.][0-9a-f]{64}$' OR
        p_owner_module OPERATOR(pg_catalog.!~) '^[a-z][a-z0-9_]{0,62}$' OR

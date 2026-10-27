@@ -41,4 +41,4 @@ CREATE TRIGGER backup_receipts_immutable
 BEFORE UPDATE OR DELETE ON platform.backup_receipts
 FOR EACH STATEMENT EXECUTE FUNCTION platform.backup_reject_receipt_mutation_v1();
 
-GRANT SELECT ON TABLE platform.backup_receipts TO forgecrud_runtime;
+GRANT SELECT ON TABLE platform.backup_receipts TO harpy_runtime;

@@ -135,7 +135,7 @@ REVOKE ALL ON FUNCTION platform.platformops_complete_recovery_disable_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.platformops_claim_recovery_kit_v1(
     uuid,uuid,uuid,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION platform.platformops_ack_recovery_kit_v1(
     uuid,uuid,uuid,bytea,bytea,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

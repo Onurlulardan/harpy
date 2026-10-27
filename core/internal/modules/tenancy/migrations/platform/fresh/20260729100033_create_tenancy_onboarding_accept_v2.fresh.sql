@@ -27,8 +27,8 @@ AS $function$
 DECLARE
     v_existing platform.tenancy_onboarding_operations%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'onboarding accept denied';
     END IF;
@@ -127,4 +127,4 @@ GRANT EXECUTE ON FUNCTION platform.tenancy_onboarding_accept_v2(
     uuid,uuid,text,text,text,text,text,text,uuid,name,text,uuid,uuid,uuid,
     uuid,uuid,bigint,text,timestamptz,bigint,text,bigint,text,uuid,text,
     uuid,bigint,text,text,text,timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;

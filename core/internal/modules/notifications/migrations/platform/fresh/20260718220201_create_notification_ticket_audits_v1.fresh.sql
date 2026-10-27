@@ -16,5 +16,5 @@ CREATE INDEX notification_realtime_ticket_audits_retention_idx
 CREATE INDEX notification_legacy_connection_hits_purge_idx
     ON platform.notification_legacy_connection_hits (occurred_at, id);
 
-GRANT SELECT ON TABLE platform.notification_realtime_ticket_audits TO forgecrud_runtime;
-GRANT INSERT (ticket_id, tenant_id, user_id, authorization_version, origin_digest, terminal_kind, terminal_at, retain_until) ON platform.notification_realtime_ticket_audits TO forgecrud_runtime;
+GRANT SELECT ON TABLE platform.notification_realtime_ticket_audits TO harpy_runtime;
+GRANT INSERT (ticket_id, tenant_id, user_id, authorization_version, origin_digest, terminal_kind, terminal_at, retain_until) ON platform.notification_realtime_ticket_audits TO harpy_runtime;

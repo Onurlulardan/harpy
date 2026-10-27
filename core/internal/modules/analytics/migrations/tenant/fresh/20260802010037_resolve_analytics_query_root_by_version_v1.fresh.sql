@@ -36,5 +36,5 @@ $function$;
 REVOKE ALL ON FUNCTION analytics_query_root_by_version_v1(name,uuid)
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_query_root_by_version_v1(name,uuid)
-TO forgecrud_runtime;
+TO harpy_runtime;
 

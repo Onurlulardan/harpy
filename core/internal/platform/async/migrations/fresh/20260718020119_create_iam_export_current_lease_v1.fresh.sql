@@ -13,8 +13,8 @@ DECLARE
     v_job platform.jobs%ROWTYPE;
     v_attempt platform.job_attempts%ROWTYPE;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        pg_catalog.uuid_extract_version(p_export_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_job_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_attempt_id) IS DISTINCT FROM 7 OR

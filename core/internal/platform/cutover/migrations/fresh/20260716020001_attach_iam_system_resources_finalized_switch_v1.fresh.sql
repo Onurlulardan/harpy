@@ -57,10 +57,10 @@ $function$;
 REVOKE ALL ON FUNCTION platform.iam_system_resources_finalize_transition_v1()
 FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_system_resources_finalize_transition_v1()
-TO forgecrud_cutover_authority_owner;
+TO harpy_cutover_authority_owner;
 GRANT EXECUTE ON FUNCTION platform.iam_system_resources_apply_finalized_switch_v1(
     uuid,uuid,text
-) TO forgecrud_cutover_authority_owner;
+) TO harpy_cutover_authority_owner;
 
 CREATE TRIGGER cutover_operations_iam_system_resources_finalized_switch
 AFTER UPDATE OF state ON platform.cutover_operations

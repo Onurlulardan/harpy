@@ -18,8 +18,8 @@ DECLARE
     v_owner_user_id uuid;
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter'
-       OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter'
+       OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.current_setting('application_name',true)
             IS DISTINCT FROM 'forgecrud-cutover/'||p_run_id::text
        OR p_scope_kind IS DISTINCT FROM 'global' OR p_scope_id IS NULL

@@ -35,7 +35,7 @@ BEGIN
        NEW.profile_sha256 IS NOT DISTINCT FROM OLD.profile_sha256 THEN
         RETURN NEW;
     END IF;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        NEW.profile_schema_version_id IS DISTINCT FROM v_target_schema_id THEN
         RAISE EXCEPTION USING ERRCODE = '40001',
             MESSAGE = 'IAM profile resource kind is fenced for backfill';

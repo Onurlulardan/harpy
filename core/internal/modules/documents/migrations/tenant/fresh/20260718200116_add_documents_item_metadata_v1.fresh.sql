@@ -13,8 +13,8 @@ ALTER TABLE documents_uploads
         CHECK (pg_catalog.jsonb_typeof(tags) = 'array' AND
                pg_catalog.octet_length(tags::text) <= 2048);
 
-GRANT INSERT (description, tags) ON documents_items TO forgecrud_runtime;
-GRANT UPDATE (description, tags) ON documents_items TO forgecrud_runtime;
-GRANT INSERT (description, tags) ON documents_uploads TO forgecrud_runtime;
-GRANT INSERT (description, tags) ON documents_items TO forgecrud_adopter;
-GRANT UPDATE (description, tags) ON documents_items TO forgecrud_adopter;
+GRANT INSERT (description, tags) ON documents_items TO harpy_runtime;
+GRANT UPDATE (description, tags) ON documents_items TO harpy_runtime;
+GRANT INSERT (description, tags) ON documents_uploads TO harpy_runtime;
+GRANT INSERT (description, tags) ON documents_items TO harpy_adopter;
+GRANT UPDATE (description, tags) ON documents_items TO harpy_adopter;

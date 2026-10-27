@@ -6,8 +6,8 @@ LANGUAGE plpgsql
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'iam_refresh_locators' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',

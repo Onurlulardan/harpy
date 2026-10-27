@@ -16,8 +16,8 @@ DECLARE
     v_source platform.jobs%ROWTYPE;
     v_retry platform.jobs%ROWTYPE;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        p_tenant_id IS NULL OR p_principal_id IS NULL OR
        pg_catalog.uuid_extract_version(p_import_id) IS DISTINCT FROM 7 OR
        pg_catalog.uuid_extract_version(p_source_job_id) IS DISTINCT FROM 7 OR

@@ -79,4 +79,4 @@ REVOKE ALL ON FUNCTION documents_form_record_adoption_advance_v1(
     bytea,bytea,boolean,timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION documents_form_record_adoption_advance_v1(
     uuid,uuid,bigint,uuid,bigint,bigint,bytea,bytea,uuid,bigint,bigint,
-    bytea,bytea,boolean,timestamptz) TO forgecrud_runtime;
+    bytea,bytea,boolean,timestamptz) TO harpy_runtime;

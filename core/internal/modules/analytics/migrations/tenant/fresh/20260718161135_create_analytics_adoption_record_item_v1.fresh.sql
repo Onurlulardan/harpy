@@ -22,8 +22,8 @@ DECLARE
     v_schema text;
 BEGIN
     v_schema := pg_catalog.current_schema()::text;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_scope_schema IS NULL OR p_scope_schema::text IS DISTINCT FROM v_schema THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'analytics adoption authority is invalid';

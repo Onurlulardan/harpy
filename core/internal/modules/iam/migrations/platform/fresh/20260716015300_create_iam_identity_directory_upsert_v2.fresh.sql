@@ -14,8 +14,8 @@ DECLARE
     v_row platform.iam_login_directory%ROWTYPE;
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_user_id IS NULL OR p_identifier_id IS NULL OR
        NOT platform.iam_hmac_key_id_valid_v1(p_lookup_key_id) OR
        p_identifier_hmac IS NULL OR pg_catalog.octet_length(p_identifier_hmac) <> 32 OR
@@ -70,4 +70,4 @@ REVOKE ALL ON FUNCTION platform.iam_identity_directory_upsert_v2(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_identity_directory_upsert_v2(
     uuid,bigint,bigint,uuid,uuid,text,bytea,bigint,bytea
-) TO forgecrud_runtime;
+) TO harpy_runtime;

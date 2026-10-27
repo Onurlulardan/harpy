@@ -92,4 +92,4 @@ $function$;
 REVOKE ALL ON FUNCTION iam_work_available_users_v1(name,uuid,uuid,text,integer)
     FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_work_available_users_v1(name,uuid,uuid,text,integer)
-    TO forgecrud_runtime;
+    TO harpy_runtime;

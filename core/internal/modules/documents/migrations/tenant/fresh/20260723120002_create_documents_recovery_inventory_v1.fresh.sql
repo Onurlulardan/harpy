@@ -18,7 +18,7 @@ SECURITY DEFINER
 SET search_path FROM CURRENT
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR NOT EXISTS (
            SELECT 1 FROM documents_dr_holds AS hold
            WHERE hold.recovery_set_id = p_recovery_set_id
@@ -58,7 +58,7 @@ DECLARE
     v_existing documents_dr_copy_receipts%ROWTYPE;
     v_now timestamptz := pg_catalog.statement_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_backup'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_backup'
        OR NOT EXISTS (
            SELECT 1 FROM documents_dr_holds AS hold
            WHERE hold.recovery_set_id = p_recovery_set_id

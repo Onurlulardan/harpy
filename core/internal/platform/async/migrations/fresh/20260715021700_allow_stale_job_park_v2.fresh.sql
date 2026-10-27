@@ -17,8 +17,8 @@ BEGIN
     IF TG_OP IS DISTINCT FROM 'UPDATE' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'jobs' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
-       SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
+       SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
        OLD.state NOT IN ('queued', 'running') OR NEW.state <> 'queued' OR
        OLD.parked_at IS NOT NULL OR NEW.parked_at IS NULL OR
        OLD.effect_started_at IS NOT NULL OR

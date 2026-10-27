@@ -21,7 +21,7 @@ DECLARE
     v_run_state text;
     v_item platform.async_v1_adoption_items%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5650',
             MESSAGE = 'V1 async item cancellation requires adopter authority';
     END IF;

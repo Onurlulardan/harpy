@@ -11,7 +11,7 @@ CREATE TABLE platform.platform_cutover_v1_adoption_plans (
     issue_codes jsonb NOT NULL CHECK (pg_catalog.jsonb_typeof(issue_codes)='array'),
     plan_document jsonb NOT NULL CHECK (pg_catalog.jsonb_typeof(plan_document)='object'),
     recorded_at timestamptz NOT NULL,
-    recorded_by name NOT NULL CHECK (recorded_by='forgecrud_adopter'),
+    recorded_by name NOT NULL CHECK (recorded_by='harpy_adopter'),
     CONSTRAINT platform_cutover_v1_adoption_decision_shape CHECK (
         (decision='ready' AND primary_tenant_id IS NOT NULL AND owner_user_id IS NOT NULL
             AND plan_sha256 IS NOT NULL AND pg_catalog.jsonb_array_length(issue_codes)=0)
@@ -30,7 +30,7 @@ CREATE TABLE platform.platform_cutover_v1_adoption_completion_receipts (
     module_migration_hits bigint NOT NULL CHECK (module_migration_hits=0),
     zero_hit_since timestamptz NOT NULL,
     completed_at timestamptz NOT NULL,
-    recorded_by name NOT NULL CHECK (recorded_by='forgecrud_adopter'),
+    recorded_by name NOT NULL CHECK (recorded_by='harpy_adopter'),
     CONSTRAINT platform_cutover_v1_completion_plan_fk FOREIGN KEY (operation_id)
         REFERENCES platform.platform_cutover_v1_adoption_plans (operation_id)
         ON UPDATE NO ACTION ON DELETE RESTRICT,

@@ -50,26 +50,26 @@ REVOKE ALL ON FUNCTION iam_portal_authorization_evidence_read_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION iam_portal_authorization_evidence_read_v1(
     name,uuid,uuid,text,text
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_user_create_v1(
     name,uuid,uuid,bytea,uuid,uuid,bytea,bytea,uuid,text,text,bytea,
     uuid,text,text,bytea,uuid,uuid,text,uuid,uuid,uuid,uuid,bytea,
     text,text[],uuid[],uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_user_status_v1(
     name,uuid,uuid,bytea,uuid,bigint,text,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_user_console_grant_v1(
     name,uuid,uuid,bytea,uuid,bigint,uuid,uuid,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_user_console_revoke_v1(
     name,uuid,uuid,bytea,uuid,bigint,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_user_read_v1(name,uuid)
-    TO forgecrud_runtime;
+    TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_access_verify_v1(
     name,uuid,uuid,uuid,bigint,bigint
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 GRANT EXECUTE ON FUNCTION iam_portal_subject_links_read_v1(
     name,uuid,uuid,bigint,bigint,bigint,uuid,uuid,uuid[]
-) TO forgecrud_runtime;
+) TO harpy_runtime;

@@ -15,7 +15,7 @@ DECLARE
     v_locked_count integer;
     v_changed_at timestamptz;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_cutover_finalizer' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer' OR
        p_acceptance_digest IS NULL OR
        p_acceptance_digest !~ '^[0-9a-f]{64}$' THEN
         RAISE EXCEPTION USING ERRCODE='P5670',

@@ -17,8 +17,8 @@ BEGIN
     IF TG_OP IS DISTINCT FROM 'UPDATE' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'outbox' OR
-       SESSION_USER OPERATOR(pg_catalog.<>) 'forgecrud_v2_runtime' OR
-       CURRENT_USER OPERATOR(pg_catalog.<>) 'forgecrud_owner' OR
+       SESSION_USER OPERATOR(pg_catalog.<>) 'harpy_v2_runtime' OR
+       CURRENT_USER OPERATOR(pg_catalog.<>) 'harpy_owner' OR
        OLD.parked_at IS NOT NULL OR NEW.parked_at IS NULL OR
        NEW.parked_code IS DISTINCT FROM 'OUTBOX_AUTHORITY_STALE' OR
        NEW.parked_current_group_generation <

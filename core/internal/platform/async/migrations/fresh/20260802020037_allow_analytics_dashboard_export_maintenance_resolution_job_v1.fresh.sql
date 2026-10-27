@@ -14,8 +14,8 @@ DECLARE
     v_changed jsonb;
 BEGIN
     IF pg_catalog.pg_trigger_depth()<>1 OR
-       p_current_user IS DISTINCT FROM 'forgecrud_owner' OR
-       p_session_user IS DISTINCT FROM 'forgecrud_v2_runtime' OR
+       p_current_user IS DISTINCT FROM 'harpy_owner' OR
+       p_session_user IS DISTINCT FROM 'harpy_v2_runtime' OR
        OLD.kind NOT IN ('analytics.dashboard.export.delete',
                         'analytics.dashboard.export.expire') OR
        OLD.state IS DISTINCT FROM 'dead' OR OLD.last_error_class IS NOT NULL OR
@@ -101,7 +101,7 @@ BEGIN
         RAISE EXCEPTION USING ERRCODE='P5610',
             MESSAGE='job transition invocation is invalid';
     END IF;
-    IF CURRENT_USER='forgecrud_owner' AND OLD.parked_at IS NULL AND
+    IF CURRENT_USER='harpy_owner' AND OLD.parked_at IS NULL AND
        NEW.parked_at IS NOT NULL THEN
         NULL;
     ELSIF OLD.state='running' AND OLD.effect_started_at IS NOT NULL AND
@@ -113,7 +113,7 @@ BEGIN
                            'analytics.dashboard.export.expire') THEN
             PERFORM platform.platform_async_validate_analytics_dashboard_export_maintenance_unknown_job_v1(
                 OLD,NEW,CURRENT_USER,SESSION_USER);
-        ELSIF CURRENT_USER='forgecrud_owner' THEN
+        ELSIF CURRENT_USER='harpy_owner' THEN
             PERFORM platform.platform_async_validate_stale_external_job_unknown_v1(
                 OLD,NEW,CURRENT_USER,SESSION_USER);
         ELSE

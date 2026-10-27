@@ -14,8 +14,8 @@ DECLARE
     v_row platform.iam_login_directory%ROWTYPE;
     v_now timestamptz := pg_catalog.transaction_timestamp();
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_tenant_id IS NULL OR p_user_id IS NULL OR p_identifier_id IS NULL OR
        p_lookup_key_id IS NULL OR pg_catalog.octet_length(p_lookup_key_id) NOT BETWEEN 1 AND 128 OR
        p_lookup_key_id OPERATOR(pg_catalog.!~) '^[a-z0-9][a-z0-9._-]{0,127}$' OR

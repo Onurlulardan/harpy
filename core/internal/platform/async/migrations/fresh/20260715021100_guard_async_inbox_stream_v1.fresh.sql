@@ -12,7 +12,7 @@ BEGIN
     IF TG_OP IS DISTINCT FROM 'INSERT' OR
        TG_TABLE_SCHEMA IS DISTINCT FROM 'platform' OR
        TG_TABLE_NAME IS DISTINCT FROM 'inbox' OR
-       SESSION_USER OPERATOR(pg_catalog.<>) 'forgecrud_v2_runtime' THEN
+       SESSION_USER OPERATOR(pg_catalog.<>) 'harpy_v2_runtime' THEN
         RAISE EXCEPTION USING ERRCODE = 'P5630',
             MESSAGE = 'async inbox stream authority is invalid';
     END IF;

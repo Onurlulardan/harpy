@@ -44,7 +44,7 @@ DECLARE
     attempt_row platform.job_attempts%ROWTYPE;
     receipt_row platform.idempotency_receipts%ROWTYPE;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime'
        OR p_scope_kind NOT IN ('global','tenant')
        OR p_scope_id = '00000000-0000-0000-0000-000000000000'::uuid
        OR p_authority_group_generation < 1 OR p_cutover_generation < 1
@@ -188,5 +188,5 @@ REVOKE ALL ON FUNCTION platform.platform_async_external_effect_evidence_v1(
 GRANT EXECUTE ON FUNCTION platform.platform_async_external_effect_evidence_v1(
     uuid,text,uuid,text,bigint,text,bigint,uuid,uuid,bigint,text,integer,
     text,text,text,uuid,text,integer,text,text,text,text,text,text,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

@@ -10,8 +10,8 @@ DECLARE
     v_matched bigint;
 BEGIN
     v_version_id:=(p_target->'published_version'->>'id')::uuid;
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        pg_catalog.jsonb_typeof(p_target->'dependencies') IS DISTINCT FROM 'array' OR
        pg_catalog.jsonb_array_length(p_target->'dependencies') NOT BETWEEN 1 AND 32
        OR EXISTS (

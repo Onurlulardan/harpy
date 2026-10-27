@@ -16,11 +16,11 @@ CREATE TABLE work_task_compatibility_metadata (
             OR pg_catalog.octet_length(form_filter::text) <= 128000)
 );
 
-GRANT SELECT ON work_task_compatibility_metadata TO forgecrud_runtime;
+GRANT SELECT ON work_task_compatibility_metadata TO harpy_runtime;
 GRANT INSERT (task_id,is_recurring,recurrence_rule,recurrence_end,form_filter,created_at,updated_at)
-    ON work_task_compatibility_metadata TO forgecrud_runtime;
+    ON work_task_compatibility_metadata TO harpy_runtime;
 GRANT UPDATE (is_recurring,recurrence_rule,recurrence_end,form_filter,updated_at)
-    ON work_task_compatibility_metadata TO forgecrud_runtime;
+    ON work_task_compatibility_metadata TO harpy_runtime;
 
 DROP FUNCTION work_v1_adoption_document_valid_v1(text,jsonb);
 -- +goose StatementBegin
@@ -29,7 +29,7 @@ RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER
 SET search_path FROM CURRENT AS $function$
 DECLARE v_keys text; v_expected text;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner'
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR CURRENT_USER IS DISTINCT FROM 'harpy_owner'
        OR pg_catalog.jsonb_typeof(p_record) IS DISTINCT FROM 'object' OR p_record='{}'::jsonb THEN RETURN false; END IF;
     SELECT pg_catalog.string_agg(key,',' ORDER BY key) INTO v_keys
       FROM pg_catalog.jsonb_object_keys(p_record) AS key;
@@ -69,7 +69,7 @@ RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER
 SET search_path FROM CURRENT AS $function$
 DECLARE v_record jsonb; v_matches bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RETURN NEW;
     END IF;
     SELECT pg_catalog.jsonb_agg(stage.target_record ORDER BY stage.run_id)->0,
@@ -97,7 +97,7 @@ RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER
 SET search_path FROM CURRENT AS $function$
 DECLARE v_record jsonb; v_matches bigint;
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_adopter' OR CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' THEN
+    IF SESSION_USER IS DISTINCT FROM 'harpy_adopter' OR CURRENT_USER IS DISTINCT FROM 'harpy_owner' THEN
         RETURN NEW;
     END IF;
     SELECT pg_catalog.jsonb_agg(stage.target_record ORDER BY stage.run_id)->0,

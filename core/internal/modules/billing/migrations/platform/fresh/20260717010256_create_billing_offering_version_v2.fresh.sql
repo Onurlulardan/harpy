@@ -113,5 +113,5 @@ GRANT EXECUTE ON FUNCTION platform.billing_create_offering_version_v2(
     uuid,uuid,uuid,uuid,uuid,text,bytea,bigint,text,text,integer,text,text,text,
     boolean,boolean,integer,integer,smallint,smallint,timestamptz,timestamptz,
     timestamptz
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

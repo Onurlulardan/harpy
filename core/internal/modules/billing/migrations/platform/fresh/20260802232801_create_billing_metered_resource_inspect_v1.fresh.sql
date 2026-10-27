@@ -109,5 +109,5 @@ REVOKE ALL ON FUNCTION platform.billing_metered_resource_inspect_v1(
 ) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_metered_resource_inspect_v1(
     uuid,uuid,uuid,text,text,text,uuid
-) TO forgecrud_runtime;
+) TO harpy_runtime;
 -- +goose StatementEnd

@@ -7,7 +7,7 @@ SET search_path = pg_catalog
 AS $function$
 BEGIN
     IF TG_OP OPERATOR(pg_catalog.=) 'DELETE' AND
-       CURRENT_USER OPERATOR(pg_catalog.=) 'forgecrud_owner' THEN
+       CURRENT_USER OPERATOR(pg_catalog.=) 'harpy_owner' THEN
         RETURN OLD;
     END IF;
     RAISE EXCEPTION USING

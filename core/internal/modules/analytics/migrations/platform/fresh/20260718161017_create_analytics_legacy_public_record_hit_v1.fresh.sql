@@ -16,8 +16,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
 BEGIN
-    IF SESSION_USER IS DISTINCT FROM 'forgecrud_v2_runtime' OR
-       CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR
+    IF SESSION_USER IS DISTINCT FROM 'harpy_v2_runtime' OR
+       CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR
        p_hit_at IS NULL OR NOT pg_catalog.isfinite(p_hit_at) THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'analytics legacy hit authority is invalid';

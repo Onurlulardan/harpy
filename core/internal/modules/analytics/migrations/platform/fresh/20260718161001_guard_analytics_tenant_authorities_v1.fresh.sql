@@ -11,13 +11,13 @@ DECLARE
     v_state text;
     v_writer text;
 BEGIN
-    IF CURRENT_USER IS DISTINCT FROM 'forgecrud_owner' OR TG_OP IS DISTINCT FROM 'INSERT' THEN
+    IF CURRENT_USER IS DISTINCT FROM 'harpy_owner' OR TG_OP IS DISTINCT FROM 'INSERT' THEN
         RAISE EXCEPTION USING ERRCODE = '42501',
             MESSAGE = 'analytics tenant authority mutation is invalid';
     END IF;
-    IF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_v2_runtime' THEN
+    IF SESSION_USER IS NOT DISTINCT FROM 'harpy_v2_runtime' THEN
         v_mode := 'runtime_v2'; v_state := 'v2'; v_writer := 'v2';
-    ELSIF SESSION_USER IS NOT DISTINCT FROM 'forgecrud_adopter' THEN
+    ELSIF SESSION_USER IS NOT DISTINCT FROM 'harpy_adopter' THEN
         v_mode := 'adopter_shadow'; v_state := 'shadow'; v_writer := 'v1';
     ELSE
         RAISE EXCEPTION USING ERRCODE = '42501',

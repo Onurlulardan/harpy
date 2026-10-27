@@ -2,26 +2,26 @@
 -- Migration stream version: 20260729100039.
 
 REVOKE ALL ON FUNCTION platform.billing_installation_assign_v1(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v1(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text) FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v1(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text) FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v1(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text) FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v1(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION platform.billing_installation_assign_v2(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v2(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v2(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v2(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_installation_assign_v2(uuid,uuid,uuid,uuid,uuid,text,uuid,bigint,text,timestamptz,bigint,text,text,text) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION platform.billing_installation_open_usage_v1(uuid,uuid,text) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_installation_open_usage_v1(uuid,uuid,text) FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_installation_open_usage_v1(uuid,uuid,text) FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_installation_open_usage_v1(uuid,uuid,text) FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_installation_open_usage_v1(uuid,uuid,text) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION platform.billing_reconcile_current_global_authority_v1() FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_global_authority_v1() FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_global_authority_v1() FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_global_authority_v1() FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_global_authority_v1() FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_reconcile_current_tenant_authorities_v1() FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz) FROM harpy_v2_runtime;
 REVOKE ALL ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM forgecrud_runtime;
-REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM forgecrud_v2_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM harpy_runtime;
+REVOKE EXECUTE ON FUNCTION platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz) FROM harpy_v2_runtime;
 
 WITH retired(signature) AS (
     VALUES
@@ -56,7 +56,7 @@ WITH retired(signature) AS (
     SELECT relation_name, pg_catalog.to_regclass(relation_name) AS relation_oid
     FROM required_tables
 ), forbidden_roles(role_name) AS (
-    VALUES ('forgecrud_runtime'), ('forgecrud_v2_runtime')
+    VALUES ('harpy_runtime'), ('harpy_v2_runtime')
 ), forbidden_privileges(privilege_name) AS (
     VALUES
         ('SELECT'), ('INSERT'), ('UPDATE'), ('DELETE'),
@@ -68,10 +68,10 @@ SELECT 1 / CASE WHEN
         FROM retired_resolved
         WHERE routine_oid IS NULL
            OR pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -81,17 +81,17 @@ SELECT 1 / CASE WHEN
           ON routine.oid = retained_resolved.routine_oid
         WHERE routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT (
                COALESCE(routine.proconfig, ARRAY[]::text[])
                @> ARRAY['search_path=pg_catalog']::text[]
            )
            OR NOT pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -101,17 +101,17 @@ SELECT 1 / CASE WHEN
           ON routine.oid = internal_resolved.routine_oid
         WHERE routine_oid IS NULL
            OR routine.proowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
            OR NOT routine.prosecdef
            OR NOT (
                COALESCE(routine.proconfig, ARRAY[]::text[])
                @> ARRAY['search_path=pg_catalog']::text[]
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_runtime', routine_oid, 'EXECUTE'
+               'harpy_runtime', routine_oid, 'EXECUTE'
            )
            OR pg_catalog.has_function_privilege(
-               'forgecrud_v2_runtime', routine_oid, 'EXECUTE'
+               'harpy_v2_runtime', routine_oid, 'EXECUTE'
            )
     )
     OR EXISTS (
@@ -122,7 +122,7 @@ SELECT 1 / CASE WHEN
         WHERE relation_oid IS NULL
            OR relation.relkind IS DISTINCT FROM 'r'
            OR relation.relowner IS DISTINCT FROM
-              pg_catalog.to_regrole('forgecrud_owner')::oid
+              pg_catalog.to_regrole('harpy_owner')::oid
     )
     OR EXISTS (
         SELECT 1
