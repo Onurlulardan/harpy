@@ -11,7 +11,7 @@ func buildReleaseManifest(
 ) (releaseDocument, []byte, attestation.VerifiedRelease, error) {
 	document, err := canonicalDocument(attestation.ReleaseManifest{
 		ContractVersion: "postgres-release-manifest.v1", ReleaseID: localReleaseID,
-		IssuedAt: keys.clock.stamp(keys.clock.issued), ExpiresAt: keys.clock.stamp(keys.clock.expires),
+		IssuedAt: keys.clock.stamp(keys.clock.issued), ExpiresAt: keys.clock.stamp(keys.clock.releaseExpires),
 		DatabaseName: localDatabase, DatabaseOrigin: "fresh",
 		DatabaseEncoding: runtimev1.PostgresEncoding, DatabaseLocaleProvider: runtimev1.PostgresLocaleProvider,
 		DatabaseCollation: runtimev1.PostgresCollation, DatabaseCType: runtimev1.PostgresCharacterType,

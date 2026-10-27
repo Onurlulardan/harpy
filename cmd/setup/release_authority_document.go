@@ -14,7 +14,7 @@ func buildAuthority(
 	manifest, err := canonicalDocument(runtimev1.BootstrapAuthorityManifest{
 		ContractVersion: "bootstrap-authority-manifest.v1", ManifestID: localAuthorityID,
 		EnvironmentID: localEnvironmentID, ReleaseID: localReleaseID,
-		IssuedAt: keys.clock.stamp(keys.clock.issued), ExpiresAt: keys.clock.stamp(keys.clock.expires),
+		IssuedAt: keys.clock.stamp(keys.clock.issued), ExpiresAt: keys.clock.stamp(keys.clock.releaseExpires),
 		DatabaseOrigin: "fresh",
 		Database: runtimev1.BootstrapAuthorityDatabase{
 			Name: localDatabase, CreateDatabase: true, Owner: "harpy_owner",

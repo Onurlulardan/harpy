@@ -13,29 +13,30 @@ import (
 )
 
 const (
-	releaseKeyID        = "local-release"
-	catalogKeyID        = "local-catalog"
-	localDatabase       = "harpy"
-	localSystemID       = "123456789"
-	localDatabaseOID    = 16384
-	localReleaseID      = "11111111-1111-4111-8111-111111111111"
-	localEnvironmentID  = "22222222-2222-4222-8222-222222222222"
-	localAuthorityID    = "33333333-3333-4333-8333-333333333333"
-	localOwnershipID    = "33333333-3333-4333-8333-333333333334"
-	localClusterLease   = "55555555-5555-4555-8555-555555555555"
-	localExtensionLease = "66666666-6666-4666-8666-666666666666"
-	localBootstrapRun   = "77777777-7777-4777-8777-777777777777"
-	localExtensionRun   = "88888888-8888-4888-8888-888888888888"
-	localCleanupRun     = "99999999-9999-4999-8999-999999999999"
-	localOperationID    = "10000000-0000-4000-8000-000000000021"
-	localReceiptID      = "10000000-0000-4000-8000-000000000024"
-	localPackageID      = "10000000-0000-4000-8000-000000000031"
-	localComponentID    = "10000000-0000-4000-8000-000000000032"
-	localFixedDigest    = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	releaseKeyID         = "local-release"
+	catalogKeyID         = "local-catalog"
+	localDatabase        = "harpy"
+	localSystemID        = "123456789"
+	localDatabaseOID     = 16384
+	localReleaseID       = "11111111-1111-4111-8111-111111111111"
+	localEnvironmentID   = "22222222-2222-4222-8222-222222222222"
+	localAuthorityID     = "33333333-3333-4333-8333-333333333333"
+	localOwnershipID     = "33333333-3333-4333-8333-333333333334"
+	localClusterLease    = "55555555-5555-4555-8555-555555555555"
+	localExtensionLease  = "66666666-6666-4666-8666-666666666666"
+	localBootstrapRun    = "77777777-7777-4777-8777-777777777777"
+	localExtensionRun    = "88888888-8888-4888-8888-888888888888"
+	localCleanupRun      = "99999999-9999-4999-8999-999999999999"
+	localOperationID     = "10000000-0000-4000-8000-000000000021"
+	localReceiptID       = "10000000-0000-4000-8000-000000000024"
+	localPackageID       = "10000000-0000-4000-8000-000000000031"
+	localComponentID     = "10000000-0000-4000-8000-000000000032"
+	localFixedDigest     = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	localReleaseValidity = 24 * time.Hour
 )
 
 type releaseClock struct {
-	now, issued, expires, adopted, cleaned time.Time
+	now, issued, expires, releaseExpires, adopted, cleaned time.Time
 }
 
 func newReleaseClock(now time.Time) releaseClock {
@@ -43,7 +44,8 @@ func newReleaseClock(now time.Time) releaseClock {
 	issued := now.Add(-2 * time.Minute)
 	return releaseClock{
 		now: now, issued: issued, expires: issued.Add(12 * time.Minute),
-		adopted: issued.Add(time.Minute), cleaned: issued.Add(-time.Second),
+		releaseExpires: now.Add(localReleaseValidity),
+		adopted:        issued.Add(time.Minute), cleaned: issued.Add(-time.Second),
 	}
 }
 
@@ -103,7 +105,7 @@ func newReleaseKeys(clock releaseClock) (releaseKeys, error) {
 			KeyID: releaseKeyID, Algorithm: "Ed25519",
 			PublicKey: base64.RawURLEncoding.EncodeToString(public),
 			NotBefore: clock.stamp(clock.issued.Add(-time.Hour)),
-			NotAfter:  clock.stamp(clock.expires.Add(time.Hour)),
+			NotAfter:  clock.stamp(clock.releaseExpires.Add(time.Hour)),
 		}},
 	})
 	if err != nil {
