@@ -56,12 +56,12 @@ func executePrepare(
 	) == nil {
 		return nil
 	}
-	if exists && refreshSignedRelease(
-		options.outputDirectory, "", time.Now().UTC().Truncate(time.Second),
-	) == nil {
-		fmt.Printf("local signed release refreshed: %s\n", options.outputDirectory)
-		return nil
-	}
+	// A reused release that fails verification must be rebuilt in full.
+	// refreshSignedRelease replaces only the trust root and release signature,
+	// leaving authority and receipts on the previous key.
+	agentDebugLog("A", "prepare.go:executePrepare", "full release build", map[string]string{
+		"existingOutput": fmt.Sprintf("%t", exists),
+	})
 	operationContext, cancel := context.WithTimeout(ctx, 3*time.Minute)
 	defer cancel()
 	catalog, err := buildReleaseCatalog(migration)
@@ -75,7 +75,12 @@ func executePrepare(
 		return err
 	}
 	now := time.Now().UTC().Truncate(time.Second)
-	ids := newReleaseIDsForEnvironment(live.environmentID)
+	ids := applyStoredReleaseID(
+		newReleaseIDsForEnvironment(live.environmentID), live.appliedReleaseID,
+	)
+	agentDebugLog("H", "prepare.go:executePrepare", "release identity", map[string]string{
+		"appliedRelease": fmt.Sprintf("%t", live.appliedReleaseID != ""),
+	})
 	catalog.catalogPackageSet, err = buildCatalogPackageSet(
 		ids.release, packageAuthority,
 	)

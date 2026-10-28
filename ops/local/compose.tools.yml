@@ -89,6 +89,7 @@ services:
     volumes:
       - local-secret-local-release:/run/secrets:ro
       - release-state:/run/release
+      - ../../debug-66ab43.log:/tmp/debug-66ab43.log
     depends_on:
       postgres:
         condition: service_healthy
@@ -119,6 +120,7 @@ services:
     volumes:
       - local-secret-migrator:/run/secrets:ro
       - release-state:/run/release:ro
+      - ../../debug-66ab43.log:/tmp/debug-66ab43.log
     depends_on:
       postgres:
         condition: service_healthy

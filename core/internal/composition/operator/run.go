@@ -76,7 +76,7 @@ func runLocalAction(
 	if err == nil {
 		return processcode.Clean
 	}
-	writeFailure(stderr, stage, processcode.OperatorResumable)
+	writeFailureCause(stderr, stage, processcode.OperatorResumable, err.Error())
 	return processcode.OperatorResumable
 }
 

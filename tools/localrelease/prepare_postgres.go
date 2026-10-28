@@ -54,6 +54,12 @@ func preparePostgres(
 	if err != nil {
 		return liveDatabaseIdentity{}, err
 	}
+	live.appliedReleaseID, err = readAppliedReleaseID(
+		ctx, target, live.environmentID, contract.MigrationManifestSHA256,
+	)
+	if err != nil {
+		return liveDatabaseIdentity{}, err
+	}
 	if err := verifyNewReleaseStage(ctx, target, contract, live.environmentID); err != nil {
 		return liveDatabaseIdentity{}, err
 	}

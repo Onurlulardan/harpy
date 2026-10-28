@@ -12,7 +12,7 @@ import (
 const (
 	ReadyTTL         = 30 * time.Second
 	ReadyHeartbeat   = 10 * time.Second
-	LeaseTTL         = 60 * time.Second
+	LeaseTTL         = 300 * time.Second
 	LeaseHeartbeat   = 20 * time.Second
 	IdlePollInterval = 500 * time.Millisecond
 	MaximumAttempts  = 8

@@ -55,6 +55,9 @@ func (workload *tenantMigrationWorkload) run(
 		workload.mutex.Unlock()
 		return
 	}
+	agentDebugLog("I", "tenant_migration_workload.go:run", "executor stopped", map[string]string{
+		"error": err.Error(),
+	})
 	workload.failures <- err
 }
 

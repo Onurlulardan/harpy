@@ -10,7 +10,7 @@ import (
 
 type liveDatabaseIdentity struct {
 	name, owner, encoding, provider, collation, ctype, systemID string
-	environmentID                                               string
+	environmentID, appliedReleaseID                             string
 	databaseOID                                                 uint32
 	checksums                                                   bool
 	serverVersion                                               int

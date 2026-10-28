@@ -86,7 +86,10 @@ func runVerifiedDeploy(
 	)
 	if err != nil {
 		reportDependencyStage(logger, "release_evidence")
-		reportFailure(stderr, logger, "dependency_preflight", string(action))
+		agentDebugLog("B", "run_deploy.go:runVerifiedDeploy", "release evidence rejected", map[string]string{
+			"error": err.Error(),
+		})
+		reportFailureCause(stderr, logger, "dependency_preflight", string(action), err)
 		_ = database.Close()
 		shutdownDeployTelemetry(settings, telemetryRuntime)
 		return processcode.DependencyPreflight
@@ -95,7 +98,10 @@ func runVerifiedDeploy(
 		evidence.Artifacts().Artifacts().Migration, documents,
 	)
 	if err != nil {
-		reportFailure(stderr, logger, "build_contract", string(action))
+		agentDebugLog("D", "run_deploy.go:runVerifiedDeploy", "release documents rejected", map[string]string{
+			"error": err.Error(),
+		})
+		reportFailureCause(stderr, logger, "build_contract", string(action), err)
 		_ = database.Close()
 		shutdownDeployTelemetry(settings, telemetryRuntime)
 		return processcode.InvalidStartup
@@ -107,7 +113,10 @@ func runVerifiedDeploy(
 	)
 	if err != nil {
 		reportDependencyStage(logger, "catalog_release")
-		reportFailure(stderr, logger, "dependency_preflight", string(action))
+		agentDebugLog("E", "run_deploy.go:runVerifiedDeploy", "catalog release rejected", map[string]string{
+			"error": err.Error(),
+		})
+		reportFailureCause(stderr, logger, "dependency_preflight", string(action), err)
 		_ = database.Close()
 		shutdownDeployTelemetry(settings, telemetryRuntime)
 		return processcode.DependencyPreflight

@@ -49,3 +49,35 @@ bootstrap_authority_sha256 FROM platform.environment_identity WHERE singleton=TR
 	}
 	return environmentID, nil
 }
+
+func readAppliedReleaseID(
+	ctx context.Context, target *pgx.Conn, environmentID, digest string,
+) (string, error) {
+	if environmentID == "" || digest == "" {
+		return "", nil
+	}
+	var exists bool
+	if err := target.QueryRow(ctx,
+		"SELECT pg_catalog.to_regclass('platform.release_generations') IS NOT NULL",
+	).Scan(&exists); err != nil {
+		return "", fmt.Errorf("inspect applied release: %w", err)
+	}
+	if !exists {
+		return "", nil
+	}
+	var releaseID string
+	err := target.QueryRow(ctx, `SELECT release_id::text
+FROM platform.release_generations
+WHERE environment_id=$1::uuid AND migration_manifest_sha256=$2
+ORDER BY database_generation DESC LIMIT 1`, environmentID, digest).Scan(&releaseID)
+	if err == pgx.ErrNoRows {
+		return "", nil
+	}
+	if err != nil {
+		return "", fmt.Errorf("read applied release: %w", err)
+	}
+	if _, err := uuid.Parse(releaseID); err != nil {
+		return "", fmt.Errorf("applied release id is invalid")
+	}
+	return releaseID, nil
+}

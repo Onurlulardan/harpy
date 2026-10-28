@@ -2,6 +2,7 @@
 .env
 .env.*
 deploy/**/.env
+debug-*.log
 
 # Secrets written by setup.
 secrets

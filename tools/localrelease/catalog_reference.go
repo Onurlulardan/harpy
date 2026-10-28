@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 
-	canonicaljsonv1 "github.com/Onurlulardan/harpy/contracts/canonicaljson/v1"
 	catalogpackagev1 "github.com/Onurlulardan/harpy/contracts/catalogpackage/v1"
 )
 
@@ -23,26 +22,13 @@ type catalogReference struct {
 }
 
 func localCatalogReferences() ([]catalogReference, error) {
-	payloadDocument := []byte(
-		`{"component_id":"` + localCatalogComponentID +
-			`","contract_version":"` + catalogpackagev1.ContractCatalog +
-			`","module_slug":"project"}`,
-	)
-	payload, err := canonicaljsonv1.CanonicalizeObject(
-		payloadDocument, catalogpackagev1.MaximumPayloadBytes,
-	)
+	payloadDigest := sha256.Sum256(nil)
+	manifest, payload, err := localDemoDocuments(hex.EncodeToString(payloadDigest[:]))
 	if err != nil {
 		return nil, err
 	}
-	payloadDigest := sha256.Sum256(payload)
-	manifestDocument := []byte(
-		`{"contract":"` + catalogpackagev1.ManifestContract +
-			`","package_id":"` + localCatalogPackageID +
-			`","slug":"project","version":"1.0.0"}`,
-	)
-	manifest, err := canonicaljsonv1.CanonicalizeObject(
-		manifestDocument, catalogpackagev1.MaximumManifestBytes,
-	)
+	payloadDigest = sha256.Sum256(payload)
+	manifest, payload, err = localDemoDocuments(hex.EncodeToString(payloadDigest[:]))
 	if err != nil {
 		return nil, err
 	}

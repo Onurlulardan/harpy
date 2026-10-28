@@ -19,3 +19,11 @@ func TestReleaseIDsCreateEnvironmentForFoundation(t *testing.T) {
 		t.Fatal("foundation environment identity was not generated")
 	}
 }
+
+func TestReleaseIDsKeepAppliedRelease(t *testing.T) {
+	const applied = "01a183a1-8862-7315-aa0e-f8af7a1c08f1"
+	ids := applyStoredReleaseID(newReleaseIDsForEnvironment(""), applied)
+	if ids.release != applied {
+		t.Fatalf("applied release id = %s", ids.release)
+	}
+}

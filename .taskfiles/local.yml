@@ -58,14 +58,14 @@ tasks:
       - "{{.COMPOSE}} run --rm s3-init"
       - "{{.COMPOSE}} run --rm recovery-s3-init"
   bootstrap:
-    desc: Provision and finalize the pinned bootstrap baseline
+    desc: Install the current fresh release when no baseline exists
     status:
       - >-
-        {{.COMPOSE}} run --rm foundation-local-release foundation-applied
+        {{.COMPOSE}} run --rm local-release release-applied
         -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
     cmds:
       - >-
-        {{.COMPOSE}} run --rm foundation-local-release prepare
+        {{.COMPOSE}} run --rm local-release prepare
         -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
         -runtime-password-file /run/secrets/postgres-runtime-password.txt
         -migrator-password-file /run/secrets/postgres-migrator-password.txt
@@ -80,11 +80,11 @@ tasks:
         -migration-manifest /app/migration-manifest.json
         -replace-owned-output
         -output /run/release/current
-      - "{{.COMPOSE}} run --rm foundation-core-migrator deploy up"
+      - "{{.COMPOSE}} run --rm core-migrator deploy up"
       - >-
-        {{.COMPOSE}} run --rm foundation-local-release grant-runtime
+        {{.COMPOSE}} run --rm local-release grant-runtime
         -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
-      - "{{.COMPOSE}} run --rm foundation-core-migrator deploy verify"
+      - "{{.COMPOSE}} run --rm core-migrator deploy verify"
   migrate:
     desc: Prepare, apply, authorize and verify the current migration release
     status:

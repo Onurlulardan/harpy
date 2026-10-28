@@ -22,9 +22,34 @@ func verifyNewReleaseStage(
 		return nil
 	}
 	if environmentID == "" {
-		return fmt.Errorf("current release requires the finalized bootstrap baseline")
+		agentDebugLog("C", "foundation_database.go:verifyNewReleaseStage", "fresh install", map[string]string{
+			"baseline": "absent",
+		})
+		return nil
 	}
-	return verifyFoundationRelease(ctx, target, environmentID)
+	if err := verifyCurrentReleaseApplied(ctx, target, environmentID, contract); err == nil {
+		return nil
+	}
+	if err := verifyFoundationRelease(ctx, target, environmentID); err == nil {
+		return nil
+	}
+	return verifyFreshInstallPresent(ctx, target, environmentID)
+}
+
+func verifyFreshInstallPresent(
+	ctx context.Context,
+	target *pgx.Conn,
+	environmentID string,
+) error {
+	var present bool
+	err := target.QueryRow(ctx, `SELECT pg_catalog.count(*)>0
+FROM platform.migration_runs AS run
+WHERE run.environment_id=$1 AND run.database_origin='fresh'
+  AND run.command='up' AND run.state='succeeded'`, environmentID).Scan(&present)
+	if err != nil || !present {
+		return fmt.Errorf("current release requires a finalized fresh install")
+	}
+	return nil
 }
 
 func verifyFoundationRelease(

@@ -29,3 +29,10 @@ func newReleaseIDsForEnvironment(environment string) releaseIDs {
 		cutoverReceipt:    uuid.Must(uuid.NewV7()).String(),
 	}
 }
+
+func applyStoredReleaseID(ids releaseIDs, applied string) releaseIDs {
+	if applied != "" {
+		ids.release = applied
+	}
+	return ids
+}

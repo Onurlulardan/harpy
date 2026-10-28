@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/ed25519"
 	"encoding/base64"
 	"testing"
@@ -63,7 +64,9 @@ func TestBuildCatalogPackageSetSignsAllFirstPartyPackages(t *testing.T) {
 		}
 		delete(byDigest, sealed.ManifestSHA256)
 	}
-	if totalPayloads != 1 || len(byDigest) != 0 {
+	if totalPayloads != 1 || len(byDigest) != 0 ||
+		!bytes.Contains(references[0].Manifest, []byte("DEMO_DATA")) ||
+		!bytes.Contains(references[0].OwnerPayloads[0].Document, []byte("source_contract")) {
 		t.Fatalf(
 			"local package coverage = %d payloads, %d missing packages",
 			totalPayloads, len(byDigest),
