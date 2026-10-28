@@ -1,6 +1,6 @@
 # Harpy Migration Sistemi Modernizasyonu — Görev Planı
 
-**Durum:** İnceleme ve planlama. Bu belgeler görev tanımlarıdır; mimari kararlar ölçüm ve uyumluluk kanıtları görülmeden kesinleşmiş sayılmamalıdır.
+**Durum:** 01–06 ve 10 için ölçüm ve dar uygulama `baseline.md` içindedir. 07–09 bu akışın dışındadır. Tarihsel release manifestleri elle değişmedi.
 
 ## Amaç
 

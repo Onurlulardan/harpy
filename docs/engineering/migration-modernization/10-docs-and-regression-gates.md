@@ -14,6 +14,16 @@ Migration refactor'ının determinism, release compatibility, offline upgrade ve
 6. Eski freeze/release docs ile güncel implementasyon farklarını listeleyin; tarihsel dokümanı sessizce silmeyin.
 7. Her refactor için rollback yolu, eski formatı okuma süresi ve kaldırma kriteri yazın.
 
+## Bu geçişte bağlanan akış
+
+Kaynak keşfi iki yerde kalır: modül `MigrationDocuments` (çalışma zamanı, history zinciri burada) ve `internal/migrationbundle.Collect` (dosya sistemi). Seçim, manifest ve kanonik JSON tek API'dir (`Select`, `Build`, `Digest`). Attestation formatı değişmedi. API ve worker startup'ı SQL'i yeniden taramaz; gömülü fresh manifestin SHA-256 değeri `binary-schema-contract.json` ile aynı olmalıdır. Goose yürütmesi ve history doğrulaması migrator'da durur.
+
+Testler: `TestFilesystemBundleMatchesRuntimeFreshRegistry`, `TestBuildIsDeterministicAndDigestTracksBytes`, `TestCanonicalFreshMatchesBinarySchemaContract`, `TestSelectFreshPreservesSupersessionChain`, `TestLoadBoundStartupRejectsStaleAndInvalidManifests`, `TestFilesystemReleaseMatchesEmbed`. Zaman eşiği eklenmedi.
+
+Üretim komutları: `go run ./internal/migrationbundle/cmd/checkfresh` (drift) ve `-write` (yeniden yaz). Census: `go run ./internal/migrationbundle/cmd/census .`. `go test ./...` bu paket testlerini çalıştırır.
+
+Rollback: startup'ı yeniden `FreshMigrationDocuments` + `LoadStartup` yap, `fresh-migration-manifest.json` ile embed okuyucusunu geri al. Geçmiş release embed'i bu geçişte değişmediği için migrator arşivi ayrıca geri alınmaz. Eski manifest formatı okunmaya devam eder.
+
 ## Kabul kriterleri
 
 - Upgrade/offline uyumluluk matrisi mevcut.

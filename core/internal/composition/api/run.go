@@ -5,7 +5,6 @@ import (
 	"io"
 	"os"
 
-	compositionmigrator "github.com/Onurlulardan/harpy/core/internal/composition/migrator"
 	"github.com/Onurlulardan/harpy/core/internal/platform/buildinfo"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/envfile"
@@ -95,10 +94,5 @@ func runProcessWithContractLoader(
 }
 
 func loadSchemaContract() (schemacontract.EmbeddedContract, error) {
-	documents, err := compositionmigrator.FreshMigrationDocuments()
-	if err != nil {
-		return schemacontract.EmbeddedContract{}, err
-	}
-	embedded, _, err := schemacontract.LoadStartup(documents)
-	return embedded, err
+	return schemacontract.LoadBoundStartup()
 }
