@@ -7,60 +7,61 @@ import (
 	"os"
 	"path/filepath"
 
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/internal/attestation"
 	"github.com/Onurlulardan/harpy/internal/migrationbundle"
 )
 
 func main() {
-	write := flag.Bool("write", false, "write the fresh migration manifest")
+	write := flag.Bool("write", false, "write the contract digest and fresh migration manifest")
 	rootFlag := flag.String("root", "", "module root")
 	flag.Parse()
-	root, err := moduleRoot(*rootFlag)
-	if err != nil {
+	if err := checkFresh(*rootFlag, *write); err != nil {
 		fail(err)
+	}
+}
+
+func checkFresh(rootFlag string, write bool) error {
+	root, err := moduleRoot(rootFlag)
+	if err != nil {
+		return err
 	}
 	body, err := migrationbundle.CanonicalFresh(root)
 	if err != nil {
-		fail(err)
+		return err
 	}
-	if migrationbundle.Digest(body) != contractDigest(root) {
-		fail(fmt.Errorf("fresh migration digest does not match the binary schema contract"))
-	}
-	target := filepath.Join(root, "contracts", "runtime", "v1", "fresh-migration-manifest.json")
-	if *write {
-		if err = os.WriteFile(target, body, 0o644); err != nil {
-			fail(err)
+	digest := migrationbundle.Digest(body)
+	if write {
+		if err = writeFreshArtifacts(root, digest, body); err != nil {
+			return err
 		}
 	}
-	embedded, err := os.ReadFile(target)
+	recorded, err := contractDigest(root)
 	if err != nil {
-		fail(err)
+		return err
+	}
+	if digest != recorded {
+		return fmt.Errorf("fresh migration digest does not match the binary schema contract")
+	}
+	embedded, err := os.ReadFile(manifestPath(root))
+	if err != nil {
+		return err
 	}
 	if !bytes.Equal(body, embedded) {
-		fail(fmt.Errorf("fresh migration manifest is stale; run with -write"))
+		return fmt.Errorf("fresh migration manifest is stale; run with -write")
 	}
 	if _, err = attestation.VerifyMigrationManifestArtifact(body); err != nil {
-		fail(err)
+		return err
 	}
-	fmt.Printf("fresh migration manifest %s %d bytes\n", migrationbundle.Digest(body), len(body))
+	fmt.Printf("fresh migration manifest %s %d bytes\n", digest, len(body))
+	return nil
 }
 
-func contractDigest(root string) string {
-	document, err := os.ReadFile(filepath.Join(
-		root, "contracts", "runtime", "v1", "binary-schema-contract.json",
-	))
-	if err != nil {
-		fail(err)
-	}
-	contract, err := attestation.VerifyBinarySchemaContract(document)
-	if err != nil {
-		fail(err)
-	}
-	if contract.Value().ContractVersion != runtimev1.BinarySchemaContractVersion {
-		fail(fmt.Errorf("binary schema contract version differs"))
-	}
-	return contract.Value().MigrationManifestSHA256
+func manifestPath(root string) string {
+	return filepath.Join(root, "contracts", "runtime", "v1", "fresh-migration-manifest.json")
+}
+
+func contractPath(root string) string {
+	return filepath.Join(root, "contracts", "runtime", "v1", "binary-schema-contract.json")
 }
 
 func moduleRoot(root string) (string, error) {
