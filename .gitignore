@@ -1,5 +1,6 @@
 # Env. go.sum stays tracked.
 .env
+.env.*
 deploy/**/.env
 
 # Secrets written by setup.
