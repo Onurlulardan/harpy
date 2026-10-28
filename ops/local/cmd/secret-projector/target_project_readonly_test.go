@@ -22,6 +22,7 @@ func TestProjectTargetPublishesCompleteMarkerOnReadonlyDirectory(t *testing.T) {
 	}
 	wantPerm := directoryPermAfterChmod(t, target.dir)
 	targetRoot := t.TempDir()
+	keepTempDirRemovable(t, targetRoot)
 	directoryChowned := false
 	chown := func(path string, uid, gid int) error {
 		if path != targetRoot {
@@ -70,6 +71,7 @@ func TestProjectTargetPublishesCompleteMarkerOnReadonlyDirectory(t *testing.T) {
 func directoryPermAfterChmod(t *testing.T, mode os.FileMode) os.FileMode {
 	t.Helper()
 	dir := t.TempDir()
+	keepTempDirRemovable(t, dir)
 	if err := os.Chmod(dir, mode); err != nil {
 		t.Fatal(err)
 	}

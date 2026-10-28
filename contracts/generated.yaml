@@ -2,22 +2,22 @@
   "version": 1,
   "files": [
     {
+      "path": "contracts/http/core-api-v1.openapi.yaml",
       "generator": "go run ./tools/coreopenapi",
       "input_sha256": "ac8fe97da500e928129b86a608b0b9d61e572d1b19ab4286e2600442d2c03169",
-      "output_sha256": "ac8fe97da500e928129b86a608b0b9d61e572d1b19ab4286e2600442d2c03169",
-      "path": "contracts/http/core-api-v1.openapi.yaml"
+      "output_sha256": "ac8fe97da500e928129b86a608b0b9d61e572d1b19ab4286e2600442d2c03169"
     },
     {
+      "path": "core/internal/modules/billing/domain/money/currency_registry_gen.go",
       "generator": "go run ./tools/currencyregistry",
       "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
-      "output_sha256": "4d81d59309a4675baaf591c5233d7361c3fc734833b35081c6ae690afb373b65",
-      "path": "core/internal/modules/billing/domain/money/currency_registry_gen.go"
+      "output_sha256": "8f7d46dc1f12881cedaccdfe6d1906a73dba59d6d19fa76c8b1eede2ba24417d"
     },
     {
+      "path": "core/internal/modules/billing/migrations/platform/fresh/20260717010012_seed_billing_currency_exponents_v1.fresh.sql",
       "generator": "go run ./tools/currencyregistry",
       "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
-      "output_sha256": "36c8bbcee3854ce345c2e2298d100c0824aadf331bb5f141f765f1807c713795",
-      "path": "core/internal/modules/billing/migrations/platform/fresh/20260717010012_seed_billing_currency_exponents_v1.fresh.sql"
+      "output_sha256": "36c8bbcee3854ce345c2e2298d100c0824aadf331bb5f141f765f1807c713795"
     }
   ]
 }

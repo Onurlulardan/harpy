@@ -68,7 +68,7 @@ func loadMigratorDeploy(t *testing.T, lines []string) error {
 	if err := os.WriteFile(envFile, []byte(strings.Join(lines, "\n")+"\n"), 0o600); err != nil {
 		return err
 	}
-	command := exec.Command(filepath.Join(runtime.GOROOT(), "bin", "go.exe"), "run", "-mod=readonly", ".", envFile)
+	command := exec.Command(goTool(), "run", "-mod=readonly", ".", envFile)
 	command.Dir = directory
 	command.Env = append(os.Environ(), "GOPROXY=off", "GOTOOLCHAIN=local", "GOFLAGS=-mod=readonly")
 	output, err := command.CombinedOutput()

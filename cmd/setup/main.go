@@ -28,9 +28,10 @@ func main() {
 }
 
 type options struct {
-	defaults bool
-	rotate   bool
-	profile  string
+	defaults         bool
+	rotate           bool
+	profile          string
+	managementListen string
 }
 
 func run(args []string, in io.Reader, stdout, stderr io.Writer, root string) error {
@@ -38,6 +39,12 @@ func run(args []string, in io.Reader, stdout, stderr io.Writer, root string) err
 	if err != nil {
 		return err
 	}
+	setupRotateSecrets = opts.rotate
+	requestedManagementListen = opts.managementListen
+	defer func() {
+		setupRotateSecrets = false
+		requestedManagementListen = ""
+	}()
 	var answers answers
 	var prev map[string]string
 	if opts.defaults {
@@ -80,11 +87,12 @@ func parseArgs(args []string, stderr io.Writer) (options, error) {
 	fs := flag.NewFlagSet("setup", flag.ContinueOnError)
 	fs.SetOutput(stderr)
 	fs.Usage = func() {
-		fmt.Fprintln(stderr, "usage: go run ./cmd/setup [--defaults] [--rotate-secrets] [--profile single-tenant|multi-tenant]")
+		fmt.Fprintln(stderr, "usage: go run ./cmd/setup [--defaults] [--rotate-secrets] [--profile single-tenant|multi-tenant] [--management-listen host:port]")
 	}
 	defaults := fs.Bool("defaults", false, "answer with defaults and do not prompt")
 	rotate := fs.Bool("rotate-secrets", false, "generate new local secrets")
 	profile := fs.String("profile", "", "single-tenant or multi-tenant")
+	listen := fs.String("management-listen", "", "explicit management bind host:port")
 	if err := fs.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return options{}, errHelp
@@ -94,9 +102,16 @@ func parseArgs(args []string, stderr io.Writer) (options, error) {
 	if fs.NArg() != 0 {
 		return options{}, errors.New("unexpected arguments")
 	}
-	opts := options{defaults: *defaults, rotate: *rotate, profile: *profile}
+	opts := options{
+		defaults: *defaults, rotate: *rotate, profile: *profile, managementListen: *listen,
+	}
 	if opts.profile != "" {
 		if err := validProfile(opts.profile); err != nil {
+			return options{}, err
+		}
+	}
+	if opts.managementListen != "" {
+		if err := validListenAddress(opts.managementListen); err != nil {
 			return options{}, err
 		}
 	}
