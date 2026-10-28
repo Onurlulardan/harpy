@@ -1,0 +1,27 @@
+package main
+
+var existingOutputNames = []string{
+	ownedMarkerName,
+	"migration-manifest.json",
+	"extension-manifest.json",
+	"roles-manifest.json",
+	"privileges-manifest.json",
+	"ownership-manifest.json",
+	"bootstrap-operation.json",
+	"extension-operation.json",
+	"cleanup-operation.json",
+	"binary-schema-contract.json",
+	"catalog-package-set.json",
+	"trust-root.json",
+	"bootstrap-authority.json",
+	"bootstrap-authority.sig",
+	"cutover-authority-operation.json",
+	"cutover-authority-operation.sig",
+	"release.json",
+	"release.sig",
+	"bootstrap-receipt.json",
+	"extension-receipt.json",
+	"cleanup-receipt.json",
+	"cutover-authority-receipt.json",
+	"cutover-authority-receipt.sig",
+}
