@@ -76,7 +76,9 @@ RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache
     GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags="-s -w" -o /out/telemetry-archive ./ops/production/cmd/telemetry-archive
 
-RUN chmod 0444 /out/migration-manifest.json /out/foundation-migration-manifest.json
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go run ./internal/migrationbundle/cmd/packrelease -output /out/migration-release.zip
+RUN chmod 0444 /out/migration-manifest.json /out/foundation-migration-manifest.json /out/migration-release.zip
 
 FROM gcr.io/distroless/base-debian13:nonroot@sha256:97b9d04bed1c754b756c3c4b6a04915c22fb0b5d96a59944eb3bf78c26e6e157
 

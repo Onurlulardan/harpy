@@ -16,9 +16,9 @@ Setup contract for `go run ./cmd/setup`. The command does not start Docker.
 
 Release private keys are not stored. A directory that is missing any catalogued release file is rebuilt as one set. Runtime files that are missing are created again; files that are still present are not replaced unless rotation was requested.
 
-Deleting only one file of a derived pair, such as the actor-bridge seed without its public key, can leave that pair inconsistent. Remove the pair or run `--rotate-secrets`.
+The actor-bridge seed and its public key file are one derived pair. If either file is missing, the next setup rewrites both together. Other runtime files are still recreated individually.
 
-Refreshing local release evidence after a schema change requires `--rotate-secrets`. That rebuild also rotates runtime keys. Trust-root, signatures, receipts, and the catalog keyring change. Role, privilege, migration, extension, ownership, and operation documents stay put when their source corpus is unchanged.
+`--refresh-release` rebuilds `secrets/release/` without rotating runtime keys or compose passwords. The release private key is not stored, so this rebuild mints a new release trust root. Role, privilege, migration, extension, ownership, and operation documents stay put when their source corpus is unchanged. `--rotate-secrets` still rotates runtime keys and the release trust material together.
 
 Fingerprints in tests are SHA-256 of file bytes. Secret values are not written to stdout.
 

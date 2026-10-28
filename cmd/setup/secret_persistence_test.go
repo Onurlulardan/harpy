@@ -58,6 +58,42 @@ func TestSecondSetupKeepsInstalledMaterial(t *testing.T) {
 	}
 }
 
+func TestRefreshReleaseKeepsRuntimeKeys(t *testing.T) {
+	root := t.TempDir()
+	runOK(t, root, []string{"--defaults"}, "")
+	base := filepath.Join(root, "deploy", "single-tenant", "secrets")
+	access := filepath.Join(base, "runtime", "access-token-keyring.json")
+	trust := filepath.Join(base, "release", "trust-root.json")
+	accessBefore := fileFingerprint(t, access)
+	trustBefore := fileFingerprint(t, trust)
+	runOK(t, root, []string{"--defaults", "--refresh-release"}, "")
+	if fileFingerprint(t, access) != accessBefore {
+		t.Fatal("refresh-release rotated a runtime key")
+	}
+	if fileFingerprint(t, trust) == trustBefore {
+		t.Fatal("refresh-release kept the release trust root")
+	}
+}
+
+func TestActorBridgePairRewritesTogether(t *testing.T) {
+	root := t.TempDir()
+	runOK(t, root, []string{"--defaults"}, "")
+	base := filepath.Join(root, "deploy", "single-tenant", "secrets", "runtime")
+	seed := filepath.Join(base, "actor-bridge-seed")
+	public := filepath.Join(base, "actor-bridge-public-keys.json")
+	seedBefore := fileFingerprint(t, seed)
+	if err := os.Remove(public); err != nil {
+		t.Fatal(err)
+	}
+	runOK(t, root, []string{"--defaults"}, "")
+	if _, err := os.Stat(public); err != nil {
+		t.Fatal(err)
+	}
+	if fileFingerprint(t, seed) == seedBefore {
+		t.Fatal("deleted public key left the old seed in place")
+	}
+}
+
 func TestMultiTenantSetupKeepsMaterial(t *testing.T) {
 	root := t.TempDir()
 	runOK(t, root, []string{"--defaults", "--profile", "multi-tenant"}, "")

@@ -22,6 +22,10 @@ jobs:
           go-version: "1.26.5"
       - name: Test
         run: go test ./...
+      - name: Generated release artifacts
+        run: |
+          go run ./internal/migrationbundle/cmd/checkfresh
+          go run ./internal/migrationbundle/cmd/packrelease -check
 
   fileguard:
     name: fileguard

@@ -18,11 +18,11 @@ Migration refactor'ının determinism, release compatibility, offline upgrade ve
 
 Kaynak keşfi iki yerde kalır: modül `MigrationDocuments` (çalışma zamanı, history zinciri burada) ve `internal/migrationbundle.Collect` (dosya sistemi). Seçim, manifest ve kanonik JSON tek API'dir (`Select`, `Build`, `Digest`). Attestation formatı değişmedi. API ve worker startup'ı SQL'i yeniden taramaz; gömülü fresh manifestin SHA-256 değeri `binary-schema-contract.json` ile aynı olmalıdır. Goose yürütmesi ve history doğrulaması migrator'da durur.
 
-Testler: `TestFilesystemBundleMatchesRuntimeFreshRegistry`, `TestBuildIsDeterministicAndDigestTracksBytes`, `TestCanonicalFreshMatchesBinarySchemaContract`, `TestSelectFreshPreservesSupersessionChain`, `TestLoadBoundStartupRejectsStaleAndInvalidManifests`, `TestFilesystemReleaseMatchesEmbed`. Zaman eşiği eklenmedi.
+Testler: `TestFilesystemBundleMatchesRuntimeFreshRegistry`, `TestBuildIsDeterministicAndDigestTracksBytes`, `TestCanonicalFreshMatchesBinarySchemaContract`, `TestSelectFreshPreservesSupersessionChain`, `TestLoadBoundStartupRejectsStaleAndInvalidManifests`, `TestReleaseIndexMatchesManifests`, `TestReleaseArchiveAuthorizesIndexedDigest`, `TestMutatedManifestFailsAuthorize`. Zaman eşiği eklenmedi.
 
-Üretim komutları: `go run ./internal/migrationbundle/cmd/checkfresh` (drift) ve `-write` (yeniden yaz). Census: `go run ./internal/migrationbundle/cmd/census .`. `go test ./...` bu paket testlerini çalıştırır.
+Üretim komutları: `go run ./internal/migrationbundle/cmd/checkfresh` (drift) ve `-write` (yeniden yaz). Census: `go run ./internal/migrationbundle/cmd/census .`. Release index: `go run ./internal/migrationbundle/cmd/packrelease -check`. CI bu iki komutu `go test ./...` sonrasında çalıştırır. `TestReleaseIndexMatchesManifests` index ile tam manifest yürüyüşünü karşılaştırır. `TestReleaseArchiveAuthorizesIndexedDigest` eski bir digest'i yetkilendirir ve bilinmeyen digest'i reddeder. `TestMutatedManifestFailsAuthorize` baytı değişmiş dosyayı fail-closed yapar.
 
-Rollback: startup'ı yeniden `FreshMigrationDocuments` + `LoadStartup` yap, `fresh-migration-manifest.json` ile embed okuyucusunu geri al. Geçmiş release embed'i bu geçişte değişmediği için migrator arşivi ayrıca geri alınmaz. Eski manifest formatı okunmaya devam eder.
+Rollback: startup'ı yeniden `FreshMigrationDocuments` + `LoadStartup` yap. Historical arşivi yeniden `go:embed` ile `LoadReleaseRegistry` içine al ve imajdaki `migration-release.zip` kopyasını kaldır. Eski manifest formatı okunmaya devam eder.
 
 ## Kabul kriterleri
 

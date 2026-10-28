@@ -26,13 +26,17 @@ Tüm geçmiş manifestlerin gereksiz olduğunu varsayma: eski migration history 
 6. Fresh install, desteklenen eski release'ten upgrade, tenant migration, restore, rollback ve history supersession senaryolarını test et.
 7. Eski formatı dual-read/compare ile doğrulamadan manifest silme; cutover ve rollback planı oluştur.
 
-## Karar (bu geçiş)
+## Uygulama
 
-Üretim embed'i yerinde bırakıldı. `Authorize` kanonik bayt eşitliği ister. `ops/production/Dockerfile` son imaja yalnız `/out` binary'lerini koyar; release dizini yoktur. Geçmiş manifestleri embed'den çıkarmak, imaj paketlenmeden offline upgrade'i fail-closed kırardı.
+`LoadReleaseRegistry` artık 109 manifesti parse etmez. Binary yalnız `release-index.json` taşır: digest listesi ve document contract birleşimi. Manifest baytları yanındaki arşivden, tek digest istenince okunur.
 
-Kanıt: `LoadReleaseManifestFS` aynı dosyaları diskten okur. `TestFilesystemReleaseMatchesEmbed` digest listesini, kanonik baytları, document contract kümesini ve en az bir eski digest için `Authorize` sonucunu embed ile karşılaştırır. Bilinmeyen digest reddedilir.
+Kaynak dosyalar repoda durur. `go test` ve yerel çalışma, çalışma dizininden `core/internal/platform/migration/release` dizinini bulur. Distroless imaj `migration-release.zip` dosyasını binary ile aynı dizine koyar (`ops/production/Dockerfile`). Zip, executable yanında varsa o kullanılır.
 
-`-ldflags="-s -w" -trimpath` ile API ve worker, `LoadReleaseRegistry` çağırmadığı için 109 arşivi linker'dan düşürür. Migrator ve operator çağırdığı için tutar. Ölçüm `baseline.md` içindedir. `harpy_measure_no_release_embed` yalnız ölçüm etiketidir; üretim build'i kullanmaz.
+Açılış yalnız index ile arşiv dosya adlarını karşılaştırır. `Authorize` ve `MigrationArtifact` tek dosyayı okur, SHA-256 dosya adıyla aynı mı bakar, attestation doğrular, canonical baytları karşılaştırır. Bilinmeyen digest ve değiştirilmiş bayt fail-closed olur.
+
+Index drift'i `TestReleaseIndexMatchesManifests` yakalar. Yenilemek için `HARPY_WRITE_RELEASE_INDEX=1 go test ./core/internal/platform/migration/ -run TestReleaseIndexMatchesManifests`. İsim kontrolü `go run ./internal/migrationbundle/cmd/packrelease -check`.
+
+Aynı makinede `go1.26.5` `linux/amd64` ölçümü, `BenchmarkLoadReleaseRegistry` medyanı 13985065 ns/op, 7348521 B/op, 38559 allocs/op. Önceki tam parse ölçümü 18412161195 ns/op, 8465312328 B/op, 169000537 allocs/op. `go build -trimpath -ldflags="-s -w"` migrator 45011209 byte, operator 36389129 byte. Önceki migrator 159387913, operator 150782217 byte.
 
 ## Kabul kriterleri
 

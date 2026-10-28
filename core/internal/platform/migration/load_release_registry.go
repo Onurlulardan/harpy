@@ -1,9 +1,7 @@
-//go:build !harpy_measure_no_release_embed
-
 package migration
 
 import (
-	"embed"
+	_ "embed"
 	"fmt"
 	"io/fs"
 	"path"
@@ -14,11 +12,59 @@ import (
 
 const releaseManifestSuffix = ".migration-manifest.json"
 
-//go:embed release/*.migration-manifest.json
-var releaseManifestFiles embed.FS
+//go:embed release-index.json
+var releaseIndexJSON []byte
 
 func LoadReleaseRegistry() (*ReleaseRegistry, error) {
-	return LoadReleaseManifestFS(releaseManifestFiles, "release")
+	archive, err := openDefaultReleaseArchive()
+	if err != nil {
+		return nil, err
+	}
+	return loadIndexedRelease(releaseIndexJSON, archive)
+}
+
+func loadIndexedRelease(indexDocument []byte, archive releaseReader) (*ReleaseRegistry, error) {
+	index, known, contracts, err := parseReleaseIndex(indexDocument)
+	if err != nil {
+		return nil, err
+	}
+	if err = inventoryMatches(index.Digests, archive); err != nil {
+		return nil, err
+	}
+	return &ReleaseRegistry{
+		manifests:         map[string][]byte{},
+		known:             known,
+		digestList:        append([]string(nil), index.Digests...),
+		documentContracts: contracts,
+		readManifest:      archive.read,
+	}, nil
+}
+
+func inventoryMatches(digests []string, archive releaseReader) error {
+	names, err := archive.names()
+	if err != nil {
+		return err
+	}
+	found := make(map[string]struct{}, len(names))
+	for _, name := range names {
+		if !strings.HasSuffix(name, releaseManifestSuffix) || strings.Contains(name, "/") {
+			return fmt.Errorf("migration release archive name is invalid")
+		}
+		digest := strings.TrimSuffix(name, releaseManifestSuffix)
+		if _, duplicate := found[digest]; duplicate {
+			return fmt.Errorf("migration release archive digest is duplicated")
+		}
+		found[digest] = struct{}{}
+	}
+	if len(found) != len(digests) {
+		return fmt.Errorf("migration release archive does not match the release index")
+	}
+	for _, digest := range digests {
+		if _, exists := found[digest]; !exists {
+			return fmt.Errorf("migration release archive does not match the release index")
+		}
+	}
+	return nil
 }
 
 func LoadReleaseManifestFS(files fs.FS, directory string) (*ReleaseRegistry, error) {
