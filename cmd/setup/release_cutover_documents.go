@@ -23,7 +23,7 @@ func buildCutoverOperation(
 		ExpiresAt:                keys.clock.stamp(keys.clock.expires),
 		Target: cutoverv1.DatabaseIdentity{
 			DatabaseName: localDatabase, DatabaseOrigin: "fresh",
-			SystemIdentifier: localSystemID, DatabaseOID: localDatabaseOID,
+			SystemIdentifier: databaseSystemID(), DatabaseOID: localDatabaseOID,
 		},
 		MigrationManifestSHA256: migrationDigest, BootstrapAuthoritySHA256: authorityDigest,
 		Executor: "external_root_provisioner", ExecutorSessionUser: "postgres",

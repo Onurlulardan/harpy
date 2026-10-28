@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
 
 	catalogpackagev1 "github.com/Onurlulardan/harpy/contracts/catalogpackage/v1"
@@ -29,15 +28,15 @@ func (keyring catalogKeyring) PublicKeys() []ed25519.PublicKey {
 }
 
 func buildCatalogSet(keys releaseKeys) ([]byte, error) {
-	manifest, err := attestation.MarshalCanonical(struct {
-		PackageID string `json:"package_id"`
-		Version   string `json:"version"`
-	}{PackageID: localPackageID, Version: "1.0.0"})
+	payload, err := localCatalogPayload()
 	if err != nil {
 		return nil, err
 	}
-	payloadDocument := json.RawMessage("{}")
-	payloadDigest := sha256.Sum256(payloadDocument)
+	payloadDigest := sha256.Sum256(payload)
+	manifest, err := localCatalogManifest(hex.EncodeToString(payloadDigest[:]))
+	if err != nil {
+		return nil, err
+	}
 	manifestDigest := sha256.Sum256(manifest)
 	signature := ed25519.Sign(keys.catalogPrivate, manifest)
 	return attestation.MarshalCanonical(catalogpackagev1.ReleaseSet{
@@ -46,8 +45,9 @@ func buildCatalogSet(keys releaseKeys) ([]byte, error) {
 			Manifest: manifest, ManifestSHA256: hex.EncodeToString(manifestDigest[:]),
 			Signature: base64.RawURLEncoding.EncodeToString(signature), KeyID: catalogKeyID,
 			OwnerPayloads: []catalogpackagev1.OwnerPayload{{
-				ComponentID: localComponentID, Owner: "catalog", Contract: "local.package",
-				ContentSHA256: hex.EncodeToString(payloadDigest[:]), Document: payloadDocument,
+				ComponentID: localComponentID, Owner: "catalog",
+				Contract:      catalogpackagev1.ContractCatalog,
+				ContentSHA256: hex.EncodeToString(payloadDigest[:]), Document: payload,
 			}},
 		}},
 	})

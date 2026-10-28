@@ -30,7 +30,7 @@ const (
 	localOperationID     = "10000000-0000-4000-8000-000000000021"
 	localReceiptID       = "10000000-0000-4000-8000-000000000024"
 	localPackageID       = "10000000-0000-4000-8000-000000000031"
-	localComponentID     = "10000000-0000-4000-8000-000000000032"
+	localComponentID     = "018f0000-0000-7000-8000-000000000032"
 	localFixedDigest     = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 	localReleaseValidity = 24 * time.Hour
 )

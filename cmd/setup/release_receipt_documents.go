@@ -1,6 +1,10 @@
 package main
 
 import (
+	"os"
+	"strings"
+
+	postgresv1 "github.com/Onurlulardan/harpy/contracts/postgres/v1"
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/internal/attestation"
 )
@@ -33,7 +37,7 @@ func signedBootstrapReceipt(
 		IssuedAt: keys.clock.stamp(keys.clock.issued), ReleaseManifestSHA256: release.digest,
 		BootstrapAuthorityManifestSHA256: authority.digest, CredentialLeaseID: localClusterLease,
 		PostgresImageDigest: runtimev1.PostgresImageDigest, OwnershipManifestSHA256: manifests.ownership.digest,
-		DatabaseName: localDatabase, DatabaseSystemIdentifier: localSystemID, DatabaseOID: localDatabaseOID,
+		DatabaseName: localDatabase, DatabaseSystemIdentifier: databaseSystemID(), DatabaseOID: localDatabaseOID,
 		ServerVersionNumber: runtimev1.PostgresServerVersionNumber, DatabaseOrigin: "fresh",
 		DatabaseOwner: runtimev1.DatabaseOwnerRole, DatabaseEncoding: runtimev1.PostgresEncoding,
 		DatabaseLocaleProvider: runtimev1.PostgresLocaleProvider, DatabaseCollation: runtimev1.PostgresCollation,
@@ -52,23 +56,23 @@ func signedExtensionReceipt(
 	keys releaseKeys, manifests postgresManifests, operations postgresOperations,
 	authority, release releaseDocument,
 ) ([]byte, error) {
+	records, err := extensionReceiptRecords(manifests.extension)
+	if err != nil {
+		return nil, err
+	}
 	payload := runtimev1.ExtensionReceiptPayload{
 		RunID: localExtensionRun, ReleaseID: localReleaseID, IssuedAt: keys.clock.stamp(keys.clock.issued),
 		ReleaseManifestSHA256: release.digest, BootstrapAuthorityManifestSHA256: authority.digest,
 		CredentialLeaseID: localExtensionLease, PostgresImageDigest: runtimev1.PostgresImageDigest,
 		OwnershipManifestSHA256: manifests.ownership.digest, DatabaseName: localDatabase,
-		DatabaseSystemIdentifier: localSystemID, DatabaseOID: localDatabaseOID,
+		DatabaseSystemIdentifier: databaseSystemID(), DatabaseOID: localDatabaseOID,
 		ServerVersionNumber: runtimev1.PostgresServerVersionNumber, DatabaseOrigin: "fresh",
 		DatabaseOwner: runtimev1.DatabaseOwnerRole, DatabaseEncoding: runtimev1.PostgresEncoding,
 		DatabaseLocaleProvider: runtimev1.PostgresLocaleProvider, DatabaseCollation: runtimev1.PostgresCollation,
 		DatabaseCType: runtimev1.PostgresCharacterType, DataChecksums: runtimev1.PostgresDataChecksums,
 		SessionUser: "harpy_extension_admin", CurrentUser: "harpy_extension_admin",
 		OperationDigest: operations.extension.digest, Result: "succeeded",
-		ExtensionManifestSHA256: manifests.extension.digest,
-		Extensions: []runtimev1.ExtensionRecord{
-			{Name: "pg_trgm", Version: "1.6", Schema: "platform_ext", Owner: "harpy_extension_admin", ControlFileSHA256: localFixedDigest},
-			{Name: "vector", Version: "0.8.3", Schema: "platform_ext", Owner: "harpy_extension_admin", ControlFileSHA256: localFixedDigest},
-		},
+		ExtensionManifestSHA256: manifests.extension.digest, Extensions: records,
 	}
 	return finishReceipt(keys, "postgres-extension-receipt.v1", "extension_admin", payload, func(body []byte) error {
 		_, err := attestation.VerifyExtensionReceipt(body, keys.root, keys.clock.now)
@@ -83,7 +87,7 @@ func signedCleanupReceipt(
 		RunID: localCleanupRun, ReleaseID: localReleaseID, IssuedAt: keys.clock.stamp(keys.clock.issued),
 		ReleaseManifestSHA256: release.digest, BootstrapAuthorityManifestSHA256: authority.digest,
 		CleanupOperationDigest: operations.cleanup.digest, DatabaseName: localDatabase,
-		DatabaseOrigin: "fresh", DatabaseSystemIdentifier: localSystemID, DatabaseOID: localDatabaseOID,
+		DatabaseOrigin: "fresh", DatabaseSystemIdentifier: databaseSystemID(), DatabaseOID: localDatabaseOID,
 		DatabaseOwner: runtimev1.DatabaseOwnerRole, DatabaseEncoding: runtimev1.PostgresEncoding,
 		DatabaseLocaleProvider: runtimev1.PostgresLocaleProvider, DatabaseCollation: runtimev1.PostgresCollation,
 		DatabaseCType: runtimev1.PostgresCharacterType, DataChecksums: runtimev1.PostgresDataChecksums,
@@ -97,6 +101,34 @@ func signedCleanupReceipt(
 		_, err := attestation.VerifyCredentialCleanupReceipt(body, keys.root, keys.clock.now)
 		return err
 	})
+}
+
+func databaseSystemID() string {
+	value := strings.TrimSpace(os.Getenv("HARPY_DATABASE_SYSTEM_IDENTIFIER"))
+	if value == "" {
+		return localSystemID
+	}
+	for _, char := range value {
+		if char < '0' || char > '9' {
+			return localSystemID
+		}
+	}
+	return value
+}
+
+func extensionReceiptRecords(manifest releaseDocument) ([]runtimev1.ExtensionRecord, error) {
+	var decoded postgresv1.ExtensionManifest
+	if err := attestation.DecodeStrict(manifest.body, &decoded); err != nil {
+		return nil, err
+	}
+	records := make([]runtimev1.ExtensionRecord, 0, len(decoded.Extensions))
+	for _, extension := range decoded.Extensions {
+		records = append(records, runtimev1.ExtensionRecord{
+			Name: extension.Name, Version: extension.Version, Schema: extension.Schema,
+			Owner: extension.Owner, ControlFileSHA256: extension.ControlFileSHA256,
+		})
+	}
+	return records, nil
 }
 
 func cleanedPrincipal(keys releaseKeys, name, lease string) runtimev1.CleanedPrincipal {
