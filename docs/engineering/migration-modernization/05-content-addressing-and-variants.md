@@ -13,6 +13,17 @@ Release manifest entry modeli variants.fresh ve variants.v1_adopted içeriyor. H
 5. Fresh/adopted execution davranışlarının eşit olduğunu varsayma. Schema state, history row, transaction mode, ordering ve upgrade testlerini belirle.
 6. Gerekirse geçişte önce eski path/digest referanslarını doğrula; eski release manifest formatını geriye dönük değiştirme.
 
+## Ölçüm
+
+`go run ./internal/migrationbundle/cmd/census .` (ayrıntı `baseline.md`):
+
+- Repo içinde `*.v1_adopted.sql` yok. Adopted path'ler yalnız arşiv manifestlerinin `variants.v1_adopted` alanındadır.
+- 2735 benzersiz entry'nin tamamında fresh ve v1_adopted vardır. 2714 aynı SHA256 ve farklı path. 21 farklı SHA256. Aynı path: 0.
+- 21 farktan 19'u `ai` modülü path'i, biri `tenancy` platform `20260713030300`, biri `platform_cutover` `20260716020103`. Bu ağaçta adopted SQL yok; forms, workflow ve AI kaynakları starter'da yoktur.
+- Benzersiz entry JSON yaklaşık 1.7 MB. Kazanç, 116 MB arşivin entry tekrarıdır. Bunu content-addressed blob'a çevirmek release attestation baytlarını değiştirir.
+
+Kod değişikliği yok. Fresh ve adopted yürütmesi eşit kabul edilmedi. Goose, history satırı ve origin seçimi duruyor.
+
 ## Kabul kriterleri
 
 - Fresh/adopted corpus kapsamı doğrulanmış.

@@ -14,6 +14,10 @@ core/internal/composition/api/run.go içindeki loadSchemaContract() yolu composi
 6. Contract uyuşmazlığında mevcut fail-closed davranışı koru.
 7. Startup testleri ve stale/invalid contract ile fail-closed testi ekle.
 
+## Uygulama
+
+`LoadBoundStartup` gömülü `fresh-migration-manifest.json` baytlarının SHA-256 değerini `binary-schema-contract.json` içindeki `migration_manifest_sha256` ile karşılaştırır. Uyuşmazlık, boş manifest ve doğrulanmamış contract fail-closed olur. SQL taraması `LoadStartup` olarak testte durur. Ölçüm `baseline.md` içindedir.
+
 ## Kabul kriterleri
 
 - API startup'ta gereken bilgiler belgelenmiş.

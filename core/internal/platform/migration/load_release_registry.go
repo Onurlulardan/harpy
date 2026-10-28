@@ -1,3 +1,5 @@
+//go:build !harpy_measure_no_release_embed
+
 package migration
 
 import (
@@ -16,7 +18,11 @@ const releaseManifestSuffix = ".migration-manifest.json"
 var releaseManifestFiles embed.FS
 
 func LoadReleaseRegistry() (*ReleaseRegistry, error) {
-	entries, err := fs.ReadDir(releaseManifestFiles, "release")
+	return LoadReleaseManifestFS(releaseManifestFiles, "release")
+}
+
+func LoadReleaseManifestFS(files fs.FS, directory string) (*ReleaseRegistry, error) {
+	entries, err := fs.ReadDir(files, directory)
 	if err != nil {
 		return nil, fmt.Errorf("read embedded migration manifests: %w", err)
 	}
@@ -28,7 +34,7 @@ func LoadReleaseRegistry() (*ReleaseRegistry, error) {
 		if entry.IsDir() || !strings.HasSuffix(entry.Name(), releaseManifestSuffix) {
 			return nil, fmt.Errorf("embedded migration manifest name is invalid")
 		}
-		content, err := fs.ReadFile(releaseManifestFiles, path.Join("release", entry.Name()))
+		content, err := fs.ReadFile(files, path.Join(directory, entry.Name()))
 		if err != nil {
 			return nil, err
 		}

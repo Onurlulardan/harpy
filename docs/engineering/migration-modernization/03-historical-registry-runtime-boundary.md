@@ -26,6 +26,14 @@ Tüm geçmiş manifestlerin gereksiz olduğunu varsayma: eski migration history 
 6. Fresh install, desteklenen eski release'ten upgrade, tenant migration, restore, rollback ve history supersession senaryolarını test et.
 7. Eski formatı dual-read/compare ile doğrulamadan manifest silme; cutover ve rollback planı oluştur.
 
+## Karar (bu geçiş)
+
+Üretim embed'i yerinde bırakıldı. `Authorize` kanonik bayt eşitliği ister. `ops/production/Dockerfile` son imaja yalnız `/out` binary'lerini koyar; release dizini yoktur. Geçmiş manifestleri embed'den çıkarmak, imaj paketlenmeden offline upgrade'i fail-closed kırardı.
+
+Kanıt: `LoadReleaseManifestFS` aynı dosyaları diskten okur. `TestFilesystemReleaseMatchesEmbed` digest listesini, kanonik baytları, document contract kümesini ve en az bir eski digest için `Authorize` sonucunu embed ile karşılaştırır. Bilinmeyen digest reddedilir.
+
+`-ldflags="-s -w" -trimpath` ile API ve worker, `LoadReleaseRegistry` çağırmadığı için 109 arşivi linker'dan düşürür. Migrator ve operator çağırdığı için tutar. Ölçüm `baseline.md` içindedir. `harpy_measure_no_release_embed` yalnız ölçüm etiketidir; üretim build'i kullanmaz.
+
 ## Kabul kriterleri
 
 - Historical manifestlerin her call site'taki gerçek amacı belgelenmiş.

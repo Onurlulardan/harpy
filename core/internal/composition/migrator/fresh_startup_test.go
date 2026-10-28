@@ -65,6 +65,11 @@ func TestLoadStartupRegistryUsesFreshDocuments(t *testing.T) {
 		embedded.Value().MigrationManifestSHA256 != registry.Digests()[0] {
 		t.Fatalf("load startup = %#v, %v", loaded, err)
 	}
+	bound, err := schemacontract.LoadBoundStartup()
+	if err != nil || !bound.IsVerified() ||
+		bound.Value().MigrationManifestSHA256 != registry.Digests()[0] {
+		t.Fatalf("bound startup = %+v, %v", bound.Value(), err)
+	}
 }
 
 func assertFreshTerminal(t *testing.T, versions map[int64]string) {
