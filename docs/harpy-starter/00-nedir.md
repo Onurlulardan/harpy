@@ -8,11 +8,13 @@ Go module yolu `github.com/Onurlulardan/harpy`. Go sürümü `1.26`.
 
 Kişi `git clone https://github.com/Onurlulardan/harpy.git` ile klonlar. `go run ./cmd/setup` profili sorar, secret ve env yazar, sonraki komutları basar. Docker başlatmaz.
 
-Secret `deploy/<profil>/.env` ve `deploy/<profil>/secrets/` altına yazılır. `.gitignore` bu yolları dışarıda bırakır. İkinci çalıştırma var olan secret'ı tutar. Yenilemek için:
+Secret `deploy/<profil>/.env` ve `deploy/<profil>/secrets/` altına yazılır. `.gitignore` bu yolları dışarıda bırakır. İkinci çalıştırma compose secret'larını, runtime kimlik ve anahtar dosyalarını ve tamamlanmış release paketini tutar. Kurulumun yazdığı placeholder authority dosyası doluysa korunur. Yenilemek için:
 
 ```text
 go run ./cmd/setup --rotate-secrets
 ```
+
+Yerel süreç management dinleyicisini `127.0.0.1:9090` adresine bağlar. Konteyner yayını için adres açık verilir: `go run ./cmd/setup --management-listen 0.0.0.0:9090`. Tutulan materyal, rotation ve dinleyici sınırı [secrets and management](04-secrets-and-management.md) sayfasındadır.
 
 Soru sormadan varsayılanlarla yazmak için `go run ./cmd/setup --defaults`.
 
