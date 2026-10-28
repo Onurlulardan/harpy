@@ -43,6 +43,10 @@ func runCLI(
 		fmt.Fprintf(stderr, "localconfig: %v\n", err)
 		return 1
 	}
+	if err := ensureEnvLocal(); err != nil {
+		fmt.Fprintf(stderr, "localconfig: %v\n", err)
+		return 1
+	}
 	state := "current"
 	if result.Generated {
 		state = "generated"
