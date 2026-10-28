@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"io"
+	"net"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestResolveManagementListenAddress(t *testing.T) {
@@ -81,4 +84,83 @@ func TestContainerComposePublishesExplicitManagementBind(t *testing.T) {
 	if !strings.Contains(body, "127.0.0.1:${LOCAL_API_MANAGEMENT_PORT}:9000") {
 		t.Fatal("host management publish is no longer loopback")
 	}
+}
+
+func TestLoopbackListenAcceptsSameMachine(t *testing.T) {
+	address, err := resolveManagementListenAddress("local", "", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	host, _, err := net.SplitHostPort(address)
+	if err != nil || host != "127.0.0.1" {
+		t.Fatalf("local management host = %q, %v", host, err)
+	}
+	listener, err := net.Listen("tcp", net.JoinHostPort(host, "0"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer listener.Close()
+	boundHost, _, err := net.SplitHostPort(listener.Addr().String())
+	if err != nil || boundHost != host {
+		t.Fatalf("bound address = %s, %v", listener.Addr(), err)
+	}
+
+	accepted := make(chan error, 1)
+	go func() {
+		accepted <- acceptLoopbackPing(listener, host)
+	}()
+
+	conn, err := net.DialTimeout("tcp", listener.Addr().String(), time.Second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer conn.Close()
+	if err = exchangeLoopbackPing(conn); err != nil {
+		t.Fatal(err)
+	}
+	if err = <-accepted; err != nil {
+		t.Fatal(err)
+	}
+}
+
+func acceptLoopbackPing(listener net.Listener, host string) error {
+	conn, err := listener.Accept()
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	_ = conn.SetDeadline(time.Now().Add(time.Second))
+	remoteHost, _, err := net.SplitHostPort(conn.RemoteAddr().String())
+	if err != nil {
+		return err
+	}
+	if remoteHost != host {
+		return fmt.Errorf("accepted remote %s", remoteHost)
+	}
+	buf := make([]byte, 4)
+	if _, err = io.ReadFull(conn, buf); err != nil {
+		return err
+	}
+	if string(buf) != "ping" {
+		return fmt.Errorf("unexpected payload")
+	}
+	_, err = conn.Write([]byte("pong"))
+	return err
+}
+
+func exchangeLoopbackPing(conn net.Conn) error {
+	if err := conn.SetDeadline(time.Now().Add(time.Second)); err != nil {
+		return err
+	}
+	if _, err := conn.Write([]byte("ping")); err != nil {
+		return err
+	}
+	buf := make([]byte, 4)
+	if _, err := io.ReadFull(conn, buf); err != nil {
+		return err
+	}
+	if string(buf) != "pong" {
+		return fmt.Errorf("unexpected reply")
+	}
+	return nil
 }
