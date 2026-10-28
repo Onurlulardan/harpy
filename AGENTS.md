@@ -20,6 +20,8 @@ AGENTS, INDEX ve SKILL okumaya yarayan salt okunur keşif komutları dışında,
 
 Skill okumadan yapılan değişiklik hatalıdır.
 
+Yerel API ve worker `ops/local/compose.runtime.yml` içinde container'dır. Komut `task dev` (`local:up`). `task dev` kullanılmazsa aynı sıra eksiksiz tamamlanır: `prepare`, `infra`, `bootstrap`, `migrate`, `installation:artifacts`, `license`, `tenant-executor`, `initialize`, `services`, `verify` (`.taskfiles/local.yml` `up`). `license` atlanırsa on-premise açılış `billing_license_heads` satırını bulamaz ve API kalkmaz. `go run ./core/cmd/api` bu sıranın yerine geçmez.
+
 ## Kurallar
 
 1. Elle yazılan dosyalar `code-organization` skill'ini ve fileguard'ı geçer. Satır, CRUD ve dosya adı politikasının tek kaynağı o skill'dir.

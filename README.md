@@ -10,16 +10,7 @@ Go module yolu `github.com/Onurlulardan/harpy`. Go sürümü `1.26`.
 
 Klon: `git clone https://github.com/Onurlulardan/harpy.git`
 
-İlk komut `go run ./cmd/setup`. Setup profili sorar, secret ve env yazar, sonraki komutları basar. Docker başlatmaz. Secret git'e girmez.
-
-```text
-go run ./cmd/setup
-docker compose -f deploy/single-tenant/compose.yml up -d
-go run ./core/cmd/migrator --env-file deploy/single-tenant/.env deploy up
-go run ./core/cmd/operator --env-file deploy/single-tenant/.env initialize
-go run ./core/cmd/api --env-file deploy/single-tenant/.env
-go run ./core/cmd/worker --env-file deploy/single-tenant/.env
-```
+Starter komut `task dev`. Sıra [AGENTS.md çalışma protokolü](AGENTS.md#çalışma-protokolü) kuralındadır.
 
 ## Devam
 
