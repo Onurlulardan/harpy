@@ -20,12 +20,13 @@ func findRepositoryRoot() (string, error) {
 	}
 	for {
 		module, readErr := os.ReadFile(filepath.Join(current, "go.mod"))
-		if readErr == nil && strings.HasPrefix(string(module), "module github.com/Onurlulardan/harpy\n") {
+		line, _, _ := strings.Cut(string(module), "\n")
+		if readErr == nil && strings.TrimSpace(line) == "module github.com/Onurlulardan/harpy" {
 			return current, nil
 		}
 		parent := filepath.Dir(current)
 		if parent == current {
-			return "", fmt.Errorf("backend-v2 repository root not found")
+			return "", fmt.Errorf("repository root not found")
 		}
 		current = parent
 	}

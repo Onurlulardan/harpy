@@ -10,13 +10,12 @@ import (
 func validateCurrentManifestCatalog(
 	files []manifestFile,
 	profile generationProfile,
-	licenseKind string,
 ) error {
 	if err := validateManifestFileCatalog(files); err != nil {
 		return err
 	}
 	expected := newArtifactSetFor(generationOptions{
-		profile: profile, licenseKind: licenseKind,
+		profile: profile,
 	}).expectedArtifactNames()
 	if len(files) != len(expected) {
 		return fmt.Errorf("manifest does not match the current artifact catalog")

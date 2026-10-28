@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
-	"time"
 )
 
 type recoveryCredentialFixture struct {
@@ -115,19 +114,6 @@ func TestRecoveryProfilesUseExactBranchesAndReconcileEvidence(t *testing.T) {
 	} {
 		if !strings.Contains(identity, value+"\n") {
 			t.Fatalf("identity reconcile profile missing %s", value)
-		}
-	}
-}
-
-func TestForgeGuardCatalogNeverGeneratesLocalRecoverySecrets(t *testing.T) {
-	options := forgeGuardOptionsForTest(t, "connected")
-	set, err := generateArtifactSetFor(time.Date(2026, 7, 23, 4, 0, 0, 0, time.UTC), options)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, name := range recoveryArtifactNames {
-		if _, found := set.files[name]; found {
-			t.Fatalf("ForgeGuard generation emitted local recovery artifact %s", name)
 		}
 	}
 }

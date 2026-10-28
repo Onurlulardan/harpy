@@ -143,11 +143,11 @@ func releaseFrontierEntry(
 	generation int64,
 	digestCharacter string,
 ) postgresv1.MigrationEntry {
-	base := "core/internal/modules/forms/migrations/platform/"
+	base := "core/internal/modules/documents/migrations/platform/"
 	versionText := strconv.FormatInt(version, 10)
 	digest := strings.Repeat(digestCharacter, 64)
 	return postgresv1.MigrationEntry{
-		Owner: "forms", Scope: "platform", Version: version,
+		Owner: "documents", Scope: "platform", Version: version,
 		TransactionMode: "transactional", Phase: "expand",
 		TargetDatabaseGeneration: generation, NextMinimumRuntimeGeneration: 13,
 		Variants: postgresv1.MigrationVariants{

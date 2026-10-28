@@ -41,7 +41,7 @@ type runtimeCatalogVariable struct {
 func loadRuntimeCatalog(t *testing.T) []runtimeCatalogVariable {
 	t.Helper()
 	var combined []runtimeCatalogVariable
-	for _, name := range []string{"config.json", "phase14-config.json"} {
+	for _, name := range []string{"config.json", "config.tail.json", "phase14-config.json"} {
 		path := filepath.Join("..", "..", "contracts", "runtime", "v1", name)
 		content, err := os.ReadFile(path)
 		if err != nil {

@@ -20,10 +20,10 @@ func TestRepositoryMigrationStreamCatalogLoadsKnownOwners(t *testing.T) {
 		owners[index] = owner.Name
 	}
 	wantOwners := []string{
-		"ai", "analytics", "billing", "catalog", "documents", "forms", "iam", "mcp",
-		"notifications", "platform_async", "platform_backupreceipt", "platform_cutover",
+		"analytics", "billing", "catalog", "documents", "iam", "notifications",
+		"platform_async", "platform_backupreceipt", "platform_cutover",
 		"platform_migrator", "platformauthority", "platformops", "system_resource_layout",
-		"tenancy", "work", "workflow",
+		"tenancy", "work",
 	}
 	streams := manifest.Streams()
 	if manifest.Version != catalogVersion || !reflect.DeepEqual(owners, wantOwners) {

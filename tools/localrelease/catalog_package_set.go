@@ -11,14 +11,13 @@ import (
 
 	canonicaljsonv1 "github.com/Onurlulardan/harpy/contracts/canonicaljson/v1"
 	catalogpackagev1 "github.com/Onurlulardan/harpy/contracts/catalogpackage/v1"
-	"github.com/Onurlulardan/harpy/tools/internal/firstpartycatalog"
 )
 
 func buildCatalogPackageSet(
 	releaseID string,
 	authority catalogPackageAuthority,
 ) (artifact, error) {
-	references, err := firstpartycatalog.BuildAll()
+	references, err := localCatalogReferences()
 	if err != nil {
 		return artifact{}, err
 	}
@@ -59,7 +58,7 @@ func buildCatalogPackageSet(
 }
 
 func catalogPackageLess(
-	left, right firstpartycatalog.Package,
+	left, right catalogReference,
 ) bool {
 	if left.PackageID != right.PackageID {
 		return left.PackageID < right.PackageID
@@ -94,7 +93,7 @@ func catalogSemver(value string) ([3]uint64, bool) {
 }
 
 func sealCatalogPackage(
-	reference firstpartycatalog.Package,
+	reference catalogReference,
 	authority catalogPackageAuthority,
 ) (catalogpackagev1.SealedPackage, error) {
 	payloads := append(

@@ -21,14 +21,6 @@ func addProfileEnvironmentArtifacts(set *artifactSet, _ time.Time) error {
 		{"operator.env", operatorEnvironment(set)},
 		{"tenant-migration-executor.env", tenantMigrationExecutorEnvironment(set)},
 	}
-	if set.options.profile == profileForgeGuard {
-		profiles = append(profiles,
-			struct {
-				name   string
-				values profileEnvironment
-			}{"delivery-operator.env", deliveryOperatorEnvironment(set)},
-		)
-	}
 	for _, profile := range profiles {
 		content, err := renderProfileEnvironment(profile.values)
 		if err != nil {
@@ -75,26 +67,13 @@ func validEnvironmentKey(value string) bool {
 }
 
 func baseRuntimeEnvironment(dsn string) profileEnvironment {
-	set := newArtifactSet()
-	return baseRuntimeEnvironmentFor(set, dsn)
+	return baseRuntimeEnvironmentFor(dsn)
 }
 
-func baseRuntimeEnvironmentFor(
-	set *artifactSet,
-	dsn string,
-) profileEnvironment {
-	environment := "development"
-	if set.options.profile == profileForgeGuard {
-		environment = "production"
-	}
-	values := profileEnvironment{
-		"HARPY_ENVIRONMENT":            environment,
+func baseRuntimeEnvironmentFor(dsn string) profileEnvironment {
+	return profileEnvironment{
+		"HARPY_ENVIRONMENT":            "development",
 		"HARPY_POSTGRES_ENDPOINT_KIND": "direct_postgres",
 		"HARPY_POSTGRES_DSN_FILE":      dsn,
 	}
-	if set.options.profile == profileForgeGuard {
-		values["HARPY_OTLP_ENDPOINT"] = "https://telemetry:4318"
-		values["HARPY_OTLP_INSECURE"] = "false"
-	}
-	return values
 }

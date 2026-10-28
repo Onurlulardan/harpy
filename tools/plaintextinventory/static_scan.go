@@ -11,7 +11,7 @@ import (
 
 func runStatic(arguments []string) (int, error) {
 	flags := flag.NewFlagSet("static", flag.ContinueOnError)
-	workspaceFlag := flags.String("workspace", "", "ForgeCRUD workspace root")
+	workspaceFlag := flags.String("workspace", "", "workspace root")
 	if err := flags.Parse(arguments); err != nil || flags.NArg() != 0 || *workspaceFlag == "" {
 		return 0, fmt.Errorf("static scan arguments are invalid")
 	}
@@ -20,7 +20,7 @@ func runStatic(arguments []string) (int, error) {
 		return 0, fmt.Errorf("workspace is invalid")
 	}
 	verified := 0
-	for _, root := range []string{"backend-v2", "frontend-v3", "forgeGuard"} {
+	for _, root := range []string{"backend-v2", "frontend-v3"} {
 		err = filepath.WalkDir(filepath.Join(workspace, root),
 			func(path string, entry os.DirEntry, walkErr error) error {
 				if walkErr != nil {
@@ -74,7 +74,7 @@ func inspectStaticFile(path, relative string, kind staticKind) error {
 
 func workspaceShapeValid(root string) bool {
 	for _, path := range []string{
-		"backend-v2/go.mod", "frontend-v3/package.json", "forgeGuard/backend/go.mod",
+		"backend-v2/go.mod", "frontend-v3/package.json",
 	} {
 		info, err := os.Stat(filepath.Join(root, filepath.FromSlash(path)))
 		if err != nil || !info.Mode().IsRegular() {

@@ -58,7 +58,6 @@ func buildSetManifest(set *artifactSet, now time.Time) (setManifest, error) {
 		ArtifactContractRevision: currentArtifactContractRevision,
 		Profile:                  string(set.options.profile),
 		ProfileInputsSHA256:      set.options.digest(),
-		LicenseKind:              set.options.licenseKind,
 		GenerationID:             generationID,
 		GeneratedAt:              canonicalTimestamp(now),
 		RenewAfter:               canonicalTimestamp(renewAfter),
@@ -95,29 +94,7 @@ func validateManifestDocument(
 		manifest.ProfileInputsSHA256 != "" || manifest.LicenseKind != "" {
 		return fmt.Errorf("manifest profile is not local")
 	}
-	return validateCurrentManifestCatalog(manifest.Files, profileLocal, "")
-}
-
-func validateForgeGuardManifestDocument(
-	manifest setManifest,
-	now time.Time,
-	options generationOptions,
-	ignoreExpiry bool,
-) error {
-	if err := validateManifestLifecycle(manifest, now, ignoreExpiry); err != nil {
-		return err
-	}
-	if err := validateCurrentArtifactContractRevision(manifest); err != nil {
-		return err
-	}
-	if manifest.Profile != string(profileForgeGuard) ||
-		manifest.ProfileInputsSHA256 != options.digest() ||
-		manifest.LicenseKind != options.licenseKind {
-		return fmt.Errorf("manifest forgeguard profile identity differs")
-	}
-	return validateCurrentManifestCatalog(
-		manifest.Files, profileForgeGuard, options.licenseKind,
-	)
+	return validateCurrentManifestCatalog(manifest.Files, profileLocal)
 }
 
 func validateResetManifestDocument(manifest setManifest, now time.Time) error {

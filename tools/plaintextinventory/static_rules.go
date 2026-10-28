@@ -13,7 +13,6 @@ const (
 	staticSkip staticKind = iota
 	staticDeployment
 	staticSource
-	staticForgeGuardSource
 )
 
 var (
@@ -40,9 +39,6 @@ func staticFileKind(relative string, entry os.DirEntry) staticKind {
 		return staticDeployment
 	}
 	if sourceFile(lower) {
-		if strings.HasPrefix(lower, "forgeguard/") {
-			return staticForgeGuardSource
-		}
 		return staticSource
 	}
 	return staticSkip
@@ -69,22 +65,20 @@ func sourceFile(path string) bool {
 		return false
 	}
 	return strings.HasPrefix(path, "backend-v2/core/") ||
-		strings.HasPrefix(path, "frontend-v3/src/") ||
-		strings.HasPrefix(path, "forgeguard/backend/internal/") ||
-		strings.HasPrefix(path, "forgeguard/frontend/src/")
+		strings.HasPrefix(path, "frontend-v3/src/")
 }
 
 func staticLineViolation(line string, kind staticKind) string {
 	if kind == staticDeployment && legacyBootstrap.MatchString(line) {
 		return "legacy bootstrap plaintext configuration"
 	}
-	if (kind == staticSource || kind == staticForgeGuardSource) && liveEnvLookup.MatchString(line) {
+	if kind == staticSource && liveEnvLookup.MatchString(line) {
 		return "legacy bootstrap environment lookup"
 	}
 	if kind == staticSource && legacyAdminBoolean.MatchString(line) {
 		return "super-admin boolean authority"
 	}
-	if (kind == staticSource || kind == staticForgeGuardSource) && browserSecretStore.MatchString(line) {
+	if kind == staticSource && browserSecretStore.MatchString(line) {
 		return "browser installation-secret persistence"
 	}
 	return ""

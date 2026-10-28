@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 func generateArtifactSet(now time.Time) (*artifactSet, error) {
@@ -19,14 +17,10 @@ func generateArtifactSetFor(
 	if canonical.IsZero() {
 		return nil, fmt.Errorf("clock is required")
 	}
-	set := newArtifactSetFor(options)
-	if options.profile == profileForgeGuard {
-		actorID, err := uuid.NewV7()
-		if err != nil {
-			return nil, fmt.Errorf("generate documents billing actor ID: %w", err)
-		}
-		set.billingActorID = actorID.String()
+	if options.profile != profileLocal {
+		return nil, fmt.Errorf("generation profile is invalid")
 	}
+	set := newArtifactSetFor(options)
 	steps := []func(*artifactSet, time.Time) error{
 		addConnectionArtifacts,
 		addGeneralKeyrings,
@@ -37,9 +31,7 @@ func generateArtifactSetFor(
 		addRecoveryArtifacts,
 		addWorkloadIdentityArtifacts,
 		addAuthorityArtifacts,
-		addAIMCPRuntimeArtifacts,
 		addProfileEnvironmentArtifacts,
-		addForgeGuardInputArtifacts,
 	}
 	for _, step := range steps {
 		if err := step(set, canonical); err != nil {

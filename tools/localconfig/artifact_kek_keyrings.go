@@ -25,8 +25,6 @@ var analyticsDashboardExportKEKTarget = artifactKEKTarget{
 var artifactKEKTargets = []artifactKEKTarget{
 	{"documents-kek-keyring.json", "local-documents-"},
 	analyticsDashboardExportKEKTarget,
-	{"forms-export-fcart-kek-keyring.json", "local-forms-export-"},
-	{"forms-import-source-fcart-kek-keyring.json", "local-forms-import-"},
 	{"iam-system-export-fcart-kek-keyring.json", "local-iam-export-"},
 	{"iam-system-import-source-fcart-kek-keyring.json", "local-iam-import-"},
 }

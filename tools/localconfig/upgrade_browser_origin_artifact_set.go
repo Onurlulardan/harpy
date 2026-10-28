@@ -76,19 +76,12 @@ func validateBrowserOriginUpgradeManifest(
 	if err := validateManifestLifecycle(value, now, false); err != nil {
 		return err
 	}
-	if options.profile == profileLocal {
-		if (value.Profile != "" && value.Profile != string(profileLocal)) ||
-			value.ProfileInputsSHA256 != "" || value.LicenseKind != "" {
-			return fmt.Errorf("browser origin upgrade source profile differs")
-		}
-	} else if value.Profile != string(profileForgeGuard) ||
-		value.ProfileInputsSHA256 != options.digest() ||
-		value.LicenseKind != options.licenseKind {
+	if options.profile != profileLocal ||
+		(value.Profile != "" && value.Profile != string(profileLocal)) ||
+		value.ProfileInputsSHA256 != "" || value.LicenseKind != "" {
 		return fmt.Errorf("browser origin upgrade source profile differs")
 	}
-	return validateCurrentManifestCatalog(
-		value.Files, options.profile, options.licenseKind,
-	)
+	return validateCurrentManifestCatalog(value.Files, options.profile)
 }
 
 func publishBrowserOriginUpgrade(

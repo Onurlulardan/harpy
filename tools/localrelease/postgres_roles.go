@@ -72,7 +72,7 @@ func verifyManagedRoleSet(
 ) error {
 	rows, err := admin.Query(ctx,
 		`SELECT rolname FROM pg_catalog.pg_roles
-WHERE rolname LIKE 'harpy\_%' ESCAPE '\' OR rolname='forge_runtime'`,
+WHERE rolname LIKE 'harpy\_%' ESCAPE '\'`,
 	)
 	if err != nil {
 		return fmt.Errorf("list managed roles: %w", err)

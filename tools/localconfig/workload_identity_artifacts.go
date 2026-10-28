@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/ed25519"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -11,8 +10,6 @@ import (
 
 const localWorkloadAudience = "//iam.googleapis.com/projects/123456789012/" +
 	"locations/global/workloadIdentityPools/harpy-local/providers/local-runtime"
-const hostWorkloadAudience = "//iam.googleapis.com/projects/123456789012/" +
-	"locations/global/workloadIdentityPools/harpy-host/providers/host-runtime"
 
 func addWorkloadIdentityArtifacts(set *artifactSet, now time.Time) error {
 	masterKey, err := randomBytes(32)
@@ -22,9 +19,6 @@ func addWorkloadIdentityArtifacts(set *artifactSet, now time.Time) error {
 	defer clear(masterKey)
 	if err := set.add("kms-master-key.bin", masterKey); err != nil {
 		return err
-	}
-	if set.options.profile == profileForgeGuard {
-		return addHostWorkloadIdentityArtifacts(set)
 	}
 	return addLocalWorkloadIdentityArtifacts(set, now)
 }
@@ -62,66 +56,6 @@ func addLocalWorkloadIdentityArtifacts(set *artifactSet, now time.Time) error {
 	}
 	set.trackExpiry(expiresAt)
 	return nil
-}
-
-func addHostWorkloadIdentityArtifacts(set *artifactSet) error {
-	accessKey, err := randomBytes(32)
-	if err != nil {
-		return err
-	}
-	defer clear(accessKey)
-	if err := set.add("kms-access-token-signing-key.bin", accessKey); err != nil {
-		return err
-	}
-	keys := make([]map[string]string, 0, 2)
-	for _, workload := range []struct {
-		name, subject string
-	}{
-		{name: "api", subject: "harpy-host-api"},
-		{name: "worker", subject: "harpy-host-worker"},
-	} {
-		seed, seedErr := randomBytes(ed25519.SeedSize)
-		if seedErr != nil {
-			return seedErr
-		}
-		privateKey := ed25519.NewKeyFromSeed(seed)
-		publicKey := privateKey.Public().(ed25519.PublicKey)
-		keys = append(keys, map[string]string{
-			"kid": workload.name, "subject": workload.subject,
-			"public_key": base64.RawURLEncoding.EncodeToString(publicKey),
-		})
-		if err := set.add(workload.name+"-workload-signing-seed", seed); err != nil {
-			clear(seed)
-			clear(privateKey)
-			return err
-		}
-		clear(seed)
-		clear(privateKey)
-		if err := addExecutableWIF(set, workload.name, workload.subject); err != nil {
-			return err
-		}
-	}
-	return addJSON(set, "host-workload-public-keys.json", map[string]any{
-		"version": 1,
-		"keys":    keys,
-	})
-}
-
-func addExecutableWIF(set *artifactSet, name, subject string) error {
-	command := "/app/workload-token -key /run/secrets/" + name +
-		"-workload-signing-seed -kid " + name + " -subject " + subject
-	return addJSON(set, name+"-gcp-wif.json", map[string]any{
-		"type":               "external_account",
-		"audience":           hostWorkloadAudience,
-		"subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
-		"token_url":          "https://sts.googleapis.com/v1/token",
-		"credential_source": map[string]any{
-			"executable": map[string]any{
-				"command":        command,
-				"timeout_millis": 5000,
-			},
-		},
-	})
 }
 
 func issueSubjectToken(

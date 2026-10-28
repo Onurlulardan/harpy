@@ -30,7 +30,7 @@ func addConnectionArtifacts(set *artifactSet, _ time.Time) error {
 	files := map[string]string{
 		"postgres-bootstrap-password.txt": passwords.bootstrap,
 		"postgres-bootstrap-dsn.txt": postgresDSN(
-			bootstrapPrincipal(set), passwords.bootstrap, "postgres"),
+			bootstrapPrincipal(), passwords.bootstrap, "postgres"),
 		"postgres-runtime-password.txt":         passwords.runtime,
 		"postgres-migrator-password.txt":        passwords.migrator,
 		"postgres-cluster-admin-password.txt":   passwords.clusterAdmin,
@@ -66,10 +66,7 @@ func addConnectionArtifacts(set *artifactSet, _ time.Time) error {
 	return addInvitationTemplate(set)
 }
 
-func bootstrapPrincipal(set *artifactSet) string {
-	if set.options.profile == profileForgeGuard {
-		return "harpy_bootstrap"
-	}
+func bootstrapPrincipal() string {
 	return "local_bootstrap_admin"
 }
 
@@ -131,8 +128,8 @@ func rabbitMQURL(username, password string) string {
 func addInvitationTemplate(set *artifactSet) error {
 	return addJSON(set, "invitation-template.json", map[string]any{
 		"version": 1,
-		"subject": "You're invited to ForgeCRUD",
-		"text":    "Join your ForgeCRUD workspace: {{INVITATION_URL}}",
+		"subject": "You're invited to Harpy",
+		"text":    "Join your Harpy workspace: {{INVITATION_URL}}",
 		"html":    invitationGraphiteHTML,
 	})
 }

@@ -73,5 +73,5 @@ func validateRecoveryPathUpgradeManifest(value setManifest, now time.Time) error
 	if err := validateManifestLifecycle(value, now, false); err != nil {
 		return err
 	}
-	return validateCurrentManifestCatalog(value.Files, profileLocal, "")
+	return validateCurrentManifestCatalog(value.Files, profileLocal)
 }

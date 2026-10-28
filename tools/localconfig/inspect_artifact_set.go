@@ -19,19 +19,6 @@ func inspectArtifactSet(
 	})
 }
 
-func inspectForgeGuardArtifactSet(
-	output string,
-	now time.Time,
-	options generationOptions,
-	ignoreExpiry bool,
-) (setManifest, bool, error) {
-	return inspectManifestBackedSet(output, func(manifest setManifest) error {
-		return validateForgeGuardManifestDocument(
-			manifest, now, options, ignoreExpiry,
-		)
-	})
-}
-
 func inspectResettableArtifactSet(
 	output string,
 	now time.Time,

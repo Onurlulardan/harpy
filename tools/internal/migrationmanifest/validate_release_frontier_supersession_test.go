@@ -96,12 +96,12 @@ func exactSupersessionFrontier(
 	current.Entries = append([]postgresv1.MigrationEntry(nil), previous.Entries...)
 	entry := current.Entries[0]
 	entry.Variants.Fresh = &postgresv1.MigrationVariant{
-		Path: "core/internal/modules/forms/migrations/platform/supersessions/fresh/" +
+		Path: "core/internal/modules/documents/migrations/platform/supersessions/fresh/" +
 			filepath.Base(previous.Entries[0].Variants.Fresh.Path),
 		SHA256: strings.Repeat(digestCharacter, 64),
 	}
 	entry.Variants.V1Adopted = &postgresv1.MigrationVariant{
-		Path: "core/internal/modules/forms/migrations/platform/supersessions/v1_adopted/" +
+		Path: "core/internal/modules/documents/migrations/platform/supersessions/v1_adopted/" +
 			filepath.Base(previous.Entries[0].Variants.V1Adopted.Path),
 		SHA256: strings.Repeat(digestCharacter, 64),
 	}
@@ -131,13 +131,13 @@ func moveSupersessionFrontier(
 	current.Entries = append([]postgresv1.MigrationEntry(nil), previous.Entries...)
 	entry := current.Entries[0]
 	entry.Variants.Fresh = &postgresv1.MigrationVariant{
-		Path: "core/internal/modules/forms/migrations/platform/supersessions/" +
+		Path: "core/internal/modules/documents/migrations/platform/supersessions/" +
 			level + "/fresh/" +
 			filepath.Base(previous.Entries[0].Variants.Fresh.Path),
 		SHA256: strings.Repeat(digestCharacter, 64),
 	}
 	entry.Variants.V1Adopted = &postgresv1.MigrationVariant{
-		Path: "core/internal/modules/forms/migrations/platform/supersessions/" +
+		Path: "core/internal/modules/documents/migrations/platform/supersessions/" +
 			level + "/v1_adopted/" +
 			filepath.Base(previous.Entries[0].Variants.V1Adopted.Path),
 		SHA256: strings.Repeat(digestCharacter, 64),

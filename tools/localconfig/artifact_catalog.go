@@ -11,15 +11,11 @@ const manifestFileName = "manifest.json"
 
 var actorBridgeDomains = []string{
 	"analytics", "billing", "catalog", "documents",
-	"forms", "notifications", "work", "workflow",
+	"notifications", "work",
 }
 
 var baseArtifactNames = []string{
 	"api.env",
-	"ai-context-public-keys.json",
-	"ai-core-credential",
-	"ai-credential-private-key",
-	"ai-runtime.json",
 	"analytics-dashboard-export-fcart-kek-keyring.json",
 	"actor-bridge-client.crt",
 	"actor-bridge-client.key",
@@ -31,8 +27,6 @@ var baseArtifactNames = []string{
 	"catalog-package-public-keyring.json",
 	"catalog-package-signing-seed",
 	"documents-kek-keyring.json",
-	"forms-export-fcart-kek-keyring.json",
-	"forms-import-source-fcart-kek-keyring.json",
 	"iam-access-token-keyring.json",
 	"iam-auth-throttle-keyring.json",
 	"iam-csrf-keyring.json",
@@ -54,8 +48,6 @@ var baseArtifactNames = []string{
 	"local-ca.key",
 	"mailpit-server.crt",
 	"mailpit-server.key",
-	"mcp-core-credential",
-	"mcp-runtime.json",
 	"migrator.env",
 	"minio.env",
 	"minio-root-access-key.txt",
@@ -98,21 +90,11 @@ var localWorkloadArtifactNames = []string{
 	"local-authority-release-signing-seed",
 }
 
-var forgeGuardWorkloadArtifactNames = []string{
-	"api-gcp-wif.json",
-	"api-workload-signing-seed",
-	"host-workload-public-keys.json",
-	"kms-access-token-signing-key.bin",
-	"worker-gcp-wif.json",
-	"worker-workload-signing-seed",
-}
-
 type artifactSet struct {
 	files            map[string][]byte
 	expiresAt        time.Time
 	actorBridgeKeyID string
 	options          generationOptions
-	billingActorID   string
 }
 
 func newArtifactSet() *artifactSet {
@@ -136,19 +118,7 @@ func expectedArtifactNames() []string {
 }
 
 func (set *artifactSet) expectedArtifactNames() []string {
-	names := expectedArtifactNames()
-	if set.options.profile == profileForgeGuard {
-		for _, localName := range localWorkloadArtifactNames {
-			names = removeArtifactName(names, localName)
-		}
-		for _, recoveryName := range recoveryArtifactNames {
-			names = removeArtifactName(names, recoveryName)
-		}
-		names = append(names, forgeGuardWorkloadArtifactNames...)
-		names = append(names, forgeGuardArtifactNames(set.options.licenseKind)...)
-		sort.Strings(names)
-	}
-	return names
+	return expectedArtifactNames()
 }
 
 func removeArtifactName(names []string, target string) []string {

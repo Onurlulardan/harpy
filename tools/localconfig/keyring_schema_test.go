@@ -9,8 +9,6 @@ func TestGeneratedTypedKeyringsSatisfyRuntimeSchemas(t *testing.T) {
 		{"catalog-package-public-keyring.json", "catalog-package-public-keyring.schema.json"},
 		{"documents-kek-keyring.json", "documents-kek-keyring.schema.json"},
 		{"analytics-dashboard-export-fcart-kek-keyring.json", "analytics-dashboard-export-fcart-kek-keyring.schema.json"},
-		{"forms-export-fcart-kek-keyring.json", "forms-export-fcart-kek-keyring.schema.json"},
-		{"forms-import-source-fcart-kek-keyring.json", "forms-import-source-fcart-kek-keyring.schema.json"},
 		{"iam-access-token-keyring.json", "iam-access-token-keyring.schema.json"},
 		{"iam-refresh-token-keyring.json", "iam-hmac-keyring.schema.json"},
 		{"iam-csrf-keyring.json", "iam-hmac-keyring.schema.json"},

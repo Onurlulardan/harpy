@@ -5,13 +5,13 @@ import "fmt"
 const releaseRoot = "/run/release/current/"
 
 func schemaExecutorEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(set, secretRoot+"postgres-migrator-dsn.txt")
+	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-migrator-dsn.txt")
 	values["HARPY_MANAGEMENT_LISTEN_ADDR"] = "0.0.0.0:9000"
 	return values
 }
 
 func migratorEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(set, secretRoot+"postgres-migrator-dsn.txt")
+	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-migrator-dsn.txt")
 	values["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE"] =
 		secretRoot + "catalog-package-public-keyring.json"
 	paths := map[string]string{
@@ -44,7 +44,7 @@ func migratorEnvironment(set *artifactSet) profileEnvironment {
 }
 
 func tenantMigrationExecutorEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(set, secretRoot+"postgres-migrator-dsn.txt")
+	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-migrator-dsn.txt")
 	values["HARPY_MANAGEMENT_LISTEN_ADDR"] = "0.0.0.0:9000"
 	values["HARPY_RELEASE_MANIFEST_PATH"] = releaseRoot + "release.json"
 	values["HARPY_RELEASE_SIGNATURE_PATH"] = releaseRoot + "release.sig"
@@ -61,51 +61,16 @@ func addTenantMigrationExecutorEnvironment(set *artifactSet) error {
 }
 
 func operatorEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(set, secretRoot+"postgres-runtime-dsn.txt")
+	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-runtime-dsn.txt")
 	values["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"] =
 		secretRoot + "iam-login-directory-keyring.json"
 	values["HARPY_INSTALLATION_MANIFEST_PATH"] = "/run/installation/manifest.json"
 	values["HARPY_INITIAL_ADMIN_PASSWORD_FILE"] =
 		"/run/installation/initial-admin-password"
 	values["HARPY_RECOVERY_SIGNING_DIRECTORY"] = "/run/recovery-signing/current"
-	if set.options.profile == profileForgeGuard {
-		values["HARPY_INITIAL_ADMIN_PASSWORD_FILE"] =
-			"/run/installation-secret/initial-admin-password"
-		addForgeGuardLicenseEnvironment(values, set.options)
-		values["HARPY_LICENSE_TRUST_BUNDLE_PATH"] =
-			secretRoot + "license-trust-bundle.v1.json"
-	} else {
-		values["HARPY_LICENSE_SNAPSHOT_FILE"] =
-			"/run/dev-authority/current/license-snapshot.json"
-		values["HARPY_LICENSE_TRUST_BUNDLE_PATH"] =
-			"/run/dev-authority/current/license-trust.json"
-	}
-	return values
-}
-
-func deliveryOperatorEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(set, secretRoot+"postgres-runtime-dsn.txt")
-	values["HARPY_INSTALLATION_MANIFEST_PATH"] = "/run/installation/manifest.json"
-	values["HARPY_INITIAL_ADMIN_PASSWORD_FILE"] =
-		"/run/installation-secret/initial-admin-password"
-	values["HARPY_FORGEGUARD_DELIVERY_CREDENTIAL_FILE"] =
-		secretRoot + "forgeguard-operation-credential"
-	values["HARPY_FORGEGUARD_DELIVERY_ARTIFACT_PATH"] =
-		"/run/delivery/credential-artifact.v1.json"
-	return values
-}
-
-func addForgeGuardLicenseEnvironment(
-	values profileEnvironment,
-	options generationOptions,
-) {
-	if options.licenseKind == "connected" {
-		values["HARPY_LICENSE_CREDENTIAL_FILE"] =
-			secretRoot + "license-binding-credential"
-		values["HARPY_LICENSE_ISSUER_URL"] =
-			options.forgeGuardURL + "/api/v2/license-snapshots/issue"
-		return
-	}
 	values["HARPY_LICENSE_SNAPSHOT_FILE"] =
-		secretRoot + "license-snapshot.json"
+		"/run/dev-authority/current/license-snapshot.json"
+	values["HARPY_LICENSE_TRUST_BUNDLE_PATH"] =
+		"/run/dev-authority/current/license-trust.json"
+	return values
 }

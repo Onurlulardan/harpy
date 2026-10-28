@@ -93,7 +93,7 @@ func recoveryBaseEnvironment(dsnKey, dsnPath string) profileEnvironment {
 	return profileEnvironment{
 		"HARPY_ENVIRONMENT":             "development",
 		"HARPY_POSTGRES_ENDPOINT_KIND":  "direct_postgres",
-		dsnKey:                              dsnPath,
+		dsnKey:                          dsnPath,
 		"HARPY_RELEASE_MANIFEST_PATH":   releaseRoot + "release.json",
 		"HARPY_RELEASE_SIGNATURE_PATH":  releaseRoot + "release.sig",
 		"HARPY_RELEASE_TRUST_ROOT_PATH": releaseRoot + "trust-root.json",

@@ -65,11 +65,6 @@ func inspectPublishedArtifactSet(
 	generatedAt time.Time,
 	set *artifactSet,
 ) (setManifest, bool, error) {
-	if set.options.profile == profileForgeGuard {
-		return inspectForgeGuardArtifactSet(
-			path, generatedAt, set.options, false,
-		)
-	}
 	return inspectArtifactSet(path, generatedAt, false)
 }
 

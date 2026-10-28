@@ -14,10 +14,10 @@ func TestResetAcceptsIntactPriorCatalogRejectedByEnsure(t *testing.T) {
 		count   int
 		removed []string
 	}{
-		{"pre-minio-root", 109, []string{
+		{"pre-minio-root", 97, []string{
 			"minio-root-access-key.txt", "minio-root-secret-key.txt", "rabbitmq.conf",
 		}},
-		{"pre-rabbitmq-conf", 111, []string{"rabbitmq.conf"}},
+		{"pre-rabbitmq-conf", 99, []string{"rabbitmq.conf"}},
 	}
 	for _, test := range cases {
 		t.Run(test.name, func(t *testing.T) {
@@ -38,7 +38,7 @@ func TestResetAcceptsIntactPriorCatalogRejectedByEnsure(t *testing.T) {
 
 func TestResetRefusesDamagedPriorCatalog(t *testing.T) {
 	now := time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC)
-	output := priorCatalogSetForTest(t, now, 111, "rabbitmq.conf")
+	output := priorCatalogSetForTest(t, now, 99, "rabbitmq.conf")
 	path := filepath.Join(output, "s3-access-key-id.txt")
 	if err := os.WriteFile(path, []byte("damaged"), 0o600); err != nil {
 		t.Fatal(err)

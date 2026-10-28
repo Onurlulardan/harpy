@@ -60,7 +60,7 @@ func addActorBridgeTargets(set *artifactSet) error {
 
 func addActorBridgeCertificates(set *artifactSet, now time.Time) error {
 	authority, err := newCertificateAuthority(
-		now, "ForgeCRUD local actor bridge CA", 365*24*time.Hour,
+		now, "Harpy local actor bridge CA", 365*24*time.Hour,
 	)
 	if err != nil {
 		return err

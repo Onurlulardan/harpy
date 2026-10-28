@@ -6,12 +6,8 @@ import (
 )
 
 func addRuntimePKI(set *artifactSet, now time.Time) error {
-	authorityName := "ForgeCRUD local runtime CA"
-	if set.options.profile == profileForgeGuard {
-		authorityName = "ForgeCRUD host runtime CA"
-	}
 	authority, err := newCertificateAuthority(
-		now, authorityName, 365*24*time.Hour,
+		now, "Harpy local runtime CA", 365*24*time.Hour,
 	)
 	if err != nil {
 		return err
@@ -27,32 +23,14 @@ func addRuntimePKI(set *artifactSet, now time.Time) error {
 	if err := set.add("local-ca.key", key); err != nil {
 		return err
 	}
-	kmsDNSNames := []string{
-		"sts.googleapis.com", "cloudkms.googleapis.com", "kms-emulator",
-	}
-	if set.options.profile == profileForgeGuard {
-		kmsDNSNames = []string{
-			"sts.googleapis.com", "cloudkms.googleapis.com", "kms-service",
-		}
-	}
 	requests := []struct {
 		name string
 		dns  []string
 	}{
-		{"kms-server", kmsDNSNames},
+		{"kms-server", []string{
+			"sts.googleapis.com", "cloudkms.googleapis.com", "kms-emulator",
+		}},
 		{"mailpit-server", []string{"mailpit"}},
-	}
-	if set.options.profile == profileForgeGuard {
-		requests = append(requests,
-			struct {
-				name string
-				dns  []string
-			}{"s3-owner-server", []string{"s3-owner"}},
-			struct {
-				name string
-				dns  []string
-			}{"telemetry-server", []string{"telemetry"}},
-		)
 	}
 	for _, item := range requests {
 		certificate, privateKey, expiresAt, issueErr := issueLeafCertificate(

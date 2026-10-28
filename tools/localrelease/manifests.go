@@ -6,7 +6,7 @@ const (
 	databaseName          = "harpy"
 	pgTrgmControlHash     = "17c2745da2a706e1443ee363ab7424ced871a9a652e86bf55d25d139f43ee27b"
 	vectorControlHash     = "db4ad0045e6622228471acdcb8fc9aeeec0cd6cf9666569d26f723751ea95fcb"
-	extensionManifestHash = "4ffeeb750859e5da63faef81709819c76e4c1ff5d9064e44658d9826835c42e7"
+	extensionManifestHash = "1c3cd913662549390e547f2504ec15f3251a53ec272f81930f912628673101f6"
 )
 
 func extensionManifest() postgresv1.ExtensionManifest {
@@ -33,8 +33,6 @@ func extensionManifest() postgresv1.ExtensionManifest {
 func rolesManifest() postgresv1.RolesManifest {
 	names := []string{
 		"harpy_owner", "harpy_cutover_authority_owner", "harpy_runtime",
-		"forge_runtime",
-		"harpy_forms_record_reader", "harpy_forms_record_writer",
 		"harpy_v2_runtime", "harpy_migrator", "harpy_cluster_admin",
 		"harpy_extension_admin", "harpy_adopter", "harpy_cutover_decoder",
 		"harpy_cutover_finalizer", "harpy_backup_reader",
@@ -68,8 +66,6 @@ func rolesManifest() postgresv1.RolesManifest {
 func privilegesManifest() postgresv1.PrivilegesManifest {
 	memberships := []postgresv1.RoleMembership{
 		{Member: "harpy_v2_runtime", Role: "harpy_runtime", SetOption: true},
-		{Member: "harpy_v2_runtime", Role: "harpy_forms_record_reader", SetOption: true},
-		{Member: "harpy_v2_runtime", Role: "harpy_forms_record_writer", SetOption: true},
 		{Member: "harpy_migrator", Role: "harpy_owner", SetOption: true},
 		{Member: "harpy_backup", Role: "harpy_backup_reader", SetOption: true},
 		{Member: "harpy_restore", Role: "harpy_owner", SetOption: true},

@@ -8,7 +8,7 @@ import (
 
 func TestStaticInventoryRejectsLegacyDeploymentAuthority(t *testing.T) {
 	workspace := staticWorkspaceFixture(t)
-	compose := filepath.Join(workspace, "forgeGuard", "docker-compose.prod.yml")
+	compose := filepath.Join(workspace, "backend-v2", "docker-compose.prod.yml")
 	writeInventoryFixture(t, compose, "services:\n  api:\n    environment:\n      SUPER_ADMIN_PASSWORD: unsafe\n", 0o600)
 	if _, err := runStatic([]string{"-workspace", workspace}); err == nil {
 		t.Fatal("legacy deployment secret was accepted")
@@ -37,7 +37,7 @@ func staticWorkspaceFixture(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	for _, path := range []string{
-		"backend-v2/go.mod", "frontend-v3/package.json", "forgeGuard/backend/go.mod",
+		"backend-v2/go.mod", "frontend-v3/package.json",
 	} {
 		writeInventoryFixture(t, filepath.Join(root, filepath.FromSlash(path)), "fixture", 0o600)
 	}
