@@ -9,7 +9,7 @@ go run ./tools/archguard
 
 Satır ve dosya adı gerekçesi [code-organization](../../skills/code-organization/SKILL.md) skill'indedir. Bağımlılık gerekçesi [modular-architecture](../../skills/modular-architecture/SKILL.md) skill'indedir.
 
-CI, `push` ve `pull_request` üzerinde üç iş çalıştırır: `go test ./...`, `go run ./tools/fileguard`, `go run ./tools/archguard`. Birim işi Postgres, RabbitMQ ve RustFS istemez.
+CI, `push` ve `pull_request` üzerinde üç iş çalıştırır. Birim işi `go test ./...` çalıştırır; `checkfresh` ve `packrelease -check` durur; ardından currency drift kapısı çalışır. Ayrı işler `go run ./tools/fileguard` ve `go run ./tools/archguard` kalır. Birim işi Postgres, RabbitMQ, RustFS ve üretim secret'ı istemez.
 
 ## fileguard ne ölçer
 
@@ -28,6 +28,17 @@ Lockfile sayılmaz: `go.sum`, `yarn.lock`, `package-lock.json`, `pnpm-lock.yaml`
 İlk beş satırda `code generated` ve `do not edit` birlikte geçiyorsa dosya generated sayılır. Kayıt `contracts/generated.yaml` içindedir. Bu dosya JSON'dur. Her kayıtta `generator`, `input_sha256` ve `output_sha256` vardır. Dosyanın SHA-256 çıktısı kayıtla aynı olmak zorundadır.
 
 Header var, kayıt yoksa kırmızıdır. Kayıt var, dosya doğrulanmazsa kırmızıdır. Yeni bir istisna bu sayfadan eklenmez.
+
+## Currency drift
+
+Birim işi, release artifact adımlarından sonra şu kapıyı çalıştırır:
+
+```text
+go run ./tools/currencyregistry
+git diff --exit-code -- contracts/generated.yaml
+```
+
+`contracts/generated.yaml` değişirse komut kırmızı olur. Hash'ler uyuşuyorsa ikinci koşu dosyaya yazmaz. Hash elle yazılmaz.
 
 ## archguard ne ölçer
 

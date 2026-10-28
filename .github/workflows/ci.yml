@@ -26,6 +26,10 @@ jobs:
         run: |
           go run ./internal/migrationbundle/cmd/checkfresh
           go run ./internal/migrationbundle/cmd/packrelease -check
+      - name: Currency registry drift
+        run: |
+          go run ./tools/currencyregistry
+          git diff --exit-code -- contracts/generated.yaml
 
   fileguard:
     name: fileguard

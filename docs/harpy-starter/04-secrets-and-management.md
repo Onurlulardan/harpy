@@ -22,9 +22,23 @@ The actor-bridge seed and its public key file are one derived pair. If either fi
 
 Fingerprints in tests are SHA-256 of file bytes. Secret values are not written to stdout.
 
+## Restore a copied secrets tree
+
+Copy `deploy/<profile>/secrets` back into place, then run setup again. SHA-256 fingerprints stay. A normal second setup does not replace the cursor keyring, the IAM keyrings, the FCART KEK keyrings, or the release trust root. `runtime/access-token-keyring.json` still parses after that second setup.
+
+`--rotate-secrets` invalidates the previous cursor keyring, IAM keyrings, FCART KEK keyrings, and release trust root. The table above still applies: compose passwords and the other listed runtime key files are replaced, and operator-supplied external S3 keys stay.
+
+## Preserved authority and cutover windows
+
+`--rotate-secrets` keeps the installed issue clock on `authority-manifest.json` and `cutover-operation.json`. The new trust root still changes. When the preserved `issued_at` is earlier than the new release clock, the new trust root `not_before` reaches back to one hour before that `issued_at`, so the new key can sign the unchanged documents. The cutover receipt `adopted_at` stays inside the original operation window, including the 12-minute cutover window. A later rotate leaves those original validity windows in place.
+
+## What is deterministic
+
+Source-derived and deterministic: the currency Go file, a fresh currency SQL seed, a fresh migration manifest, and the release index. Per-install and not deterministic: the runtime keyring, compose passwords, and the release trust root. Hashes in `contracts/generated.yaml` are not hand-edited.
+
 ## Management listener
 
-`/livez`, `/readyz`, and `/version` have no authentication.
+`GET /livez`, `/readyz`, and `/version` return 200 with no auth header. The JSON has no password, token, DSN, or key material.
 
 | Endpoint | Response |
 | --- | --- |
@@ -32,9 +46,13 @@ Fingerprints in tests are SHA-256 of file bytes. Secret values are not written t
 | `/readyz` | Dependency check names and ready or not-ready status. No credentials. |
 | `/version` | Service, version, commit, build time, Go version, contract version, and environment. |
 
-Local single-machine setup writes `HARPY_MANAGEMENT_LISTEN_ADDR=127.0.0.1:9090`. The public API stays on `127.0.0.1`. A second setup keeps a previously written address. `--management-listen host:port` replaces it.
+| Placement | Who can connect |
+| --- | --- |
+| Local setup | Same machine on loopback `127.0.0.1:9090`. Setup writes `HARPY_MANAGEMENT_LISTEN_ADDR=127.0.0.1:9090`. A later setup keeps it unless `--management-listen` overrides it. The public API stays on `127.0.0.1`. |
+| Container process | Listens on `0.0.0.0:9000` so the process accepts the published port. In-container health is `http://127.0.0.1:9000/readyz`. |
+| Host publish | `127.0.0.1` only. |
 
-Container deployment does not inherit the loopback default. `ops/local/compose.runtime.yml` sets `HARPY_MANAGEMENT_LISTEN_ADDR=0.0.0.0:9000` so the process accepts the published port. In-container health checks use `http://127.0.0.1:9000/readyz`. Host publish stays `127.0.0.1`. The process default used when the variable is absent remains `0.0.0.0:9090` in the runtime schema; local setup does not rely on that default.
+Residual risk: a hand-written env that omits `HARPY_MANAGEMENT_LISTEN_ADDR` still binds `0.0.0.0:9090`. That is the schema default in `core/internal/platform/config/runtime.go`. Local setup and compose always write an address, so they do not use that default.
 
 ## Fixture and generated hash commands
 
@@ -47,4 +65,4 @@ go run ./tools/currencyregistry
 go run ./tools/fileguard
 ```
 
-The command records the SHA-256 of the existing generated Go and SQL files in `contracts/generated.yaml`. It does not rewrite those outputs. A second run on the same tree is byte-identical. `go run ./tools/archguard` is the import gate.
+The command records the SHA-256 of the existing generated Go and SQL files in `contracts/generated.yaml`. It does not rewrite those outputs. A second run on the same tree is byte-identical and writes nothing when the hashes match. The writer splices only the two currency records. CI runs the drift gate in [03-fileguard-archguard.md](03-fileguard-archguard.md).

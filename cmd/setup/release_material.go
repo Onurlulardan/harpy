@@ -34,7 +34,12 @@ func releaseMaterial(root, profile string) ([]string, error) {
 	if err = os.MkdirAll(directory, 0o700); err != nil {
 		return nil, err
 	}
-	files, err := buildReleaseFiles(newReleaseClock(time.Now()))
+	fresh := newReleaseClock(time.Now())
+	source, err := preservedSourceClock(directory, fresh)
+	if err != nil {
+		return nil, err
+	}
+	files, err := buildReleaseBundle(fresh, source)
 	if err != nil {
 		return nil, err
 	}
@@ -50,10 +55,20 @@ func releaseMaterial(root, profile string) ([]string, error) {
 }
 
 func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
-	keys, err := newReleaseKeys(clock)
+	return buildReleaseBundle(clock, clock)
+}
+
+func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
+	keys, err := newReleaseKeys(fresh)
 	if err != nil {
 		return nil, err
 	}
+	keys, err = coverInstalledIssuedAt(keys, source)
+	if err != nil {
+		return nil, err
+	}
+	sourceKeys := keys
+	sourceKeys.clock = source
 	manifests, err := buildPostgresManifests()
 	if err != nil {
 		return nil, fmt.Errorf("postgres manifests: %w", err)
@@ -65,12 +80,12 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 	if err != nil {
 		return nil, fmt.Errorf("postgres operations: %w", err)
 	}
-	authority, authoritySignature, err := buildAuthority(keys, manifests, operations)
+	authority, authoritySignature, err := buildAuthority(sourceKeys, manifests, operations)
 	if err != nil {
 		return nil, fmt.Errorf("bootstrap authority: %w", err)
 	}
 	verifiedAuthority, err := attestation.VerifyBootstrapAuthority(
-		authority.body, authoritySignature, keys.root, clock.now,
+		authority.body, authoritySignature, keys.root, source.now,
 	)
 	if err != nil {
 		return nil, err
@@ -80,7 +95,7 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 		return nil, fmt.Errorf("catalog package set: %w", err)
 	}
 	operationDocument, operationSignature, err := buildCutoverOperation(
-		keys, manifests.migration.digest, authority.digest,
+		sourceKeys, manifests.migration.digest, authority.digest,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("cutover authority operation: %w", err)
@@ -95,7 +110,7 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 		return nil, fmt.Errorf("catalog package set: %w", err)
 	}
 	verifiedOperation, err := verifyCutoverOperation(
-		keys, operationDocument.body, operationSignature, verifiedRelease, verifiedAuthority,
+		sourceKeys, operationDocument.body, operationSignature, verifiedRelease, verifiedAuthority,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("cutover authority operation: %w", err)
@@ -110,8 +125,10 @@ func buildReleaseFiles(clock releaseClock) ([]releaseFile, error) {
 	if err != nil {
 		return nil, fmt.Errorf("runtime receipts: %w", err)
 	}
+	receiptKeys := keys
+	receiptKeys.clock.adopted = source.adopted
 	cutoverReceipt, cutoverReceiptSignature, err := buildCutoverReceipt(
-		keys, operation, verifiedOperation, verifiedRelease, verifiedAuthority,
+		receiptKeys, operation, verifiedOperation, verifiedRelease, verifiedAuthority,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("cutover authority receipt: %w", err)
