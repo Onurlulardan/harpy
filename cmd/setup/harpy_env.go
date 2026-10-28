@@ -6,10 +6,18 @@ import (
 	"strings"
 )
 
-const localManagementListenAddress = "0.0.0.0:9090"
-
 func harpyEnvLines(root string, in answers) ([]string, error) {
 	mode, err := deploymentMode(in.Profile)
+	if err != nil {
+		return nil, err
+	}
+	prev, err := loadPrev(root, in.Profile)
+	if err != nil {
+		return nil, err
+	}
+	listen, err := resolveManagementListenAddress(
+		"local", requestedManagementListen, prev["HARPY_MANAGEMENT_LISTEN_ADDR"],
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +37,7 @@ func harpyEnvLines(root string, in answers) ([]string, error) {
 		"HARPY_LOG_LEVEL=info",
 		"DEPLOYMENT_MODE=" + mode,
 		"HARPY_PUBLIC_LISTEN_ADDR=127.0.0.1:" + strconv.Itoa(in.HTTPPort),
-		"HARPY_MANAGEMENT_LISTEN_ADDR=" + localManagementListenAddress,
+		"HARPY_MANAGEMENT_LISTEN_ADDR=" + listen,
 		"HARPY_RABBITMQ_URL=" + rabbit,
 		"GOMEMLIMIT=512MiB",
 		"HARPY_INITIAL_ADMIN_PASSWORD_FILE=" + filepath.Join(secrets, "initial_admin_password"),

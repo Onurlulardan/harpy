@@ -35,11 +35,7 @@ func runtimeMaterial(root, profile string) ([]string, error) {
 }
 
 func writeRuntimeFile(dir, name string, data []byte) (string, error) {
-	path := filepath.Join(dir, name)
-	if err := writePrivate(path, data); err != nil {
-		return "", err
-	}
-	return path, nil
+	return writeMaterialFile(dir, name, data, !setupRotateSecrets)
 }
 
 func runtimeDirectory(parent, name string) (string, error) {

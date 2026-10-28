@@ -1,7 +1,7 @@
 package main
 
 func writeAuthorityMaterial(dir, mode string) ([]string, error) {
-	manifest, err := writeRuntimeFile(dir, "installation.json", []byte("{}\n"))
+	manifest, err := writeDurableFile(dir, "installation.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
@@ -21,11 +21,11 @@ func writeAuthorityMaterial(dir, mode string) ([]string, error) {
 }
 
 func writeSaaSAuthority(dir string) ([]string, error) {
-	ack, err := writeRuntimeFile(dir, "ack-trust.json", []byte("{}\n"))
+	ack, err := writeDurableFile(dir, "ack-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
-	release, err := writeRuntimeFile(dir, "release-trust.json", []byte("{}\n"))
+	release, err := writeDurableFile(dir, "release-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func writeSaaSAuthority(dir string) ([]string, error) {
 }
 
 func writeOnPremAuthority(dir string) ([]string, error) {
-	recovery, err := writeRuntimeFile(dir, "recovery-trust.json", []byte("{}\n"))
+	recovery, err := writeDurableFile(dir, "recovery-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
@@ -45,23 +45,23 @@ func writeOnPremAuthority(dir string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	ack, err := writeRuntimeFile(dir, "ack-trust.json", []byte("{}\n"))
+	ack, err := writeDurableFile(dir, "ack-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
-	license, err := writeRuntimeFile(dir, "license.json", []byte("{}\n"))
+	license, err := writeDurableFile(dir, "license.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
-	licenseTrust, err := writeRuntimeFile(dir, "license-trust.json", []byte("{}\n"))
+	licenseTrust, err := writeDurableFile(dir, "license-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
-	release, err := writeRuntimeFile(dir, "release-trust.json", []byte("{}\n"))
+	release, err := writeDurableFile(dir, "release-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
-	journal, err := writeRuntimeFile(dir, "authority-head.jsonl", []byte("{}\n"))
+	journal, err := writeDurableFile(dir, "authority-head.jsonl", []byte("{}\n"))
 	if err != nil {
 		return nil, err
 	}
