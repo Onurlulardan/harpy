@@ -18,9 +18,12 @@ RUN --mount=type=cache,target=/go/pkg/mod \
         cp contracts/runtime/v1/fresh-migration-manifest.json /out/migration-manifest.json \
         ;; \
       foundation-contract) \
+        mkdir -p /out && \
         go run ./tools/localrelease foundation-contract \
-          -output /src/contracts/runtime/v1/binary-schema-contract.json \
-          -migration-output /out/migration-manifest.json \
+          -output /out/binary-schema-contract.json \
+          -migration-output /out/migration-manifest.json && \
+        cp /out/binary-schema-contract.json \
+          /src/contracts/runtime/v1/binary-schema-contract.json \
         ;; \
       *) exit 64 ;; \
     esac
