@@ -8,7 +8,6 @@ import (
 
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
 	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
@@ -90,11 +89,7 @@ func openPostRestoreObserverPool(
 	ctx context.Context,
 	settings config.PostRestoreReactivationObserver,
 ) (*postgres.Pool, error) {
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		return nil, err
-	}
-	embedded, err := schemacontract.LoadEmbedded(registry)
+	embedded, err := schemacontract.LoadBoundStartup()
 	if err != nil {
 		return nil, err
 	}

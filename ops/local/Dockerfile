@@ -23,7 +23,9 @@ RUN --mount=type=cache,target=/go/pkg/mod \
           -output /out/binary-schema-contract.json \
           -migration-output /out/migration-manifest.json && \
         cp /out/binary-schema-contract.json \
-          /src/contracts/runtime/v1/binary-schema-contract.json \
+          /src/contracts/runtime/v1/binary-schema-contract.json && \
+        go run ./internal/migrationbundle/cmd/packrelease \
+          -output /out/migration-release.zip \
         ;; \
       *) exit 64 ;; \
     esac
@@ -64,7 +66,8 @@ RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags="-s -w" -o /out/plaintext-inventory ./tools/plaintextinventory
-RUN chmod 0444 /out/migration-manifest.json
+RUN chmod 0444 /out/migration-manifest.json && \
+    if [ -f /out/migration-release.zip ]; then chmod 0444 /out/migration-release.zip; fi
 
 FROM gcr.io/distroless/base-debian13:nonroot@sha256:97b9d04bed1c754b756c3c4b6a04915c22fb0b5d96a59944eb3bf78c26e6e157
 

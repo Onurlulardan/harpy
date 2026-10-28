@@ -8,7 +8,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/deployevidence"
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	platformmigrator "github.com/Onurlulardan/harpy/core/internal/platform/migrator"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
 	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
@@ -34,14 +33,14 @@ func runTenantMigrationExecutorProcess(
 		)
 		return processcode.InvalidStartup
 	}
-	registry, err := migration.LoadReleaseRegistry()
+	documents, err := deployMigrationDocuments()
 	if err != nil {
 		reportFailureStage(
-			stderr, nil, "build_contract", tenantMigrationCommand, "release_registry",
+			stderr, nil, "build_contract", tenantMigrationCommand, "schema_contract",
 		)
 		return processcode.InvalidStartup
 	}
-	embedded, err := schemacontract.LoadEmbedded(registry)
+	embedded, registry, err := schemacontract.LoadStartup(documents)
 	if err != nil {
 		reportFailureStage(
 			stderr, nil, "build_contract", tenantMigrationCommand, "schema_contract",
@@ -74,11 +73,6 @@ func runTenantMigrationExecutorProcess(
 		return failTenantPreflight(
 			settings, telemetryRuntime, logger, "release_evidence",
 		)
-	}
-	documents, err := deployMigrationDocuments()
-	if err != nil {
-		_ = database.Close()
-		return failTenantConfiguration(settings, telemetryRuntime, logger)
 	}
 	return startTenantMigrationExecutor(process, settings, info, embedded,
 		registry, release, documents, database, logger, telemetryRuntime)

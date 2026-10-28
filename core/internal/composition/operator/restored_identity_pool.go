@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
@@ -14,11 +13,7 @@ func openIdentityReconcilePool(
 	ctx context.Context,
 	runtime config.Runtime,
 ) (*platformpostgres.Pool, error) {
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		return nil, err
-	}
-	embedded, err := schemacontract.LoadEmbedded(registry)
+	embedded, err := schemacontract.LoadBoundStartup()
 	if err != nil {
 		return nil, err
 	}

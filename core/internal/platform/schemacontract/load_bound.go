@@ -7,6 +7,7 @@ import (
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/core/internal/platform/binarycontract"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 func LoadBoundStartup() (EmbeddedContract, error) {
@@ -44,9 +45,22 @@ func authorizeBoundManifest(
 		return EmbeddedContract{}, fmt.Errorf("fresh migration manifest is empty")
 	}
 	sum := sha256.Sum256(document)
-	if artifact.Value().MigrationManifestSHA256 != hex.EncodeToString(sum[:]) {
+	if artifact.Value().MigrationManifestSHA256 == hex.EncodeToString(sum[:]) {
+		return EmbeddedContract{artifact: artifact, authorized: true}, nil
+	}
+	return authorizeReleaseDigest(artifact)
+}
+
+func authorizeReleaseDigest(artifact binarycontract.Artifact) (EmbeddedContract, error) {
+	registry, err := migration.LoadReleaseRegistry()
+	if err != nil {
 		return EmbeddedContract{}, fmt.Errorf(
-			"schema contract migration digest does not match the fresh migration bundle",
+			"schema contract migration digest does not match the fresh migration bundle: %w", err,
+		)
+	}
+	if err = registry.AuthorizeDigest(artifact.Value().MigrationManifestSHA256); err != nil {
+		return EmbeddedContract{}, fmt.Errorf(
+			"schema contract migration digest does not match the fresh migration bundle: %w", err,
 		)
 	}
 	return EmbeddedContract{artifact: artifact, authorized: true}, nil

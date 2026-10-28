@@ -7,7 +7,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/buildinfo"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
 	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
@@ -78,9 +77,5 @@ func runSchemaExecutorProcessWithContractLoader(
 }
 
 func loadSchemaContract() (schemacontract.EmbeddedContract, error) {
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		return schemacontract.EmbeddedContract{}, err
-	}
-	return schemacontract.LoadEmbedded(registry)
+	return schemacontract.LoadBoundStartup()
 }

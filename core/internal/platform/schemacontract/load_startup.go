@@ -10,8 +10,16 @@ import (
 func LoadStartup(
 	documents []migration.Document,
 ) (EmbeddedContract, *migration.ReleaseRegistry, error) {
-	registry, schemaErr := migration.LoadStartupRegistry(documents)
-	artifact, contractErr := binarycontract.LoadEmbedded()
+	return loadStartup(documents, binarycontract.LoadEmbedded, migration.LoadReleaseRegistry)
+}
+
+func loadStartup(
+	documents []migration.Document,
+	loadContract func() (binarycontract.Artifact, error),
+	loadRelease func() (*migration.ReleaseRegistry, error),
+) (EmbeddedContract, *migration.ReleaseRegistry, error) {
+	fresh, schemaErr := migration.LoadStartupRegistry(documents)
+	artifact, contractErr := loadContract()
 	if contractErr != nil && schemaErr != nil {
 		return EmbeddedContract{}, nil, fmt.Errorf("%w; %v", contractErr, schemaErr)
 	}
@@ -21,9 +29,20 @@ func LoadStartup(
 	if schemaErr != nil {
 		return EmbeddedContract{}, nil, schemaErr
 	}
-	embedded, err := authorizeEmbedded(registry, artifact)
+	if fresh.AuthorizeDigest(artifact.Value().MigrationManifestSHA256) == nil {
+		embedded, err := authorizeEmbedded(fresh, artifact)
+		if err != nil {
+			return EmbeddedContract{}, nil, err
+		}
+		return embedded, fresh, nil
+	}
+	release, err := loadRelease()
+	if err != nil {
+		return EmbeddedContract{}, nil, fmt.Errorf("authorize binary migration contract: %w", err)
+	}
+	embedded, err := authorizeEmbedded(release, artifact)
 	if err != nil {
 		return EmbeddedContract{}, nil, err
 	}
-	return embedded, registry, nil
+	return embedded, release, nil
 }

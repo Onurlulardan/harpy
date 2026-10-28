@@ -25,6 +25,9 @@ func (registry *ReleaseRegistry) selectAuthorizedDocuments(
 		return nil, fmt.Errorf("migration release document registry is unavailable")
 	}
 	target := expectedDocuments(manifest)
+	if registry.known != nil {
+		return selectSealedDocuments(target, documents)
+	}
 	selected := make([]Document, 0, len(target))
 	seen := make(map[string]bool, len(documents))
 	for _, document := range documents {
