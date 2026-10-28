@@ -12,7 +12,6 @@ WITH required_runtime(signature) AS (
         ('platform.billing_discount_offerings_snapshot_read_v1(uuid,uuid)')
 ), owner_only(signature) AS (
     VALUES
-        ('platform.workflow_resolve_current_tenant_authority_v1(uuid)'),
         ('platform.analytics_resolve_current_tenant_authority_v1(uuid)')
 ), lock_free(signature) AS (
     SELECT signature FROM required_runtime

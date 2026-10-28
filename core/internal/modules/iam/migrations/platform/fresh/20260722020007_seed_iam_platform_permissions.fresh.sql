@@ -78,4 +78,4 @@ INSERT INTO platform.iam_platform_permissions (
 SELECT 1 / CASE WHEN (
     SELECT pg_catalog.count(*) FROM platform.iam_platform_permissions
     WHERE state = 'active'
-) = 53 THEN 1 ELSE 0 END AS iam_platform_permission_catalog_assertion;
+) = 50 THEN 1 ELSE 0 END AS iam_platform_permission_catalog_assertion;

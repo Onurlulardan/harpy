@@ -16,7 +16,7 @@ INSERT INTO platform.billing_offering_versions (
     effective_start,effective_end,presentation_metadata,presentation_sha256,
     publication_state,publication_operation_id,published_at
 ) SELECT '019b0000-0000-7000-8000-000000000201',authority_id,
-    '019b0000-0000-7000-8000-000000000200',1,true,false,true,0,0,1,13,
+    '019b0000-0000-7000-8000-000000000200',1,true,false,true,0,0,1,10,
     '2026-07-22T00:00:00Z',NULL,metadata,
     pg_catalog.sha256(pg_catalog.convert_to(metadata::text,'UTF8')),
     'published','019b0000-0000-7000-8000-000000000202','2026-07-22T00:00:00Z'

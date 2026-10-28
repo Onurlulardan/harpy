@@ -20,7 +20,7 @@ WITH retired(signature) AS (
         ('platform.billing_reconcile_current_global_authority_v1()'),
         ('platform.billing_reconcile_current_tenant_authorities_v1()'),
         ('platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz)'),
-        ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz)'),
+        ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'),
         ('platform.analytics_reconcile_current_tenant_authorities_v1()'),
         ('platform.analytics_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'),
         ('platform.platformops_installation_recovery_initialize_v1(uuid,uuid,uuid,name,text,bigint,text,text)'),

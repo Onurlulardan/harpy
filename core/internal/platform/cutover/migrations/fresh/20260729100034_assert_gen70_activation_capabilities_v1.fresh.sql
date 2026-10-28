@@ -43,7 +43,7 @@ WITH public_routines(signature) AS (
         ('platform.billing_reconcile_current_global_authority_v1()'),
         ('platform.billing_reconcile_current_tenant_authorities_v1()'),
         ('platform.billing_register_global_authority_v1(uuid,bigint,bigint,timestamptz)'),
-        ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,bigint,timestamptz)'),
+        ('platform.billing_register_tenant_authority_v1(uuid,uuid,bigint,bigint,timestamptz)'),
         ('platform.platformauthority_installation_head_pin_v2(uuid,uuid,uuid,name,uuid,text,uuid,bigint,text,text,text,text,text)'),
         ('platform.tenancy_activation_initialize_v4(uuid,uuid,uuid,text,text,uuid,text,text,text,text)'),
         ('platform.tenancy_onboarding_complete_v1(uuid,uuid,text,text,bigint)'),
