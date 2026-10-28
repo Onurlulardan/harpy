@@ -16,6 +16,7 @@ func TestProjectTargetCopiesOnlyAllowlistAndIsIdempotent(t *testing.T) {
 	}
 	target := runtimeTarget("test", "local-ca.crt", "postgres-runtime-dsn.txt")
 	targetRoot := t.TempDir()
+	keepTempDirRemovable(t, targetRoot)
 	if err := projectTarget(targetRoot, source, target, noOwnershipChange); err != nil {
 		t.Fatal(err)
 	}
@@ -43,6 +44,7 @@ func TestProjectTargetRejectsChangedProjection(t *testing.T) {
 	}
 	target := runtimeTarget("test", "local-ca.crt")
 	targetRoot := t.TempDir()
+	keepTempDirRemovable(t, targetRoot)
 	if err := projectTarget(targetRoot, source, target, noOwnershipChange); err != nil {
 		t.Fatal(err)
 	}
@@ -67,6 +69,7 @@ func TestProjectTargetRecoversOwnedPendingWrite(t *testing.T) {
 	}
 	target := runtimeTarget("test", "local-ca.crt", "postgres-runtime-dsn.txt")
 	targetRoot := t.TempDir()
+	keepTempDirRemovable(t, targetRoot)
 	marker, err := marshalMarker(markerFor(source, target))
 	if err != nil {
 		t.Fatal(err)
@@ -80,4 +83,11 @@ func TestProjectTargetRecoversOwnedPendingWrite(t *testing.T) {
 	if err := projectTarget(targetRoot, source, target, noOwnershipChange); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func keepTempDirRemovable(t *testing.T, dir string) {
+	t.Helper()
+	t.Cleanup(func() {
+		_ = os.Chmod(dir, 0o700)
+	})
 }
