@@ -33,9 +33,9 @@ BEGIN
        OR p_document ->> 'snapshot_sha256' <> v_snapshot.payload_sha256
        OR p_document ->> 'release_channel' <> v_snapshot.release_channel
        OR pg_catalog.jsonb_typeof(p_document -> 'booleans') <> 'array'
-       OR pg_catalog.jsonb_array_length(p_document -> 'booleans') <> 7
+       OR pg_catalog.jsonb_array_length(p_document -> 'booleans') <> 5
        OR pg_catalog.jsonb_typeof(p_document -> 'limits') <> 'array'
-       OR pg_catalog.jsonb_array_length(p_document -> 'limits') <> 7 THEN
+       OR pg_catalog.jsonb_array_length(p_document -> 'limits') <> 5 THEN
         RETURN false;
     END IF;
     IF EXISTS (

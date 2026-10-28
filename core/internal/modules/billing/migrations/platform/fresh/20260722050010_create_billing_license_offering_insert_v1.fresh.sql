@@ -48,7 +48,7 @@ BEGIN
         publication_operation_id, published_at
     ) VALUES (
         p_offering_version_id, p_authority_id, p_offering_id, p_revision,
-        true, false, false, 0, 0, 1, 13,
+        true, false, false, 0, 0, 1, 10,
         p_effective_at, NULL, v_metadata,
         pg_catalog.sha256(pg_catalog.convert_to(v_metadata::text, 'UTF8')),
         'published', p_operation_id, p_effective_at
@@ -79,7 +79,7 @@ BEGIN
      AND (NOT projection.unlimited OR definition.unlimited_allowed)
     WHERE projection.snapshot_id = p_snapshot_id;
     GET DIAGNOSTICS v_count = ROW_COUNT;
-    IF v_count <> 13 THEN
+    IF v_count <> 10 THEN
         RAISE EXCEPTION USING ERRCODE = '23503',
             MESSAGE = 'billing license offering grants are incomplete';
     END IF;
