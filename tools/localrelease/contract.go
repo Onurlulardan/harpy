@@ -6,20 +6,22 @@ import (
 	"os"
 	"path/filepath"
 
+	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/internal/attestation"
 )
 
 func runContract(arguments []string) error {
-	return exportContract(arguments, loadMigrationArtifact)
+	return exportContract(arguments, loadMigrationArtifact, freshBinarySchemaContract)
 }
 
 func runFoundationContract(arguments []string) error {
-	return exportContract(arguments, loadFoundationMigrationArtifact)
+	return exportContract(arguments, loadFoundationMigrationArtifact, localSchemaContract)
 }
 
 func exportContract(
 	arguments []string,
 	loadMigration func() (artifact, error),
+	schemaContract func(artifact, string) (runtimev1.BinarySchemaContract, error),
 ) error {
 	options, err := parseContractOptions(arguments)
 	if err != nil {
@@ -36,7 +38,7 @@ func exportContract(
 	if err != nil {
 		return err
 	}
-	contract, err := localSchemaContract(migration, extension.digest)
+	contract, err := schemaContract(migration, extension.digest)
 	if err != nil {
 		return err
 	}

@@ -31,6 +31,13 @@ func TestLocalSchemaContractTracksCanonicalMigrationFrontier(t *testing.T) {
 			frontier.NextMinimumRuntimeGeneration, frontier.TargetDatabaseGeneration,
 		)
 	}
+	embedded, err := readEmbeddedBuildContract()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if contract != embedded {
+		t.Fatal("fresh frontier contract differs from the embedded binary schema contract")
+	}
 }
 
 func TestPreparedMigrationRejectsGenerationMismatch(t *testing.T) {

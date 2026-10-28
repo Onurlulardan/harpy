@@ -48,3 +48,19 @@ func localSchemaContract(
 	}
 	return contract, nil
 }
+
+func freshBinarySchemaContract(
+	migration artifact, _ string,
+) (runtimev1.BinarySchemaContract, error) {
+	contract, err := readEmbeddedBuildContract()
+	if err != nil {
+		return runtimev1.BinarySchemaContract{}, err
+	}
+	contract.MigrationManifestSHA256 = migration.digest
+	if err := contract.Validate(); err != nil {
+		return runtimev1.BinarySchemaContract{}, fmt.Errorf(
+			"validate local schema contract: %w", err,
+		)
+	}
+	return contract, nil
+}

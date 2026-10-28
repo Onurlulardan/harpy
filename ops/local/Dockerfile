@@ -12,12 +12,18 @@ COPY . .
 ARG LOCAL_RELEASE_CONTRACT_COMMAND=contract
 RUN --mount=type=cache,target=/go/pkg/mod \
     case "${LOCAL_RELEASE_CONTRACT_COMMAND}" in \
-      contract|foundation-contract) ;; \
+      contract) \
+        go run ./internal/migrationbundle/cmd/checkfresh -write && \
+        mkdir -p /out && \
+        cp contracts/runtime/v1/fresh-migration-manifest.json /out/migration-manifest.json \
+        ;; \
+      foundation-contract) \
+        go run ./tools/localrelease foundation-contract \
+          -output /src/contracts/runtime/v1/binary-schema-contract.json \
+          -migration-output /out/migration-manifest.json \
+        ;; \
       *) exit 64 ;; \
-    esac && \
-    go run ./tools/localrelease "${LOCAL_RELEASE_CONTRACT_COMMAND}" \
-    -output /src/contracts/runtime/v1/binary-schema-contract.json \
-    -migration-output /out/migration-manifest.json
+    esac
 
 ARG TARGETOS
 ARG TARGETARCH

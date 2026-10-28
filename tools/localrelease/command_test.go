@@ -64,8 +64,17 @@ func TestContractExportsCanonicalBuildInputsIdempotently(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if contract.Value().MigrationManifestSHA256 != migration.DigestSHA256() {
+	exported := contract.Value()
+	if exported.MigrationManifestSHA256 != migration.DigestSHA256() {
 		t.Fatal("exported contract and migration manifest differ")
+	}
+	embedded, err := readEmbeddedBuildContract()
+	if err != nil {
+		t.Fatal(err)
+	}
+	exported.MigrationManifestSHA256 = embedded.MigrationManifestSHA256
+	if exported != embedded {
+		t.Fatal("contract export changed a field other than migration_manifest_sha256")
 	}
 }
 

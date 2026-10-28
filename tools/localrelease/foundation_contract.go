@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 
 	"github.com/Onurlulardan/harpy/internal/attestation"
 )
@@ -37,23 +36,12 @@ func loadFoundationMigrationArtifact() (artifact, error) {
 		frontier.NextMinimumRuntimeGeneration != 1 {
 		return artifact{}, fmt.Errorf("foundation migration frontier differs")
 	}
-	currentArtifact, err := loadMigrationArtifact()
-	if err != nil {
-		return artifact{}, err
-	}
-	current, err := attestation.VerifyMigrationManifestArtifact(currentArtifact.document)
-	if err != nil || len(current.Value().Entries) < len(manifest.Entries) {
-		return artifact{}, fmt.Errorf("verify current migration prefix: %w", err)
-	}
 	scopes := map[string]bool{}
 	required := map[int64]bool{
 		20260714005900: false, 20260714010000: false,
 		20260714012910: false, 20260714012920: false, 20260714012930: false,
 	}
-	for index, entry := range manifest.Entries {
-		if !reflect.DeepEqual(entry, current.Value().Entries[index]) {
-			return artifact{}, fmt.Errorf("foundation migration is not the current exact prefix")
-		}
+	for _, entry := range manifest.Entries {
 		scopes[entry.Scope] = true
 		if _, exists := required[entry.Version]; exists {
 			required[entry.Version] = true

@@ -1,14 +1,13 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/Onurlulardan/harpy/internal/attestation"
-	"github.com/Onurlulardan/harpy/tools/internal/migrationmanifest"
+	"github.com/Onurlulardan/harpy/internal/migrationbundle"
 )
 
 const releaseArtifactDirectory = "core/internal/platform/migration/release"
@@ -37,37 +36,18 @@ func loadMigrationArtifact() (artifact, error) {
 	if err != nil {
 		return artifact{}, err
 	}
-	inventory, err := migrationmanifest.LoadStorageInventory(root)
+	document, err := migrationbundle.CanonicalFresh(root)
 	if err != nil {
 		return artifact{}, err
-	}
-	groups, err := migrationmanifest.CollectAll(root, inventory)
-	if err != nil {
-		return artifact{}, err
-	}
-	manifest, err := migrationmanifest.Build(inventory, groups)
-	if err != nil {
-		return artifact{}, err
-	}
-	directory := filepath.Join(root, releaseArtifactDirectory)
-	if err := migrationmanifest.ValidateReleaseFrontierAdvance(directory, manifest); err != nil {
-		return artifact{}, err
-	}
-	document, digest, err := migrationmanifest.Encode(manifest)
-	if err != nil {
-		return artifact{}, err
-	}
-	path := filepath.Join(directory, digest+".migration-manifest.json")
-	embedded, err := os.ReadFile(path)
-	if err != nil {
-		return artifact{}, fmt.Errorf("read canonical migration artifact: %w", err)
-	}
-	if !bytes.Equal(document, embedded) {
-		return artifact{}, fmt.Errorf("canonical migration artifact differs from repository sources")
 	}
 	verified, err := attestation.VerifyMigrationManifestArtifact(document)
-	if err != nil || verified.DigestSHA256() != digest {
-		return artifact{}, fmt.Errorf("verify canonical migration artifact: %w", err)
+	if err != nil {
+		return artifact{}, fmt.Errorf("verify canonical fresh migration: %w", err)
 	}
-	return artifact{name: filepath.Base(path), digest: digest, document: document}, nil
+	if verified.DigestSHA256() != migrationbundle.Digest(document) {
+		return artifact{}, fmt.Errorf("canonical fresh migration digest differs")
+	}
+	return artifact{
+		name: "migration-manifest.json", digest: verified.DigestSHA256(), document: document,
+	}, nil
 }
