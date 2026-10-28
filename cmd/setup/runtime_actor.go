@@ -55,14 +55,15 @@ func writeActorBridge(dir string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	seedPath, err := writeRuntimeFile(dir, "actor-bridge-seed", []byte(rawKey(seed[:])))
+	derived, err := writeRuntimeGroup(dir, map[string][]byte{
+		"actor-bridge-seed":             []byte(rawKey(seed[:])),
+		"actor-bridge-public-keys.json": publicDocument,
+	})
 	if err != nil {
 		return nil, err
 	}
-	keysPath, err := writeRuntimeFile(dir, "actor-bridge-public-keys.json", publicDocument)
-	if err != nil {
-		return nil, err
-	}
+	seedPath := derived["actor-bridge-seed"]
+	keysPath := derived["actor-bridge-public-keys.json"]
 	targetsPath, err := writeRuntimeFile(dir, "actor-bridge-targets.json", targets)
 	if err != nil {
 		return nil, err

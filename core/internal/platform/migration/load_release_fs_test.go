@@ -3,61 +3,91 @@ package migration
 import (
 	"bytes"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
-func TestFilesystemReleaseMatchesEmbed(t *testing.T) {
-	embedded, err := LoadReleaseRegistry()
+func TestReleaseIndexMatchesManifests(t *testing.T) {
+	built, err := BuildReleaseIndex(os.DirFS("release"), ".")
 	if err != nil {
 		t.Fatal(err)
 	}
-	fromDisk, err := LoadReleaseManifestFS(os.DirFS("release"), ".")
+	if os.Getenv("HARPY_WRITE_RELEASE_INDEX") == "1" {
+		if err = os.WriteFile("release-index.json", built, 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	embedded, err := os.ReadFile("release-index.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	embeddedDigests := embedded.Digests()
-	diskDigests := fromDisk.Digests()
-	if len(embeddedDigests) == 0 || len(embeddedDigests) != len(diskDigests) {
-		t.Fatalf("digest counts embedded %d disk %d", len(embeddedDigests), len(diskDigests))
+	if !bytes.Equal(built, embedded) {
+		t.Fatal("release index is stale; rerun with HARPY_WRITE_RELEASE_INDEX=1")
 	}
-	for index, digest := range embeddedDigests {
-		if diskDigests[index] != digest {
-			t.Fatalf("digest %d embedded %s disk %s", index, digest, diskDigests[index])
-		}
-		if !bytes.Equal(embedded.manifests[digest], fromDisk.manifests[digest]) {
-			t.Fatalf("canonical bytes differ for %s", digest)
-		}
+}
+
+func TestReleaseArchiveAuthorizesIndexedDigest(t *testing.T) {
+	registry, err := LoadReleaseRegistry()
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, index := range []int{0, len(embeddedDigests) / 2, len(embeddedDigests) - 1} {
-		digest := embeddedDigests[index]
-		artifact, err := fromDisk.MigrationArtifact(digest)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if err = embedded.Authorize(artifact); err != nil {
-			t.Fatalf("embed authorize %s: %v", digest, err)
-		}
-		if err = fromDisk.AuthorizeDigest(digest); err != nil {
-			t.Fatal(err)
-		}
+	digests := registry.Digests()
+	if len(digests) < 3 {
+		t.Fatalf("digest count %d", len(digests))
 	}
-	if len(embedded.documentContracts) != len(fromDisk.documentContracts) {
-		t.Fatalf("document contracts embedded %d disk %d",
-			len(embedded.documentContracts), len(fromDisk.documentContracts))
-	}
-	for path, contracts := range embedded.documentContracts {
-		other := fromDisk.documentContracts[path]
-		if len(contracts) != len(other) {
-			t.Fatalf("contracts for %s differ", path)
+	for _, index := range []int{0, len(digests) / 2, len(digests) - 1} {
+		artifact, artifactErr := registry.MigrationArtifact(digests[index])
+		if artifactErr != nil {
+			t.Fatal(artifactErr)
 		}
-		for contract := range contracts {
-			if _, ok := other[contract]; !ok {
-				t.Fatalf("disk registry missing contract for %s", path)
-			}
+		if err = registry.Authorize(artifact); err != nil {
+			t.Fatalf("authorize %s: %v", digests[index], err)
 		}
 	}
 	missing := "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-	if err = embedded.AuthorizeDigest(missing); err == nil || fromDisk.AuthorizeDigest(missing) == nil {
+	if err = registry.AuthorizeDigest(missing); err == nil {
 		t.Fatal("unknown digest was authorized")
+	}
+	if _, err = registry.MigrationArtifact(missing); err == nil {
+		t.Fatal("unknown digest returned a manifest")
+	}
+}
+
+func TestMutatedManifestFailsAuthorize(t *testing.T) {
+	entries, err := os.ReadDir("release")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var name string
+	for _, entry := range entries {
+		if strings.HasSuffix(entry.Name(), releaseManifestSuffix) {
+			name = entry.Name()
+			break
+		}
+	}
+	body, err := os.ReadFile(filepath.Join("release", name))
+	if err != nil {
+		t.Fatal(err)
+	}
+	directory := t.TempDir()
+	if err = os.WriteFile(filepath.Join(directory, name), body, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	index, err := BuildReleaseIndex(os.DirFS(directory), ".")
+	if err != nil {
+		t.Fatal(err)
+	}
+	body[0] ^= 0xff
+	if err = os.WriteFile(filepath.Join(directory, name), body, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	registry, err := loadIndexedRelease(index, directoryRelease{root: directory})
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := strings.TrimSuffix(name, releaseManifestSuffix)
+	if _, err = registry.MigrationArtifact(digest); err == nil {
+		t.Fatal("mutated manifest was authorized")
 	}
 }

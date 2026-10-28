@@ -30,6 +30,7 @@ func main() {
 type options struct {
 	defaults         bool
 	rotate           bool
+	refreshRelease   bool
 	profile          string
 	managementListen string
 }
@@ -40,9 +41,11 @@ func run(args []string, in io.Reader, stdout, stderr io.Writer, root string) err
 		return err
 	}
 	setupRotateSecrets = opts.rotate
+	setupRefreshRelease = opts.refreshRelease
 	requestedManagementListen = opts.managementListen
 	defer func() {
 		setupRotateSecrets = false
+		setupRefreshRelease = false
 		requestedManagementListen = ""
 	}()
 	var answers answers
@@ -87,10 +90,11 @@ func parseArgs(args []string, stderr io.Writer) (options, error) {
 	fs := flag.NewFlagSet("setup", flag.ContinueOnError)
 	fs.SetOutput(stderr)
 	fs.Usage = func() {
-		fmt.Fprintln(stderr, "usage: go run ./cmd/setup [--defaults] [--rotate-secrets] [--profile single-tenant|multi-tenant] [--management-listen host:port]")
+		fmt.Fprintln(stderr, "usage: go run ./cmd/setup [--defaults] [--rotate-secrets] [--refresh-release] [--profile single-tenant|multi-tenant] [--management-listen host:port]")
 	}
 	defaults := fs.Bool("defaults", false, "answer with defaults and do not prompt")
 	rotate := fs.Bool("rotate-secrets", false, "generate new local secrets")
+	refresh := fs.Bool("refresh-release", false, "rebuild the release bundle without rotating runtime keys")
 	profile := fs.String("profile", "", "single-tenant or multi-tenant")
 	listen := fs.String("management-listen", "", "explicit management bind host:port")
 	if err := fs.Parse(args); err != nil {
@@ -103,7 +107,8 @@ func parseArgs(args []string, stderr io.Writer) (options, error) {
 		return options{}, errors.New("unexpected arguments")
 	}
 	opts := options{
-		defaults: *defaults, rotate: *rotate, profile: *profile, managementListen: *listen,
+		defaults: *defaults, rotate: *rotate, refreshRelease: *refresh,
+		profile: *profile, managementListen: *listen,
 	}
 	if opts.profile != "" {
 		if err := validProfile(opts.profile); err != nil {

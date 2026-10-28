@@ -26,6 +26,10 @@ Bu bir operasyonel risk hipotezidir; tüm anahtarların her koşulda değiştiğ
 5. Eski FCART artifact'ları, IAM token'ları, cursor'lar ve release signing/trust material davranışını test et; etkiyi kanıtla.
 6. Docs ve implementation uyuşmuyorsa sözleşmeyi netleştirip ikisini uyumlu hale getir.
 
+## Uygulama
+
+İkinci setup kurulu secret'ları korur. `--refresh-release` yalnız `secrets/release/` paketini yeniden kurar; runtime anahtarları ve compose şifreleri durur. Release private key saklanmadığı için bu yenileme yeni bir trust root üretir. Actor-bridge seed ile public key tek gruptur; biri yoksa ikisi birlikte yeniden yazılır.
+
 ## Kabul kriterleri
 
 - İkinci normal setup persistence sözleşmesini test ediyor.

@@ -1,6 +1,6 @@
 # Harpy Migration Sistemi Modernizasyonu — Görev Planı
 
-**Durum:** 01–06 ve 10 için ölçüm ve dar uygulama `baseline.md` içindedir. 07–09 bu akışın dışındadır. Tarihsel release manifestleri elle değişmedi.
+**Durum:** 01–10 uygulandı. Historical manifest baytları binary embed'inden çıktı; index ve `migration-release.zip` kullanılıyor. Manifest JSON'ları elle değişmedi.
 
 ## Amaç
 
