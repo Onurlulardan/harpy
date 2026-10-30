@@ -57,7 +57,6 @@ Harpy'nin business yetenekleri, veri ve iş kuralı sahipliği belirlenmiş mod�
 | **IAM — Identity & Access Management** | Identity, authentication, credentials, sessions, organizations, RBAC, permissions, invitations, profiles, service principals ve erişim yönetimi |
 | **Tenancy** | Tenant yaşam döngüsü, provisioning, onboarding, deployment policy, tenant settings ve tenant activation |
 | **Billing** | Offerings, pricing, subscriptions, invoices, entitlements, usage, retention ve license authority |
-| **Catalog** | İmzalı paketler, dependency resolution, release publication, component lifecycle ve menu yönetimi |
 | **Work Management** | Boards, columns, memberships, tasks, labels, checklists, comments, calendars ve recurrence |
 | **Documents** | Folders, items, versions, uploads, downloads, links, archives, recovery, encryption ve scanning entegrasyonları |
 | **Notifications** | Messages, preferences, templates, provider configuration ve delivery süreçleri |
@@ -169,7 +168,6 @@ flowchart TB
 | **REST Query** | Typed query modeli, field catalog, validation, authorization, planning ve execution |
 | **Artifact Object** | S3-compatible object read/write/delete, digest ve reconciliation arayüzleri |
 | **Artifact Spool** | Geçici artifact üretimi için bounded workspace, lease ve cleanup |
-| **Catalog Component / Projection** | Catalog component owner contract'ları ve consumer projection modelleri |
 | **Credential Delivery** | Credential artifact ve kontrollü delivery contract'ları |
 | **License Bootstrap / Restored License** | License authority bootstrap ve restore sonrası binding yetenekleri |
 | **Tenant Activation** | Doğrulanmış activation grant ve activation scope |
@@ -512,7 +510,6 @@ Modüllere özel dokümanlar:
 - [IAM](docs/architecture/modules/iam.md) — Identity, authentication, sessions, RBAC ve organizations.
 - [Tenancy](docs/architecture/modules/tenancy.md) — Tenant identity, provisioning, onboarding ve settings.
 - [Billing](docs/architecture/modules/billing.md) — Money, offering, subscription, invoice, entitlement ve usage.
-- [Catalog](docs/architecture/modules/catalog.md) — Signed package, dependency resolution, component lifecycle ve menu.
 - [Work](docs/architecture/modules/work.md) — Board, task, membership, calendar ve recurrence.
 - [Documents](docs/architecture/modules/documents.md) — Folder, item, version, upload, encryption, scan ve archive.
 - [Notifications](docs/architecture/modules/notifications.md) — Inbox, preference, template, provider ve delivery.
