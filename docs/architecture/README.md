@@ -22,7 +22,7 @@ Bu dokümantasyon, Harpy'nin kaynak kodda implement edilmiş mimarisini gelişti
 | 12 | [Paylaşılan capabilities](12-paylasilan-capabilities.md) | REST Query, artifact, tenant activation ve orchestration |
 | 13 | [Contract kataloğu](13-kontrat-katalogu.md) | HTTP, event, runtime, authority ve storage contracts |
 | 14 | [Mimari kararlar](14-mimari-kararlar.md) | Modular monolith ve önemli trade-off'lar |
-| 15 | [Modül paket haritası](15-modul-paket-haritasi.md) | 14 modülün application ve adapter alt paketleri |
+| 15 | [Modül paket haritası](15-modul-paket-haritasi.md) | 13 modülün application ve adapter alt paketleri |
 
 ## Modül belgeleri
 
@@ -31,7 +31,6 @@ Bu dokümantasyon, Harpy'nin kaynak kodda implement edilmiş mimarisini gelişti
 | [IAM](modules/iam.md) | Identity, authentication, sessions, RBAC, organizations |
 | [Tenancy](modules/tenancy.md) | Tenant kimliği, provisioning, onboarding, settings |
 | [Billing](modules/billing.md) | Money, offering, subscription, invoice, entitlement, usage |
-| [Catalog](modules/catalog.md) | Signed package, dependency resolution, component lifecycle, menu |
 | [Work](modules/work.md) | Board, task, membership, calendar, recurrence |
 | [Documents](modules/documents.md) | Folder, item, version, upload, encryption, scan, archive |
 | [Notifications](modules/notifications.md) | Inbox, preference, template, provider, delivery |
