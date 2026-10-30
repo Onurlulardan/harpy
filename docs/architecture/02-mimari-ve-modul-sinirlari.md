@@ -78,7 +78,6 @@ Yeni bir deployable yalnız ekip/klasör büyüklüğü nedeniyle oluşturulmaz.
 `core/internal/capabilities` daha üst seviyeli, modüller tarafından kullanılan teknik capability'leri barındırır. Önemli örnekler:
 - `restquery`: typed query AST, authorization, planning ve execution.
 - `artifactobject`: S3 tabanlı artifact/object API.
-- `catalogcomponent` ve `catalogprojection`: component owner ve projection sözleşmeleri.
 - `credentialdelivery`, `licensebootstrap`, `restoredlicense`: sınırlandırılmış credential/license capability'leri.
 - `tenantactivation`: tenant aktivasyonu için doğrulanmış activation grant.
 
