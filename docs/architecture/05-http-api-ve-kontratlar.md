@@ -31,7 +31,6 @@ Public route ile management route aynı authorization ve ağ erişim beklentisin
 API composition'da modül bazlı builder dosyaları bulunur. Örnekler:
 - `build_iam_http.go`, `iam_rbac_http.go`, `iam_profile_http.go`
 - `build_billing_http.go`, `billing_routes.go`
-- `build_catalog_http.go`
 - `build_documents_http.go`
 - `build_notifications_http.go`
 - `build_work_http.go`
