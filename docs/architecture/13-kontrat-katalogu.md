@@ -19,7 +19,6 @@ Kaynak kök: contracts/
 | jobs/ | Job kind/payload/request contracts |
 | restquery/ | Query document and query wire contract |
 | actorassertion/ | Signed actor assertion ve peer binding contract |
-| catalogpackage/ | Signed catalog package manifest contract |
 | credentialdelivery/ | Credential artifact/manifest contract |
 | environmentrecovery/ | Recovery artifact contract |
 | recoverykit/ | Recovery kit build/parse/validate contract |
@@ -31,7 +30,6 @@ Kaynak kök: contracts/
 HTTP path ve schema dosyaları capability/modül bazında bölünmüştür. Örnek gruplar:
 - IAM auth, identity, authorization ve RBAC
 - Billing catalog, subscription, offering, invoice, usage, webhook
-- Catalog registry/menu/lifecycle
 - Documents
 - Work
 - Analytics query/dashboard/publication
@@ -64,7 +62,7 @@ Bu katalogların görevi yalnız runtime registration değildir: unknown produce
 
 ## 6. Authority contracts
 
-authority/ altında IAM, tenancy, billing, catalog, documents, notifications, Work, platform authority/ops ve system resource alanları için declarative policy JSON'ları bulunur.
+authority/ altında IAM, tenancy, billing, documents, notifications, Work, platform authority/ops ve system resource alanları için declarative policy JSON'ları bulunur.
 
 Bu tanımlar:
 - Hangi owner'ın operation'a sahip olduğunu,
