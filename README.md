@@ -1,10 +1,10 @@
 # Harpy
 
-**A Go-based modular backend platform for multi-tenant and on-premise applications.**
+**Çok kiracılı (multi-tenant) ve kurum içi (on-premise) uygulamalar için Go tabanlı modüler backend platformu.**
 
-Harpy is a production-oriented backend foundation built around explicit module ownership, tenant isolation, contract-driven interfaces, and durable background processing. It brings core application capabilities and the infrastructure required to operate them into one cohesive Go codebase—without turning every capability into a separately deployed service.
+Harpy; açık modül sahipliği, tenant izolasyonu, sözleşme odaklı arayüzler ve kalıcı arka plan işleme üzerine kurulu bir backend platformudur. Temel uygulama yeteneklerini ve bunları çalıştırmak için gereken altyapıyı tek bir Go codebase içinde bir araya getirir. Her yeteneği ayrı bir servise dönüştürmek yerine, modüler monolith yaklaşımıyla yönetilebilir sınırlar oluşturur.
 
-The name **Harpy** is inspired by the harpy eagle. The reference is symbolic: a backend should be strong, capable, and dependable under demanding workloads.
+**Harpy** ismi, güçlü ve dayanıklı bir backend vizyonunu temsil etmesi için harpy eagle'dan (harpi kartalı) esinlenerek seçildi.
 
 <p align="center">
   <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white" alt="Go 1.26"></a>
@@ -16,73 +16,71 @@ The name **Harpy** is inspired by the harpy eagle. The reference is symbolic: a 
 
 ---
 
-## Overview
+## Genel Bakış
 
-Harpy is designed for applications that need more than an HTTP server and a database. It provides a structured backend foundation for identity, tenant lifecycle, authorization, commercial capabilities, content management, collaboration, analytics, notifications, and platform operations.
+Harpy, yalnızca HTTP server ve database ihtiyacının ötesinde; identity, tenant yaşam döngüsü, authorization, ticari yetenekler, içerik yönetimi, iş birliği, analytics, notifications ve platform operasyonları gerektiren uygulamalar için geliştirilmiştir.
 
-It supports two deployment models:
+İki deployment modelini destekler:
 
-| Deployment | Intended use | Tenant model |
+| Model | Kullanım | Tenant yapısı |
 | --- | --- | --- |
-| **Single-tenant** | Dedicated customer environments and on-premise installations | One customer environment |
-| **Multi-tenant** | Shared SaaS deployments | Multiple isolated tenants |
+| **Single-tenant** | Müşteriye özel ortamlar ve on-premise kurulumlar | Tek müşteri ortamı |
+| **Multi-tenant** | Paylaşımlı SaaS deployment'ları | Birbirinden izole birden fazla tenant |
 
-Harpy is a **backend repository**. It exposes HTTP APIs and runs background workloads; it does not contain a built-in frontend application.
+Harpy bir **backend repository**'sidir. HTTP API sunar ve arka plan işlerini yürütür; bu repository içinde yerleşik bir frontend uygulaması bulunmaz.
 
-## Capabilities
+## Yetenekler
 
-The codebase is organized around business modules with explicit ownership boundaries.
+Kod tabanı, açık veri ve iş kuralı sahipliğine sahip modüller etrafında düzenlenmiştir.
 
-| Area | Capabilities |
+| Alan | Kapsam |
 | --- | --- |
-| **Identity & Access (IAM)** | Identity, authentication, credentials, sessions, organizations, RBAC, permissions, invitations, profiles, and service principals |
-| **Tenancy** | Tenant lifecycle, provisioning, onboarding, deployment policy, tenant settings, and activation |
-| **Billing** | Offerings, pricing, subscriptions, invoices, entitlements, usage, retention, and license authority |
-| **Catalog** | Signed packages, dependency resolution, release publication, component lifecycle, and menu management |
-| **Work Management** | Boards, columns, memberships, tasks, labels, checklists, comments, calendars, and recurrence |
-| **Documents** | Folders, items, versions, uploads, downloads, links, archives, recovery, encryption, and scanning integrations |
-| **Notifications** | Messages, preferences, templates, provider configuration, and delivery |
-| **Analytics** | Saved queries, query execution, dashboards, exports, publication, and access control |
-| **Audit & Usage** | Owner-operation audit trails, field-change evidence, usage observations, and reporting |
-| **Platform Authority & Operations** | Authority evidence, diagnostics, health, alerts, traces, recovery sets, and restore operations |
-| **Support** | Platform and tenant support contacts and bug reports |
-| **System Resource Layout** | Revisioned system resource layouts and presentation metadata |
+| **Identity & Access (IAM)** | Identity, authentication, credentials, sessions, organizations, RBAC, permissions, invitations, profiles ve service principals |
+| **Tenancy** | Tenant yaşam döngüsü, provisioning, onboarding, deployment policy, tenant settings ve activation |
+| **Billing** | Offerings, pricing, subscriptions, invoices, entitlements, usage, retention ve license authority |
+| **Catalog** | İmzalı paketler, dependency resolution, release publication, component lifecycle ve menu yönetimi |
+| **Work Management** | Boards, columns, memberships, tasks, labels, checklists, comments, calendars ve recurrence |
+| **Documents** | Folders, items, versions, uploads, downloads, links, archives, recovery, encryption ve scanning entegrasyonları |
+| **Notifications** | Messages, preferences, templates, provider configuration ve delivery |
+| **Analytics** | Saved queries, query execution, dashboards, exports, publication ve access control |
+| **Audit & Usage** | Owner operation audit kayıtları, field-change kanıtları, usage observations ve raporlama |
+| **Platform Authority & Operations** | Authority kanıtları, diagnostics, health, alerts, traces, recovery sets ve restore operasyonları |
+| **Support** | Platform ve tenant destek kayıtları ile bug reports |
+| **System Resource Layout** | Sürümlenen system resource layout'ları ve presentation metadata |
 
-These are implemented capabilities, not a promise that every possible workflow or product surface is included. For the exact module and package inventory, see the [module package map](docs/architecture/15-modul-paket-haritasi.md).
+Tablo, repository'de karşılığı bulunan yetenek alanlarını özetler; her olası ürün akışının tamamlandığı anlamına gelmez. Modüllerin ve paketlerin ayrıntılı envanteri için [modül paket haritasına](docs/architecture/15-modul-paket-haritasi.md) bakın.
 
-## Architecture
+## Mimari
 
-Harpy uses a **modular monolith** architecture.
+Harpy, **modular monolith** mimarisini kullanır. Modüller business ownership sınırlarıdır; bağımsız deployable servisler değildir. Her modül kendi domain kurallarının, application use-case'lerinin ve persistence adapter'larının sahibidir. API, worker, migrator ve operator süreçleri ihtiyaç duydukları modülleri ayrı composition root'ları üzerinden bir araya getirir.
 
-Modules are business ownership boundaries—not independent deployables. Each module owns its domain rules, application use cases, and persistence adapters. API, worker, migrator, and operator processes compose the modules they need through dedicated composition roots.
+Bu yaklaşım, aynı process içindeki işlemlerde gereksiz network sınırları oluşturmadan kod ve veri sahipliğini açık tutar.
 
-This keeps in-process use cases simple and avoids unnecessary network boundaries while preserving explicit ownership and dependency rules.
+### Runtime süreçleri
 
-### Runtime processes
-
-| Process | Entry point | Responsibility |
+| Süreç | Giriş noktası | Sorumluluk |
 | --- | --- | --- |
-| **API** | `core/cmd/api` | Public HTTP API, route assembly, request admission, and runtime readiness |
-| **Worker** | `core/cmd/worker` | Background jobs, event consumers, retries, and asynchronous effects |
-| **Migrator** | `core/cmd/migrator` | Database migration execution and schema lifecycle |
-| **Operator** | `core/cmd/operator` | Installation and controlled platform operations |
-| **Setup CLI** | `cmd/setup` | Deployment profile configuration and local secret preparation |
+| **API** | `core/cmd/api` | Public HTTP API, route assembly, request admission ve runtime readiness |
+| **Worker** | `core/cmd/worker` | Background jobs, event consumers, retry ve asenkron yan etkiler |
+| **Migrator** | `core/cmd/migrator` | Database migration yürütümü ve schema yaşam döngüsü |
+| **Operator** | `core/cmd/operator` | Kurulum ve kontrollü platform operasyonları |
+| **Setup CLI** | `cmd/setup` | Deployment profili yapılandırması ve yerel secret hazırlığı |
 
-The process entry points stay deliberately thin. Dependency construction and runtime lifecycle belong to `core/internal/composition/`.
+Process giriş noktaları ince tutulur. Dependency wiring ve runtime lifecycle yönetimi `core/internal/composition/` altındadır.
 
-### Architectural boundaries
+### Mimari sınırlar
 
-- **Domain** contains business types, invariants, and state transitions. It does not depend on HTTP, database drivers, or infrastructure SDKs.
-- **Application** coordinates use cases, authorization, transactions, and side effects.
-- **Ports and adapters** isolate persistence, HTTP, events, and external providers.
-- **Module APIs** are the supported synchronous cross-module interface. A module must not reach into another module's private packages or tables.
-- **Capabilities** provide reusable technical contracts such as REST Query, object storage, artifact handling, credential delivery, and tenant activation.
-- **Orchestration** coordinates multi-step operations across owners without taking ownership of their business data.
-- **Composition roots** wire concrete modules and adapters for each process.
+- **Domain:** Business type'ları, invariant'ları ve state transition kurallarını barındırır; HTTP, database driver veya infrastructure SDK bağımlılığı taşımaz.
+- **Application:** Use-case'leri, authorization çağrılarını, transaction sınırlarını ve side effect koordinasyonunu yönetir.
+- **Ports & adapters:** Persistence, HTTP, event ve dış provider entegrasyonlarını izole eder.
+- **Module API:** Modüller arası senkron iletişimin desteklenen arayüzüdür. Bir modül başka modülün private package'ine veya tablolarına erişmez.
+- **Capabilities:** REST Query, object storage, artifact, credential delivery ve tenant activation gibi ortak teknik yetenekleri sunar.
+- **Orchestration:** Birden fazla owner'ı kapsayan çok adımlı operasyonları koordine eder; business data sahipliğini devralmaz.
+- **Composition roots:** Her process için somut modülleri ve adapter'ları birbirine bağlar.
 
 ```mermaid
 flowchart TB
-    subgraph processes["Runtime processes"]
+    subgraph processes["Runtime süreçleri"]
       API["API"]
       Worker["Worker"]
       Migrator["Migrator"]
@@ -94,16 +92,16 @@ flowchart TB
       MC["Migrator composition"]
       OC["Operator composition"]
     end
-    subgraph app["Modular application"]
-      Modules["Business modules"]
-      Capabilities["Shared capabilities"]
+    subgraph app["Modüler uygulama"]
+      Modules["Business modüller"]
+      Capabilities["Paylaşılan capabilities"]
       Orchestration["Platform orchestration"]
-      Contracts["Versioned contracts"]
+      Contracts["Sürümlenen contracts"]
     end
-    subgraph infrastructure["Infrastructure"]
+    subgraph infrastructure["Altyapı"]
       PG[("PostgreSQL")]
       MQ[("RabbitMQ")]
-      S3[("S3-compatible object storage")]
+      S3[("S3 uyumlu object storage")]
     end
     API --> AC
     Worker --> WC
@@ -121,61 +119,61 @@ flowchart TB
     Modules --> S3
 ```
 
-### Data ownership and tenant isolation
+### Veri sahipliği ve tenant izolasyonu
 
-PostgreSQL is the canonical state store for business data, durable job state, idempotency receipts, and event publication intent.
+PostgreSQL; business data, kalıcı job state, idempotency receipt ve event publication intent için canonical state kaynağıdır.
 
-Tenant data follows a **schema-per-tenant** model. Tenant scope is derived from the authenticated actor and canonical server-side tenant identity; it is not trusted from an arbitrary request header. Platform/global data uses separately defined ownership and scope.
+Tenant verileri **schema-per-tenant** modeliyle ayrılır. Tenant scope, doğrulanmış actor context ve sunucu tarafında belirlenen canonical tenant identity üzerinden oluşturulur; request header'ından güvenilir kabul edilmez. Platform/global veriler ayrı sahiplik ve scope kurallarıyla yönetilir.
 
-Modules do not query or mutate another module's tables directly. Cross-module work uses owner APIs, explicit coordination, and transaction boundaries.
+Modüller birbirlerinin tablolarını doğrudan sorgulamaz veya değiştirmez. Modüller arası işlemler owner API'leri, açık koordinasyon ve tanımlı transaction sınırları üzerinden yürütülür.
 
-### Asynchronous processing
+### Asenkron işleme
 
-Harpy combines PostgreSQL-backed durable work with RabbitMQ as an integration transport.
+Harpy, PostgreSQL üzerinde kalıcı iş yönetimini RabbitMQ'yu integration transport olarak kullanmakla birleştirir.
 
-- The **outbox** records event publication intent transactionally with business state.
-- **RabbitMQ** transports events between asynchronous producers and consumers; it is not the source of truth.
-- **Database-backed jobs** persist scheduled/background work, attempts, leases, and execution state.
-- Consumers and external effects are designed for retries and at-least-once delivery, with idempotency and explicit failure handling.
+- **Outbox**, event yayınlama niyetini business state değişikliğiyle aynı transaction içinde kaydeder.
+- **RabbitMQ**, asenkron producer ve consumer'lar arasında event taşır; canonical state kaynağı değildir.
+- **Database-backed jobs**, zamanlanmış ve arka plan işlerinin state, attempt, lease ve execution bilgilerini saklar.
+- Consumer ve dış sistem etkileri retry ve at-least-once delivery koşulları dikkate alınarak; idempotency ve açık hata yönetimiyle tasarlanır.
 
-### Contracts and security
+### Contracts ve güvenlik
 
-HTTP, event, runtime, authority, storage, and asynchronous processing contracts are versioned under `contracts/`. Request schemas, event versions, producer/consumer policies, and generated API descriptions are treated as explicit interfaces.
+HTTP, event, runtime, authority, storage ve async processing sözleşmeleri `contracts/` altında sürümlenir. Request schema'ları, event versiyonları, producer/consumer policy'leri ve API tanımları açık arayüzler olarak yönetilir.
 
-The security model is designed to fail closed: missing actor identity, tenant scope, permission, authority evidence, or invalid contract data must not silently become an allowed operation. Authentication and authorization are separate concerns, and resource-level policies remain with their owning modules.
+Güvenlik modeli **fail-closed** çalışır: doğrulanmış actor, tenant scope, permission veya authority kanıtı yoksa işlem varsayılan olarak kabul edilmez. Authentication ve authorization ayrı sorumluluklardır; resource seviyesindeki policy ilgili modülün sahibidir.
 
-## Technology
+## Teknoloji Yığını
 
-| Concern | Implementation |
+| Katman | Teknoloji |
 | --- | --- |
-| Language | Go 1.26 |
-| Relational database | PostgreSQL 18, accessed through pgx |
+| Dil | Go 1.26 |
+| Relational database | PostgreSQL 18, pgx |
 | Message broker | RabbitMQ 4 |
-| Object storage | S3-compatible API; RustFS in the standard deployment profile |
-| API contracts | Versioned HTTP contracts, JSON Schema, and OpenAPI |
-| Async contracts | Versioned event, producer/consumer, and job manifests |
-| Observability | OpenTelemetry traces and metrics with OTLP exporters |
-| Runtime | Docker Compose and Task |
-| Testing | Go unit/application tests, adapter and integration tests, security tests, and architecture checks |
+| Object storage | S3-compatible API; standart deployment profilinde RustFS |
+| API contracts | Sürümlenen HTTP contracts, JSON Schema ve OpenAPI |
+| Async contracts | Sürümlenen event, producer/consumer ve job manifestleri |
+| Observability | OpenTelemetry traces ve metrics, OTLP exporters |
+| Runtime | Docker Compose ve Task |
+| Test | Go unit/application, adapter ve integration testleri; security ve architecture kontrolleri |
 
-The dependency source of truth is [`go.mod`](go.mod). Deployment service definitions are maintained in [`deploy/third-party.yml`](deploy/third-party.yml).
+Dependency listesinin kaynağı [`go.mod`](go.mod), deployment servis tanımları ise [`deploy/third-party.yml`](deploy/third-party.yml) dosyasıdır.
 
-## Getting started
+## Hızlı Başlangıç
 
-### Requirements
+### Gereksinimler
 
-For backend development:
+Backend geliştirme için:
 
 - Go 1.26 toolchain
-- Docker Engine or Docker Desktop with Compose v2
+- Docker Engine veya Docker Desktop ve Compose v2
 - [Task](https://taskfile.dev/)
-- Internet access for the initial dependency and image build
+- İlk dependency ve image build işlemi için internet erişimi
 
-The full local stack also starts supporting services and the sibling frontend project. See [Local development](ops/local/README.md) for its additional requirements and operational details.
+Tam local stack, destek servislerinin yanında kardeş frontend projesini de başlatır. Ek gereksinimler ve operasyon detayları için [local development rehberine](ops/local/README.md) bakın.
 
-### Run the complete local development stack
+### Tam local development stack'i başlatma
 
-The recommended path for developing against the full local environment is:
+Tam yerel geliştirme ortamı için önerilen yol:
 
 ```bash
 git clone https://github.com/Onurlulardan/harpy.git
@@ -184,15 +182,15 @@ cd harpy
 task dev
 ```
 
-`task dev` delegates to the repository's local stack workflow. It prepares local-only secrets and certificates, builds the pinned images, starts infrastructure, bootstraps the environment, applies migrations, starts runtime services, and verifies readiness.
+`task dev`, repository'nin local stack akışını çalıştırır: makineye özel secret ve sertifikaları hazırlar, pinlenmiş image'ları build eder, altyapıyı başlatır, ortamı bootstrap eder, migration'ları uygular, runtime servislerini açar ve readiness kontrollerini yürütür.
 
-To stop the stack while preserving named volumes:
+Named volume verilerini koruyarak durdurmak için:
 
 ```bash
 task stop
 ```
 
-To inspect logs:
+Logları izlemek için:
 
 ```bash
 task local:logs
@@ -200,33 +198,33 @@ task local:logs:api
 task local:logs:worker
 ```
 
-> **Data warning:** `task local:destroy` is a destructive operation. It removes local database, broker, object-storage, and related state. Use it only when you intend to reset the local environment.
+> **Veri uyarısı:** `task local:destroy` yıkıcı bir işlemdir. Local database, broker, object storage ve ilişkili state'i siler. Yalnızca yerel ortamı sıfırlamak istediğinizde kullanın.
 
-### Prepare a standard deployment profile
+### Standart deployment profili hazırlama
 
-For a standalone single-tenant or multi-tenant deployment, use the setup CLI:
+Bağımsız single-tenant veya multi-tenant deployment için Setup CLI:
 
 ```bash
 go run ./cmd/setup
 ```
 
-The setup command validates the selected profile, prepares local configuration and secret material, writes the corresponding deployment environment file, and prints the next commands.
+Setup komutu seçilen profili doğrular, yerel configuration ve secret materyalini hazırlar, ilgili deployment ortam dosyasını yazar ve sonraki komutları ekrana basar.
 
-You can select a profile non-interactively:
+İşlemi varsayılan cevaplarla, etkileşimsiz çalıştırabilirsiniz:
 
 ```bash
 go run ./cmd/setup --defaults --profile single-tenant
-# or
+# veya
 go run ./cmd/setup --defaults --profile multi-tenant
 ```
 
-The generated profile is written under `deploy/<profile>/`. The setup command does not start Docker or silently run the entire application lifecycle; follow the commands it prints for Compose, migration, initialization, API, and worker startup.
+Üretilen profil `deploy/<profile>/` altına yazılır. Setup CLI Docker başlatmaz ve tüm uygulama yaşam döngüsünü kendiliğinden yürütmez; Compose, migration, initialization, API ve worker için ekrana bastığı komutları izleyin.
 
-See [Deployment and operations](docs/architecture/09-deployment-ve-operasyon.md) for deployment profiles and [Local stack guide](ops/local/README.md) for the complete local workflow.
+Ayrıntılar: [Deployment ve operasyon](docs/architecture/09-deployment-ve-operasyon.md) ve [Local stack rehberi](ops/local/README.md).
 
-## Development
+## Geliştirme
 
-### Repository layout
+### Repository yapısı
 
 ```text
 cmd/
@@ -234,82 +232,82 @@ cmd/
 
 core/
   cmd/
-    api/                       HTTP API entry point
-    worker/                    Background worker entry point
-    migrator/                  Database migration entry point
-    operator/                  Platform operator entry point
+    api/                       HTTP API giriş noktası
+    worker/                    Background worker giriş noktası
+    migrator/                  Database migration giriş noktası
+    operator/                  Platform operator giriş noktası
   internal/
-    composition/               Per-process runtime composition
-    modules/                   Business modules and their owners
-    capabilities/              Shared technical capabilities
-    orchestration/             Multi-step platform workflows
-    platform/                  Infrastructure and runtime primitives
+    composition/               Process bazlı runtime composition
+    modules/                   Business modülleri ve sahiplik alanları
+    capabilities/              Paylaşılan teknik yetenekler
+    orchestration/             Çok adımlı platform iş akışları
+    platform/                  Infrastructure ve runtime primitive'leri
 
-contracts/                     Versioned HTTP, event, runtime, and storage contracts
-compat/                        Explicit compatibility adapters
-deploy/                        Single-tenant, multi-tenant, and third-party Compose definitions
-ops/                           Local development and operational workflows
-tools/                         File, architecture, contract, and engineering tools
-skills/                        Repository-specific engineering procedures
+contracts/                     Sürümlenen HTTP, event, runtime ve storage contracts
+compat/                        Açıkça sınırlandırılmış uyumluluk adapter'ları
+deploy/                        Single-tenant, multi-tenant ve ortak Compose tanımları
+ops/                           Local geliştirme ve operasyon iş akışları
+tools/                         Guard, contract ve mühendislik araçları
+skills/                        Repository mühendislik prosedürleri
 docs/
-  architecture/                Architecture and module documentation
+  architecture/                Mimari ve modül dokümantasyonu
 ```
 
-### Useful commands
+### Kullanışlı komutlar
 
-| Command | Purpose |
+| Komut | Açıklama |
 | --- | --- |
-| `go test ./...` | Run the Go test suite |
-| `go run ./tools/fileguard` | Check file organization and generated-file provenance |
-| `go run ./tools/archguard` | Check package dependencies and architectural boundaries |
-| `task check` | Run the repository's file and architecture guards |
-| `task dev` | Start the complete local development stack |
-| `task stop` | Stop the local stack and preserve data |
+| `go test ./...` | Go test paketini çalıştırır |
+| `go run ./tools/fileguard` | Dosya organizasyonu ve generated file provenance kurallarını denetler |
+| `go run ./tools/archguard` | Package dependency ve mimari sınırları denetler |
+| `task check` | Fileguard ve archguard kontrollerini çalıştırır |
+| `task dev` | Tam local development stack'i başlatır |
+| `task stop` | Local stack'i verileri koruyarak durdurur |
 
-### Engineering conventions
+### Mühendislik kuralları
 
-Harpy's repository-level development protocol is documented in [`AGENTS.md`](AGENTS.md). Before changing code, follow the skill routing in [`skills/INDEX.md`](skills/INDEX.md), read the relevant skill, and inspect the affected architecture and contract documents.
+Repository çalışma protokolü [`AGENTS.md`](AGENTS.md) dosyasındadır. Kod değişikliğinden önce [`skills/INDEX.md`](skills/INDEX.md) üzerinden ilgili skill'i belirleyin; skill'i, etkilenen mimariyi ve contract dosyalarını inceleyin.
 
-The main rules are:
+Temel kurallar:
 
-1. Keep business state and policy inside the owning module.
-2. Use another module's public API for synchronous cross-module calls.
-3. Do not access another module's tables or private packages.
-4. Keep handlers focused on transport; application use cases own business orchestration.
-5. Derive tenant identity from verified actor context and fail closed on missing scope.
-6. Treat RabbitMQ as transport, not canonical state.
-7. Keep HTTP, event, runtime, and authority contracts explicit and versioned.
-8. Add tests for authorization, tenant isolation, retries, idempotency, and failure paths—not only successful requests.
-9. Run the targeted tests and the relevant repository quality gates before considering a change complete.
+1. Business state ve policy ilgili owner modülde kalır.
+2. Senkron modüller arası iletişimde hedef modülün public API'si kullanılır.
+3. Başka bir modülün tablolarına veya private package'lerine doğrudan erişilmez.
+4. Handler transport sorumluluğunu taşır; business orchestration application use-case'lerinde bulunur.
+5. Tenant identity doğrulanmış actor context'ten türetilir; eksik scope durumunda işlem reddedilir.
+6. RabbitMQ state kaynağı değil, transport katmanıdır.
+7. HTTP, event, runtime ve authority contract'ları açık ve sürümlü tutulur.
+8. Yalnızca başarılı akışlar değil; authorization, tenant isolation, retry, idempotency ve hata senaryoları da test edilir.
+9. Değişiklik tamamlanmadan önce hedefli testler ve ilgili kalite kontrolleri çalıştırılır.
 
-## Documentation
+## Dokümantasyon
 
-The architecture documentation is the canonical human-readable guide to Harpy's current design. Start with the [architecture index](docs/architecture/README.md).
+Harpy'nin güncel mimarisini anlamak için [mimari dokümantasyon dizini](docs/architecture/README.md) başlangıç noktasıdır.
 
-| Document | What it covers |
+| Belge | Kapsam |
 | --- | --- |
-| [General overview](docs/architecture/01-genel-bakis.md) | Product scope, technology, repository map, and processes |
-| [Architecture and module boundaries](docs/architecture/02-mimari-ve-modul-sinirlari.md) | Modular monolith, layers, dependencies, and ownership |
-| [Runtime and composition](docs/architecture/03-runtime-ve-composition.md) | Setup, API, worker, migrator, operator, and lifecycle |
-| [Platform foundations](docs/architecture/04-platform-temelleri.md) | Configuration, PostgreSQL, transactions, telemetry, and health |
-| [HTTP API and contracts](docs/architecture/05-http-api-ve-kontratlar.md) | Routing, HTTP contracts, errors, and REST Query |
-| [Data and tenant isolation](docs/architecture/06-veri-ve-tenant-izolasyonu.md) | Schema-per-tenant, scopes, data ownership, and transactions |
-| [Events, jobs, and workers](docs/architecture/07-event-job-ve-worker.md) | Outbox, RabbitMQ, durable jobs, retries, leases, and workers |
-| [Security model](docs/architecture/08-guvenlik-modeli.md) | Actors, IAM, RBAC, tokens, tenant security, and secrets |
-| [Deployment and operations](docs/architecture/09-deployment-ve-operasyon.md) | Compose profiles, local stack, health, logs, and operations |
-| [Testing and engineering standards](docs/architecture/10-test-ve-muhendislik-standartlari.md) | CI, testing strategy, fileguard, and archguard |
-| [Developer guide](docs/architecture/11-gelistirici-rehberi.md) | Setup, commands, module changes, and troubleshooting |
-| [Shared capabilities and orchestration](docs/architecture/12-paylasilan-capabilities.md) | REST Query, artifacts, tenant activation, and orchestration |
-| [Contract catalog](docs/architecture/13-kontrat-katalogu.md) | HTTP, event, runtime, authority, and storage contracts |
-| [Architecture decisions](docs/architecture/14-mimari-kararlar.md) | Trade-offs and architectural rationale |
-| [Module package map](docs/architecture/15-modul-paket-haritasi.md) | Application and adapter package groups by module |
+| [Genel bakış](docs/architecture/01-genel-bakis.md) | Ürün kapsamı, teknoloji, repository haritası ve süreçler |
+| [Mimari ve modül sınırları](docs/architecture/02-mimari-ve-modul-sinirlari.md) | Modular monolith, katmanlar, bağımlılıklar ve sahiplik |
+| [Runtime ve composition](docs/architecture/03-runtime-ve-composition.md) | Setup, API, worker, migrator, operator ve yaşam döngüsü |
+| [Platform temelleri](docs/architecture/04-platform-temelleri.md) | Config, PostgreSQL, transaction, telemetry ve health |
+| [HTTP API ve contracts](docs/architecture/05-http-api-ve-kontratlar.md) | Routing, HTTP contracts, hata modeli ve REST Query |
+| [Veri ve tenant izolasyonu](docs/architecture/06-veri-ve-tenant-izolasyonu.md) | Schema-per-tenant, scope, data ownership ve transaction |
+| [Event, job ve worker](docs/architecture/07-event-job-ve-worker.md) | Outbox, RabbitMQ, kalıcı job'lar, retry, lease ve worker |
+| [Güvenlik modeli](docs/architecture/08-guvenlik-modeli.md) | Actor, IAM, RBAC, token, tenant güvenliği ve secrets |
+| [Deployment ve operasyon](docs/architecture/09-deployment-ve-operasyon.md) | Compose profilleri, local stack, health ve operasyon |
+| [Test ve mühendislik standartları](docs/architecture/10-test-ve-muhendislik-standartlari.md) | CI, test stratejisi, fileguard ve archguard |
+| [Geliştirici rehberi](docs/architecture/11-gelistirici-rehberi.md) | Kurulum, komutlar, modül değişiklikleri ve troubleshooting |
+| [Paylaşılan capabilities](docs/architecture/12-paylasilan-capabilities.md) | REST Query, artifact, tenant activation ve orchestration |
+| [Contract kataloğu](docs/architecture/13-kontrat-katalogu.md) | HTTP, event, runtime, authority ve storage contracts |
+| [Mimari kararlar](docs/architecture/14-mimari-kararlar.md) | Mimari trade-off'lar ve karar gerekçeleri |
+| [Modül paket haritası](docs/architecture/15-modul-paket-haritasi.md) | Modüllere göre application ve adapter paketleri |
 
-The architecture guide also contains focused documentation for [IAM](docs/architecture/modules/iam.md), [Tenancy](docs/architecture/modules/tenancy.md), [Billing](docs/architecture/modules/billing.md), [Catalog](docs/architecture/modules/catalog.md), [Work](docs/architecture/modules/work.md), [Documents](docs/architecture/modules/documents.md), [Notifications](docs/architecture/modules/notifications.md), [Analytics](docs/architecture/modules/analytics.md), and [other modules](docs/architecture/modules/diger-moduller.md).
+Modül bazlı belgeler: [IAM](docs/architecture/modules/iam.md), [Tenancy](docs/architecture/modules/tenancy.md), [Billing](docs/architecture/modules/billing.md), [Catalog](docs/architecture/modules/catalog.md), [Work](docs/architecture/modules/work.md), [Documents](docs/architecture/modules/documents.md), [Notifications](docs/architecture/modules/notifications.md), [Analytics](docs/architecture/modules/analytics.md) ve [diğer modüller](docs/architecture/modules/diger-moduller.md).
 
-## Project scope
+## Proje Kapsamı
 
-Harpy's current scope is the backend foundation and the capabilities present in this repository. It is not presented as a generic low-code platform or as a collection of independently deployed microservices. Features such as a Forms Engine, Workflow Engine, AI module, or MCP server are not part of the documented current product scope.
+Harpy'nin mevcut kapsamı, bu repository'de implement edilmiş backend altyapısı ve yetenekleridir. Proje genel amaçlı bir low-code platform veya bağımsız microservice koleksiyonu olarak konumlandırılmıyor. Forms Engine, Workflow Engine, AI modülü ve MCP server mevcut ürün kapsamına dahil değildir.
 
-## License
+## Lisans
 
-No license file is currently published in this repository. Until a license is added, the repository should not be assumed to grant permissions for reuse, modification, or redistribution.
+Repository'de şu anda bir lisans dosyası yayımlanmamıştır. Lisans eklenene kadar kodun yeniden kullanımı, değiştirilmesi veya dağıtılması için açık izin verildiği varsayılmamalıdır.
