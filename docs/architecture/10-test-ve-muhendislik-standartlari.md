@@ -25,7 +25,7 @@ Unit job Go 1.26.5 toolchain kullanır ve go test ./... çalıştırır. Filegua
 | Property/fuzz | Geniş input space ve invariant | Query parser, canonical JSON, crypto framing |
 | Architecture | Import yönü ve owner boundary | Cross-module import/SQL prohibition |
 
-Harpy'de test yoğunluğu özellikle IAM, Billing, Catalog, Documents, Analytics ve async runtime tarafında yüksektir. Test isimlerinin yanında ilgili source dosyalarını ve fixture contract'larını da incele.
+Harpy'de test yoğunluğu özellikle IAM, Billing, Documents, Analytics ve async runtime tarafında yüksektir. Test isimlerinin yanında ilgili source dosyalarını ve fixture contract'larını da incele.
 
 ## 3. Local kalite komutları
 
