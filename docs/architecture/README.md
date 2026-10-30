@@ -22,6 +22,7 @@ Bu dokümantasyon, Harpy'nin kaynak kodda mevcut olan mimarisini geliştirici, t
 | 12 | [Paylaşılan capabilities](12-paylasilan-capabilities.md) | REST Query, artifact, tenant activation ve orchestration |
 | 13 | [Contract kataloğu](13-kontrat-katalogu.md) | HTTP, event, runtime, authority ve storage contract'ları |
 | 14 | [Mimari kararlar](14-mimari-kararlar.md) | Modüler monolit ve önemli trade-off'lar |
+| 15 | [Modül paket haritası](15-modul-paket-haritasi.md) | 14 modülün application ve adapter alt paketleri |
 
 ## Modül belgeleri
 
