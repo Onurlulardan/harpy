@@ -65,7 +65,7 @@ Attempt limit dolduğunda iş terminal state'e veya dead-letter/operator-visible
 
 `core/internal/composition/worker/` modül işlerini bir araya getirir. Kaynakta görülen ana gruplar:
 - Billing provider, subscription ve retention processor'ları
-- Catalog lifecycle ve customer provisioning processor'ları
+- Customer provisioning processor'ları
 - Documents archive/upload/deletion ve ilgili job'lar
 - IAM invitation/delivery, maintenance ve system transfer processor'ları
 - Notifications delivery ve retention
