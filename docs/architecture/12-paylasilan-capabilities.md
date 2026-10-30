@@ -13,8 +13,6 @@ Kaynak kök: core/internal/capabilities/
 | restquery | Typed query contract, authorization, planning ve execution |
 | artifactobject | S3-compatible object read/write/delete/reconciliation API |
 | artifactspool | Geçici artifact üretimi için allocation, lease, writer ve janitor |
-| catalogcomponent | Catalog component owner kontratları |
-| catalogprojection | Catalog package/component snapshot ve projection hazırlığı |
 | credentialdelivery | Credential delivery artifact ve envelope kontratı |
 | licensebootstrap | License bootstrap grant/binding capability |
 | restoredlicense | Environment restore sonrası license binding capability |
@@ -59,13 +57,7 @@ artifactspool kısa ömürlü local artifact üretimi için bounded manager sağ
 
 Spool kalıcı business storage değildir. Lease süresi, disk sınırı ve cleanup policy'si explicit olmalıdır. Final artifact gerektiğinde owner module tarafından object store'a taşınır.
 
-## 6. Catalog owner/projection interfaces
-
-catalogcomponent consumer ve owner arasında typed component contract sağlar. Component result validation ve owner API interface'i burada bulunur.
-
-catalogprojection package catalog component/package snapshot ve provisioning target modelini sağlar. Projection, catalog state'in consumer tarafında kontrollü temsilidir; business owner'ın tablosuna doğrudan SQL erişim sağlamaz.
-
-## 7. Credential ve license capabilities
+## 6. Credential ve license capabilities
 
 credentialdelivery credential artifact, encrypted payload ve delivery reference contract'larını içerir. Bu capability secret'ın public API response veya normal event payload'ında taşınması yerine kontrollü delivery kanalına aktarılmasını sağlar.
 
@@ -73,7 +65,7 @@ licensebootstrap ilk runtime license authority bağlantısında grant/binding op
 
 Bu paketler billing/tenancy/platform owner implementasyonlarının yerine geçmez; o owner'ların kullanabileceği typed capability sınırlarını sağlar.
 
-## 8. Tenant activation
+## 7. Tenant activation
 
 tenantactivation API, doğrulanmış activation grant'i ve callback scope'u tanımlar. Activation:
 - Tenant/operation identity,
@@ -85,11 +77,11 @@ bağlamlarını doğrular.
 
 Tenancy onboarding application, capability'yi doğrulanmış plan/claim ile çağırır. Capability kendi başına tenant provisioning UI veya business domain değildir.
 
-## 9. Tabular mapping/transfer
+## 8. Tabular mapping/transfer
 
 tabularmapping file column/field mapping tanımları ve validation'ı sağlar. tabulartransfer import/export transfer state ve receipt contract'larını taşır. İlgili consumer'ın data owner'ı, target resource authorization ve transaction kararını vermeye devam eder.
 
-## 10. Orchestration
+## 9. Orchestration
 
 core/internal/orchestration birden fazla owner/capability arasındaki sıralı operasyonları koordine eder. Önemli paket aileleri:
 - systemresources
@@ -99,7 +91,7 @@ core/internal/orchestration birden fazla owner/capability arasındaki sıralı o
 
 Orchestration modüllerin internal persistence'ına erişmek yerine owner API/port ve platform scope kullanır. Operation state, plan hash ve execution result doğrulanabilir olmalıdır.
 
-## 11. Kaynak haritası
+## 10. Kaynak haritası
 
 - Capabilities: core/internal/capabilities/
 - Artifact object: core/internal/capabilities/artifactobject/
