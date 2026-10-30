@@ -74,7 +74,7 @@ Bu işlemlerin öncesi/sonrası persisted state ve durable receipt ile koordine 
 - Scope dışına çıkan veya tainted connection'ı normal connection gibi tekrar kullanmaz.
 - Readiness sırasında database role ve schema contract uyumunu kontrol eder.
 
-Tenant transaction search path'inde yalnız catalog ve doğru tenant schema'sı yer alır. Client-controlled schema/table identifier kabul edilmez.
+Tenant transaction `search_path` değerinde yalnız `pg_catalog` ve ilgili tenant schema'sı yer alır. Client-controlled schema/table identifier kabul edilmez.
 
 ## 7. Platform vs tenant verisi
 
