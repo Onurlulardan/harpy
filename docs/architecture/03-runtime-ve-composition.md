@@ -50,7 +50,7 @@ API composition başlıca şu işleri yapar:
 - API ve management HTTP server'larını başlatır.
 - Readiness için modül runtime'larının hazır olmasını şart koşar.
 
-Route grupları IAM, billing, catalog, documents, notifications, Work, Analytics, Audit, Platform Ops, Support, Usage, deployment/customer ve system resource layout alanlarından gelir. Kesin endpoint kaynağı `contracts/http/` ve modül HTTP adapter'larıdır.
+Route grupları IAM, billing, documents, notifications, Work, Analytics, Audit, Platform Ops, Support, Usage, deployment/customer ve system resource layout alanlarından gelir. Kesin endpoint kaynağı `contracts/http/` ve modül HTTP adapter'larıdır.
 
 ## 4. Public ve management yüzeyleri
 
@@ -67,7 +67,6 @@ JWKS public route'u `/.well-known/jwks.json` adresinde GET ve HEAD metotlarıyla
 API readiness bileşik bir koşuldur. Kaynakta açıkça kontrol edilen runtime alanları:
 - IAM actor bridge
 - Analytics HTTP runtime
-- Catalog HTTP runtime
 - Documents HTTP handler
 - Notifications HTTP runtime
 - Work HTTP runtime
