@@ -19,13 +19,16 @@ Bu dokümantasyon, Harpy'nin kaynak kodda mevcut olan mimarisini geliştirici, t
 | 9 | [Deployment ve operasyon](09-deployment-ve-operasyon.md) | Compose, profiller, local stack, health, log ve backup |
 | 10 | [Test ve mühendislik standartları](10-test-ve-muhendislik-standartlari.md) | Test türleri, CI, fileguard, archguard |
 | 11 | [Geliştirici rehberi](11-gelistirici-rehberi.md) | İlk kurulum, çalışma komutları, katkı akışı |
+| 12 | [Paylaşılan capabilities](12-paylasilan-capabilities.md) | REST Query, artifact, tenant activation ve orchestration |
+| 13 | [Contract kataloğu](13-kontrat-katalogu.md) | HTTP, event, runtime, authority ve storage contract'ları |
+| 14 | [Mimari kararlar](14-mimari-kararlar.md) | Modüler monolit ve önemli trade-off'lar |
 
 ## Modül belgeleri
 
 | Modül | Kapsam |
 | --- | --- |
 | [IAM](modules/iam.md) | Identity, authentication, sessions, RBAC, organizations |
-| [Tenancy](modules/tenancy.md) | Tenant kimliği, provision, onboarding, settings |
+| [Tenancy](modules/tenancy.md) | Tenant kimliği, provisioning, onboarding, settings |
 | [Billing](modules/billing.md) | Money, offering, subscription, invoice, entitlement, usage |
 | [Catalog](modules/catalog.md) | Signed package, dependency resolution, component lifecycle, menu |
 | [Work](modules/work.md) | Board, task, membership, calendar, recurrence |
@@ -36,13 +39,13 @@ Bu dokümantasyon, Harpy'nin kaynak kodda mevcut olan mimarisini geliştirici, t
 
 ## Mimariyi doğrulamak için başlıca kaynaklar
 
-- `AGENTS.md`: repository çalışma protokolü ve değişiklik sınırları.
-- `skills/INDEX.md`: iş türüne göre zorunlu skill yönlendirmesi.
-- `skills/modular-architecture/SKILL.md`: modül sahipliği ve dependency yönü.
-- `skills/code-organization/SKILL.md`: dosya organizasyonu ve boyut standardı.
-- `skills/testing-quality/SKILL.md`: test seçimi ve kalite kapıları.
-- `contracts/`: HTTP, event, runtime ve authority kontratları.
-- `core/internal/composition/`: process wiring ve runtime assembly.
+- AGENTS.md: repository çalışma protokolü ve değişiklik sınırları.
+- skills/INDEX.md: iş türüne göre zorunlu skill yönlendirmesi.
+- skills/modular-architecture/SKILL.md: modül sahipliği ve dependency yönü.
+- skills/code-organization/SKILL.md: dosya organizasyonu ve boyut standardı.
+- skills/testing-quality/SKILL.md: test seçimi ve kalite kapıları.
+- contracts/: HTTP, event, runtime ve authority kontratları.
+- core/internal/composition/: process wiring ve runtime assembly.
 
 ## Dokümanların doğruluk sınırı
 
