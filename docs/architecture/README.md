@@ -1,53 +1,53 @@
-# Harpy mimari dokümantasyonu
+# Harpy architecture documentation
 
-## Bu belge setinin amacı
+## Purpose
 
-Bu dokümantasyon, Harpy'nin kaynak kodda mevcut olan mimarisini geliştirici, teknik lider ve operasyon ekibinin takip edebileceği şekilde açıklar. Üst seviye yönlendirme için [Harpy Teknik Dokümantasyon](../harpy-starter/04-teknik-mimari-ve-gelistirici-rehberi.md) sayfası kullanılır.
+This documentation describes the architecture implemented in the source tree for developers, technical leads, and operations engineers. It is the canonical technical guide to Harpy; the repository overview and getting-started instructions live in the [root README](../../README.md).
 
-## Okuma sırası
+## Reading order
 
-| Sıra | Belge | Kapsam |
+| Order | Document | Scope |
 | --- | --- | --- |
-| 1 | [Genel bakış](01-genel-bakis.md) | Ürün sınırı, teknoloji seti, repository haritası |
-| 2 | [Mimari ve modül sınırları](02-mimari-ve-modul-sinirlari.md) | Modüler monolit, katmanlar, bağımlılık kuralları |
-| 3 | [Runtime ve composition](03-runtime-ve-composition.md) | Setup, API, worker, operator ve süreç yaşam döngüsü |
-| 4 | [Platform temelleri](04-platform-temelleri.md) | Config, PostgreSQL, transaction, telemetry, health |
-| 5 | [HTTP, API ve kontratlar](05-http-api-ve-kontratlar.md) | Route assembly, API contract, hata modeli, REST Query |
-| 6 | [Veri ve tenant izolasyonu](06-veri-ve-tenant-izolasyonu.md) | Schema-per-tenant, scope, owner data, Unit of Work |
-| 7 | [Event, job ve worker](07-event-job-ve-worker.md) | Outbox, RabbitMQ, DB job, retry, lease, worker |
-| 8 | [Güvenlik modeli](08-guvenlik-modeli.md) | Actor, IAM, RBAC, token, tenant güvenliği, secrets |
-| 9 | [Deployment ve operasyon](09-deployment-ve-operasyon.md) | Compose, profiller, local stack, health, log ve backup |
-| 10 | [Test ve mühendislik standartları](10-test-ve-muhendislik-standartlari.md) | Test türleri, CI, fileguard, archguard |
-| 11 | [Geliştirici rehberi](11-gelistirici-rehberi.md) | İlk kurulum, çalışma komutları, katkı akışı |
-| 12 | [Paylaşılan capabilities](12-paylasilan-capabilities.md) | REST Query, artifact, tenant activation ve orchestration |
-| 13 | [Contract kataloğu](13-kontrat-katalogu.md) | HTTP, event, runtime, authority ve storage contract'ları |
-| 14 | [Mimari kararlar](14-mimari-kararlar.md) | Modüler monolit ve önemli trade-off'lar |
-| 15 | [Modül paket haritası](15-modul-paket-haritasi.md) | 14 modülün application ve adapter alt paketleri |
+| 1 | [General overview](01-genel-bakis.md) | Product scope, technology, repository map |
+| 2 | [Architecture and module boundaries](02-mimari-ve-modul-sinirlari.md) | Modular monolith, layers, dependency rules |
+| 3 | [Runtime and composition](03-runtime-ve-composition.md) | Setup, API, worker, operator, process lifecycle |
+| 4 | [Platform foundations](04-platform-temelleri.md) | Config, PostgreSQL, transactions, telemetry, health |
+| 5 | [HTTP, API, and contracts](05-http-api-ve-kontratlar.md) | Route assembly, API contracts, error model, REST Query |
+| 6 | [Data and tenant isolation](06-veri-ve-tenant-izolasyonu.md) | Schema-per-tenant, scope, data ownership, Unit of Work |
+| 7 | [Events, jobs, and workers](07-event-job-ve-worker.md) | Outbox, RabbitMQ, DB jobs, retries, leases |
+| 8 | [Security model](08-guvenlik-modeli.md) | Actor, IAM, RBAC, tokens, tenant security, secrets |
+| 9 | [Deployment and operations](09-deployment-ve-operasyon.md) | Compose, profiles, local stack, health, logs, backup |
+| 10 | [Testing and engineering standards](10-test-ve-muhendislik-standartlari.md) | Test types, CI, fileguard, archguard |
+| 11 | [Developer guide](11-gelistirici-rehberi.md) | Setup, commands, contribution workflow |
+| 12 | [Shared capabilities](12-paylasilan-capabilities.md) | REST Query, artifacts, tenant activation, orchestration |
+| 13 | [Contract catalog](13-kontrat-katalogu.md) | HTTP, event, runtime, authority, storage contracts |
+| 14 | [Architecture decisions](14-mimari-kararlar.md) | Modular monolith and key trade-offs |
+| 15 | [Module package map](15-modul-paket-haritasi.md) | Application and adapter package groups |
 
-## Modül belgeleri
+## Module documentation
 
-| Modül | Kapsam |
+| Module | Scope |
 | --- | --- |
 | [IAM](modules/iam.md) | Identity, authentication, sessions, RBAC, organizations |
-| [Tenancy](modules/tenancy.md) | Tenant kimliği, provisioning, onboarding, settings |
+| [Tenancy](modules/tenancy.md) | Tenant identity, provisioning, onboarding, settings |
 | [Billing](modules/billing.md) | Money, offering, subscription, invoice, entitlement, usage |
-| [Catalog](modules/catalog.md) | Signed package, dependency resolution, component lifecycle, menu |
+| [Catalog](modules/catalog.md) | Signed packages, dependency resolution, component lifecycle, menu |
 | [Work](modules/work.md) | Board, task, membership, calendar, recurrence |
 | [Documents](modules/documents.md) | Folder, item, version, upload, encryption, scan, archive |
 | [Notifications](modules/notifications.md) | Inbox, preference, template, provider, delivery |
 | [Analytics](modules/analytics.md) | Query, dashboard, publication, ACL, execution |
-| [Diğer modüller](modules/diger-moduller.md) | Audit, Usage, Support, System Resource Layout, Platform Authority/Ops |
+| [Other modules](modules/diger-moduller.md) | Audit, Usage, Support, System Resource Layout, Platform Authority/Ops |
 
-## Mimariyi doğrulamak için başlıca kaynaklar
+## Primary engineering references
 
-- AGENTS.md: repository çalışma protokolü ve değişiklik sınırları.
-- skills/INDEX.md: iş türüne göre zorunlu skill yönlendirmesi.
-- skills/modular-architecture/SKILL.md: modül sahipliği ve dependency yönü.
-- skills/code-organization/SKILL.md: dosya organizasyonu ve boyut standardı.
-- skills/testing-quality/SKILL.md: test seçimi ve kalite kapıları.
-- contracts/: HTTP, event, runtime ve authority kontratları.
-- core/internal/composition/: process wiring ve runtime assembly.
+- `AGENTS.md`: repository workflow and change boundaries.
+- `skills/INDEX.md`: required skill routing by work type.
+- `skills/modular-architecture/SKILL.md`: module ownership and dependency direction.
+- `skills/code-organization/SKILL.md`: file organization and size standards.
+- `skills/testing-quality/SKILL.md`: test selection and quality gates.
+- `contracts/`: HTTP, event, runtime, and authority contracts.
+- `core/internal/composition/`: process wiring and runtime assembly.
 
-## Dokümanların doğruluk sınırı
+## Documentation accuracy
 
-Modül tanımları gerçek kaynak dizinleri, domain tipleri, application use-case'leri, adapter grupları ve test varlığı üzerinden hazırlanmıştır. Skill dosyalarındaki normatif kurallar ile doğrudan kaynak kodundan gözlenen davranış birbirinden ayrılmıştır. Bir modül içindeki her use-case bu rehberde tek tek listelenmediğinde ilgili modül ağacı esas alınmalıdır.
+Module descriptions are based on actual source directories, domain types, application use cases, adapter groups, and test presence. Normative rules in skill files are distinguished from behavior directly observed in source code. When a module's complete use-case inventory is not listed here, use its source tree as the definitive reference.
