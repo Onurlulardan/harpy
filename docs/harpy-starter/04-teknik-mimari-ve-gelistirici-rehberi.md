@@ -2,6 +2,8 @@
 
 Bu dizin Harpy'nin mevcut backend kodunu, modül sınırlarını, runtime akışlarını ve geliştirme kurallarını ayrıntılı olarak açıklar. Belge seti repository kaynak kodu esas alınarak hazırlanmıştır.
 
+**Tam dokümantasyon dizini:** [Harpy mimari dokümantasyonu](../architecture/README.md)
+
 ## Başlangıç
 
 1. [Sistem genel bakış](../architecture/01-genel-bakis.md)
@@ -15,6 +17,10 @@ Bu dizin Harpy'nin mevcut backend kodunu, modül sınırlarını, runtime akış
 9. [Deployment ve operasyon](../architecture/09-deployment-ve-operasyon.md)
 10. [Test ve mühendislik standartları](../architecture/10-test-ve-muhendislik-standartlari.md)
 11. [Geliştirici başlangıç rehberi](../architecture/11-gelistirici-rehberi.md)
+12. [Paylaşılan capabilities](../architecture/12-paylasilan-capabilities.md)
+13. [Contract kataloğu](../architecture/13-kontrat-katalogu.md)
+14. [Mimari kararlar](../architecture/14-mimari-kararlar.md)
+15. [Modül paket haritası](../architecture/15-modul-paket-haritasi.md)
 
 ## Modül belgeleri
 
@@ -32,19 +38,19 @@ Bu dizin Harpy'nin mevcut backend kodunu, modül sınırlarını, runtime akış
 
 | Alan | Kaynak dizin |
 | --- | --- |
-| Süreç giriş noktaları | `core/cmd/`, `cmd/setup/` |
-| Composition root | `core/internal/composition/` |
-| İş modülleri | `core/internal/modules/` |
-| Teknik altyapı | `core/internal/platform/` |
-| Paylaşılan capability'ler | `core/internal/capabilities/` |
-| Orchestration | `core/internal/orchestration/` |
-| Wire ve runtime kontratları | `contracts/` |
-| Yerel/production operasyon dosyaları | `ops/`, `deploy/`, `.taskfiles/` |
-| Guard ve yardımcı araçlar | `tools/` |
-| Beceri/uygulama standartları | `skills/` |
+| Süreç giriş noktaları | core/cmd/, cmd/setup/ |
+| Composition root | core/internal/composition/ |
+| İş modülleri | core/internal/modules/ |
+| Teknik altyapı | core/internal/platform/ |
+| Paylaşılan capability'ler | core/internal/capabilities/ |
+| Orchestration | core/internal/orchestration/ |
+| Wire ve runtime kontratları | contracts/ |
+| Yerel/production operasyon dosyaları | ops/, deploy/, .taskfiles/ |
+| Guard ve yardımcı araçlar | tools/ |
+| Beceri/uygulama standartları | skills/ |
 
 ## Belge okuma prensibi
 
-Bu sayfalar kaynak kodunun yerine geçmez. Bir davranışın kesin uygulamasını doğrularken ilgili modülün `domain`, `application`, `api`, `ports`, `adapters` ve test dosyalarını birlikte incele. `skills/INDEX.md` iş türüne göre okunması gereken skill dosyalarını listeler; `AGENTS.md` repository çalışma protokolünün sahibidir.
+Bu sayfalar kaynak kodunun yerine geçmez. Bir davranışın kesin uygulamasını doğrularken ilgili modülün domain, application, api, ports, adapters ve test dosyalarını birlikte incele. skills/INDEX.md iş türüne göre okunması gereken skill dosyalarını listeler; AGENTS.md repository çalışma protokolünün sahibidir.
 
-Repository'de frontend uygulaması bulunmaz. Yerel geliştirme altyapısı, kardeş `frontend-v3` çalışma ağacını ayrıca başlatabilen operasyon görevleri içerir; bu belge seti Harpy backend'ini kapsar.
+Repository'de frontend uygulaması bulunmaz. Yerel geliştirme altyapısı, kardeş frontend-v3 çalışma ağacını ayrıca başlatabilen operasyon görevleri içerir; bu belge seti Harpy backend'ini kapsar.
