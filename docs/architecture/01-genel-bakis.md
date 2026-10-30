@@ -63,7 +63,6 @@ Harpy'nin ana uzun yaşayan süreçleri API ve worker'dır. Operator ise belirli
 | IAM | User, role, organization, permission, credential, session |
 | Tenancy | Tenant, tenant schema, deployment policy, onboarding |
 | Billing | Offering, price, subscription, invoice, entitlement, usage |
-| Catalog | Signed package, component, installation operation, menu |
 | Work | Board, column, task, membership, calendar event |
 | Documents | Folder, item, version, upload, archive, legal hold |
 | Notifications | Message, preference, template, delivery, provider |
