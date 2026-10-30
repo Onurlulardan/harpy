@@ -35,17 +35,7 @@ Application:
 
 Adapters: cryptography, licenseauthoritysource, postgres, provider, resourceusage.
 
-## 4. Catalog
-
-Application:
-- Package: registry, dependency, authority, releasepublication
-- Tenant lifecycle: lifecycle
-- Presentation/menu: menu
-- Demo workflows: demohandoff, demomaterialization
-
-Adapters: http, postgres.
-
-## 5. Work
+## 4. Work
 
 Application:
 - Board structure: boards, columns, memberships
@@ -55,7 +45,7 @@ Application:
 
 Adapters: http, postgres.
 
-## 6. Documents
+## 5. Documents
 
 Application:
 - Content lifecycle: folder, item, link, copy, deletion, purge
@@ -65,7 +55,7 @@ Application:
 
 Adapters: adoptionartifact, archiveartifact, blobcrypto, cipher, clamav, http, keyring, keywrap, postgres, s3blob.
 
-## 7. Notifications
+## 6. Notifications
 
 Application code root-level use-case files plus retention and channel/consumer runtime packages bulunur. Adapter grupları:
 - http, postgres
@@ -75,18 +65,17 @@ Application code root-level use-case files plus retention and channel/consumer r
 
 Domain package message, delivery, preference, template, provider config ve quiet-hours kurallarını içerir.
 
-## 8. Analytics
+## 7. Analytics
 
 Application:
 - Query: query, queryexecution
 - Dashboard: dashboard, dashboardexport
 - Publication/authority: publication, authority
-- Owner integration: catalogcomponentowner, cataloglegacyowner
 - Support: entitlement, httptransport, retention, compatibility
 
 Adapters: artifact, cache, http, postgres.
 
-## 9. Audit ve Usage
+## 8. Audit ve Usage
 
 Audit:
 - Domain: entry/action/classification/field-change model
@@ -98,7 +87,7 @@ Usage:
 - Application: record, read models/analytics
 - Adapters: http, postgres
 
-## 10. Platform Authority ve Platform Ops
+## 9. Platform Authority ve Platform Ops
 
 Platform Authority application grubu recoveryevidence; adapter'lar airgap, devjournal, gcpkms, localkey, postgres ve providerregistry'dir.
 
@@ -108,7 +97,7 @@ Platform Ops application grupları:
 
 Adapters: backuparchive, pgtools, postgres, recoveryplansigner, recoverys3.
 
-## 11. Support ve System Resource Layout
+## 10. Support ve System Resource Layout
 
 Support application:
 - contact
@@ -123,7 +112,7 @@ System Resource Layout:
 - PostgreSQL adapter persistence owner'dır.
 - Presentation compile/publish akışı platform fieldcatalog ile çalışır.
 
-## 12. Dizin haritası nasıl kullanılmalı?
+## 11. Dizin haritası nasıl kullanılmalı?
 
 1. Feature'ın owner modülünü belirle.
 2. İlgili application alt paketinde mevcut use-case'i bul.
