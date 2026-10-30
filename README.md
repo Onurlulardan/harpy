@@ -138,9 +138,9 @@ flowchart TB
     CT["Versioned contracts"]
   end
   subgraph I["Altyapı"]
-    PG[("PostgreSQL") ]
-    MQ[("RabbitMQ") ]
-    S3[("S3 uyumlu object storage") ]
+    PG[(PostgreSQL)]
+    MQ[(RabbitMQ)]
+    S3[(S3 uyumlu object storage)]
   end
   API --> AC
   W --> WC
