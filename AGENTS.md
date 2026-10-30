@@ -1,90 +1,90 @@
 # Harpy
 
-Harpy is a Go-based modular backend platform for single-tenant/on-premise and multi-tenant/SaaS deployments. Its business capabilities are organized as modules inside one Go codebase; API, worker, migrator, and operator are separate runtime processes composed from those modules. The standard deployment infrastructure includes PostgreSQL 18, RabbitMQ 4, and RustFS through an S3-compatible API. The Go module path is `github.com/Onurlulardan/harpy`; the Go version is 1.26.
+Harpy; single-tenant/on-premise ve multi-tenant/SaaS deployment modellerini destekleyen, Go ile geliştirilmiş modüler bir backend platformudur. Business yetenekleri tek bir Go codebase içindeki modüller olarak düzenlenir; API, worker, migrator ve operator bu modüllerden composition root'ları aracılığıyla oluşturulan ayrı runtime süreçleridir. Standart deployment altyapısı PostgreSQL 18, RabbitMQ 4 ve S3-compatible API üzerinden RustFS içerir. Go module yolu `github.com/Onurlulardan/harpy`, Go sürümü 1.26'dır.
 
-The current repository scope is the backend capabilities implemented in source. Forms Engine, Workflow Engine, AI module, MCP server, and historical SQL migration dumps are not part of the current scope. Do not add them as assumed product capabilities.
+Mevcut repository kapsamı, kaynak kodda implement edilmiş backend yetenekleridir. Forms Engine, Workflow Engine, AI modülü, MCP server ve tarihsel SQL migration dump'ları mevcut kapsamda değildir. Bunları varsayılan ürün yeteneği olarak ekleme.
 
-The setup CLI is `go run ./cmd/setup`. It validates a deployment profile, prepares local configuration and secrets, writes profile files, and prints the next deployment commands. It does not start Docker or run the full lifecycle itself.
+Setup CLI komutu `go run ./cmd/setup` şeklindedir. Deployment profilini doğrular, yerel configuration ve secret materyalini hazırlar, profil dosyalarını yazar ve sonraki deployment komutlarını gösterir. Docker başlatmaz veya tüm uygulama yaşam döngüsünü tek başına yürütmez.
 
-## Working protocol
+## Çalışma protokolü
 
-Except for read-only discovery of AGENTS, INDEX, SKILL, and relevant architecture files, before changing code or documentation:
+AGENTS, INDEX, SKILL ve ilgili mimari dosyalarını salt okunur keşfetme komutları dışında, kod veya doküman değiştirmeden önce:
 
-1. Read `skills/INDEX.md`.
-2. Read the complete `skills/*/SKILL.md` files matching the work.
-3. For work affecting multiple modules, also read the `impact-analysis` skill.
-4. Read the relevant architecture material under `docs/architecture/`.
-5. If scope or ownership is unclear, establish the impact and decision boundary before editing.
+1. `skills/INDEX.md` dosyasını oku.
+2. İş ile eşleşen `skills/*/SKILL.md` dosyalarını eksiksiz oku.
+3. Birden fazla modülü etkileyen işte `impact-analysis` skill'ini de oku.
+4. `docs/architecture/` altındaki ilgili mimari metinleri oku.
+5. Kapsam veya sahiplik belirsizse değişiklik yapmadan önce etki ve karar sınırını netleştir.
 
-Do not make implementation changes without reading the required skills.
+Gerekli skill'ler okunmadan implementasyon değişikliği yapma.
 
-The local API and worker run as containers in `ops/local/compose.runtime.yml`. The supported full local workflow is `task dev` (alias for `local:up`). The workflow performs the required sequence: `prepare`, `infra`, `bootstrap`, `migrate`, `installation:artifacts`, `license`, `tenant-executor`, `initialize`, `services`, and `verify` (see `.taskfiles/local.yml`). Skipping `license` prevents the on-premise API from finding its `billing_license_heads` record. Running `go run ./core/cmd/api` alone is not a substitute for this sequence.
+Local API ve worker, `ops/local/compose.runtime.yml` içinde container olarak çalışır. Desteklenen tam local workflow `task dev` ( `local:up` kısa yolu) komutudur. Akış sırasıyla `prepare`, `infra`, `bootstrap`, `migrate`, `installation:artifacts`, `license`, `tenant-executor`, `initialize`, `services` ve `verify` adımlarını yürütür (bkz. `.taskfiles/local.yml`). `license` adımı atlanırsa on-premise API gerekli `billing_license_heads` kaydını bulamaz. Tek başına `go run ./core/cmd/api` çalıştırmak bu akışın yerine geçmez.
 
-## Rules
+## Kurallar
 
-1. Hand-written files must satisfy the `code-organization` skill and fileguard. That skill is the source of truth for line, CRUD, and filename policy.
-2. A module must not access another module's tables, domain, or adapters.
-3. Handlers do not contain business logic. Repositories do not make authorization decisions.
-4. Application commands define transaction boundaries; HTTP middleware does not.
-5. Tenant identity comes from verified actor context, not a request header.
-6. Modules in the same process do not communicate through HTTP or RabbitMQ.
-7. RabbitMQ is an integration transport, not a source of truth.
-8. Do not add Forms Engine, Workflow Engine, AI module, MCP server, or historical SQL dumps as assumed existing scope.
-9. Dynamic queries run only through the REST Query `QuerySpec`.
-10. Unknown fields, operators, or nodes must not be silently accepted.
-11. Generated files are not edited manually and must retain their generated provenance header.
-12. Do not run git commands unless explicitly requested by the user.
-13. Do not introduce temporary frameworks, storage, transports, or domain models. Migration is a separately owned core boundary with persistent state, automatically verified exit conditions, and explicit ownership.
+1. Elle yazılan dosyalar `code-organization` skill'ine ve fileguard'a uymalıdır. Satır, CRUD ve dosya adı politikasının kaynağı bu skill'dir.
+2. Bir modül başka modülün tablolarına, domain'ine veya adapter'larına erişemez.
+3. Handler business logic taşımaz. Repository authorization kararı vermez.
+4. Transaction sınırını application command belirler; HTTP middleware belirlemez.
+5. Tenant kimliği doğrulanmış actor context'ten gelir; request header kaynak değildir.
+6. Aynı process içindeki modüller HTTP veya RabbitMQ ile haberleşmez.
+7. RabbitMQ state kaynağı değil, integration transport'tur.
+8. Forms Engine, Workflow Engine, AI modülü, MCP server veya tarihsel SQL dump'larını var olan ürün kapsamıymış gibi ekleme.
+9. Dynamic query yalnız REST Query `QuerySpec` üzerinden çalışır.
+10. Bilinmeyen field, operator veya node sessizce kabul edilmez.
+11. Generated dosyalar elle değiştirilmez ve generated provenance header'ını korumalıdır.
+12. Kullanıcı açıkça istemedikçe git komutu çalıştırılmaz.
+13. Geçici framework, storage, transport veya domain modeli kurulmaz. Migration ayrı bir core sınırıdır; kalıcı state'e, otomatik doğrulanan çıkış koşullarına ve açık sahipliğe sahiptir.
 
-## Module boundaries
+## Modül sınırları
 
-1. Each workstream is limited to one module or one explicitly defined owner boundary. Writable paths must be stated; overlapping write ownership is not allowed.
-2. Until a module is closed, only its source, module-specific HTTP contract, migration, permission implementation, and targeted tests should change. Schema SQL is authored for Harpy.
-3. A module is not complete without evidence that:
-   - Endpoint, application, adapter, and any required DB routine are wired.
-   - Production constructors use the real owner API and concrete adapters, not test fixtures or stubs.
-   - No duplicate HTTP method/path is owned by multiple modules.
-   - Tenant and permission decisions are proven fail-closed by targeted tests.
-   - Migration versions do not conflict with another owner.
-   - Targeted module tests pass.
-4. Missing owner APIs, concrete adapters, permission decisions, DB routines, migrations, or targeted tests are blockers. A module must not be closed with these gaps.
-5. Do not invent permissions. A different authorization model requires an explicit decision and fail-closed tests.
-6. Reopen a closed module only when targeted tests or live runtime evidence proves a required defect. New scope alone is not a reason to reopen it.
+1. Her çalışma kolu tek bir modül veya açıkça tanımlanmış tek bir owner sınırıyla sınırlıdır. Yazılabilir dizinler görevde belirtilir; çakışan yazma alanı verilmez.
+2. Modül kapanana kadar yalnızca o modülün source'u, modüle özel HTTP contract'ı, migration'ı, permission implementasyonu ve hedefli testleri değiştirilir. Schema SQL, Harpy için yazılır.
+3. Bir modül şu kanıtlar olmadan tamamlanmış sayılmaz:
+   - Endpoint, application, adapter ve gerekiyorsa DB routine birbirine bağlıdır.
+   - Production constructor, test fixture veya stub yerine gerçek owner API ve concrete adapter kullanır.
+   - Aynı HTTP method ve path birden fazla modül tarafından sahiplenilmez.
+   - Tenant ve permission kararları hedefli testlerle fail-closed olarak kanıtlanmıştır.
+   - Migration sürümleri başka owner ile çakışmaz.
+   - Modülün hedefli testleri geçmiştir.
+4. Eksik owner API, concrete adapter, permission kararı, DB routine, migration veya hedefli test blocker'dır. Modül bu eksiklerle kapatılmaz.
+5. Yeni permission uydurulmaz. Farklı authorization modeli ancak açık kararla ve fail-closed testlerle kabul edilir.
+6. Kapanmış modül, hedefli test veya canlı runtime kanıtı zorunlu bir hatayı gösterirse yeniden açılır. Yeni kapsam tek başına yeniden açma gerekçesi değildir.
 
-## Shared surfaces
+## Paylaşılan yüzeyler
 
-The following surfaces remain locked while individual modules are being completed: operation manifests, authority manifests, generated OpenAPI aggregate, global permission catalog, migration manifest, archguard counters, and fileguard counters.
+Modüller kapanana kadar şu yüzeyler kilitlidir: operation manifestleri, authority manifestleri, generated OpenAPI aggregate, global permission kataloğu, migration manifesti, archguard ve fileguard sayaçları.
 
-Do not edit these surfaces from parallel module workstreams. After the affected modules are closed, one owner performs the shared normalization pass. Do not repeatedly patch shared aggregates while a module is reopened.
+Bu dosyalar paralel modül çalışma kolları tarafından düzenlenmez. İlgili modüller kapandıktan sonra tek bir owner ortak normalizasyon geçişini yapar. Bir modül yeniden açılırsa ortak aggregate üzerinde art arda düzeltme yapılmaz.
 
-## Closure sequence
+## Kapanış sırası
 
-1. Targeted tests for closed modules.
-2. Single assembly of operation, authority, permission, and OpenAPI aggregates.
-3. Single normalization of the migration manifest.
-4. `fileguard` and `archguard`.
-5. Data-preserving migration application and local stack verification.
-6. Login, tenant selection, and IAM authorization flow.
+1. Kapanmış modüllerin hedefli testleri.
+2. Operation, authority, permission ve OpenAPI aggregate'inin tek seferde kurulması.
+3. Migration manifestinin tek seferde normalizasyonu.
+4. `fileguard` ve `archguard`.
+5. Veri korumalı migration uygulaması ve local stack doğrulaması.
+6. Login, tenant seçimi ve IAM authorization akışı.
 
-A build, unit test, or passing static gate alone is not proof of completion. Do not call Harpy complete until the local stack is running and these flows have been exercised.
+Build, unit test veya yeşil statik kontrol tek başına tamamlanma kanıtı değildir. Harpy tamamlandı denmeden önce local stack çalışmalı ve bu akışlar denenmelidir.
 
-Do not close gates by updating counters or snapshots while required wiring is missing. Login and localhost acceptance are separate owner work. That acceptance work does not contain an E2E retry loop. Updating README does not close missing wiring.
+Eksik wiring varken sayaç veya snapshot güncelleyerek kalite kapısı kapatılmaz. Login ve localhost kabulü ayrı bir owner geçişidir. Bu geçişin içinde E2E retry döngüsü yoktur. README güncellemesi eksik wiring'i tamamlamaz.
 
-## Ownership
+## Sahiplik
 
-- `AGENTS.md`: mandatory repository workflow.
-- `skills/INDEX.md`: work-type to skill routing.
-- `skills/*/SKILL.md`: domain-specific procedures.
-- `docs/architecture/`: current architecture and module documentation.
-- `README.md`: repository overview, setup paths, runtime processes, and entry points.
+- `AGENTS.md`: Zorunlu repository çalışma protokolü.
+- `skills/INDEX.md`: İş türü ile skill eşlemesi.
+- `skills/*/SKILL.md`: Alana özel prosedürler.
+- `docs/architecture/`: Güncel mimari ve modül dokümantasyonu.
+- `README.md`: Repository özeti, kurulum yolları, runtime süreçleri ve başlangıç noktaları.
 
-Avoid duplicating rules across files. Link to the file that owns the rule.
+Aynı kuralı birden fazla dosyada tekrarlama. Kuralın sahibi olan dosyaya bağlantı ver.
 
-## Completion
+## Tamamlama
 
-- Relevant skill checklists are satisfied.
-- No unresolved decision remains in the affected architecture.
-- Targeted tests and architecture tests pass.
-- `go run ./tools/fileguard` and `go run ./tools/archguard` pass.
-- Tenant, permission, and migration impact is reported.
-- New behavior has explicit contracts and observability.
+- İlgili skill checklist'leri karşılanmıştır.
+- Etkilenen mimaride açık karar kalmamıştır.
+- Hedefli testler ve architecture testleri geçmiştir.
+- `go run ./tools/fileguard` ve `go run ./tools/archguard` başarılıdır.
+- Tenant, permission ve migration etkisi raporlanmıştır.
+- Yeni davranışın contract'ı ve observability'si vardır.
