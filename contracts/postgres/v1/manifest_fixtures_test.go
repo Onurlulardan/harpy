@@ -5,7 +5,7 @@ func validMigrationManifest() map[string]any {
 		"contract_version": "postgres-migration-manifest.v1",
 		"engine":           "goose.v3",
 		"postgres_major":   18,
-		"history_table":    "platform.platform_migration_history",
+		"history_table":    "platform.goose_db_version",
 		"out_of_order":     false,
 		"entries": []any{map[string]any{
 			"owner": "tenancy", "scope": "platform", "version": 20260714010000,

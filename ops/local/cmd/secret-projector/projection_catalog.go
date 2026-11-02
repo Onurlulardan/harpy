@@ -86,7 +86,6 @@ func runtimeTarget(name string, names ...string) targetSpec {
 
 func stateTargets() []targetSpec {
 	return []targetSpec{
-		{name: "foundation-release", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "release", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "analytics-dashboard-export", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},
 		{name: "iam-transfer", uid: runtimeUserID, gid: runtimeUserID, dir: 0o700},

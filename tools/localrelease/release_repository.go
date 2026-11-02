@@ -1,13 +1,15 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
+	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/internal/attestation"
-	"github.com/Onurlulardan/harpy/internal/migrationbundle"
 )
 
 const releaseArtifactDirectory = "core/internal/platform/migration/release"
@@ -32,11 +34,7 @@ func findRepositoryRoot() (string, error) {
 }
 
 func loadMigrationArtifact() (artifact, error) {
-	root, err := findRepositoryRoot()
-	if err != nil {
-		return artifact{}, err
-	}
-	document, err := migrationbundle.CanonicalFresh(root)
+	document, err := runtimev1.ReadEmbeddedFreshMigrationManifest()
 	if err != nil {
 		return artifact{}, err
 	}
@@ -44,7 +42,8 @@ func loadMigrationArtifact() (artifact, error) {
 	if err != nil {
 		return artifact{}, fmt.Errorf("verify canonical fresh migration: %w", err)
 	}
-	if verified.DigestSHA256() != migrationbundle.Digest(document) {
+	sum := sha256.Sum256(document)
+	if verified.DigestSHA256() != hex.EncodeToString(sum[:]) {
 		return artifact{}, fmt.Errorf("canonical fresh migration digest differs")
 	}
 	return artifact{

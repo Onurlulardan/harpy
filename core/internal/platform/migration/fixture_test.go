@@ -32,7 +32,7 @@ func testMigrationFixture(t *testing.T) (
 		ContractVersion: "postgres-migration-manifest.v1",
 		Engine:          "goose.v3",
 		PostgresMajor:   18,
-		HistoryTable:    "platform.platform_migration_history",
+		HistoryTable:    "platform.goose_db_version",
 		Entries: []postgresv1.MigrationEntry{{
 			Owner: testOwner, Scope: "platform", Version: testVersion,
 			TransactionMode: "transactional", Phase: "foundation",

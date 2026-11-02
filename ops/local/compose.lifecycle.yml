@@ -21,7 +21,6 @@ services:
       - local-secret-operator:/catalog/secret-operator:ro
       - local-secret-api:/catalog/secret-api:ro
       - local-secret-worker:/catalog/secret-worker:ro
-      - foundation-release-state:/catalog/foundation-release:ro
       - release-state:/catalog/release:ro
       - analytics-dashboard-export-spool:/catalog/analytics-dashboard-export:ro
       - iam-transfer-spool:/catalog/iam-transfer:ro
@@ -51,7 +50,6 @@ volumes:
   local-secret-operator:
   local-secret-api:
   local-secret-worker:
-  foundation-release-state:
   release-state:
   analytics-dashboard-export-spool:
   iam-transfer-spool:

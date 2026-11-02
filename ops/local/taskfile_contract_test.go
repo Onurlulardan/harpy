@@ -66,7 +66,7 @@ func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
 	}
 	if !strings.Contains(
 		build,
-		"build foundation-local-release local-release",
+		"build local-release",
 	) {
 		t.Fatal("normal local:build must build the local images in one cache-sharing bake")
 	}
@@ -83,7 +83,7 @@ func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
 	refresh := taskBlock(t, operations, "build:refresh", "check")
 	if !strings.Contains(
 		refresh,
-		"build --pull foundation-local-release local-release",
+		"build --pull local-release",
 	) {
 		t.Fatal("explicit build refresh must pull the two release images together")
 	}

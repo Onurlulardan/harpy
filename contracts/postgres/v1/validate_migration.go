@@ -10,7 +10,7 @@ import (
 func (manifest MigrationManifest) Validate() error {
 	if manifest.ContractVersion != "postgres-migration-manifest.v1" ||
 		manifest.Engine != "goose.v3" || manifest.PostgresMajor != 18 ||
-		manifest.HistoryTable != "platform.platform_migration_history" || manifest.OutOfOrder {
+		manifest.HistoryTable != "platform.goose_db_version" || manifest.OutOfOrder {
 		return fmt.Errorf("migration manifest header is invalid")
 	}
 	if len(manifest.Entries) == 0 || len(manifest.Entries) > 10000 {

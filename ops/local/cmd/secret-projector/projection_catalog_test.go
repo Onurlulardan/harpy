@@ -59,7 +59,7 @@ func TestReleaseStateTargetsAreSeparate(t *testing.T) {
 	for _, target := range stateTargets() {
 		states[target.name] = true
 	}
-	if !states["foundation-release"] || !states["release"] {
+	if !states["release"] {
 		t.Fatal("foundation and current release state must use separate volumes")
 	}
 }

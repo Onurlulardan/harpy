@@ -45,7 +45,7 @@ func Build(
 		ContractVersion: "postgres-migration-manifest.v1",
 		Engine:          "goose.v3",
 		PostgresMajor:   18,
-		HistoryTable:    "platform.platform_migration_history",
+		HistoryTable:    "platform.goose_db_version",
 		Entries:         make([]postgresv1.MigrationEntry, 0, len(versions)),
 	}
 	for _, version := range versions {

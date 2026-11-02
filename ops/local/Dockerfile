@@ -9,26 +9,8 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY . .
 
-ARG LOCAL_RELEASE_CONTRACT_COMMAND=contract
-RUN --mount=type=cache,target=/go/pkg/mod \
-    case "${LOCAL_RELEASE_CONTRACT_COMMAND}" in \
-      contract) \
-        go run ./internal/migrationbundle/cmd/checkfresh -write && \
-        mkdir -p /out && \
-        cp contracts/runtime/v1/fresh-migration-manifest.json /out/migration-manifest.json \
-        ;; \
-      foundation-contract) \
-        mkdir -p /out && \
-        go run ./tools/localrelease foundation-contract \
-          -output /out/binary-schema-contract.json \
-          -migration-output /out/migration-manifest.json && \
-        cp /out/binary-schema-contract.json \
-          /src/contracts/runtime/v1/binary-schema-contract.json && \
-        go run ./internal/migrationbundle/cmd/packrelease \
-          -output /out/migration-release.zip \
-        ;; \
-      *) exit 64 ;; \
-    esac
+RUN mkdir -p /out && \
+    cp contracts/runtime/v1/fresh-migration-manifest.json /out/migration-manifest.json
 
 ARG TARGETOS
 ARG TARGETARCH
