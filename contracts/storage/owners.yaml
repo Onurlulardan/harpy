@@ -3,7 +3,6 @@
   "includes": [
     "contracts/storage/owners/analytics.json",
     "contracts/storage/owners/billing.json",
-    "contracts/storage/owners/catalog.json",
     "contracts/storage/owners/documents.json",
     "contracts/storage/owners/iam.json",
     "contracts/storage/owners/notifications.json",
