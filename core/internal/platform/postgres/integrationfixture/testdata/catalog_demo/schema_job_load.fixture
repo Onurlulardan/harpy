@@ -1,3 +1,0 @@
-SELECT publication.schema_job_id::text,publication.plan_document
-FROM catalog_a.forms_publications AS publication
-WHERE publication.definition_id=$1::uuid

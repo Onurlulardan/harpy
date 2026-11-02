@@ -1,2 +1,0 @@
-SET LOCAL ROLE harpy_runtime;
-SELECT pg_catalog.set_config('search_path','platform,pg_catalog',true);
