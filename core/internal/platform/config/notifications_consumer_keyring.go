@@ -11,33 +11,9 @@ import (
 
 const notificationsConsumerKeyringFileKey = "HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE"
 
-var notificationsConsumerPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,63}package config
-
-import (
-	"crypto/ed25519"
-	"errors"
-	"fmt"
-	"io"
-	"log/slog"
-	"regexp"
-)
-
-const notificationsConsumerKeyringFileKey = "HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE"
-
-)
-var notificationsConsumerKeyIDPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,127}package config
-
-import (
-	"crypto/ed25519"
-	"errors"
-	"fmt"
-	"io"
-	"log/slog"
-	"regexp"
-)
-
-const notificationsConsumerKeyringFileKey = "HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE"
-
+var (
+	notificationsConsumerPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,63}$`)
+	notificationsConsumerKeyIDPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,127}$`)
 )
 
 type notificationsConsumerKey struct {
@@ -65,10 +41,11 @@ func (keyring NotificationsConsumerKeyring) Validate() error {
 	return nil
 }
 
-func (keyring NotificationsConsumerKeyring) Resolve(keyID, consumer string,
-	digest [32]byte,
+func (keyring NotificationsConsumerKeyring) Resolve(
+	keyID, consumer string, digest [32]byte,
 ) (ed25519.PublicKey, error) {
-	if keyring.Validate() != nil || !catalogKeyIDPattern.MatchString(keyID) ||
+	if keyring.Validate() != nil ||
+		!notificationsConsumerKeyIDPattern.MatchString(keyID) ||
 		!notificationsConsumerPattern.MatchString(consumer) || digest == [32]byte{} {
 		return nil, errors.New("notification consumer key is unavailable")
 	}
