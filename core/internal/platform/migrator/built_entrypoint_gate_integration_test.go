@@ -22,8 +22,7 @@ func TestBuiltEntrypointsAgainstCanonicalPostgreSQL184Contract(t *testing.T) {
 	profiles := []builtEntrypointProfile{
 		{name: "api", binary: binaries.api, dsn: database.runtimeDSN,
 			service: runtimev1.ServiceCoreAPI, sessionUser: "harpy_v2_runtime",
-			application: "harpy-v2:core-api", api: true,
-			catalogPackageKeyring: evidence.catalog.catalogPackageKeyring},
+			application: "harpy-v2:core-api", api: true,},
 		{name: "worker", binary: binaries.worker, dsn: database.runtimeDSN,
 			service: runtimev1.ServiceCoreWorker, sessionUser: "harpy_v2_runtime",
 			application:           "harpy-v2:core-worker",
