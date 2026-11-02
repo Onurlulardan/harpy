@@ -7,7 +7,7 @@ import (
 
 func buildReleaseManifest(
 	keys releaseKeys, manifests postgresManifests, operations postgresOperations,
-	authorityDigest, catalogDigest, cutoverDigest string,
+	authorityDigest, cutoverDigest string,
 ) (releaseDocument, []byte, attestation.VerifiedRelease, error) {
 	document, err := canonicalDocument(attestation.ReleaseManifest{
 		ContractVersion: "postgres-release-manifest.v1", ReleaseID: localReleaseID,
@@ -26,7 +26,7 @@ func buildReleaseManifest(
 		BootstrapOperationDigest:        operations.bootstrap.digest,
 		ExtensionOperationDigest:        operations.extension.digest,
 		CredentialCleanupDigest:         operations.cleanup.digest,
-		CutoverAuthorityOperationDigest: cutoverDigest, CatalogPackageSetSHA256: catalogDigest,
+		CutoverAuthorityOperationDigest: cutoverDigest,
 	})
 	if err != nil {
 		return releaseDocument{}, nil, attestation.VerifiedRelease{}, err
