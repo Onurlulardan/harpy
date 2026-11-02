@@ -134,7 +134,6 @@ func profileSnapshot(profile string) map[string]any {
 		variables["GOMEMLIMIT"] = "512MiB"
 		variables["HARPY_RABBITMQ_URL"] = "amqp://worker:secret@rabbit.invalid/%2f"
 		variables["HARPY_REST_QUERY_CURSOR_KEYRING"] = validCursorKeyringContractValue()
-			validCatalogPackageKeyringContractValue()
 		addAnalyticsDashboardExportProfileSnapshot(variables, true)
 		addIAMSystemTransferProfileSnapshot(variables)
 		addIAMWorkerProfileSnapshot(variables)
