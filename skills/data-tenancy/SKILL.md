@@ -64,9 +64,9 @@ application command
 - Migration'i yalniz `core-migrator` calistirsin.
 - API ve worker startup migration calistirmasin.
 - Applied migration'i degistirme; yeni forward migration yaz.
-- Her migration'a checksum ve owner module bilgisi ata.
+- Baslangic semasi `core/internal/platform/baseline` icindeki Goose baseline'idir. History Goose version tablosudur.
 - DDL ve modul kurulumu icin advisory lock kullan.
-- Tenant basina checkpoint ve acik failure state tut.
+- Tenant schema'si kendi Goose version tablosunu tutar.
 - Existing schema'yi otomatik drop etme.
 - Uninstall disable eder; purge ayri, onayli ve audit'li use-case'tir.
 

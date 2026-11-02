@@ -25,6 +25,9 @@ func runDeploy(
 	stdout io.Writer,
 	stderr io.Writer,
 ) processcode.Code {
+	if action == deployUp {
+		return runBaselineUp(ctx, stdout, stderr)
+	}
 	settings, err := config.LoadMigratorDeploy()
 	if err != nil {
 		reportFailureCause(stderr, nil, "configuration", string(action), err)

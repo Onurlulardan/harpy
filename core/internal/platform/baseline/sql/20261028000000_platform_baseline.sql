@@ -14,7 +14,6 @@ SET idle_in_transaction_session_timeout = 0;
 SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
@@ -24,7 +23,7 @@ SET row_security = off;
 -- Name: cutover_authority; Type: SCHEMA; Schema: -; Owner: harpy_owner
 --
 
-CREATE SCHEMA cutover_authority;
+CREATE SCHEMA IF NOT EXISTS cutover_authority;
 
 
 ALTER SCHEMA cutover_authority OWNER TO harpy_owner;
@@ -33,7 +32,7 @@ ALTER SCHEMA cutover_authority OWNER TO harpy_owner;
 -- Name: platform; Type: SCHEMA; Schema: -; Owner: harpy_owner
 --
 
-CREATE SCHEMA platform;
+CREATE SCHEMA IF NOT EXISTS platform;
 
 
 ALTER SCHEMA platform OWNER TO harpy_owner;
@@ -42,7 +41,7 @@ ALTER SCHEMA platform OWNER TO harpy_owner;
 -- Name: platform_ext; Type: SCHEMA; Schema: -; Owner: harpy_owner
 --
 
-CREATE SCHEMA platform_ext;
+CREATE SCHEMA IF NOT EXISTS platform_ext;
 
 
 ALTER SCHEMA platform_ext OWNER TO harpy_owner;
