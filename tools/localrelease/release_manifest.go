@@ -38,7 +38,6 @@ func buildReleaseManifest(
 		ExtensionOperationDigest:        catalog.extensionOperation.digest,
 		CredentialCleanupDigest:         catalog.cleanupOperation.digest,
 		CutoverAuthorityOperationDigest: cutover.document.digest,
-		CatalogPackageSetSHA256:         catalog.catalogPackageSet.digest,
 	}
 	document, err := newArtifact("release.json", manifest)
 	if err != nil {
