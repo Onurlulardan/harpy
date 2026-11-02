@@ -72,7 +72,7 @@ func decodeNotificationsConsumerKey(item notificationsConsumerKeyDocument) (
 ) {
 	public, publicErr := base64.RawURLEncoding.Strict().DecodeString(item.PublicKey)
 	digest, digestErr := base64.RawURLEncoding.Strict().DecodeString(item.ManifestSHA256)
-	valid := catalogKeyIDPattern.MatchString(item.KeyID) &&
+	valid := notificationsConsumerKeyIDPattern.MatchString(item.KeyID) &&
 		notificationsConsumerPattern.MatchString(item.Consumer) && publicErr == nil &&
 		digestErr == nil && len(public) == ed25519.PublicKeySize && len(digest) == 32 &&
 		base64.RawURLEncoding.EncodeToString(public) == item.PublicKey &&
