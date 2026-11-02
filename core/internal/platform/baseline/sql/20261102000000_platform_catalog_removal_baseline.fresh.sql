@@ -3,7 +3,7 @@
 DO $catalog_removal$
 DECLARE
     object_record record;
-    current_schema_name text := pg_catalog.current_schema();
+    current_schema_name text := current_schema;
     has_rows boolean;
 BEGIN
     FOR object_record IN
