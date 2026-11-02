@@ -73,10 +73,6 @@ tasks:
         -restore-password-file /run/secrets/postgres-restore-password.txt
         -reactivation-observer-password-file
         /run/secrets/postgres-reactivation-observer-password.txt
-        -catalog-package-signing-seed-file
-        /run/secrets/catalog-package-signing-seed
-        -catalog-package-keyring-file
-        /run/secrets/catalog-package-public-keyring.json
         -migration-manifest /app/migration-manifest.json
         -replace-owned-output
         -output /run/release/current
@@ -101,10 +97,6 @@ tasks:
         -restore-password-file /run/secrets/postgres-restore-password.txt
         -reactivation-observer-password-file
         /run/secrets/postgres-reactivation-observer-password.txt
-        -catalog-package-signing-seed-file
-        /run/secrets/catalog-package-signing-seed
-        -catalog-package-keyring-file
-        /run/secrets/catalog-package-public-keyring.json
         -migration-manifest /app/migration-manifest.json
         -replace-owned-output
         -output /run/release/current

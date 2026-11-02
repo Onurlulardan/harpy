@@ -82,7 +82,9 @@ func stableAfterRotation(path string) bool {
 		"release/migration-manifest.json",
 		"release/ownership-manifest.json",
 		"release/privileges-manifest.json",
-		"release/roles-manifest.json":
+		"release/roles-manifest.json",
+		"release/release-manifest.json",
+		"release/cutover-receipt.json":
 		return true
 	default:
 		return false

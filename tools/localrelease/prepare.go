@@ -31,11 +31,6 @@ func executePrepare(
 	if err != nil {
 		return err
 	}
-	packageAuthority, err := loadCatalogPackageAuthority(options)
-	if err != nil {
-		return err
-	}
-	defer clear(packageAuthority.privateKey)
 	migration, err := loadPreparedMigration(options.migrationManifest, contract)
 	if err != nil {
 		return err
@@ -47,12 +42,10 @@ func executePrepare(
 	if exists && !options.replaceOwned {
 		return reuseExistingPrepare(
 			ctx, options, contract, migration, adminDSN, passwords,
-			packageAuthority,
 		)
 	}
 	if exists && reuseExistingPrepare(
 		ctx, options, contract, migration, adminDSN, passwords,
-		packageAuthority,
 	) == nil {
 		return nil
 	}
@@ -81,12 +74,6 @@ func executePrepare(
 	agentDebugLog("H", "prepare.go:executePrepare", "release identity", map[string]string{
 		"appliedRelease": fmt.Sprintf("%t", live.appliedReleaseID != ""),
 	})
-	catalog.catalogPackageSet, err = buildCatalogPackageSet(
-		ids.release, packageAuthority,
-	)
-	if err != nil {
-		return err
-	}
 	signer, err := newSigningAuthority(now)
 	if err != nil {
 		return err
@@ -114,7 +101,7 @@ func executePrepare(
 		return err
 	}
 	if err := verifyGeneratedEvidence(
-		now, catalog, signer, packageAuthority, evidence,
+		now, catalog, signer, evidence,
 	); err != nil {
 		return err
 	}

@@ -57,9 +57,6 @@ func releaseVerificationKeys() []string {
 		"HARPY_CUTOVER_AUTHORITY_OPERATION_SIGNATURE_PATH",
 		"HARPY_CUTOVER_AUTHORITY_RECEIPT_PATH",
 		"HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH",
-		"HARPY_CATALOG_PACKAGE_SET_PATH",
-		catalogPackageKeyringEnvironmentKey,
-		catalogPackageKeyringEnvironmentKey + "_FILE",
 	}
 }
 

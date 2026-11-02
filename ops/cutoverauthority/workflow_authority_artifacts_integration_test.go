@@ -106,7 +106,6 @@ func workflowReleaseManifest(
 		OwnershipManifestSHA256: digest, BootstrapAuthoritySHA256: bootstrapSHA,
 		BootstrapOperationDigest: digest, ExtensionOperationDigest: digest,
 		CredentialCleanupDigest: digest, CutoverAuthorityOperationDigest: operationSHA,
-		CatalogPackageSetSHA256: digest,
 	}
 }
 

@@ -22,7 +22,6 @@ func loadExistingEvidence(
 	directory string,
 	now time.Time,
 	catalog releaseCatalog,
-	packageAuthority catalogPackageAuthority,
 ) (existingEvidenceIdentity, error) {
 	if err := verifyOwnedDirectory(directory, filepath.Dir(directory)); err != nil {
 		return existingEvidenceIdentity{}, err
@@ -76,7 +75,7 @@ func loadExistingEvidence(
 		extensionReceipt: extension, cleanupReceipt: cleanup,
 	}
 	if err := verifyGeneratedEvidence(
-		now, catalog, signingAuthority{trustRoot: root}, packageAuthority, evidence,
+		now, catalog, signingAuthority{trustRoot: root}, evidence,
 	); err != nil {
 		return existingEvidenceIdentity{}, fmt.Errorf("verify existing release evidence: %w", err)
 	}

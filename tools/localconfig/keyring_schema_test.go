@@ -6,7 +6,6 @@ func TestGeneratedTypedKeyringsSatisfyRuntimeSchemas(t *testing.T) {
 	set, _ := generatedSetForTest(t)
 	tests := []struct{ file, schema string }{
 		{"rest-query-cursor-keyring.json", "rest-query-cursor-keyring.schema.json"},
-		{"catalog-package-public-keyring.json", "catalog-package-public-keyring.schema.json"},
 		{"documents-kek-keyring.json", "documents-kek-keyring.schema.json"},
 		{"analytics-dashboard-export-fcart-kek-keyring.json", "analytics-dashboard-export-fcart-kek-keyring.schema.json"},
 		{"iam-access-token-keyring.json", "iam-access-token-keyring.schema.json"},

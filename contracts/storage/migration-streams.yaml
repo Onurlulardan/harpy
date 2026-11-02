@@ -3,7 +3,6 @@
   "includes": [
     "contracts/storage/migration-streams/analytics.json",
     "contracts/storage/migration-streams/billing.json",
-    "contracts/storage/migration-streams/catalog.json",
     "contracts/storage/migration-streams/documents.json",
     "contracts/storage/migration-streams/iam.json",
     "contracts/storage/migration-streams/notifications.json",

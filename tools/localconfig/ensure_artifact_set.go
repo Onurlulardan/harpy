@@ -64,13 +64,6 @@ func ensureArtifactSet(output string, now time.Time) (ensureResult, error) {
 		} else if upgraded {
 			return result, nil
 		}
-		if result, upgraded, upgradeErr := upgradeMigratorCatalogArtifactSet(
-			resolved, now, localGenerationOptions(),
-		); upgradeErr != nil {
-			return ensureResult{}, upgradeErr
-		} else if upgraded {
-			return result, nil
-		}
 		_, intact, inspectErr := inspectArtifactSet(resolved, now, true)
 		if inspectErr != nil {
 			return ensureResult{}, inspectErr

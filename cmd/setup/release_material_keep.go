@@ -27,8 +27,6 @@ func releaseCatalog() []releaseFile {
 		{key: "HARPY_CUTOVER_AUTHORITY_OPERATION_SIGNATURE_PATH", name: "cutover-operation-signature.json"},
 		{key: "HARPY_CUTOVER_AUTHORITY_RECEIPT_PATH", name: "cutover-receipt.json"},
 		{key: "HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH", name: "cutover-receipt-signature.json"},
-		{key: "HARPY_CATALOG_PACKAGE_SET_PATH", name: "catalog-package-set.json"},
-		{key: "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE", name: "catalog-package-keyring.json"},
 	}
 }
 

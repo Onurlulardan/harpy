@@ -21,7 +21,6 @@ func jobPolicies() []jobsv1.KindPolicy {
 	}
 	policies := BillingJobPolicies()
 	policies = append(policies, AnalyticsJobPolicies()...)
-	policies = append(policies, CatalogJobPolicies()...)
 	policies = append(policies, WorkJobPolicies()...)
 	policies = append(policies, DocumentsJobPolicies()...)
 	policies = append(policies, NotificationsJobPolicies()...)
@@ -51,7 +50,6 @@ func producerPolicies() []eventsv1.ProducerPolicy {
 	}
 	policies := BillingProducerPolicies()
 	policies = append(policies, AnalyticsProducerPolicies()...)
-	policies = append(policies, CatalogProducerPolicies()...)
 	policies = append(policies, WorkProducerPolicies()...)
 	for _, definition := range definitions {
 		policy, _ := eventsv1.NewProducerPolicy(definition[0], 1, "iam", definition[1])

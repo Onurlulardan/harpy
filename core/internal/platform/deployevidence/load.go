@@ -24,12 +24,6 @@ func Load(
 	if err != nil {
 		return Evidence{}, err
 	}
-	packageSet, err := verifyCatalogPackageSet(
-		settings, verifiedAuthority,
-	)
-	if err != nil {
-		return Evidence{}, err
-	}
 	artifacts, err := verifyPostgresArtifacts(settings.Artifacts())
 	if err != nil {
 		return Evidence{}, err
@@ -58,7 +52,7 @@ func Load(
 		registry: registry, release: verifiedAuthority.release,
 		authority: verifiedAuthority.authority, artifacts: boundArtifacts,
 		bootstrapReceipt: receipts.bootstrap, extensionReceipt: receipts.extension,
-		cleanupReceipt: receipts.cleanup, catalogPackages: packageSet,
+		cleanupReceipt: receipts.cleanup,
 		releaseBinding: binding,
 	}, nil
 }

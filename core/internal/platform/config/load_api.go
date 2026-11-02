@@ -16,7 +16,6 @@ type API struct {
 	iam                   IAMAPI
 	analyticsExports      AnalyticsDashboardExportArtifacts
 	iamTransferArtifacts  IAMSystemTransferArtifacts
-	catalogPackageKeys    CatalogPackageKeyring
 	documents             DocumentsAPI
 	notificationConsumers NotificationsConsumerKeyring
 }
@@ -89,10 +88,6 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 	); err != nil {
 		return API{}, err
 	}
-	catalogKeys, err := loadCatalogPackageKeyring(values)
-	if err != nil {
-		return API{}, err
-	}
 	documents, err := loadDocumentsAPI(values, runtimeConfig.Environment())
 	if err != nil {
 		return API{}, err
@@ -108,7 +103,6 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 		deploymentMode:   deploymentMode, authority: authority,
 		iam: iamConfig, analyticsExports: analyticsExports,
 		iamTransferArtifacts:  iamTransferArtifacts,
-		catalogPackageKeys:    catalogKeys,
 		documents:             documents,
 		notificationConsumers: notificationConsumers,
 	}, nil

@@ -26,45 +26,26 @@
         "HARPY_OTLP_EXPORT_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
         "HARPY_TRACE_SAMPLE_RATIO": {"$ref": "config.schema.json#/$defs/ratio", "default": "0.1", "x-harpy-minimum": "0", "x-harpy-maximum": "1"}
       },
-      "allOf": [
-        {"$ref": "config.schema.json#/$defs/runtimeDSNXor"},
-        {"$ref": "config.schema.json#/$defs/otlpHeadersXor"},
-        {"$ref": "config.schema.json#/$defs/otlpRules"},
-        {"$ref": "#/$defs/runtimeTLSRules"}
-      ]
+      "allOf": [{"$ref": "config.schema.json#/$defs/runtimeDSNXor"}, {"$ref": "config.schema.json#/$defs/otlpHeadersXor"}, {"$ref": "config.schema.json#/$defs/otlpRules"}, {"$ref": "#/$defs/runtimeTLSRules"}]
     },
-    "longRunning": {
-      "allOf": [
-        {"$ref": "#/$defs/runtime"},
-        {"type": "object", "properties": {
-          "HARPY_MANAGEMENT_LISTEN_ADDR": {"$ref": "config.schema.json#/$defs/listenAddress", "default": "0.0.0.0:9090"},
-          "HARPY_DRAIN_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "30s", "x-harpy-minimum": "5s", "x-harpy-maximum": "5m"}
-        }}
-      ]
-    },
+    "longRunning": {"allOf": [{"$ref": "#/$defs/runtime"}, {"type": "object", "properties": {"HARPY_MANAGEMENT_LISTEN_ADDR": {"$ref": "config.schema.json#/$defs/listenAddress", "default": "0.0.0.0:9090"}, "HARPY_DRAIN_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "30s", "x-harpy-minimum": "5s", "x-harpy-maximum": "5m"}}}]},
     "apiVariables": {
       "allOf": [
         {"$ref": "#/$defs/longRunning"},
-        {"type": "object", "properties": {
-          "HARPY_PUBLIC_LISTEN_ADDR": {"$ref": "config.schema.json#/$defs/listenAddress", "default": "0.0.0.0:8000", "x-harpy-different-port-from": "HARPY_MANAGEMENT_LISTEN_ADDR"},
-          "HARPY_HTTP_READ_HEADER_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
-          "HARPY_HTTP_IDLE_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "60s", "x-harpy-minimum": "5s", "x-harpy-maximum": "5m"},
-          "HARPY_HTTP_UNARY_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "30s", "x-harpy-minimum": "1s", "x-harpy-maximum": "2m"},
-          "HARPY_HTTP_MAX_HEADER_BYTES": {"$ref": "config.schema.json#/$defs/integer", "default": "65536", "x-harpy-minimum": "8192", "x-harpy-maximum": "1048576"},
-          "HARPY_HTTP_MAX_JSON_BODY_BYTES": {"$ref": "config.schema.json#/$defs/integer", "default": "1048576", "x-harpy-minimum": "4096", "x-harpy-maximum": "16777216"},
-          "HARPY_REST_QUERY_CURSOR_KEYRING": {
-            "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
-            "contentSchema": {"$ref": "rest-query-cursor-keyring.schema.json"}
-          },
-          "HARPY_REST_QUERY_CURSOR_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
-          "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING": {
-            "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
-            "contentSchema": {"$ref": "catalog-package-public-keyring.schema.json"}
-          },
-          "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
-        }},
+        {
+          "type": "object",
+          "properties": {
+            "HARPY_PUBLIC_LISTEN_ADDR": {"$ref": "config.schema.json#/$defs/listenAddress", "default": "0.0.0.0:8000", "x-harpy-different-port-from": "HARPY_MANAGEMENT_LISTEN_ADDR"},
+            "HARPY_HTTP_READ_HEADER_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
+            "HARPY_HTTP_IDLE_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "60s", "x-harpy-minimum": "5s", "x-harpy-maximum": "5m"},
+            "HARPY_HTTP_UNARY_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "30s", "x-harpy-minimum": "1s", "x-harpy-maximum": "2m"},
+            "HARPY_HTTP_MAX_HEADER_BYTES": {"$ref": "config.schema.json#/$defs/integer", "default": "65536", "x-harpy-minimum": "8192", "x-harpy-maximum": "1048576"},
+            "HARPY_HTTP_MAX_JSON_BODY_BYTES": {"$ref": "config.schema.json#/$defs/integer", "default": "1048576", "x-harpy-minimum": "4096", "x-harpy-maximum": "16777216"},
+            "HARPY_REST_QUERY_CURSOR_KEYRING": {"$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json", "contentSchema": {"$ref": "rest-query-cursor-keyring.schema.json"}},
+            "HARPY_REST_QUERY_CURSOR_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+          }
+        },
         {"$ref": "config.schema.json#/$defs/cursorKeyringXor"},
-        {"$ref": "config.schema.json#/$defs/catalogPackageKeyringXor"},
         {"$ref": "iam-system-transfer-config-fragment.schema.json"},
         {"$ref": "iam-api-config-fragment.schema.json"}
       ]
@@ -72,25 +53,20 @@
     "workerVariables": {
       "allOf": [
         {"$ref": "#/$defs/longRunning"},
-        {"type": "object", "required": ["GOMEMLIMIT"], "properties": {
-          "GOMEMLIMIT": {"$ref": "config.schema.json#/$defs/byteCount", "x-harpy-minimum": "536870912"},
-          "HARPY_RABBITMQ_URL": {"$ref": "config.schema.json#/$defs/rabbitMQURL"},
-          "HARPY_RABBITMQ_URL_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
-          "HARPY_REST_QUERY_CURSOR_KEYRING": {
-            "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
-            "contentSchema": {"$ref": "rest-query-cursor-keyring.schema.json"}
-          },
-          "HARPY_REST_QUERY_CURSOR_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
-          "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING": {
-            "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
-            "contentSchema": {"$ref": "catalog-package-public-keyring.schema.json"}
-          },
-          "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
-        }},
+        {
+          "type": "object",
+          "required": ["GOMEMLIMIT"],
+          "properties": {
+            "GOMEMLIMIT": {"$ref": "config.schema.json#/$defs/byteCount", "x-harpy-minimum": "536870912"},
+            "HARPY_RABBITMQ_URL": {"$ref": "config.schema.json#/$defs/rabbitMQURL"},
+            "HARPY_RABBITMQ_URL_FILE": {"$ref": "config.schema.json#/$defs/secretFile"},
+            "HARPY_REST_QUERY_CURSOR_KEYRING": {"$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json", "contentSchema": {"$ref": "rest-query-cursor-keyring.schema.json"}},
+            "HARPY_REST_QUERY_CURSOR_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+          }
+        },
         {"$ref": "#/$defs/rabbitMQURLXor"},
         {"$ref": "#/$defs/rabbitMQTLSRules"},
         {"$ref": "config.schema.json#/$defs/cursorKeyringXor"},
-        {"$ref": "config.schema.json#/$defs/catalogPackageKeyringXor"},
         {"$ref": "iam-system-transfer-config-fragment.schema.json"},
         {"$ref": "iam-worker-config-fragment.schema.json"}
       ]
@@ -101,21 +77,26 @@
         {
           "type": "object",
           "required": [
-            "HARPY_RELEASE_MANIFEST_PATH", "HARPY_RELEASE_SIGNATURE_PATH",
-            "HARPY_RELEASE_TRUST_ROOT_PATH", "HARPY_BOOTSTRAP_RECEIPT_PATH",
+            "HARPY_RELEASE_MANIFEST_PATH",
+            "HARPY_RELEASE_SIGNATURE_PATH",
+            "HARPY_RELEASE_TRUST_ROOT_PATH",
+            "HARPY_BOOTSTRAP_RECEIPT_PATH",
             "HARPY_EXTENSION_RECEIPT_PATH",
             "HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH",
             "HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH",
             "HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH",
-            "HARPY_MIGRATION_MANIFEST_PATH", "HARPY_EXTENSION_MANIFEST_PATH",
-            "HARPY_ROLES_MANIFEST_PATH", "HARPY_PRIVILEGES_MANIFEST_PATH",
-            "HARPY_OWNERSHIP_MANIFEST_PATH", "HARPY_BOOTSTRAP_OPERATION_PATH",
-            "HARPY_EXTENSION_OPERATION_PATH", "HARPY_CREDENTIAL_CLEANUP_OPERATION_PATH",
+            "HARPY_MIGRATION_MANIFEST_PATH",
+            "HARPY_EXTENSION_MANIFEST_PATH",
+            "HARPY_ROLES_MANIFEST_PATH",
+            "HARPY_PRIVILEGES_MANIFEST_PATH",
+            "HARPY_OWNERSHIP_MANIFEST_PATH",
+            "HARPY_BOOTSTRAP_OPERATION_PATH",
+            "HARPY_EXTENSION_OPERATION_PATH",
+            "HARPY_CREDENTIAL_CLEANUP_OPERATION_PATH",
             "HARPY_CUTOVER_AUTHORITY_OPERATION_PATH",
             "HARPY_CUTOVER_AUTHORITY_OPERATION_SIGNATURE_PATH",
             "HARPY_CUTOVER_AUTHORITY_RECEIPT_PATH",
-            "HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH",
-            "HARPY_CATALOG_PACKAGE_SET_PATH"
+            "HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH"
           ],
           "properties": {
             "HARPY_RELEASE_MANIFEST_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
@@ -137,16 +118,9 @@
             "HARPY_CUTOVER_AUTHORITY_OPERATION_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
             "HARPY_CUTOVER_AUTHORITY_OPERATION_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
             "HARPY_CUTOVER_AUTHORITY_RECEIPT_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
-            "HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
-            "HARPY_CATALOG_PACKAGE_SET_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"},
-            "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING": {
-              "$ref": "config.schema.json#/$defs/secret", "contentMediaType": "application/json",
-              "contentSchema": {"$ref": "catalog-package-public-keyring.schema.json"}
-            },
-            "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE": {"$ref": "config.schema.json#/$defs/secretFile"}
+            "HARPY_CUTOVER_AUTHORITY_RECEIPT_SIGNATURE_PATH": {"$ref": "config.schema.json#/$defs/absolutePath"}
           }
-        },
-        {"$ref": "config.schema.json#/$defs/catalogPackageKeyringXor"}
+        }
       ],
       "unevaluatedProperties": false
     },
@@ -161,21 +135,10 @@
         "HARPY_OTLP_EXPORT_TIMEOUT": {"$ref": "config.schema.json#/$defs/duration", "default": "5s", "x-harpy-minimum": "1s", "x-harpy-maximum": "30s"},
         "HARPY_TRACE_SAMPLE_RATIO": {"$ref": "config.schema.json#/$defs/ratio", "default": "0.1", "x-harpy-minimum": "0", "x-harpy-maximum": "1"}
       },
-      "allOf": [
-        {"$ref": "config.schema.json#/$defs/otlpHeadersXor"},
-        {"$ref": "config.schema.json#/$defs/otlpRules"}
-      ]
+      "allOf": [{"$ref": "config.schema.json#/$defs/otlpHeadersXor"}, {"$ref": "config.schema.json#/$defs/otlpRules"}]
     },
-    "rabbitMQURLXor": {"oneOf": [
-      {"required": ["HARPY_RABBITMQ_URL"], "not": {"required": ["HARPY_RABBITMQ_URL_FILE"]}},
-      {"required": ["HARPY_RABBITMQ_URL_FILE"], "not": {"required": ["HARPY_RABBITMQ_URL"]}}
-    ]},
-    "rabbitMQTLSRules": {"allOf": [
-      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_RABBITMQ_URL"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_RABBITMQ_URL": {"pattern": "^amqps://"}}}}
-    ]},
-    "runtimeTLSRules": {"allOf": [
-      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_POSTGRES_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_POSTGRES_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}},
-      {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_POSTGRES_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_POSTGRES_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}}
-    ]}
+    "rabbitMQURLXor": {"oneOf": [{"required": ["HARPY_RABBITMQ_URL"], "not": {"required": ["HARPY_RABBITMQ_URL_FILE"]}}, {"required": ["HARPY_RABBITMQ_URL_FILE"], "not": {"required": ["HARPY_RABBITMQ_URL"]}}]},
+    "rabbitMQTLSRules": {"allOf": [{"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_RABBITMQ_URL"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_RABBITMQ_URL": {"pattern": "^amqps://"}}}}]},
+    "runtimeTLSRules": {"allOf": [{"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_POSTGRES_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["production", "staging"]}}}, "then": {"properties": {"HARPY_POSTGRES_DSN": {"pattern": "[?&]sslmode=verify-full(?:&|$)"}}}}, {"if": {"required": ["HARPY_ENVIRONMENT", "HARPY_POSTGRES_DSN"], "properties": {"HARPY_ENVIRONMENT": {"enum": ["development", "test"]}}}, "then": {"properties": {"HARPY_POSTGRES_DSN": {"pattern": "[?&]sslmode=(?:disable|verify-full)(?:&|$)"}}}}]}
   }
 }

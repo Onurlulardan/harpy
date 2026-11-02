@@ -1,5 +1,8 @@
 # 05 — Doğrulanmış boşluklar
 
+> **Tarihsel audit notu:** Aşağıdaki Catalog sayıları ve dosya yolları kaldırma öncesi envanterdir. `fix/migration-baseline-completion` branch'inde Catalog business module, 54 migration SQL kaynağı ve owner adapter'ları kaldırıldı. Baseline snapshot'ları tarihsel DDL içerdiği için platform/tenant cleanup migration'ları baseline sonrasında çalışır; beklenmeyen dolu tablolar veya dış bağımlılıklar varsa transaction fail-closed durur. Baseline dump'ın kendisi yeniden üretilmedi. `TestBaselineDumpCleanupPostgres18` mevcut platform ve tenant dump'ını PostgreSQL 18 üzerinde uygular ve cleanup sonrası Catalog önek kümesinin boş kaldığını doğrular.
+
+
 Bu belge 2 Kasım 2026 çalışma ağacında doğrulanan bulguların sahibidir. Agent iş emirleri [03](03-agent-work-orders.md) içindedir. Buradaki maddeler tahmin değildir.
 
 ## Envanter
@@ -65,4 +68,4 @@ Catalog'un kendi migration ağacında 54 SQL vardır: 45 tenant, 9 platform. Man
 
 ## Faz 2 sınırının açık bıraktığı testler
 
-`platform.platform_migration_history` ve 1.982 entry assert'leri migrator paketinin dışında da durur. Örnekler: `core/internal/platform/migrator/adapters/postgres/history_store_assertions_integration_test.go`, `history_store_denials_integration_test.go`, `tenant_finalized_release_seed_integration_test.go` ve release frontier migration testleri. Faz 0, `rg` ile tam dosya listesini çıkarır. Faz 2a yalnız migrator ve composition ağacını değiştirir. Faz 2b bu listenin migrator dışı maddelerini günceller ve `core/internal/modules/catalog/**` ile Catalog'a ait IAM/Analytics SQL'ine yazmaz.
+`platform.platform_migration_history` ve 1.982 entry assert'leri migrator paketinin dışında da durur. Örnekler: `core/internal/platform/migrator/adapters/postgres/history_store_assertions_integration_test.go`, `history_store_denials_integration_test.go`, `tenant_finalized_release_seed_integration_test.go` ve release frontier migration testleri. Faz 0, `rg` ile tam dosya listesini çıkarır. Faz 2a migrator ve composition ağacını değiştirir. Catalog removal bu branch'te ayrı ama aynı migration baseline iş akışına bağlı workstream olarak yürütülür; generic migration catalog ve IAM permission/resource catalog altyapısı korunur.

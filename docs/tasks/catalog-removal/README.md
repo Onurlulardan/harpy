@@ -12,7 +12,7 @@ Bu paket dağıtım/kurulum sistemi ForgeCRUD ürün katmanına aittir. Harpy'ni
 
 Envanter GitHub main ağacından 30 Ekim 2026 tarihinde çıkarıldı. Mevcut ağaçta:
 
-- core/internal/modules/catalog/ altında 646 tracked file,
+- core/internal/modules/catalog/ altında yüzlerce tracked file,
 - Catalog modülünün kendi migration ağacında 54 SQL migration dosyası,
 - API composition ve Worker composition içinde ayrı Catalog runtime wiring,
 - IAM ve Analytics tarafında Catalog component-owner/projection entegrasyonları,

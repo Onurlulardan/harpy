@@ -20,7 +20,6 @@ type apiRuntime struct {
 	deploymentPolicy     *tenancymodule.DeploymentPolicyRuntime
 	asyncWriteCatalogs   platformasync.WriteCatalogs
 	analytics            analyticsHTTPRuntime
-	catalog              catalogHTTPRuntime
 	documents            *documentsmodule.HTTPHandler
 	documentsProduction  *documentsmodule.Production
 	platformOps          *platformOpsHTTPRuntime

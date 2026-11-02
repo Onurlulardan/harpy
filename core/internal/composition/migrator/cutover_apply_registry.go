@@ -3,7 +3,6 @@ package migrator
 import (
 	"github.com/Onurlulardan/harpy/core/internal/modules/analytics"
 	"github.com/Onurlulardan/harpy/core/internal/modules/billing"
-	"github.com/Onurlulardan/harpy/core/internal/modules/catalog"
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/modules/notifications"
@@ -54,10 +53,6 @@ func newCutoverApplyRegistry() (cutover.ApplyRegistry, error) {
 	if err != nil {
 		return cutover.ApplyRegistry{}, err
 	}
-	catalogContract, err := catalog.CutoverApplyContract()
-	if err != nil {
-		return cutover.ApplyRegistry{}, err
-	}
 	workContract, err := work.CutoverApplyContract()
 	if err != nil {
 		return cutover.ApplyRegistry{}, err
@@ -81,7 +76,6 @@ func newCutoverApplyRegistry() (cutover.ApplyRegistry, error) {
 		iamContract,
 		billingTenantContract,
 		analyticsContract,
-		catalogContract,
 		workContract,
 		documentsContract,
 		notificationsContract,

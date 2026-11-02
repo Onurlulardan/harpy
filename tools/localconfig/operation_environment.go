@@ -12,8 +12,6 @@ func schemaExecutorEnvironment(set *artifactSet) profileEnvironment {
 
 func migratorEnvironment(set *artifactSet) profileEnvironment {
 	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-migrator-dsn.txt")
-	values["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE"] =
-		secretRoot + "catalog-package-public-keyring.json"
 	paths := map[string]string{
 		"HARPY_RELEASE_MANIFEST_PATH":                      "release.json",
 		"HARPY_RELEASE_SIGNATURE_PATH":                     "release.sig",
@@ -23,7 +21,6 @@ func migratorEnvironment(set *artifactSet) profileEnvironment {
 		"HARPY_BOOTSTRAP_RECEIPT_PATH":                     "bootstrap-receipt.json",
 		"HARPY_EXTENSION_RECEIPT_PATH":                     "extension-receipt.json",
 		"HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH":            "cleanup-receipt.json",
-		"HARPY_CATALOG_PACKAGE_SET_PATH":                   "catalog-package-set.json",
 		"HARPY_MIGRATION_MANIFEST_PATH":                    "migration-manifest.json",
 		"HARPY_EXTENSION_MANIFEST_PATH":                    "extension-manifest.json",
 		"HARPY_ROLES_MANIFEST_PATH":                        "roles-manifest.json",

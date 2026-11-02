@@ -4,8 +4,6 @@ package main
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/json"
 	"os"
 	"path/filepath"
 	"testing"
@@ -53,26 +51,6 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 	backupPath := writeIntegrationSecret(t, directory, "backup", "backup-integration-only")
 	restorePath := writeIntegrationSecret(t, directory, "restore", "restore-integration-only")
 	observerPath := writeIntegrationSecret(t, directory, "observer", "observer-integration-only")
-	packageAuthority := testCatalogPackageAuthority()
-	seedPath := writeIntegrationSecret(
-		t, directory, "catalog-package-seed",
-		base64.RawURLEncoding.EncodeToString(packageAuthority.privateKey.Seed()),
-	)
-	keyringDocument, err := json.Marshal(localCatalogKeyringDocument{
-		Version: 1,
-		Keys: []localCatalogPublicKey{{
-			KeyID: packageAuthority.keyID,
-			PublicKey: base64.RawURLEncoding.EncodeToString(
-				packageAuthority.keys[packageAuthority.keyID],
-			),
-		}},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	keyringPath := writeIntegrationSecret(
-		t, directory, "catalog-package-keyring", string(keyringDocument),
-	)
 	migration, err := loadMigrationArtifact()
 	if err != nil {
 		t.Fatal(err)
@@ -87,8 +65,6 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 		"-migrator-password-file", migratorPath, "-backup-password-file", backupPath,
 		"-restore-password-file", restorePath, "-migration-manifest", migrationPath,
 		"-reactivation-observer-password-file", observerPath,
-		"-catalog-package-signing-seed-file", seedPath,
-		"-catalog-package-keyring-file", keyringPath,
 		"-output", output,
 	}
 	options, err := parsePrepareOptions(arguments)

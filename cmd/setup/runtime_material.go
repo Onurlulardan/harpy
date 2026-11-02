@@ -17,6 +17,9 @@ func runtimeMaterial(root, profile string) ([]string, error) {
 	if err = os.MkdirAll(dir, 0o700); err != nil {
 		return nil, err
 	}
+	if err = removeRetiredCatalogFiles(dir, "catalog-package-keyring.json"); err != nil {
+		return nil, err
+	}
 	now := time.Now().UTC().Truncate(time.Second)
 	lines, err := writeIdentityMaterial(dir, now)
 	if err != nil {
@@ -70,4 +73,14 @@ func iamKeyID(material [32]byte) string {
 
 func iamStamp(value time.Time) string {
 	return value.UTC().Format("2006-01-02T15:04:05Z")
+}
+
+func removeRetiredCatalogFiles(directory string, names ...string) error {
+	for _, name := range names {
+		err := os.Remove(filepath.Join(directory, name))
+		if err != nil && !os.IsNotExist(err) {
+			return err
+		}
+	}
+	return nil
 }

@@ -8,7 +8,6 @@ type APISetter interface {
 
 func SetAPI(setter APISetter) {
 	setter.Helper()
-	setCatalogPackageKeyring(setter)
 	SetIAMAPI(setter)
 	setPhase14API(setter)
 	setAnalyticsDashboardExport(setter, false)
@@ -24,7 +23,6 @@ type WorkerSetter interface {
 func SetWorker(setter WorkerSetter) {
 	setter.Helper()
 	setter.Setenv("GOMEMLIMIT", "512MiB")
-	setCatalogPackageKeyring(setter)
 	SetIAMWorker(setter)
 	setPhase14Worker(setter)
 	setRestQueryCursorKeyring(setter)
@@ -36,8 +34,7 @@ func SetWorker(setter WorkerSetter) {
 
 func APIEnvironment(fixture ArtifactFixture, now time.Time) []string {
 	fixture.Helper()
-	values := append([]string{catalogPackageKeyringEnvironment()},
-		IAMAPIEnvironment(fixture, now)...)
+	values := append([]string{}, IAMAPIEnvironment(fixture, now)...)
 	values = append(values, phase14APIEnvironment(fixture)...)
 	values = append(values, analyticsDashboardExportEnvironment(fixture, false)...)
 	values = append(values, iamSystemTransferEnvironment(fixture)...)
@@ -49,7 +46,7 @@ func APIEnvironment(fixture ArtifactFixture, now time.Time) []string {
 func WorkerEnvironment(fixture ArtifactFixture, now time.Time) []string {
 	fixture.Helper()
 	values := append([]string{
-		"GOMEMLIMIT=512MiB", catalogPackageKeyringEnvironment(),
+		"GOMEMLIMIT=512MiB",
 	}, IAMWorkerEnvironment(fixture, now)...)
 	values = append(values, phase14WorkerEnvironment(fixture)...)
 	values = append(values, restQueryCursorKeyringEnvironment())

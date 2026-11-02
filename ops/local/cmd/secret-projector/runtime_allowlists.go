@@ -2,7 +2,6 @@ package main
 
 func sharedRuntimeSecretNames() []string {
 	return []string{
-		"catalog-package-public-keyring.json",
 		"documents-kek-keyring.json",
 		"analytics-dashboard-export-fcart-kek-keyring.json",
 		"gcp-subject-token.jwt",

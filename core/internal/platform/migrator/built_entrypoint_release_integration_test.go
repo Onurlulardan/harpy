@@ -45,7 +45,6 @@ func writeBuiltEntrypointRelease(
 		ExtensionOperationDigest:        catalog.extensionOperation.digest,
 		CredentialCleanupDigest:         catalog.cleanupOperation.digest,
 		CutoverAuthorityOperationDigest: catalog.cutoverAuthorityOperation.digest,
-		CatalogPackageSetSHA256:         catalog.catalogPackageSet.digest,
 	}
 	document := writeBuiltEntrypointArtifact(t, directory, "release.json", manifest)
 	signed := writeBuiltEntrypointArtifact(t, directory, "release.sig", map[string]any{

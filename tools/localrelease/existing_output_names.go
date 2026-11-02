@@ -11,7 +11,6 @@ var existingOutputNames = []string{
 	"extension-operation.json",
 	"cleanup-operation.json",
 	"binary-schema-contract.json",
-	"catalog-package-set.json",
 	"trust-root.json",
 	"bootstrap-authority.json",
 	"bootstrap-authority.sig",

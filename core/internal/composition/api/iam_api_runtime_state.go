@@ -25,7 +25,6 @@ type iamAPIRuntime struct {
 	customerProvisioningAccess *iammodule.CustomerProvisioningAccessRuntime
 	portalAccess               *iammodule.PortalAccessRuntime
 	analyticsAccess            *iammodule.AnalyticsAccessRuntime
-	catalogAccess              *iammodule.CatalogAccessRuntime
 	documentsAccess            *iammodule.DocumentsAccessRuntime
 	documentsArchiveAccess     *iammodule.DocumentsArchiveAccessRuntime
 	notificationsAccess        *iammodule.NotificationsAccessRuntime

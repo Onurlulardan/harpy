@@ -54,8 +54,6 @@ func addS3Environment(
 func addSharedKeyringEnvironment(values profileEnvironment) {
 	values["HARPY_REST_QUERY_CURSOR_KEYRING_FILE"] =
 		secretRoot + "rest-query-cursor-keyring.json"
-	values["HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE"] =
-		secretRoot + "catalog-package-public-keyring.json"
 	values["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"] =
 		secretRoot + "iam-login-directory-keyring.json"
 	values["HARPY_IAM_ONE_TIME_TOKEN_KEYRING_FILE"] =

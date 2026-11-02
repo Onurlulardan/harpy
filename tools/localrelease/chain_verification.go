@@ -17,7 +17,6 @@ func verifyGeneratedEvidence(
 	now time.Time,
 	catalog releaseCatalog,
 	signer signingAuthority,
-	packageAuthority catalogPackageAuthority,
 	evidence generatedEvidence,
 ) error {
 	root, err := attestation.ParseTrustRoot(signer.trustRoot.document)
@@ -30,14 +29,6 @@ func verifyGeneratedEvidence(
 	)
 	if err != nil {
 		return fmt.Errorf("verify release: %w", err)
-	}
-	if _, err := attestation.VerifyCatalogPackageSet(
-		catalog.catalogPackageSet.document,
-		release,
-		packageAuthority,
-		root.ActivePublicKeys(release.IssuedAt()),
-	); err != nil {
-		return fmt.Errorf("verify Catalog package set: %w", err)
 	}
 	authority, err := attestation.VerifyBootstrapAuthority(
 		evidence.authority.document.document, evidence.authority.signature.document, root, now,

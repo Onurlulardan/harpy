@@ -28,5 +28,4 @@ type ReleaseManifest struct {
 	ExtensionOperationDigest        string `json:"extension_operation_digest"`
 	CredentialCleanupDigest         string `json:"credential_cleanup_operation_digest"`
 	CutoverAuthorityOperationDigest string `json:"cutover_authority_adoption_operation_digest"`
-	CatalogPackageSetSHA256         string `json:"catalog_package_set_sha256"`
 }

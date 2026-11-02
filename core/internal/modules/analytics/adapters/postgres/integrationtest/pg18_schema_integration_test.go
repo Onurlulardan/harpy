@@ -42,7 +42,6 @@ CHECK(fenced=(fence_code IS NOT NULL)));
 CREATE TABLE platform.cutover_groups(scope_kind text,scope_id uuid,group_id text,generation bigint,state text,writer text,requested_by uuid,approved_by uuid,reason text,change_reference text,acceptance_digest text,changed_at timestamptz,PRIMARY KEY(scope_kind,scope_id,group_id));
 CREATE TABLE platform.cutover_group_members(scope_kind text,scope_id uuid,group_id text,domain text,ordinal bigint NOT NULL,PRIMARY KEY(scope_kind,scope_id,group_id,domain));
 CREATE TABLE platform.domain_cutovers(scope_kind text,scope_id uuid,domain text,generation bigint,state text,writer text,requested_by uuid,approved_by uuid,reason text,change_reference text,acceptance_digest text,changed_at timestamptz,PRIMARY KEY(scope_kind,scope_id,domain));
-CREATE TABLE platform.catalog_package_owner_payloads(package_id uuid,version text,component_id uuid,owner text,contract text,content_sha256 text,document jsonb,release_id uuid,registered_at timestamptz);
 CREATE SCHEMA t_analytics_a AUTHORIZATION harpy_owner;
 CREATE SCHEMA t_analytics_b AUTHORIZATION harpy_owner;
 GRANT USAGE ON SCHEMA platform,t_analytics_a,t_analytics_b TO harpy_runtime;

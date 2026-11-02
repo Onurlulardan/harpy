@@ -27,6 +27,36 @@ jobs:
           go run ./tools/currencyregistry
           git diff --exit-code -- contracts/generated.yaml
 
+
+  baseline-pg18:
+    name: baseline PostgreSQL 18
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.3-pg18-bookworm@sha256:c8a919765f2ef63681329fa21021b830cd4d79d1165bdca730dd016014e4da84
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: harpy_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d harpy_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      HARPY_BASELINE_PG18_TEST_DSN: postgresql://postgres:postgres@localhost:5432/harpy_test?sslmode=disable
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go 1.26
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.5"
+      - name: Test Catalog cleanup migrations on PostgreSQL 18
+        run: go test ./core/internal/platform/baseline -run 'TestCatalogRemovalPostgres18|TestBaselineDumpCleanupPostgres18' -count=1 -v
+
   fileguard:
     name: fileguard
     runs-on: ubuntu-latest

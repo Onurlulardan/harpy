@@ -2,13 +2,10 @@ package main
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
 
-	catalogpackagev1 "github.com/Onurlulardan/harpy/contracts/catalogpackage/v1"
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/internal/attestation"
 )
@@ -63,10 +60,6 @@ func loadExistingReleaseCatalog(
 	if err != nil {
 		return releaseCatalog{}, err
 	}
-	catalog.catalogPackageSet, err = loadCatalogPackageSetArtifact(directory)
-	if err != nil {
-		return releaseCatalog{}, err
-	}
 	catalog.schemaContract = contract
 	for _, item := range []artifact{
 		catalog.bootstrapOperation, catalog.extensionOperation,
@@ -77,27 +70,6 @@ func loadExistingReleaseCatalog(
 		}
 	}
 	return catalog, verifyPostgresCatalog(catalog)
-}
-
-func loadCatalogPackageSetArtifact(directory string) (artifact, error) {
-	const name = "catalog-package-set.json"
-	document, err := os.ReadFile(filepath.Join(directory, name))
-	if err != nil {
-		return artifact{}, fmt.Errorf("read %s: %w", name, err)
-	}
-	if len(document) > catalogpackagev1.MaximumPackageSetBytes {
-		return artifact{}, fmt.Errorf(
-			"%s exceeds the %d byte contract limit",
-			name, catalogpackagev1.MaximumPackageSetBytes,
-		)
-	}
-	if _, err := catalogpackagev1.DecodeCanonical(document); err != nil {
-		return artifact{}, fmt.Errorf("verify %s: %w", name, err)
-	}
-	digest := sha256.Sum256(document)
-	return artifact{
-		name: name, digest: hex.EncodeToString(digest[:]), document: document,
-	}, nil
 }
 
 func loadOwnershipArtifact(directory string) (artifact, error) {

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"crypto/ed25519"
 	"os"
 	"path/filepath"
 	"testing"
@@ -22,13 +20,6 @@ func TestGeneratedEvidencePassesProductionVerifiers(t *testing.T) {
 	}
 	now := time.Now().UTC().Truncate(time.Second)
 	ids := newReleaseIDs()
-	packageAuthority := testCatalogPackageAuthority()
-	catalog.catalogPackageSet, err = buildCatalogPackageSet(
-		ids.release, packageAuthority,
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
 	signer, err := newSigningAuthority(now)
 	if err != nil {
 		t.Fatal(err)
@@ -62,7 +53,7 @@ func TestGeneratedEvidencePassesProductionVerifiers(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err := verifyGeneratedEvidence(
-		now, catalog, signer, packageAuthority, evidence,
+		now, catalog, signer, evidence,
 	); err != nil {
 		t.Fatal(err)
 	}
@@ -77,7 +68,7 @@ func TestGeneratedEvidencePassesProductionVerifiers(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := loadExistingEvidence(
-		target, now, loadedCatalog, packageAuthority,
+		target, now, loadedCatalog,
 	); err != nil {
 		t.Fatal(err)
 	}
@@ -85,22 +76,9 @@ func TestGeneratedEvidencePassesProductionVerifiers(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := loadExistingEvidence(
-		target, now, loadedCatalog, packageAuthority,
+		target, now, loadedCatalog,
 	); err == nil {
 		t.Fatal("corrupt existing release evidence was accepted")
-	}
-}
-
-func testCatalogPackageAuthority() catalogPackageAuthority {
-	privateKey := ed25519.NewKeyFromSeed(
-		bytes.Repeat([]byte{0x35}, ed25519.SeedSize),
-	)
-	publicKey := privateKey.Public().(ed25519.PublicKey)
-	return catalogPackageAuthority{
-		keyID: "catalog-test-2026-07", privateKey: privateKey,
-		keys: map[string]ed25519.PublicKey{
-			"catalog-test-2026-07": publicKey,
-		},
 	}
 }
 

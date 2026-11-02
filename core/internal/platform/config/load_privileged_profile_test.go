@@ -75,8 +75,6 @@ func TestMigratorLoadsVerificationWithoutPrivilegedSigningKey(t *testing.T) {
 	}
 	if loaded.Verification().BootstrapReceiptPath().Value() == "" ||
 		loaded.Verification().ExtensionReceiptPath().Value() == "" ||
-		loaded.Verification().CatalogPackageSetPath().Value() == "" ||
-		loaded.CatalogPackageKeyring().Validate() != nil ||
 		loaded.Artifacts().MigrationManifestPath().Value() == "" {
 		t.Fatal("migrator verification receipts were not loaded")
 	}

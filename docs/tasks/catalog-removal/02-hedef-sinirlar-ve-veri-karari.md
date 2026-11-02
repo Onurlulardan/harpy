@@ -83,7 +83,7 @@ Catalog'u çıkarmak, Catalog'a ait verilerin otomatik olarak silinebileceği an
 
 Catalog owner sözleşmesinde görünen platform.catalog_package_owner_payloads, platform.catalog_package_versions, platform.catalog_packages tabloları ile menu_configs, module_dependencies, module_forms, module_migration_runs, module_schema_versions ve modules legacy table inventory'si ayrı ayrı sorgulanmalıdır. Bu isimlerin manifestte bulunması, canlı DB'de hâlâ bulunduklarını veya boş olduklarını kanıtlamaz.
 
-IAM ve Analytics Catalog integration tabloları Catalog-owned tablolardan farklıdır. Bunların cleanup'ı kendi owner modül migration'ı ve owner contract'ı üzerinden ele alınır; Catalog SQL'inin içinden başka modül tablosu DROP edilmez.
+IAM ve Analytics Catalog integration tabloları Catalog-owned tablolardan farklıdır. Bunlar yalnız `iam_catalog_*` ve `analytics_catalog_*` isim alanındaki owner tabloları ile sınırlı cleanup kapsamındadır; generic IAM/Analytics tabloları korunur. Cleanup migration, bu owner tablolarında baseline seed dışı veri bulursa hata verir.
 
 ## 6. Veri saklama / silme seçimi
 
@@ -93,7 +93,7 @@ Destructive migration yazılmadan önce aşağıdaki kararlardan biri açıkça 
 - **Transform:** İş açısından gerekli kayıtlar belirlenmiş native owner state'e aktarılır. Her mapping, referential integrity, permission ve rollback/forward-recovery kanıtı test edilir. ForgeCRUD package modelini Harpy'ye taşımak transform kabul edilmez.
 - **Drop:** Yalnızca state'in gereksiz olduğu, hiçbir consumer'ın kullanmadığı ve retention/contract yükümlülüğü bulunmadığı kanıtlanırsa uygulanır. Onaylı kapsam, tenant count ve object inventory kaydedilir.
 
-Karar verilmedikçe default davranış **veriyi silmemek ve destructive DB değişikliği yapmamaktır**. Kullanıcının local volume'ları veya gerçek DB'si hiçbir test/agent tarafından otomatik reset edilmez.
+Karar verilmedikçe default davranış **veriyi silmemek ve destructive DB değişikliği yapmamaktır**. Branch'teki versioned cleanup migration bu nedenle Catalog-owned tablolarda boşluk/default menu seed kontrolü yapar; beklenmeyen satır bulursa hiçbir DROP işlemi başlamadan transaction'ı abort eder. IAM Catalog resource/permission kayıtları hard-delete edilmez: active binding'ler revoked, permission ve resource kayıtları retired yapılır. Bu, dolu Catalog state için retain/export/drop kararının yerine geçmez. Kullanıcının local volume'ları veya gerçek DB'si hiçbir test/agent tarafından otomatik reset edilmez.
 
 ## 7. API ve dış consumer uyumluluğu
 

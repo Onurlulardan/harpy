@@ -10,13 +10,13 @@
 6. `core/internal/platform/migrator` ve `tools/localrelease` topluca silinmez. Call graph ve testler, legacy migration framework ile license, role, extension, secret, installation, backup/restore, tenant identity ve RLS davranışını ayırır.
 7. Bir agent başka agent'ın sahip olduğu dosya grubunu değiştirmez. Fazlar tek entegrasyon dalında sırayla ilerler. Her faz kabul edilmeden sonraki agent eski katmanları silmez.
 8. Her fazın sonunda `git diff --check`, ilgili testler ve değişen dosyaların listesi raporlanır. Test gevşetme, ignored test ve `go test` atlama kabul edilmez.
-9. Bu set Catalog removal yapmaz. `core/internal/modules/catalog/**`, Catalog package-set, keyring ve Catalog'a ait IAM/Analytics SQL'i Catalog removal sahibine kalır. Ortak release/setup yüzeyine aynı anda iki iş yazmaz.
+9. Catalog business module removal bu branch içinde yürütülür. Generic migration catalog, PostgreSQL catalog, REST Query field catalog, IAM permission/resource catalog ve async/job catalog korunur.
 
 ## Önkoşul
 
-Faz 0 Catalog kararını beklemez. Faz 1, Catalog fresh-install şema kararı yazılmadan baseline dondurmaz.
+Faz 0, Catalog verisi için retain/export/drop kararını zorunlu tutar. Mevcut baseline snapshot'ı tarihsel Catalog DDL içerir; post-baseline cleanup migration yalnız boş/default seed nesnelerini kaldırır ve beklenmeyen dolu Catalog tablolarında hata vererek durur. Baseline dump'ın kendisi yeniden üretilmez. Cleanup'ın bu dump üzerinde çalıştığı `TestBaselineDumpCleanupPostgres18` ile doğrulanır.
 
-Fresh install'da Catalog tabloları ve IAM/Analytics catalog tabloları kalmayacaksa, bu nesneler dump kaynağından çıkmış olur. Retain kararı varsa baseline'a girecek nesnelerin adları Faz 0 raporundadır. Agent DROP yazmaz.
+Fresh install'da Catalog tabloları ve IAM/Analytics Catalog owner tabloları post-baseline cleanup ile kaldırılır. Cleanup, bilinen boş/default menu seed satırları dışındaki veriyi silmez; beklenmeyen veri görürse transaction hata ile durur. IAM Catalog resource/permission satırları audit ve FK bütünlüğü için retired olarak tutulur; aktif binding'ler revoked yapılır.
 
 ## Faz 0 — Audit
 
@@ -31,7 +31,7 @@ Fresh install'da Catalog tabloları ve IAM/Analytics catalog tabloları kalmayac
 
 ## Faz 1 — Baseline
 
-**Başlangıç:** Faz 0 raporu var ve Catalog şema kararı dump kaynağına uygulanmış.
+**Başlangıç:** Catalog cleanup migration'ları var; non-empty data için fail-closed preflight mevcut. Baseline dump yeniden üretilmez; cleanup'ın mevcut dump üzerinde çalıştığı PostgreSQL 18 testi vardır.
 
 **Sahiplik:** yeni baseline SQL dosyaları ve onları üreten küçük script ile test. Eski `.fresh.sql` durur.
 
@@ -57,7 +57,7 @@ Fresh install'da Catalog tabloları ve IAM/Analytics catalog tabloları kalmayac
 
 **Başlangıç:** Faz 2a kabul edilmiş. Dosya listesi Faz 0 `rg` raporudur.
 
-**Sahiplik:** bu listenin migrator ağacı dışındaki maddeleri. `core/internal/modules/catalog/**` ve Catalog'a ait IAM/Analytics SQL'i yazılmaz. Eski SQL silinmez.
+**Sahiplik:** migration runner ve baseline wiring. Catalog module kaynakları ile Catalog'a ait IAM/Analytics owner SQL'i bu branch'te kaldırılmıştır; generic migration catalog altyapısına dokunulmaz.
 
 - `platform_migration_history` insert/assert ve 1.982 entry sayımı, native Goose history ile uyumlu hale gelir.
 - Çıkış: hedefli testler geçer. Kalan her eski referans gerekçesiyle yazılır.
@@ -69,7 +69,7 @@ Fresh install'da Catalog tabloları ve IAM/Analytics catalog tabloları kalmayac
 - `foundation-contract`, `foundation-applied`, sabit 138-entry manifest ve ayrı full release aşaması tek baseline akışına iner.
 - Docker build manifest generation ve migration-release ZIP üretiminden çıkar.
 - `task dev` temiz volume'da bootstrap, platform baseline, installation/license/setup, tenant baseline, API ve worker sırasını başlatır. Secret ve signed license SQL baseline'a taşınmaz.
-- `tools/localrelease` içinde yalnız migration artifact üretimi ayrılır. License, key, grant, extension, setup, recovery ve Catalog package-set kodu yerinde kalır.
+- `tools/localrelease` içindeki generic release ve migration artifact üretimi korunur. Catalog package-set, keyring ve deploy-evidence doğrulaması kaldırılır; license, key, grant, extension, setup ve recovery akışları korunur.
 - CI, önceki commit'teki `.sql` migration dosyasının değişmesini ve silinmesini reddeder. Yeni dosya eklenmesi geçer.
 - Çıkış: build ve setup tek baseline kullanır. Elle kopyalanan manifest hash'i kalmaz.
 

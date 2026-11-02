@@ -60,12 +60,5 @@ func buildCoreJobProcessors(
 		return nil, err
 	}
 	processors = append(processors, analyticsProcessors...)
-	catalogProcessor, err := buildCatalogJobProcessor(
-		settings, release, catalogs, pool, coordinator,
-	)
-	if err != nil {
-		return nil, err
-	}
-	processors = append(processors, catalogProcessor)
 	return processors, nil
 }

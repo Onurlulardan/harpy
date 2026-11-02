@@ -58,6 +58,29 @@ func TestSecondSetupKeepsInstalledMaterial(t *testing.T) {
 	}
 }
 
+
+func TestSetupRemovesRetiredCatalogPackageArtifacts(t *testing.T) {
+	root := t.TempDir()
+	runOK(t, root, []string{"--defaults"}, "")
+	secrets := filepath.Join(root, "deploy", "single-tenant", "secrets")
+	retired := []string{
+		filepath.Join(secrets, "runtime", "catalog-package-keyring.json"),
+		filepath.Join(secrets, "release", "catalog-package-set.json"),
+		filepath.Join(secrets, "release", "catalog-package-keyring.json"),
+	}
+	for _, path := range retired {
+		if err := os.WriteFile(path, []byte("retired"), 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	runOK(t, root, []string{"--defaults"}, "")
+	for _, path := range retired {
+		if _, err := os.Stat(path); !os.IsNotExist(err) {
+			t.Fatalf("retired Catalog artifact remains at %s: %v", path, err)
+		}
+	}
+}
+
 func TestRefreshReleaseKeepsRuntimeKeys(t *testing.T) {
 	root := t.TempDir()
 	runOK(t, root, []string{"--defaults"}, "")

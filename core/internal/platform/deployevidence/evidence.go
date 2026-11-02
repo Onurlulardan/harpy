@@ -15,7 +15,6 @@ type Evidence struct {
 	bootstrapReceipt attestation.VerifiedBootstrapReceipt
 	extensionReceipt attestation.VerifiedExtensionReceipt
 	cleanupReceipt   attestation.VerifiedCredentialCleanupReceipt
-	catalogPackages  attestation.VerifiedCatalogPackageSet
 	releaseBinding   schemacontract.ReleaseBinding
 }
 
@@ -37,10 +36,6 @@ func (e Evidence) ExtensionReceipt() attestation.VerifiedExtensionReceipt {
 
 func (e Evidence) CleanupReceipt() attestation.VerifiedCredentialCleanupReceipt {
 	return e.cleanupReceipt
-}
-
-func (e Evidence) CatalogPackages() attestation.VerifiedCatalogPackageSet {
-	return e.catalogPackages
 }
 
 func (e Evidence) ReleaseBinding() schemacontract.ReleaseBinding { return e.releaseBinding }

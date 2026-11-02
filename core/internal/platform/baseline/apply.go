@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	_ "embed"
 	"fmt"
+	"strconv"
 	"strings"
 	"testing/fstest"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
 )
 
@@ -19,24 +19,44 @@ var platformScript string
 //go:embed sql/20261028000001_tenant_baseline.fresh.sql
 var tenantScript string
 
+//go:embed sql/20261102000000_platform_catalog_removal_baseline.fresh.sql
+var platformCatalogRemovalScript string
+
+//go:embed sql/20261102000001_tenant_catalog_removal_baseline.fresh.sql
+var tenantCatalogRemovalScript string
+
 const (
-	tenantSchemaToken = "__tenant_schema__"
-	platformVersion   = int64(20261028000000)
-	tenantVersion     = int64(20261028000001)
-	platformFile      = "20261028000000_platform_baseline.fresh.sql"
-	tenantFile        = "20261028000001_tenant_baseline.fresh.sql"
+	tenantSchemaToken          = "__tenant_schema__"
+	platformVersion            = int64(20261028000000)
+	tenantVersion              = int64(20261028000001)
+	platformFile               = "20261028000000_platform_baseline.fresh.sql"
+	tenantFile                 = "20261028000001_tenant_baseline.fresh.sql"
+	platformCatalogRemovalFile = "20261102000000_platform_catalog_removal_baseline.fresh.sql"
+	tenantCatalogRemovalFile   = "20261102000001_tenant_catalog_removal_baseline.fresh.sql"
 )
 
 type Result struct {
-	Applied bool
-	Version int64
+	Applied         bool
+	Version         int64
+	AppliedVersions []int64
 }
 
 func ApplyPlatform(ctx context.Context, dsn string) (Result, error) {
 	if err := ensureSchema(ctx, dsn, "platform"); err != nil {
 		return Result{}, err
 	}
-	return apply(ctx, dsn, "platform, pg_catalog", platformFile, platformScript)
+	result, err := apply(ctx, dsn, "platform, pg_catalog", platformFile, platformScript)
+	if err != nil {
+		return Result{}, err
+	}
+	cleanup, err := apply(
+		ctx, dsn, "platform, pg_catalog",
+		platformCatalogRemovalFile, platformCatalogRemovalScript,
+	)
+	if err != nil {
+		return Result{}, fmt.Errorf("apply platform Catalog removal: %w", err)
+	}
+	return combineBaselineResults(result, cleanup), nil
 }
 
 func ApplyTenantDB(ctx context.Context, database *sql.DB, schema string) (Result, error) {
@@ -52,7 +72,16 @@ func ApplyTenantDB(ctx context.Context, database *sql.DB, schema string) (Result
 		return Result{}, fmt.Errorf("set tenant search path: %w", err)
 	}
 	script := strings.ReplaceAll(tenantScript, tenantSchemaToken, schema)
-	return applyDB(ctx, database, tenantFile, script)
+	result, err := applyDB(ctx, database, tenantFile, script)
+	if err != nil {
+		return Result{}, err
+	}
+	cleanup := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
+	cleanupResult, err := applyDB(ctx, database, tenantCatalogRemovalFile, cleanup)
+	if err != nil {
+		return Result{}, fmt.Errorf("apply tenant Catalog removal: %w", err)
+	}
+	return combineBaselineResults(result, cleanupResult), nil
 }
 
 func ApplyTenant(ctx context.Context, dsn, schema string) (Result, error) {
@@ -63,7 +92,18 @@ func ApplyTenant(ctx context.Context, dsn, schema string) (Result, error) {
 		return Result{}, err
 	}
 	script := strings.ReplaceAll(tenantScript, tenantSchemaToken, schema)
-	return apply(ctx, dsn, schema+", pg_catalog", tenantFile, script)
+	result, err := apply(ctx, dsn, schema+", pg_catalog", tenantFile, script)
+	if err != nil {
+		return Result{}, err
+	}
+	cleanup := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
+	cleanupResult, err := apply(
+		ctx, dsn, schema+", pg_catalog", tenantCatalogRemovalFile, cleanup,
+	)
+	if err != nil {
+		return Result{}, fmt.Errorf("apply tenant Catalog removal: %w", err)
+	}
+	return combineBaselineResults(result, cleanupResult), nil
 }
 
 func apply(ctx context.Context, dsn, searchPath, name, script string) (Result, error) {
@@ -90,50 +130,10 @@ func applyDB(ctx context.Context, database *sql.DB, name, script string) (Result
 	if err != nil {
 		return Result{}, fmt.Errorf("apply baseline: %w", err)
 	}
-	version := platformVersion
-	if name == tenantFile {
-		version = tenantVersion
+	versionPrefix := strings.SplitN(name, "_", 2)[0]
+	version, err := strconv.ParseInt(versionPrefix, 10, 64)
+	if err != nil {
+		return Result{}, fmt.Errorf("parse baseline migration version %s: %w", name, err)
 	}
 	return Result{Applied: len(applied) > 0, Version: version}, nil
-}
-
-func open(dsn, searchPath string) (*sql.DB, error) {
-	config, err := pgx.ParseConfig(dsn)
-	if err != nil {
-		return nil, fmt.Errorf("parse baseline dsn: %w", err)
-	}
-	config.RuntimeParams["search_path"] = searchPath
-	database := stdlib.OpenDB(*config)
-	database.SetMaxOpenConns(1)
-	return database, nil
-}
-
-func ensureSchema(ctx context.Context, dsn, schema string) error {
-	config, err := pgx.ParseConfig(dsn)
-	if err != nil {
-		return fmt.Errorf("parse baseline dsn: %w", err)
-	}
-	conn, err := pgx.ConnectConfig(ctx, config)
-	if err != nil {
-		return fmt.Errorf("open baseline database: %w", err)
-	}
-	defer conn.Close(ctx)
-	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS "+pgx.Identifier{schema}.Sanitize())
-	if err != nil {
-		return fmt.Errorf("create schema %s: %w", schema, err)
-	}
-	return nil
-}
-
-func validSchema(schema string) bool {
-	if schema == "" || len(schema) > 63 {
-		return false
-	}
-	for index, char := range schema {
-		ok := char == '_' || (char >= 'a' && char <= 'z') || (char >= '0' && char <= '9' && index > 0)
-		if !ok {
-			return false
-		}
-	}
-	return schema != tenantSchemaToken
 }

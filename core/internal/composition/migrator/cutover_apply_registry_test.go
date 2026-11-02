@@ -18,7 +18,6 @@ func TestCutoverApplyRegistryContainsEveryProductionContract(t *testing.T) {
 		"iam.v1_adoption.v1",
 		"billing.v1_adoption.tenant.v1",
 		"analytics.v1_adoption.v1",
-		"catalog.v1_adoption.v1",
 		"work.v1_adoption.v1",
 		"documents.v1_adoption.v1",
 		"notifications.v1_adoption.v1",

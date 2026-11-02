@@ -18,8 +18,6 @@ func TestPrepareRequiresEveryAbsolutePath(t *testing.T) {
 		"-restore-password-file", filepath.Join(root, "restore"),
 		"-reactivation-observer-password-file", filepath.Join(root, "observer"),
 		"-migration-manifest", filepath.Join(root, "migration.json"),
-		"-catalog-package-signing-seed-file", filepath.Join(root, "catalog.seed"),
-		"-catalog-package-keyring-file", filepath.Join(root, "catalog-keyring.json"),
 		"-output", filepath.Join(root, "release"),
 	}
 	options, err := parsePrepareOptions(arguments)

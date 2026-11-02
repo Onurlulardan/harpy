@@ -77,7 +77,6 @@
     {"name": "HARPY_IAM_INVITATION_TEMPLATE_FILE", "profiles": ["worker"], "kind": "absolute_path", "path_mode": "read", "required": true},
     {"name": "HARPY_IAM_INVITATION_SMTP_TIMEOUT", "profiles": ["worker"], "kind": "duration", "default": "10s", "minimum": "1s", "maximum": "30s"},
     {"name": "HARPY_REST_QUERY_CURSOR_KEYRING", "profiles": ["api", "worker"], "kind": "secret", "semantic": "rest_query_cursor_keyring_v1", "required": true, "minimum_bytes": 1, "maximum_bytes": 65536, "file_variant": "HARPY_REST_QUERY_CURSOR_KEYRING_FILE", "content_schema": "rest-query-cursor-keyring.schema.json"},
-    {"name": "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING", "profiles": ["api", "worker", "migrator_deploy"], "kind": "secret", "semantic": "catalog_package_public_keyring_v1", "required": true, "minimum_bytes": 1, "maximum_bytes": 65536, "file_variant": "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE", "content_schema": "catalog-package-public-keyring.schema.json"},
     {"name": "HARPY_ANALYTICS_TRUSTED_PROXY_CIDRS", "profiles": ["api"], "kind": "canonical_cidr_list", "separator": ",", "maximum_items": 16, "default": ""},
     {"name": "HARPY_IAM_ACCESS_TOKEN_ISSUER", "profiles": ["api"], "kind": "canonical_http_uri", "allowed_schemes": ["http", "https"], "https_required_in_environments": ["production", "staging"], "required": true},
     {"name": "HARPY_IAM_ACCESS_TOKEN_AUDIENCE", "profiles": ["api"], "kind": "canonical_http_uri", "allowed_schemes": ["http", "https"], "https_required_in_environments": ["production", "staging"], "required": true},
@@ -116,15 +115,8 @@
     {"name": "HARPY_READINESS_TIMEOUT", "profiles": ["api", "worker", "migrator_deploy", "schema_executor"], "kind": "duration", "default": "2s", "minimum": "250ms", "maximum": "10s", "maximum_ref": "HARPY_POSTGRES_HEALTH_CHECK_PERIOD"},
     {"name": "HARPY_DRAIN_TIMEOUT", "profiles": ["api", "worker", "schema_executor"], "kind": "duration", "default": "30s", "minimum": "5s", "maximum": "5m"},
     {"name": "HARPY_LOG_LEVEL", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cluster_bootstrap", "extension_admin", "cutover_adoption", "cutover_finalization"], "kind": "enum", "default": "info", "values": ["debug", "error", "info", "warn"]},
-    {
-      "name": "HARPY_OTLP_ENDPOINT", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "absolute_http_uri", "protocol": "otlp_http_protobuf",
-      "allowed_schemes": ["http", "https"], "scheme_requires": {"http": {"HARPY_OTLP_INSECURE": "true"}, "https": {"HARPY_OTLP_INSECURE": "false"}},
-      "https_required_in_environments": ["production", "staging"], "required_in_environments": ["production", "staging"]
-    },
-    {
-      "name": "HARPY_OTLP_HEADERS", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "secret",
-      "minimum_bytes": 1, "maximum_bytes": 8192, "reject_controls": true, "file_variant": "HARPY_OTLP_HEADERS_FILE"
-    },
+    {"name": "HARPY_OTLP_ENDPOINT", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "absolute_http_uri", "protocol": "otlp_http_protobuf", "allowed_schemes": ["http", "https"], "scheme_requires": {"http": {"HARPY_OTLP_INSECURE": "true"}, "https": {"HARPY_OTLP_INSECURE": "false"}}, "https_required_in_environments": ["production", "staging"], "required_in_environments": ["production", "staging"]},
+    {"name": "HARPY_OTLP_HEADERS", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "secret", "minimum_bytes": 1, "maximum_bytes": 8192, "reject_controls": true, "file_variant": "HARPY_OTLP_HEADERS_FILE"},
     {"name": "HARPY_OTLP_INSECURE", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "boolean", "default": "false", "production_value": "false"},
     {"name": "HARPY_OTLP_EXPORT_TIMEOUT", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "duration", "default": "5s", "minimum": "1s", "maximum": "30s"},
     {"name": "HARPY_TRACE_SAMPLE_RATIO", "profiles": ["api", "worker", "migrator_deploy", "schema_executor", "cutover_adoption", "cutover_finalization"], "kind": "ratio", "default": "0.1", "minimum": "0", "maximum": "1"},
@@ -156,7 +148,6 @@
     {"name": "HARPY_BOOTSTRAP_RECEIPT_PATH", "profiles": ["migrator_deploy", "cluster_bootstrap"], "kind": "absolute_path", "profile_path_modes": {"migrator_deploy": "read", "cluster_bootstrap": "write_new"}, "required": true},
     {"name": "HARPY_EXTENSION_RECEIPT_PATH", "profiles": ["migrator_deploy", "extension_admin"], "kind": "absolute_path", "profile_path_modes": {"migrator_deploy": "read", "extension_admin": "write_new"}, "required": true},
     {"name": "HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH", "profiles": ["migrator_deploy"], "kind": "absolute_path", "path_mode": "read", "required": true},
-    {"name": "HARPY_CATALOG_PACKAGE_SET_PATH", "profiles": ["migrator_deploy"], "kind": "absolute_path", "path_mode": "read", "required": true},
     {"name": "HARPY_MIGRATION_MANIFEST_PATH", "profiles": ["migrator_deploy"], "kind": "absolute_path", "path_mode": "read", "required": true},
     {"name": "HARPY_EXTENSION_MANIFEST_PATH", "profiles": ["migrator_deploy", "extension_admin"], "kind": "absolute_path", "path_mode": "read", "required": true},
     {"name": "HARPY_ROLES_MANIFEST_PATH", "profiles": ["migrator_deploy", "cluster_bootstrap"], "kind": "absolute_path", "path_mode": "read", "required": true},
