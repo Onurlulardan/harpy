@@ -10,7 +10,7 @@ import (
 const manifestFileName = "manifest.json"
 
 var actorBridgeDomains = []string{
-	"analytics", "billing", "catalog", "documents",
+	"analytics", "billing", "documents",
 	"notifications", "work",
 }
 
@@ -24,8 +24,6 @@ var baseArtifactNames = []string{
 	"actor-bridge-server-ca.key",
 	"actor-bridge-signing-seed",
 	"actor-bridge-targets.json",
-	"catalog-package-public-keyring.json",
-	"catalog-package-signing-seed",
 	"documents-kek-keyring.json",
 	"iam-access-token-keyring.json",
 	"iam-auth-throttle-keyring.json",
