@@ -4,8 +4,6 @@ import (
 	"crypto/ed25519"
 	"crypto/rand"
 	"encoding/base64"
-	"encoding/json"
-	"fmt"
 	"time"
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
@@ -14,7 +12,6 @@ import (
 
 const (
 	releaseKeyID         = "local-release"
-	catalogKeyID         = "local-catalog"
 	localDatabase        = "harpy"
 	localSystemID        = "123456789"
 	localDatabaseOID     = 16384
@@ -29,8 +26,6 @@ const (
 	localCleanupRun      = "99999999-9999-4999-8999-999999999999"
 	localOperationID     = "10000000-0000-4000-8000-000000000021"
 	localReceiptID       = "10000000-0000-4000-8000-000000000024"
-	localPackageID       = "10000000-0000-4000-8000-000000000031"
-	localComponentID     = "018f0000-0000-7000-8000-000000000032"
 	localFixedDigest     = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 	localReleaseValidity = 24 * time.Hour
 )
@@ -58,9 +53,6 @@ type releaseKeys struct {
 	private        ed25519.PrivateKey
 	root           attestation.TrustRoot
 	rootDocument   []byte
-	catalogPrivate ed25519.PrivateKey
-	catalogPublic  ed25519.PublicKey
-	keyring        []byte
 }
 
 type trustedReleaseKey struct {
@@ -92,13 +84,6 @@ func newReleaseKeys(clock releaseClock) (releaseKeys, error) {
 	if err != nil {
 		return releaseKeys{}, err
 	}
-	catalogPublic, catalogPrivate, err := ed25519.GenerateKey(rand.Reader)
-	if err != nil {
-		return releaseKeys{}, err
-	}
-	if public.Equal(catalogPublic) {
-		return releaseKeys{}, fmt.Errorf("catalog signing key matches the release trust root")
-	}
 	rootDocument, err := attestation.MarshalCanonical(trustedReleaseRoot{
 		ContractVersion: "attestation-trust-root.v1",
 		Keys: []trustedReleaseKey{{
@@ -115,28 +100,8 @@ func newReleaseKeys(clock releaseClock) (releaseKeys, error) {
 	if err != nil {
 		return releaseKeys{}, err
 	}
-	keyring, err := json.Marshal(struct {
-		Version int `json:"version"`
-		Keys    []struct {
-			KeyID     string `json:"key_id"`
-			PublicKey string `json:"public_key"`
-		} `json:"keys"`
-	}{
-		Version: 1,
-		Keys: []struct {
-			KeyID     string `json:"key_id"`
-			PublicKey string `json:"public_key"`
-		}{{
-			KeyID:     catalogKeyID,
-			PublicKey: base64.RawURLEncoding.EncodeToString(catalogPublic),
-		}},
-	})
-	if err != nil {
-		return releaseKeys{}, err
-	}
 	return releaseKeys{
 		clock: clock, private: private, root: root, rootDocument: rootDocument,
-		catalogPrivate: catalogPrivate, catalogPublic: catalogPublic, keyring: keyring,
 	}, nil
 }
 
