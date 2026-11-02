@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Onurlulardan/harpy/core/internal/platform/baseline"
 	postgresstore "github.com/Onurlulardan/harpy/core/internal/platform/migrator/adapters/postgres"
 	"github.com/jackc/pgx/v5"
 )
@@ -47,64 +48,15 @@ func (runner *Runner) executeTenantTarget(
 	if session.SchemaName != target.SchemaName {
 		return nil, fmt.Errorf("tenant migration target schema is absent from session search path")
 	}
-	provider, err := runner.buildTenantGooseProvider(database, target, session, runID)
+	appliedResult, err := baseline.ApplyTenantDB(ctx, database, target.SchemaName)
 	if err != nil {
 		return nil, err
 	}
 	var applied []int64
-	var committedErr error
-	for _, selected := range runner.tenantSelected {
-		apply, err := prepareTenantCheckpoint(
-			ctx, database, target, session, selected, runner.tenantAliases, runID,
-		)
-		if err != nil {
-			return nil, err
-		}
-		if !apply {
-			continue
-		}
-		if _, err := provider.UpTo(ctx, selected.Version); err != nil {
-			reconcileCtx, cancelReconcile := context.WithTimeout(
-				context.WithoutCancel(ctx), requiredCleanupTimeout,
-			)
-			committed, safelyFailed, reconcileErr := reconcileTenantMigration(
-				reconcileCtx, database, target, session, selected,
-				runner.tenantAliases,
-			)
-			cancelReconcile()
-			if reconcileErr != nil {
-				return nil, ambiguousOutcome(
-					runID, "tenant migration reconcile", errors.Join(err, reconcileErr),
-				)
-			}
-			if committed {
-				applied = append(applied, selected.Version)
-				committedErr = errors.Join(committedErr, ErrCommitted, err)
-				continue
-			}
-			if !safelyFailed {
-				return nil, err
-			}
-			code := "migration_execution_failed"
-			if ctx.Err() != nil {
-				code = "migration_cancelled"
-			}
-			failureCtx, cancel := context.WithTimeout(
-				context.WithoutCancel(ctx), requiredCleanupTimeout,
-			)
-			failureErr := failTenantCheckpoint(
-				failureCtx, database, target, session, selected, runID, code,
-			)
-			cancel()
-			return nil, errors.Join(err, failureErr)
-		}
-		if err := verifyTenantCheckpoint(
-			ctx, database, target, selected, runner.tenantAliases,
-		); err != nil {
-			return nil, err
-		}
-		applied = append(applied, selected.Version)
+	if appliedResult.Applied {
+		applied = []int64{appliedResult.Version}
 	}
+	var committedErr error
 	if err := runner.verifyTenantIdentity(ctx, database, target, session); err != nil {
 		return nil, err
 	}
