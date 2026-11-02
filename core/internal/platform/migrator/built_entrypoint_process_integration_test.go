@@ -26,7 +26,6 @@ type builtEntrypointProfile struct {
 	sessionUser           string
 	application           string
 	api                   bool
-	catalogPackageKeyring string
 }
 
 func runBuiltEntrypoint(
@@ -61,17 +60,11 @@ func runBuiltEntrypoint(
 		)
 		values = appendBuiltEntrypointRuntimeFixture(
 			values, configfixture.APIEnvironment(t, time.Now().UTC()),
-			profile.catalogPackageKeyring,
 		)
 	} else if profile.service == runtimev1.ServiceCoreWorker {
 		values = appendBuiltEntrypointRuntimeFixture(
 			values, configfixture.WorkerEnvironment(t, time.Now().UTC()),
-			profile.catalogPackageKeyring,
 		)
-	}
-	if profile.catalogPackageKeyring != "" {
-		values = append(values, "HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING="+
-			profile.catalogPackageKeyring)
 	}
 	command := exec.CommandContext(ctx, profile.binary, profile.arguments...)
 	command.Env = config.IntegrationSubprocessEnvironment(values)
