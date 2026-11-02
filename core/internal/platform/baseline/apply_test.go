@@ -29,6 +29,27 @@ func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	}
 }
 
+func TestCombineBaselineResultsKeepsCleanupVersion(t *testing.T) {
+	const cleanupVersion = int64(20261102000000)
+	applied := combineBaselineResults(
+		Result{Applied: true, Version: platformVersion},
+		Result{Applied: true, Version: cleanupVersion},
+	)
+	if !applied.Applied || applied.Version != cleanupVersion ||
+		len(applied.AppliedVersions) != 2 ||
+		applied.AppliedVersions[0] != platformVersion ||
+		applied.AppliedVersions[1] != cleanupVersion {
+		t.Fatalf("applied baseline result = %+v", applied)
+	}
+	repeated := combineBaselineResults(
+		Result{Version: platformVersion},
+		Result{Version: cleanupVersion},
+	)
+	if repeated.Applied || repeated.Version != cleanupVersion || len(repeated.AppliedVersions) != 0 {
+		t.Fatalf("repeated baseline result = %+v", repeated)
+	}
+}
+
 func TestTenantSchemaName(t *testing.T) {
 	if validSchema("") || validSchema("Tenant") || validSchema("1abc") || validSchema(tenantSchemaToken) {
 		t.Fatal("invalid schema names were accepted")
@@ -48,6 +69,7 @@ func TestCatalogRemovalMigrationsFailClosedAndRetainIAMHistory(t *testing.T) {
 			"blocked by a foreign key",
 			"blocked by a view",
 			"blocked by a routine",
+			"blocked by a trigger",
 		} {
 			if !strings.Contains(script, guard) {
 				t.Errorf("%s cleanup is missing %q guard", name, guard)
@@ -68,5 +90,8 @@ func TestCatalogRemovalMigrationsFailClosedAndRetainIAMHistory(t *testing.T) {
 		strings.Contains(tenantCatalogRemovalScript, "DELETE FROM __tenant_schema__.iam_permissions") {
 		t.Fatal("tenant cleanup must retain IAM history instead of hard-deleting it")
 	}
+	if strings.Contains(platformCatalogRemovalScript, "CASCADE") ||
+		strings.Contains(tenantCatalogRemovalScript, "CASCADE") {
+		t.Fatal("Catalog cleanup must drop objects without CASCADE")
+	}
 }
-

@@ -33,6 +33,7 @@
 | Migration platform | core/internal/platform/migration catalog files, tenant_catalog.go; tools/internal/migrationstreamcatalog | Generic migration source/stream registration |
 | Storage governance | tools/internal/storagecatalog ve contracts/storage owner infrastructure | Generic DB ownership manifests |
 | Cutover authority | ops/cutoverauthority/adoption_catalog.go, contracts/cutover/v1/authority_catalog_digest.go | PostgreSQL object adoption ve authority inventory |
+| IAM V1 actor bridge | contracts/runtime/v1/iam-v1-actor-targets.schema.json içindeki catalog domain değeri | Eski actor assertion enum'unun tam sekiz üyesinden biri; forms ve workflow ile birlikte durur. ForgeCRUD paket API'si değildir |
 | Secret projector | ops/local/cmd/secret-projector/projection_catalog.go | Local secret projection manifest |
 | Generic release | tools/localrelease/release_catalog.go | CatalogPackageSet alanı kaldırıldıktan sonra diğer release artifact'larının generic listesi korunabilir |
 

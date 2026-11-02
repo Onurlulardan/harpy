@@ -10,8 +10,6 @@
     ],
     "static_sql_dirs": [
       {"path":"core/internal/modules/analytics/adapters/postgres/adoption/sql/tenant","scope":"tenant"},
-      {"path":"core/internal/modules/analytics/adapters/postgres/cataloglifecycle/sql/tenant","scope":"tenant"},
-      {"path":"core/internal/modules/analytics/adapters/postgres/catalogowner/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/analytics/adapters/postgres/compatibility/sql/platform","scope":"platform"},
       {"path":"core/internal/modules/analytics/adapters/postgres/compatibility/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/analytics/adapters/postgres/dashboard/sql/tenant","scope":"tenant"},

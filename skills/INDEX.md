@@ -22,7 +22,6 @@ Komut, kod veya dokuman degisikliginden once bu tabloyu kullan.
 | Workflow definition, node veya runtime | `events-jobs` |
 | Workflow form verisini etkiliyorsa | `events-jobs` |
 | Outbox, job, worker, RabbitMQ | `events-jobs`, `data-tenancy` |
-| Package, install/upgrade/purge, menu | `catalog`, `events-jobs`, `impact-analysis` |
 | Board, task, comment, calendar | `work`, `rest-query`, `events-jobs` |
 | Document, upload, blob, archive | `documents`, `events-jobs`, `data-tenancy` |
 | Billing, entitlement, usage, provider | `billing`, `events-jobs`, `data-tenancy` |
@@ -42,7 +41,6 @@ Komut, kod veya dokuman degisikliginden once bu tabloyu kullan.
 - `skills/iam-system-resources/SKILL.md`
 - `skills/rest-query/SKILL.md`
 - `skills/events-jobs/SKILL.md`
-- `skills/catalog/SKILL.md`
 - `skills/work/SKILL.md`
 - `skills/documents/SKILL.md`
 - `skills/billing/SKILL.md`

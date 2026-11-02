@@ -1,6 +1,6 @@
 # 05 — Doğrulanmış boşluklar
 
-> **Tarihsel audit notu:** Aşağıdaki Catalog sayıları ve dosya yolları kaldırma öncesi envanterdir. `fix/migration-baseline-completion` branch'inde Catalog business module, 54 migration SQL kaynağı ve owner adapter'ları kaldırıldı. Baseline snapshot'ları tarihsel DDL içerdiği için platform/tenant cleanup migration'ları baseline sonrasında çalışır; beklenmeyen dolu tablolar veya dış bağımlılıklar varsa transaction fail-closed durur. Baseline dump'ın doğrudan yeniden üretilmesi ve PostgreSQL 18 entegrasyon doğrulaması henüz tamamlanmış değildir.
+> **Tarihsel audit notu:** Aşağıdaki Catalog sayıları ve dosya yolları kaldırma öncesi envanterdir. `fix/migration-baseline-completion` branch'inde Catalog business module, 54 migration SQL kaynağı ve owner adapter'ları kaldırıldı. Baseline snapshot'ları tarihsel DDL içerdiği için platform/tenant cleanup migration'ları baseline sonrasında çalışır; beklenmeyen dolu tablolar veya dış bağımlılıklar varsa transaction fail-closed durur. Baseline dump'ın kendisi yeniden üretilmedi. `TestBaselineDumpCleanupPostgres18` mevcut platform ve tenant dump'ını PostgreSQL 18 üzerinde uygular ve cleanup sonrası Catalog önek kümesinin boş kaldığını doğrular.
 
 
 Bu belge 2 Kasım 2026 çalışma ağacında doğrulanan bulguların sahibidir. Agent iş emirleri [03](03-agent-work-orders.md) içindedir. Buradaki maddeler tahmin değildir.

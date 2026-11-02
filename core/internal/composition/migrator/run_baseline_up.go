@@ -128,11 +128,9 @@ func runBaselineUp(
 		reportFailureCause(stderr, nil, "runtime", "up", err)
 		return processcode.ServeFailure
 	}
-	versions := []int64{}
-	if applied.Applied {
-		versions = []int64{applied.Version}
-	}
-	result, err := migratoroutput.NewBaselineUp(runID, versions, applied.Version)
+	result, err := migratoroutput.NewBaselineUp(
+		runID, applied.AppliedVersions, applied.Version,
+	)
 	if err != nil {
 		reportFailureCause(stderr, nil, "runtime", "up", err)
 		return processcode.ServeFailure
