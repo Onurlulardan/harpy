@@ -2,7 +2,7 @@ package baseline
 
 import (
 	"context"
-	"fmt"
+	"database/sql"
 	"os"
 	"strings"
 	"testing"
@@ -29,13 +29,11 @@ func TestCatalogRemovalPostgres18(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer database.Close()
-		if _, err = database.ExecContext(ctx, `
+		execBaselineTestSQL(t, ctx, database, `
 			CREATE TABLE catalog_packages (id integer);
 			CREATE FUNCTION catalog_test_function() RETURNS integer
 			LANGUAGE sql AS 'SELECT 1';
-		`); err != nil {
-			t.Fatal(err)
-		}
+		`)
 		if _, err = apply(ctx, dsn, schema+", pg_catalog",
 			platformCatalogRemovalFile, platformCatalogRemovalScript); err != nil {
 			t.Fatalf("apply platform Catalog cleanup: %v", err)
@@ -51,9 +49,7 @@ func TestCatalogRemovalPostgres18(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer database.Close()
-		if _, err = database.ExecContext(ctx, tenantCleanupFixtureSQL); err != nil {
-			t.Fatal(err)
-		}
+		execBaselineTestSQL(t, ctx, database, tenantCleanupFixtureSQL)
 		script := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
 		if _, err = apply(ctx, dsn, schema+", pg_catalog", tenantCatalogRemovalFile, script); err != nil {
 			t.Fatalf("apply tenant Catalog cleanup: %v", err)
@@ -181,6 +177,9 @@ CREATE TABLE catalog_menu_versions (
 CREATE TABLE catalog_installations (id integer);
 CREATE TABLE analytics_catalog_owner_projection (id integer);
 CREATE TABLE iam_catalog_component_bindings (id integer);
+CREATE FUNCTION catalog_test_function() RETURNS integer LANGUAGE sql AS 'SELECT 1';
+CREATE FUNCTION analytics_catalog_test_function() RETURNS integer LANGUAGE sql AS 'SELECT 1';
+CREATE FUNCTION iam_catalog_test_function() RETURNS integer LANGUAGE sql AS 'SELECT 1';
 INSERT INTO catalog_menu_definitions VALUES (
     '018f6000-0000-7000-8000-000000000001', 1,
     '018f6000-0000-7000-8000-000000000002'
@@ -220,10 +219,13 @@ func resetBaselineTestSchema(t *testing.T, ctx context.Context, dsn, schema stri
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer admin.Close()
 	if _, err = admin.ExecContext(ctx,
 		"DROP SCHEMA IF EXISTS "+pgx.Identifier{schema}.Sanitize()+" CASCADE",
 	); err != nil {
+		_ = admin.Close()
+		t.Fatal(err)
+	}
+	if err = admin.Close(); err != nil {
 		t.Fatal(err)
 	}
 	if err = ensureSchema(ctx, dsn, schema); err != nil {
@@ -232,7 +234,13 @@ func resetBaselineTestSchema(t *testing.T, ctx context.Context, dsn, schema stri
 	t.Cleanup(func() {
 		cleanupCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 		defer cancel()
-		if _, cleanupErr := admin.ExecContext(cleanupCtx,
+		cleanupDB, cleanupErr := open(dsn, "pg_catalog")
+		if cleanupErr != nil {
+			t.Errorf("open cleanup database for %s: %v", schema, cleanupErr)
+			return
+		}
+		defer cleanupDB.Close()
+		if _, cleanupErr = cleanupDB.ExecContext(cleanupCtx,
 			"DROP SCHEMA IF EXISTS "+pgx.Identifier{schema}.Sanitize()+" CASCADE",
 		); cleanupErr != nil {
 			t.Errorf("drop test schema %s: %v", schema, cleanupErr)
@@ -266,5 +274,18 @@ func assertNoCatalogObjects(t *testing.T, ctx context.Context, database *sql.DB,
 	}
 	if tables != 0 || routines != 0 {
 		t.Fatalf("Catalog objects remain in %s: tables=%d routines=%d", schema, tables, routines)
+	}
+}
+
+func execBaselineTestSQL(t *testing.T, ctx context.Context, database *sql.DB, script string) {
+	t.Helper()
+	for _, statement := range strings.Split(script, ";") {
+		statement = strings.TrimSpace(statement)
+		if statement == "" {
+			continue
+		}
+		if _, err := database.ExecContext(ctx, statement); err != nil {
+			t.Fatalf("execute baseline fixture SQL %q: %v", statement, err)
+		}
 	}
 }
