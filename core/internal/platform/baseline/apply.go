@@ -49,12 +49,14 @@ func ApplyPlatform(ctx context.Context, dsn string) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	if _, err := apply(
+	cleanup, err := apply(
 		ctx, dsn, "platform, pg_catalog",
 		platformCatalogRemovalFile, platformCatalogRemovalScript,
-	); err != nil {
+	)
+	if err != nil {
 		return Result{}, fmt.Errorf("apply platform Catalog removal: %w", err)
 	}
+	result.Applied = result.Applied || cleanup.Applied
 	return result, nil
 }
 
@@ -76,9 +78,11 @@ func ApplyTenantDB(ctx context.Context, database *sql.DB, schema string) (Result
 		return Result{}, err
 	}
 	cleanup := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
-	if _, err := applyDB(ctx, database, tenantCatalogRemovalFile, cleanup); err != nil {
+	cleanupResult, err := applyDB(ctx, database, tenantCatalogRemovalFile, cleanup)
+	if err != nil {
 		return Result{}, fmt.Errorf("apply tenant Catalog removal: %w", err)
 	}
+	result.Applied = result.Applied || cleanupResult.Applied
 	return result, nil
 }
 
@@ -95,11 +99,13 @@ func ApplyTenant(ctx context.Context, dsn, schema string) (Result, error) {
 		return Result{}, err
 	}
 	cleanup := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
-	if _, err := apply(
+	cleanupResult, err := apply(
 		ctx, dsn, schema+", pg_catalog", tenantCatalogRemovalFile, cleanup,
-	); err != nil {
+	)
+	if err != nil {
 		return Result{}, fmt.Errorf("apply tenant Catalog removal: %w", err)
 	}
+	result.Applied = result.Applied || cleanupResult.Applied
 	return result, nil
 }
 
