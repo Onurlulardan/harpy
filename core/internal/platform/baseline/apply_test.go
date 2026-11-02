@@ -7,8 +7,10 @@ import (
 
 func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	for name, script := range map[string]string{
-		"platform": platformScript,
-		"tenant":   tenantScript,
+		"platform":         platformScript,
+		"tenant":           tenantScript,
+		"platform cleanup": platformCatalogRemovalScript,
+		"tenant cleanup":   tenantCatalogRemovalScript,
 	} {
 		if strings.Contains(script, "\\restrict") || strings.Contains(script, "\\unrestrict") {
 			t.Fatalf("%s baseline contains a psql meta command", name)
@@ -17,11 +19,13 @@ func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 			t.Fatalf("%s baseline is not a goose statement", name)
 		}
 	}
-	if !strings.Contains(tenantScript, tenantSchemaToken) {
-		t.Fatal("tenant baseline has no schema token")
+	if !strings.Contains(tenantScript, tenantSchemaToken) ||
+		!strings.Contains(tenantCatalogRemovalScript, tenantSchemaToken) {
+		t.Fatal("tenant SQL scripts must contain the tenant schema token")
 	}
-	if strings.Contains(platformScript, tenantSchemaToken) {
-		t.Fatal("platform baseline contains the tenant schema token")
+	if strings.Contains(platformScript, tenantSchemaToken) ||
+		strings.Contains(platformCatalogRemovalScript, tenantSchemaToken) {
+		t.Fatal("platform SQL scripts must not contain the tenant schema token")
 	}
 }
 
