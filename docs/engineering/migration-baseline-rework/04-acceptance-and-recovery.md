@@ -16,6 +16,10 @@ Bu çalışma ancak aşağıdakilerin tamamı sağlandığında biter:
 - [ ] Local clean bootstrap sonrası operator initialize başarılı, billing installation offering tam bir kayıt döndürüyor ve API readiness yeşil.
 - [ ] Eski migrations, manifest hash, archive, index ve generator'lar current tree'den kaldırılmış; `rg` ile kalan reference'lar gözden geçirilmiş.
 - [ ] `go test ./...`, `go mod tidy`, FileGuard, ArchGuard, image build ve PostgreSQL 18 integration/E2E testleri geçiyor.
+- [ ] Baseline Goose dosyasında `\restrict` / `\unrestrict` yoktur; gövde `-- +goose Up` ve `StatementBegin` / `StatementEnd` ile tek statement'tır.
+- [ ] Fresh install baseline'ında Catalog tabloları ve IAM/Analytics catalog tabloları, Faz 0 retain listesinde adları yazılmadıkça yoktur.
+- [ ] Run lifecycle kararı yazılıdır: legacy release generation kalkmış ya da backup/installation durumu `platform.platform_migration_history` dışına taşınmıştır.
+- [ ] `skills/data-tenancy/SKILL.md` migration kuralı bu sete bağlıdır. Her migration'a checksum ve owner yazma, tenant checkpoint'i custom history'de tutma ve eski snapshot upgrade zorunluluğu starter baseline'ından sonra kalkmıştır. Eksik `docs/adr/0006-tenancy-migrations.md` uydurulmamıştır.
 
 ## Zorunlu test matrisı
 
@@ -33,6 +37,9 @@ Bu çalışma ancak aşağıdakilerin tamamı sağlandığında biter:
 | On-premise installation | Geçerli installation manifest ve local license/offering setup/operator yoluyla oluşur; SaaS offering fallback yoktur. |
 | Local stale volume | Eski custom history formatı fresh starter ile uyumlu varsayılmaz; reset açıkça ve kontrollü yapılır. |
 | Secret redaction | Connection string/parola/token/key loglarda görünmez. |
+| Goose dosyası | Baseline'da psql meta komutu yoktur; dolar-tırnaklı rutinler tek statement bloğundadır. |
+| Catalog şeması | Retain listesi yoksa baseline Catalog ve IAM/Analytics catalog nesnelerini kurmaz. |
+| Run lifecycle | Faz 0 ayrımındaki operasyonel durum ya korunmuş ya da gerekçesiyle kalkmıştır. |
 
 ## Local hata ve mevcut volume
 

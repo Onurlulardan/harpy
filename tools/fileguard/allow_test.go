@@ -20,6 +20,8 @@ func TestInspectAllowsBudgetAndSkippedFiles(t *testing.T) {
 		writeFixture(t, root, name, "\xff"+repeatLines("line", maxLines+1))
 	}
 	writeFixture(t, root, "wide.json", `{"value":"`+strings.Repeat("a", 80*1024)+`"}`)
+	writeFixture(t, root, "docs/guide.md", repeatLines("paragraph", maxLines+80))
+	writeFixture(t, root, "docs/guide.markdown", repeatLines(" ", maxLines+1))
 	if violations := inspectFixture(t, root); len(violations) != 0 {
 		t.Fatalf("allowed tree rejected: %v", violations)
 	}

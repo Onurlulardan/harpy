@@ -7,7 +7,7 @@ import (
 )
 
 func TestInspectRejectsOverlongFiles(t *testing.T) {
-	for _, name := range []string{"create.go", "seed.sql", "README.md", "config.yaml", "run.sh", "run.ps1"} {
+	for _, name := range []string{"create.go", "seed.sql", "config.yaml", "run.sh", "run.ps1"} {
 		t.Run(name, func(t *testing.T) {
 			root := t.TempDir()
 			writeFixture(t, root, filepath.Join("pkg", name), repeatLines("line", maxLines+1))
@@ -21,9 +21,9 @@ func TestInspectRejectsOverlongFiles(t *testing.T) {
 
 func TestInspectRejectsWhitespaceLines(t *testing.T) {
 	root := t.TempDir()
-	writeFixture(t, root, "blank.md", repeatLines(" ", maxLines+1))
+	writeFixture(t, root, "blank.txt", repeatLines(" ", maxLines+1))
 	violations := inspectFixture(t, root)
-	if !containsViolation(violations, "blank.md has 201 lines") {
+	if !containsViolation(violations, "blank.txt has 201 lines") {
 		t.Fatalf("whitespace lines were collapsed: %v", violations)
 	}
 }

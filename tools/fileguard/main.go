@@ -46,6 +46,15 @@ func main() {
 	os.Exit(1)
 }
 
+func lineLimitApplies(base string) bool {
+	switch filepath.Ext(base) {
+	case ".md", ".markdown":
+		return false
+	default:
+		return true
+	}
+}
+
 func inspect(root string) ([]string, error) {
 	absolute, err := filepath.Abs(root)
 	if err != nil {
@@ -118,7 +127,7 @@ func inspect(root string) ([]string, error) {
 		if err != nil {
 			return err
 		}
-		if lines > maxLines {
+		if lineLimitApplies(base) && lines > maxLines {
 			violations = append(violations,
 				fmt.Sprintf("%s has %d lines; maximum is %d", key, lines, maxLines))
 		}

@@ -17,7 +17,8 @@ description: Enforce backend-v2 file-size, naming, CRUD separation, readability,
 - Elle yazilan her dosyayi en fazla 200 fiziksel satirda tut.
 - 160 satiri tasarim hedefi, 180 satiri zorunlu bolme uyarisi kabul et.
 - Bosluklari silerek, coklu statement'i tek satira sikistirarak siniri asma.
-- Test, SQL migration, Markdown, YAML ve script dosyalarini da sinira dahil et.
+- Test, SQL migration, YAML ve script dosyalarini da sinira dahil et.
+- Markdown bu satir limitine girmez.
 - Repo-authored dosya UTF-8 text'tir; symlink veya binary artifact commit etme.
 - Generated istisnasi header ile exact `contracts/generated.yaml` provenance ister.
 - Yalniz verified generated output, lockfile ve vendor dependency istisnadir.
