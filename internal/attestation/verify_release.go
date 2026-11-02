@@ -85,7 +85,7 @@ func validReleaseDigests(manifest ReleaseManifest) bool {
 		manifest.OwnershipManifestSHA256,
 		manifest.BootstrapAuthoritySHA256, manifest.BootstrapOperationDigest,
 		manifest.ExtensionOperationDigest, manifest.CredentialCleanupDigest,
-		manifest.CutoverAuthorityOperationDigest, manifest.CatalogPackageSetSHA256,
+		manifest.CutoverAuthorityOperationDigest,
 	}
 	for _, digest := range digests {
 		if !digestPattern.MatchString(digest) {
