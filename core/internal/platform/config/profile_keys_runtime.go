@@ -41,7 +41,6 @@ func workerKeys() []string {
 		deploymentModeEnvironmentKey,
 		"HARPY_RABBITMQ_URL", "HARPY_RABBITMQ_URL_FILE",
 		cursorKeyringEnvironmentKey, cursorKeyringEnvironmentKey + "_FILE",
-		catalogPackageKeyringEnvironmentKey, catalogPackageKeyringEnvironmentKey + "_FILE",
 		notificationsKEKKeyringFileKey,
 		"HARPY_IAM_INVITATION_SMTP_HOST",
 		"HARPY_IAM_INVITATION_SMTP_PORT",
