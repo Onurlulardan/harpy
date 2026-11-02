@@ -11,8 +11,6 @@ import (
 	"strings"
 	"testing"
 
-	iammodule "github.com/Onurlulardan/harpy/core/internal/modules/iam"
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -60,7 +58,7 @@ func loadPublicationAuthorityDocument(
 
 func publicationIAMDocuments(t *testing.T, origin, scope, phase string) []migration.Document {
 	t.Helper()
-	documents, err := iammodule.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -98,7 +96,7 @@ func publicationRuntimeVersion(version int64) bool {
 
 func publicationAsyncDocuments(t *testing.T, origin string) []migration.Document {
 	t.Helper()
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

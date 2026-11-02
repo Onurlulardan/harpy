@@ -26,18 +26,6 @@ var insertTenantCheckpointAttemptSQL string
 //go:embed sql/complete_tenant_checkpoint.sql
 var completeTenantCheckpointSQL string
 
-//go:embed sql/tenant_checkpoint_table_exists.sql
-var tenantCheckpointTableExistsSQL string
-
-//go:embed sql/list_tenant_store_migrations.sql
-var listTenantStoreMigrationsSQL string
-
-//go:embed sql/get_tenant_store_migration.sql
-var getTenantStoreMigrationSQL string
-
-//go:embed sql/get_latest_tenant_store_version.sql
-var getLatestTenantStoreVersionSQL string
-
 //go:embed sql/acquire_tenant_migration_lock.sql
 var acquireTenantMigrationLockSQL string
 

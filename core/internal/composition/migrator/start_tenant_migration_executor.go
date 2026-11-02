@@ -8,7 +8,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/health"
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	platformmigrator "github.com/Onurlulardan/harpy/core/internal/platform/migrator"
 	tenantmigrationstore "github.com/Onurlulardan/harpy/core/internal/platform/migrator/tenantmigrationexecutor/adapters/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
@@ -24,9 +23,7 @@ func startTenantMigrationExecutor(
 	settings config.TenantMigrationExecutor,
 	info buildinfo.Info,
 	embedded schemacontract.EmbeddedContract,
-	registry *migration.ReleaseRegistry,
 	release attestation.VerifiedRelease,
-	documents []migration.Document,
 	database *platformmigrator.TenantExecutorDatabase,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
@@ -62,8 +59,8 @@ func startTenantMigrationExecutor(
 	}
 	migrator, err := platformmigrator.NewTenantExecutor(
 		platformmigrator.TenantExecutorDependencies{Database: database.SQL(),
-			OpenTenant: database.OpenTenant, Registry: registry, Release: release,
-			Documents: documents, Logger: logger, NewID: tenantexec.NewID},
+			OpenTenant: database.OpenTenant, Release: release,
+			Logger: logger, NewID: tenantexec.NewID},
 	)
 	if err != nil {
 		return failTenantStartup(

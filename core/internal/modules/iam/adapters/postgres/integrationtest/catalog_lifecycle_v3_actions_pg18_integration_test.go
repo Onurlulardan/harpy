@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	iammodule "github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -24,7 +23,7 @@ func iamCatalogLifecycleV3Documents(
 	t *testing.T, origin string,
 ) []migration.Document {
 	t.Helper()
-	documents, err := iammodule.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

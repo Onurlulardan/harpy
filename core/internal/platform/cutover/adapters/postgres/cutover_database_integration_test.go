@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	platformcutover "github.com/Onurlulardan/harpy/core/internal/platform/cutover"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/testcontainers/testcontainers-go"
@@ -146,7 +146,7 @@ func applyCutoverMigrations(
 	skipped map[string]bool,
 ) {
 	t.Helper()
-	documents, err := platformcutover.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

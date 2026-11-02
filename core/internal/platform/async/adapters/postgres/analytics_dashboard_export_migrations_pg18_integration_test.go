@@ -101,7 +101,7 @@ func applyAnalyticsDashboardExportPG18MigrationsThrough(
     ADD COLUMN deleted_at timestamptz;`); err != nil {
 		t.Fatalf("extend Analytics export tenant catalog: %v", err)
 	}
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

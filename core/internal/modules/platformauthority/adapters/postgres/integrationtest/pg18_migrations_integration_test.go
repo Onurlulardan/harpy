@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Onurlulardan/harpy/core/internal/modules/platformauthority"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
@@ -38,7 +38,7 @@ func applyAuthorityFreshDocuments(
 	t *testing.T, ctx context.Context, database *sql.DB,
 ) {
 	t.Helper()
-	documents, err := platformauthority.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

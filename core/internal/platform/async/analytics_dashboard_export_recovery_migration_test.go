@@ -6,15 +6,6 @@ import (
 	"testing"
 )
 
-func analyticsExportFresh(t *testing.T, logical string) string {
-	t.Helper()
-	document := analyticsDashboardExportMigrationPairs(t)[logical]["fresh"]
-	if len(document) == 0 {
-		t.Fatalf("missing Analytics dashboard export migration %s", logical)
-	}
-	return string(document)
-}
-
 func TestGenericExpiredRecoveryExcludesAnalyticsDashboardExport(t *testing.T) {
 	document, err := os.ReadFile("adapters/postgres/sql/lock_expired_jobs.sql")
 	if err != nil {

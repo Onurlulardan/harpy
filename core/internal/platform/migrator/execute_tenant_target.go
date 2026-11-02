@@ -2,6 +2,7 @@ package migrator
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 
@@ -52,6 +53,13 @@ func (runner *Runner) executeTenantTarget(
 	if err != nil {
 		return nil, err
 	}
+	if len(runner.tenantSelected) == 0 {
+		return nil, fmt.Errorf("tenant migration selection is empty")
+	}
+	if err := recordTenantSchemaIdentity(ctx, database, target,
+		tenantSentinelOrigin(runner.tenantSelected[0].Origin)); err != nil {
+		return nil, err
+	}
 	var applied []int64
 	if appliedResult.Applied {
 		applied = []int64{appliedResult.Version}
@@ -61,4 +69,26 @@ func (runner *Runner) executeTenantTarget(
 		return nil, err
 	}
 	return applied, committedErr
+}
+
+func recordTenantSchemaIdentity(
+	ctx context.Context,
+	database *sql.DB,
+	target postgresstore.TenantMigrationTarget,
+	origin string,
+) error {
+	transaction, err := database.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin tenant schema identity: %w", err)
+	}
+	defer func() { _ = transaction.Rollback() }()
+	if err := postgresstore.InsertTenantSchemaIdentity(
+		ctx, transaction, target, origin,
+	); err != nil {
+		return err
+	}
+	if err := transaction.Commit(); err != nil {
+		return fmt.Errorf("commit tenant schema identity: %w", err)
+	}
+	return nil
 }

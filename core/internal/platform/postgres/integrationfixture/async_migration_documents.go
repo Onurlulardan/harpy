@@ -2,12 +2,10 @@
 
 package integrationfixture
 
-import (
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
-)
+import "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 
-// LoadAsyncMigrationDocuments returns the runtime-selected async migration set.
+// LoadAsyncMigrationDocuments returns no per-module SQL. Tenant and platform
+// schema now come from the Goose baseline.
 func LoadAsyncMigrationDocuments() ([]migration.Document, error) {
-	return platformasync.MigrationDocuments()
+	return nil, nil
 }

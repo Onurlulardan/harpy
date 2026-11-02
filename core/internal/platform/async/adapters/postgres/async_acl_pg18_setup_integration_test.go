@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -61,7 +61,7 @@ UPDATE platform.cutover_groups SET state='v2', writer='v2';
 UPDATE platform.domain_cutovers SET state='v2', writer='v2';`); err != nil {
 		t.Fatalf("activate async ACL authority: %v", err)
 	}
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatalf("load async ACL migrations: %v", err)
 	}

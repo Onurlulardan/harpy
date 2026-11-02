@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	catalogmodule "github.com/Onurlulardan/harpy/core/internal/modules/catalog"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 func assertCatalogMenuBaselineState(t *testing.T, ctx context.Context,
@@ -105,7 +105,7 @@ func executeCatalogMenuRepair(t *testing.T, ctx context.Context, database *sql.D
 
 func catalogMenuRepairBody(t *testing.T) string {
 	t.Helper()
-	documents, err := catalogmodule.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

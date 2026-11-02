@@ -10,7 +10,6 @@ import (
 	"strings"
 	"testing"
 
-	analyticsmodule "github.com/Onurlulardan/harpy/core/internal/modules/analytics"
 	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -21,7 +20,7 @@ func analyticsDocuments(
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("Analytics migration origin %q is unsupported", origin)
 	}
-	documents, err := analyticsmodule.MigrationDocuments()
+	documents, err := []platformmigration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

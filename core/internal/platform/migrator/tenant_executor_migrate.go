@@ -6,8 +6,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"os"
-	"strings"
 
 	tenantexec "github.com/Onurlulardan/harpy/core/internal/platform/tenantmigrationexecutor"
 )
@@ -30,9 +28,6 @@ func (executor *TenantExecutor) Migrate(
 		claim.MigrationRunID.String(),
 	)
 	if err != nil && !errors.Is(err, ErrCommitted) {
-		// #region agent log
-		fmt.Fprintf(os.Stderr, "debug J %s\n", strings.ReplaceAll(err.Error(), "\n", " "))
-		// #endregion
 		if errors.Is(err, ErrOutcomeAmbiguous) {
 			return tenantexec.MigrationReceipt{}, errors.Join(
 				tenantexec.ErrAmbiguousOutcome, err,

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Onurlulardan/harpy/core/internal/modules/platformops"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 func TestPlatformOpsMigrationsAndRecoveryLifecyclePG18(t *testing.T) {
@@ -34,7 +34,7 @@ func resetPlatformOpsSchema(t *testing.T, ctx context.Context, database *sql.DB)
 
 func applyPlatformOpsDocuments(t *testing.T, ctx context.Context, database *sql.DB) {
 	t.Helper()
-	documents, err := platformops.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

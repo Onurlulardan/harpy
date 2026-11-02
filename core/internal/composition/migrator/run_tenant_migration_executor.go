@@ -33,14 +33,7 @@ func runTenantMigrationExecutorProcess(
 		)
 		return processcode.InvalidStartup
 	}
-	documents, err := deployMigrationDocuments()
-	if err != nil {
-		reportFailureStage(
-			stderr, nil, "build_contract", tenantMigrationCommand, "schema_contract",
-		)
-		return processcode.InvalidStartup
-	}
-	embedded, registry, err := schemacontract.LoadStartup(documents)
+	embedded, err := schemacontract.LoadStatic()
 	if err != nil {
 		reportFailureStage(
 			stderr, nil, "build_contract", tenantMigrationCommand, "schema_contract",
@@ -75,5 +68,5 @@ func runTenantMigrationExecutorProcess(
 		)
 	}
 	return startTenantMigrationExecutor(process, settings, info, embedded,
-		registry, release, documents, database, logger, telemetryRuntime)
+		release, database, logger, telemetryRuntime)
 }

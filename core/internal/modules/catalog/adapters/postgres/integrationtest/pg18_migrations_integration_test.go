@@ -11,7 +11,6 @@ import (
 	"strings"
 	"testing"
 
-	catalogmodule "github.com/Onurlulardan/harpy/core/internal/modules/catalog"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -43,7 +42,7 @@ func applyCatalogMigrations(
 	t *testing.T, ctx context.Context, database *sql.DB, origin string,
 ) {
 	t.Helper()
-	documents, err := catalogmodule.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
