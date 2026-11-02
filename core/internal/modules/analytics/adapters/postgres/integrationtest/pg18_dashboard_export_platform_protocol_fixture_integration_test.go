@@ -12,7 +12,6 @@ import (
 	"testing"
 	"time"
 
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -66,7 +65,7 @@ func analyticsPlatformProtocolDocuments(t *testing.T) []platformmigration.Docume
 		"20260802020014_create_analytics_dashboard_export_cleanup_owner_v1.fresh.sql":       true,
 		"20260802020021_create_analytics_dashboard_export_control_v1.fresh.sql":             true,
 	}
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []platformmigration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

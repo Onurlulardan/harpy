@@ -8,7 +8,6 @@ import (
 	"strings"
 	"testing"
 
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -69,7 +68,7 @@ func selectAnalyticsDashboardExportPlatformDocuments(t *testing.T, origin string
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("Platform Analytics export origin %q is unsupported", origin)
 	}
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []platformmigration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

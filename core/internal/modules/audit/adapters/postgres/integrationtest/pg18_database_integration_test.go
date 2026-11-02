@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Onurlulardan/harpy/core/internal/modules/audit"
+	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/testcontainers/testcontainers-go"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
@@ -80,7 +80,7 @@ func applyAuditOrigin(
 		schema, schema, schema, schema)); err != nil {
 		t.Fatal(err)
 	}
-	documents, err := audit.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

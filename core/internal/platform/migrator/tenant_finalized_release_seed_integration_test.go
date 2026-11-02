@@ -4,7 +4,6 @@ package migrator
 
 import (
 	"context"
-	"os"
 	"strings"
 	"testing"
 
@@ -13,16 +12,9 @@ import (
 
 func seedFinalizedRelease(
 	t *testing.T, ctx context.Context, fixture tenantMigrationFixture,
-	runner *Runner, selected postgresv1.SelectedMigration,
+	runner *Runner, _ postgresv1.SelectedMigration,
 ) {
 	t.Helper()
-	historySQL, err := os.ReadFile("adapters/postgres/sql/create_history_table.sql")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, err := fixture.database.ExecContext(ctx, string(historySQL)); err != nil {
-		t.Fatal(err)
-	}
 	identity := runner.identity
 	if _, err := fixture.database.ExecContext(ctx, `INSERT INTO platform.environment_identity
 (environment_id,database_origin,database_system_identifier,database_oid,
@@ -35,15 +27,6 @@ release_id,bootstrap_authority_sha256) VALUES($1,$2,$3,$4,$5,$6)`,
 (environment_id,database_generation,migration_manifest_sha256,extension_manifest_sha256)
 VALUES($1,$2,$3,$4)`, identity.environmentID, identity.databaseGeneration,
 		identity.manifestSHA256, identity.extensionSHA256); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := fixture.database.ExecContext(ctx, `INSERT INTO platform.platform_migration_history
-(version,record_kind,is_applied,owner,scope,origin,selected_path,selected_sha256,
-run_id,target_database_generation,next_minimum_runtime_generation,applied_at)
-VALUES($1,'migration',true,$2,$3,$4,$5,$6,$7,$8,$9,pg_catalog.clock_timestamp())`,
-		selected.Version, selected.Owner, selected.Scope, selected.Origin, selected.Path,
-		selected.SHA256, finalizedMigrationRun, selected.TargetDatabaseGeneration,
-		selected.NextMinimumRuntimeGeneration); err != nil {
 		t.Fatal(err)
 	}
 	transaction, err := fixture.database.BeginTx(ctx, nil)

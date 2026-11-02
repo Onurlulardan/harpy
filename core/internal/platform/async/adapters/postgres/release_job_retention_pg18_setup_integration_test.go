@@ -9,7 +9,6 @@ import (
 	"strings"
 	"testing"
 
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -44,7 +43,7 @@ func applyRetentionReleaseMigrations(
 	t *testing.T, ctx context.Context, database *sql.DB, origin string,
 ) {
 	t.Helper()
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

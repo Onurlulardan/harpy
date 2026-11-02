@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/jackc/pgx/v5"
@@ -84,49 +83,3 @@ WHERE release.environment_id=$1 AND release.database_origin='fresh'
   AND release.migration_manifest_sha256=$2
   AND release.extension_manifest_sha256=$3
   AND release.postgres_image_digest=$4`
-
-func runFoundationApplied(ctx context.Context, arguments []string) error {
-	path, err := parseSinglePath(arguments, "foundation-applied", "admin-dsn-file")
-	if err != nil {
-		return err
-	}
-	contract, err := readEmbeddedBuildContract()
-	if err != nil {
-		return err
-	}
-	if contract.MigrationManifestSHA256 != foundationMigrationDigest {
-		return fmt.Errorf("foundation status requires the pinned bootstrap image")
-	}
-	dsn, err := readSecret(path, "admin DSN")
-	if err != nil {
-		return err
-	}
-	operationContext, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-	admin, config, err := openAdmin(operationContext, dsn)
-	if err != nil {
-		return err
-	}
-	defer admin.Close(context.Background())
-	target, err := openTarget(operationContext, config)
-	if err != nil {
-		return err
-	}
-	defer target.Close(context.Background())
-	live, err := readLiveDatabaseIdentity(operationContext, target)
-	if err != nil {
-		return err
-	}
-	environmentID, err := readExistingEnvironmentID(operationContext, target, live)
-	if err != nil {
-		return err
-	}
-	if environmentID == "" {
-		return fmt.Errorf("bootstrap baseline environment is absent")
-	}
-	if err := verifyFoundationRelease(operationContext, target, environmentID); err != nil {
-		return err
-	}
-	fmt.Println("bootstrap baseline already finalized")
-	return nil
-}

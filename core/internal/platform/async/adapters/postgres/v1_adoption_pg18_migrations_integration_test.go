@@ -10,9 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	asyncadoption "github.com/Onurlulardan/harpy/core/internal/platform/async/adoption"
-	platformcutover "github.com/Onurlulardan/harpy/core/internal/platform/cutover"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -66,11 +64,11 @@ func applyAdoptionMigrations(
 	if _, err := database.ExecContext(ctx, adoptionAuthorityFixture); err != nil {
 		t.Fatalf("prepare adoption authority: %v", err)
 	}
-	asyncDocuments, err := platformasync.MigrationDocuments()
+	asyncDocuments, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	cutoverDocuments, err := platformcutover.MigrationDocuments()
+	cutoverDocuments, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

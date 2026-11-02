@@ -14,10 +14,6 @@ func runContract(arguments []string) error {
 	return exportContract(arguments, loadMigrationArtifact, freshBinarySchemaContract)
 }
 
-func runFoundationContract(arguments []string) error {
-	return exportContract(arguments, loadFoundationMigrationArtifact, localSchemaContract)
-}
-
 func exportContract(
 	arguments []string,
 	loadMigration func() (artifact, error),

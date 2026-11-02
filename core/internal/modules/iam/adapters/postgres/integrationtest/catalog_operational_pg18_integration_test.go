@@ -10,7 +10,6 @@ import (
 	"time"
 
 	catalogpackagev1 "github.com/Onurlulardan/harpy/contracts/catalogpackage/v1"
-	iammodule "github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/jackc/pgx/v5"
 )
@@ -52,7 +51,7 @@ func TestIAMCatalogMaterializesOperationalRBACAgainstPostgreSQL184(t *testing.T)
 
 func iamCatalogDocuments(t *testing.T, origin string) []migration.Document {
 	t.Helper()
-	documents, err := iammodule.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

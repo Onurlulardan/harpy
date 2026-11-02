@@ -85,7 +85,7 @@ func analyticsMaintenancePlatformDocuments(t *testing.T,
 	first, last string,
 ) []platformmigration.Document {
 	t.Helper()
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []platformmigration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

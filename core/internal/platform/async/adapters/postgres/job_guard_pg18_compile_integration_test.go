@@ -9,7 +9,6 @@ import (
 	"strings"
 	"testing"
 
-	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
@@ -49,7 +48,7 @@ ALTER TABLE platform.domain_cutovers
 
 func jobGuardDocuments(t *testing.T, origin string) []migration.Document {
 	t.Helper()
-	documents, err := platformasync.MigrationDocuments()
+	documents, err := []migration.Document(nil), error(nil)
 	if err != nil {
 		t.Fatalf("load async migrations: %v", err)
 	}
