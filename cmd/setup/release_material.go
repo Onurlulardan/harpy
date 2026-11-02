@@ -90,10 +90,6 @@ func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
 	if err != nil {
 		return nil, err
 	}
-	catalog, err := buildCatalogSet(keys)
-	if err != nil {
-		return nil, fmt.Errorf("catalog package set: %w", err)
-	}
 	operationDocument, operationSignature, err := buildCutoverOperation(
 		sourceKeys, manifests.migration.digest, authority.digest,
 	)
@@ -105,9 +101,6 @@ func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
 	)
 	if err != nil {
 		return nil, fmt.Errorf("release manifest: %w", err)
-	}
-	if err = verifyCatalogSet(keys, catalog, verifiedRelease); err != nil {
-		return nil, fmt.Errorf("catalog package set: %w", err)
 	}
 	verifiedOperation, err := verifyCutoverOperation(
 		sourceKeys, operationDocument.body, operationSignature, verifiedRelease, verifiedAuthority,
@@ -139,6 +132,5 @@ func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
 		manifests.roles.body, manifests.privileges.body, manifests.ownership.body,
 		operations.bootstrap.body, operations.extension.body, operations.cleanup.body,
 		operationDocument.body, operationSignature, cutoverReceipt, cutoverReceiptSignature,
-		catalog, keys.keyring,
 	)
 }
