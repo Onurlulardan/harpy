@@ -33,6 +33,13 @@ Tek bir başlangıç sürümü, tek bir üretim/kurulum akışı ve tek bir sche
 - [02 — Baseline üretimi ve hedef Goose mimarisi](02-baseline-and-goose.md)
 - [03 — Agent iş emirleri ve paralelleştirme sınırları](03-agent-work-orders.md)
 - [04 — Kabul kriterleri, testler ve local recovery](04-acceptance-and-recovery.md)
+- [05 — Doğrulanmış boşluklar](05-verified-gaps.md)
+
+## Catalog removal ile sıra
+
+Bu iş ile [Catalog removal](../../tasks/catalog-removal/README.md) tek çalışma değildir ve ortak dosyalarda paralel yazılmaz. Catalog, ForgeCRUD paket sistemidir; fresh install şemasında kalması bu belgenin kararı değildir. Baseline, Catalog şema kararı verilmiş kaynaktan bir kez dondurulur. Fresh install'da Catalog tabloları ile IAM/Analytics catalog tabloları kalmayacaksa, bu nesneler dump kaynağından çıkmadan Faz 1 baseline almaz. Retain kararı varsa baseline'a girecek nesneler Faz 0 raporunda yazılı olur. Agent kendi kendine DROP yazmaz.
+
+Ortak yüzey tek sahibi vardır: `tools/localrelease`, `cmd/setup`, Dockerfile, Taskfile ve migration manifest. Catalog package-set, keyring ve modül silme Catalog removal sırasında kalır. Bu sette `tools/localrelease` içinden yalnız migration artifact üretimi ayrılır.
 
 ## Gözden geçirilen mevcut durum
 
@@ -42,5 +49,6 @@ Tek bir başlangıç sürümü, tek bir üretim/kurulum akışı ve tek bir sche
 - `core/internal/platform/migration/release/` altında 109 historical migration manifest'i var.
 - Goose bağımlılığı zaten `go.mod` içinde (`pressly/goose/v3 v3.27.2`), ancak custom `Store`, custom history tablosu, release registry ve manifest sistemi Goose'un etrafına ikinci bir migration framework'ü koyuyor.
 - Local logunda `core-migrator deploy up` şu hatayla duruyor: `history version 20260722050009 differs from verified metadata`. Kod bu mesajı `core/internal/platform/migrator/classify_history.go` içinde üretiyor.
+- 2 Kasım 2026 çalışma ağacı aynı sayıları doğruladı. Manifestteki 1.982 entry'nin tamamı `phase=expand` ve `transaction_mode=transactional`. Seçilmeyen 18 SQL, eksik şema değil; supersession'ın bıraktığı terminal olmayan kopyalar. Ayrıntı [05](05-verified-gaps.md) içindedir.
 
 Önemli: baseline, eski SQL dosyalarından rastgele seçilerek oluşturulmayacak. Önce temiz, geçici bir PostgreSQL 18 ortamında mevcut son geçerli şema oluşturulacak; sonra bu şema doğrulanmış başlangıç baseline'ına dönüştürülecek.

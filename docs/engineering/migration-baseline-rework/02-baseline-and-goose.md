@@ -21,6 +21,15 @@ Baseline'ı mevcut migration dosyalarından elle birleştirme. Kaynak, son şema
 7. Kaynak şemayı yeni baseline'dan oluşturulmuş boş hedef DB ile karşılaştır. Catalog query'leriyle nesne sayıları ve isimleri, constraint/index definition'ları, routine signature/body, trigger/RLS, extensions, grants ve tenant izolasyonu karşılaştırılmalı.
 8. Aynı işlemi yeni bir temporary tenant schema'da tekrarla. Platform ve tenant başlangıç durumu, uygulama readiness'si ve on-premise installation/license offering akışı doğrulanmadan eski SQL kaynaklarını silme.
 
+## pg_dump çıktısını Goose dosyasına sarmak
+
+Baseline'ın kaynağı `pg_dump` çıktısıdır. Bu çıktı olduğu gibi `.sql` diye kaydedilip Goose'a verilmez.
+
+- PostgreSQL 18 dump'ındaki `\restrict` ve `\unrestrict` satırları `psql` meta komutudur. Baseline dosyasına alınmaz.
+- Fonksiyon ve prosedür gövdeleri dolar-tırnak içindedir ve noktalı virgül taşır. Goose, `StatementBegin` / `StatementEnd` olmadan ifadeyi noktalı virgülden böler. Platform baseline'ı ve tenant baseline'ı ayrı ayrı `-- +goose Up` altında tek statement bloğu olur.
+- `SET`, `search_path`, `CREATE EXTENSION`, ownership ve ACL dump'ta nasıl durduğu katalog karşılaştırmasıyla doğrulanır. `--no-owner` ve `--no-acl` güvenlik sınırı ayrıca gerekçelenmeden kullanılmaz.
+- Statement bloğunun içine secret, license, admin credential, signing key ve runtime UUID girmez.
+
 ## Dosya / sürüm modeli
 
 - `20261028000000_initial_schema.sql` baseline için örnek version'dır; son adlandırmayı repo'nun FileGuard ve migration version kurallarıyla uyumlu seç. Future migration timestamp'leri bundan büyük ve benzersiz olmalı.

@@ -16,6 +16,10 @@
 | Runtime schema contract | `contracts/runtime/v1/binary-schema-contract.json`, `core/internal/platform/schemacontract/**`, `core/internal/platform/binarycontract/**` | Migration manifest digest'ine bağımlılığı kaldırılacak. API/runtime gerçekten DB schema compatibility version'ı kullanıyorsa küçük bir version contract olarak tut; 1.982 migration entry'lik catalog'a bağlama. |
 | Goose bağımlılığı | `go.mod`, `core/internal/platform/migrator/build_goose_provider.go` | Goose zaten kullanılıyor. Yeni motor kurma. Normal provider, native history store ve gerekli locking ile sadeleştir. |
 
+## 2 Kasım 2026 doğrulaması
+
+Aynı ağaçta migration dizinlerinde 2.000 `.fresh.sql` var. `contracts/runtime/v1/fresh-migration-manifest.json` 1.982 entry seçiyor: 969 platform, 1.013 tenant, sürümler benzersiz. `core/internal/platform/migration/release/` altında 109 `*.migration-manifest.json` ve yanında `release-index.json` duruyor. `go.mod` içinde Goose `v3.27.2`. Seçilmeyen 18 dosya, `internal/migrationbundle/select.go` supersession sırasının elediği kopyalar; baseline onların birleşiminden çıkmaz. Liste ve run lifecycle ayrımı [05-verified-gaps.md](05-verified-gaps.md) içindedir.
+
 ## Logdaki hatanın gerçek anlamı
 
 `core/internal/platform/migrator/classify_history.go` içindeki `verifyHistoryRow` şu metadata alanlarını karşılaştırıyor: record kind, applied durumu, owner, scope, origin, target database generation ve next minimum runtime generation. Path/SHA aynı değilse ayrıca supersession kaydı arıyor. Ekteki `history version 20260722050009 differs from verified metadata` hatası bu kontrollerin en az birinin başarısız olduğunu bildiriyor; mesaj hangi alanın farklı olduğunu açıklamıyor.

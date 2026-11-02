@@ -1,78 +1,100 @@
 # 03 — Agent iş emirleri, dosya sınırları ve bağımlılıklar
 
-## Genel talimatlar (tüm agent'lar için zorunlu)
+## Genel talimatlar
 
-1. Önce bu klasördeki dört planı ve belirtilen kaynak kodları oku. README'ye bakıp tahminle refactor yapma.
-2. Bu çalışma **backwards-compatible migration upgrade çalışması değildir**. Amaç yeni starter repo'sunun başlangıç şemasını son geçerli hâle getirmek ve legacy migration zincirini kaldırmaktır.
-3. Eski SQL'leri basitçe silme; önce temiz PostgreSQL 18 üzerinde final schema baseline'ını üret, kaynak/target katalog karşılaştırmasını ve runtime smoke testlerini geçir.
-4. Kullanıcının local named volume'larını/gerçek DB'sini silme. Her destructive test disposable Compose project, temporary Postgres container veya disposable volume kullansın. `task local:destroy`, volume prune veya DB reset komutları otomatik çalıştırılmasın.
-5. Hash/digest/UUID/license/seed değerleri uydurma. Migration hash manifesti, release archive veya custom store'u yeni adlarla yeniden yaratma.
-6. Eski sistemdeki her `core/internal/platform/migrator` ve `tools/localrelease` dosyasını topluca silme. Call graph ve tests ile hangi davranışın yalnız legacy migration framework'e ait olduğunu ispatla. License, role, extension, secret, installation, backup/restore, tenant identity ve RLS davranışları ayrı domain sorumluluğudur.
-7. Bir agent aynı anda başka agent'ın sahip olduğu dosya grubunu değiştirmesin. Fazlar sequential merge/commit mantığıyla ilerlesin; merge sonrası testler yeniden çalıştırılsın.
-8. Her fazın sonunda `git diff --check`, ilgili tests ve değişen dosyaların listesi raporlansın. Test gevşetme, ignored test veya `go test` atlama kabul edilmez.
+1. Önce bu klasördeki planların tamamını oku. README'ye bakıp tahminle refactor yapma. Doğrulanmış boşluklar [05](05-verified-gaps.md) içindedir.
+2. Bu çalışma backwards-compatible migration upgrade çalışması değildir. Amaç yeni starter'ın başlangıç şemasını son geçerli hâle getirmek ve legacy migration zincirini kaldırmaktır.
+3. Eski SQL'leri silerek başlama. Temiz PostgreSQL 18 üzerinde final schema baseline'ını üret, katalog karşılaştırmasını ve runtime smoke testlerini geçir. `pg_dump` çıktısını Goose dosyasına sarmak [02](02-baseline-and-goose.md) bölümündedir.
+4. Kullanıcının local named volume'larını ve gerçek DB'sini silme. Destructive test disposable Compose project, temporary Postgres container veya disposable volume kullanır. `task local:destroy`, volume prune ve DB reset komutları otomatik çalıştırılmaz.
+5. Hash, digest, UUID, license ve seed uydurma. Migration hash manifesti, release archive veya custom store yeni adlarla kurulmaz.
+6. `core/internal/platform/migrator` ve `tools/localrelease` topluca silinmez. Call graph ve testler, legacy migration framework ile license, role, extension, secret, installation, backup/restore, tenant identity ve RLS davranışını ayırır.
+7. Bir agent başka agent'ın sahip olduğu dosya grubunu değiştirmez. Fazlar tek entegrasyon dalında sırayla ilerler. Her faz kabul edilmeden sonraki agent eski katmanları silmez.
+8. Her fazın sonunda `git diff --check`, ilgili testler ve değişen dosyaların listesi raporlanır. Test gevşetme, ignored test ve `go test` atlama kabul edilmez.
+9. Bu set Catalog removal yapmaz. `core/internal/modules/catalog/**`, Catalog package-set, keyring ve Catalog'a ait IAM/Analytics SQL'i Catalog removal sahibine kalır. Ortak release/setup yüzeyine aynı anda iki iş yazmaz.
 
-## Faz 0 — Audit ve source-of-truth doğrulama (read-only agent)
+## Önkoşul
 
-**Dokunulacak dosya yok; yalnız envanter/rapor.**
+Faz 0 Catalog kararını beklemez. Faz 1, Catalog fresh-install şema kararı yazılmadan baseline dondurmaz.
 
-- `internal/migrationbundle/**`, `core/internal/platform/migration/**`, `core/internal/platform/migrator/**`, `core/internal/composition/{migrator,operator}/**`, `cmd/setup/**`, `tools/localrelease/**`, `tools/internal/migrationmanifest/**`, Dockerfile/Compose/Taskfile/CI çağrı noktalarını tara.
-- Ekli local logdaki `history version 20260722050009 differs from verified metadata` hatasının temiz DB'de de tekrarlanıp tekrarlanmadığını kaydet.
-- Boş PostgreSQL 18'e current main'i deploy edip platform + örnek tenant final şemasını kur. Temiz kurulum başarısızsa hangi migration, SQLSTATE, DB object veya metadata kontrolünde durduğunu tam olarak raporla. Başarısız zincirden yarım dump üretme.
-- Tüm gerekli database object/seed/extension/role/privilege'leri envanterle. Runtime-generated records ile statik başlangıç verilerini ayır.
-- Çıkış: baseline source DB başarılı; kaynak final schema envanteri, gerekli seed listesi ve tüm çağrı noktaları raporlanmış.
+Fresh install'da Catalog tabloları ve IAM/Analytics catalog tabloları kalmayacaksa, bu nesneler dump kaynağından çıkmış olur. Retain kararı varsa baseline'a girecek nesnelerin adları Faz 0 raporundadır. Agent DROP yazmaz.
 
-## Faz 1 — Baseline üretimi (database/schema agent)
+## Faz 0 — Audit
 
-**Sahiplik:** yalnız yeni baseline SQL dosyaları ve bunları tekrarlanabilir şekilde üretmeye/test etmeye yarayan küçük script/test. Henüz eski dosyaları silme.
+**Sahiplik:** yok. Yalnız rapor.
 
-- Platform ve tenant için gerekli kapsamları aynı baseline release'i içinde üret.
-- Başlangıç nesnelerini pg_dump üzerinden al; dump'ı elle yazmaya başlama. Role/extension/grant ve gerekli data farklarını açıkça ele al.
-- Baseline'dan boş DB ve yeni tenant schema oluşturup source final schema ile katalog karşılaştırmasını çalıştır.
-- On-premise kurulumun gerekli installation manifest ve billing license/offering kayıtları setup/operator authority akışıyla oluşabildiğini doğrula; signing key/license gibi runtime verileri baseline'a gömme.
-- Çıkış: fresh platform DB + fresh tenant schema testleri geçiyor, object/seed farkları açıklanmış ve baseline dosyaları sabitlenmiş.
+- `internal/migrationbundle/**`, `core/internal/platform/migration/**`, `core/internal/platform/migrator/**`, `core/internal/composition/{migrator,operator}/**`, `cmd/setup/**`, `tools/localrelease/**`, `tools/internal/migrationmanifest/**`, Dockerfile, Compose, Taskfile ve CI çağrı noktalarını tara.
+- `history version 20260722050009 differs from verified metadata` hatasının temiz disposable PostgreSQL 18'de de çıkıp çıkmadığını kaydet. Temiz kurulum durursa migration, SQLSTATE, DB object ve metadata kontrolünü yaz. Yarım dump üretme.
+- Sembolleri iki listeye ayır. Legacy metadata: `classify_history.go`, supersession, custom `Store` / `TenantStore` içindeki path, SHA, owner, scope, origin, generation. Operasyonel durum: advisory lock, `recoverFinalizedRelease`, `bootstrapRunLifecycle`, `ensureRunRunning`, `finalizeSuccess`, `finalizeFailure`, backup ve release finalization.
+- `rg` ile `FreshMigrationDocuments`, `platform_migration_history` ve 1.982 entry assert eden dosyaların tam listesini çıkar. Migrator ağacının içinde ve dışında diye böl.
+- Statik seed ile runtime identity, credential, license ve signing key kayıtlarını ayır.
+- Çıkış: kaynak şema envanteri, seed listesi, retain listesi, sembol ayrımı ve çağrı listesi. Bu rapor baseline'ı dondurmaz.
 
-## Faz 2 — Goose runtime sadeleştirmesi (Go migration agent)
+## Faz 1 — Baseline
 
-**Sahiplik:** migration runner/provider/history ve migration-specific contracts; build wiring/old SQL deletion yok.
+**Başlangıç:** Faz 0 raporu var ve Catalog şema kararı dump kaynağına uygulanmış.
 
-- `build_goose_provider.go` ve `build_tenant_goose_provider.go` içindeki `DialectCustom` + custom `WithStore` yolunu Goose native PostgreSQL store'a geçir.
-- Baseline'ı bir kere uygulat; yalnız sonraki timestamp'li SQL'leri Goose ile sırayla uygulat. Platform/tenant scope ve paralel tenant initialization lock gereksinimini kanıtla.
-- `classify_history.go`, history supersession, custom `Store`/`TenantStore` ve selected migration metadata bağımlılıklarını native Goose history ile değiştir.
-- Goose native store dinamik tenant schema history'sini desteklemezse minimal bir store/adapter yap ve gerekçesini tek dokümanda yaz; eski metadata modelini koruma.
-- `core/internal/composition/operator/startup.go` gibi yalnız schema contract isteyen call site'larda `FreshMigrationDocuments()` ile corpus toplamayı kaldır. Migrator ancak migration uygulayacağı için kendi kapsamındaki dosyaları yükler.
-- Çıkış: tests prove baseline up, second up is no-op, new migration applies once, invalid order fails and per-tenant history is isolated.
+**Sahiplik:** yeni baseline SQL dosyaları ve onları üreten küçük script ile test. Eski `.fresh.sql` durur.
 
-## Faz 3 — Bootstrap/build/local dev sadeleştirmesi (platform tooling agent)
+- Platform ve tenant kapsamlarını aynı baseline release'inde üret. Lifecycle ayrıysa iki SQL dosyası olur.
+- Nesneler `pg_dump` ile alınır. Ham dump kaydedilmez. `\restrict` ve `\unrestrict` alınmaz. Her dosya `-- +goose Up` altında `StatementBegin` / `StatementEnd` ile tek statement olur.
+- Boş DB ve yeni tenant schema, kaynak final şema ile katalog karşılaştırmasından geçer.
+- Installation manifest ve billing license/offering, setup/operator ile oluşur. Signing key ve license baseline'a gömülmez.
+- Çıkış: fresh platform DB ve fresh tenant schema testleri geçer. Object ve seed farkları yazılır. Baseline dosyaları sabitlenir.
 
-**Sahiplik:** `Taskfile.yml`, `.taskfiles/**`, `ops/local/Dockerfile`, `ops/production/Dockerfile`, `ops/local/compose*.yml`, `tools/localrelease/**`, `cmd/setup/**`, `.github/workflows/ci.yml`.
+## Faz 2a — Goose runtime
 
-- `foundation-contract`/`foundation-applied`/hard-coded 138-entry manifest ve separate full release aşamalarını tek initial baseline/release akışına indir.
-- Docker local ve production build'i eski manifest generation ve migration-release ZIP üretiminden çıkar.
-- `task dev` clean volume üzerinde tek anlaşılır bootstrap → platform baseline → installation/license/setup → tenant baseline → API/worker akışını başlatmalı. Başlangıç sırasını dependency'lere göre belirle; runtime secret veya signed license'ı SQL baseline'a taşıma.
-- `tools/localrelease` içindeki migration artifact kodlarını ayır; lisans, key, grant, extension, setup ve recovery kodları gerekiyorsa kalmalı.
-- Çıkış: build/setup tek authoritative baseline kullanıyor; hiç kimse eski custom manifest dosyası/hash'i elle kopyalamıyor.
+**Sahiplik:** `core/internal/platform/migrator/**`, `core/internal/composition/migrator/**`, `core/internal/composition/operator/startup.go`. Eski SQL silinmez. Dockerfile, Taskfile ve `tools/localrelease` bu faza ait değildir.
 
-## Faz 4 — Legacy migration framework removal agent
+- `DialectCustom` ve custom `WithStore` native PostgreSQL store'a döner.
+- Baseline bir kez uygulanır. Sonraki timestamp'li SQL sırayla uygulanır. Out-of-order kapalıdır.
+- Native store tenant schema history'sini karşılayamazsa yalnız bu eksik için küçük adapter yazılır. Owner, scope, generation, SHA ve supersession geri gelmez.
+- Bir kilit mekanizması kalır. Advisory lock gerekiyorsa Goose locker ile yan yana ikinci kilit kurulmaz.
+- Faz 0 ayrımı uygulanır. Legacy release generation'a ait run lifecycle kalkar. Backup veya installation hâlâ kullanıyorsa durum `platform.platform_migration_history` dışına taşınır.
+- `startup.go` schema contract için `FreshMigrationDocuments()` ile corpus toplamaz.
+- Çıkış: bu ağaçtaki testler baseline up, ikinci up no-op, yeni migration bir kez, geçersiz sıra reddi ve tenant history izolasyonunu gösterir.
 
-**Başlangıç koşulu:** Faz 1–3 tamamlandı, baseline ve Goose testleri yeşil.
+## Faz 2b — Migrator dışı call site ve testler
 
-- Eski 2.000 SQL dosyası ve supersession JSON'larını kaldır; yeni baseline ve bundan sonraki migrations hariç legacy `.fresh.sql` zinciri kalmasın.
-- `internal/migrationbundle/**`, `tools/internal/migrationmanifest/**`, 109 historical release manifest'i, `release-index.json`, migration release archive/packer, yalnız legacy chain'e ait registry/select/manifest attestation code ve contract alanlarını kaldır.
-- Tüm Go embed pattern'lerini, CI/Taskfile/Dockerfile references, tests, FileGuard/ArchGuard ve docs'u güncelle.
-- `tools/localrelease` veya `core/internal/platform/migrator` klasörünü körlemesine kaldırma; yalnız call graph'ında artık kullanılmayan migration-specific kodu sil.
-- Çıkış: `rg` taramasıyla stale reference yok; starter repository yalnız baseline + future migration'larla çalışıyor.
+**Başlangıç:** Faz 2a kabul edilmiş. Dosya listesi Faz 0 `rg` raporudur.
 
-## Faz 5 — Bağımsız doğrulama agent'ı
+**Sahiplik:** bu listenin migrator ağacı dışındaki maddeleri. `core/internal/modules/catalog/**` ve Catalog'a ait IAM/Analytics SQL'i yazılmaz. Eski SQL silinmez.
 
-Bu agent diğer fazların yazdığı kodu yeniden tasarlamaz; test ve diff inceler.
+- `platform_migration_history` insert/assert ve 1.982 entry sayımı, native Goose history ile uyumlu hale gelir.
+- Çıkış: hedefli testler geçer. Kalan her eski referans gerekçesiyle yazılır.
 
-- Clean PostgreSQL 18 platform install ve fresh tenant creation.
-- Re-run bootstrap idempotency ve API/worker readiness.
-- Gelecek migration senaryosu: yeni migration ekle → Goose uygulasın → ikinci `up` değişiklik yapmasın → version table doğru sürümü göstersin.
-- SQL geçmişi koruma kuralı: önceki commit'teki migration dosyasına edit/delete gelirse CI fail; new `.sql` eklenmesi geçsin.
-- Roles, ownership, grants, extensions, constraints, functions, triggers, RLS/policies, tenant isolation, license offering, backup/restore ve setup idempotency regression testleri.
-- Çıkış: test command, exit code ve önemli schema comparison sonuçları raporlanmış.
+## Faz 3 — Build ve local
 
-## Agent'lar arası sıralama
+**Sahiplik:** `Taskfile.yml`, `.taskfiles/**`, `ops/local/Dockerfile`, `ops/production/Dockerfile`, `ops/local/compose*.yml`, `cmd/setup/**` içindeki migration manifest yolu, `.github/workflows/ci.yml`.
 
-Faz 0 → Faz 1 → Faz 2 → Faz 3 → Faz 4 → Faz 5. Bunları migration kaynakları ve build wiring üzerinde paralel çalıştırma. Tek bir entegrasyon branch'i üzerinden ilerle; her aşama kabul edilmeden sonraki agent'a eski katmanları sildirme.
+- `foundation-contract`, `foundation-applied`, sabit 138-entry manifest ve ayrı full release aşaması tek baseline akışına iner.
+- Docker build manifest generation ve migration-release ZIP üretiminden çıkar.
+- `task dev` temiz volume'da bootstrap, platform baseline, installation/license/setup, tenant baseline, API ve worker sırasını başlatır. Secret ve signed license SQL baseline'a taşınmaz.
+- `tools/localrelease` içinde yalnız migration artifact üretimi ayrılır. License, key, grant, extension, setup, recovery ve Catalog package-set kodu yerinde kalır.
+- CI, önceki commit'teki `.sql` migration dosyasının değişmesini ve silinmesini reddeder. Yeni dosya eklenmesi geçer.
+- Çıkış: build ve setup tek baseline kullanır. Elle kopyalanan manifest hash'i kalmaz.
+
+## Faz 4 — Legacy silme
+
+**Başlangıç:** Faz 1, 2a, 2b ve 3 yeşil.
+
+- Eski 2.000 SQL ve yedi `migration-supersessions.json` kalkar. Baseline ve ondan sonraki migration kalır.
+- `internal/migrationbundle/**`, `tools/internal/migrationmanifest/**`, 109 historical release manifest, `release-index.json`, release archive/packer ve yalnız legacy zincire ait registry/select/manifest attestation kalkar.
+- Embed, CI, Taskfile, Dockerfile, test, FileGuard, ArchGuard ve bu klasördeki artık referanslar güncellenir.
+- `skills/data-tenancy/SKILL.md` migration kuralı bu sete bağlanır. Checksum, owner-module ve eski snapshot upgrade cümleleri starter baseline'ından sonra kalkar. `docs/adr/0006-tenancy-migrations.md` uydurulmaz.
+- `tools/localrelease` ve `core/internal/platform/migrator` klasörleri bütün olarak silinmez. Call graph'ında kullanılmayan migration-specific kod silinir.
+- Çıkış: `rg` taramasında gerekçesiz eski referans yoktur. Starter baseline ve sonraki migration'larla çalışır.
+
+## Faz 5 — Doğrulama
+
+Bu agent kodun tasarımını değiştirmez. [04](04-acceptance-and-recovery.md) kabul listesini çalıştırır.
+
+- Temiz PostgreSQL 18 platform install ve fresh tenant.
+- İkinci tenant izolasyonu, ikinci `up` no-op, yeni migration bir kez, out-of-order ret.
+- Geçmiş `.sql` değişince CI fail. Yeni `.sql` geçişi.
+- Role, ownership, grant, extension, constraint, function, trigger, RLS, tenant isolation, license offering, backup/restore ve setup idempotency.
+- Baseline dosyasında psql meta komutu yoktur. Gövde tek Goose statement bloğudur.
+- Çıkış: komut, exit code ve platform ile tenant katalog karşılaştırması yazılır.
+
+## Sıra
+
+Faz 0, Catalog şema kararı ile birlikte Faz 1'i açar. Sonrası Faz 1, Faz 2a, Faz 2b, Faz 3, Faz 4, Faz 5. Bu fazlar migration kaynakları ve build wiring üzerinde paralel yazmaz.
