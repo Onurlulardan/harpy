@@ -5,7 +5,59 @@ DECLARE
     object_record record;
     current_schema_name text := pg_catalog.current_schema();
     retired_at_value timestamp with time zone := pg_catalog.clock_timestamp();
+    has_rows boolean;
+    unexpected_rows bigint;
 BEGIN
+    FOR object_record IN
+        SELECT namespace.nspname, relation.relname
+        FROM pg_catalog.pg_class AS relation
+        JOIN pg_catalog.pg_namespace AS namespace
+          ON namespace.oid = relation.relnamespace
+        WHERE namespace.nspname = current_schema_name
+          AND relation.relkind IN ('r', 'p')
+          AND relation.relname ~ '^(catalog_|analytics_catalog_|iam_catalog_)'
+    LOOP
+        IF object_record.relname = 'catalog_menu_definitions' THEN
+            EXECUTE pg_catalog.format(
+                'SELECT count(*) FROM %I.%I WHERE definition_id <> $1 OR revision <> 1 OR active_version_id <> $2',
+                object_record.nspname, object_record.relname
+            ) INTO unexpected_rows
+            USING '018f6000-0000-7000-8000-000000000001'::uuid,
+                  '018f6000-0000-7000-8000-000000000002'::uuid;
+            IF unexpected_rows > 0 THEN
+                RAISE EXCEPTION USING
+                    ERRCODE = '55000',
+                    MESSAGE = 'Catalog removal requires an explicit data disposition for catalog_menu_definitions';
+            END IF;
+        ELSIF object_record.relname = 'catalog_menu_versions' THEN
+            EXECUTE pg_catalog.format(
+                'SELECT count(*) FROM %I.%I WHERE version_id <> $1 OR definition_id <> $2 OR version_number <> 1 OR content_sha256 <> $3',
+                object_record.nspname, object_record.relname
+            ) INTO unexpected_rows
+            USING '018f6000-0000-7000-8000-000000000002'::uuid,
+                  '018f6000-0000-7000-8000-000000000001'::uuid,
+                  'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+            IF unexpected_rows > 0 THEN
+                RAISE EXCEPTION USING
+                    ERRCODE = '55000',
+                    MESSAGE = 'Catalog removal requires an explicit data disposition for catalog_menu_versions';
+            END IF;
+        ELSE
+            EXECUTE pg_catalog.format(
+                'SELECT EXISTS (SELECT 1 FROM %I.%I)',
+                object_record.nspname, object_record.relname
+            ) INTO has_rows;
+            IF has_rows THEN
+                RAISE EXCEPTION USING
+                    ERRCODE = '55000',
+                    MESSAGE = pg_catalog.format(
+                        'Catalog removal requires an explicit data disposition for %I.%I',
+                        object_record.nspname, object_record.relname
+                    );
+            END IF;
+        END IF;
+    END LOOP;
+
     UPDATE __tenant_schema__.iam_role_permission_bindings AS binding
     SET state = 'revoked',
         revoked_at = retired_at_value,
