@@ -94,11 +94,8 @@ func TestCatalogRemovalPostgres18(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer database.Close()
-		if _, err = database.ExecContext(ctx,
-			"CREATE TABLE catalog_manual_data (id integer); INSERT INTO catalog_manual_data VALUES (1)",
-		); err != nil {
-			t.Fatal(err)
-		}
+		execBaselineTestSQL(t, ctx, database,
+			"CREATE TABLE catalog_manual_data (id integer); INSERT INTO catalog_manual_data VALUES (1);")
 		script := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
 		if _, err = apply(ctx, dsn, schema+", pg_catalog", tenantCatalogRemovalFile, script); err == nil ||
 			!strings.Contains(err.Error(), "explicit data disposition") {
@@ -121,12 +118,10 @@ func TestCatalogRemovalPostgres18(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer database.Close()
-		if _, err = database.ExecContext(ctx, `
+		execBaselineTestSQL(t, ctx, database, `
 			CREATE TABLE catalog_manual_data (id integer);
 			CREATE VIEW generic_view AS SELECT id FROM catalog_manual_data;
-		`); err != nil {
-			t.Fatal(err)
-		}
+		`)
 		script := strings.ReplaceAll(tenantCatalogRemovalScript, tenantSchemaToken, schema)
 		if _, err = apply(ctx, dsn, schema+", pg_catalog", tenantCatalogRemovalFile, script); err == nil ||
 			!strings.Contains(err.Error(), "view owned outside") {
