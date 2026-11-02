@@ -4,7 +4,7 @@ import "time"
 
 func addGeneralKeyrings(set *artifactSet, now time.Time) error {
 	steps := []func(*artifactSet, time.Time) error{
-		addQueryAndCatalogKeyrings,
+		addQueryKeyring,
 		addArtifactKEKKeyrings,
 		addNotificationsKeyrings,
 	}
