@@ -216,6 +216,34 @@ BEGIN
     WHERE resource_key IN ('catalog', 'catalog.menu')
       AND state = 'active';
 
+    IF EXISTS (
+        SELECT 1
+        FROM pg_catalog.pg_depend AS dependency
+        JOIN pg_catalog.pg_proc AS referenced_routine
+          ON dependency.refclassid = 'pg_catalog.pg_proc'::regclass
+         AND dependency.refobjid = referenced_routine.oid
+        JOIN pg_catalog.pg_namespace AS referenced_namespace
+          ON referenced_namespace.oid = referenced_routine.pronamespace
+        JOIN pg_catalog.pg_rewrite AS view_rule
+          ON dependency.classid = 'pg_catalog.pg_rewrite'::regclass
+         AND dependency.objid = view_rule.oid
+        JOIN pg_catalog.pg_class AS dependent_view
+          ON dependent_view.oid = view_rule.ev_class
+        JOIN pg_catalog.pg_namespace AS dependent_namespace
+          ON dependent_namespace.oid = dependent_view.relnamespace
+        WHERE dependency.deptype = 'n'
+          AND referenced_namespace.nspname = current_schema_name
+          AND referenced_routine.proname ~ '^(catalog_|analytics_catalog_|iam_catalog_)'
+          AND NOT (
+              dependent_namespace.nspname = current_schema_name
+              AND dependent_view.relname ~ '^(catalog_|analytics_catalog_|iam_catalog_)'
+          )
+    ) THEN
+        RAISE EXCEPTION USING
+            ERRCODE = '55000',
+            MESSAGE = 'Catalog removal blocked by a view dependent on a Catalog routine';
+    END IF;
+
     FOR object_record IN
         SELECT namespace.nspname, procedure_row.proname,
                pg_catalog.pg_get_function_identity_arguments(procedure_row.oid) AS identity_arguments
