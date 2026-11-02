@@ -8,8 +8,6 @@ import (
 
 type builtEntrypointArtifactCatalog struct {
 	migration                          builtEntrypointArtifact
-	catalogPackageSet                  builtEntrypointArtifact
-	catalogPackageKeyring              string
 	extension                          builtEntrypointArtifact
 	roles                              builtEntrypointArtifact
 	privileges                         builtEntrypointArtifact
@@ -28,8 +26,6 @@ func prepareBuiltEntrypointArtifactCatalog(
 ) builtEntrypointArtifactCatalog {
 	t.Helper()
 	migration := readBuiltEntrypointMigrationArtifact(t, directory, stage)
-	catalogPackageSet, catalogPackageKeyring :=
-		prepareBuiltEntrypointCatalogPackageSet(t, directory, stage)
 	extension := writeBuiltEntrypointArtifact(
 		t, directory, "extensions.json", builtEntrypointExtensionManifest(),
 	)
@@ -58,8 +54,7 @@ func prepareBuiltEntrypointArtifactCatalog(
 		builtEntrypointCleanupOperation(roles.digest, privileges.digest),
 	)
 	return builtEntrypointArtifactCatalog{
-		migration: migration, catalogPackageSet: catalogPackageSet,
-		catalogPackageKeyring: catalogPackageKeyring,
+		migration: migration,
 		extension:             extension, roles: roles, privileges: privileges,
 		ownership: ownership, bootstrapOperation: bootstrapOperation,
 		extensionOperation: extensionOperation, cleanupOperation: cleanupOperation,
