@@ -6,7 +6,6 @@ type MigratorDeploy struct {
 	runtime      Runtime
 	verification ReleaseVerification
 	artifacts    MigrationArtifacts
-	catalogKeys  CatalogPackageKeyring
 }
 
 func LoadMigratorDeploy() (MigratorDeploy, error) {
@@ -26,25 +25,16 @@ func loadMigratorDeploy(entries []string) (MigratorDeploy, error) {
 	if err != nil {
 		return MigratorDeploy{}, err
 	}
-	catalogKeys, err := loadCatalogPackageKeyring(values)
-	if err != nil {
-		return MigratorDeploy{}, err
-	}
 	if err := validateArtifactPathIsolation(verification.paths(), artifacts.paths()); err != nil {
 		return MigratorDeploy{}, err
 	}
 	return MigratorDeploy{
 		runtime: runtimeConfig, verification: verification, artifacts: artifacts,
-		catalogKeys: catalogKeys,
 	}, nil
 }
 
 func (c MigratorDeploy) Verification() ReleaseVerification { return c.verification }
 func (c MigratorDeploy) Artifacts() MigrationArtifacts     { return c.artifacts }
-func (c MigratorDeploy) CatalogPackageKeyring() CatalogPackageKeyring {
-	return c.catalogKeys
-}
-
 func (c MigratorDeploy) Runtime() Runtime {
 	return c.runtime
 }
