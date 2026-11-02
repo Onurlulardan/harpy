@@ -19,6 +19,7 @@ description: Enforce backend-v2 file-size, naming, CRUD separation, readability,
 - Bosluklari silerek, coklu statement'i tek satira sikistirarak siniri asma.
 - Test, SQL migration, YAML ve script dosyalarini da sinira dahil et.
 - Markdown bu satir limitine girmez.
+- `*_baseline.sql` sema snapshot'lari bu satir limitine girmez.
 - Repo-authored dosya UTF-8 text'tir; symlink veya binary artifact commit etme.
 - Generated istisnasi header ile exact `contracts/generated.yaml` provenance ister.
 - Yalniz verified generated output, lockfile ve vendor dependency istisnadir.

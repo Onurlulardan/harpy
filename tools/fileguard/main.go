@@ -50,9 +50,8 @@ func lineLimitApplies(base string) bool {
 	switch filepath.Ext(base) {
 	case ".md", ".markdown":
 		return false
-	default:
-		return true
 	}
+	return !strings.HasSuffix(base, "_baseline.sql")
 }
 
 func inspect(root string) ([]string, error) {
