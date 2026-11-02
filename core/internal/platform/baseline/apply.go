@@ -32,6 +32,8 @@ const (
 	tenantVersion     = int64(20261028000001)
 	platformFile      = "20261028000000_platform_baseline.fresh.sql"
 	tenantFile        = "20261028000001_tenant_baseline.fresh.sql"
+	platformCatalogRemovalFile = "20261102000000_catalog_removal.fresh.sql"
+	tenantCatalogRemovalFile   = "20261102000001_catalog_removal.fresh.sql"
 )
 
 type Result struct {
