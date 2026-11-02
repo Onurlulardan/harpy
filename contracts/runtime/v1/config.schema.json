@@ -384,7 +384,6 @@
         "content_schema": {
           "enum": [
             "rest-query-cursor-keyring.schema.json",
-            "catalog-package-public-keyring.schema.json",
             "iam-access-token-keyring.schema.json",
             "iam-hmac-keyring.schema.json",
             "iam-password-blocklists.schema.json",
