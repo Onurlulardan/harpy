@@ -10,7 +10,7 @@ const (
 	FreshAuthoringRuntimeGeneration  = int64(1)
 	freshManifestContract            = "postgres-migration-manifest.v1"
 	freshManifestEngine              = "goose.v3"
-	freshManifestHistory             = "platform.platform_migration_history"
+	freshManifestHistory             = "platform.goose_db_version"
 	freshManifestPostgresMajor       = 18
 )
 

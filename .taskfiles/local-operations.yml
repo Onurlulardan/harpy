@@ -84,7 +84,7 @@ tasks:
     desc: Explicitly refresh digest-pinned build inputs from their registries
     dir: "{{.ROOT_DIR}}"
     cmds:
-      - "{{.COMPOSE}} build --pull foundation-local-release local-release"
+      - "{{.COMPOSE}} build --pull local-release"
       - docker builder prune --filter type=regular -f
       - docker builder prune --filter type=source.local -f
       - docker builder prune --max-used-space 2gb -f

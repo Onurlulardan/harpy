@@ -11,7 +11,7 @@
     "contract_version": {"const": "postgres-migration-manifest.v1"},
     "engine": {"const": "goose.v3"},
     "postgres_major": {"const": 18},
-    "history_table": {"const": "platform.platform_migration_history"},
+    "history_table": {"const": "platform.goose_db_version"},
     "out_of_order": {"const": false},
     "entries": {
       "type": "array", "minItems": 1, "maxItems": 10000, "uniqueItems": true,

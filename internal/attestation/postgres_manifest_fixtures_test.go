@@ -11,7 +11,7 @@ import (
 func testMigrationManifest() postgresv1.MigrationManifest {
 	return postgresv1.MigrationManifest{
 		ContractVersion: "postgres-migration-manifest.v1", Engine: "goose.v3",
-		PostgresMajor: 18, HistoryTable: "platform.platform_migration_history",
+		PostgresMajor: 18, HistoryTable: "platform.goose_db_version",
 		Entries: []postgresv1.MigrationEntry{{
 			Owner: "tenancy", Scope: "platform", Version: 20260714010000,
 			TransactionMode: "transactional", Phase: "foundation",

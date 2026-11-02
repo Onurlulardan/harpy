@@ -15,15 +15,12 @@ func (runner *Runner) buildTenantGooseProvider(
 	session postgresstore.TenantSessionProof,
 	runID string,
 ) (*goose.Provider, error) {
-	store, err := postgresstore.NewTenantStore(
-		runID, target, session, runner.tenantSelected,
-	)
-	if err != nil {
-		return nil, err
-	}
+	_ = runID
+	_ = target
+	_ = session
 	provider, err := goose.NewProvider(
-		goose.DialectCustom, database, runner.tenantFiles,
-		goose.WithStore(store), goose.WithAllowOutofOrder(false),
+		goose.DialectPostgres, database, runner.tenantFiles,
+		goose.WithAllowOutofOrder(false),
 		goose.WithDisableGlobalRegistry(true), goose.WithIsolateDDL(false),
 		goose.WithSlog(runner.logger),
 	)

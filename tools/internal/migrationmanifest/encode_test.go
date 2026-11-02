@@ -36,7 +36,7 @@ func TestEncodeUsesMigrationArtifactSizeLimit(t *testing.T) {
 	}
 	manifest := postgresv1.MigrationManifest{
 		ContractVersion: "postgres-migration-manifest.v1", Engine: "goose.v3",
-		PostgresMajor: 18, HistoryTable: "platform.platform_migration_history",
+		PostgresMajor: 18, HistoryTable: "platform.goose_db_version",
 		Entries: entries,
 	}
 	canonical, digest, err := Encode(manifest)

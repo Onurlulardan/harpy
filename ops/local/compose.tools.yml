@@ -18,7 +18,6 @@ services:
       - local-secret-operator:/targets/operator
       - local-secret-api:/targets/api
       - local-secret-worker:/targets/worker
-      - foundation-release-state:/targets/foundation-release
       - release-state:/targets/release
       - analytics-dashboard-export-spool:/targets/analytics-dashboard-export
       - iam-transfer-spool:/targets/iam-transfer
@@ -95,22 +94,6 @@ services:
         condition: service_healthy
     networks: [local]
 
-  foundation-local-release:
-    image: harpy/backend-v2-local-foundation:dev
-    build:
-      context: ../..
-      dockerfile: ops/local/Dockerfile
-      args:
-        LOCAL_RELEASE_CONTRACT_COMMAND: foundation-contract
-    entrypoint: ["/app/local-release"]
-    volumes:
-      - local-secret-local-release:/run/secrets:ro
-      - foundation-release-state:/run/release
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks: [local]
-
   core-migrator:
     image: harpy/backend-v2-local:dev
     entrypoint: ["/app/core-migrator"]
@@ -121,20 +104,6 @@ services:
       - local-secret-migrator:/run/secrets:ro
       - release-state:/run/release:ro
       - ../../debug-66ab43.log:/tmp/debug-66ab43.log
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks: [local]
-
-  foundation-core-migrator:
-    image: harpy/backend-v2-local-foundation:dev
-    entrypoint: ["/app/core-migrator"]
-    env_file: ./state/secrets/migrator.env
-    environment:
-      HARPY_LOG_LEVEL: debug
-    volumes:
-      - local-secret-migrator:/run/secrets:ro
-      - foundation-release-state:/run/release:ro
     depends_on:
       postgres:
         condition: service_healthy

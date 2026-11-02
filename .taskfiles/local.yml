@@ -31,7 +31,7 @@ tasks:
   build:
     desc: Build pinned images from the local Docker and Go caches
     cmds:
-      - "{{.COMPOSE}} build foundation-local-release local-release"
+      - "{{.COMPOSE}} build local-release"
   project:
     desc: Project least-authority secrets and initialize non-root state volumes
     cmds:

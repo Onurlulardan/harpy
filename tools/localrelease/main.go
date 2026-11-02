@@ -15,15 +15,11 @@ func main() {
 
 func run(ctx context.Context, arguments []string) error {
 	if len(arguments) == 0 {
-		return fmt.Errorf("command is required: contract, foundation-contract, foundation-applied, release-applied, prepare, refresh-signed-release, or grant-runtime")
+		return fmt.Errorf("command is required: contract, release-applied, prepare, refresh-signed-release, or grant-runtime")
 	}
 	switch arguments[0] {
 	case "contract":
 		return runContract(arguments[1:])
-	case "foundation-contract":
-		return runFoundationContract(arguments[1:])
-	case "foundation-applied":
-		return runFoundationApplied(ctx, arguments[1:])
 	case "release-applied":
 		return runReleaseApplied(ctx, arguments[1:])
 	case "prepare":

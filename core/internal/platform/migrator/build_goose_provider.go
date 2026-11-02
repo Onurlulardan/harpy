@@ -4,20 +4,15 @@ import (
 	"fmt"
 	"path"
 
-	postgresstore "github.com/Onurlulardan/harpy/core/internal/platform/migrator/adapters/postgres"
 	"github.com/pressly/goose/v3"
 )
 
 func (runner *Runner) buildGooseProvider(runID string) (*goose.Provider, error) {
-	store, err := postgresstore.NewStore(runID, runner.selected)
-	if err != nil {
-		return nil, err
-	}
+	_ = runID
 	provider, err := goose.NewProvider(
-		goose.DialectCustom,
+		goose.DialectPostgres,
 		runner.database,
 		runner.platformFiles,
-		goose.WithStore(store),
 		goose.WithAllowOutofOrder(false),
 		goose.WithDisableGlobalRegistry(true),
 		goose.WithIsolateDDL(false),

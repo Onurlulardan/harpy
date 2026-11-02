@@ -8,7 +8,7 @@ import (
 func TestLocalBuildKeepsImageAndBuilderCache(t *testing.T) {
 	document := readContractText(t, "../../.taskfiles/local.yml")
 	build := taskBlock(t, document, "build", "project")
-	if !strings.Contains(build, "build foundation-local-release local-release") ||
+	if !strings.Contains(build, "build local-release") ||
 		strings.Contains(build, "mcp-service") || strings.Contains(build, "ai-service") {
 		t.Fatal("local:build must compile the local images without AI or MCP")
 	}
