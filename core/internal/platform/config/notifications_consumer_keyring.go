@@ -11,7 +11,34 @@ import (
 
 const notificationsConsumerKeyringFileKey = "HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE"
 
-var notificationsConsumerPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,63}$`)
+var notificationsConsumerPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,63}package config
+
+import (
+	"crypto/ed25519"
+	"errors"
+	"fmt"
+	"io"
+	"log/slog"
+	"regexp"
+)
+
+const notificationsConsumerKeyringFileKey = "HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE"
+
+)
+var notificationsConsumerKeyIDPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,127}package config
+
+import (
+	"crypto/ed25519"
+	"errors"
+	"fmt"
+	"io"
+	"log/slog"
+	"regexp"
+)
+
+const notificationsConsumerKeyringFileKey = "HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE"
+
+)
 
 type notificationsConsumerKey struct {
 	consumer string
@@ -29,7 +56,7 @@ func (keyring NotificationsConsumerKeyring) Validate() error {
 		return invalidNotificationsConsumerKeyring()
 	}
 	for keyID, entry := range keyring.keys {
-		if !catalogKeyIDPattern.MatchString(keyID) ||
+		if !notificationsConsumerKeyIDPattern.MatchString(keyID) ||
 			!notificationsConsumerPattern.MatchString(entry.consumer) ||
 			entry.digest == [32]byte{} || len(entry.key) != ed25519.PublicKeySize {
 			return invalidNotificationsConsumerKeyring()
