@@ -169,7 +169,7 @@ BEGIN
           ON namespace.oid = procedure_row.pronamespace
         WHERE namespace.nspname = current_schema_name
           AND procedure_row.proname ~ '^catalog_'
-          AND procedure_row.prokind IN ('f', 'p', 'a')
+          AND procedure_row.prokind IN ('f', 'p', 'a', 'w')
         ORDER BY procedure_row.oid DESC
     LOOP
         EXECUTE pg_catalog.format(
