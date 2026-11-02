@@ -16,7 +16,6 @@ type Worker struct {
 	analyticsExportSpool AbsolutePath
 	restQueryCursorKeys  CursorKeyring
 	iamTransferArtifacts IAMSystemTransferArtifacts
-	catalogPackageKeys   CatalogPackageKeyring
 	documents            DocumentsWorker
 	notificationsKeys    NotificationsKEKKeyring
 }
@@ -82,10 +81,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 	); err != nil {
 		return Worker{}, err
 	}
-	catalogKeys, err := loadCatalogPackageKeyring(values)
-	if err != nil {
-		return Worker{}, err
-	}
 	documents, err := loadDocumentsWorker(values, runtimeConfig.Environment())
 	if err != nil {
 		return Worker{}, err
@@ -101,7 +96,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 		analyticsExports: analyticsExports, analyticsExportSpool: analyticsExportSpool,
 		restQueryCursorKeys:  cursorKeys,
 		iamTransferArtifacts: iamTransferArtifacts,
-		catalogPackageKeys:   catalogKeys,
 		documents:            documents,
 		notificationsKeys:    notificationsKeys,
 	}, nil
