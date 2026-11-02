@@ -79,9 +79,6 @@ func builtEntrypointDeployEnvironment(
 		"HARPY_BOOTSTRAP_RECEIPT_PATH=" + evidence.bootstrapReceipt,
 		"HARPY_EXTENSION_RECEIPT_PATH=" + evidence.extensionReceipt,
 		"HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH=" + evidence.cleanupReceipt,
-		"HARPY_CATALOG_PACKAGE_SET_PATH=" + evidence.catalog.catalogPackageSet.path,
-		"HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING=" +
-			evidence.catalog.catalogPackageKeyring,
 		"HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH=" + evidence.authorityManifest,
 		"HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH=" + evidence.authoritySignature,
 		"HARPY_MIGRATION_MANIFEST_PATH=" + evidence.catalog.migration.path,
