@@ -20,7 +20,7 @@ func TestRepositoryStorageCatalogLoadsWithoutSemanticDrift(t *testing.T) {
 		owners[index] = owner.Name
 	}
 	want := []string{
-		"analytics", "billing", "catalog", "documents", "iam", "notifications",
+		"analytics", "billing", "documents", "iam", "notifications",
 		"platform_async", "platform_backupreceipt", "platform_cutover", "platform_migrator",
 		"platform_postgres", "platformauthority", "platformops", "system_resource_layout",
 		"tenancy", "work",
