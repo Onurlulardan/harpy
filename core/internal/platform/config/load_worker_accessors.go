@@ -8,10 +8,6 @@ func (c Worker) Documents() (DocumentsWorker, error) {
 	return c.documents, c.documents.Validate()
 }
 
-func (c Worker) CatalogPackageKeyring() (CatalogPackageKeyring, error) {
-	return c.catalogPackageKeys, c.catalogPackageKeys.Validate()
-}
-
 func (c Worker) LongRunning() LongRunning {
 	return c.longRunning
 }
