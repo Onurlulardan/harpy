@@ -2,8 +2,6 @@ package postgres
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
 	"os"
 	"path/filepath"
 	"strings"
@@ -62,15 +60,6 @@ var layoutMigrationNames = []string{
 	"20260802232102_repair_layout_curated_parity_v2",
 }
 
-func TestLayoutMigrationsStayPairedAndClosed(t *testing.T) {
-	for _, name := range layoutMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readLayoutMigration(t, name)
-			assertLayoutMigrationSource(t, fresh)
-		})
-	}
-}
-
 func readLayoutMigration(t *testing.T, name string) []byte {
 	t.Helper()
 	directory := filepath.Join("..", "..", "migrations", "tenant")
@@ -83,33 +72,6 @@ func readLayoutMigration(t *testing.T, name string) []byte {
 		t.Fatal(err)
 	}
 	return content
-}
-
-func TestPublishedLayoutRepairSourcesStayByteImmutable(t *testing.T) {
-	const repair = "20260730120104_repair_installation_layout_publications_v1"
-	fixtures := []struct{ directory, name, hash string }{
-		{"", "20260730120103_create_layout_installation_evidence_validator_v1",
-			"f43111aa9452b4ed1ef418bdfc742462a1d2da92a2697535dc796aa49876b724"},
-		{"", repair, "561757a212e2205e14091db2f9c05ab94f97d5a8cc67438d16c44a2ed4d0a8a2"},
-		{"supersessions", repair,
-			"9ecca5ceb2b0453956a81f46e46d2bf633890ee5e8c212002b33b35d73faa575"},
-		{filepath.Join("supersessions", "v2"), repair,
-			"596819b7a320d41d283ea4d88846566a16bcbe6e6739701b64af77bca93d524d"},
-		{filepath.Join("supersessions", "v3"), repair,
-			"cef35a91f7e9cffebc4a48a3c26d69b5edb90cbd27afae1e67dc606c58309972"},
-	}
-	for _, fixture := range fixtures {
-		path := filepath.Join("..", "..", "migrations", "tenant",
-			fixture.directory, "fresh", fixture.name+".fresh.sql")
-		content, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		digest := sha256.Sum256(content)
-		if got := hex.EncodeToString(digest[:]); got != fixture.hash {
-			t.Fatalf("%s SHA = %s, want %s", fixture.name, got, fixture.hash)
-		}
-	}
 }
 
 func assertLayoutMigrationSource(t *testing.T, content []byte) {

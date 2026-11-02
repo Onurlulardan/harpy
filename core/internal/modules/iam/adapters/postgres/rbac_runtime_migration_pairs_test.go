@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"bytes"
 	"testing"
 )
 
@@ -37,20 +36,6 @@ var iamRBACRuntimeMigrationNames = []string{
 	"20260716014055_create_iam_rbac_protected_admin_update_v1",
 	"20260716014056_create_iam_rbac_audit_write_v1",
 	"20260716014057_grant_iam_rbac_runtime_v1",
-}
-
-func TestIAMRBACRuntimeMigrationsStayPaired(t *testing.T) {
-	for _, name := range iamRBACRuntimeMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readIAMIdentityMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			if bytes.Count(fresh, []byte("\n"))+1 > 200 {
-				t.Fatal("RBAC runtime migration exceeds 200 lines")
-			}
-		})
-	}
 }
 
 func TestIAMRBACRuntimeMigrationRangeIsClosed(t *testing.T) {

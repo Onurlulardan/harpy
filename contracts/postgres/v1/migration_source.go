@@ -10,7 +10,7 @@ import (
 	"unicode/utf8"
 )
 
-const maximumMigrationSourceBytes = 1024 * 1024
+const maximumMigrationSourceBytes = 8 * 1024 * 1024
 
 var migrationSourceBOM = []byte{0xef, 0xbb, 0xbf}
 

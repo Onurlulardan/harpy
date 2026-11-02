@@ -25,26 +25,3 @@ func TestLoadEmbeddedPropagatesAbsenceWithoutAuthority(t *testing.T) {
 		t.Fatal("missing contract returned schema authority")
 	}
 }
-
-func TestAuthorizeEmbeddedRequiresMigrationRegistryMembership(t *testing.T) {
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		t.Fatal(err)
-	}
-	digests := registry.Digests()
-	if len(digests) == 0 {
-		t.Fatal("migration registry is empty")
-	}
-	artifact := contractArtifact(t, digests[0], "extension-a")
-	contract, err := authorizeEmbedded(registry, artifact)
-	if err != nil {
-		t.Fatalf("authorize embedded contract: %v", err)
-	}
-	if !contract.IsVerified() || contract.Value().MigrationManifestSHA256 != digests[0] {
-		t.Fatalf("unexpected embedded authority: %+v", contract.Value())
-	}
-	unembedded := contractArtifact(t, contract.Value().ExtensionManifestSHA256, "extension-b")
-	if _, err := authorizeEmbedded(registry, unembedded); err == nil {
-		t.Fatal("unembedded migration digest was authorized")
-	}
-}

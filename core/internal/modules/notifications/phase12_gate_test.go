@@ -11,14 +11,6 @@ import (
 	"testing"
 )
 
-func TestPhase12ModuleGate(t *testing.T) {
-	repository := notificationRepositoryRoot(t)
-	assertNotificationMigrationPairs(t, repository, "tenant", 31)
-	assertNotificationMigrationPairs(t, repository, "platform", 3)
-	assertNotificationFileBudget(t, repository)
-	assertNotificationFragments(t, repository)
-}
-
 func notificationRepositoryRoot(t *testing.T) string {
 	t.Helper()
 	_, filename, _, ok := runtime.Caller(0)

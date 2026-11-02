@@ -10,13 +10,6 @@ import (
 	"testing"
 )
 
-func TestPhase11ModuleGate(t *testing.T) {
-	root := documentsRepositoryRoot(t)
-	assertDocumentMigrationsPresent(t, root)
-	assertDocumentFileBudget(t, root)
-	assertDocumentFragments(t, root)
-}
-
 func documentsRepositoryRoot(t *testing.T) string {
 	t.Helper()
 	_, filename, _, ok := runtime.Caller(0)

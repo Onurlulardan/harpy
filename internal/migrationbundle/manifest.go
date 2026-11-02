@@ -101,7 +101,8 @@ func freshEntry(source Source) (postgresv1.MigrationEntry, error) {
 	if err != nil {
 		return postgresv1.MigrationEntry{}, err
 	}
-	if !strings.HasSuffix(path.Base(source.Path), ".fresh.sql") {
+	baseName := path.Base(source.Path)
+	if !strings.HasSuffix(baseName, ".fresh.sql") && !strings.HasSuffix(baseName, "_baseline.sql") {
 		return postgresv1.MigrationEntry{}, fmt.Errorf(
 			"fresh migration %s is not a fresh source", source.Path,
 		)

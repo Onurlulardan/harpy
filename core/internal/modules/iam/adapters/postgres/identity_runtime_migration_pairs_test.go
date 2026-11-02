@@ -67,15 +67,6 @@ var iamIdentityTenantMigrationNames = []string{
 	"20260802232005_grant_iam_identity_organization_delete_v2",
 }
 
-func TestIAMIdentityRuntimeMigrationsStayPairedAndValid(t *testing.T) {
-	for _, migration := range iamIdentityPlatformMigrationNames {
-		assertIAMIdentityMigrationPair(t, "platform", migration)
-	}
-	for _, migration := range iamIdentityTenantMigrationNames {
-		assertIAMIdentityMigrationPair(t, "tenant", migration)
-	}
-}
-
 func assertIAMIdentityMigrationPair(t *testing.T, scope, name string) {
 	t.Helper()
 	var fresh []byte

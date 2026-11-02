@@ -42,11 +42,7 @@ func deployMigrationDocuments() ([]migration.Document, error) {
 		}
 		documents = append(documents, owned...)
 	}
-	selected, err := migration.SelectFreshDocuments(documents)
-	if err != nil {
-		return nil, fmt.Errorf("select fresh migrations: %w", err)
-	}
-	return selected, nil
+	return documents, nil
 }
 
 func platformMigrationCollections() []migrationCollection {

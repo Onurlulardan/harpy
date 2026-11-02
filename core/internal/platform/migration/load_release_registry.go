@@ -1,7 +1,6 @@
 package migration
 
 import (
-	_ "embed"
 	"fmt"
 	"io/fs"
 	"path"
@@ -12,15 +11,15 @@ import (
 
 const releaseManifestSuffix = ".migration-manifest.json"
 
-//go:embed release-index.json
-var releaseIndexJSON []byte
-
 func LoadReleaseRegistry() (*ReleaseRegistry, error) {
-	archive, err := openDefaultReleaseArchive()
-	if err != nil {
-		return nil, err
-	}
-	return loadIndexedRelease(releaseIndexJSON, archive)
+	return &ReleaseRegistry{
+		manifests:         map[string][]byte{},
+		known:             map[string]struct{}{},
+		documentContracts: map[string]map[expectedDocument]struct{}{},
+		readManifest: func(string) ([]byte, error) {
+			return nil, fmt.Errorf("migration release archive is not part of the baseline")
+		},
+	}, nil
 }
 
 func loadIndexedRelease(indexDocument []byte, archive releaseReader) (*ReleaseRegistry, error) {

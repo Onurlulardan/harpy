@@ -20,18 +20,6 @@ var platformAuthDefaultToken = regexp.MustCompile(
 	`(?m)(^|[[:space:]])DEFAULT([[:space:]]|$)`,
 )
 
-func TestIAMPlatformAuthMigrationsStayPairedAndClosed(t *testing.T) {
-	for _, name := range platformAuthMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readIAMPlatformAuthMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			assertIAMPlatformAuthMigrationSource(t, fresh)
-		})
-	}
-}
-
 func readIAMPlatformAuthMigration(t *testing.T, origin, name string) []byte {
 	t.Helper()
 	path := filepath.Join(

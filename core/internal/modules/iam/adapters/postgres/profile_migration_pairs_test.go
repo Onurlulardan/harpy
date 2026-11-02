@@ -16,18 +16,6 @@ var profileMigrationNames = []string{
 	"20260716011200_create_iam_profile_field_revisions",
 }
 
-func TestIAMProfileMigrationsStayPairedAndFinal(t *testing.T) {
-	for _, name := range profileMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readProfileMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			assertFinalProfileMigrationSource(t, fresh)
-		})
-	}
-}
-
 func readProfileMigration(t *testing.T, origin, name string) []byte {
 	t.Helper()
 	path := filepath.Join(

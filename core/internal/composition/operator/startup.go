@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	compositionmigrator "github.com/Onurlulardan/harpy/core/internal/composition/migrator"
 	"github.com/Onurlulardan/harpy/core/internal/modules/tenancy"
 	"github.com/Onurlulardan/harpy/core/internal/orchestration/environmentoperator"
 	"github.com/Onurlulardan/harpy/core/internal/platform/buildinfo"
@@ -31,11 +30,7 @@ func initializeEnvironment(ctx context.Context) (
 	if _, err = buildinfo.ReadOperator(settings.Runtime().Environment()); err != nil {
 		return environmentoperator.InitializeResult{}, "build_contract", err
 	}
-	documents, err := compositionmigrator.FreshMigrationDocuments()
-	if err != nil {
-		return environmentoperator.InitializeResult{}, "build_contract", err
-	}
-	embedded, _, err := schemacontract.LoadStartup(documents)
+	embedded, err := schemacontract.LoadStatic()
 	if err != nil {
 		return environmentoperator.InitializeResult{}, "build_contract", err
 	}
