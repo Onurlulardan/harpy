@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/ed25519"
-	"crypto/rand"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -21,10 +19,6 @@ func writeIdentityMaterial(dir string, now time.Time) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	catalog, err := writeCatalogMaterial(dir)
-	if err != nil {
-		return nil, err
-	}
 	keyrings, err := writeIAMKeyrings(dir, now)
 	if err != nil {
 		return nil, err
@@ -37,7 +31,7 @@ func writeIdentityMaterial(dir string, now time.Time) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	lines = append(lines, cursor, catalog)
+	lines = append(lines, cursor)
 	lines = append(lines,
 		runtimeLine("HARPY_IAM_ACCESS_TOKEN_ISSUER", "http://127.0.0.1:8080"),
 		runtimeLine("HARPY_IAM_ACCESS_TOKEN_AUDIENCE", "http://127.0.0.1:8080/api"),
@@ -75,22 +69,6 @@ func writeCursorMaterial(dir string) (string, error) {
 		return "", err
 	}
 	return runtimeLine("HARPY_REST_QUERY_CURSOR_KEYRING_FILE", path), nil
-}
-
-func writeCatalogMaterial(dir string) (string, error) {
-	public, _, err := ed25519.GenerateKey(rand.Reader)
-	if err != nil {
-		return "", err
-	}
-	body := fmt.Sprintf(
-		`{"version":1,"keys":[{"key_id":"release-local","public_key":%q}]}`,
-		rawKey(public),
-	)
-	path, err := writeRuntimeFile(dir, "catalog-package-keyring.json", []byte(body))
-	if err != nil {
-		return "", err
-	}
-	return runtimeLine("HARPY_CATALOG_PACKAGE_PUBLIC_KEYRING_FILE", path), nil
 }
 
 func writeIAMKeyrings(dir string, now time.Time) ([]string, error) {
