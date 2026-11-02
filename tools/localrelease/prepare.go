@@ -46,7 +46,6 @@ func executePrepare(
 	}
 	if exists && reuseExistingPrepare(
 		ctx, options, contract, migration, adminDSN, passwords,
-		packageAuthority,
 	) == nil {
 		return nil
 	}
