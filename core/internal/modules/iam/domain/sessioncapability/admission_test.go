@@ -10,7 +10,7 @@ func TestAdmissionRequiresModeBeforeExactCapability(t *testing.T) {
 			"platform.license.read",
 		},
 		TenantCapabilities: []string{
-			"billing.entitlements.read", "catalog.read",
+			"billing.entitlements.read",
 		},
 	}
 	if !sets.AllowsPlatform("platform.instance.read") ||
@@ -18,8 +18,7 @@ func TestAdmissionRequiresModeBeforeExactCapability(t *testing.T) {
 		sets.AllowsPlatform("platform.billing.catalog.read") {
 		t.Fatal("platform mode guard did not precede exact capability membership")
 	}
-	if !sets.AllowsTenant("catalog.read") ||
-		!sets.AllowsTenant("billing.entitlements.read") ||
+	if !sets.AllowsTenant("billing.entitlements.read") ||
 		sets.AllowsTenant("billing.subscription.read") {
 		t.Fatal("tenant mode guard did not precede exact capability membership")
 	}
@@ -40,8 +39,8 @@ func TestAdmissionHasNoBooleanIdentityBypass(t *testing.T) {
 	}
 }
 
-func TestCatalogContainsEveryPhase14TenantCapability(t *testing.T) {
-	if len(TenantReleaseCatalog) != 17 {
+func TestReleaseCapabilitiesContainEveryPhase14TenantCapability(t *testing.T) {
+	if len(TenantReleaseCatalog) != 7 {
 		t.Fatalf("unexpected release catalog size: %d", len(TenantReleaseCatalog))
 	}
 	for _, capability := range TenantReleaseCatalog {
