@@ -67,10 +67,6 @@ func (runtime *iamAPIRuntime) buildHTTPAccess(
 	if err != nil {
 		return fmt.Errorf("build IAM Analytics access runtime: %w", err)
 	}
-	runtime.catalogAccess, err = iammodule.NewCatalogAccessRuntime(shared)
-	if err != nil {
-		return fmt.Errorf("build IAM Catalog access runtime: %w", err)
-	}
 	runtime.documentsAccess, err = iammodule.NewDocumentsAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Documents access runtime: %w", err)
