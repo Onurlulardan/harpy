@@ -101,7 +101,7 @@ func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
 		return nil, fmt.Errorf("cutover authority operation: %w", err)
 	}
 	releaseDocument, releaseSignature, verifiedRelease, err := buildReleaseManifest(
-		keys, manifests, operations, authority.digest, catalogSetDigest(catalog), operationDocument.digest,
+		keys, manifests, operations, authority.digest, operationDocument.digest,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("release manifest: %w", err)
