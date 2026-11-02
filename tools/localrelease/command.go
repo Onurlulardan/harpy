@@ -17,8 +17,6 @@ type prepareOptions struct {
 	observerPassword   string
 	migrationManifest  string
 	outputDirectory    string
-	catalogSigningSeed string
-	catalogKeyring     string
 	replaceOwned       bool
 }
 
@@ -40,14 +38,6 @@ func parsePrepareOptions(arguments []string) (prepareOptions, error) {
 		"post-restore reactivation observer password secret file",
 	)
 	flags.StringVar(&options.migrationManifest, "migration-manifest", "", "canonical migration manifest")
-	flags.StringVar(
-		&options.catalogSigningSeed, "catalog-package-signing-seed-file", "",
-		"Catalog package signing seed secret file",
-	)
-	flags.StringVar(
-		&options.catalogKeyring, "catalog-package-keyring-file", "",
-		"Catalog package public keyring file",
-	)
 	flags.StringVar(&options.outputDirectory, "output", "", "new artifact output directory")
 	flags.BoolVar(&options.replaceOwned, "replace-owned-output", false,
 		"atomically replace a marker-owned prior release output")
@@ -61,8 +51,7 @@ func parsePrepareOptions(arguments []string) (prepareOptions, error) {
 		&options.adminDSNFile, &options.runtimePassword,
 		&options.migratorPassword, &options.backupPassword, &options.restorePassword,
 		&options.observerPassword,
-		&options.migrationManifest, &options.catalogSigningSeed,
-		&options.catalogKeyring, &options.outputDirectory,
+		&options.migrationManifest, &options.outputDirectory,
 	}
 	for _, path := range paths {
 		if err := requireAbsolutePath(path); err != nil {
