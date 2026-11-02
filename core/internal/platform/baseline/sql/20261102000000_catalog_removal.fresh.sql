@@ -4,7 +4,31 @@ DO $catalog_removal$
 DECLARE
     object_record record;
     current_schema_name text := pg_catalog.current_schema();
+    has_rows boolean;
 BEGIN
+    FOR object_record IN
+        SELECT namespace.nspname, relation.relname
+        FROM pg_catalog.pg_class AS relation
+        JOIN pg_catalog.pg_namespace AS namespace
+          ON namespace.oid = relation.relnamespace
+        WHERE namespace.nspname = current_schema_name
+          AND relation.relkind IN ('r', 'p')
+          AND relation.relname ~ '^catalog_'
+    LOOP
+        EXECUTE pg_catalog.format(
+            'SELECT EXISTS (SELECT 1 FROM %I.%I)',
+            object_record.nspname, object_record.relname
+        ) INTO has_rows;
+        IF has_rows THEN
+            RAISE EXCEPTION USING
+                ERRCODE = '55000',
+                MESSAGE = pg_catalog.format(
+                    'Catalog removal requires an explicit data disposition for %I.%I',
+                    object_record.nspname, object_record.relname
+                );
+        END IF;
+    END LOOP;
+
     FOR object_record IN
         SELECT namespace.nspname, procedure_row.proname,
                pg_catalog.pg_get_function_identity_arguments(procedure_row.oid) AS identity_arguments
