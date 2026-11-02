@@ -65,8 +65,7 @@ func secretTargets() []targetSpec {
 			"postgres-runtime-password.txt", "postgres-migrator-password.txt",
 			"postgres-backup-password.txt", "postgres-restore-password.txt",
 			"postgres-reactivation-observer-password.txt",
-			"catalog-package-signing-seed",
-			"catalog-package-public-keyring.json"),
+
 		runtimeTarget("migrator", "postgres-migrator-dsn.txt",
 			"catalog-package-public-keyring.json"),
 		runtimeTarget("schema", "postgres-migrator-dsn.txt"),
