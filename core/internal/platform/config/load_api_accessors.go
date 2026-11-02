@@ -8,10 +8,6 @@ func (c API) Documents() (DocumentsAPI, error) {
 	return c.documents, c.documents.Validate()
 }
 
-func (c API) CatalogPackageKeyring() (CatalogPackageKeyring, error) {
-	return c.catalogPackageKeys, c.catalogPackageKeys.Validate()
-}
-
 func (c API) IAM() (IAMAPI, error) {
 	if err := c.iam.Validate(); err != nil {
 		return IAMAPI{}, err
