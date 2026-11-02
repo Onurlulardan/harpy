@@ -17,7 +17,7 @@ Bu çalışma ancak aşağıdakilerin tamamı sağlandığında biter:
 - [ ] Eski migrations, manifest hash, archive, index ve generator'lar current tree'den kaldırılmış; `rg` ile kalan reference'lar gözden geçirilmiş.
 - [ ] `go test ./...`, `go mod tidy`, FileGuard, ArchGuard, image build ve PostgreSQL 18 integration/E2E testleri geçiyor.
 - [ ] Baseline Goose dosyasında `\restrict` / `\unrestrict` yoktur; gövde `-- +goose Up` ve `StatementBegin` / `StatementEnd` ile tek statement'tır.
-- [ ] Fresh install baseline'ında Catalog tabloları ve IAM/Analytics catalog tabloları, Faz 0 retain listesinde adları yazılmadıkça yoktur.
+- [ ] Fresh install baseline + post-baseline cleanup sonrasında Catalog tabloları ve IAM/Analytics Catalog owner tabloları yoktur; non-empty tablolar veya dış bağımlılıklar cleanup'ı fail-closed durdurur.
 - [ ] Run lifecycle kararı yazılıdır: legacy release generation kalkmış ya da backup/installation durumu `platform.platform_migration_history` dışına taşınmıştır.
 - [ ] `skills/data-tenancy/SKILL.md` migration kuralı bu sete bağlıdır. Her migration'a checksum ve owner yazma, tenant checkpoint'i custom history'de tutma ve eski snapshot upgrade zorunluluğu starter baseline'ından sonra kalkmıştır. Eksik `docs/adr/0006-tenancy-migrations.md` uydurulmamıştır.
 
