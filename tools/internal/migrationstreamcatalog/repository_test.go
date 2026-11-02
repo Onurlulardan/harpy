@@ -20,7 +20,7 @@ func TestRepositoryMigrationStreamCatalogLoadsKnownOwners(t *testing.T) {
 		owners[index] = owner.Name
 	}
 	wantOwners := []string{
-		"analytics", "billing", "catalog", "documents", "iam", "notifications",
+		"analytics", "billing", "documents", "iam", "notifications",
 		"platform_async", "platform_backupreceipt", "platform_cutover",
 		"platform_migrator", "platformauthority", "platformops", "system_resource_layout",
 		"tenancy", "work",
