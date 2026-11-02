@@ -89,7 +89,6 @@ func validReleaseManifest(digest string) map[string]any {
 		"bootstrap_operation_digest":          digest, "extension_operation_digest": digest,
 		"credential_cleanup_operation_digest":         digest,
 		"cutover_authority_adoption_operation_digest": digest,
-		"catalog_package_set_sha256":                  digest,
 	}
 }
 
