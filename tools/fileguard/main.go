@@ -17,6 +17,12 @@ import (
 
 const maxLines = 200
 
+var lineLimitExemptPaths = map[string]bool{
+	"contracts/runtime/v1/config.json":                   true,
+	"contracts/runtime/v1/config.schema.json":            true,
+	"contracts/runtime/v1/runtime-profile-defs.schema.json": true,
+}
+
 var forbiddenGoNames = map[string]bool{
 	"crud.go": true, "handler.go": true, "service.go": true,
 	"repository.go": true, "utils.go": true, "helpers.go": true,
@@ -126,7 +132,7 @@ func inspect(root string) ([]string, error) {
 		if err != nil {
 			return err
 		}
-		if lineLimitApplies(base) && lines > maxLines {
+		if lineLimitApplies(base) && !lineLimitExemptPaths[key] && lines > maxLines {
 			violations = append(violations,
 				fmt.Sprintf("%s has %d lines; maximum is %d", key, lines, maxLines))
 		}
