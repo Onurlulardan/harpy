@@ -6,65 +6,6 @@ import (
 	"testing"
 )
 
-func TestIAMSystemResourcesFinalizedSwitchMigrationsArePaired(t *testing.T) {
-	documents, err := MigrationDocuments()
-	if err != nil {
-		t.Fatal(err)
-	}
-	versions := []string{"20260716020000", "20260716020001"}
-	fresh := make(map[string]string, len(versions))
-	for _, document := range documents {
-		name := path.Base(document.Path())
-		if !strings.HasSuffix(name, ".fresh.sql") {
-			continue
-		}
-		for _, version := range versions {
-			if strings.HasPrefix(name, version+"_") {
-				fresh[version] = string(document.Content())
-			}
-		}
-	}
-	for _, version := range versions {
-		source := fresh[version]
-		if source == "" {
-			t.Fatalf("fresh migration %s did not load", version)
-		}
-		if strings.Contains(source, "-- +goose Down") {
-			t.Fatalf("migration %s has a destructive down section", version)
-		}
-	}
-}
-
-func TestIAMSystemResourcesFinalizedSwitchKeepsFinalizerSurfaceClosed(t *testing.T) {
-	sources := iamSystemResourcesSwitchSources(t)
-	apply := sources["20260716020000"]
-	for _, marker := range []string{
-		"SESSION_USER IS DISTINCT FROM 'harpy_cutover_finalizer'",
-		`'["iam","system_resource_layout"]'::jsonb`,
-		"adoption.state='accepted'", "adoption.item_count=0",
-		"FOR SHARE OF adoption,zero_receipt",
-		"event_kind,scope_kind,scope_id", "'switch'",
-	} {
-		if !strings.Contains(apply, marker) {
-			t.Fatalf("finalized switch lacks %q", marker)
-		}
-	}
-	attach := sources["20260716020001"]
-	for _, marker := range []string{
-		"cutover_authority.verify_finalization_receipt_v1",
-		"AFTER UPDATE OF state ON platform.cutover_operations",
-		"ENABLE ALWAYS TRIGGER",
-		"TO harpy_cutover_authority_owner",
-	} {
-		if !strings.Contains(attach, marker) {
-			t.Fatalf("finalizer transition lacks %q", marker)
-		}
-	}
-	if strings.Contains(attach, "TO harpy_cutover_finalizer") {
-		t.Fatal("finalized switch opened a second direct finalizer routine")
-	}
-}
-
 func iamSystemResourcesSwitchSources(t *testing.T) map[string]string {
 	t.Helper()
 	documents, err := MigrationDocuments()

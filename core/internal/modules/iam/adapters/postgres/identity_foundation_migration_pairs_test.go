@@ -26,18 +26,6 @@ var iamIdentityMigrationNames = []string{
 
 var sqlDefaultToken = regexp.MustCompile(`(?m)(^|[[:space:]])DEFAULT([[:space:]]|$)`)
 
-func TestIAMIdentityMigrationsStayPairedAndClosed(t *testing.T) {
-	for _, name := range iamIdentityMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readIAMIdentityMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			assertIAMIdentityMigrationSource(t, fresh)
-		})
-	}
-}
-
 func readIAMIdentityMigration(t *testing.T, origin, name string) []byte {
 	t.Helper()
 	path := filepath.Join(

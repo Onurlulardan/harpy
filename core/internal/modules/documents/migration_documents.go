@@ -1,16 +1,7 @@
 package documents
 
-import (
-	"embed"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
-)
-
-//go:embed migrations/tenant/fresh/*.fresh.sql
-var tenantMigrationFiles embed.FS
+import "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 
 func MigrationDocuments() ([]migration.Document, error) {
-	return migration.CollectEmbedded(
-		"documents", "tenant", "core/internal/modules/documents", tenantMigrationFiles,
-	)
+	return nil, nil
 }

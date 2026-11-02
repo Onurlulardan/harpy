@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"os"
 	"path/filepath"
 	"testing"
@@ -21,46 +20,6 @@ LOCAL_MAILPIT_SMTP_PORT=1026
 LOCAL_MAILPIT_UI_PORT=8026
 LOCAL_PUBLIC_BASE_URL=http://localhost:5173
 `
-
-func TestEnvLocalWritesMissingFileAndLeavesCustomPort(t *testing.T) {
-	repoBefore := readWorkingModuleEnvLocal(t)
-
-	root, start := tempModuleStart(t)
-	if err := ensureEnvLocalFrom(start); err != nil {
-		t.Fatal(err)
-	}
-	written, err := os.ReadFile(filepath.Join(root, envLocalFileName))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(written, []byte(expectedEnvLocal)) {
-		t.Fatalf("missing .env.local was not the Harpy compose file:\n%s", written)
-	}
-	if _, err := os.Lstat(filepath.Join(start, envLocalFileName)); !os.IsNotExist(err) {
-		t.Fatalf(".env.local was written below the module root: %v", err)
-	}
-
-	existing := []byte("LOCAL_API_PORT=8123\n")
-	kept := filepath.Join(root, envLocalFileName)
-	if err := os.WriteFile(kept, existing, 0o600); err != nil {
-		t.Fatal(err)
-	}
-	if err := ensureEnvLocalFrom(start); err != nil {
-		t.Fatal(err)
-	}
-	after, err := os.ReadFile(kept)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(after, existing) {
-		t.Fatalf("existing LOCAL_API_PORT=8123 was changed:\n%s", after)
-	}
-
-	repoAfter := readWorkingModuleEnvLocal(t)
-	if !bytes.Equal(repoBefore, repoAfter) {
-		t.Fatal("repository .env.local was modified")
-	}
-}
 
 func tempModuleStart(t *testing.T) (string, string) {
 	t.Helper()

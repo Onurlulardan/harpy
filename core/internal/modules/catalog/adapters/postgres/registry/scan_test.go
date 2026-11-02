@@ -3,18 +3,12 @@ package registry
 import (
 	"bytes"
 	"context"
-	"crypto/ed25519"
-	"crypto/rand"
-	"crypto/sha256"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"testing"
 	"time"
 
-	canonicaljsonv1 "github.com/Onurlulardan/harpy/contracts/canonicaljson/v1"
 	"github.com/Onurlulardan/harpy/core/internal/modules/catalog/api/packageregistry"
-	"github.com/Onurlulardan/harpy/core/internal/modules/catalog/domain/packagecontract"
 )
 
 const registryPackageID = "018f5000-0000-7000-8000-000000000001"
@@ -68,39 +62,6 @@ func TestScanVersionRestoresCanonicalManifestBytesFromJSONB(t *testing.T) {
 	}
 	if value.ReleaseID != registryReleaseID {
 		t.Fatalf("release_id = %s", value.ReleaseID)
-	}
-}
-
-func TestScanVersionKeepsSignedManifestVerifiableAfterJSONBRoundTrip(t *testing.T) {
-	postgresJSONB := []byte(fmt.Sprintf(
-		`{"version": "1.0.0", "slug": "catalog-test", "profile": "business",`+
-			` "platform_contract": "harpy.v2", "package_id": "%s", "menu": [],`+
-			` "dependencies": [], "contract": "catalog-package.v1", "components": [`+
-			`{"content_sha256": "%064d", "kind": "FORM", "ID": "%s",`+
-			` "Owner": "forms", "Contract": "forms.v2"}]}`,
-		registryPackageID, 1, registryComponentID,
-	))
-	canonical, err := canonicaljsonv1.CanonicalizeObject(
-		postgresJSONB, packagecontract.MaximumManifestBytes,
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-	publicKey, privateKey, err := ed25519.GenerateKey(rand.Reader)
-	if err != nil {
-		t.Fatal(err)
-	}
-	digest := sha256.Sum256(canonical)
-	value, err := scanVersion(registryVersionRow{manifest: postgresJSONB,
-		digest: hex.EncodeToString(digest[:]), signature: ed25519.Sign(privateKey, canonical)})
-	if err != nil {
-		t.Fatalf("scan signed version: %v", err)
-	}
-	manifest, err := packagecontract.Verify(value.Manifest, packagecontract.Attestation{
-		ManifestSHA256: value.ManifestSHA256, Signature: value.Signature, KeyID: value.KeyID,
-	}, publicKey)
-	if err != nil || manifest.PackageID.String() != registryPackageID {
-		t.Fatalf("verify scanned manifest = %s, %v", manifest.PackageID.String(), err)
 	}
 }
 

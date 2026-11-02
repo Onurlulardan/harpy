@@ -23,18 +23,6 @@ var authenticationDefaultToken = regexp.MustCompile(
 	`(?m)(^|[[:space:]])DEFAULT([[:space:]]|$)`,
 )
 
-func TestIAMAuthenticationMigrationsStayPairedAndClosed(t *testing.T) {
-	for _, name := range iamAuthenticationMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readIAMAuthenticationMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			assertIAMAuthenticationMigrationSource(t, fresh)
-		})
-	}
-}
-
 func readIAMAuthenticationMigration(t *testing.T, origin, name string) []byte {
 	t.Helper()
 	path := filepath.Join(

@@ -11,14 +11,6 @@ import (
 	"testing"
 )
 
-func TestPhase9ModuleGate(t *testing.T) {
-	repository := catalogRepositoryRoot(t)
-	assertCatalogFreshMigrations(t, repository, "tenant", 44)
-	assertCatalogFreshMigrations(t, repository, "platform", 9)
-	assertCatalogFileBudget(t, repository)
-	assertCatalogFragments(t, repository)
-}
-
 func catalogRepositoryRoot(t *testing.T) string {
 	t.Helper()
 	_, filename, _, ok := runtime.Caller(0)

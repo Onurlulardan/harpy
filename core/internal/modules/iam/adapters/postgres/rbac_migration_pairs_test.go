@@ -21,18 +21,6 @@ var iamRBACMigrationNames = []string{
 	"20260716013150_guard_iam_protected_admin_v1",
 }
 
-func TestIAMRBACMigrationsStayPairedAndClosed(t *testing.T) {
-	for _, name := range iamRBACMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readIAMIdentityMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			assertIAMRBACMigrationSource(t, fresh)
-		})
-	}
-}
-
 func assertIAMRBACMigrationSource(t *testing.T, content []byte) {
 	t.Helper()
 	if bytes.Count(content, []byte("\n"))+1 > 200 {

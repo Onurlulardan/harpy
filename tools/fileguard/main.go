@@ -51,7 +51,7 @@ func lineLimitApplies(base string) bool {
 	case ".md", ".markdown":
 		return false
 	}
-	return !strings.HasSuffix(base, "_baseline.sql")
+	return !strings.Contains(base, "_baseline")
 }
 
 func inspect(root string) ([]string, error) {

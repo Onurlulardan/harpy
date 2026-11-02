@@ -13,17 +13,18 @@ import (
 	"github.com/pressly/goose/v3"
 )
 
-//go:embed sql/20261028000000_platform_baseline.sql
+//go:embed sql/20261028000000_platform_baseline.fresh.sql
 var platformScript string
 
-//go:embed sql/20261028000000_tenant_baseline.sql
+//go:embed sql/20261028000001_tenant_baseline.fresh.sql
 var tenantScript string
 
 const (
 	tenantSchemaToken = "__tenant_schema__"
-	baselineVersion   = int64(20261028000000)
-	platformFile      = "20261028000000_platform_baseline.sql"
-	tenantFile        = "20261028000000_tenant_baseline.sql"
+	platformVersion   = int64(20261028000000)
+	tenantVersion     = int64(20261028000001)
+	platformFile      = "20261028000000_platform_baseline.fresh.sql"
+	tenantFile        = "20261028000001_tenant_baseline.fresh.sql"
 )
 
 type Result struct {
@@ -89,7 +90,11 @@ func applyDB(ctx context.Context, database *sql.DB, name, script string) (Result
 	if err != nil {
 		return Result{}, fmt.Errorf("apply baseline: %w", err)
 	}
-	return Result{Applied: len(applied) > 0, Version: baselineVersion}, nil
+	version := platformVersion
+	if name == tenantFile {
+		version = tenantVersion
+	}
+	return Result{Applied: len(applied) > 0, Version: version}, nil
 }
 
 func open(dsn, searchPath string) (*sql.DB, error) {

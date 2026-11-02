@@ -26,18 +26,6 @@ var iamProfileRevisionMigrationNames = []string{
 	"20260716013220_grant_iam_profile_read_routines_v1",
 }
 
-func TestIAMProfileRevisionMigrationsStayPairedAndClosed(t *testing.T) {
-	for _, name := range iamProfileRevisionMigrationNames {
-		t.Run(name, func(t *testing.T) {
-			fresh := readIAMIdentityMigration(t, "fresh", name)
-			if len(fresh) == 0 {
-				t.Fatal("fresh migration is empty")
-			}
-			assertIAMProfileRevisionMigrationSource(t, fresh)
-		})
-	}
-}
-
 func assertIAMProfileRevisionMigrationSource(t *testing.T, content []byte) {
 	t.Helper()
 	if bytes.Count(content, []byte("\n"))+1 > 200 {

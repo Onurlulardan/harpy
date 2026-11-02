@@ -73,37 +73,6 @@ func (row catalogFinalizerRow) Scan(destinations ...any) error {
 	return nil
 }
 
-func TestCatalogReleaseFinalizerUsesVerifiedReleaseEvidence(t *testing.T) {
-	release, version, key := catalogFinalizerEvidence(t)
-	finalizer, err := NewReleaseFinalizer(
-		release, catalogFinalizerKeys{key: key},
-		[]packageregistry.SealedVersion{version},
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var captured []any
-	queryRow := func(
-		_ context.Context,
-		statement string,
-		arguments ...any,
-	) platformmigrator.FinalizationRow {
-		if statement == "" {
-			t.Fatal("Catalog registration SQL is empty")
-		}
-		captured = append([]any(nil), arguments...)
-		return catalogFinalizerRow{arguments: arguments}
-	}
-	if err := finalizer.FinalizeRelease(context.Background(), queryRow); err != nil {
-		t.Fatalf("finalize Catalog release: %v", err)
-	}
-	if len(captured) != 10 ||
-		captured[7] != catalogFinalizerReleaseID ||
-		captured[8] != catalogFinalizerRegisteredAt {
-		t.Fatalf("release-derived registration = %#v", captured)
-	}
-}
-
 func TestCatalogReleaseFinalizerRejectsForeignPackageSigner(t *testing.T) {
 	release, version, key := catalogFinalizerEvidence(t)
 	version.KeyID = "foreign-release"

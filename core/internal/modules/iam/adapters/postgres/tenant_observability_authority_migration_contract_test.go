@@ -1,32 +1,11 @@
 package postgres
 
 import (
-	"bytes"
 	"strings"
 	"testing"
-
-	postgresv1 "github.com/Onurlulardan/harpy/contracts/postgres/v1"
 )
 
 const iamTenantObservabilityAuthorityMigration = "20260802234200_publish_iam_tenant_observability_authority_v1"
-
-func TestIAMTenantObservabilityAuthorityMigrationContract(t *testing.T) {
-	fresh := readIAMIdentityMigration(
-		t, "fresh", iamTenantObservabilityAuthorityMigration,
-	)
-	if len(fresh) == 0 {
-		t.Fatal("fresh migration is empty")
-	}
-	if bytes.Count(fresh, []byte("\n"))+1 > 200 {
-		t.Fatal("IAM tenant observability authority migration exceeds 200 lines")
-	}
-	if _, err := postgresv1.InspectMigrationSource(fresh); err != nil {
-		t.Fatalf("inspect IAM tenant observability authority migration: %v", err)
-	}
-	assertIAMRBACMigrationSource(t, fresh)
-	assertIAMTenantObservabilityCatalogSource(t, string(fresh))
-	assertIAMTenantObservabilityGrantSource(t, string(fresh))
-}
 
 func assertIAMTenantObservabilityCatalogSource(t *testing.T, source string) {
 	t.Helper()

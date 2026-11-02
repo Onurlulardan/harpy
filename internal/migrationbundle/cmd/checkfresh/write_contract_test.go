@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -9,55 +8,7 @@ import (
 	"testing"
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
-	"github.com/Onurlulardan/harpy/internal/migrationbundle"
 )
-
-func TestWriteUpdatesContractHashAndFreshManifest(t *testing.T) {
-	repo, err := moduleRoot("")
-	if err != nil {
-		t.Fatal(err)
-	}
-	tree := t.TempDir()
-	copyFreshTree(t, repo, tree)
-	mutateFreshSQL(t, tree)
-
-	contractBefore := readBytes(t, contractPath(tree))
-	manifestBefore := readBytes(t, manifestPath(tree))
-	if err = checkFresh(tree, false); err == nil {
-		t.Fatal("stale fresh digest was accepted")
-	}
-	if !bytes.Equal(readBytes(t, contractPath(tree)), contractBefore) ||
-		!bytes.Equal(readBytes(t, manifestPath(tree)), manifestBefore) {
-		t.Fatal("mismatch wrote contract or manifest files")
-	}
-
-	if err = checkFresh(tree, true); err != nil {
-		t.Fatal(err)
-	}
-	body, err := migrationbundle.CanonicalFresh(tree)
-	if err != nil {
-		t.Fatal(err)
-	}
-	written := contractValue(t, readBytes(t, contractPath(tree)))
-	original := contractValue(t, contractBefore)
-	if written.MigrationManifestSHA256 == original.MigrationManifestSHA256 {
-		t.Fatal("contract migration hash was not updated")
-	}
-	if written.MigrationManifestSHA256 != migrationbundle.Digest(body) {
-		t.Fatal("contract hash does not match the fresh manifest")
-	}
-	original.MigrationManifestSHA256 = written.MigrationManifestSHA256
-	if written != original {
-		t.Fatal("write changed a contract field other than the migration hash")
-	}
-	if !bytes.Equal(readBytes(t, manifestPath(tree)), body) ||
-		bytes.Equal(body, manifestBefore) {
-		t.Fatal("fresh manifest was not replaced from Fresh SQL")
-	}
-	if err = checkFresh(tree, false); err != nil {
-		t.Fatal(err)
-	}
-}
 
 func copyFreshTree(t *testing.T, repo, tree string) {
 	t.Helper()

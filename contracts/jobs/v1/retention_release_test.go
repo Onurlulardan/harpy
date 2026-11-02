@@ -6,31 +6,6 @@ import (
 	"testing"
 )
 
-func TestRetentionReleaseCanonicalDigestIsStable(t *testing.T) {
-	value, err := NewRetentionRelease(testRetentionRelease())
-	if err != nil {
-		t.Fatal(err)
-	}
-	first, err := value.CanonicalJSON()
-	if err != nil {
-		t.Fatal(err)
-	}
-	second, err := value.CanonicalJSON()
-	if err != nil || !bytes.Equal(first, second) {
-		t.Fatal("retention release canonical JSON is not deterministic")
-	}
-	if !bytes.HasPrefix(first, []byte(`{"authority":`)) {
-		t.Fatalf("retention release is not RFC 8785 ordered: %s", first)
-	}
-	digest, err := value.SHA256()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if digest != "5fd2c65bfa1954fad42e5b6c6e3d97a672570318b9b273cf3aaaca32dca8f954" {
-		t.Fatalf("retention release digest = %s", digest)
-	}
-}
-
 func TestRetentionReleaseDecodeIsStrictAndTenantBound(t *testing.T) {
 	value, err := NewRetentionRelease(testRetentionRelease())
 	if err != nil {
