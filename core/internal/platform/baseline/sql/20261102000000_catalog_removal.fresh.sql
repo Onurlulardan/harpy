@@ -29,6 +29,110 @@ BEGIN
         END IF;
     END LOOP;
 
+    IF EXISTS (
+        SELECT 1
+        FROM pg_catalog.pg_constraint AS foreign_key
+        JOIN pg_catalog.pg_class AS referenced_relation
+          ON referenced_relation.oid = foreign_key.confrelid
+        JOIN pg_catalog.pg_namespace AS referenced_namespace
+          ON referenced_namespace.oid = referenced_relation.relnamespace
+        JOIN pg_catalog.pg_class AS source_relation
+          ON source_relation.oid = foreign_key.conrelid
+        JOIN pg_catalog.pg_namespace AS source_namespace
+          ON source_namespace.oid = source_relation.relnamespace
+        WHERE foreign_key.contype = 'f'
+          AND referenced_namespace.nspname = current_schema_name
+          AND referenced_relation.relname ~ '^catalog_'
+          AND NOT (
+              source_namespace.nspname = current_schema_name
+              AND source_relation.relname ~ '^catalog_'
+          )
+    ) THEN
+        RAISE EXCEPTION USING
+            ERRCODE = '55000',
+            MESSAGE = 'Catalog removal blocked by a foreign key owned outside the Catalog module';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM pg_catalog.pg_depend AS dependency
+        JOIN pg_catalog.pg_class AS referenced_relation
+          ON dependency.refclassid = 'pg_catalog.pg_class'::regclass
+         AND dependency.refobjid = referenced_relation.oid
+        JOIN pg_catalog.pg_namespace AS referenced_namespace
+          ON referenced_namespace.oid = referenced_relation.relnamespace
+        JOIN pg_catalog.pg_rewrite AS view_rule
+          ON dependency.classid = 'pg_catalog.pg_rewrite'::regclass
+         AND dependency.objid = view_rule.oid
+        JOIN pg_catalog.pg_class AS dependent_view
+          ON dependent_view.oid = view_rule.ev_class
+        JOIN pg_catalog.pg_namespace AS dependent_namespace
+          ON dependent_namespace.oid = dependent_view.relnamespace
+        WHERE dependency.deptype = 'n'
+          AND referenced_namespace.nspname = current_schema_name
+          AND referenced_relation.relname ~ '^catalog_'
+          AND NOT (
+              dependent_namespace.nspname = current_schema_name
+              AND dependent_view.relname ~ '^catalog_'
+          )
+    ) THEN
+        RAISE EXCEPTION USING
+            ERRCODE = '55000',
+            MESSAGE = 'Catalog removal blocked by a view owned outside the Catalog module';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM pg_catalog.pg_depend AS dependency
+        JOIN pg_catalog.pg_class AS referenced_relation
+          ON dependency.refclassid = 'pg_catalog.pg_class'::regclass
+         AND dependency.refobjid = referenced_relation.oid
+        JOIN pg_catalog.pg_namespace AS referenced_namespace
+          ON referenced_namespace.oid = referenced_relation.relnamespace
+        JOIN pg_catalog.pg_proc AS dependent_routine
+          ON dependency.classid = 'pg_catalog.pg_proc'::regclass
+         AND dependency.objid = dependent_routine.oid
+        JOIN pg_catalog.pg_namespace AS dependent_namespace
+          ON dependent_namespace.oid = dependent_routine.pronamespace
+        WHERE dependency.deptype = 'n'
+          AND referenced_namespace.nspname = current_schema_name
+          AND referenced_relation.relname ~ '^catalog_'
+          AND NOT (
+              dependent_namespace.nspname = current_schema_name
+              AND dependent_routine.proname ~ '^catalog_'
+          )
+    ) THEN
+        RAISE EXCEPTION USING
+            ERRCODE = '55000',
+            MESSAGE = 'Catalog removal blocked by a routine owned outside the Catalog module';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM pg_catalog.pg_depend AS dependency
+        JOIN pg_catalog.pg_proc AS referenced_routine
+          ON dependency.refclassid = 'pg_catalog.pg_proc'::regclass
+         AND dependency.refobjid = referenced_routine.oid
+        JOIN pg_catalog.pg_namespace AS referenced_namespace
+          ON referenced_namespace.oid = referenced_routine.pronamespace
+        JOIN pg_catalog.pg_proc AS dependent_routine
+          ON dependency.classid = 'pg_catalog.pg_proc'::regclass
+         AND dependency.objid = dependent_routine.oid
+        JOIN pg_catalog.pg_namespace AS dependent_namespace
+          ON dependent_namespace.oid = dependent_routine.pronamespace
+        WHERE dependency.deptype = 'n'
+          AND referenced_namespace.nspname = current_schema_name
+          AND referenced_routine.proname ~ '^catalog_'
+          AND NOT (
+              dependent_namespace.nspname = current_schema_name
+              AND dependent_routine.proname ~ '^catalog_'
+          )
+    ) THEN
+        RAISE EXCEPTION USING
+            ERRCODE = '55000',
+            MESSAGE = 'Catalog removal blocked by a dependent routine outside the Catalog module';
+    END IF;
+
     FOR object_record IN
         SELECT namespace.nspname, procedure_row.proname,
                pg_catalog.pg_get_function_identity_arguments(procedure_row.oid) AS identity_arguments
