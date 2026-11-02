@@ -14,7 +14,7 @@
 
 ## Önkoşul
 
-Faz 0, Catalog verisi için retain/export/drop kararını zorunlu tutar. Mevcut baseline snapshot'ı tarihsel Catalog DDL içerir; post-baseline cleanup migration yalnız boş/default seed nesnelerini kaldırır ve beklenmeyen dolu Catalog tablolarında hata vererek durur. Baseline dump'ın doğrudan yeniden üretilmesi hâlâ ayrı bir doğrulama işidir.
+Faz 0, Catalog verisi için retain/export/drop kararını zorunlu tutar. Mevcut baseline snapshot'ı tarihsel Catalog DDL içerir; post-baseline cleanup migration yalnız boş/default seed nesnelerini kaldırır ve beklenmeyen dolu Catalog tablolarında hata vererek durur. Baseline dump'ın kendisi yeniden üretilmez. Cleanup'ın bu dump üzerinde çalıştığı `TestBaselineDumpCleanupPostgres18` ile doğrulanır.
 
 Fresh install'da Catalog tabloları ve IAM/Analytics Catalog owner tabloları post-baseline cleanup ile kaldırılır. Cleanup, bilinen boş/default menu seed satırları dışındaki veriyi silmez; beklenmeyen veri görürse transaction hata ile durur. IAM Catalog resource/permission satırları audit ve FK bütünlüğü için retired olarak tutulur; aktif binding'ler revoked yapılır.
 
@@ -31,7 +31,7 @@ Fresh install'da Catalog tabloları ve IAM/Analytics Catalog owner tabloları po
 
 ## Faz 1 — Baseline
 
-**Başlangıç:** Catalog cleanup migration'ları var; non-empty data için fail-closed preflight mevcut. Baseline dump'ın doğrudan yeniden üretimi henüz tamamlanmış sayılmaz.
+**Başlangıç:** Catalog cleanup migration'ları var; non-empty data için fail-closed preflight mevcut. Baseline dump yeniden üretilmez; cleanup'ın mevcut dump üzerinde çalıştığı PostgreSQL 18 testi vardır.
 
 **Sahiplik:** yeni baseline SQL dosyaları ve onları üreten küçük script ile test. Eski `.fresh.sql` durur.
 

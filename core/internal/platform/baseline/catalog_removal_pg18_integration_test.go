@@ -6,7 +6,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
 )
 
 const baselinePG18TestDSNKey = "HARPY_BASELINE_PG18_TEST_DSN"
@@ -136,4 +135,3 @@ func TestCatalogRemovalPostgres18(t *testing.T) {
 		}
 	})
 }
-

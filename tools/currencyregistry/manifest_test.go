@@ -16,10 +16,10 @@ func TestManifestRewriteTwiceIsByteIdentical(t *testing.T) {
 	const (
 		keptSpace = `"generator":  "keep-bytes"`
 		adopted   = "core/internal/modules/billing/migrations/platform/v1_adopted/old.v1_adopted.sql"
+		baseline  = "core/internal/platform/baseline/sql/20261028000001_tenant_baseline.fresh.sql"
 		staleGo   = "1111111111111111111111111111111111111111111111111111111111111111"
 		staleSQL  = "2222222222222222222222222222222222222222222222222222222222222222"
 		nextGo    = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-		nextSQL   = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
 		input     = "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
 	)
 	body := strings.Join([]string{
@@ -39,7 +39,7 @@ func TestManifestRewriteTwiceIsByteIdentical(t *testing.T) {
 		"      \"output_sha256\": \"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"",
 		"    },",
 		"    {\"path\":\"" + freshGo + "\",\"generator\":\"go run ./tools/currencyregistry\",\"input_sha256\":\"" + input + "\",\"output_sha256\":\"" + staleGo + "\"},",
-		"    {\"path\":\"" + freshSQL + "\",\"generator\":\"go run ./tools/currencyregistry\",\"input_sha256\":\"" + input + "\",\"output_sha256\":\"" + staleSQL + "\"}",
+		"    {\"path\":\"" + baseline + "\",\"generator\":\"go run ./tools/currencyregistry\",\"input_sha256\":\"" + input + "\",\"output_sha256\":\"" + staleSQL + "\"}",
 		"  ]",
 		"}",
 		"",
@@ -50,7 +50,6 @@ func TestManifestRewriteTwiceIsByteIdentical(t *testing.T) {
 	}
 	replacements := []generatedFile{
 		{Path: freshGo, Generator: "go run ./tools/currencyregistry", InputSHA256: input, OutputSHA256: nextGo},
-		{Path: freshSQL, Generator: "go run ./tools/currencyregistry", InputSHA256: input, OutputSHA256: nextSQL},
 	}
 	if err := writeManifest(root, replacements); err != nil {
 		t.Fatal(err)
@@ -75,10 +74,10 @@ func TestManifestRewriteTwiceIsByteIdentical(t *testing.T) {
 	if !bytes.Contains(second, []byte("\"generator\": \"historical\",\r\n")) {
 		t.Fatal("non-currency record bytes were rewritten")
 	}
-	if !bytes.Contains(second, []byte(nextGo)) || !bytes.Contains(second, []byte(nextSQL)) {
-		t.Fatal("currency provenance was not recorded")
+	if !bytes.Contains(second, []byte(nextGo)) || !bytes.Contains(second, []byte(staleSQL)) {
+		t.Fatal("currency provenance was not recorded without rewriting the baseline dump")
 	}
-	if bytes.Contains(second, []byte(staleGo)) || bytes.Contains(second, []byte(staleSQL)) {
+	if bytes.Contains(second, []byte(staleGo)) {
 		t.Fatal("stale currency provenance remained")
 	}
 }

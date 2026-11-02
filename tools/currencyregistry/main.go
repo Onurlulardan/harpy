@@ -10,10 +10,7 @@ import (
 	"strings"
 )
 
-const (
-	freshGo  = "core/internal/modules/billing/domain/money/currency_registry_gen.go"
-	freshSQL = "core/internal/platform/baseline/sql/20261028000001_tenant_baseline.fresh.sql"
-)
+const freshGo = "core/internal/modules/billing/domain/money/currency_registry_gen.go"
 
 func main() {
 	root, err := os.Getwd()
@@ -29,15 +26,9 @@ func main() {
 	if err != nil {
 		exit(err)
 	}
-	sqlHash, err := fileSHA256(filepath.Join(root, filepath.FromSlash(freshSQL)))
-	if err != nil {
-		exit(err)
-	}
 	if err = writeManifest(root, []generatedFile{
 		{Path: freshGo, Generator: "go run ./tools/currencyregistry",
 			InputSHA256: inputDigest, OutputSHA256: goHash},
-		{Path: freshSQL, Generator: "go run ./tools/currencyregistry",
-			InputSHA256: inputDigest, OutputSHA256: sqlHash},
 	}); err != nil {
 		exit(err)
 	}

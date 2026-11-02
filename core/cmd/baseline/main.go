@@ -41,6 +41,9 @@ func run(arguments []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("applied=%t version=%d\n", result.Applied, result.Version)
+	fmt.Printf(
+		"applied=%t version=%d applied_versions=%v\n",
+		result.Applied, result.Version, result.AppliedVersions,
+	)
 	return nil
 }

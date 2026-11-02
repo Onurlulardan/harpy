@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:18
+        image: pgvector/pgvector:0.8.3-pg18-bookworm@sha256:c8a919765f2ef63681329fa21021b830cd4d79d1165bdca730dd016014e4da84
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -55,7 +55,7 @@ jobs:
         with:
           go-version: "1.26.5"
       - name: Test Catalog cleanup migrations on PostgreSQL 18
-        run: go test ./core/internal/platform/baseline -run TestCatalogRemovalPostgres18 -count=1 -v
+        run: go test ./core/internal/platform/baseline -run 'TestCatalogRemovalPostgres18|TestBaselineDumpCleanupPostgres18' -count=1 -v
 
   fileguard:
     name: fileguard
