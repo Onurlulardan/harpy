@@ -25,6 +25,11 @@ func releaseMaterial(root, profile string) ([]string, error) {
 		return nil, err
 	}
 	directory := filepath.Join(absolute, "deploy", profile, "secrets", "release")
+	if err = removeRetiredCatalogFiles(
+		directory, "catalog-package-set.json", "catalog-package-keyring.json",
+	); err != nil {
+		return nil, err
+	}
 	if !setupRotateSecrets && !setupRefreshRelease {
 		lines, ok, reuseErr := reuseCompleteRelease(directory)
 		if reuseErr != nil || ok {
