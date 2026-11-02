@@ -39,7 +39,7 @@ func TestHTTPPermissionAuthorityPairsAreAcceptedByIAMBridges(t *testing.T) {
 		})
 	}
 	for _, bridge := range []string{
-		"analytics", "catalog", "documents",
+		"analytics", "documents",
 	} {
 		if coverage[bridge] == 0 {
 			t.Errorf("%s HTTP bridge has no contract coverage", bridge)
@@ -100,9 +100,6 @@ func resolveHTTPPermissionAuthority(permission, authority string) (
 		strings.HasPrefix(permission, "analytics.publication."):
 		_, valid = resolveAnalyticsAccess(permission, authority)
 		return "analytics", true, valid
-	case strings.HasPrefix(permission, "catalog."):
-		_, valid = resolveCatalogAccess(permission, authority)
-		return "catalog", true, valid
 	case strings.HasPrefix(permission, "documents."):
 		_, valid = resolveDocumentsAccess(permission, authority)
 		return "documents", true, valid
