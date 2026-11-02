@@ -2,7 +2,6 @@ package config
 
 import (
 	"bytes"
-	"crypto/ed25519"
 	"encoding/base64"
 	"fmt"
 	"os"
@@ -38,7 +37,6 @@ func validWorkerEnvironmentAt(now time.Time) []string {
 		"GOMEMLIMIT=512MiB",
 		"HARPY_RABBITMQ_URL=amqp://worker:secret@rabbit.invalid/%2f",
 		cursorKeyringEnvironmentEntry(),
-		catalogPackageKeyringEnvironmentEntry(),
 	)
 	entries = append(entries, validAnalyticsDashboardExportEnvironment(true)...)
 	entries = append(entries, validIAMSystemTransferEnvironment()...)
@@ -78,7 +76,6 @@ func validWorkerEnvironmentAt(now time.Time) []string {
 
 func validAPIEnvironmentAt(now time.Time) []string {
 	entries := append(validEnvironment(), cursorKeyringEnvironmentEntry(),
-		catalogPackageKeyringEnvironmentEntry(),
 		deploymentModeEnvironmentKey+"=saas")
 	entries = append(entries, validAnalyticsDashboardExportEnvironment(false)...)
 	entries = append(entries, validIAMSystemTransferEnvironment()...)
@@ -86,11 +83,6 @@ func validAPIEnvironmentAt(now time.Time) []string {
 	entries = append(entries, validNotificationsConsumerKeyringEnvironmentEntry())
 	entries = append(entries, validAPISaaSAuthorityEnvironment()...)
 	return append(entries, validIAMAPIEnvironment(now)...)
-}
-
-func catalogPackageKeyringEnvironmentEntry() string {
-	key := base64.RawURLEncoding.EncodeToString(bytes.Repeat([]byte{7}, ed25519.PublicKeySize))
-	return catalogPackageKeyringEnvironmentKey + `={"version":1,"keys":[{"key_id":"release-2026-07","public_key":"` + key + `"}]}`
 }
 
 func cursorKeyringEnvironmentEntry() string {
