@@ -801,7 +801,6 @@
       "file_variant": "HARPY_REST_QUERY_CURSOR_KEYRING_FILE",
       "content_schema": "rest-query-cursor-keyring.schema.json"
     },
-    null,
     {
       "name": "HARPY_ANALYTICS_TRUSTED_PROXY_CIDRS",
       "profiles": [
@@ -1659,7 +1658,6 @@
       "path_mode": "read",
       "required": true
     },
-    null,
     {
       "name": "HARPY_MIGRATION_MANIFEST_PATH",
       "profiles": [
