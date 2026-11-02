@@ -23,7 +23,6 @@ type WorkerSetter interface {
 func SetWorker(setter WorkerSetter) {
 	setter.Helper()
 	setter.Setenv("GOMEMLIMIT", "512MiB")
-	setCatalogPackageKeyring(setter)
 	SetIAMWorker(setter)
 	setPhase14Worker(setter)
 	setRestQueryCursorKeyring(setter)
