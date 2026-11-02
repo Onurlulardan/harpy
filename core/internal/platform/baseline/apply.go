@@ -23,7 +23,7 @@ var tenantScript string
 //go:embed sql/20261102000000_catalog_removal.fresh.sql
 var platformCatalogRemovalScript string
 
-//go:embed sql/20261102000001_catalog_removal.fresh.sql
+//go:embed sql/20261102000001_tenant_catalog_removal_baseline.fresh.sql
 var tenantCatalogRemovalScript string
 
 const (
@@ -33,7 +33,7 @@ const (
 	platformFile      = "20261028000000_platform_baseline.fresh.sql"
 	tenantFile        = "20261028000001_tenant_baseline.fresh.sql"
 	platformCatalogRemovalFile = "20261102000000_catalog_removal.fresh.sql"
-	tenantCatalogRemovalFile   = "20261102000001_catalog_removal.fresh.sql"
+	tenantCatalogRemovalFile   = "20261102000001_tenant_catalog_removal_baseline.fresh.sql"
 )
 
 type Result struct {
