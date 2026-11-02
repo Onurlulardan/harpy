@@ -1,11 +1,15 @@
 package main
 
-import "github.com/Onurlulardan/harpy/internal/migrationbundle"
+import (
+	"fmt"
 
-// schemaMigrationManifest is the setup filesystem producer. It uses the same
-// select, manifest, and canonical bytes as the runtime fresh registry.
-// History-supersession chains stay on runtime migration documents; they are
-// not fields of the fresh manifest.
-func schemaMigrationManifest(root string) ([]byte, error) {
-	return migrationbundle.CanonicalFresh(root)
+	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
+)
+
+func schemaMigrationManifest(string) ([]byte, error) {
+	document, err := runtimev1.ReadEmbeddedFreshMigrationManifest()
+	if err != nil {
+		return nil, fmt.Errorf("read embedded fresh migration manifest: %w", err)
+	}
+	return document, nil
 }

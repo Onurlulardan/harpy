@@ -9,9 +9,7 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY . .
 
-RUN --mount=type=cache,target=/go/pkg/mod \
-    go run ./internal/migrationbundle/cmd/checkfresh -write && \
-    mkdir -p /out && \
+RUN mkdir -p /out && \
     cp contracts/runtime/v1/fresh-migration-manifest.json /out/migration-manifest.json
 
 ARG TARGETOS
