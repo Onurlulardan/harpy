@@ -58,8 +58,6 @@ func migratorEnvironment(t *testing.T) []string {
 		"HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH="+filepath.Join(directory, "authority.json"),
 		"HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH="+filepath.Join(directory, "authority.sig"),
 		"HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH="+filepath.Join(directory, "cleanup.json"),
-		"HARPY_CATALOG_PACKAGE_SET_PATH="+filepath.Join(directory, "catalog-package-set.json"),
-		catalogPackageKeyringEnvironmentEntry(),
 		"HARPY_MIGRATION_MANIFEST_PATH="+filepath.Join(directory, "migrations.json"),
 		"HARPY_EXTENSION_MANIFEST_PATH="+filepath.Join(directory, "extensions.json"),
 		"HARPY_ROLES_MANIFEST_PATH="+filepath.Join(directory, "roles.json"),
