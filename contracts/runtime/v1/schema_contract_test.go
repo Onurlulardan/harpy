@@ -126,7 +126,6 @@ func profileSnapshot(profile string) map[string]any {
 	}
 	if profile == "api" {
 		variables["HARPY_REST_QUERY_CURSOR_KEYRING"] = validCursorKeyringContractValue()
-			validCatalogPackageKeyringContractValue()
 		addAnalyticsDashboardExportProfileSnapshot(variables, false)
 		addIAMSystemTransferProfileSnapshot(variables)
 		addIAMAPIProfileSnapshot(variables)
