@@ -12,7 +12,6 @@ type releaseCatalog struct {
 	migration, extension, roles, privileges, ownership       artifact
 	bootstrapOperation, extensionOperation, cleanupOperation artifact
 	binaryContract                                           artifact
-	catalogPackageSet                                        artifact
 	schemaContract                                           runtimev1.BinarySchemaContract
 }
 
@@ -134,6 +133,6 @@ func (catalog releaseCatalog) baseArtifacts() []artifact {
 	return []artifact{
 		catalog.migration, catalog.extension, catalog.roles, catalog.privileges,
 		catalog.ownership, catalog.bootstrapOperation, catalog.extensionOperation,
-		catalog.cleanupOperation, catalog.binaryContract, catalog.catalogPackageSet,
+		catalog.cleanupOperation, catalog.binaryContract,
 	}
 }
