@@ -5,7 +5,6 @@ import documentsmodule "github.com/Onurlulardan/harpy/core/internal/modules/docu
 func apiRuntimeReadiness(
 	iam iamAPIRuntime,
 	analytics analyticsHTTPRuntime,
-	catalog catalogHTTPRuntime,
 	documents *documentsmodule.HTTPHandler,
 	notifications notificationsHTTPRuntime,
 	work workHTTPRuntime,
@@ -15,7 +14,6 @@ func apiRuntimeReadiness(
 	return []func() bool{
 		iam.actorBridgeReady,
 		analytics.Ready,
-		catalog.Ready,
 		documents.Ready,
 		notifications.Ready,
 		work.Ready,

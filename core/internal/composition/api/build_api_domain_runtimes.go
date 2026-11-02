@@ -14,7 +14,6 @@ import (
 
 type apiDomainRuntimes struct {
 	analytics            analyticsHTTPRuntime
-	catalog              catalogHTTPRuntime
 	documents            *documentsmodule.HTTPHandler
 	documentsProduction  *documentsmodule.Production
 	notifications        notificationsHTTPRuntime
@@ -32,12 +31,6 @@ func buildAPIDomainRuntimes(
 ) (apiDomainRuntimes, error) {
 	analyticsHTTP, err := buildAnalyticsHTTP(
 		ctx, settings, pool, catalogs, *iam, report,
-	)
-	if err != nil {
-		return apiDomainRuntimes{}, err
-	}
-	catalogHTTP, err := buildCatalogHTTP(
-		settings, pool, catalogs, *iam, report,
 	)
 	if err != nil {
 		return apiDomainRuntimes{}, err
@@ -75,7 +68,7 @@ func buildAPIDomainRuntimes(
 		return apiDomainRuntimes{}, err
 	}
 	return apiDomainRuntimes{
-		analytics: analyticsHTTP, catalog: catalogHTTP,
+		analytics: analyticsHTTP,
 		documents: documentsHTTP, documentsProduction: documentsProduction,
 		notifications: notificationsHTTP, work: workHTTP, secondary: secondaryHTTP,
 		systemLayouts: systemLayoutHTTP, customerProvisioning: customerProvisioning,

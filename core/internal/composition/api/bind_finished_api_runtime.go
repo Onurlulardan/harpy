@@ -27,7 +27,7 @@ func bindFinishedAPIRuntime(
 		settings, monitor, info, logger, admission, restrictedRoutes, report,
 		platformOpsHTTP.Observe, domains.secondary.Observe, pool, policyRuntime,
 		apiRuntimeReadiness(
-			iamRuntime, domains.analytics, domains.catalog,
+			iamRuntime, domains.analytics,
 			domains.documents, domains.notifications, domains.work, domains.secondary,
 			domains.systemLayouts,
 		),
@@ -41,7 +41,6 @@ func bindFinishedAPIRuntime(
 		telemetryRuntime: telemetryRuntime, asyncWriteCatalogs: writeCatalogs,
 		analytics: domains.analytics,
 		deploymentPolicy:     policyRuntime,
-		catalog:              domains.catalog,
 		documents:            domains.documents,
 		documentsProduction:  domains.documentsProduction,
 		notifications:        domains.notifications,
