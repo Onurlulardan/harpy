@@ -31,7 +31,6 @@ func existingOwnedOutput(path string) (bool, error) {
 func reuseExistingPrepare(
 	ctx context.Context, options prepareOptions, contract runtimev1.BinarySchemaContract,
 	migration artifact, adminDSN string, passwords applicationPasswords,
-	packageAuthority catalogPackageAuthority,
 ) error {
 	catalog, err := loadExistingReleaseCatalog(options.outputDirectory, migration, contract)
 	if err != nil {
@@ -39,7 +38,7 @@ func reuseExistingPrepare(
 	}
 	now := reuseEvidenceClock(time.Now().UTC().Truncate(time.Second))
 	identity, err := loadExistingEvidence(
-		options.outputDirectory, now, catalog, packageAuthority,
+		options.outputDirectory, now, catalog,
 	)
 	if err != nil {
 		return err
