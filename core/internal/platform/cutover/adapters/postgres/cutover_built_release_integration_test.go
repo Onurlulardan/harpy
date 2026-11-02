@@ -38,7 +38,6 @@ func writeBuiltCutoverRelease(
 		BootstrapOperationDigest: digest, ExtensionOperationDigest: digest,
 		CredentialCleanupDigest:         digest,
 		CutoverAuthorityOperationDigest: operation.digest,
-		CatalogPackageSetSHA256:         digest,
 	}
 	document := writeBuiltCutoverArtifact(t, directory, "release.json", manifest)
 	signed := writeBuiltCutoverArtifact(t, directory, "release.sig", map[string]any{
