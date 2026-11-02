@@ -26,7 +26,6 @@ func apiKeys() []string {
 		"HARPY_HTTP_MAX_HEADER_BYTES", "HARPY_HTTP_MAX_JSON_BODY_BYTES",
 		analyticsTrustedProxyKey,
 		cursorKeyringEnvironmentKey, cursorKeyringEnvironmentKey + "_FILE",
-		catalogPackageKeyringEnvironmentKey, catalogPackageKeyringEnvironmentKey + "_FILE",
 		notificationsConsumerKeyringFileKey,
 	}
 	keys = append(keys, analyticsDashboardExportArtifactKeys()...)
