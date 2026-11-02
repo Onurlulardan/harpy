@@ -14,7 +14,6 @@
     "bootstrap_authority_manifest_sha256", "bootstrap_operation_digest",
     "extension_operation_digest", "credential_cleanup_operation_digest",
     "cutover_authority_adoption_operation_digest",
-    "catalog_package_set_sha256"
   ],
   "properties": {
     "contract_version": {"const": "postgres-release-manifest.v1"},
