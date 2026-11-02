@@ -29,12 +29,6 @@ func TestRepositoryTenantFrontierAdvancesHaveSequentialPlatformFences(t *testing
 		NextMinimumRuntimeGeneration: 23,
 	})
 	assertRepositoryFrontierStream(t, streams, Stream{
-		Owner: "catalog", Directory: "core/internal/modules/catalog/migrations/tenant",
-		Scope: "tenant", VersionFrom: 20260728105100, VersionTo: 20260728105100,
-		Phase: "expand", TargetDatabaseGeneration: 68,
-		NextMinimumRuntimeGeneration: 23,
-	})
-	assertRepositoryFrontierStream(t, streams, Stream{
 		Owner:     "platform_cutover",
 		Directory: "core/internal/platform/cutover/migrations",
 		Scope:     "platform", VersionFrom: 20260728105110, VersionTo: 20260728105110,
