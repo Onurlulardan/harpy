@@ -37,3 +37,36 @@ func TestTenantSchemaName(t *testing.T) {
 		t.Fatal("tenant_a was rejected")
 	}
 }
+
+func TestCatalogRemovalMigrationsFailClosedAndRetainIAMHistory(t *testing.T) {
+	for name, script := range map[string]string{
+		"platform": platformCatalogRemovalScript,
+		"tenant":   tenantCatalogRemovalScript,
+	} {
+		for _, guard := range []string{
+			"requires an explicit data disposition",
+			"blocked by a foreign key",
+			"blocked by a view",
+			"blocked by a routine",
+		} {
+			if !strings.Contains(script, guard) {
+				t.Errorf("%s cleanup is missing %q guard", name, guard)
+			}
+		}
+	}
+	for _, statement := range []string{
+		"SET state = 'revoked'",
+		"SET state = 'retired'",
+		"iam_resources",
+		"iam_permissions",
+	} {
+		if !strings.Contains(tenantCatalogRemovalScript, statement) {
+			t.Errorf("tenant cleanup is missing %q", statement)
+		}
+	}
+	if strings.Contains(tenantCatalogRemovalScript, "DELETE FROM __tenant_schema__.iam_resources") ||
+		strings.Contains(tenantCatalogRemovalScript, "DELETE FROM __tenant_schema__.iam_permissions") {
+		t.Fatal("tenant cleanup must retain IAM history instead of hard-deleting it")
+	}
+}
+
