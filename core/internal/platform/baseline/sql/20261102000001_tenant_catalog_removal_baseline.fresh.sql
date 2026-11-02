@@ -3,7 +3,7 @@
 DO $catalog_removal$
 DECLARE
     object_record record;
-    current_schema_name text := pg_catalog.current_schema();
+    current_schema_name text := current_schema;
     retired_at_value timestamp with time zone := pg_catalog.clock_timestamp();
     has_rows boolean;
     unexpected_rows bigint;
