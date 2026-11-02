@@ -12,8 +12,7 @@ import (
 
 const (
 	freshGo  = "core/internal/modules/billing/domain/money/currency_registry_gen.go"
-	freshSQL = "core/internal/modules/billing/migrations/platform/fresh/" +
-		"20260717010012_seed_billing_currency_exponents_v1.fresh.sql"
+	freshSQL = "core/internal/platform/baseline/sql/20261028000001_tenant_baseline.fresh.sql"
 )
 
 func main() {
