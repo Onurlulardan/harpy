@@ -59,8 +59,8 @@
     },
     "variables": {
       "type": "array",
-      "minItems": 166,
-      "maxItems": 166,
+      "minItems": 164,
+      "maxItems": 164,
       "uniqueItems": true,
       "items": {
         "$ref": "#/$defs/catalogVariable"
