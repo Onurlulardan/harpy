@@ -437,6 +437,8 @@ docs/
 | Komut | Açıklama |
 | --- | --- |
 | `go test ./...` | Go test paketini çalıştırır |
+| `go vet ./...` | Go vet kontrollerini çalıştırır |
+| `go test -tags=integration -count=0 -run '^$' ./...` | Integration tag'li testleri çalıştırmadan derler |
 | `go run ./tools/fileguard` | Dosya organizasyonu ve generated file provenance kurallarını denetler |
 | `go run ./tools/archguard` | Package dependency ve mimari sınırları denetler |
 | `task check` | Fileguard ve archguard kontrollerini çalıştırır |
@@ -468,12 +470,14 @@ Temel mimari kurallar:
 
 ### Kalite kapıları ve CI
 
-CI workflow'u `.github/workflows/ci.yml` altında tanımlıdır ve push/pull request olaylarında çalışır. Go testleri, generated release artifact kontrolleri, currency registry drift kontrolü ve mimari guard'lar ayrı işler halinde yürütülür.
+CI workflow'u `.github/workflows/ci.yml` altında tanımlıdır ve push/pull request olaylarında çalışır. Ayrı job'lar `go test ./...`, `go vet ./...`, currency registry drift, integration-tag derlemesi, PostgreSQL 18 baseline cleanup, fileguard ve archguard kontrollerini yürütür. Tam integration koşusu ve production image build her PR'da çalışmaz. Çalıştırma yolu [test standartlarında](docs/architecture/10-test-ve-muhendislik-standartlari.md) yazılıdır.
 
 Repository seviyesindeki ana kontroller:
 
 ```bash
 go test ./...
+go vet ./...
+go test -tags=integration -count=0 -run '^$' ./...
 go run ./tools/fileguard
 go run ./tools/archguard
 task check
@@ -520,4 +524,4 @@ Modüllere özel dokümanlar:
 
 Harpy'nin mevcut kapsamı, bu repository'de implement edilmiş backend altyapısı ve yetenekleridir. Proje genel amaçlı bir low-code platform veya bağımsız microservice koleksiyonu olarak konumlandırılmıyor. Forms Engine, Workflow Engine, AI modülü ve MCP server mevcut ürün kapsamına dahil değildir.
 
-Repository'de şu anda bir lisans dosyası yayımlanmamıştır. Lisans eklenene kadar kodun yeniden kullanımı, değiştirilmesi veya dağıtılması için açık izin verildiği varsayılmamalıdır.
+Harpy [MIT License](LICENSE) ile lisanslanmıştır. Lisans, kodun kullanılmasına, değiştirilmesine, özel projelerde fork edilmesine ve dağıtılmasına izin verir. Kopyalarda lisans metni ve telif bildirimi korunur.

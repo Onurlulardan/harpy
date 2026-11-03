@@ -1,7 +1,7 @@
 # HRY-003 — CI kalite kapılarını gerçek kabul kriterleriyle eşitle
 
 **Öncelik:** P0  
-**Durum:** Açık.
+**Durum:** PR kapısı güncellendi. `go vet ./...` unit job'unda, integration-tag derlemesi ayrı job'da, PostgreSQL 18 baseline cleanup job'u yerinde. Tam integration koşusu ve `docker build -f ops/production/Dockerfile .` image smoke'u her PR'a bağlanmadı; nasıl çalıştırılacakları mimari test belgesinde yazılı.
 
 ## Bulgu
 Mevcut CI; `go test ./...`, FileGuard, ArchGuard ve PostgreSQL 18 baseline cleanup kontrolü çalıştırıyor. Buna karşılık migration-baseline kabul belgesi `go vet ./...` ve daha geniş integration doğrulamalarını da bekliyor. `integration` tag derlemesinin normal CI dışında kalması HRY-001'deki problemi görünmez bırakmış.

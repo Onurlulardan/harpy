@@ -1,7 +1,7 @@
 # HRY-004 — Açık kaynak lisansını belirle ve repository'ye ekle
 
 **Öncelik:** P0  
-**Durum:** Açık.
+**Durum:** Kapatıldı. Lisans MIT olarak seçildi. Harpy açık kaynak bir fork tabanıdır; MIT ticari kullanıma, değiştirmeye ve özel türev dağıtmaya izin verir. Kök `go.mod` require bloğunda GPL veya AGPL modül görülmedi. Doğrudan bağımlılıklar Apache-2.0, MIT ve BSD ailesindedir. Bu bir hukuki denetim raporu değildir.
 
 ## Bulgu
 Harpy README'si şu anda repository'de lisans dosyası yayımlanmadığını açıkça belirtiyor. Repository'nin public olması, tek başına yeniden kullanım, değiştirme veya dağıtım izni sağlamıyor.

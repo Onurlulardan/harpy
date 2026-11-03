@@ -1,7 +1,7 @@
 # HRY-001 — Integration-tag testlerini derlenebilir ve CI tarafından görünür hale getir
 
 **Öncelik:** P0  
-**Durum:** Açık — kaynak kod incelemesinde problem bulundu.
+**Durum:** Derleme kapanışı yapıldı. `catalogPackageKeyring` atamaları kaldırıldı. Silinmiş supersession zincirine bağlı integration testleri çıkarıldı. `go test -tags=integration -count=0 -run '^$' ./...` geçiyor ve CI `integration compile` job'u bunu kapıya aldı. Built entrypoint testi derleniyor. PostgreSQL 18 üzerinde startup/readiness/shutdown koşusu Docker istediği için bu kapanışta çalıştırılmadı.
 
 ## Bulgu
 `core/internal/platform/migrator/built_entrypoint_gate_integration_test.go` içinde API/Worker/Migrator test profillerine `catalogPackageKeyring` alanı atanıyor. Ancak aynı paketteki `builtEntrypointProfile`, `built_entrypoint_process_integration_test.go` dosyasında bu alanı tanımlamıyor. Bu nedenle integration build tag'iyle ilgili test paketi derlenirken hata oluşması bekleniyor. Normal `go test ./...` bu dosyaları build tag nedeniyle kapsamıyor.

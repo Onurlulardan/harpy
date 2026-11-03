@@ -2,15 +2,19 @@
 
 ## 1. CI görünümü
 
-CI workflow .github/workflows/ci.yml içindedir. push ve pull_request olaylarında çalışır. Workflow'da üç ana job vardır:
+CI workflow .github/workflows/ci.yml içindedir. push ve pull_request olaylarında çalışır. Workflow'da beş job vardır:
 
 | Job | Kontrol |
 | --- | --- |
-| unit | Go test suite |
+| unit | `go test ./...`, `go vet ./...` ve currency registry drift |
+| integration compile | `go test -tags=integration -count=0 -run '^$' ./...` |
+| baseline PostgreSQL 18 | Catalog removal ve baseline cleanup migration testleri |
 | fileguard | Dosya organizasyonu ve generated provenance kuralları |
 | archguard | Paket dependency ve architecture kuralları |
 
-Unit job Go 1.26.5 toolchain kullanır ve go test ./... çalıştırır. Fileguard ve archguard ayrı CI job'larıdır; böylece kod testlerinden bağımsız mimari ihlaller de PR kapısında yakalanır.
+Unit, integration compile, fileguard ve archguard job'ları Go 1.26.5 toolchain kullanır. Integration compile job'u testleri çalıştırmaz; `integration` tag'i altındaki paketlerin derlendiğini kanıtlar. Baseline job'u PostgreSQL 18 servisiyle `TestCatalogRemovalPostgres18` ve `TestBaselineDumpCleanupPostgres18` testlerini çalıştırır. Fileguard ve archguard ayrı job'lardır; böylece kod testlerinden bağımsız mimari ihlaller de PR kapısında yakalanır.
+
+Tam `go test -tags=integration ./...` koşusu her PR'da çalışmaz. PostgreSQL 18.4, RabbitMQ veya object storage isteyen bu koşunun komutu ve ephemeral cluster'ı `ops/integration/README.md` içindedir. Image build ve deployment smoke de PR kapısının dışındadır. Tekrarlanabilir image komutu `docker build -f ops/production/Dockerfile .` şeklindedir. Bu iki sınıf, unit ve integration compile job'larından ayrı tutulur.
 
 ## 2. Test türleri
 
@@ -32,6 +36,8 @@ Harpy'de test yoğunluğu özellikle IAM, Billing, Documents, Analytics ve async
 Repository root'unda:
 
     go test ./...
+    go vet ./...
+    go test -tags=integration -count=0 -run '^$' ./...
     go run ./tools/fileguard
     go run ./tools/archguard
     task check

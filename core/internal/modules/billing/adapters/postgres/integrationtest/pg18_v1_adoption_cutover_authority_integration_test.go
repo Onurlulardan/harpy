@@ -31,7 +31,7 @@ func newProtectedBillingAuthority(t *testing.T, scope string,
 	if err != nil {
 		t.Fatal(err)
 	}
-	group, checkpoint := "billing"
+	group, checkpoint := "billing", "billing"
 	if scope == "global" {
 		group, checkpoint = "billing", "catalog"
 	}
