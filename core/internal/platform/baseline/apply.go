@@ -69,7 +69,13 @@ func ApplyPlatform(ctx context.Context, dsn string) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	return combineBaselineResults(result, cleanup, executor, completion, claimClock), nil
+	contract, err := applyPlatformTenantExecutorCompletionContract(ctx, dsn)
+	if err != nil {
+		return Result{}, err
+	}
+	return combineBaselineResults(
+		result, cleanup, executor, completion, claimClock, contract,
+	), nil
 }
 
 func ApplyTenantDB(ctx context.Context, database *sql.DB, schema string) (Result, error) {

@@ -34,7 +34,7 @@ func TestCurrentReleaseStatusUsesBaselineGooseVersion(t *testing.T) {
 	}
 	if !strings.Contains(currentReleaseAppliedSQL, "platform.environment_identity AS identity") ||
 		!strings.Contains(currentReleaseAppliedSQL, "platform.goose_db_version AS history") ||
-		!strings.Contains(currentReleaseAppliedSQL, "20261103000005") {
+		!strings.Contains(currentReleaseAppliedSQL, "20261103000006") {
 		t.Fatal("current release status must use the baseline identity and Goose version")
 	}
 }

@@ -16,7 +16,7 @@ WHERE identity.singleton=TRUE
   AND identity.database_origin='fresh'
   AND EXISTS (
     SELECT 1 FROM platform.goose_db_version AS history
-    WHERE history.is_applied AND history.version_id=20261103000005
+    WHERE history.is_applied AND history.version_id=20261103000006
   )`
 
 func validateCurrentReleaseContract(contract runtimev1.BinarySchemaContract) error {

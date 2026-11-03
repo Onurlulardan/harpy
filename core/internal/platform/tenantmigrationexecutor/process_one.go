@@ -44,9 +44,12 @@ func (executor *Executor) processOne(
 	if !validDigest(receipt.ReceiptSHA256) || !validDigest(receipt.EvidenceSHA256) {
 		return true, fmt.Errorf("tenant migration receipt is invalid")
 	}
-	return true, executor.store.Complete(
+	if err := executor.store.Complete(
 		context.WithoutCancel(ctx), claim, receiptID, receipt,
-	)
+	); err != nil {
+		return true, fmt.Errorf("complete tenant migration job: %w", err)
+	}
+	return true, nil
 }
 
 func (executor *Executor) claimIDs() (uuid.UUID, uuid.UUID, uuid.UUID, error) {

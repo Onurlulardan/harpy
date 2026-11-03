@@ -23,7 +23,7 @@ func (coordinator *Coordinator) prepareAuthority(
 	}
 	plan, err := coordinator.authority.Prepare(ctx, request)
 	if err != nil {
-		return tenantapi.ProtectedAuthorityPlan{}, classifyDependency(err)
+		return tenantapi.ProtectedAuthorityPlan{}, classifyDependency("authority.prepare", err)
 	}
 	if plan.RegistryBindingID != request.RegistryBindingID ||
 		plan.ScopeKind != tenantapi.AuthorityScopeEnvironment ||
@@ -44,7 +44,7 @@ func (coordinator *Coordinator) acknowledgeAuthority(
 	}
 	ack, err := coordinator.authority.Acknowledge(ctx, prepared.authorityRequest)
 	if err != nil {
-		return 0, classifyDependency(err)
+		return 0, classifyDependency("authority.acknowledge", err)
 	}
 	plan := prepared.plan.Authority()
 	if ack.OperationID != prepared.plan.OperationID() ||
@@ -61,7 +61,7 @@ func (coordinator *Coordinator) acknowledgeAuthority(
 		if errors.Is(err, tenantapi.ErrAuthorityCASConflict) {
 			return 0, ErrFenced
 		}
-		return 0, ErrResumable
+		return 0, Resumable("authority.receive_ack", "authority_ack_failed", "", err)
 	}
 	return transition.Revision, nil
 }

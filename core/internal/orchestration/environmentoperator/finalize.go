@@ -19,14 +19,14 @@ func (coordinator *Coordinator) finalize(
 		ExpectedRevision: claim.revision, LeaseUntil: claim.leaseUntil,
 	})
 	if err != nil {
-		return classifyDependency(err)
+		return classifyDependency("activation.finalize", err)
 	}
 	operation, err := coordinator.onboarding.Accept(ctx, plan)
 	if err != nil {
 		if errors.Is(err, tenantapi.ErrOnboardingConflict) {
 			return ErrFenced
 		}
-		return ErrResumable
+		return Resumable("onboarding.finalize_accept", "finalize_accept_failed", "", err)
 	}
 	if operation.State() != tenantapi.OnboardingSucceeded {
 		return ErrFenced

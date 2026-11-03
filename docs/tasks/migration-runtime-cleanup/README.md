@@ -1,6 +1,6 @@
 # Migration runtime cleanup — uçtan uca audit ve görev planı
 
-**Durum:** Audit tamamlandı, uygulama task'ları açık. Bu doküman kod değişikliğinin tamamlandığını iddia etmez.  
+**Durum:** P0 teşhis ve completion sözleşmesi uygulandı (`20261103000006`). Legacy migrator framework sökümü (HRY-MIG-004..009) açık. Bu doküman tüm kabul matrisinin kapandığını iddia etmez.  
 **Audit edilen ref:** `main` — `8d72c6c867225d26e81c65c764473eddb0cdce63` (3 Kasım 2026).  
 **Tetikleyen olay:** `task dev` akışının migration `up` ve `verify` aşamalarını geçtikten sonra `core-operator initialize` aşamasında çıkış kodu 5 ile durması.
 
@@ -119,3 +119,13 @@ Detaylı agent iş emirleri [01-agent-work-orders.md](01-agent-work-orders.md), 
 - Tenant executor durable job/lease/retry güvenliği korunur fakat eski release-generation/manifest/checkpoint state'e bağımlı değildir.
 - Applied migration'lar immutable; local/production volume resetlenmemiştir.
 - `task dev`, clean install, second run/no-op, tenant retry/recovery ve API/worker readiness testleri geçer.
+
+## 7. Uygulama notu — 3 Kasım 2026
+
+P0'ın kodla kapanan kısmı:
+
+- Operator `ErrResumable` dönüşleri stage, error code, redacted cause ve varsa SQLSTATE taşır. JSON failure kaydı `error_code`, `detail` ve `sqlstate` alanlarını geriye uyumlu ekler.
+- `platform.tenancy_tenant_migration_complete_v3` yeni forward migration `20261103000006` ile değiştirildi. Applied `20261103000003`–`00005` dosyalarına dokunulmadı.
+- Completion, tenant şemasındaki Goose history için tek minimum sürüm (`20261102000001`) kullanır. İki sabit checkpoint sürümünü saymaz. Job `succeeded` ile onboarding `migration_ready` / `authority_pending` geçişi aynı routine içindedir ve kayıp cevaptan sonra tekrar çağrı aynı final state'i korur.
+
+Açık kalan iş: HRY-MIG-003 disposable `task dev` E2E, HRY-MIG-004..009 legacy manifest/release framework sökümü ve CI fresh-install kapısı. Bu ortamda Docker olmadığı için tam `task dev` doğrulanmadı.

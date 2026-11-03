@@ -26,7 +26,7 @@ func (coordinator *Coordinator) preparePlan(
 		Manifest: manifest, OperationID: operationID, CreatedAt: createdAt,
 	})
 	if err != nil {
-		return preparedPlan{}, classifyDependency(err)
+		return preparedPlan{}, classifyDependency("installation_offering.resolve", err)
 	}
 	schema, err := tenantapi.OnboardingSchemaName(tenantID)
 	if err != nil {
