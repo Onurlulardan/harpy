@@ -32,7 +32,17 @@ func verifyNewReleaseStage(
 	if err := verifyFoundationRelease(ctx, target, environmentID); err == nil {
 		return nil
 	}
-	return verifyFreshInstallPresent(ctx, target, environmentID)
+	if err := verifyFreshInstallPresent(ctx, target, environmentID); err == nil {
+		return nil
+	}
+	awaiting, err := baselineSeedAwaitingRelease(ctx, target, environmentID)
+	if err != nil {
+		return err
+	}
+	if awaiting {
+		return nil
+	}
+	return fmt.Errorf("current release requires a finalized fresh install")
 }
 
 func verifyFreshInstallPresent(

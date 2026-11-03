@@ -50,6 +50,9 @@ func preparePostgres(
 	if err != nil {
 		return liveDatabaseIdentity{}, err
 	}
+	if err := bindBaselineSeedIdentity(ctx, target, live); err != nil {
+		return liveDatabaseIdentity{}, err
+	}
 	live.environmentID, err = readExistingEnvironmentID(ctx, target, live)
 	if err != nil {
 		return liveDatabaseIdentity{}, err
