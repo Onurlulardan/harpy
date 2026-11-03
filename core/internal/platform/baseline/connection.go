@@ -9,21 +9,51 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
+const databaseOwnerRole = "harpy_owner"
+
 func open(dsn, searchPath string) (*sql.DB, error) {
-	config, err := pgx.ParseConfig(dsn)
+	return openSession(dsn, searchPath, false)
+}
+
+func openSession(dsn, searchPath string, assumeOwner bool) (*sql.DB, error) {
+	config, err := sessionConfig(dsn, searchPath, assumeOwner)
 	if err != nil {
-		return nil, fmt.Errorf("parse baseline dsn: %w", err)
+		return nil, err
 	}
-	config.RuntimeParams["search_path"] = searchPath
 	database := stdlib.OpenDB(*config)
 	database.SetMaxOpenConns(1)
 	return database, nil
 }
 
-func ensureSchema(ctx context.Context, dsn, schema string) error {
+func sessionConfig(dsn, searchPath string, assumeOwner bool) (*pgx.ConnConfig, error) {
 	config, err := pgx.ParseConfig(dsn)
 	if err != nil {
-		return fmt.Errorf("parse baseline dsn: %w", err)
+		return nil, fmt.Errorf("parse baseline dsn: %w", err)
+	}
+	if config.RuntimeParams == nil {
+		config.RuntimeParams = map[string]string{}
+	}
+	if searchPath != "" {
+		config.RuntimeParams["search_path"] = searchPath
+	}
+	if assumeOwner {
+		config.RuntimeParams["role"] = databaseOwnerRole
+	}
+	return config, nil
+}
+
+func ensureSchema(ctx context.Context, dsn, schema string) error {
+	return ensureSchemaSession(ctx, dsn, schema, false)
+}
+
+func ensureOwnerSchema(ctx context.Context, dsn, schema string) error {
+	return ensureSchemaSession(ctx, dsn, schema, true)
+}
+
+func ensureSchemaSession(ctx context.Context, dsn, schema string, assumeOwner bool) error {
+	config, err := sessionConfig(dsn, "", assumeOwner)
+	if err != nil {
+		return err
 	}
 	conn, err := pgx.ConnectConfig(ctx, config)
 	if err != nil {

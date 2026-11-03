@@ -10,9 +10,9 @@ import (
 )
 
 func Inspect(ctx context.Context, dsn string) (bool, error) {
-	config, err := pgx.ParseConfig(dsn)
+	config, err := sessionConfig(dsn, "", true)
 	if err != nil {
-		return false, fmt.Errorf("parse baseline dsn: %w", err)
+		return false, err
 	}
 	conn, err := pgx.ConnectConfig(ctx, config)
 	if err != nil {
