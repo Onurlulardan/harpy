@@ -78,9 +78,7 @@ func TestContractExportsCanonicalBuildInputsIdempotently(t *testing.T) {
 
 func TestRuntimeReadinessAllowlistIsExact(t *testing.T) {
 	expected := []string{
-		"environment_identity", "bootstrap_receipts", "extension_registry",
-		"migration_runs", "schema_contracts", "database_generation_manifests",
-		"release_generations",
+		"environment_identity", "goose_db_version",
 	}
 	if len(runtimeReadinessTables) != len(expected) {
 		t.Fatalf("readiness table count = %d", len(runtimeReadinessTables))

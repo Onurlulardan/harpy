@@ -13,6 +13,8 @@ func runStop(cfg runtimeConfig) error {
 	if errors.Is(err, errReceiptNotFound) {
 		if frontendReady(context.Background(), cfg.ReadyURL) {
 			fmt.Println("frontend-v3: unmanaged server is running on port 5173; left untouched")
+		} else if !cfg.CheckoutPresent {
+			fmt.Println("frontend-v3: sibling checkout is absent; already stopped")
 		} else {
 			fmt.Println("frontend-v3: already stopped")
 		}

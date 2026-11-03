@@ -28,6 +28,12 @@ func startTenantMigrationExecutor(
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 ) processcode.Code {
+	if err := validateTenantMigrationReleaseContract(release.Value(), embedded.Value()); err != nil {
+		_ = database.Close()
+		return failTenantPreflight(
+			settings, telemetryRuntime, logger, "release_contract",
+		)
+	}
 	runtimeSettings := settings.LongRunning().Runtime()
 	startup, cancel := context.WithTimeout(
 		process.StartupContext(), runtimeSettings.ReadinessTimeout(),

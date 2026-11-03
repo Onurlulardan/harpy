@@ -20,9 +20,6 @@ var sessionHygieneSQL string
 //go:embed adapters/postgres/sql/probe_schema_contract.sql
 var probeSchemaContractSQL string
 
-//go:embed adapters/postgres/sql/preflight_foundation.sql
-var preflightFoundationSQL string
-
 //go:embed adapters/postgres/sql/probe_runtime_role.sql
 var probeRuntimeRoleSQL string
 

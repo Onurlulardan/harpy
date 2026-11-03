@@ -21,29 +21,21 @@ func TestCurrentReleaseStatusAcceptsCurrentContract(t *testing.T) {
 	}
 }
 
-func TestCurrentReleaseStatusRequiresVerifiedRollingLineage(t *testing.T) {
-	required := []string{
-		"platform.schema_contracts AS contract",
-		"platform.release_generations AS active_release",
-		"platform.release_generations AS compatible_release",
-		"platform.environment_identity AS identity",
-		"platform.migration_runs AS run",
-		"run.command='up' AND run.state='succeeded'",
-		"active_release.bootstrap_receipt_run_id",
-		"active_release.extension_receipt_run_id",
-		"active_release.cleanup_receipt_run_id",
-		"contract.database_generation >= $3",
-		"$2 >= contract.minimum_runtime_generation",
-		"compatible_release.runtime_generation=$2",
-		"compatible_release.minimum_database_generation=$3",
-		"compatible_release.migration_manifest_sha256=$4",
-		"compatible_release.extension_manifest_sha256=$5",
-		"compatible_release.postgres_image_digest=$6",
-	}
-	for _, fragment := range required {
-		if !strings.Contains(currentReleaseAppliedSQL, fragment) {
-			t.Fatalf("current release status omitted %q", fragment)
+func TestCurrentReleaseStatusUsesBaselineGooseVersion(t *testing.T) {
+	for _, removed := range []string{
+		"platform.release_generations",
+		"platform.schema_contracts",
+		"platform.migration_runs",
+		"platform.bootstrap_receipts",
+	} {
+		if strings.Contains(currentReleaseAppliedSQL, removed) {
+			t.Fatalf("current release status still reads %s", removed)
 		}
+	}
+	if !strings.Contains(currentReleaseAppliedSQL, "platform.environment_identity AS identity") ||
+		!strings.Contains(currentReleaseAppliedSQL, "platform.goose_db_version AS history") ||
+		!strings.Contains(currentReleaseAppliedSQL, "20261103000004") {
+		t.Fatal("current release status must use the baseline identity and Goose version")
 	}
 }
 

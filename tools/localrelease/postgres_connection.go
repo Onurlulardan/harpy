@@ -2,9 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 func openAdmin(ctx context.Context, dsn string) (*pgx.Conn, *pgx.ConnConfig, error) {
@@ -20,7 +23,7 @@ func openAdmin(ctx context.Context, dsn string) (*pgx.Conn, *pgx.ConnConfig, err
 	}
 	connection, err := pgx.ConnectConfig(ctx, config)
 	if err != nil {
-		return nil, nil, fmt.Errorf("connect admin DSN: %w", err)
+		return nil, nil, adminConnectError(err)
 	}
 	var database, sessionUser, currentUser string
 	var superuser bool
@@ -48,4 +51,19 @@ func openTarget(
 		return nil, fmt.Errorf("connect target database: %w", err)
 	}
 	return connection, nil
+}
+
+func adminConnectError(err error) error {
+	var postgresError *pgconn.PgError
+	stalePassword := errors.As(err, &postgresError) && postgresError.Code == "28P01"
+	if !stalePassword && strings.Contains(err.Error(), "(SQLSTATE 28P01)") {
+		stalePassword = true
+	}
+	if !stalePassword {
+		return fmt.Errorf("connect admin DSN: %w", err)
+	}
+	return fmt.Errorf(
+		"connect admin DSN: PostgreSQL rejected the bootstrap password because the data volume still has the previous secret generation; run task local:destroy, then task dev: %w",
+		err,
+	)
 }

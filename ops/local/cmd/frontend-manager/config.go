@@ -16,17 +16,18 @@ const (
 )
 
 type runtimeConfig struct {
-	BackendRoot   string
-	FrontendRoot  string
-	StateDir      string
-	ReceiptPath   string
-	LogPath       string
-	ReadyURL      string
-	LocalAPIPort  string
-	StartupWindow time.Duration
+	BackendRoot     string
+	FrontendRoot    string
+	StateDir        string
+	ReceiptPath     string
+	LogPath         string
+	ReadyURL        string
+	LocalAPIPort    string
+	StartupWindow   time.Duration
+	CheckoutPresent bool
 }
 
-func loadConfig() (runtimeConfig, error) {
+func loadConfig(requireCheckout bool) (runtimeConfig, error) {
 	workingDirectory, err := os.Getwd()
 	if err != nil {
 		return runtimeConfig{}, fmt.Errorf("read working directory: %w", err)
@@ -36,10 +37,12 @@ func loadConfig() (runtimeConfig, error) {
 		return runtimeConfig{}, err
 	}
 	frontendRoot := filepath.Join(filepath.Dir(backendRoot), "frontend-v3")
-	for _, required := range []string{"package.json", "yarn.lock"} {
-		if _, err := os.Stat(filepath.Join(frontendRoot, required)); err != nil {
-			return runtimeConfig{}, fmt.Errorf("frontend-v3 %s is unavailable: %w", required, err)
-		}
+	checkoutPresent, err := frontendCheckoutPresent(frontendRoot)
+	if err != nil {
+		return runtimeConfig{}, err
+	}
+	if requireCheckout && !checkoutPresent {
+		return runtimeConfig{}, errFrontendCheckoutAbsent
 	}
 	apiPort, err := localAPIPort(filepath.Join(backendRoot, ".env.local"))
 	if err != nil {
@@ -47,14 +50,15 @@ func loadConfig() (runtimeConfig, error) {
 	}
 	stateDir := filepath.Join(backendRoot, "ops", "local", "state", "frontend-v3")
 	return runtimeConfig{
-		BackendRoot:   backendRoot,
-		FrontendRoot:  frontendRoot,
-		StateDir:      stateDir,
-		ReceiptPath:   filepath.Join(stateDir, "receipt.json"),
-		LogPath:       filepath.Join(stateDir, "frontend.log"),
-		ReadyURL:      localFrontendReadyURL,
-		LocalAPIPort:  apiPort,
-		StartupWindow: 60 * time.Second,
+		BackendRoot:     backendRoot,
+		FrontendRoot:    frontendRoot,
+		StateDir:        stateDir,
+		ReceiptPath:     filepath.Join(stateDir, "receipt.json"),
+		LogPath:         filepath.Join(stateDir, "frontend.log"),
+		ReadyURL:        localFrontendReadyURL,
+		LocalAPIPort:    apiPort,
+		StartupWindow:   60 * time.Second,
+		CheckoutPresent: checkoutPresent,
 	}, nil
 }
 
@@ -68,7 +72,7 @@ func findBackendRoot(start string) (string, error) {
 		}
 		parent := filepath.Dir(current)
 		if parent == current {
-			return "", fmt.Errorf("backend-v2 root was not found from %s", start)
+			return "", fmt.Errorf("harpy module root was not found from %s", start)
 		}
 		current = parent
 	}

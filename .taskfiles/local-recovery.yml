@@ -57,7 +57,7 @@ tasks:
         -frontend-base-url "{{.FRONTEND_BASE_URL}}"
       - "{{.COMPOSE}} run --rm restore-license-reconcile"
       - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api"
-      - task: :local:frontend
+      - task: :local:frontend:if-present
       - >-
         go run ./ops/local/cmd/recovery-state show-reactivation
         -source "{{.REACTIVATION_HANDOFF}}"
@@ -93,7 +93,7 @@ tasks:
         -frontend-base-url "{{.FRONTEND_BASE_URL}}"
       - "{{.COMPOSE}} run --rm restore-license-reconcile"
       - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api"
-      - task: :local:frontend
+      - task: :local:frontend:if-present
       - >-
         go run ./ops/local/cmd/recovery-state show-reactivation
         -source "{{.REACTIVATION_HANDOFF}}"
@@ -102,7 +102,7 @@ tasks:
     desc: Resume worker and frontend after restricted owner reactivation
     cmds:
       - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api core-worker"
-      - task: :local:frontend
+      - task: :local:frontend:if-present
 
   status:
     desc: Show local recovery storage, executor and restore one-shots

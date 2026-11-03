@@ -6,10 +6,15 @@ func combineBaselineResults(steps ...Result) Result {
 		if step.Version > combined.Version {
 			combined.Version = step.Version
 		}
-		if step.Applied {
-			combined.Applied = true
-			combined.AppliedVersions = append(combined.AppliedVersions, step.Version)
+		versions := step.AppliedVersions
+		if len(versions) == 0 && step.Applied {
+			versions = []int64{step.Version}
 		}
+		if len(versions) == 0 {
+			continue
+		}
+		combined.Applied = true
+		combined.AppliedVersions = append(combined.AppliedVersions, versions...)
 	}
 	return combined
 }

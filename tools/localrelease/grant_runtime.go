@@ -9,12 +9,7 @@ import (
 
 var runtimeReadinessTables = []string{
 	"environment_identity",
-	"bootstrap_receipts",
-	"extension_registry",
-	"migration_runs",
-	"schema_contracts",
-	"database_generation_manifests",
-	"release_generations",
+	"goose_db_version",
 }
 
 var readinessReaderRoles = []string{

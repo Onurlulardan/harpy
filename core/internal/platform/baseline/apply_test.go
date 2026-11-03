@@ -7,10 +7,12 @@ import (
 
 func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	for name, script := range map[string]string{
-		"platform":         platformScript,
-		"tenant":           tenantScript,
-		"platform cleanup": platformCatalogRemovalScript,
-		"tenant cleanup":   tenantCatalogRemovalScript,
+		"platform":                   platformScript,
+		"tenant":                     tenantScript,
+		"platform cleanup":           platformCatalogRemovalScript,
+		"platform tenant executor":   platformTenantExecutorBaselineScript,
+		"platform tenant completion": platformTenantExecutorCompletionScript,
+		"tenant cleanup":             tenantCatalogRemovalScript,
 	} {
 		if strings.Contains(script, "\\restrict") || strings.Contains(script, "\\unrestrict") {
 			t.Fatalf("%s baseline contains a psql meta command", name)
@@ -29,24 +31,47 @@ func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	}
 }
 
-func TestCombineBaselineResultsKeepsCleanupVersion(t *testing.T) {
-	const cleanupVersion = int64(20261102000000)
+func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 	applied := combineBaselineResults(
 		Result{Applied: true, Version: platformVersion},
-		Result{Applied: true, Version: cleanupVersion},
+		Result{Applied: true, Version: platformCatalogRemovalVersion},
+		Result{Applied: true, Version: platformTenantExecutorBaselineVersion},
+		Result{Applied: true, Version: platformTenantExecutorCompletionVersion},
 	)
-	if !applied.Applied || applied.Version != cleanupVersion ||
-		len(applied.AppliedVersions) != 2 ||
+	if !applied.Applied || applied.Version != platformTenantExecutorCompletionVersion ||
+		len(applied.AppliedVersions) != 4 ||
 		applied.AppliedVersions[0] != platformVersion ||
-		applied.AppliedVersions[1] != cleanupVersion {
+		applied.AppliedVersions[1] != platformCatalogRemovalVersion ||
+		applied.AppliedVersions[2] != platformTenantExecutorBaselineVersion ||
+		applied.AppliedVersions[3] != platformTenantExecutorCompletionVersion {
 		t.Fatalf("applied baseline result = %+v", applied)
 	}
 	repeated := combineBaselineResults(
 		Result{Version: platformVersion},
-		Result{Version: cleanupVersion},
+		Result{Version: platformCatalogRemovalVersion},
+		Result{Version: platformTenantExecutorBaselineVersion},
+		Result{Version: platformTenantExecutorCompletionVersion},
 	)
-	if repeated.Applied || repeated.Version != cleanupVersion || len(repeated.AppliedVersions) != 0 {
+	if repeated.Applied || repeated.Version != platformTenantExecutorCompletionVersion ||
+		len(repeated.AppliedVersions) != 0 {
 		t.Fatalf("repeated baseline result = %+v", repeated)
+	}
+}
+
+func TestPlatformMigrationSetIsOrderedAndIncludesReadinessCompatibility(t *testing.T) {
+	migrations := PlatformMigrations()
+	if len(migrations) != 4 ||
+		migrations[0].Version != platformVersion ||
+		migrations[1].Version != platformCatalogRemovalVersion ||
+		migrations[2].Version != platformTenantExecutorBaselineVersion ||
+		migrations[3].Version != platformTenantExecutorCompletionVersion ||
+		LatestPlatformVersion() != platformTenantExecutorCompletionVersion {
+		t.Fatalf("platform baseline migration set = %+v", migrations)
+	}
+	for _, migration := range migrations {
+		if migration.Path == "" || len(migration.SHA256) != 64 {
+			t.Fatalf("invalid platform migration metadata = %+v", migration)
+		}
 	}
 }
 

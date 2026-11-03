@@ -9,21 +9,42 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
+const (
+	databaseOwnerRole = "harpy_owner"
+	migratorLoginRole = "harpy_migrator"
+)
+
 func open(dsn, searchPath string) (*sql.DB, error) {
-	config, err := pgx.ParseConfig(dsn)
+	config, err := sessionConfig(dsn, searchPath)
 	if err != nil {
-		return nil, fmt.Errorf("parse baseline dsn: %w", err)
+		return nil, err
 	}
-	config.RuntimeParams["search_path"] = searchPath
 	database := stdlib.OpenDB(*config)
 	database.SetMaxOpenConns(1)
 	return database, nil
 }
 
-func ensureSchema(ctx context.Context, dsn, schema string) error {
+func sessionConfig(dsn, searchPath string) (*pgx.ConnConfig, error) {
 	config, err := pgx.ParseConfig(dsn)
 	if err != nil {
-		return fmt.Errorf("parse baseline dsn: %w", err)
+		return nil, fmt.Errorf("parse baseline dsn: %w", err)
+	}
+	if config.RuntimeParams == nil {
+		config.RuntimeParams = map[string]string{}
+	}
+	if searchPath != "" {
+		config.RuntimeParams["search_path"] = searchPath
+	}
+	if config.User == migratorLoginRole {
+		config.RuntimeParams["role"] = databaseOwnerRole
+	}
+	return config, nil
+}
+
+func ensureSchema(ctx context.Context, dsn, schema string) error {
+	config, err := sessionConfig(dsn, "")
+	if err != nil {
+		return err
 	}
 	conn, err := pgx.ConnectConfig(ctx, config)
 	if err != nil {

@@ -50,6 +50,9 @@ func preparePostgres(
 	if err != nil {
 		return liveDatabaseIdentity{}, err
 	}
+	if err := bindBaselineSeedIdentity(ctx, target, live); err != nil {
+		return liveDatabaseIdentity{}, err
+	}
 	live.environmentID, err = readExistingEnvironmentID(ctx, target, live)
 	if err != nil {
 		return liveDatabaseIdentity{}, err
@@ -60,7 +63,7 @@ func preparePostgres(
 	if err != nil {
 		return liveDatabaseIdentity{}, err
 	}
-	if err := verifyNewReleaseStage(ctx, target, contract, live.environmentID); err != nil {
+	if err := verifyNewReleaseStage(contract, live.environmentID); err != nil {
 		return liveDatabaseIdentity{}, err
 	}
 	if err := grantExistingRuntimeReadiness(ctx, target); err != nil {

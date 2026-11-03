@@ -12,6 +12,10 @@ func runStatus(cfg runtimeConfig) error {
 		if frontendReady(context.Background(), cfg.ReadyURL) {
 			return errors.New("unmanaged server is responding on port 5173")
 		}
+		if !cfg.CheckoutPresent {
+			fmt.Println("frontend-v3: sibling checkout is absent")
+			return nil
+		}
 		fmt.Println("frontend-v3: stopped")
 		return nil
 	}

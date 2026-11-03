@@ -28,11 +28,22 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 		"initialize",
 		"services",
 		"verify",
-		"frontend",
+		"frontend:if-present",
 		"status",
 	}
 	if !slices.Equal(actual, expected) {
 		t.Fatalf("local:up order = %v, want %v", actual, expected)
+	}
+}
+
+func TestLocalMigrateStopsAtBaselineVerify(t *testing.T) {
+	document := readContractText(t, "../../.taskfiles/local.yml")
+	block := taskBlock(t, document, "migrate", "installation:artifacts")
+	if strings.Contains(block, "migrationmanifest") {
+		t.Fatal("local migrate still invokes the historical migration manifest tool")
+	}
+	if !strings.Contains(block, "core-migrator deploy verify") {
+		t.Fatal("local migrate must verify the applied baseline")
 	}
 }
 
