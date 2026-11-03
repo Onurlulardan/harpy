@@ -212,3 +212,65 @@ Gerçek PostgreSQL üzerinde:
 ## 13. Tamamlanma şartı
 
 Goose, platform ve tenant schema DDL'inin tek otoritesidir. İlk schema sıfırdan yazılmış temiz migration source'larından kurulur. Goose native history dışında history/version/state yoktur. Eski migration sistemi Goose'a taşınmamış; tamamen silinmiştir. Runner yalnız resmi Goose implementation'ını çağırır.
+
+## 14. Mevcut Goose/baseline kodunun yeniden yazım sınırı
+
+Bugünkü `core/internal/platform/baseline/apply.go` resmi Goose Provider çağırıyor olsa bile yeni hedefin kabul edilebilir Goose implementation'ı değildir. Bu dosya özel `fstest.MapFS` snapshot seçimi, sabit legacy version listesi, ardışık Catalog-removal ve tenant-executor completion migration uygulaması içerir. `core/internal/platform/migrator/build_goose_provider.go` ve `build_tenant_goose_provider.go` da mevcut custom release/catalog/contract akışının parçasıdır. Bu mekanizma Goose kullanıyor diye korunamaz.
+
+Yeni implementation yalnız resmi Goose API'sini çağırır. Başlangıç SQL'i normal Goose native source dizinlerinde bulunur; dosya adları Goose tarafından keşfedilir. `ApplyPlatform`, `ApplyTenant`, `applyPlatformTenantExecutor*`, `combineBaselineResults`, `AppliedVersions`, `fstest.MapFS` tabanlı özel baseline sağlayıcısı veya bunların eşdeğeri yeni tasarımda bulunmaz.
+
+Mevcut dosyaların zorunlu disposition'ı:
+
+- `core/internal/platform/baseline/`: tüm eski özel baseline Go/test kodu kaldırılır; yeni minimal Goose çağrı sınırı gerekiyorsa yeni package'ta sıfırdan yazılır.
+- `core/internal/platform/baseline/sql/*.fresh.sql`: yeni source'a kopyalanmaz. Her birinin çıkardığı schema nesnesi disposition envanterine alınır.
+- `core/internal/platform/migrator/`: Goose dışında kalan planner/selector/release/catalog/checkpoint/evidence/runner/tenant executor kodları silinir.
+- `core/internal/platform/migration/`: custom migration document, release ve source abstraction'ları silinir.
+- `core/internal/platform/migratoroutput/`: custom plan/up/verify çıktı modelleri silinir.
+- `core/internal/platform/tenantmigrationexecutor/` ve `core/internal/platform/migrator/tenantmigrationexecutor/`: silinir; ayrı tenant process yoktur.
+- `core/internal/platform/schemacontract/` ve `core/internal/platform/binarycontract/`: migration/release contract bağımlılıkları kaldırılır. Uygulama runtime readiness'ine gereken non-DDL bağlantı kontrolleri ayrı olarak tanımlanır.
+
+### 14.1 Sekiz mevcut snapshot'ın tek tek ele alınması
+
+Önceki envanterde görülen dosyalar:
+
+| Snapshot | Disposition |
+| --- | --- |
+| `20261028000000_platform_baseline.fresh.sql` | Tarihsel platform schema envanteri; SQL gövdesi taşınmaz. |
+| `20261028000001_tenant_baseline.fresh.sql` | Tarihsel tenant schema envanteri; SQL gövdesi taşınmaz. |
+| `20261102000000_platform_catalog_removal_baseline.fresh.sql` | Catalog/migration framework cleanup; yeni DB'de tekrar üretilmez. |
+| `20261102000001_tenant_catalog_removal_baseline.fresh.sql` | Tenant Catalog cleanup; yeni DB'de tekrar üretilmez. |
+| `20261103000003_platform_tenant_executor_baseline.fresh.sql` | Tenant executor runtime rutinleri; yeni modele taşınmaz. |
+| `20261103000004_platform_tenant_executor_completion_baseline.fresh.sql` | Legacy checkpoint completion/reopen rutinleri; yeni modele taşınmaz. |
+| `20261103000005_platform_tenant_executor_claim_clock_baseline.fresh.sql` | Legacy tenant executor claim/clock düzeltmesi; yeni modele taşınmaz. |
+| `20261103000006_platform_tenant_executor_completion_contract_baseline.fresh.sql` | Legacy executor completion/onboarding state transition; yeni modele taşınmaz. |
+
+Bu listedeki bir SQL nesnesinin güncel bir application davranışını sağladığı görülürse yalnız o davranış ilgili domain owner altında, migration dışı bir modelle yeniden tasarlanır. Legacy function adı veya signature'ı korunarak yeni Goose'a kopyalanmaz.
+
+### 14.2 Eski stream ve snapshot'tan schema tasarımına geçiş
+
+`contracts/storage/migration-streams.yaml` ile include ettiği 14 owner JSON dosyası yalnız tarihsel kapsam kontrolüdür. Önceki sayımdaki 312 stream bir kabul kontrol toplamıdır. Her owner ve stream için üretilen DB nesneleri güncel Go SQL consumers, storage owner contracts ve API/domain behavior ile çapraz doğrulanır. Her nesne `KEEP_PRODUCT_SCHEMA`, `RECREATE_AS_NEW_GOOSE_DDL`, `REMOVE_LEGACY_STATE` veya `UNRESOLVED` olarak sınıflandırılır.
+
+Her `RECREATE_AS_NEW_GOOSE_DDL` satırında yeni dosya/satır, owner, consumer ve PostgreSQL integration test adı bulunur. Eski stream version, SQL gövdesi, supersession ilişkisi veya selected order yeni source'a taşınamaz. 14 owner'dan biri veya herhangi bir nesne `UNRESOLVED` kalırsa task başarısızdır.
+
+### 14.3 Goose immutability
+
+Yeni migration source için Git tabanlı bir immutability gate ekle:
+- PR'da değiştirilen/değiştirilmeye çalışılan mevcut migration dosyalarının path listesi çıkarılır.
+- Default/base branch'te zaten mevcut olan migration dosyasında içerik değişikliği CI'ı fail eder.
+- Yeni migration eklenmesine izin verilir.
+- Bu kontrol Goose native history'yi değiştirmez ve runtime custom digest/history tablosu üretmez.
+- İstisna/allowlist ile eski migration dosyasını değiştirmek mümkün kılınmaz; düzeltme yeni forward migration ile yapılır.
+
+## 15. Tenant provisioning ve dynamic form schema sınırı
+
+Aynı Goose runner hem platform hem tenant schema için çağrılır. Tenant provisioning işleminin queue consumer, executor, daemon, long-running service veya ayrı binary ihtiyacı yoktur. Provisioning domain akışı tenant metadata'sını yönetebilir; schema oluşturma Foundation ve Goose sınırındadır. Goose başarısızsa tenant active/ready işaretlenmez. Bu davranış custom migration checkpoint tablosuna bağlanmaz.
+
+Bugünkü `schema-executor` ve typed DDL IR, dynamic form/config publish sırasında runtime DDL uygular. Bu yol tamamen kaldırılır. Form/config publish sırasında yeni Goose dosyası üretilip uygulanamaz; runtime migration dosya sistemi veya Goose source'una yazamaz. Form metadata, record CRUD, validation, search/filter, indexing ve tenant isolation davranışlarının DDL'siz nihai data model karşılığı tanımlanır ve gerçek PostgreSQL integration testleriyle kanıtlanır. EAV/JSONB çözümü otomatik varsayılmaz; tasarım kararı ve performans/constraint testleri bu task'ın zorunlu blocker'ıdır.
+
+### 15.1 Tenant schema history
+
+Platform ve her tenant schema için Goose native version history'nin doğru schema'da oluştuğu test edilir. Goose API'sinin `search_path`/schema seçimi native ve açık şekilde yapılır. Tenant A ve Tenant B paralel çağrılarında history veya DDL'nin çapraz schema'ya yazılmadığı doğrulanır. Custom tenant version table veya tenant executor coordination state eklenmez.
+
+### 15.2 Tamamlanma
+
+Goose task'ı yalnız yeni normal SQL source'ları boş PostgreSQL'de Goose native discovery/execution ile çalışıyor, platform + iki tenant testleri geçiyor, runtime DDL path'i kaldırılmış, immutable migration gate çalışıyor ve tarihsel stream/snapshot disposition dosyaları `UNRESOLVED` içermiyorsa tamamlanır.
