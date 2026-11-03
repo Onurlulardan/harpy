@@ -94,19 +94,15 @@ Aynı credential'ın hem Goose hem API/worker tarafından kullanılması kabul e
 
 ## 6. Schema ve tenant namespace kuralları
 
-Platform ve tenant namespace'leri açıkça belirlenir. Schema isimleri canonical tenant identity kuralından üretilir; kullanıcı girdisi, URL slug'ı veya HTTP header doğrudan SQL identifier olarak kullanılmaz.
+Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
 
-Tenant schema oluşturma işlemi:
+API yalnız sabit trusted Job template'ini tenant ID ile tetikleyebilir. Image, command, service account, secret mount, volume ve network ayarları kullanıcı girdisiyle değiştirilemez; orchestrator policy/admission ile sabitlenir. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile yalnız hedef tenant migration source'unu çalıştırır.
 
-1. Tenant kimliğinin mevcut tenancy domain kuralıyla doğrulanması.
-2. Schema adının tek ve deterministik canonical mapping ile hesaplanması.
-3. Identifier'ın PostgreSQL limitleri ve karakter kurallarına uygun olduğunun doğrulanması.
-4. Schema'nın Foundation yetkisiyle oluşturulması.
-5. Ownership ve default privilege kurallarının atanması.
-6. Goose'un aynı native runner ile doğru schema/search_path hedeflenerek çağrılması.
-7. Goose başarılı olmadan tenant'ın aktif edilmemesi.
+DDL credential kısa ömürlü secret injection ile yalnız Job'a verilir. API/worker credential'ı okuyamaz veya DDL yapamaz. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir; platform ve diğer tenant schema'larına erişemediği PostgreSQL negative testleriyle kanıtlanır. Cluster-wide superuser/CREATEDB/CREATEROLE verilmez.
 
-Tenant provisioning için ayrı migration engine, tenant executor, migrator process, worker veya özel history kaydı oluşturulmaz. Foundation yalnız namespace ve privilege işini yapar; tenant tablolarını Goose kurar.
+Tenant domain kaydı işlem başında PROVISIONING, Job/Goose başarısında ACTIVE olur; hata durumunda aktif edilmez. Bu gerçek tenancy lifecycle state'idir, migration attempt/checkpoint/receipt değildir. Retry/concurrency custom migration state'i olmadan PostgreSQL/orchestrator native davranışıyla yönetilir. Orchestrator bu izolasyonu sağlayamıyorsa API'ye DDL yetkisi verilerek fallback yapılmaz; provisioning fail closed olur.
+
+Foundation namespace/ownership/default privilege işlemini yapar; Goose tenant tablolarını kurar. API/worker DDL credential taşımaz.
 
 ## 7. Extension yönetimi
 
@@ -187,7 +183,7 @@ Bu allowlist'in dışında tablo, view, function, procedure, trigger, type, sequ
 
 ### 11.2 Secret ve yetki sınırı
 
-Eski `migrator.env`, `schema-executor.env`, `tenant-migration-executor.env` ve local-release database secret üretimleri yeni Foundation credential modeline alias edilmez. Yeni ayrıcalıklı credential yalnız initialize process'ine verilir; API/worker environment, mounted secret volume veya artifact setinde bulunmadığı negatif testle gösterilir. Log ve hata mesajlarında DSN/password/token/private key redaction testleri bulunur.
+Eski `migrator.env`, `schema-executor.env`, `tenant-migration-executor.env` ve local-release database secret üretimleri yeni Foundation credential modeline alias edilmez. Yeni ayrıcalıklı credential yalnız initialize process'ine verilir; API/worker environment, mounted secret volume veya artifact setinde bulunmadığı negatif testle gösterilir. Tenant-scoped DDL secret yalnız orchestrator/secret manager üzerinden one-shot provisioning Job'a verilir. Log ve hata mesajlarında DSN/password/token/private key redaction testleri bulunur.
 
 ### 11.3 Tamamlanma
 
