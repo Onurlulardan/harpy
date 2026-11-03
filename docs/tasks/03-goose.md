@@ -134,18 +134,22 @@ Platform migration'larının dışında ayrıca schema bootstrap SQL'i çalışt
 
 Otomatik tenant provisioning aşağıdaki kesin mimariyle yapılır. Bu, beşinci bir lifecycle aşaması veya sürekli çalışan executor değildir.
 
-1. Harpy API tenant oluşturma isteğini alır. Tenant kaydını `PROVISIONING` durumuna getirir. API DDL yetkisi taşımaz.
-2. API, güvenilir bir mekanizma üzerinden kısa ömürlü Tenant Provisioning Job başlatma isteği gönderir. Job image, command, service account, secret mount ve network ayarları kullanıcı girdisiyle değiştirilemez; sabit template'dir.
-3. One-shot Tenant Provisioning Job aynı Harpy release image'ını ve aynı binary'yi kullanır. Aynı Goose Runner implementation'ını çağırır. Ayrı migrator binary veya ikinci Goose implementation yazılmaz.
-4. Job, tenant ID'den güvenilir biçimde üretilen canonical schema adıyla hedef tenant schema'sını oluşturur (Foundation namespace/ownership/privilege kuralları içinde). Kullanıcı girdisi schema adını belirlemez.
-5. Job, aynı Goose Runner ile yalnız o tenant'ın migration source'unu çalıştırır. Goose native history ilgili tenant schema içinde oluşur.
-6. Migration başarılıysa tenant `ACTIVE` durumuna geçer ve kullanıma açılır. Başarısızsa `ACTIVE` olmaz ve hata gerçek sebebiyle raporlanır.
-7. Job işlem bitince kapanır. Sürekli çalışan tenant migration executor, daemon, worker veya migration-specific queue yoktur.
-8. Migration credential'ı API veya worker'a verilmez. Yalnız Job tarafından güvenilir secret mekanizmasından alınır ve işlem sonrası erişilemez.
-9. Aynı tenant için eşzamanlı provisioning PostgreSQL advisory lock veya eşdeğer native mekanizma ile engellenir. Custom migration state, catalog, checkpoint veya receipt oluşturulmaz.
-10. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir. Platform ve diğer tenant schema'larına erişemediği negative testlerle kanıtlanır.
+**Çalıştırma mekanizması:** `docker compose run --rm` ile başlatılan kısa ömürlü one-shot container. Kubernetes Job kullanılmaz. Mevcut `task dev` / `local:up` zinciri de aynı Compose one-shot modelini kullanır.
 
-One-shot Job yeni lifecycle aşaması değildir. INITIALIZE platformun ilk kurulumunu yapar; Job sonradan açılan tenant için aynı Foundation ve Goose kod yolunu çağırır.
+1. Harpy API tenant oluşturma isteğini alır. Tenant kaydını `PROVISIONING` durumuna getirir. API DDL yetkisi taşımaz.
+2. API (veya onun adına çalışan thin launcher), `ops/local/compose.runtime.yml` (veya eşdeğer Compose dosyası) içinde sabitlenmiş `tenant-provisioning` service tanımı üzerinden `docker compose run --rm` ile container’ı başlatır. Image, entrypoint, command, network ve volume’lar kullanıcı girdisiyle değiştirilemez.
+3. One-shot container aynı Harpy image’ını ve aynı binary’yi kullanır. Aynı Goose Runner implementation’ını çağırır. Ayrı migrator binary veya ikinci Goose implementation yazılmaz.
+4. Container, tenant ID’den üretilen canonical schema adıyla hedef tenant schema’sını oluşturur. Önerilen format: `tenant_` + UUID (hyphen’sız, lowercase). Uzunluk ve PostgreSQL identifier güvenliği doğrulanır. Kullanıcı girdisi schema adını belirlemez.
+5. Container, aynı Goose Runner ile yalnız o tenant’ın migration source’unu çalıştırır. Goose native history ilgili tenant schema içinde oluşur.
+6. Migration başarılıysa tenant `ACTIVE` durumuna geçer. Başarısızsa `ACTIVE` olmaz ve hata gerçek sebebiyle raporlanır.
+7. Container işlem bitince kapanır (`--rm`). Sürekli çalışan tenant migration executor, daemon, worker veya migration-specific queue yoktur.
+8. Migration credential’ı API veya worker environment’ına verilmez. Yalnız one-shot container’a `secret-projector` tarafından üretilen Docker volume + `env_file` (ör. `./state/secrets/tenant-provisioning.env`) üzerinden verilir. İşlem sonrası credential container’da kalmaz.
+9. Aynı tenant için eşzamanlı provisioning PostgreSQL advisory lock ile engellenir. Custom migration state, catalog, checkpoint veya receipt oluşturulmaz.
+10. Tenant container credential’ı yalnız hedef tenant schema’sında DDL yapabilir. Platform ve diğer tenant schema’larına erişemediği negative testlerle kanıtlanır.
+
+One-shot container yeni lifecycle aşaması değildir. INITIALIZE platformun ilk kurulumunu yapar; sonradan açılan tenant için aynı Foundation ve Goose kod yolunu çağırır.
+
+**Job template konumu:** `ops/local/compose.runtime.yml` içinde `tenant-provisioning` adıyla tanımlı one-shot service. `restart: "no"`, entrypoint sabit, `env_file` ve secret volume mount’ları sabit. `task dev` ve runtime tenant oluşturma bu service’i `docker compose run --rm` ile çağırır.
 
 ## 9. Goose transaction ve eşzamanlılık
 

@@ -45,7 +45,7 @@ Eski uygulama verisinin taşınması bu task setinin kapsamı değildir. Yeni da
 | Platform migration | Goose |
 | Tenant migration | Aynı Goose Runner |
 | Tenant provisioning | Otomatik |
-| Privileged execution | Kısa ömürlü one-shot Tenant Provisioning Job (aynı Harpy binary) |
+| Privileged execution | `docker compose run --rm` ile başlatılan kısa ömürlü one-shot Tenant Provisioning container (aynı Harpy binary + Goose Runner). Kubernetes Job yok. Credential: secret-projector + env_file. |
 | Sürekli çalışan migration executor | Yasak |
 | API / Worker DDL | Yasak |
 | Dynamic form sistemi | Harpy kapsamı dışında; schema-executor ve typed DDL IR tamamen kaldırılır |
