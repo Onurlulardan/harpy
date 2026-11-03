@@ -36,6 +36,17 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 	}
 }
 
+func TestLocalMigrateStopsAtBaselineVerify(t *testing.T) {
+	document := readContractText(t, "../../.taskfiles/local.yml")
+	block := taskBlock(t, document, "migrate", "installation:artifacts")
+	if strings.Contains(block, "migrationmanifest") {
+		t.Fatal("local migrate still invokes the historical migration manifest tool")
+	}
+	if !strings.Contains(block, "core-migrator deploy verify") {
+		t.Fatal("local migrate must verify the applied baseline")
+	}
+}
+
 func TestLocalInfraReloadsClamAVAfterSignatureUpdate(t *testing.T) {
 	document := readContractText(t, "../../.taskfiles/local.yml")
 	block := taskBlock(t, document, "infra", "bootstrap")

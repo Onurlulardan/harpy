@@ -105,7 +105,6 @@ tasks:
         {{.COMPOSE}} run --rm local-release grant-runtime
         -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
       - "{{.COMPOSE}} run --rm core-migrator deploy verify"
-      - go run ./tools/migrationmanifest -mark-applied
   installation:artifacts:
     desc: Reconcile the immutable local manifest and signed development license
     cmds:
