@@ -7,13 +7,14 @@ import (
 
 func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	for name, script := range map[string]string{
-		"platform":                    platformScript,
-		"tenant":                      tenantScript,
-		"platform cleanup":            platformCatalogRemovalScript,
-		"platform tenant executor":    platformTenantExecutorBaselineScript,
-		"platform tenant completion":  platformTenantExecutorCompletionScript,
-		"platform tenant claim clock": platformTenantExecutorClaimClockScript,
-		"tenant cleanup":              tenantCatalogRemovalScript,
+		"platform":                            platformScript,
+		"tenant":                              tenantScript,
+		"platform cleanup":                    platformCatalogRemovalScript,
+		"platform tenant executor":            platformTenantExecutorBaselineScript,
+		"platform tenant completion":          platformTenantExecutorCompletionScript,
+		"platform tenant claim clock":         platformTenantExecutorClaimClockScript,
+		"platform tenant completion contract": platformTenantExecutorCompletionContractScript,
+		"tenant cleanup":                      tenantCatalogRemovalScript,
 	} {
 		if strings.Contains(script, "\\restrict") || strings.Contains(script, "\\unrestrict") {
 			t.Fatalf("%s baseline contains a psql meta command", name)
@@ -39,14 +40,16 @@ func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 		Result{Applied: true, Version: platformTenantExecutorBaselineVersion},
 		Result{Applied: true, Version: platformTenantExecutorCompletionVersion},
 		Result{Applied: true, Version: platformTenantExecutorClaimClockVersion},
+		Result{Applied: true, Version: platformTenantExecutorCompletionContractVersion},
 	)
-	if !applied.Applied || applied.Version != platformTenantExecutorClaimClockVersion ||
-		len(applied.AppliedVersions) != 5 ||
+	if !applied.Applied || applied.Version != platformTenantExecutorCompletionContractVersion ||
+		len(applied.AppliedVersions) != 6 ||
 		applied.AppliedVersions[0] != platformVersion ||
 		applied.AppliedVersions[1] != platformCatalogRemovalVersion ||
 		applied.AppliedVersions[2] != platformTenantExecutorBaselineVersion ||
 		applied.AppliedVersions[3] != platformTenantExecutorCompletionVersion ||
-		applied.AppliedVersions[4] != platformTenantExecutorClaimClockVersion {
+		applied.AppliedVersions[4] != platformTenantExecutorClaimClockVersion ||
+		applied.AppliedVersions[5] != platformTenantExecutorCompletionContractVersion {
 		t.Fatalf("applied baseline result = %+v", applied)
 	}
 	repeated := combineBaselineResults(
@@ -55,8 +58,9 @@ func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 		Result{Version: platformTenantExecutorBaselineVersion},
 		Result{Version: platformTenantExecutorCompletionVersion},
 		Result{Version: platformTenantExecutorClaimClockVersion},
+		Result{Version: platformTenantExecutorCompletionContractVersion},
 	)
-	if repeated.Applied || repeated.Version != platformTenantExecutorClaimClockVersion ||
+	if repeated.Applied || repeated.Version != platformTenantExecutorCompletionContractVersion ||
 		len(repeated.AppliedVersions) != 0 {
 		t.Fatalf("repeated baseline result = %+v", repeated)
 	}
@@ -64,13 +68,14 @@ func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 
 func TestPlatformMigrationSetIsOrderedAndIncludesReadinessCompatibility(t *testing.T) {
 	migrations := PlatformMigrations()
-	if len(migrations) != 5 ||
+	if len(migrations) != 6 ||
 		migrations[0].Version != platformVersion ||
 		migrations[1].Version != platformCatalogRemovalVersion ||
 		migrations[2].Version != platformTenantExecutorBaselineVersion ||
 		migrations[3].Version != platformTenantExecutorCompletionVersion ||
 		migrations[4].Version != platformTenantExecutorClaimClockVersion ||
-		LatestPlatformVersion() != platformTenantExecutorClaimClockVersion {
+		migrations[5].Version != platformTenantExecutorCompletionContractVersion ||
+		LatestPlatformVersion() != platformTenantExecutorCompletionContractVersion {
 		t.Fatalf("platform baseline migration set = %+v", migrations)
 	}
 	for _, migration := range migrations {

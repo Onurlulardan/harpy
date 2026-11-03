@@ -11,10 +11,13 @@ import (
 )
 
 type failureResult struct {
-	Success  bool   `json:"success"`
-	Stage    string `json:"stage"`
-	ExitCode int    `json:"exit_code"`
-	Cause    string `json:"cause,omitempty"`
+	Success   bool   `json:"success"`
+	Stage     string `json:"stage"`
+	ExitCode  int    `json:"exit_code"`
+	Cause     string `json:"cause,omitempty"`
+	ErrorCode string `json:"error_code,omitempty"`
+	Detail    string `json:"detail,omitempty"`
+	SQLState  string `json:"sqlstate,omitempty"`
 }
 
 func writeFailure(writer io.Writer, stage string, code processcode.Code) {
@@ -22,14 +25,36 @@ func writeFailure(writer io.Writer, stage string, code processcode.Code) {
 }
 
 func writeFailureCause(writer io.Writer, stage string, code processcode.Code, cause string) {
+	writeFailureRecord(writer, failureResult{
+		Success: false, Stage: stage, ExitCode: code.Int(), Cause: cause,
+	})
+}
+
+func writeInitializeFailure(
+	writer io.Writer, stage string, code processcode.Code, err error,
+) {
+	if err == nil {
+		return
+	}
+	record := failureResult{
+		Success: false, Stage: stage, ExitCode: code.Int(), Cause: err.Error(),
+	}
+	if diagnostic := environmentoperator.Diagnose(err); diagnostic.Stage != "" {
+		record.Stage = diagnostic.Stage
+		record.ErrorCode = diagnostic.ErrorCode
+		record.Detail = diagnostic.Detail
+		record.SQLState = diagnostic.SQLState
+	}
+	writeFailureRecord(writer, record)
+}
+
+func writeFailureRecord(writer io.Writer, record failureResult) {
 	if writer == nil {
 		return
 	}
 	encoder := json.NewEncoder(writer)
 	encoder.SetEscapeHTML(false)
-	_ = encoder.Encode(failureResult{
-		Success: false, Stage: stage, ExitCode: code.Int(), Cause: cause,
-	})
+	_ = encoder.Encode(record)
 }
 
 func writeSuccess(

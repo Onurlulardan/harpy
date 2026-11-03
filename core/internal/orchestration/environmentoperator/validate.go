@@ -1,9 +1,6 @@
 package environmentoperator
 
-import (
-	"errors"
-	"fmt"
-)
+import "errors"
 
 func recoverysigningZero() RecoverySigningResult {
 	return RecoverySigningResult{}
@@ -13,7 +10,7 @@ func (result RecoverySigningResult) IsValid() bool {
 	return result.Generation == 1 && len(result.TrustBundleSHA256) == 64
 }
 
-func classifyDependency(err error) error {
+func classifyDependency(stage string, err error) error {
 	switch {
 	case err == nil:
 		return nil
@@ -26,7 +23,7 @@ func classifyDependency(err error) error {
 	case errors.Is(err, ErrFailed):
 		return ErrFailed
 	default:
-		return fmt.Errorf("%w: %w", ErrResumable, err)
+		return Resumable(stage, "dependency_failed", "", err)
 	}
 }
 

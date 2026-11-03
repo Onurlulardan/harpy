@@ -30,7 +30,9 @@ func (coordinator *Coordinator) Initialize(
 		if errors.Is(err, tenantapi.ErrDeploymentPolicyConflict) {
 			return InitializeResult{}, ErrFenced
 		}
-		return InitializeResult{}, ErrResumable
+		return InitializeResult{}, Resumable(
+			"deployment_policy.create", "deployment_policy_failed", "", err,
+		)
 	}
 	recovery := recoveryPin(request)
 	prepared, err := coordinator.preparePlan(
@@ -44,7 +46,9 @@ func (coordinator *Coordinator) Initialize(
 		if errors.Is(err, tenantapi.ErrOnboardingConflict) {
 			return InitializeResult{}, ErrFenced
 		}
-		return InitializeResult{}, ErrResumable
+		return InitializeResult{}, Resumable(
+			"onboarding.accept", "onboarding_accept_failed", "", err,
+		)
 	}
 	result := InitializeResult{OperationID: operationID,
 		TenantID:    uuid.UUID(prepared.plan.TenantID()),

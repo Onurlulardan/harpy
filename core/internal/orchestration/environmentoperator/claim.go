@@ -19,7 +19,7 @@ func (coordinator *Coordinator) claim(
 ) (leaseClaim, error) {
 	secret := make([]byte, 32)
 	if _, err := io.ReadFull(coordinator.entropy, secret); err != nil {
-		return leaseClaim{}, ErrResumable
+		return leaseClaim{}, Resumable("onboarding.claim_entropy", "claim_entropy_failed", "", err)
 	}
 	digest := sha256.Sum256(secret)
 	claim := leaseClaim{attemptID: attemptID(manifest, revision),
@@ -48,11 +48,14 @@ func (coordinator *Coordinator) acquire(
 		ExpectedRevision: revision, LeaseDuration: maximumLease,
 	})
 	if err != nil {
-		if errors.Is(err, tenantapi.ErrOnboardingLeaseHeld) ||
-			errors.Is(err, tenantapi.ErrOnboardingConflict) {
-			return leaseClaim{}, ErrResumable
+		code := "claim_failed"
+		if errors.Is(err, tenantapi.ErrOnboardingLeaseHeld) {
+			code = "claim_lease_held"
 		}
-		return leaseClaim{}, ErrResumable
+		if errors.Is(err, tenantapi.ErrOnboardingConflict) {
+			code = "claim_conflict"
+		}
+		return leaseClaim{}, Resumable("onboarding.claim", code, "", err)
 	}
 	if lease.OperationID() != operationID || lease.AttemptID() != claim.attemptID {
 		return leaseClaim{}, ErrFenced

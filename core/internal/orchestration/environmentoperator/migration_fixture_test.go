@@ -10,16 +10,18 @@ import (
 )
 
 type migrationFixture struct {
-	onboarding   *onboardingFixture
-	states       []string
-	index        int
-	ready        bool
-	readyAfter   int
-	readyCalls   int
-	enqueues     int
-	gets         int
-	createdAt    time.Time
-	databaseStep time.Duration
+	onboarding         *onboardingFixture
+	states             []string
+	index              int
+	ready              bool
+	readyAfter         int
+	readyCalls         int
+	enqueues           int
+	gets               int
+	preserveOnboarding bool
+	enqueueErr         error
+	createdAt          time.Time
+	databaseStep       time.Duration
 }
 
 func (fixture *migrationFixture) CurrentReady(context.Context) (
@@ -44,6 +46,9 @@ func (fixture *migrationFixture) Enqueue(_ context.Context,
 	operationID uuid.UUID,
 ) (tenantapi.TenantMigrationJob, error) {
 	fixture.enqueues++
+	if fixture.enqueueErr != nil {
+		return tenantapi.TenantMigrationJob{}, fixture.enqueueErr
+	}
 	return fixture.job(operationID, "pending", fixture.createdAt), nil
 }
 
@@ -58,7 +63,7 @@ func (fixture *migrationFixture) Get(_ context.Context,
 			fixture.index++
 		}
 	}
-	if state == "succeeded" &&
+	if state == "succeeded" && !fixture.preserveOnboarding &&
 		fixture.onboarding.state == tenantapi.OnboardingMigrating {
 		fixture.onboarding.state = migrationNextState(
 			fixture.onboarding.plan.DeploymentMode(),

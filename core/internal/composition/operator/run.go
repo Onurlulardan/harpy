@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/Onurlulardan/harpy/core/internal/orchestration/environmentoperator"
 	"github.com/Onurlulardan/harpy/core/internal/platform/envfile"
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
@@ -58,7 +59,12 @@ func run(
 	result, stage, err := initializeEnvironment(ctx)
 	if err != nil {
 		code := classifyStartupError(stage, err)
-		writeFailureCause(stderr, stage, code, err.Error())
+		if stage == "initialize" {
+			if observed := environmentoperator.ObservedStage(err); observed != "" {
+				stage = observed
+			}
+		}
+		writeInitializeFailure(stderr, stage, code, err)
 		return code
 	}
 	if !result.IsValid() || writeSuccess(stdout, result) != nil {

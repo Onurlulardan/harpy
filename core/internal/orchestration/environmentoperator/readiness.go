@@ -20,7 +20,7 @@ func (coordinator *Coordinator) waitClaimReady(
 	for {
 		ready, found, err := coordinator.migration.CurrentReady(ctx)
 		if err != nil {
-			return ErrResumable
+			return Resumable("tenant_migration.claim_ready", "claim_ready_failed", "", err)
 		}
 		if found {
 			if !ready.IsValid() ||
@@ -35,7 +35,7 @@ func (coordinator *Coordinator) waitClaimReady(
 		}
 		wait := min(coordinator.poll, remaining)
 		if err := coordinator.sleep(ctx, wait); err != nil {
-			return ErrResumable
+			return Resumable("tenant_migration.claim_ready_wait", "claim_ready_wait_interrupted", "", err)
 		}
 		remaining -= wait
 	}
