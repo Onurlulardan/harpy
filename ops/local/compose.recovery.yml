@@ -77,7 +77,7 @@ services:
     <<: *logging
     image: harpy/backend-v2-local:dev
     restart: unless-stopped
-    entrypoint: ["/app/core-migrator", "database-backup-executor"]
+    entrypoint: ["/app/core-recovery", "database-backup-executor"]
     env_file: ./state/secrets/database-backup-executor.env
     volumes:
       - local-secret-recovery-backup:/run/secrets:ro
@@ -102,7 +102,7 @@ services:
   database-restore:
     image: harpy/backend-v2-local:dev
     restart: "no"
-    entrypoint: ["/app/core-migrator", "database-restore"]
+    entrypoint: ["/app/core-recovery", "database-restore"]
     env_file: ./state/secrets/database-restore.env
     volumes:
       - local-secret-recovery-restore:/run/secrets:ro
@@ -121,7 +121,7 @@ services:
   database-rehydrate:
     image: harpy/backend-v2-local:dev
     restart: "no"
-    entrypoint: ["/app/core-migrator", "database-restore"]
+    entrypoint: ["/app/core-recovery", "database-restore"]
     env_file: ./state/secrets/database-rehydrate.env
     volumes:
       - local-secret-recovery-restore:/run/secrets:ro

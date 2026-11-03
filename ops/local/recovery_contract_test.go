@@ -15,8 +15,8 @@ func TestRecoveryComposeKeepsStorageAndCredentialsIsolated(t *testing.T) {
 		"- local-secret-recovery-restore:/run/secrets:ro",
 		"- local-secret-recovery-operator:/run/secrets:ro",
 		"- local-restore-state:/run/restore-state",
-		"entrypoint: [\"/app/core-migrator\", \"database-backup-executor\"]",
-		"entrypoint: [\"/app/core-migrator\", \"database-restore\"]",
+		"entrypoint: [\"/app/core-recovery\", \"database-backup-executor\"]",
+		"entrypoint: [\"/app/core-recovery\", \"database-restore\"]",
 	}
 	for _, value := range required {
 		if !strings.Contains(compose, value) {
