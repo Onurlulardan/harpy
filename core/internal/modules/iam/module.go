@@ -1,30 +1,11 @@
 package iam
 
 import (
-	adoptionpostgres "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/adoption"
 	profilepostgres "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/profile"
-	v1authoritypostgres "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres/v1authority"
 	adoptionapp "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/adoption"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/identifier"
 	profileapp "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profile"
-	platformcutover "github.com/Onurlulardan/harpy/core/internal/platform/cutover"
 )
-
-func V1ProtectedAuthorityAdoptionContract() (platformcutover.ApplyContract, error) {
-	descriptor, err := v1authoritypostgres.NewCutoverContract()
-	if err != nil {
-		return platformcutover.ApplyContract{}, err
-	}
-	return platformcutover.NewApplyContract(descriptor.ID(), descriptor.Query())
-}
-
-func CutoverApplyContract() (platformcutover.ApplyContract, error) {
-	descriptor, err := adoptionpostgres.NewCutoverContract()
-	if err != nil {
-		return platformcutover.ApplyContract{}, err
-	}
-	return platformcutover.NewApplyContract(descriptor.ID(), descriptor.Query())
-}
 
 type V1AdoptionCompiler = adoptionapp.Compiler
 type V1AdoptionMapping = adoptionapp.Mapping

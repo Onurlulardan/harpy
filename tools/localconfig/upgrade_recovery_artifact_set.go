@@ -41,9 +41,6 @@ func upgradeRecoveryArtifactSet(
 	if err := refreshAuthorityProfileEnvironments(set); err != nil {
 		return ensureResult{}, false, err
 	}
-	if err := addTenantMigrationExecutorEnvironment(set); err != nil {
-		return ensureResult{}, false, err
-	}
 	manifest, err := buildSetManifest(set, now)
 	if err != nil {
 		return ensureResult{}, false, err

@@ -16,9 +16,6 @@ func (coordinator *Coordinator) continueOperation(
 	var claim leaseClaim
 	var err error
 	if state == tenantapi.OnboardingAccepted || state == tenantapi.OnboardingMigrating {
-		if err = coordinator.waitClaimReady(ctx, request); err != nil {
-			return err
-		}
 		claim, err = coordinator.claim(ctx, request.Manifest, prepared.plan.OperationID(), revision)
 		if err != nil {
 			return err

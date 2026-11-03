@@ -1,6 +1,6 @@
 ---
 name: platform-runtime
-description: Build backend-v2 composition, HTTP runtime, configuration, telemetry, tenant transaction, database roles, migration runtime, and health surfaces. Use for core-api, core-worker, core-migrator, platform packages, bootstrap, or deployment wiring.
+description: Build backend-v2 composition, HTTP runtime, configuration, telemetry, tenant transaction, database roles, and health surfaces. Use for core-api, core-worker, core-initialize, core-recovery, platform packages, or deployment wiring.
 ---
 
 # Platform Runtime

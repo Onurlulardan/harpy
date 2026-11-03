@@ -47,7 +47,6 @@ var baseArtifactNames = []string{
 	"local-ca.key",
 	"mailpit-server.crt",
 	"mailpit-server.key",
-	"migrator.env",
 	"minio.env",
 	"minio-root-access-key.txt",
 	"minio-root-secret-key.txt",
@@ -80,10 +79,8 @@ var baseArtifactNames = []string{
 	"rest-query-cursor-keyring.json",
 	"s3-access-key-id.txt",
 	"s3-secret-access-key.txt",
-	"schema-executor.env",
 	"smtp-auth.txt",
 	"smtp-password.txt",
-	"tenant-migration-executor.env",
 	"tenant-provisioning.env",
 	"worker.env",
 }

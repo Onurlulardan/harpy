@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	tenancymodule "github.com/Onurlulardan/harpy/core/internal/modules/tenancy"
 )
@@ -91,6 +92,28 @@ func verifiedDeploymentRuntime(
 		t.Fatalf("verify deployment runtime = %v, %v", runtime, err)
 	}
 	return runtime
+}
+
+func billingPolicyFixture(
+	t *testing.T,
+	mode tenancymodule.DeploymentMode,
+) tenancymodule.DeploymentPolicy {
+	t.Helper()
+	var maximum *int64
+	if mode == tenancymodule.DeploymentModeOnPremise {
+		zero := int64(0)
+		maximum = &zero
+	}
+	policy, err := tenancymodule.NewDeploymentPolicy(
+		"10000000-0000-4000-8000-000000000001",
+		mode,
+		maximum,
+		time.Date(2026, 7, 22, 10, 0, 0, 0, time.UTC),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return policy
 }
 
 func primaryTargetFixture(
