@@ -9,14 +9,13 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
-const databaseOwnerRole = "harpy_owner"
+const (
+	databaseOwnerRole = "harpy_owner"
+	migratorLoginRole = "harpy_migrator"
+)
 
 func open(dsn, searchPath string) (*sql.DB, error) {
-	return openSession(dsn, searchPath, false)
-}
-
-func openSession(dsn, searchPath string, assumeOwner bool) (*sql.DB, error) {
-	config, err := sessionConfig(dsn, searchPath, assumeOwner)
+	config, err := sessionConfig(dsn, searchPath)
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +24,7 @@ func openSession(dsn, searchPath string, assumeOwner bool) (*sql.DB, error) {
 	return database, nil
 }
 
-func sessionConfig(dsn, searchPath string, assumeOwner bool) (*pgx.ConnConfig, error) {
+func sessionConfig(dsn, searchPath string) (*pgx.ConnConfig, error) {
 	config, err := pgx.ParseConfig(dsn)
 	if err != nil {
 		return nil, fmt.Errorf("parse baseline dsn: %w", err)
@@ -36,22 +35,14 @@ func sessionConfig(dsn, searchPath string, assumeOwner bool) (*pgx.ConnConfig, e
 	if searchPath != "" {
 		config.RuntimeParams["search_path"] = searchPath
 	}
-	if assumeOwner {
+	if config.User == migratorLoginRole {
 		config.RuntimeParams["role"] = databaseOwnerRole
 	}
 	return config, nil
 }
 
 func ensureSchema(ctx context.Context, dsn, schema string) error {
-	return ensureSchemaSession(ctx, dsn, schema, false)
-}
-
-func ensureOwnerSchema(ctx context.Context, dsn, schema string) error {
-	return ensureSchemaSession(ctx, dsn, schema, true)
-}
-
-func ensureSchemaSession(ctx context.Context, dsn, schema string, assumeOwner bool) error {
-	config, err := sessionConfig(dsn, "", assumeOwner)
+	config, err := sessionConfig(dsn, "")
 	if err != nil {
 		return err
 	}

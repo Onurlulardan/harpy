@@ -42,14 +42,14 @@ type Result struct {
 }
 
 func ApplyPlatform(ctx context.Context, dsn string) (Result, error) {
-	if err := ensureOwnerSchema(ctx, dsn, "platform"); err != nil {
+	if err := ensureSchema(ctx, dsn, "platform"); err != nil {
 		return Result{}, err
 	}
-	result, err := applyOwner(ctx, dsn, "platform, pg_catalog", platformFile, platformScript)
+	result, err := apply(ctx, dsn, "platform, pg_catalog", platformFile, platformScript)
 	if err != nil {
 		return Result{}, err
 	}
-	cleanup, err := applyOwner(
+	cleanup, err := apply(
 		ctx, dsn, "platform, pg_catalog",
 		platformCatalogRemovalFile, platformCatalogRemovalScript,
 	)
@@ -107,17 +107,7 @@ func ApplyTenant(ctx context.Context, dsn, schema string) (Result, error) {
 }
 
 func apply(ctx context.Context, dsn, searchPath, name, script string) (Result, error) {
-	return applySession(ctx, dsn, searchPath, name, script, false)
-}
-
-func applyOwner(ctx context.Context, dsn, searchPath, name, script string) (Result, error) {
-	return applySession(ctx, dsn, searchPath, name, script, true)
-}
-
-func applySession(
-	ctx context.Context, dsn, searchPath, name, script string, assumeOwner bool,
-) (Result, error) {
-	database, err := openSession(dsn, searchPath, assumeOwner)
+	database, err := open(dsn, searchPath)
 	if err != nil {
 		return Result{}, err
 	}

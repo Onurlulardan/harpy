@@ -10,7 +10,7 @@ import (
 )
 
 func Inspect(ctx context.Context, dsn string) (bool, error) {
-	config, err := sessionConfig(dsn, "", true)
+	config, err := sessionConfig(dsn, "")
 	if err != nil {
 		return false, err
 	}
