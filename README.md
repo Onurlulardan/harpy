@@ -442,6 +442,7 @@ docs/
 | `go run ./tools/fileguard` | Dosya organizasyonu ve generated file provenance kurallarını denetler |
 | `go run ./tools/archguard` | Package dependency ve mimari sınırları denetler |
 | `task check` | Fileguard ve archguard kontrollerini çalıştırır |
+| `task upgrade:go VERSION=<x.y.z>` | Go toolchain, CI, image ve runtime sözleşme kilidini verilen patch sürüme alır |
 | `task dev` | Tam local development stack'i başlatır |
 | `task stop` | Local stack'i verileri koruyarak durdurur |
 | `task local:status` | Backend container ve frontend sağlık durumunu gösterir |
