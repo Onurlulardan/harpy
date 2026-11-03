@@ -45,7 +45,7 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		51019, 2, binary,
+		51019, 3, binary,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -70,8 +70,20 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"fresh", "1", "018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		1, 1, binary,
+		1, 2, binary,
 	); err == nil {
 		t.Fatal("partial goose history was treated as a complete baseline")
+	}
+
+	nextGeneration := binary
+	nextGeneration.RuntimeGeneration = 2
+	if _, err := assembleBaselineFoundation(
+		"fresh", "7703580167595228103",
+		"018f0000-0000-7000-8000-000000000102",
+		"018f0000-0000-7000-8000-000000000101",
+		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
+		51019, 3, nextGeneration,
+	); err == nil {
+		t.Fatal("baseline evidence accepted a newer runtime generation")
 	}
 }

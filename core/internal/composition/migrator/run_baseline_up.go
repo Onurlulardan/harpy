@@ -42,24 +42,28 @@ func runBaselinePlan(
 		reportFailureCause(stderr, nil, "configuration", "plan", err)
 		return processcode.InvalidStartup
 	}
-	applied, err := baseline.Inspect(ctx, settings.Runtime().Postgres().DSN().Value())
+	appliedVersions, err := baseline.AppliedPlatformVersions(
+		ctx, settings.Runtime().Postgres().DSN().Value(),
+	)
 	if err != nil {
 		reportFailureCause(stderr, nil, "migration", "plan", err)
 		return processcode.DeployMigration
 	}
+	appliedSet := make(map[int64]struct{}, len(appliedVersions))
 	current := int64(0)
+	for _, version := range appliedVersions {
+		appliedSet[version] = struct{}{}
+		if version > current { current = version }
+	}
 	pending := []runtimev1.MigrationPlanEntry{}
-	if applied {
-		current = 20261028000000
-	} else {
-		pending = []runtimev1.MigrationPlanEntry{{
-			Owner: "platform_migrator", Scope: "platform", Version: 20261028000000,
+	for _, migration := range baseline.PlatformMigrations() {
+		if _, exists := appliedSet[migration.Version]; exists { continue }
+		pending = append(pending, runtimev1.MigrationPlanEntry{
+			Owner: "platform_migrator", Scope: "platform", Version: migration.Version,
 			TransactionMode: "transactional", Phase: "baseline",
 			TargetDatabaseGeneration: 1, NextMinimumRuntimeGeneration: 1,
-			Origin: "fresh",
-			Path:   "core/internal/platform/baseline/sql/20261028000000_platform_baseline.fresh.sql",
-			SHA256: baseline.PlatformDigest(),
-		}}
+			Origin: "fresh", Path: migration.Path, SHA256: migration.SHA256,
+		})
 	}
 	result, err := migratoroutput.NewBaselinePlan(current, pending)
 	if err != nil {
@@ -83,11 +87,11 @@ func runBaselineVerify(
 		reportFailureCause(stderr, nil, "configuration", "verify", err)
 		return processcode.InvalidStartup
 	}
-	applied, err := baseline.Inspect(ctx, settings.Runtime().Postgres().DSN().Value())
-	if err != nil || !applied {
-		if err == nil {
-			err = fmt.Errorf("baseline is not applied")
-		}
+	appliedVersions, err := baseline.AppliedPlatformVersions(
+		ctx, settings.Runtime().Postgres().DSN().Value(),
+	)
+	if err != nil || len(appliedVersions) != len(baseline.PlatformMigrations()) {
+		if err == nil { err = fmt.Errorf("platform baseline is incomplete") }
 		reportFailureCause(stderr, nil, "migration", "verify", err)
 		return processcode.DeployMigration
 	}
@@ -96,7 +100,7 @@ func runBaselineVerify(
 		reportFailureCause(stderr, nil, "runtime", "verify", err)
 		return processcode.ServeFailure
 	}
-	result, err := migratoroutput.NewBaselineVerify(runID, 20261028000000)
+	result, err := migratoroutput.NewBaselineVerify(runID, baseline.LatestPlatformVersion())
 	if err != nil {
 		reportFailureCause(stderr, nil, "runtime", "verify", err)
 		return processcode.ServeFailure
