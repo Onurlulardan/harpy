@@ -303,3 +303,163 @@ Tamamlanma raporunda şu kanıtlar bulunmalıdır:
 - Testler ve guard'lar gerçek sonuçlarıyla raporlanmıştır.
 
 **Eski sistemden en ufak executable kalıntı, eski migration dosyasından taşınmış yeni bir migration veya eski state'i kullanan tek bir compatibility yolu varsa görev BAŞARISIZDIR.**
+
+
+## 15. Dosya ve consumer bazında zorunlu disposition envanteri
+
+Bu task'ın uygulanmasında aşağıdaki package kümeleri topluca incelenir. Klasör silmek tek başına yeterli değildir; package dışı consumer, generated producer, config, SQL, test ve deploy wiring aynı değişiklik dizisinde kapatılır. Başlangıç sayıları 2026-11-03 main tree denetiminden gelir; uygulama anında güncel recursive tree ile tekrar sayılır.
+
+| Path | Başlangıç sayısı / not | Beklenen sonuç |
+| --- | ---: | --- |
+| `core/internal/platform/migrator/` | 289 dosya | Goose çağrısı dışındaki custom framework tamamen silinir. Backup/restore dışarı ayrılmadan package silinmez. |
+| `core/internal/composition/migrator/` | 48 dosya | Migrator composition silinir; backup/restore kendi composition/command'ına taşınır. |
+| `core/internal/platform/migration/` | 39 dosya | Migration document/release/catalog model'leri silinir. |
+| `core/internal/platform/baseline/` | 24 dosya | Snapshot provider ve custom baseline lifecycle silinir. |
+| `core/internal/platform/tenantmigrationexecutor/` | 8 dosya | Tenant executor process/state silinir. |
+| `core/internal/platform/schemacontract/` | 16 dosya | Migration schema contract kaldırılır; runtime DB reachability/role check'i DDL'siz yeniden kurulur. |
+| `core/internal/platform/migrator/tenantmigrationexecutor/` | 16 dosya | Alt executor adapter/SQL/Go kodu silinir. |
+| `core/internal/platform/migratoroutput/` | repository tree'de mevcut | Plan/up/verify output payload'ları silinir. |
+| `tools/localrelease/` | 66 dosya | Migration release/manifest işlevleri silinir; installation/license/release dışı işler ayrı owner'a taşınır. |
+| `tools/internal/migrationstreamcatalog/` | 19 dosya | Catalog reader/generator/test'leri silinir. |
+| `internal/attestation/migrationsupersession/` | 14 dosya | Supersession attestation modeli ve fixture'ları silinir. |
+| `core/internal/modules/tenancy/adapters/postgres/tenantmigration/` | 11 dosya | Migration adapter kaldırılır; tenant domain provisioning korunur. |
+| `core/cmd/migrator/` | entrypoint | Binary kaldırılır. |
+| `core/internal/platform/migrator/schemaexecutor/` | repository tree'de mevcut | Typed DDL IR executor tamamen kaldırılır; dynamic form DDL işi Goose-only modeline göre yeniden tasarlanır. |
+
+Her package için PR'da `path`, dosya sayısı, silinen dosya listesi, package dışı consumer listesi, yeni owner/path (varsa), test kanıtı ve kalan eşleşme disposition'ı bulunur. Başlangıç sayıları nihai sayım değildir.
+
+## 16. Backup/restore'un migrator'dan bağımsızlaştırılması
+
+`core-migrator` bugün yalnız schema migration yapmıyor. Aynı CLI/composition içinde şu migration dışı işler de bulunuyor:
+
+- `database-backup-executor`
+- `database-restore`
+- `cutover_adoption` ve `cutover_finalization` (bunlar migration framework/cutover bağımlılıklarıdır; yeni modele taşınmaz, ilgili domain operasyonları ayrı değerlendirilir)
+
+İlk iki işlev migration engine değildir ve silinmeleri recovery'yi bozar. Bunlar:
+1. Goose veya migration package import etmeyen ayrı Go package/command/composition altında yeniden sahiplenilir.
+2. Backup manifest, recovery set, signing/encryption, restore-plan validation, quiesce/drain, restore readiness, reactivation ve license reconciliation behavior'ını korur.
+3. `core-migrator` binary'sine alias/subcommand olarak geri eklenmez.
+4. Ayrı binary adı, config profile, least-privilege PostgreSQL role ve secret setine sahip olur.
+5. Compose, Dockerfile, `tools/localconfig` artifact producer/catalog, secret projector, volume inventory, Taskfile, healthcheck, logs/status, recovery tests ve documentation birlikte değiştirilir.
+6. Restore sonrasında Goose otomatik çalıştırmaz ve restore edilen schema'yı adopt etmez.
+
+Zorunlu testler: backup al/verify; aynı DB'ye zarar vermeden restore planı reject; disposable hedefe restore; backup/restore executable'ının Goose package'larına bağımlı olmadığının archguard testi; `rehydrate` akışının boş hedef preflight ve recovery ordering testi.
+
+## 17. Taskfile exact graph dönüşümü
+
+Güncel ana akış `.taskfiles/local.yml` içindeki `local:up` görevidir. Şu sıralama tek bir initialize çağrısına dönüştürülür:
+
+`prepare → infra → bootstrap → migrate → installation:artifacts → license → tenant-executor → initialize → services → verify → frontend:if-present → status`
+
+Yeni Taskfile'da:
+- `task dev` mevcut root alias üzerinden tek `local:up` görevini çağırmaya devam edebilir.
+- `prepare` ve `infra` migration dışı hazırlık olarak kalabilir.
+- `bootstrap` ile `migrate` ayrı task olmaktan çıkar; legacy `local-release prepare`, `migration-manifest`, `core-migrator deploy up`, `grant-runtime`, `core-migrator deploy verify` zinciri kaldırılır.
+- `tenant-executor` ve schema executor task/service/healthcheck'i kaldırılır.
+- Tek `initialize` görevi Foundation + Goose sırasını çağıran gerçek yeni entrypoint'i çalıştırır.
+- Installation artifact/license/delivery adımları ancak yeni initialize dependency contract'ı ile çelişmiyorsa korunur; migration release state'ine bağlanamaz.
+- `services` yalnız `core-api`, `core-worker` ve migration dışı servisleri başlatır.
+- `verify` yalnız gerçek runtime readiness kontrol eder.
+- `frontend:if-present` ve `status` davranışı korunur.
+
+`.taskfiles/local-recovery.yml` içindeki `rehydrate` görevi şu an `:local:bootstrap` ve `:local:migrate` çağırır. Bu iki adım tek initialize girişine çevrilir. Ancak restore kit'in DB içeriği restore edilmeden önce Goose çalıştırmak ile önce restore edip sonra initialize yapmak farklı sonuç doğurabilir; task uygulayıcısı tahminle sıra seçemez. İki yaklaşımı disposable PostgreSQL üzerinde test eder, recovery set formatı ve restore semantics ile uyumlu olanı seçer ve ordering testini ekler. Eski `bootstrap/migrate` task'larını alias bırakmak yasaktır.
+
+`.taskfiles/local-operations.yml` log/status/check görevleri `core-migrator`, `schema-executor`, `tenant-migration-executor` adlarını çıkarır. Backup/restore executable adları gerçek yeni binary isimleriyle gösterilir.
+
+`ops/local/taskfile_contract_test.go` ve `ops/local/recovery_contract_test.go` yeni task graph'i doğrular. Eski `core-migrator deploy verify` beklentileri ve executor readiness URL'leri kaldırılır; testler yalnız string absence değil task dependency/order davranışını da doğrular.
+
+## 18. Container ve artifact graph kesin temizliği
+
+Aşağıdaki güncel dosyaların tüm producer/consumer referansları kapatılır:
+
+- `ops/local/Dockerfile`
+- `ops/production/Dockerfile`
+- `ops/local/compose.tools.yml`
+- `ops/local/compose.runtime.yml`
+- `ops/local/compose.recovery.yml`
+- `ops/local/compose.lifecycle.yml`
+- `ops/local/compose.inventory.yml`
+- `.taskfiles/local.yml`
+- `.taskfiles/local-recovery.yml`
+- `.taskfiles/local-operations.yml`
+- `tools/localconfig/profile_environment_artifacts.go`
+- `tools/localconfig/operation_environment.go`
+- `tools/localconfig/artifact_catalog.go`
+- `tools/localconfig/profile_environment_test.go`
+- `cmd/setup/release_material_keep.go`
+
+Eski `migrator.env`, `schema-executor.env`, `tenant-migration-executor.env`, `HARPY_MIGRATION_MANIFEST_PATH`, migration manifest file, release-state volume, migrator/schema secret volumes, executor ports, health URL'leri ve eski image binary'leri artifact producer'dan başlayarak kaldırılır. Yalnız Compose'tan service satırı silmek yeterli değildir; generated artifact set exact list ve secret inventory testleri stale dosya üretmediğini kanıtlar.
+
+## 19. Contract ve SQL nesne disposition zorunluluğu
+
+Aşağıdaki dosyalar migration framework contract'ı olarak doğrudan incelenir ve consumer/generator ilişkisi kapatılarak kaldırılır:
+
+- `contracts/postgres/v1/migration-manifest.schema.json`
+- `contracts/postgres/v1/migration_source.go`
+- `contracts/postgres/v1/migration_types.go`
+- `contracts/postgres/v1/select_migration.go`
+- `contracts/postgres/v1/validate_migration.go`
+- `contracts/runtime/v1/core-migrator-config.schema.json`
+- `contracts/runtime/v1/fresh-migration-manifest.json`
+- `contracts/runtime/v1/fresh_migration_manifest.go`
+- `contracts/runtime/v1/binary-schema-contract.json`
+- `contracts/runtime/v1/binary_schema_contract.go`
+- `contracts/runtime/v1/migrator-command-result.schema.json`
+- `contracts/runtime/v1/migrator_command_result.go`
+- `contracts/storage/migration-streams.yaml` ve include ettiği JSON dosyaları
+- `contracts/storage/owners/platform_migrator.json`
+
+Eski platform migrator owner envanterinde listelenen 17 platform table, 39 routine ve external access/grant kayıtları yeni DB tasarımı için otomatik truth kabul edilmez. Her biri SQL object inventory ve güncel consumer üzerinden disposition alır. Migration run/checkpoint/release/catalog/routine nesneleri kaldırılır. `environment_identity` gibi application/security amacı da olabilecek nesneler isim benzerliğiyle silinmez; ayrı owner altında yeniden gerekçelendirilir.
+
+Yeni Goose schema kapsamı, 14 migration-stream owner kaynağının her birinde tarihsel stream kayıtlarını güncel domain/storage/API consumer'larıyla çapraz kontrol ederek tamamlanır. Yeni schema nesneleri için owner, yeni Goose migration path'i ve gerçek PostgreSQL test adı zorunludur. Eski migration SQL corpus'u, stream order veya baseline dump yeni migration dosyasına kopyalanamaz.
+
+## 20. Dynamic form DDL: ürün davranışı kapanışı
+
+`schema-executor` ve typed DDL IR kaldırılması yalnız runtime service silmek anlamına gelmez. Bugünkü form/config publish ile fiziksel tenant schema nesnesi üretme davranışının ürün karşılığı açıkça kapatılmalıdır.
+
+- Runtime publish sırasında Goose source oluşturulamaz/değiştirilemez/çalıştırılamaz.
+- Publish path'inde DDL, CREATE/ALTER TABLE veya dynamic schema execution bulunamaz.
+- Form metadata, field validation, record CRUD, search/filter/indexing ve tenant isolation için yeni storage design hazırlanır.
+- JSONB/EAV veya tek tablo generic model otomatik seçilemez; gerçek API/query gereksinimleri ve performans/constraint trade-off'ları dokümante edilir.
+- Eski typed DDL contract/IR payload'ı, schema-executor queue/command, secrets, config ve tests kaldırılır.
+- Form publish, concurrent publish, record write/read, validation, query filter, permission ve isolation PostgreSQL integration testleri olmadan bu başlık tamamlanmaz.
+
+## 21. CI, guard ve fresh install acceptance gate
+
+`.github/workflows/ci.yml` bugünkü `baseline-pg18` job'unda Catalog cleanup snapshot testlerini çalıştırıyor. Bu job yeni PostgreSQL 18 fresh-install doğrulamasına dönüştürülür. Aşağıdaki CI kapıları zorunludur:
+
+1. Ephemeral PostgreSQL 18 + pgvector boş DB kurulum testi.
+2. Aynı DB üzerinde INITIALIZE idempotency testi.
+3. Tenant A/B aynı Goose runner ve native history isolation testi.
+4. API/worker role DDL negative permission testi.
+5. Foundation failure ve Goose failure sonrası Application'ın başlamadığını doğrulayan orchestration testleri.
+6. Goose uygulanmış migration dosyaları için Git diff immutability gate.
+7. Bilinen legacy package/path/env/command/service/secret token'ları için source/deploy guard. Domain kelimelerini körlemesine yasaklama; her istisna gerekçe ve owner taşır.
+8. Backup/restore command'ın migrator/Goose import graph dışında olduğunu doğrulayan archguard.
+9. `go test ./...`, `go vet ./...`, integration compile, `go run ./tools/fileguard`, `go run ./tools/archguard`.
+10. Disposable Compose üzerinde yeni initialize entrypoint'iyle gerçek local startup smoke; Docker runner yoksa bu kapı skipped/success sayılamaz.
+
+Yeni guard kendisini de test eder: legacy fixture eklendiğinde fail, açıklamalı non-migration domain fixture eklendiğinde pass, Goose native source eklendiğinde pass, uygulanmış migration değiştirilince fail, yeni migration eklenince pass.
+
+## 22. Sıfır kalıntı disposition kayıt biçimi
+
+Her eski eşleşme repository içi bir audit artifact'inde aşağıdaki alanlarla kaydedilir:
+
+| Alan | Açıklama |
+| --- | --- |
+| `path` | Tam repository yolu |
+| `symbol_or_object` | Go symbol, SQL object, env key, service, task veya contract adı |
+| `legacy_owner` | Eski package/owner |
+| `consumers` | Import/call/config/generated/deploy/docs consumer'ları |
+| `decision` | `REMOVED`, `REPLACED_BY_GOOSE`, `PRESERVED_NON_MIGRATION`, `BLOCKED` |
+| `replacement` | Yeni path/symbol veya boş |
+| `test_evidence` | Test/guard adı ve sonucu |
+| `reason` | Koruma/silme gerekçesi |
+
+`BLOCKED`, boş consumer, testsiz replacement veya gerekçesiz preserve satırı varken sıfır kalıntı tamamlanmış değildir. Audit artifact'i eski migration system'in runtime contract'ı değildir; yalnız PR denetim kanıtıdır ve migration manifest/catalog formatına dönüştürülmez.
+
+## 23. Son kullanıcı güvenliği / mevcut volume kuralı
+
+`task dev`, initialize veya recovery akışı mevcut PostgreSQL named volume'u otomatik silmez, yeniden oluşturmaz, truncate etmez veya eski schema'yı temizlemez. `task local:destroy` yalnız açıkça kullanıcı tarafından çağrılan ve onay verilen local destructive operasyon olarak kalır. Yeni fresh install için ayrı disposable volume/database kullanılır. Eski geliştirme volume'u otomatik migrate/adopt edilmez; açık hata ve manuel ayrı boş database gereksinimi ile durulur.
+
