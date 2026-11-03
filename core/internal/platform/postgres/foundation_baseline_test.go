@@ -20,6 +20,16 @@ func (queryer staticQueryer) QueryRow(context.Context, string, ...any) pgx.Row {
 	return staticRow{err: queryer.err}
 }
 
+func TestBaselineFoundationIgnoresGooseVersionZero(t *testing.T) {
+	if !strings.Contains(baselineFoundationSQL, "history.version_id <> 0") ||
+		!strings.Contains(baselineFoundationSQL, "20261028000000, 20261102000000, 20261103000000") {
+		t.Fatal("baseline foundation count must require the three baseline versions and ignore Goose version 0")
+	}
+	if strings.Contains(baselineFoundationSQL, "pg_catalog.count(*)\n FROM") {
+		t.Fatal("baseline foundation still counts every applied Goose row")
+	}
+}
+
 func TestFoundationQueryKeepsPostgreSQLCause(t *testing.T) {
 	cause := errors.New("ERROR: permission denied for table goose_db_version (SQLSTATE 42501)")
 	_, err := readBaselineFoundation(context.Background(), staticQueryer{err: cause}, runtimev1.BinarySchemaContract{})

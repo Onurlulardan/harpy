@@ -24,11 +24,12 @@ func TestBaselineDumpCleanupPostgres18(t *testing.T) {
 	if err != nil {
 		t.Fatalf("apply platform baseline: %v", err)
 	}
-	if !platformResult.Applied || platformResult.Version != platformTenantExecutorReadinessVersion ||
-		len(platformResult.AppliedVersions) != 3 ||
+	if !platformResult.Applied || platformResult.Version != platformTenantExecutorReadinessFixVersion ||
+		len(platformResult.AppliedVersions) != 4 ||
 		platformResult.AppliedVersions[0] != platformVersion ||
 		platformResult.AppliedVersions[1] != platformCatalogRemovalVersion ||
-		platformResult.AppliedVersions[2] != platformTenantExecutorReadinessVersion {
+		platformResult.AppliedVersions[2] != platformTenantExecutorReadinessVersion ||
+		platformResult.AppliedVersions[3] != platformTenantExecutorReadinessFixVersion {
 		t.Fatalf("platform baseline result = %+v", platformResult)
 	}
 	assertBaselineTenantExecutorCanRegister(t, ctx, dsn)
@@ -53,7 +54,7 @@ func TestBaselineDumpCleanupPostgres18(t *testing.T) {
 		t.Fatal(err)
 	}
 	if repeatedPlatform.Applied || repeatedTenant.Applied ||
-		repeatedPlatform.Version != platformTenantExecutorReadinessVersion ||
+		repeatedPlatform.Version != platformTenantExecutorReadinessFixVersion ||
 		repeatedTenant.Version != 20261102000001 ||
 		len(repeatedPlatform.AppliedVersions) != 0 ||
 		len(repeatedTenant.AppliedVersions) != 0 {
@@ -64,14 +65,22 @@ func TestBaselineDumpCleanupPostgres18(t *testing.T) {
 func assertBaselineTenantExecutorCanRegister(t *testing.T, ctx context.Context, dsn string) {
 	t.Helper()
 	config, err := pgx.ParseConfig(dsn)
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	connection, err := pgx.ConnectConfig(ctx, config)
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer connection.Close(ctx)
 	transaction, err := connection.Begin(ctx)
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer transaction.Rollback(ctx)
-	if _, err := transaction.Exec(ctx, "SET LOCAL ROLE harpy_owner"); err != nil { t.Fatal(err) }
+	if _, err := transaction.Exec(ctx, "SET LOCAL ROLE harpy_owner"); err != nil {
+		t.Fatal(err)
+	}
 
 	const profileID = "11111111-1111-4111-8111-111111111111"
 	const releaseID = "22222222-2222-4222-8222-222222222222"
@@ -87,7 +96,9 @@ func assertBaselineTenantExecutorCanRegister(t *testing.T, ctx context.Context, 
 		profileID, releaseID, manifestSHA256,
 	).Scan(&actualProfileID, &actualReleaseID, &environmentID, &deploymentMode,
 		&runtimeGeneration, &databaseGeneration, &actualManifestSHA256, &readyUntil)
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	if actualProfileID != profileID || actualReleaseID != releaseID ||
 		environmentID == "" || deploymentMode != "onpremise" ||
 		runtimeGeneration != 1 || databaseGeneration != 1 ||

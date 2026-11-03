@@ -29,16 +29,16 @@ var platformTenantExecutorReadinessScript string
 var tenantCatalogRemovalScript string
 
 const (
-	tenantSchemaToken          = "__tenant_schema__"
-	platformVersion            = int64(20261028000000)
-	platformCatalogRemovalVersion = int64(20261102000000)
+	tenantSchemaToken                      = "__tenant_schema__"
+	platformVersion                        = int64(20261028000000)
+	platformCatalogRemovalVersion          = int64(20261102000000)
 	platformTenantExecutorReadinessVersion = int64(20261103000000)
-	tenantVersion              = int64(20261028000001)
-	platformFile               = "20261028000000_platform_baseline.fresh.sql"
-	tenantFile                 = "20261028000001_tenant_baseline.fresh.sql"
-	platformCatalogRemovalFile = "20261102000000_platform_catalog_removal_baseline.fresh.sql"
-	platformTenantExecutorReadinessFile = "20261103000000_platform_tenant_executor_baseline_readiness.fresh.sql"
-	tenantCatalogRemovalFile   = "20261102000001_tenant_catalog_removal_baseline.fresh.sql"
+	tenantVersion                          = int64(20261028000001)
+	platformFile                           = "20261028000000_platform_baseline.fresh.sql"
+	tenantFile                             = "20261028000001_tenant_baseline.fresh.sql"
+	platformCatalogRemovalFile             = "20261102000000_platform_catalog_removal_baseline.fresh.sql"
+	platformTenantExecutorReadinessFile    = "20261103000000_platform_tenant_executor_baseline_readiness.fresh.sql"
+	tenantCatalogRemovalFile               = "20261102000001_tenant_catalog_removal_baseline.fresh.sql"
 )
 
 type Result struct {
@@ -69,7 +69,11 @@ func ApplyPlatform(ctx context.Context, dsn string) (Result, error) {
 	if err != nil {
 		return Result{}, fmt.Errorf("apply platform tenant executor readiness: %w", err)
 	}
-	return combineBaselineResults(result, cleanup, readiness), nil
+	fix, err := applyPlatformTenantExecutorReadinessFix(ctx, dsn)
+	if err != nil {
+		return Result{}, err
+	}
+	return combineBaselineResults(result, cleanup, readiness, fix), nil
 }
 
 func ApplyTenantDB(ctx context.Context, database *sql.DB, schema string) (Result, error) {
