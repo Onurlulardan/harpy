@@ -24,6 +24,11 @@ tasks:
       - go run ./tools/fileguard
       - go run ./tools/archguard
 
+  "upgrade:go":
+    desc: Pin the Go toolchain, CI, images, and runtime contract to VERSION
+    cmds:
+      - go run ./tools/gotoolchain -version "{{.VERSION}}"
+
   "migration:verify":
     desc: Verify manifest lineage, lifecycle waiting, replay, recovery, and data-preserving upgrade
     cmds:

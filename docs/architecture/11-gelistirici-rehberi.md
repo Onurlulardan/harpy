@@ -4,6 +4,7 @@
 
 Backend geliştirme için:
 - Go 1.26.5 toolchain
+- Go sürüm yükseltmesi: `task upgrade:go VERSION=<x.y.z>`
 - Docker Engine/Desktop ve Compose v2 (local stack için)
 - Go Task (task)
 - İlk image build'inde internet erişimi
