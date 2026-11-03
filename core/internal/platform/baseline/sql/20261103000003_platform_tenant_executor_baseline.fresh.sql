@@ -132,7 +132,7 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM platform.tenancy_deployment_policy) THEN
         RETURN;
     END IF;
-
+    UPDATE platform.tenancy_tenant_migration_jobs AS exhausted
     SET state='fenced',error_code='attempt_limit_exhausted',
         completed_at=v_now,updated_at=v_now
     WHERE exhausted.state='failed'
