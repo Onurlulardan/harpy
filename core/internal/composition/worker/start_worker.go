@@ -11,7 +11,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
 )
 
@@ -19,12 +18,11 @@ func startWorker(
 	process *lifecycle.Process,
 	settings config.Worker,
 	info buildinfo.Info,
-	embedded schemacontract.EmbeddedContract,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 ) processcode.Code {
 	return startWorkerWithOpen(
-		process, settings, info, embedded, logger, telemetryRuntime, postgres.Open,
+		process, settings, info, logger, telemetryRuntime, postgres.Open,
 	)
 }
 
@@ -32,14 +30,12 @@ type workerPoolOpener func(
 	context.Context,
 	config.Postgres,
 	postgres.Profile,
-	schemacontract.EmbeddedContract,
 ) (*postgres.Pool, error)
 
 func startWorkerWithOpen(
 	process *lifecycle.Process,
 	settings config.Worker,
 	info buildinfo.Info,
-	embedded schemacontract.EmbeddedContract,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 	openPool workerPoolOpener,
@@ -49,7 +45,7 @@ func startWorkerWithOpen(
 		process.StartupContext(), runtimeSettings.ReadinessTimeout(),
 	)
 	pool, err := openPool(
-		startupContext, runtimeSettings.Postgres(), postgres.ProfileWorker, embedded,
+		startupContext, runtimeSettings.Postgres(), postgres.ProfileWorker,
 	)
 	if err != nil {
 		cancelStartup()

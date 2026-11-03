@@ -22,7 +22,6 @@ func probeReadiness(
 			Database:         observation.DatabaseReady(),
 			DatabaseRole:     observation.DatabaseRoleReady(),
 			DeploymentPolicy: policy,
-			SchemaContract:   observation.SchemaContractReady(),
 		}
 	}
 }
@@ -37,6 +36,5 @@ func localDependenciesReady(checks []func() bool) bool {
 }
 
 func allReady(states health.States) bool {
-	return states.Database && states.DatabaseRole && states.DeploymentPolicy &&
-		states.SchemaContract
+	return states.Database && states.DatabaseRole && states.DeploymentPolicy
 }

@@ -8,7 +8,7 @@ import (
 
 func originForVectorSchema(schema string) (runtimev1.DatabaseOrigin, error) {
 	switch schema {
-	case "platform_ext":
+	case "platform", "platform_ext":
 		return runtimev1.DatabaseOriginFresh, nil
 	case "public":
 		return runtimev1.DatabaseOriginV1Adopted, nil

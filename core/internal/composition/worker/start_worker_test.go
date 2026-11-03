@@ -12,7 +12,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
 
 func TestStartWorkerBoundsAndCancelsDatabaseStartup(t *testing.T) {
@@ -28,7 +27,6 @@ func TestStartWorkerBoundsAndCancelsDatabaseStartup(t *testing.T) {
 		ctx context.Context,
 		_ config.Postgres,
 		_ postgres.Profile,
-		_ schemacontract.EmbeddedContract,
 	) (*postgres.Pool, error) {
 		deadline, present := ctx.Deadline()
 		deadlineSeen = present && time.Until(deadline) <= time.Second
@@ -39,7 +37,7 @@ func TestStartWorkerBoundsAndCancelsDatabaseStartup(t *testing.T) {
 	}
 	code := startWorkerWithOpen(
 		lifecycle.LocalProcess(parent), settings, buildinfo.Info{},
-		schemacontract.EmbeddedContract{}, nil, nil, opener,
+		nil, nil, opener,
 	)
 	if code != processcode.DependencyPreflight || !deadlineSeen {
 		t.Fatalf("code=%d deadline_seen=%t", code, deadlineSeen)

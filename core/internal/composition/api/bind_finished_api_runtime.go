@@ -39,7 +39,7 @@ func bindFinishedAPIRuntime(
 		admission: admission, poller: serving.poller,
 		management: serving.management, public: serving.public,
 		telemetryRuntime: telemetryRuntime, asyncWriteCatalogs: writeCatalogs,
-		analytics: domains.analytics,
+		analytics:            domains.analytics,
 		deploymentPolicy:     policyRuntime,
 		documents:            domains.documents,
 		documentsProduction:  domains.documentsProduction,

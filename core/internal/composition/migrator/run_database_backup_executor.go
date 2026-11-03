@@ -27,11 +27,6 @@ func runDatabaseBackupExecutorProcess(
 		reportFailure(stderr, nil, "build_contract", "database-backup-executor")
 		return processcode.InvalidStartup
 	}
-	embedded, err := loadSchemaContract()
-	if err != nil {
-		reportFailure(stderr, nil, "build_contract", "database-backup-executor")
-		return processcode.InvalidStartup
-	}
 	logger, err := telemetry.NewLogger(stderr, runtimeSettings.LogLevel(), info)
 	if err != nil {
 		return processcode.InvalidStartup
@@ -44,7 +39,7 @@ func runDatabaseBackupExecutorProcess(
 		return processcode.InvalidStartup
 	}
 	return startDatabaseBackupExecutor(
-		process, settings, info, embedded, logger, telemetryRuntime,
+		process, settings, info, logger, telemetryRuntime,
 	)
 }
 

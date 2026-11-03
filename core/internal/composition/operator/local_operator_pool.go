@@ -6,7 +6,6 @@ import (
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
 
 func openLocalOperatorPool(
@@ -21,13 +20,8 @@ func openOperatorPool(
 	runtime config.Runtime,
 	profile platformpostgres.Profile,
 ) (*platformpostgres.Pool, error) {
-	embedded, err := schemacontract.LoadBoundStartup()
-	if err != nil {
-		return nil, err
-	}
 	connectContext, cancel := context.WithTimeout(ctx,
 		runtime.Postgres().ConnectTimeout()+runtime.ReadinessTimeout()+5*time.Second)
 	defer cancel()
-	return platformpostgres.Open(connectContext, runtime.Postgres(),
-		profile, embedded)
+	return platformpostgres.Open(connectContext, runtime.Postgres(), profile)
 }
