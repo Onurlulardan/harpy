@@ -6,6 +6,8 @@ Harpy'nin veritabanı kurulum ve schema yönetimi mevcut migration altyapısın�
 
 **Mevcut migration sistemi tamamen silinecek. Yeni sistem boş bir zeminde sıfırdan yazılacaktır.**
 
+Harpy, ForgeCRUD'ün ürün olarak devamı değildir. ForgeCRUD yalnız tarihsel kaynak kod ilişkisidir; ForgeCRUD'e özgü ürün davranışları, modülleri, ekranları, veri modelleri ve entegrasyonları Harpy gereksinimi sayılmaz. Kalıntılar [05 — ForgeCRUD kalıntı denetimi](05-forgecrud-residue-audit.md) kapsamında ayrıca incelenir.
+
 Bu karar yalnızca package isimleri için değil, davranış, veri modeli, SQL, sözleşme, konfigürasyon, build girdisi, deployable, test, fixture, CLI ve dokümantasyon için de geçerlidir. Eski sistemin bir parçasını yeni isimle taşımak, aynı davranışı başka bir struct veya servis arkasına saklamak ya da eski state'i yeni sisteme okutmak tamamlanmış iş sayılmaz.
 
 Yeni sistemin tek yaşam döngüsü aşağıdaki dört aşamadır:
@@ -47,7 +49,7 @@ Boş PostgreSQL üzerinde database seviyesindeki zorunlu altyapıyı kurar: roll
 
 ### GOOSE
 
-Bütün platform ve tenant schema DDL'inin tek otoritesidir. Resmi **github.com/pressly/goose/v3** kullanılır. İlk schema, eski migration zincirinden devralınmaz; mevcut ürün gereksinimleri esas alınarak sıfırdan hazırlanmış yeni Goose başlangıç migration'larıyla oluşturulur. Sonraki bütün schema değişiklikleri yine Goose migration dosyalarıyla yapılır.
+Bütün platform ve tenant schema DDL'inin tek otoritesidir. Resmi **github.com/pressly/goose/v3** kullanılır. İlk schema, eski migration zincirinden devralınmaz; Harpy'nin açıkça sahip olduğu generic platform/domain gereksinimleri esas alınarak sıfırdan hazırlanmış yeni Goose başlangıç migration'larıyla oluşturulur. ForgeCRUD'e özgü ürün modülleri veya bunların veri modelleri taşınmaz; bunlar için alternatif tasarlanmaz. Sonraki bütün schema değişiklikleri yine Goose migration dosyalarıyla yapılır.
 
 ### APPLICATION
 
@@ -59,7 +61,7 @@ API, worker ve diğer uygulama süreçleridir. Foundation ve Goose başarıyla b
 - Tek migration otoritesi Goose'tur.
 - Goose native version history dışında migration history yoktur.
 - Platform ve tenant migration'ları aynı Goose implementation/runner ile yürütülür.
-- Tenant schema için ikinci bir migrator, executor, worker, daemon veya migration-specific queue bulunmaz.
+- Tenant schema için ikinci migration implementation'ı, sürekli çalışan executor/worker/daemon/service veya migration-specific queue bulunmaz. Otomatik provisioning için yalnız orchestrator tarafından başlatılan kısa ömürlü one-shot Job kullanılabilir; bu beşinci lifecycle aşaması değildir.
 - Foundation domain tablolarını oluşturmaz.
 - Application startup migration çalıştırmaz.
 - Hiçbir eski migration Go kodu yeni runner'a taşınmaz.
@@ -74,7 +76,8 @@ Goose runner yalnızca hedef database bağlantısını, hedef schema/search_path
 1. [01 — INITIALIZE](01-initialize.md): eski entrypoint/orchestration kodunu kaldır ve tek yeni giriş noktasını sıfırdan oluştur.
 2. [02 — DATABASE FOUNDATION](02-database-foundation.md): yalnız boş database için DB altyapısını oluştur.
 3. [03 — GOOSE](03-goose.md): yeni platform ve tenant schema'larını temiz Goose migration source'larından sıfırdan üret.
-4. [04 — APPLICATION ve sıfır kalıntı](04-application-and-total-removal.md): uygulama başlangıç sınırlarını kur, eski sistemi repository'nin tamamından sil ve kanıtla.
+4. [05 — ForgeCRUD kalıntı denetimi](05-forgecrud-residue-audit.md): ForgeCRUD ürün kalıntılarını repository genelinde envanterle ve disposition kararlarını kanıtla.
+5. [04 — APPLICATION ve sıfır kalıntı](04-application-and-total-removal.md): uygulama başlangıç sınırlarını kur, migration ve ForgeCRUD kalıntılarını sil ve kanıtla.
 
 Task dosyaları iş sırasını belirtir. Bunlar runtime'a yeni aşama eklemez.
 
@@ -294,18 +297,11 @@ Bu generator'lardan `migrator.env`, `schema-executor.env`, `tenant-migration-exe
 
 Taskfile testleri yeni tek entrypoint ve dört lifecycle ordering'ini assert eder; eski `core-migrator deploy verify` beklentisini kaldırır. Recovery contract testleri yeni backup/restore executable'ını doğrular. CI PostgreSQL job'u eski Catalog cleanup snapshot testlerini değil, yeni Foundation/Goose/fresh-install testlerini koşar.
 
-## 13. Dynamic form DDL ve ürün davranışı kararı
+## 13. Eski schema-executor / typed DDL IR kalıntılarının kaldırılması
 
-Bugünkü `schema-executor`, form/config publish sırasında typed DDL IR uygular. Bu davranış Goose-only kararıyla aynı anda korunamaz; çünkü runtime'da Goose dışı schema DDL yolu yaratır.
+schema-executor, typed DDL IR ve bunlara bağlı runtime publish/command/queue/config/secret/contract/test kodları Harpy'nin ürün gereksinimi değildir. Bunlar ForgeCRUD kaynaklı/eski ürün altyapısı kalıntısı olarak consumer graph'ıyla birlikte denetlenir ve kaldırılır.
 
-Bu task setinde tercih edilen hedef:
-- Runtime form/config publish fiziksel tablo/kolon DDL'i uygulamaz.
-- Form ve field tanımları uygulama metadata'sı olarak saklanır; record storage modeli mevcut ürün gereksinimleri temelinde DDL'siz çalışacak şekilde tasarlanır.
-- Eğer mevcut domain modeli bu davranışı sağlayamıyorsa DDL'siz model ayrı tasarım/karar maddesi olarak çözülmeden schema-executor korunmaz.
-- Dynamic DDL ihtiyacı yeni Goose migration gerektiriyorsa bu yalnız deployment/release-time kaynak migration değişikliği olarak yapılır; runtime publish migration dosyası üretip çalıştıramaz.
-- Dynamic form alanı, validation, indexing ve query performansı gereksinimleri test edilmeden EAV/JSONB çözümü varsayılmaz. Nihai storage tasarımı ürün contract'ı ve gerçek consumer testleriyle belirlenir.
-
-Bu ürün davranışını sessizce kaybetmek de kabul edilmez. Yeni modelde mevcut form publish, record CRUD, validation, search/filter, tenant isolation ve concurrent publish akışlarının karşılığı için test gerekir.
+Harpy'de dynamic form, form publish, form metadata, record CRUD, workflow veya benzeri ürün özelliği varsayılmaz. JSONB/EAV alternatifi tasarlanmaz; form davranışı için acceptance test yazılmaz; yerine yeni ürün alt sistemi kurulmaz. Generic primitive ancak somut Harpy consumer'ı, owner'ı ve testi kanıtlanırsa korunabilir. Ayrıntılı denetim 05 numaralı task'tadır.
 
 ## 14. Catalog ve baseline snapshot geçmişi
 
@@ -360,7 +356,7 @@ Tamamlanma raporu package/file disposition CSV/Markdown, SQL object disposition,
 
 ## 19. Uygulama sırası ve durdurma koşulları
 
-Task'lar 01 → 02 → 03 → 04 sırasıyla uygulanır; ancak 04'teki repository-wide consumer temizliği önceki aşamalarda ortaya çıkan consumer'ları da kapatır. Bir task'ın metninde hedeflenen mimariyi yazmak, kodun uygulandığı anlamına gelmez.
+Task'lar 01 → 02 → 03 → 05 → 04 sırasıyla uygulanır. 05 numaralı ForgeCRUD denetimi, 04'ün silme/disposition kapsamını besler. Bir task'ın metninde hedeflenen mimariyi yazmak, kodun uygulandığı anlamına gelmez.
 
 Her aşama PR'ı şu çıktıları vermeden sonraki aşamaya geçemez: değişen/silinen dosya listesi, yeni owner ve consumer grafiği, ilgili PostgreSQL object disposition, gerçek test komutları/çıktısı ve kalan blocker. Özellikle mevcut ürün davranışı için owner/consumer belirsizliği varsa tahminle silme veya koruma yapılmaz; `BLOCKED` olarak açıkça raporlanır.
 
