@@ -20,6 +20,7 @@ func PlatformMigrations() []PlatformMigration {
 		{Version: platformVersion, Path: "core/internal/platform/baseline/sql/" + platformFile, SHA256: digest(platformScript)},
 		{Version: platformCatalogRemovalVersion, Path: "core/internal/platform/baseline/sql/" + platformCatalogRemovalFile, SHA256: digest(platformCatalogRemovalScript)},
 		{Version: platformTenantExecutorBaselineVersion, Path: "core/internal/platform/baseline/sql/" + platformTenantExecutorBaselineFile, SHA256: digest(platformTenantExecutorBaselineScript)},
+		{Version: platformTenantExecutorCompletionVersion, Path: "core/internal/platform/baseline/sql/" + platformTenantExecutorCompletionFile, SHA256: digest(platformTenantExecutorCompletionScript)},
 	}
 }
 

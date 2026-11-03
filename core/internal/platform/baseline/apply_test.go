@@ -7,11 +7,12 @@ import (
 
 func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	for name, script := range map[string]string{
-		"platform":                 platformScript,
-		"tenant":                   tenantScript,
-		"platform cleanup":         platformCatalogRemovalScript,
-		"platform tenant executor": platformTenantExecutorBaselineScript,
-		"tenant cleanup":           tenantCatalogRemovalScript,
+		"platform":                   platformScript,
+		"tenant":                     tenantScript,
+		"platform cleanup":           platformCatalogRemovalScript,
+		"platform tenant executor":   platformTenantExecutorBaselineScript,
+		"platform tenant completion": platformTenantExecutorCompletionScript,
+		"tenant cleanup":             tenantCatalogRemovalScript,
 	} {
 		if strings.Contains(script, "\\restrict") || strings.Contains(script, "\\unrestrict") {
 			t.Fatalf("%s baseline contains a psql meta command", name)
@@ -35,20 +36,23 @@ func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 		Result{Applied: true, Version: platformVersion},
 		Result{Applied: true, Version: platformCatalogRemovalVersion},
 		Result{Applied: true, Version: platformTenantExecutorBaselineVersion},
+		Result{Applied: true, Version: platformTenantExecutorCompletionVersion},
 	)
-	if !applied.Applied || applied.Version != platformTenantExecutorBaselineVersion ||
-		len(applied.AppliedVersions) != 3 ||
+	if !applied.Applied || applied.Version != platformTenantExecutorCompletionVersion ||
+		len(applied.AppliedVersions) != 4 ||
 		applied.AppliedVersions[0] != platformVersion ||
 		applied.AppliedVersions[1] != platformCatalogRemovalVersion ||
-		applied.AppliedVersions[2] != platformTenantExecutorBaselineVersion {
+		applied.AppliedVersions[2] != platformTenantExecutorBaselineVersion ||
+		applied.AppliedVersions[3] != platformTenantExecutorCompletionVersion {
 		t.Fatalf("applied baseline result = %+v", applied)
 	}
 	repeated := combineBaselineResults(
 		Result{Version: platformVersion},
 		Result{Version: platformCatalogRemovalVersion},
 		Result{Version: platformTenantExecutorBaselineVersion},
+		Result{Version: platformTenantExecutorCompletionVersion},
 	)
-	if repeated.Applied || repeated.Version != platformTenantExecutorBaselineVersion ||
+	if repeated.Applied || repeated.Version != platformTenantExecutorCompletionVersion ||
 		len(repeated.AppliedVersions) != 0 {
 		t.Fatalf("repeated baseline result = %+v", repeated)
 	}
@@ -56,11 +60,12 @@ func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 
 func TestPlatformMigrationSetIsOrderedAndIncludesReadinessCompatibility(t *testing.T) {
 	migrations := PlatformMigrations()
-	if len(migrations) != 3 ||
+	if len(migrations) != 4 ||
 		migrations[0].Version != platformVersion ||
 		migrations[1].Version != platformCatalogRemovalVersion ||
 		migrations[2].Version != platformTenantExecutorBaselineVersion ||
-		LatestPlatformVersion() != platformTenantExecutorBaselineVersion {
+		migrations[3].Version != platformTenantExecutorCompletionVersion ||
+		LatestPlatformVersion() != platformTenantExecutorCompletionVersion {
 		t.Fatalf("platform baseline migration set = %+v", migrations)
 	}
 	for _, migration := range migrations {
