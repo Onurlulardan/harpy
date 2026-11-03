@@ -8,11 +8,12 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fail("usage: frontend-manager <start|stop|status>")
+	command, optional, ok := parseCommand(os.Args[1:])
+	if !ok {
+		fail("usage: frontend-manager <start|stop|status> [--if-present]")
 	}
 
-	cfg, err := loadConfig()
+	cfg, err := loadConfig(command == "start" && !optional)
 	if err != nil {
 		fail(err.Error())
 	}
@@ -20,8 +21,12 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
-	switch os.Args[1] {
+	switch command {
 	case "start":
+		if !cfg.CheckoutPresent {
+			fmt.Println("frontend-v3: sibling checkout is absent; skipped")
+			return
+		}
 		err = runStart(ctx, cfg)
 	case "stop":
 		err = runStop(cfg)
@@ -33,6 +38,16 @@ func main() {
 	if err != nil {
 		fail(err.Error())
 	}
+}
+
+func parseCommand(arguments []string) (string, bool, bool) {
+	if len(arguments) == 1 {
+		return arguments[0], false, true
+	}
+	if len(arguments) == 2 && arguments[0] == "start" && arguments[1] == "--if-present" {
+		return arguments[0], true, true
+	}
+	return "", false, false
 }
 
 func fail(message string) {

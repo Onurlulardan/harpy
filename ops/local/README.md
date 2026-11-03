@@ -24,8 +24,10 @@ task local:up
 Bu komut sirayla local secret/sertifika uretir, release image'larini build eder,
 servis bazli least-authority secret volume'larini project eder, altyapiyi
 baslatir, fresh cluster bootstrap'unu yapar, canonical migration'i uygular,
-runtime servislerini acar, sibling `frontend-v3` projesini `yarn dev` ile
-baslatir ve tum readiness kontrollerini kosar.
+runtime servislerini acar. Kardes `frontend-v3` checkout'u varsa onu `yarn dev`
+ile baslatir; checkout yoksa backend stack'i frontend olmadan devam eder.
+`task local:down` ve `task local:destroy` de checkout yokken frontend
+durdurmayi basarili sayar.
 
 Normal `local:build` ve `local:up`, digest-pinned build girdilerini mevcut
 Docker/BuildKit cache'inden kullanir ve registry refresh'i zorlamaz. Ilk build

@@ -56,7 +56,7 @@ func TestRecoveryTaskHandshakeAndReconcileOrder(t *testing.T) {
 			"record-reactivation",
 			"restore-license-reconcile",
 			"up -d --wait --wait-timeout 180 core-api",
-			"task: :local:frontend",
+			"task: :local:frontend:if-present",
 			"show-reactivation",
 		})
 	}

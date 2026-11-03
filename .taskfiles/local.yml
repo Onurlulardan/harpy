@@ -144,6 +144,10 @@ tasks:
     desc: Start and verify the managed frontend-v3 development server
     cmds:
       - go run ./ops/local/cmd/frontend-manager start
+  frontend:if-present:
+    desc: Start frontend-v3 when the sibling checkout exists
+    cmds:
+      - go run ./ops/local/cmd/frontend-manager start --if-present
   frontend:stop:
     desc: Stop only the frontend-v3 process owned by this local stack
     cmds:
@@ -165,7 +169,7 @@ tasks:
       - task: initialize
       - task: services
       - task: verify
-      - task: frontend
+      - task: frontend:if-present
       - task: status
   status:
     desc: Show backend containers and managed frontend-v3 health

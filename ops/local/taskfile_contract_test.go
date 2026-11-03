@@ -28,7 +28,7 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 		"initialize",
 		"services",
 		"verify",
-		"frontend",
+		"frontend:if-present",
 		"status",
 	}
 	if !slices.Equal(actual, expected) {
