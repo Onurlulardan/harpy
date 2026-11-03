@@ -143,3 +143,45 @@ Gerçek PostgreSQL kullanarak:
 ## 10. Tamamlanma şartı
 
 Tek bir yeni INITIALIZE entrypoint bulunur. Bu entrypoint yalnızca dört aşamayı sırasıyla çağırır. Eski initialization/migration orchestration kodu ve onun tüm tüketicileri kaldırılmıştır. Boş olmayan/eski database otomatik dönüştürülmez. Tekrar çalıştırma özel state tablosuna değil gerçek PostgreSQL nesnelerine ve Goose native history'ye dayanır.
+
+## 11. Repository'deki mevcut INITIALIZE consumer envanteri
+
+Uygulama öncesi aşağıdaki gerçek çağrı zincirini yeniden çıkar; eski task adları varsayılarak değil YAML task graph ve container entrypoint üzerinden doğrulanarak çalışılmalıdır.
+
+| Alan | Güncel dosya / giriş | Yapılacak değişiklik |
+| --- | --- | --- |
+| Root entrypoint | `Taskfile.yml` | `task dev` yalnız `:local:up` üzerinden tek initialize akışına gider. |
+| Local lifecycle | `.taskfiles/local.yml` | `bootstrap` ve `migrate` duplicate zincirini kaldır; tek `initialize` çağrısı kur. |
+| Recovery rehydrate | `.taskfiles/local-recovery.yml` | `:local:bootstrap` + `:local:migrate` yerine initialize entrypoint'ini çağır; restore öncesi DB boşluğu ve restore sırasını gerçek PostgreSQL ile kanıtla. |
+| Local operations | `.taskfiles/local-operations.yml` | Migrator/schema/tenant executor log/status/check bağımlılıklarını kaldır. |
+| API / worker | `ops/local/compose.runtime.yml` | API ve worker yalnız initialize tamamlandıktan sonra başlar; schema-executor dependency'si kaldırılır. |
+| Compose tools | `ops/local/compose.tools.yml` | Tek initialize one-shot service; migrator ve tenant executor probe'ları yok. |
+| Local/production image | `ops/local/Dockerfile`, `ops/production/Dockerfile` | Eski migrator binary ve manifest artifact'i paketlenmez. |
+
+### 11.1 Tek girişin kesin çalışma kontratı
+
+Yeni entrypoint:
+- Bir kez configuration/preflight yapar.
+- Hedef DB kimliğini ve boşluk koşulunu doğrular.
+- Foundation'ı çağırır.
+- Aynı Goose implementation ile platform source'unu, sonra gerekiyorsa tenant source'unu çağırır.
+- Yalnız başarıdan sonra APPLICATION servislerini başlatır.
+- Hata durumunda aşama, güvenli retry niteliği ve redacted underlying cause döndürür.
+- Kendine ait migration/init run, generation, checkpoint, receipt veya completion tablosu yazmaz.
+
+Installation artifact, license, initial credential delivery ve recovery signing gibi mevcut installation domain davranışları sırf migration koduyla aynı binary'de diye silinmez. Bunların owner'ı ayrı tutulur ve INITIALIZE sırasındaki bağımlılıkları açıkça tanımlanır. Bu işlemlerin hiçbiri Goose version/history veya migrator release ledger'ı tüketemez.
+
+### 11.2 Legacy consumer kapatma prosedürü
+
+Her eski entrypoint için:
+1. Çağıran task/service/command bulunur.
+2. Tüketilen config/secret/env alanları bulunur.
+3. Generated artifact producer'ı bulunur.
+4. Healthcheck, depends_on, volume ve port referansları bulunur.
+5. Test/fixture/contract ve docs referansları bulunur.
+6. Yeni entrypoint veya kaldırma kararı consumer seviyesinde uygulanır.
+7. Arama tekrar çalıştırılır; geride kalan her eşleşme disposition alır.
+
+### 11.3 Tamamlanma
+
+INITIALIZE tamamlandı kabul edilebilmesi için eski `core-migrator` entrypoint'ine, `local-release prepare`, migration manifest, `deploy up/verify`, `bootstrap`, `migrate`, tenant/schema executor, custom finalization ve recovery rehydrate eski zincirine referans kalmamış olmalıdır. Backup/restore komutları ayrı migration dışı sahipliğe taşınmış ve recovery testleri geçmiş olmalıdır.
