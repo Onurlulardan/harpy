@@ -178,7 +178,7 @@ Aşağıdaki kavramların hiçbirinin yeni implementation'ı oluşturulamaz ve e
 - Schema contract, binary schema contract veya custom schema readiness registry.
 - Custom Goose store veya Goose history yerine kullanılan version table.
 - Migration planner, selector, classifier, verifier, finalizer veya custom state machine.
-- Tenant migration executor/migrator/worker/daemon/service.
+- Sürekli çalışan tenant migration executor/migrator/worker/daemon/service veya migration-specific queue. Sabit template kullanan kısa ömürlü orchestrator Job izinlidir.
 - Custom Goose completion routine veya migration-specific SQL function.
 - Eski schema'yı Goose history'ye alma/baseline/adoption mekanizması.
 - Eski migration dosyalarını yeni source'a dönüştüren/import eden generator.
