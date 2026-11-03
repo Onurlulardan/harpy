@@ -31,13 +31,18 @@ Normal uygulama iş kuralları, tenancy, authorization ve domain davranışları
 
 ## 3. Tenant provisioning sınırı
 
-Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
+Otomatik tenant provisioning aşağıdaki kesin sınırlarla yapılır:
 
-**İzin verilen tek tenant DDL çağrı yolu:** aynı Harpy release image digest'ini ve aynı Harpy binary'sini kullanan, sabit trusted template üzerinden başlatılan orchestrator-managed one-shot Job. Bu migrator servisi/binary'si, ikinci Goose runner, beşinci lifecycle aşaması veya sürekli çalışan executor değildir.
+- Harpy API tenant oluşturma isteğini alır ve tenant kaydını `PROVISIONING` durumuna getirir. API DDL yetkisi taşımaz.
+- Kısa ömürlü, talep üzerine başlatılan one-shot Tenant Provisioning Job aynı Harpy binary'sini ve aynı Goose Runner'ı kullanır. Ayrı migrator binary veya ikinci Goose implementation yazılmaz.
+- Job, tenant ID'den üretilen canonical schema adıyla hedef tenant schema'sını kurar ve Goose migration'larını uygular. İşlem bitince kapanır.
+- Migration credential yalnız Job'a güvenilir secret mekanizması üzerinden verilir. API ve worker bu credential'ı okuyamaz ve DDL yapamaz.
+- Tenant, migration başarılıysa `ACTIVE` olur; başarısızsa aktif edilmez.
+- Sürekli çalışan tenant migration executor, daemon, worker veya migration-specific queue yasaktır. Bu Job beşinci lifecycle aşaması değildir.
+- Aynı tenant için eşzamanlı provisioning PostgreSQL seviyesinde engellenir. Custom migration state, catalog veya checkpoint oluşturulmaz.
+- Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir.
 
-API yalnız sabit Job template'ini tenant ID ile tetikleyebilir; image, command, service account, secret, volume, network veya executable değiştirilemez. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile hedef tenant migration source'unu çalıştırır. DDL credential yalnız Job'a kısa ömürlü secret injection ile verilir; API/worker bu secret'ı okuyamaz ve DDL yapamaz. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir; platform ve diğer tenant schema'larına erişemediği integration testleriyle kanıtlanır.
-
-Tenant domain kaydı işlem başında PROVISIONING, Job/Goose başarısında ACTIVE olur; hatada aktif edilmez. Bu gerçek domain lifecycle state'idir, migration attempt/checkpoint/receipt değildir. Orchestrator izolasyonu sağlayamıyorsa provisioning fail closed olur; API/worker'a DDL yetkisi verilmez.
+Bu sınırlar ihlal edilerek API/worker'a DDL yetkisi verilmesi veya sürekli çalışan executor eklenmesi kabul edilmez.
 
 ## 4. Go source için sıfır kalıntı şartı
 

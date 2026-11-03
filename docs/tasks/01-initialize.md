@@ -173,7 +173,7 @@ Installation artifact, license, initial credential delivery ve recovery signing 
 
 ### Otomatik tenant provisioning çağrı sınırı
 
-Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
+Tenant schema kurulumu, API'nin tenant kaydını PROVISIONING durumuna getirmesinden sonra başlatılan kısa ömürlü one-shot Tenant Provisioning Job üzerinden yapılır. Job aynı Harpy binary'sini ve aynı Goose Runner'ı kullanır. Sürekli çalışan executor/daemon/worker veya migration-specific queue yoktur. Bu Job beşinci lifecycle aşaması değildir.
 
 API yalnız sabit trusted Job template'ini tenant ID ile tetikleyebilir. Image, command, service account, secret mount, volume ve network ayarları kullanıcı girdisiyle değiştirilemez; orchestrator policy/admission ile sabitlenir. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile yalnız hedef tenant migration source'unu çalıştırır.
 

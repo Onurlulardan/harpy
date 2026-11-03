@@ -37,6 +37,22 @@ Yeni kurulum için yeni ve boş bir database oluşturulur. Eski database yeni si
 
 Eski uygulama verisinin taşınması bu task setinin kapsamı değildir. Yeni database boş başlar. Bir veri aktarımı ihtiyacı doğarsa bu, migration altyapısına eklenmez ve bu task setinin tamamlanma koşulu yapılamaz.
 
+
+## Nihai karar özeti (2026-11-03)
+
+| Konu | Nihai karar |
+| --- | --- |
+| Platform migration | Goose |
+| Tenant migration | Aynı Goose Runner |
+| Tenant provisioning | Otomatik |
+| Privileged execution | Kısa ömürlü one-shot Tenant Provisioning Job (aynı Harpy binary) |
+| Sürekli çalışan migration executor | Yasak |
+| API / Worker DDL | Yasak |
+| Dynamic form sistemi | Harpy kapsamı dışında; schema-executor ve typed DDL IR tamamen kaldırılır |
+| Schema executor kalıntıları | Tamamen kaldırılacak |
+| Eski migration sistemi | Tamamen kaldırılacak |
+| Custom migration state | Yasak |
+
 ## 3. Nihai mimari
 
 ### INITIALIZE
@@ -61,7 +77,9 @@ API, worker ve diğer uygulama süreçleridir. Foundation ve Goose başarıyla b
 - Tek migration otoritesi Goose'tur.
 - Goose native version history dışında migration history yoktur.
 - Platform ve tenant migration'ları aynı Goose implementation/runner ile yürütülür.
-- Tenant schema için ikinci migration implementation'ı, sürekli çalışan executor/worker/daemon/service veya migration-specific queue bulunmaz. Otomatik provisioning için yalnız orchestrator tarafından başlatılan kısa ömürlü one-shot Job kullanılabilir; bu beşinci lifecycle aşaması değildir.
+- Sürekli çalışan tenant migration executor, daemon, worker veya migration-specific queue yasaktır.
+- Otomatik tenant provisioning için yalnız kısa ömürlü, talep üzerine başlatılan one-shot Tenant Provisioning Job kullanılır. Bu Job aynı Harpy binary'sini ve aynı Goose Runner'ı kullanır; beşinci lifecycle aşaması değildir.
+- API ve worker DDL yetkisi taşımaz. Migration credential yalnız one-shot Job'a güvenilir secret mekanizması üzerinden verilir.
 - Foundation domain tablolarını oluşturmaz.
 - Application startup migration çalıştırmaz.
 - Hiçbir eski migration Go kodu yeni runner'a taşınmaz.
@@ -155,7 +173,7 @@ Bu bölüm soyut bir arama önerisi değildir. Aşağıdaki envanter, `main` dal
 | `core/internal/composition/migrator/` | 48 dosya | Tamamı kaldırılır; backup/restore composition'ı ayrı, migration dışı package'a taşınır. |
 | `core/internal/platform/migration/` | 39 dosya | Custom migration document/release modelinin tamamı kaldırılır. |
 | `core/internal/platform/baseline/` | 24 dosya | Özel baseline provider/snapshot orkestrasyonu kaldırılır; yalnız yeni native Goose source ve minimal çağrı sınırı kalır. |
-| `core/internal/platform/tenantmigrationexecutor/` | 8 dosya | Tamamı kaldırılır; tenant provisioning aynı Goose runner ile synchronous çağrı yapar. |
+| `core/internal/platform/tenantmigrationexecutor/` | 8 dosya | Tamamı kaldırılır. Otomatik provisioning one-shot Tenant Provisioning Job ile yapılır. |
 | `core/internal/platform/schemacontract/` | 16 dosya | Migration/release readiness contract'ı kaldırılır; runtime schema readiness DDL/version yönetmeden gerekli uygulama bağlantılarını sınar. |
 | `core/internal/platform/migrator/tenantmigrationexecutor/` | 16 dosya | Tamamı kaldırılır. |
 | `tools/localrelease/` | 66 dosya | Migration manifest/release-ledger kısmı kaldırılır; installation/license gibi migration dışı işlevler gerçek owner'a taşınır ve test edilir. |
@@ -163,7 +181,7 @@ Bu bölüm soyut bir arama önerisi değildir. Aşağıdaki envanter, `main` dal
 | `internal/attestation/migrationsupersession/` | 14 dosya | Tamamı kaldırılır. |
 | `core/internal/modules/tenancy/adapters/postgres/tenantmigration/` | 11 dosya | Migration executor adapter'ı kaldırılır; tenancy domain provisioning yalnız domain state'ini yönetir. |
 | `core/cmd/migrator/` | 1 entrypoint | Tamamı kaldırılır. |
-| `core/internal/platform/migrator/schemaexecutor/` | repository ağacında mevcut | Tamamı kaldırılır; form/config DDL publish akışı da Goose-only karara göre yeniden tasarlanır. |
+| `core/internal/platform/migrator/schemaexecutor/` | repository ağacında mevcut | Tamamı kaldırılır. Dynamic form / typed DDL IR Harpy kapsamı dışındadır; yerine form altyapısı kurulmaz. |
 | `core/internal/platform/migratoroutput/` | repository ağacında mevcut | Custom plan/up/verify payload üretimi kaldırılır. |
 
 Bu tablo silinecek dosyaların tamamı değildir. Her package altındaki bütün dosyalar, alt dizinler, testler, SQL ve generated dosyalar PR'da listelenir. Paket dışındaki consumer ve üreticiler de aynı PR kapsamındadır.
@@ -299,9 +317,11 @@ Taskfile testleri yeni tek entrypoint ve dört lifecycle ordering'ini assert ede
 
 ## 13. Eski schema-executor / typed DDL IR kalıntılarının kaldırılması
 
-schema-executor, typed DDL IR ve bunlara bağlı runtime publish/command/queue/config/secret/contract/test kodları Harpy'nin ürün gereksinimi değildir. Bunlar ForgeCRUD kaynaklı/eski ürün altyapısı kalıntısı olarak consumer graph'ıyla birlikte denetlenir ve kaldırılır.
+schema-executor, typed DDL IR ve bunlara bağlı tüm command, queue, config, secret, contract, test ve deployment referansları ForgeCRUD kaynaklı kalıntıdır. Harpy'nin ürün gereksinimi değildir.
 
-Harpy'de dynamic form, form publish, form metadata, record CRUD, workflow veya benzeri ürün özelliği varsayılmaz. JSONB/EAV alternatifi tasarlanmaz; form davranışı için acceptance test yazılmaz; yerine yeni ürün alt sistemi kurulmaz. Generic primitive ancak somut Harpy consumer'ı, owner'ı ve testi kanıtlanırsa korunabilir. Ayrıntılı denetim 05 numaralı task'tadır.
+Bu kodlar tamamen kaldırılır. Yerine dynamic form, form publish, form metadata, record CRUD, EAV, JSONB form modeli veya başka bir form altyapısı kurulmaz. Bu davranışlar için acceptance test yazılmaz. Generic bir primitive ancak somut Harpy consumer'ı, owner'ı ve testi kanıtlanırsa korunabilir.
+
+Ayrıntılı envanter ve disposition 05 numaralı task'tadır. Sıfır kalıntı denetimi bu kalıntıları kapsar.
 
 ## 14. Catalog ve baseline snapshot geçmişi
 

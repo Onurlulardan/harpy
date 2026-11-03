@@ -130,15 +130,20 @@ Sıra:
 
 Platform migration'larının dışında ayrıca schema bootstrap SQL'i çalıştıran ikinci bir yol olamaz.
 
-## 8. Tenant ilk kurulum ve provisioning
+## 8. Tenant ilk kurulum ve otomatik provisioning
 
-Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
+Otomatik tenant provisioning aşağıdaki kesin mimariyle yapılır. Bu, beşinci bir lifecycle aşaması veya sürekli çalışan executor değildir.
 
-API yalnız sabit trusted Job template'ini tenant ID ile tetikleyebilir. Image, command, service account, secret mount, volume ve network ayarları kullanıcı girdisiyle değiştirilemez; orchestrator policy/admission ile sabitlenir. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile yalnız hedef tenant migration source'unu çalıştırır.
-
-DDL credential kısa ömürlü secret injection ile yalnız Job'a verilir. API/worker credential'ı okuyamaz veya DDL yapamaz. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir; platform ve diğer tenant schema'larına erişemediği PostgreSQL negative testleriyle kanıtlanır. Cluster-wide superuser/CREATEDB/CREATEROLE verilmez.
-
-Tenant domain kaydı işlem başında PROVISIONING, Job/Goose başarısında ACTIVE olur; hata durumunda aktif edilmez. Bu gerçek tenancy lifecycle state'idir, migration attempt/checkpoint/receipt değildir. Retry/concurrency custom migration state'i olmadan PostgreSQL/orchestrator native davranışıyla yönetilir. Orchestrator bu izolasyonu sağlayamıyorsa API'ye DDL yetkisi verilerek fallback yapılmaz; provisioning fail closed olur.
+1. Harpy API tenant oluşturma isteğini alır. Tenant kaydını `PROVISIONING` durumuna getirir. API DDL yetkisi taşımaz.
+2. API, güvenilir bir mekanizma üzerinden kısa ömürlü Tenant Provisioning Job başlatma isteği gönderir. Job image, command, service account, secret mount ve network ayarları kullanıcı girdisiyle değiştirilemez; sabit template'dir.
+3. One-shot Tenant Provisioning Job aynı Harpy release image'ını ve aynı binary'yi kullanır. Aynı Goose Runner implementation'ını çağırır. Ayrı migrator binary veya ikinci Goose implementation yazılmaz.
+4. Job, tenant ID'den güvenilir biçimde üretilen canonical schema adıyla hedef tenant schema'sını oluşturur (Foundation namespace/ownership/privilege kuralları içinde). Kullanıcı girdisi schema adını belirlemez.
+5. Job, aynı Goose Runner ile yalnız o tenant'ın migration source'unu çalıştırır. Goose native history ilgili tenant schema içinde oluşur.
+6. Migration başarılıysa tenant `ACTIVE` durumuna geçer ve kullanıma açılır. Başarısızsa `ACTIVE` olmaz ve hata gerçek sebebiyle raporlanır.
+7. Job işlem bitince kapanır. Sürekli çalışan tenant migration executor, daemon, worker veya migration-specific queue yoktur.
+8. Migration credential'ı API veya worker'a verilmez. Yalnız Job tarafından güvenilir secret mekanizmasından alınır ve işlem sonrası erişilemez.
+9. Aynı tenant için eşzamanlı provisioning PostgreSQL advisory lock veya eşdeğer native mekanizma ile engellenir. Custom migration state, catalog, checkpoint veya receipt oluşturulmaz.
+10. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir. Platform ve diğer tenant schema'larına erişemediği negative testlerle kanıtlanır.
 
 One-shot Job yeni lifecycle aşaması değildir. INITIALIZE platformun ilk kurulumunu yapar; Job sonradan açılan tenant için aynı Foundation ve Goose kod yolunu çağırır.
 
@@ -257,9 +262,9 @@ Yeni migration source için Git tabanlı bir immutability gate ekle:
 
 ## 15. Tenant provisioning Job ve legacy schema-executor temizliği
 
-Otomatik tenant provisioning §8'deki orchestrator-managed one-shot Job ile yapılır. Job aynı Harpy image/binary'sini, Foundation tenant namespace operation'ını ve aynı Goose Runner'ı çağırır. Sürekli çalışan executor/worker/daemon/queue veya ayrı migrator binary oluşturulmaz.
+Otomatik tenant provisioning §8'deki one-shot Tenant Provisioning Job ile yapılır. Job aynı Harpy image/binary'sini ve aynı Goose Runner'ı kullanır. Sürekli çalışan executor/worker/daemon/queue veya ayrı migrator binary oluşturulmaz.
 
-core/internal/platform/migrator/schemaexecutor/, typed DDL IR ve bunlara bağlı command/queue/config/secret/contract/test kodları eski ürün altyapısı kalıntısı olarak kaldırılır. Harpy için dynamic form, form publish, form metadata, record CRUD veya benzeri ürün davranışı varsayılmaz. JSONB/EAV tasarlanmaz; bunları korumaya yönelik acceptance test yazılmaz; yerine yeni form/config alt sistemi kurulmaz. Bütün consumer/deployment wiring 05 numaralı ForgeCRUD audit ile denetlenir.
+`core/internal/platform/migrator/schemaexecutor/`, typed DDL IR ve bunlara bağlı tüm command, queue, config, secret, contract, test ve deployment referansları ForgeCRUD kaynaklı kalıntıdır. Tamamen kaldırılır. Harpy'de dynamic form, form publish, form metadata, record CRUD veya benzeri ürün davranışı yoktur. JSONB/EAV tasarlanmaz; form davranışı için acceptance test yazılmaz; yerine yeni form/config alt sistemi kurulmaz. Tüm consumer ve deployment bağlantıları sıfır kalıntı denetimine dahildir.
 
 ### 15.1 Tenant schema history
 
