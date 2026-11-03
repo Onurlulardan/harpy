@@ -32,7 +32,7 @@ func readBaselineFoundation(
 		&extensionVersion, &extensionSchema, &extensionOwner, &appliedVersions,
 	)
 	if err != nil {
-		return foundationPreflight{}, fmt.Errorf("%w: foundation evidence query", ErrStartupPreflight)
+		return foundationPreflight{}, fmt.Errorf("%w: baseline foundation query: %w", ErrStartupPreflight, err)
 	}
 	return assembleBaselineFoundation(
 		origin, systemID, environmentID, releaseID,

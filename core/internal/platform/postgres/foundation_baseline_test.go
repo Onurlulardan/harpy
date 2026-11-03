@@ -1,11 +1,36 @@
 package postgres
 
 import (
+	"context"
+	"errors"
 	"strings"
 	"testing"
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
+	"github.com/jackc/pgx/v5"
 )
+
+type staticRow struct{ err error }
+
+func (row staticRow) Scan(...any) error { return row.err }
+
+type staticQueryer struct{ err error }
+
+func (queryer staticQueryer) QueryRow(context.Context, string, ...any) pgx.Row {
+	return staticRow{err: queryer.err}
+}
+
+func TestFoundationQueryKeepsPostgreSQLCause(t *testing.T) {
+	cause := errors.New("ERROR: permission denied for table goose_db_version (SQLSTATE 42501)")
+	_, err := readBaselineFoundation(context.Background(), staticQueryer{err: cause}, runtimev1.BinarySchemaContract{})
+	if !errors.Is(err, ErrStartupPreflight) || !errors.Is(err, cause) {
+		t.Fatalf("baseline error = %v", err)
+	}
+	_, err = readFoundationPreflight(context.Background(), staticQueryer{err: cause}, runtimev1.BinarySchemaContract{})
+	if !errors.Is(err, ErrStartupPreflight) || !errors.Is(err, cause) {
+		t.Fatalf("historical evidence error = %v", err)
+	}
+}
 
 func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 	digest := strings.Repeat("b", 64)

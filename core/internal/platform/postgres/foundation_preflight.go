@@ -123,7 +123,7 @@ func readFoundationPreflight(
 		return readBaselineFoundation(ctx, queryer, binary)
 	}
 	if err != nil {
-		return foundationPreflight{}, fmt.Errorf("%w: foundation evidence query", ErrStartupPreflight)
+		return foundationPreflight{}, fmt.Errorf("%w: foundation evidence query: %w", ErrStartupPreflight, err)
 	}
 	return result, nil
 }
