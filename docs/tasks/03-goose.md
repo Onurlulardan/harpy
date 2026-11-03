@@ -132,21 +132,15 @@ Platform migration'larının dışında ayrıca schema bootstrap SQL'i çalışt
 
 ## 8. Tenant ilk kurulum ve provisioning
 
-Her tenant, yeni ve boş tenant schema'sı olarak kurulur. Eski tenant schema'sı veya eski tenant migration state'i yeni sistemin girdisi değildir.
+Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
 
-Tenant akışı:
+API yalnız sabit trusted Job template'ini tenant ID ile tetikleyebilir. Image, command, service account, secret mount, volume ve network ayarları kullanıcı girdisiyle değiştirilemez; orchestrator policy/admission ile sabitlenir. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile yalnız hedef tenant migration source'unu çalıştırır.
 
-1. Tenant ID mevcut tenancy domain kurallarıyla doğrulanır.
-2. Canonical tenant schema adı üretilir ve identifier güvenliği doğrulanır.
-3. Foundation sorumluluğundaki namespace/ownership/privilege işlemi uygulanır.
-4. Aynı Goose runner tenant migration source'unu bu schema için çalıştırır.
-5. Goose native history ilgili tenant schema içinde oluşur.
-6. Tüm migration'lar başarılıysa tenant mevcut application provisioning akışında aktif edilir.
-7. Goose başarısızsa tenant aktif edilmez ve hata gerçek sebebiyle raporlanır.
+DDL credential kısa ömürlü secret injection ile yalnız Job'a verilir. API/worker credential'ı okuyamaz veya DDL yapamaz. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir; platform ve diğer tenant schema'larına erişemediği PostgreSQL negative testleriyle kanıtlanır. Cluster-wide superuser/CREATEDB/CREATEROLE verilmez.
 
-Platform ve tenant için ayrı migrator servisi, ayrı binary, ayrı runner, tenant executor, migration worker veya migration-specific queue oluşturulmaz. Tenant işlemi aynı kod yolu, aynı Goose implementation ve aynı native history mekanizmasıyla yapılır.
+Tenant domain kaydı işlem başında PROVISIONING, Job/Goose başarısında ACTIVE olur; hata durumunda aktif edilmez. Bu gerçek tenancy lifecycle state'idir, migration attempt/checkpoint/receipt değildir. Retry/concurrency custom migration state'i olmadan PostgreSQL/orchestrator native davranışıyla yönetilir. Orchestrator bu izolasyonu sağlayamıyorsa API'ye DDL yetkisi verilerek fallback yapılmaz; provisioning fail closed olur.
 
-Tenant provisioning sırasında admin yetkisinin yönetimi açıkça tanımlanır. API/worker runtime credential'ı DDL yetkisi almaz. Ayrı bir deployable ekleyerek bu yetki sorunu çözülmez.
+One-shot Job yeni lifecycle aşaması değildir. INITIALIZE platformun ilk kurulumunu yapar; Job sonradan açılan tenant için aynı Foundation ve Goose kod yolunu çağırır.
 
 ## 9. Goose transaction ve eşzamanlılık
 
@@ -261,16 +255,16 @@ Yeni migration source için Git tabanlı bir immutability gate ekle:
 - Bu kontrol Goose native history'yi değiştirmez ve runtime custom digest/history tablosu üretmez.
 - İstisna/allowlist ile eski migration dosyasını değiştirmek mümkün kılınmaz; düzeltme yeni forward migration ile yapılır.
 
-## 15. Tenant provisioning ve dynamic form schema sınırı
+## 15. Tenant provisioning Job ve legacy schema-executor temizliği
 
-Aynı Goose runner hem platform hem tenant schema için çağrılır. Tenant provisioning işleminin queue consumer, executor, daemon, long-running service veya ayrı binary ihtiyacı yoktur. Provisioning domain akışı tenant metadata'sını yönetebilir; schema oluşturma Foundation ve Goose sınırındadır. Goose başarısızsa tenant active/ready işaretlenmez. Bu davranış custom migration checkpoint tablosuna bağlanmaz.
+Otomatik tenant provisioning §8'deki orchestrator-managed one-shot Job ile yapılır. Job aynı Harpy image/binary'sini, Foundation tenant namespace operation'ını ve aynı Goose Runner'ı çağırır. Sürekli çalışan executor/worker/daemon/queue veya ayrı migrator binary oluşturulmaz.
 
-Bugünkü `schema-executor` ve typed DDL IR, dynamic form/config publish sırasında runtime DDL uygular. Bu yol tamamen kaldırılır. Form/config publish sırasında yeni Goose dosyası üretilip uygulanamaz; runtime migration dosya sistemi veya Goose source'una yazamaz. Form metadata, record CRUD, validation, search/filter, indexing ve tenant isolation davranışlarının DDL'siz nihai data model karşılığı tanımlanır ve gerçek PostgreSQL integration testleriyle kanıtlanır. EAV/JSONB çözümü otomatik varsayılmaz; tasarım kararı ve performans/constraint testleri bu task'ın zorunlu blocker'ıdır.
+core/internal/platform/migrator/schemaexecutor/, typed DDL IR ve bunlara bağlı command/queue/config/secret/contract/test kodları eski ürün altyapısı kalıntısı olarak kaldırılır. Harpy için dynamic form, form publish, form metadata, record CRUD veya benzeri ürün davranışı varsayılmaz. JSONB/EAV tasarlanmaz; bunları korumaya yönelik acceptance test yazılmaz; yerine yeni form/config alt sistemi kurulmaz. Bütün consumer/deployment wiring 05 numaralı ForgeCRUD audit ile denetlenir.
 
 ### 15.1 Tenant schema history
 
-Platform ve her tenant schema için Goose native version history'nin doğru schema'da oluştuğu test edilir. Goose API'sinin `search_path`/schema seçimi native ve açık şekilde yapılır. Tenant A ve Tenant B paralel çağrılarında history veya DDL'nin çapraz schema'ya yazılmadığı doğrulanır. Custom tenant version table veya tenant executor coordination state eklenmez.
+Tenant A ve Tenant B paralel Job çağrılarında Goose native history/DDL çapraz schema'ya yazılmaz. Custom tenant version table veya executor coordination state eklenmez.
 
 ### 15.2 Tamamlanma
 
-Goose task'ı yalnız yeni normal SQL source'ları boş PostgreSQL'de Goose native discovery/execution ile çalışıyor, platform + iki tenant testleri geçiyor, runtime DDL path'i kaldırılmış, immutable migration gate çalışıyor ve tarihsel stream/snapshot disposition dosyaları `UNRESOLVED` içermiyorsa tamamlanır.
+Fresh PostgreSQL platform/tenant testleri, tenant Job privilege/isolation testleri geçmeli; schema-executor/typed DDL IR consumer'ları kaldırılmalı; immutable migration gate çalışmalı ve historical stream/snapshot disposition UNRESOLVED içermemelidir.
