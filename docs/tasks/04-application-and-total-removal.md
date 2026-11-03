@@ -31,21 +31,13 @@ Normal uygulama iş kuralları, tenancy, authorization ve domain davranışları
 
 ## 3. Tenant provisioning sınırı
 
-Yeni tenant schema'sı eski tenant state'ini içeri almaz. Yeni tenant boş schema olarak oluşturulur; Foundation namespace/owner/privilege altyapısını hazırlar; aynı Goose runner tenant migration source'unu uygular; Goose başarılı olduktan sonra application provisioning akışı tenant'ı aktif eder.
+Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
 
-Bu işlem için aşağıdakiler oluşturulamaz:
+**İzin verilen tek tenant DDL çağrı yolu:** aynı Harpy release image digest'ini ve aynı Harpy binary'sini kullanan, sabit trusted template üzerinden başlatılan orchestrator-managed one-shot Job. Bu migrator servisi/binary'si, ikinci Goose runner, beşinci lifecycle aşaması veya sürekli çalışan executor değildir.
 
-- Tenant migration executor.
-- Tenant migrator service/daemon/container/binary.
-- Migration'a özel queue consumer veya worker.
-- Migration run/attempt/claim/lease/checkpoint/receipt tablosu.
-- Migration completion stored procedure.
-- Tenant schema version registry.
-- Platform migrator ile tenant migrator arasında özel RPC/HTTP kontratı.
+API yalnız sabit Job template'ini tenant ID ile tetikleyebilir; image, command, service account, secret, volume, network veya executable değiştirilemez. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile hedef tenant migration source'unu çalıştırır. DDL credential yalnız Job'a kısa ömürlü secret injection ile verilir; API/worker bu secret'ı okuyamaz ve DDL yapamaz. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir; platform ve diğer tenant schema'larına erişemediği integration testleriyle kanıtlanır.
 
-Tenant oluşturma domain iş akışı için zaten var olan genel provisioning mekanizması korunabilir; ancak migration state'i, schema DDL'i veya Goose history'si bu genel mekanizmanın içine ikinci bir migration sistemi olarak taşınamaz.
-
-Tenant schema oluşturma ve Goose çalıştırma yetkisi API/worker runtime credential'ına verilmez. Bu operasyonun güvenli çağrı sınırı dört aşamalı lifecycle ve mevcut deployment güvenlik modeli içinde kurulur; yeni deployable veya daemon ekleyerek çözülmez.
+Tenant domain kaydı işlem başında PROVISIONING, Job/Goose başarısında ACTIVE olur; hatada aktif edilmez. Bu gerçek domain lifecycle state'idir, migration attempt/checkpoint/receipt değildir. Orchestrator izolasyonu sağlayamıyorsa provisioning fail closed olur; API/worker'a DDL yetkisi verilmez.
 
 ## 4. Go source için sıfır kalıntı şartı
 
@@ -414,16 +406,11 @@ Eski platform migrator owner envanterinde listelenen 17 platform table, 39 routi
 
 Yeni Goose schema kapsamı, 14 migration-stream owner kaynağının her birinde tarihsel stream kayıtlarını güncel domain/storage/API consumer'larıyla çapraz kontrol ederek tamamlanır. Yeni schema nesneleri için owner, yeni Goose migration path'i ve gerçek PostgreSQL test adı zorunludur. Eski migration SQL corpus'u, stream order veya baseline dump yeni migration dosyasına kopyalanamaz.
 
-## 20. Dynamic form DDL: ürün davranışı kapanışı
+## 20. ForgeCRUD kalıntı denetimiyle entegrasyon
 
-`schema-executor` ve typed DDL IR kaldırılması yalnız runtime service silmek anlamına gelmez. Bugünkü form/config publish ile fiziksel tenant schema nesnesi üretme davranışının ürün karşılığı açıkça kapatılmalıdır.
+Harpy'nin ForgeCRUD kaynak kodundan ayıklanmış olması, ForgeCRUD ürün özelliklerini Harpy'de koruma gereksinimi doğurmaz. Form/workflow/dashboard/print/portal/CRM/ERP gibi ForgeCRUD ürün davranışları Harpy'ye taşınmaz ve bunların yerine alternatif tasarlanmaz.
 
-- Runtime publish sırasında Goose source oluşturulamaz/değiştirilemez/çalıştırılamaz.
-- Publish path'inde DDL, CREATE/ALTER TABLE veya dynamic schema execution bulunamaz.
-- Form metadata, field validation, record CRUD, search/filter/indexing ve tenant isolation için yeni storage design hazırlanır.
-- JSONB/EAV veya tek tablo generic model otomatik seçilemez; gerçek API/query gereksinimleri ve performans/constraint trade-off'ları dokümante edilir.
-- Eski typed DDL contract/IR payload'ı, schema-executor queue/command, secrets, config ve tests kaldırılır.
-- Form publish, concurrent publish, record write/read, validation, query filter, permission ve isolation PostgreSQL integration testleri olmadan bu başlık tamamlanmaz.
+Repository çapındaki ayrı inceleme, arama terimleri, disposition sınıfları, generic foundation koruma kriterleri ve kabul testleri docs/tasks/05-forgecrud-residue-audit.md içindedir. 04 tamamlanmadan önce tüm kayıtlar REMOVE veya kanıtlı KEEP_GENERIC_FOUNDATION kararı almalı; UNRESOLVED kalmamalıdır.
 
 ## 21. CI, guard ve fresh install acceptance gate
 
