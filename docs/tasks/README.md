@@ -1,120 +1,140 @@
-# Harpy — Tek Veritabanı Yaşam Döngüsü Task Seti
+# Harpy — Sıfırdan Veritabanı Yaşam Döngüsü
 
-## Bağlayıcı hedef
+## 1. Bu task setinin değiştirilemez kararı
 
-Harpy'nin kurulum ve veritabanı yaşam döngüsü **yalnızca ve tam olarak dört aşamadan** oluşacaktır:
+Harpy'nin veritabanı kurulum ve schema yönetimi mevcut migration altyapısının devamı değildir. Mevcut altyapı referans alınarak iyileştirilmeyecek, sadeleştirilmeyecek, Goose'a uyarlanmayacak ve bir uyumluluk katmanı altında yaşatılmayacaktır.
+
+**Mevcut migration sistemi tamamen silinecek. Yeni sistem boş bir zeminde sıfırdan yazılacaktır.**
+
+Bu karar yalnızca package isimleri için değil, davranış, veri modeli, SQL, sözleşme, konfigürasyon, build girdisi, deployable, test, fixture, CLI ve dokümantasyon için de geçerlidir. Eski sistemin bir parçasını yeni isimle taşımak, aynı davranışı başka bir struct veya servis arkasına saklamak ya da eski state'i yeni sisteme okutmak tamamlanmış iş sayılmaz.
+
+Yeni sistemin tek yaşam döngüsü aşağıdaki dört aşamadır:
 
 1. **INITIALIZE**
 2. **DATABASE FOUNDATION**
 3. **GOOSE**
 4. **APPLICATION**
 
-Bunların dışında beşinci bir aşama, ayrı migration servisi, paralel schema lifecycle, özel migration runtime'ı veya alternatif migration otoritesi oluşturulmayacaktır. Bu dosyaların numaraları yalnızca iş sırasını belirtir; yeni runtime aşamaları tanımlamaz.
+Bu dört aşamanın dışında beşinci bir lifecycle aşaması, paralel schema yöneticisi veya ayrı migration servisi bulunmayacaktır.
 
-Bu task seti, repository'deki mevcut kurulum/migration mimarisine dair çelişen eski dokümanlardan ve skill hükümlerinden üstündür. Eski tasarımı korumak, adını değiştirmek, yeni bir abstraction altına saklamak veya uyumluluk amacıyla yaşatmak kabul edilmez.
+## 2. Fresh başlangıç kuralı
 
-## Nihai akış
+Yeni sistem yalnızca **boş bir PostgreSQL database'i** hedefler. Eski migration sisteminin oluşturduğu database, tabloları, schema'ları, metadata'sı, migration dosyaları veya version kayıtları yeni sisteme girdi olarak verilmeyecektir.
 
-INITIALIZE
-→ DATABASE FOUNDATION
-→ GOOSE
-→ APPLICATION
+Aşağıdaki işlemler kesinlikle yapılmayacaktır:
 
-İlk üç aşama başarıyla tamamlanmadan API, worker veya başka bir uygulama servisi başlatılamaz. Uygulama startup'ı schema DDL çalıştıramaz. Goose tamamlanmış schema'yı kullanır; schema'nın sahibi veya ikinci bir migration yöneticisi olmaz.
+- Eski database'i Goose geçmişine dahil etmek.
+- Eski schema'yı yeni ilk migration ile eşleştirmek veya baseline/adoption yapmak.
+- Eski migration geçmişini Goose version tablosuna yazmak.
+- Eski SQL migration dosyalarını yeni migration source'una kopyalamak.
+- Eski metadata'yı yeni migration çalıştırarak temizlemek.
+- Eski veriyi, schema'yı veya migration state'ini yeni sisteme taşımak.
+- Eski davranışla uyum sağlamak için adapter, fallback, translator veya compatibility mode oluşturmak.
 
-## Dört aşamanın kesin sınırları
+Yeni kurulum için yeni ve boş bir database oluşturulur. Eski database yeni sistem tarafından okunmaz, değiştirilmez veya otomatik olarak silinmez. Konfigürasyon yanlışlıkla dolu/eski bir database'i gösteriyorsa kurulum **fail closed** davranışıyla durur. Eski database'i otomatik silmek de kabul edilmez; yeni kurulum açıkça ayrılmış boş bir database üzerinde yapılır.
 
-### 1. INITIALIZE
+Eski uygulama verisinin taşınması bu task setinin kapsamı değildir. Yeni database boş başlar. Bir veri aktarımı ihtiyacı doğarsa bu, migration altyapısına eklenmez ve bu task setinin tamamlanma koşulu yapılamaz.
 
-İlk kurulumun tek giriş noktasıdır. Sıralamayı yönetir ve başarısız aşamada akışı durdurur. İlk kurulum dışında her deploy'da özel bir migration lifecycle başlatmaz. İlk kurulumun yarıda kesilmesi halinde tekrar çağrılabilmesi için güvenli ve idempotent olmalıdır. Bu idempotency özel bir initialization/version registry ile değil, gerçek PostgreSQL nesnelerinin ve Goose native history'sinin kontrol edilmesiyle sağlanır.
+## 3. Nihai mimari
 
-### 2. DATABASE FOUNDATION
+### INITIALIZE
 
-PostgreSQL database'ini ve Goose/Application çalışması için zorunlu altyapıyı hazırlar: gerekli schema'lar, roller, extension'lar, ownership, grant/default privilege ve gerçekten kaçınılmaz bootstrap tabloları.
+Tek kurulum giriş noktasıdır. Aşamaları doğru sırada çağırır, hata durumunda durur ve tekrar çalıştırılabilir. Kendi version, run, checkpoint veya completion state'ini tutmaz.
 
-Foundation kendi schema version'ını, migration list'ini, release bilgisini veya geçmiş kaydını tutamaz. Goose'un kendi **goose_db_version** tablosunu Foundation oluşturmaz, düzenlemez veya taklit etmez; bu tablo Goose'a aittir.
+### DATABASE FOUNDATION
 
-Foundation aşamasında oluşturulması zorunlu olmayan bütün uygulama/platform/tenant tabloları ilk Goose migration'ında oluşturulur. Foundation'ın oluşturduğu sabit bir bootstrap tablosu varsa yalnızca Goose çalışmadan önce var olması teknik olarak zorunlu olduğu için bulunabilir; bu tablonun sonraki tüm DDL değişiklikleri de Goose migration'ı ile yapılır.
+Boş PostgreSQL üzerinde database seviyesindeki zorunlu altyapıyı kurar: roller, schema namespace'leri, extension'lar, ownership, grants ve default privileges. Uygulama tabloları veya migration geçmişi oluşturmaz.
 
-### 3. GOOSE
+### GOOSE
 
-Platform schema'ları ve her tenant schema'sı dahil, tüm schema lifecycle'ın tek otoritesidir. Bundan sonraki bütün DDL değişiklikleri yalnızca Goose migration dosyalarıyla yapılır:
+Bütün platform ve tenant schema DDL'inin tek otoritesidir. Resmi **github.com/pressly/goose/v3** kullanılır. İlk schema, eski migration zincirinden devralınmaz; mevcut ürün gereksinimleri esas alınarak sıfırdan hazırlanmış yeni Goose başlangıç migration'larıyla oluşturulur. Sonraki bütün schema değişiklikleri yine Goose migration dosyalarıyla yapılır.
 
-- Table, column ve data type
-- Index, constraint, foreign key ve sequence
-- Function, procedure ve trigger
-- Schema, view ve diğer PostgreSQL schema nesneleri
-- Tenant schema nesnelerinin tamamı
+### APPLICATION
 
-Migration geçmişi yalnızca Goose'un native version store'unda tutulur. Her hedef schema için Goose'un native history mekanizması kullanılır. Goose yanında ikinci bir geçmiş, catalog, manifest veya özel checkpoint bulunamaz.
+API, worker ve diğer uygulama süreçleridir. Foundation ve Goose başarıyla bitmeden başlatılmaz. Normal uygulama runtime'ı DDL veya database administration yapmaz.
 
-Goose, sürekli çalışan ayrı bir servis değildir. INITIALIZE akışı ile tenant oluşturma akışında gereken yerde çağrılan tek seferlik Goose işlevidir. Ayrı bir migrator daemon/container/deployable veya tenant migration executor kurulmayacaktır.
+## 4. Mimari sınırlar
 
-### 4. APPLICATION
+- Runtime lifecycle tam olarak dört aşamadır.
+- Tek migration otoritesi Goose'tur.
+- Goose native version history dışında migration history yoktur.
+- Platform ve tenant migration'ları aynı Goose implementation/runner ile yürütülür.
+- Tenant schema için ikinci bir migrator, executor, worker, daemon veya migration-specific queue bulunmaz.
+- Foundation domain tablolarını oluşturmaz.
+- Application startup migration çalıştırmaz.
+- Hiçbir eski migration Go kodu yeni runner'a taşınmaz.
+- Eski migration SQL corpus'u yeni başlangıç migration'ı olarak kullanılmaz.
+- Eski migration framework metadata'sı yeni database'e oluşturulmaz.
+- Goose native version tablosu Foundation tarafından yaratılmaz veya yönetilmez.
 
-API, worker ve diğer uygulama servisleridir. Yalnızca Foundation ve Goose başarılı olduktan sonra başlarlar. Normal uygulama runtime credential'ları DDL yetkisi taşımaz. API/worker startup'ında migration, baseline, schema repair veya otomatik DDL çalıştırılmaz.
+Goose runner yalnızca hedef database bağlantısını, hedef schema/search_path değerini ve ilgili native migration source'unu Goose'a ileten küçük bir çağrı sınırıdır. Runner kendi discovery, sorting, selection, classification, versioning, retry state veya completion policy'sini geliştiremez.
 
-Yeni tenant oluşturulurken de aynı sıra uygulanır: gerekli tenant schema'sı Foundation yetkisiyle oluşturulur, aynı Goose runner tenant schema'sına migration uygular, başarıdan sonra tenant uygulamaya açılır. Bunun için ikinci bir migration sistemi, migrator process'i, manifest veya migration-specific job state oluşturulmaz.
+## 5. İş sırası
 
-## Kesin yasaklar
+1. [01 — INITIALIZE](01-initialize.md): eski entrypoint/orchestration kodunu kaldır ve tek yeni giriş noktasını sıfırdan oluştur.
+2. [02 — DATABASE FOUNDATION](02-database-foundation.md): yalnız boş database için DB altyapısını oluştur.
+3. [03 — GOOSE](03-goose.md): yeni platform ve tenant schema'larını temiz Goose migration source'larından sıfırdan üret.
+4. [04 — APPLICATION ve sıfır kalıntı](04-application-and-total-removal.md): uygulama başlangıç sınırlarını kur, eski sistemi repository'nin tamamından sil ve kanıtla.
 
-Aşağıdakilerden hiçbiri mevcut veya yeni bir isimle repository'de kalamaz:
+Task dosyaları iş sırasını belirtir. Bunlar runtime'a yeni aşama eklemez.
 
-- Custom migration catalog, migration manifest, selected migration listesi veya özel dosya seçme/sıralama algoritması.
-- Migration digest/hash, migration release, release archive, release registry, database/runtime generation veya bunların attestation/receipt modelleri.
-- Goose version geçmişine paralel custom version/history tablosu, custom Goose store veya Goose history'sini saran ikinci bir kayıt sistemi.
-- Migration run, migration attempt, migration checkpoint, requirement catalog, history alias/supersession ve migration completion receipt.
-- Schema contract, binary schema contract, schema compatibility generation, migration manifest readiness kontrolü veya custom minimum-version registry.
-- Platform migrator runtime'ı, tenant migration executor servisi, migration worker'ı veya migration'a özel orchestration.
-- Manifest üretici/doğrulayıcı, release hazırlayıcı, migration artifact kopyalayıcı veya bunlara ait CLI flag, Taskfile adımı, Docker katmanı ve CI job'u.
-- Goose'un önüne yerleştirilmiş custom parser, planner, classifier, selector, verifier, finalizer veya migration state machine.
-- Aynı DDL'yi hem Foundation hem Goose hem de uygulama kodunda yöneten paralel yollar.
+## 6. Repository çapındaki silme kapsamı
 
-Bir bileşen yalnızca eski bileşenin yerine yeni isimle taşınmışsa kaldırılmış sayılmaz. Eski kavramları gizleyen yeni abstraction da yasaktır.
+Arama ve kaldırma kapsamı repository root'un tamamıdır:
 
-## Veri koruma ve mevcut kurulumlar
+- Bütün Go source ve test dosyaları
+- SQL dosyaları ve PostgreSQL routine'leri
+- JSON/JSON Schema, YAML, protobuf ve diğer contract dosyaları
+- Generated source ve generator'lar
+- Test fixture, snapshot ve mock'lar
+- Dockerfile, Compose, Taskfile ve shell script'leri
+- CLI komutları ve flag'leri
+- CI workflow ve release/build adımları
+- Environment variable, config alanı, secret ve dosya path'leri
+- Runtime image, binary, volume, service ve deployable tanımları
+- AGENTS.md, skills, architecture docs, developer guide ve README'ler
+- Eski task, archive ve migration planı klasörleri
 
-Bu çalışma mevcut tenant'ları, platform/business tablolarını veya kullanıcı verisini silme/recreate etme çalışması değildir.
+Yalnızca bir dosyayı silmek yeterli değildir. O dosyanın import eden, üreten, çağıran, test eden, deploy eden veya dokümante eden bütün bağlantıları da kaldırılmalıdır. Generated output'lar yeniden üretilerek temizlenmelidir; elle silinip generator tarafından geri getirilmeleri kabul edilmez.
 
-- Mevcut PostgreSQL database'i yeniden oluşturulmayacaktır.
-- Var olan business tabloları, satırlar, tenant schema'ları, foreign key ilişkileri ve dosya referansları korunacaktır.
-- Eski migration framework'üne ait metadata tabloları/function/procedure'lar ancak yeni Goose akışı doğrulandıktan ve hiçbir runtime consumer kalmadığı kanıtlandıktan sonra Goose forward migration'larıyla kaldırılır.
-- Eski migration metadata'sı business data gibi korunmaz; tamamen emekliye ayrılır.
-- Mevcut schema'yı Goose history'ye alma işlemi yalnızca Goose'un native mekanizmasıyla yapılır. Goose dışı bir baseline registry veya özel adoption tablosu kurulmaz.
-- Uygulama rollback'i schema'yı eski migration framework'üne döndürmek anlamına gelmez. Gerekli düzeltmeler yeni forward Goose migration'larıyla yapılır.
-- DROP DATABASE, tenant schema drop/recreate, business table truncate veya veriyi silip yeniden seed etme kabul edilmez.
+## 7. Yeni başlangıç schema'sının kaynağı
 
-## Cursor/implementasyon ajanı için çalışma emri
+Yeni schema, eski migration dosyalarının kopyası değildir. Yeni başlangıç schema'sı mevcut ürünün bugün desteklenmesi gereken domain ve platform gereksinimleri, güncel application contract'ları ve açıkça onaylanmış veri modeli üzerinden yeniden tasarlanır.
 
-1. Önce repository'nin tamamını tara. Yalnızca tek bir migrator package'ına bakarak kapsamı daraltma.
-2. Go source, SQL, contracts, JSON Schema, generated output, tests, fixtures, Dockerfile, Compose, Taskfile, scripts, CI, setup CLI, skills ve docs dahil tüm referansları takip et.
-3. Eski sistemi korumak için KEEP/compatibility/fallback kararı verme. Eski migration framework'üne ait her kod ve veri modeli silinecek veya Goose native akışına dönüştürülecektir.
-4. Kod değişikliğini yalnızca bu dört aşamaya göre yap. Yeni bir beşinci süreç/servis/adım gerekiyormuş gibi görünürse bunu oluşturma; sorumluluğu dört aşamadan doğru olana yerleştir.
-5. İlk aşamada yalnızca envanter çıkarıp bırakma. Envanter, silme ve yeniden kurma işinin başlangıcıdır; tamamlanma kriteri değildir.
-6. Başarısız testi atlama, guard'ı gevşetme, eski behavior'ı test adı altında saklama veya yalnızca derlemeyi başarı sayma.
-7. Çelişen eski skill/architecture metinlerini güncelle. Kodun yeni mimariye taşındığını söyleyip eski dokümanlarda eski sistemi normatif bırakma.
-8. Tüm kontrolleri gerçek PostgreSQL ile çalıştır. Mock veya statik test tek başına migration doğrulaması değildir.
+- Eski migration dosyaları schema tasarımının kaynağı yapılmaz.
+- Eski SQL corpus'undaki dosyalar yeni Goose dosyalarına taşınmaz.
+- Eski migration sıralaması veya eski version numaraları korunmaz.
+- Eski migration metadata tabloları yeniden yaratılmaz.
+- Gerekli tablo, index, constraint, function, trigger ve view'lar yeni SQL olarak yazılır.
+- Kullanılmayan, çakışan veya tarihsel olarak kalmış schema nesneleri yeni başlangıç schema'sına alınmaz.
+- Uygulama kodu ile yeni schema uyuşmuyorsa hangi güncel domain davranışının destekleneceği belirlenir; eski migration davranışı otomatik olarak doğru kabul edilmez.
 
-## İş sırası
+## 8. Test ve tamamlanma ölçütü
 
-- [01 — INITIALIZE](01-initialize.md)
-- [02 — DATABASE FOUNDATION](02-database-foundation.md)
-- [03 — GOOSE](03-goose.md)
-- [04 — APPLICATION ve eski sistemin tamamen kaldırılması](04-application-and-total-removal.md)
+En az aşağıdaki doğrulamalar gerçek PostgreSQL üzerinde yapılır:
 
-## Nihai kabul koşulu
+- Tamamen boş database ile ilk kurulum.
+- INITIALIZE tekrar çalıştırıldığında idempotent sonuç.
+- Foundation'ın yalnız DB altyapısını oluşturması.
+- Goose'un platform schema'sını sıfırdan oluşturması.
+- İki ayrı tenant schema'sının aynı Goose runner ile kurulması.
+- Goose hata verdiğinde Application'ın başlamaması.
+- API/worker rollerinin DDL yapamaması.
+- API/worker restart'ında migration çalışmaması.
+- Tenant izolasyonu.
+- Tekrarlanan Goose çağrısının yeni DDL/data kopyası üretmemesi.
+- Eski migration davranışı veya eski migration state'i olmadan clean install.
+- Repository genelinde eski runtime/code/config/deployable kalıntısı bulunmadığının kanıtlanması.
 
-İş ancak aşağıdaki koşulların **tamamı** sağlandığında biter:
+Çalıştırılacak kontroller:
 
-- Runtime lifecycle tam olarak dört aşamadan oluşur.
-- Goose, platform ve tenant schema değişikliklerinin tek otoritesidir.
-- Goose native history dışında migration geçmişi yoktur.
-- Eski migration framework'üne ait executable code, model, contract, SQL routine, table, script, build artifact, service, test fixture veya aktif doküman kalmamıştır.
-- Temiz database kurulumu ve mevcut database/tenant upgrade'i gerçek PostgreSQL'de doğrulanmıştır.
-- Mevcut veriler korunmuştur.
-- task dev ilk kurulumda ve tekrar çalıştırmada başarılıdır.
-- API, worker ve diğer uygulama servisleri Goose tamamlanmadan başlamaz.
-- Kod ve dokümantasyon aynı mimariyi tarif eder.
-- Test, fileguard, archguard ve CI kapıları geçer.
+- **go test ./...**
+- **go run ./tools/fileguard**
+- **go run ./tools/archguard**
+- Repository'de tanımlı contract ve generated output kontrolleri
+- **task dev** ile tamamen boş database üzerinde uçtan uca kurulum
+- Gerçek PostgreSQL tenant ve permission integration testleri
 
-Bu koşullardan biri eksikse iş tamamlanmış değildir.
+Docker veya PostgreSQL erişimi yoksa ilgili test başarılı varsayılmaz; açık blocker olarak raporlanır.
+
+**Bir eski migration kodu, eski migration SQL'i, eski migration contract'ı, eski migration config'i, eski migrator deployable'ı veya eski migration davranışı kalmışsa task seti tamamlanmamıştır.**

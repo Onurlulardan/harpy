@@ -1,135 +1,214 @@
 # 03 — GOOSE
 
-## Amaç
+## 1. Amaç
 
-Goose'u Harpy'nin bütün schema değişiklikleri için tek ve doğrudan migration otoritesi yap. Platform schema'ları ve schema-per-tenant yapısındaki bütün tenant schema'ları aynı Goose mekanizmasıyla yönetilir.
+Goose, Harpy'nin bütün platform ve tenant schema değişiklikleri için tek ve mutlak migration otoritesidir.
 
-Bu görevde custom migration framework'ü sadeleştirerek yaşatmak yoktur. Custom framework tamamen kaldırılır; yalnız Goose'un kendi migration discovery, execution ve native version history davranışı kalır.
+Bu görev mevcut migration sistemini Goose'a taşımak değildir. Mevcut migration runtime'ı, SQL corpus'u, migration catalog'u, release/manifest zinciri, özel history modeli, tenant executor'ı ve bunların bütün bağımlılıkları silinir. Yeni Goose kullanımı boş bir zeminde oluşturulur.
 
-## Tek migration otoritesi
+Tek resmi implementation **github.com/pressly/goose/v3** olacaktır. Goose'un native discovery, execution, transaction ve version history davranışları dışında ikinci bir migration motoru veya policy katmanı yazılmaz.
 
-Goose aşağıdaki tüm PostgreSQL DDL değişikliklerini yönetir:
+## 2. Fresh schema kuralı
 
-- CREATE / ALTER / DROP TABLE
-- Column ve data type değişiklikleri
-- Index, unique constraint, check constraint ve foreign key
-- Sequence, enum ve composite type
-- View, function, procedure ve trigger
-- Platform schema değişiklikleri
-- Tenant schema değişiklikleri
-- Foundation sonrası kurulacak uygulama tabloları
-- Eski migration framework metadata'sının sonradan kaldırılması
+İlk kurulum yalnızca boş database üzerinde yapılır.
 
-Bu listede bulunmayan ikinci bir DDL yönetim yolu oluşturma.
+Yeni schema başlangıcı:
 
-## Native Goose kuralları
+- Eski migration zincirinden türetilmez.
+- Eski SQL migration dosyaları yeni klasöre kopyalanarak oluşturulmaz.
+- Eski migration version numaraları korunmaz.
+- Eski migration dosyalarının sıralaması/alias/supersession ilişkisi taşınmaz.
+- Eski migration manifest veya catalog verisi kullanılmaz.
+- Eski database'den Goose version tablosuna kayıt yazılmaz.
+- Goose baseline/adoption/set-version işlemiyle var olan eski schema yeni sistemin kurulmuş hâli gibi gösterilmez.
 
-- Resmi github.com/pressly/goose/v3 API/CLI kullan.
-- Migration dosyaları Goose'un native SQL migration formatında olmalıdır.
-- Migration discovery normal filesystem/embed fs.FS üzerinden yapılmalıdır.
-- Versiyon ve sıralama Goose tarafından belirlenmelidir.
-- Applied migration dosyaları değiştirilmez; hata yeni bir forward migration ile düzeltilir.
-- Goose native PostgreSQL version store tek migration history'dir.
-- Platform schema ve her tenant schema için Goose'un native history mekanizması kullanılır.
-- Tenant schema history'si yalnız Goose tarafından yazılır/okunur.
-- Goose native API'nin sağladığı seçenekler dışında custom store/ledger geliştirilmez.
-- Goose invocation mümkün olduğunca tek, küçük, test edilebilir bir adapter/command sınırında tutulur. Bu adapter yalnız Goose'u doğru DSN/schema/source ile çağırır; kendi migration policy veya history modeli bulunmaz.
-- SQL migration'lar transaction davranışı ve lock gereksinimleri açıkça tanımlanarak yazılır.
-- Goose'un native locking kabiliyeti yeterli değilse yalnız concurrent invocation'ı engelleyen PostgreSQL advisory lock kullanılır. Lock için custom state tablosu oluşturulmaz.
+Yeni initial schema, mevcut ürün gereksinimleri ve güncel domain contract'ları üzerinden yeniden modellenir. Bunun sonucunda gereken platform ve tenant tabloları, ilişkiler, index'ler, constraint'ler, sequence'ler, enum/type'lar, function'lar, trigger'lar ve view'lar yeni Goose SQL migration dosyaları olarak sıfırdan yazılır.
 
-## Platform ve tenant migration source'ları
+Yeni başlangıç migration'ları tek bir temiz başlangıç seti olacak şekilde tasarlanır. Eski migration corpus'undan dosya kurtarma veya yalnızca format değiştirme yapılmaz. Eski dosya geçmişi ve eski SQL gövdesi yeni migration source'una dahil edilmez.
 
-Repository'deki mevcut SQL dosyalarını tarayıp aşağıdaki hedefe dönüştür:
+## 3. Tek otorite ve kapsam
 
-- Platform schema'ları için tek native Goose migration source.
-- Tenant schema'ları için tek native Goose migration source.
-- Her iki source aynı Goose implementation ve native history davranışını kullanır.
-- Platform ve tenant SQL'leri ownership/scope bakımından ayrılabilir; bu ayrım ikinci bir migration engine anlamına gelmez.
-- Migration dosyaları manifest, owner catalog, path allowlist veya release metadata tarafından seçilmez.
-- Aynı DDL'nin birden fazla aktif kopyası bulunmaz.
-- Superseded/duplicate SQL corpus'u yeni sisteme taşınmaz.
-- Gerekli schema oluşturma ve tüm DDL migration kaynaklarında açıkça bulunur.
+Goose aşağıdaki PostgreSQL schema nesnelerinin tamamını yönetir:
 
-Mevcut .fresh.sql corpus'unu otomatik olarak koruma. Her dosyayı gerçek DDL etkisi açısından sınıflandır. Goose'un normal native migration discovery mekanizmasıyla çalışabilecek, gerçekten gerekli ve tekil SQL migration'ları tut. Gereksiz kopyaları, superseded dosyaları, custom selector'ın elemek zorunda kaldığı duplicate'leri ve yalnız eski framework'ün okuyabildiği formatları kaldır. Gerekli mevcut schema'yı tek temiz Goose başlangıç migration'ı ve sonrasındaki gerçek forward migration'lar olarak yeniden kurmak uygunsa bunu yap; bu işlem mevcut database verisini silme gerekçesi değildir.
+- Database içindeki platform schema nesneleri.
+- Tenant schema nesnelerinin tamamı.
+- Table ve partitioned table.
+- Column, type ve default.
+- Primary key, unique/check/exclusion constraint.
+- Foreign key ve referential action.
+- Index ve index değişiklikleri.
+- Sequence ve identity davranışları.
+- Enum, domain ve composite type.
+- View ve materialized view.
+- Function, procedure ve trigger.
+- RLS policy ve ilgili schema güvenlik nesneleri.
+- Extension sonrasında gereken schema etkili nesneler.
+- Yeni uygulama modüllerinin ihtiyaç duyduğu domain tabloları.
+- Sonradan yapılacak bütün schema değişiklikleri.
 
-## Platform migration akışı
+Foundation yalnız PostgreSQL altyapısını kurar. Application startup schema değiştirmez. Başka hiçbir Go package veya script schema DDL'i uygulayamaz.
 
-1. INITIALIZE, Foundation'ın başarılı olduğunu doğrular.
-2. Goose platform migration source'unu native şekilde açar.
-3. Platform schema hedefi için Goose native Up çalıştırılır.
-4. Başarı/başarısızlık Goose native sonucu üzerinden raporlanır.
-5. Başarısızlıkta Application başlatılmaz.
-6. Mevcut platform Goose history dışındaki özel doğrulama/history kaydı tutulmaz.
+## 4. Migration source düzeni
 
-## Tenant migration akışı
+Platform ve tenant migration dosyaları kaynak kod içerisinde açık ve sabit bir düzende tutulur. Önerilen ayrım:
 
-Her tenant schema aynı Goose runner ile hedeflenir:
+- Platform için tek native Goose source dizini.
+- Tenant için tek native Goose source dizini.
 
-1. Canonical TenantID ve kayıtlı schema name doğrulanır.
-2. Foundation yalnız schema namespace'i ve ownership/privilege altyapısını hazırlar.
-3. Goose tenant migration source'unu native şekilde açar.
-4. Goose tenant schema için Up çalıştırır.
-5. Goose başarılı olursa tenant uygulamaya açılır.
-6. Goose başarısız olursa tenant aktif hale gelmez; gerçek hata loglanır ve retry Goose native history üzerinden yapılır.
+Bu ayrım yalnız SQL kapsamını ve hedef schema'yı ayırır; ikinci bir runner/engine oluşturmaz. Her iki source aynı Goose implementation ve aynı çağrı yoluyla yürütülür.
 
-Tenant migration için ayrı executor process, daemon, queue consumer, manifest, run/attempt/checkpoint kaydı veya özel completion SQL function oluşturma. Tenant oluşturma işinin başka bir business lifecycle ihtiyacı gerçekten varsa yalnız o genel iş amacına ait alanlar korunabilir; schema version/history/migration attempt alanları kaldırılamaz. Goose çağrısı her durumda doğrudan aynı Goose runner'dan yapılır.
+Her source için:
 
-## Eski framework'ün Goose'a taşınması
+- Dosyalar Goose'un native SQL migration formatında olur.
+- Migration version/sıralama Goose native kurallarına bırakılır.
+- Dosya isimleri açık, sıralanabilir ve çakışmasız olur.
+- Goose'un desteklediği embed filesystem veya normal filesystem mekanizması kullanılır.
+- Migration source'u custom manifest, allowlist, owner catalog veya path selection algoritmasıyla filtrelenmez.
+- Bir migration dosyası başka custom parser tarafından okunmaz.
+- Bir dosyanın uygulanıp uygulanmayacağı custom SQL veya Go state ile belirlenmez.
 
-Önce tüm aktif migration SQL'lerini, mevcut platform/tenant schema'larını ve Goose native history durumunu gerçek PostgreSQL üzerinde karşılaştır.
+Repository'de eski SQL migration dosyaları yeni source ile aynı aktif klasörde bırakılamaz. Eski corpus tamamen silinir. Yeni source yalnız sıfırdan hazırlanmış migration'lardan oluşur.
 
-Yeni/temiz kurulum için:
-- Foundation altyapıyı kurar.
-- İlk Goose migration seti tüm gerekli platform ve tenant tablolarını oluşturur.
-- Goose native history hangi migration'ların uygulandığını kaydeder.
-- Application bundan sonra başlatılır.
+## 5. Goose runner
 
-Mevcut kurulum için:
-- Database ve tenant schema'ları korunur.
-- Mevcut schema'nın hedef Goose baseline ile eşleştiği gerçek DB catalog üzerinden doğrulanır.
-- Goose native version store, yalnız Goose'un resmi API/CLI mekanizmasıyla mevcut schema seviyesine alınır. Custom adoption table, schema contract veya manifest eklenmez.
-- Ardından yalnız eksik forward Goose migration'ları çalıştırılır.
-- Eski migration metadata'sı için gereken DROP işlemleri Goose forward migration'ında yapılır.
-- Business tablolarına ve business satırlarına destructive işlem uygulanmaz.
+Tek bir küçük runner/adapter bulunabilir. Görevi yalnızca:
 
-Schema kontrolü için geçici/integration testleri ve PostgreSQL catalog sorguları kullanılabilir. Fakat bu kontroller runtime'da ikinci bir permanent schema-contract/version authority olarak tutulamaz.
+1. Hedef PostgreSQL bağlantısını almak.
+2. Platform veya tenant için doğrulanmış hedef schema'yı belirlemek.
+3. Bağlantının search_path/schema kapsamını Goose native mekanizmasına doğru biçimde iletmek.
+4. İlgili native migration source'unu Goose'a vermek.
+5. İstenen standart Goose operasyonunu çağırmak.
+6. Goose'un gerçek sonucunu ve hatasını aynen üst katmana döndürmek.
 
-## Tamamen kaldırılacak Goose dışı katmanlar
+Runner aşağıdaki sorumluluklardan hiçbirini alamaz:
 
-Aşağıdaki davranışlardan herhangi biri kaldıysa görev tamamlanmamıştır:
+- Migration dosyası parse etme.
+- Migration dosyalarını özel algoritmayla seçme/sıralama.
+- SQL statement classification.
+- Migration digest/hash üretme veya kontrol etme.
+- Manifest/release çözümleme.
+- Custom history/version tablosu okuma/yazma.
+- Goose version tablosuna özel SQL uygulama.
+- Baseline/adoption veya eski version aktarımı.
+- Migration run/attempt/checkpoint/receipt yönetimi.
+- Migration completion SQL function çağırma.
+- Goose sonucunu custom generation/contract kurallarıyla doğrulama.
+- Tenant'a özel farklı bir migration implementation çalıştırma.
 
-- Goose öncesi migration manifest okuma veya hash doğrulama
-- SelectedMigration, MigrationManifest, custom migration type/catalog
-- Migration dosyalarını seçen owner/scope/path/origin/supersession algoritmaları
-- History alias, custom history classification, migration supersession
-- Release manifest/archive/registry veya migration release resolver
-- Migration run lifecycle, attempt, receipt, checkpoint, requirement
-- Goose dışı migration status veya current-version table
-- Custom Goose database store veya custom version store
-- Schema contract/binary schema contract ve migration digest readiness
-- Tenant-specific migrator/executor/service/worker/CLI
-- Goose migration'ını tamamlayan custom DB function veya completion routine
-- Migration hash, release ID veya generation bilgisini tenant claim/job/receipt'e taşıma
-- Docker image'a migration manifest copy etme veya manifest path argümanı
-- Migration manifest üreten/verifying tool, CI check veya Taskfile komutu
+Goose API/CLI seçenekleri dışında custom Goose store, custom migration state veya custom version source oluşturulmaz. Goose native PostgreSQL version history tek kayıttır.
 
-Bir eski struct'ın yalnız bir alanını veya bir SQL kolonunu kaldırmak yetmez. O alanın üreticisi, consumer'ı, JSON/SQL kontratı, test fixture'ı, generated output'u ve deployment wiring'i de silinmelidir.
+## 6. Native version history
 
-## Test ve kabul
+Goose'un native version history tablosu her hedef schema için Goose tarafından yönetilir.
 
-Gerçek PostgreSQL integration testleri zorunludur:
+- Tabloyu Foundation oluşturmaz.
+- Uygulama oluşturmaz.
+- Custom SQL script'i oluşturmaz.
+- Go runner doğrudan INSERT/UPDATE/DELETE yapmaz.
+- Başlangıçta eski version numarasıyla seed edilmez.
+- Eski database'deki state buraya kopyalanmaz.
+- Goose'un native migration execution sonucu dışında version değiştirilemez.
 
-1. Boş database: Foundation ardından platform Goose migration'ları tüm gerekli schema'yı oluşturur.
-2. Tenant A ve Tenant B: ikisine de aynı tenant Goose kaynağı uygulanır ve ayrı native history oluşur.
-3. Aynı migration ikinci kez: Goose no-op davranışı; tekrar DDL veya data duplication yok.
-4. Yarıda hata: Goose native history ile güvenli tekrar; özel checkpoint yok.
-5. Platform ve tenant migration'larının sıralaması native Goose tarafından yönetilir.
-6. Applied migration değiştirilirse test/guard bunu yakalar veya yeni forward migration kuralı uygulanır.
-7. Mevcut DB: business table ve satırlar korunarak Goose native baseline'a alınır.
-8. Eski metadata temizliği sonrası eski runtime nesnelerine hiçbir consumer kalmamıştır.
-9. Runtime role DDL yapamaz; Goose rolü gerekli schema'larda migration yapabilir.
-10. Goose tamamlanmadan Application readiness başarılı olamaz.
+Platform ve her tenant schema için Goose'un native history davranışı korunur. Hedef schema/search_path yanlışsa işlem devam ettirilmez. Goose history'sinin yanlış schema'da oluşmadığı integration test ile kanıtlanır.
 
-## Tamamlanma şartı
+Goose native history tablosunun adı/şeması ve yapılandırması Goose'un desteklediği resmi API/CLI seçenekleriyle belirlenir. Custom version table implementasyonu veya custom store yazılamaz.
 
-Goose dışında migration discovery, planlama, seçme, uygulama, version history, checkpoint, release, verification veya completion logic'i bulunmaz. Platform ve tenant schema'ları yalnız Goose ile değişir. Goose dışı migration framework'üne ait hiçbir kod, DB state modeli veya servis kalmaz.
+## 7. Platform ilk kurulum akışı
+
+INITIALIZE, Foundation'ın başarılı olmasından sonra aynı Goose runner üzerinden platform migration source'unu çalıştırır.
+
+Sıra:
+
+1. Foundation sonucunun başarılı olduğunu doğrula.
+2. Platform database bağlantısını Goose için hazırla.
+3. Platform schema hedefini açıkça belirle.
+4. Platform native Goose source'unu aç.
+5. Goose native Up operasyonunu çalıştır.
+6. Goose'un native history ve execution sonucunu kullan.
+7. Hata varsa gerçek hatayı döndür ve Application aşamasını başlatma.
+8. Başarı varsa APPLICATION aşamasına geç.
+
+Platform migration'larının dışında ayrıca schema bootstrap SQL'i çalıştıran ikinci bir yol olamaz.
+
+## 8. Tenant ilk kurulum ve provisioning
+
+Her tenant, yeni ve boş tenant schema'sı olarak kurulur. Eski tenant schema'sı veya eski tenant migration state'i yeni sistemin girdisi değildir.
+
+Tenant akışı:
+
+1. Tenant ID mevcut tenancy domain kurallarıyla doğrulanır.
+2. Canonical tenant schema adı üretilir ve identifier güvenliği doğrulanır.
+3. Foundation sorumluluğundaki namespace/ownership/privilege işlemi uygulanır.
+4. Aynı Goose runner tenant migration source'unu bu schema için çalıştırır.
+5. Goose native history ilgili tenant schema içinde oluşur.
+6. Tüm migration'lar başarılıysa tenant mevcut application provisioning akışında aktif edilir.
+7. Goose başarısızsa tenant aktif edilmez ve hata gerçek sebebiyle raporlanır.
+
+Platform ve tenant için ayrı migrator servisi, ayrı binary, ayrı runner, tenant executor, migration worker veya migration-specific queue oluşturulmaz. Tenant işlemi aynı kod yolu, aynı Goose implementation ve aynı native history mekanizmasıyla yapılır.
+
+Tenant provisioning sırasında admin yetkisinin yönetimi açıkça tanımlanır. API/worker runtime credential'ı DDL yetkisi almaz. Ayrı bir deployable ekleyerek bu yetki sorunu çözülmez.
+
+## 9. Goose transaction ve eşzamanlılık
+
+Her migration'ın PostgreSQL transaction gereksinimi açıkça belirlenir. Transaction dışı çalışması gereken DDL varsa Goose'un native migration yönergelerine uygun şekilde tanımlanır ve yarım kalma davranışı test edilir.
+
+Aynı hedef schema üzerinde eşzamanlı Goose çağrılarının engellenmesi gerekiyorsa önce Goose'un native locking davranışı değerlendirilir. Yalnız native davranış yetersizse PostgreSQL advisory lock gibi geçici bir koordinasyon mekanizması kullanılabilir. Bu lock için özel state tablosu, lease tablosu, migration run kaydı veya custom history oluşturulmaz.
+
+Lock yalnız eşzamanlı çalışmayı engeller; migration planı, migration state'i veya version bilgisini tutmaz.
+
+## 10. Migration yazım standartları
+
+Her yeni migration:
+
+- Tek ve anlaşılır bir schema değişikliği amacı taşır.
+- Gereksiz DDL/data işlemlerini aynı dosyaya yığmaz.
+- Foreign key ve index bağımlılıklarını doğru sırada kurar.
+- Gerekli constraint'leri açıkça tanımlar.
+- Tenant schema kapsamını yanlışlıkla platform schema'sına taşırmaz.
+- Platform migration'ında tenant verisine, tenant migration'ında başka tenant schema'sına dokunmaz.
+- PostgreSQL identifier, reserved word, type ve locking davranışını dikkate alır.
+- Gerekli geri alma davranışını Goose down migration kurallarıyla tanımlar; veri kaybına yol açabilecek down işlemleri gelişigüzel yazılmaz.
+- Uygulama kodunun beklediği tablo/kolon/nullability/index/FK davranışlarıyla integration test edilir.
+
+İlk kurulum için gerekli tüm schema nesneleri yeni initial migration setinde eksiksiz bulunur. Sonradan uygulanan schema değişiklikleri yeni forward migration olarak eklenir. Uygulanmış migration dosyası geriye dönük değiştirilmez.
+
+## 11. Kesinlikle yasak olan eski mekanizmalar
+
+Aşağıdaki kavramların hiçbirinin yeni implementation'ı oluşturulamaz ve eski implementation'ı repository'de tutulamaz:
+
+- Custom migration catalog, manifest, bundle, archive veya selected migration listesi.
+- Migration file hash/digest veya release hash.
+- Release ID, release registry, release generation veya database/runtime generation.
+- Migration run, attempt, receipt, checkpoint, requirement veya completion state.
+- History alias, supersession, classification veya custom version mapping.
+- Schema contract, binary schema contract veya custom schema readiness registry.
+- Custom Goose store veya Goose history yerine kullanılan version table.
+- Migration planner, selector, classifier, verifier, finalizer veya custom state machine.
+- Tenant migration executor/migrator/worker/daemon/service.
+- Custom Goose completion routine veya migration-specific SQL function.
+- Eski schema'yı Goose history'ye alma/baseline/adoption mekanizması.
+- Eski migration dosyalarını yeni source'a dönüştüren/import eden generator.
+- Goose'un önünde çalışan custom parser veya migration discovery sistemi.
+
+Bu davranışlardan biri yeni bir isimle tekrar oluşturulursa kabul edilmez.
+
+## 12. Test planı
+
+Gerçek PostgreSQL üzerinde:
+
+1. Tamamen boş database: platform migration'ları bütün gerekli schema'yı oluşturur.
+2. Tamamen boş tenant schema: tenant migration'ları bütün gerekli tabloları oluşturur.
+3. Tenant A ve Tenant B: her ikisi aynı runner/source ile kurulur.
+4. History: Goose native version table yalnız hedeflenen schema'da oluşur.
+5. Tekrar çağrı: Goose tamamlanmış migration'ları tekrar çalıştırmaz.
+6. Hata: başarısız migration'ın alttaki PostgreSQL hatası korunur.
+7. Retry: özel checkpoint olmadan Goose native history davranışıyla yeniden çağrı yapılır.
+8. Tenant isolation: Tenant A migration'ı Tenant B schema'sını değiştirmez.
+9. Permission: Goose yetkili rolü DDL yapabilir; API/worker rolü yapamaz.
+10. Source: migration dosyaları Goose native discovery ile bulunur; custom selector yoktur.
+11. Clean start: eski database veya eski migration state olmadan sıfırdan kurulum tamamlanır.
+12. Eski corpus: eski migration SQL dosyası yeni source içinde bulunmaz.
+
+## 13. Tamamlanma şartı
+
+Goose, platform ve tenant schema DDL'inin tek otoritesidir. İlk schema sıfırdan yazılmış temiz migration source'larından kurulur. Goose native history dışında history/version/state yoktur. Eski migration sistemi Goose'a taşınmamış; tamamen silinmiştir. Runner yalnız resmi Goose implementation'ını çağırır.

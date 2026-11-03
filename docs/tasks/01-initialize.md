@@ -1,78 +1,145 @@
 # 01 — INITIALIZE
 
-## Amaç
+## 1. Amaç
 
-Harpy'nin ilk kurulumunu başlatan tek bir giriş noktası oluştur. INITIALIZE, veritabanı migration motoru değildir; ikinci bir setup framework'ü değildir; Foundation ve Goose'un yerine geçmez. Tek görevi dört aşamalı akışın doğru sırayla çalışmasını sağlamaktır.
+INITIALIZE, yeni Harpy database lifecycle'ının tek giriş noktasıdır. Bu giriş noktası mevcut initialize/orchestrator sisteminin refactor edilmiş sürümü olmayacaktır. Eski initialization ve migration orchestration kodu kaldırılacak; yeni giriş noktası dört aşamayı sıfırdan çağıracak şekilde yazılacaktır.
 
-Nihai sıra değiştirilemez:
+Tek ve değiştirilemez sıra:
 
 1. INITIALIZE
 2. DATABASE FOUNDATION
 3. GOOSE
 4. APPLICATION
 
-## Zorunlu davranış
+INITIALIZE aşama sıralamasını yönetir. Schema yönetmez, SQL migration keşfetmez, migration seçmez, history tutmaz ve kendi completion state'ini üretmez.
 
-- İlk kurulum için tek bir açık initialize entrypoint bulunmalıdır.
-- Entry point Foundation tamamlanmadan Goose çağırmamalıdır.
-- Goose tamamlanmadan API, worker veya diğer uygulama süreçlerini başlatmamalıdır.
-- Her aşama hata döndürdüğünde akış durmalıdır. Hata gizlenip sonraki aşamaya geçilmemelidir.
-- Her aşamanın gerçek exit code ve sebebi dışarı aktarılmalıdır.
-- Initialize aynı kurulum üzerinde tekrar çağrıldığında veritabanını sıfırlamamalı, var olan nesneleri silmemeli ve veri kaybına yol açmamalıdır.
-- İlk kurulum yarıda kesilmişse tekrar çalıştırma, özel checkpoint tablosu okumadan PostgreSQL nesneleri ve Goose native history üzerinden güvenle devam edebilmelidir.
-- Initialize tamamlandıktan sonra normal API/worker restart'ı initialize veya migration çalıştırmamalıdır.
+## 2. Giriş noktası kontratı
 
-## Kuruluma ait state
+Repository'de tek bir açık kurulum komutu/entrypoint bulunmalıdır. Local development, container startup ve otomatik kurulum aynı entrypoint'i kullanır. Aynı iş için birden fazla bootstrap veya migrate komutu bulunamaz.
 
-Initialize durumunu takip etmek için özel bir tablo, generation, run, receipt, manifest, digest, release veya checkpoint kaydı oluşturma.
+Giriş noktası aşağıdaki sırayı uygular:
 
-Tekrar çalıştırma güvenliği şu gerçeklere dayanır:
+1. Konfigürasyonu ve gerekli bağlantı parametrelerini doğrula.
+2. Hedef database'in yeni kurulum için uygun, boş bir database olduğunu doğrula.
+3. DATABASE FOUNDATION işlemini çağır.
+4. Foundation başarılıysa GOOSE işlemini çağır.
+5. Goose başarılıysa APPLICATION süreçlerini başlat.
+6. Her aşamanın sonucunu açık biçimde raporla ve gerçek hata kodunu dışarı aktar.
 
-- PostgreSQL database var mı?
-- Gerekli Foundation schema/role/extension/ownership/grant nesneleri var mı?
-- İlgili platform/tenant schema'sında Goose native history ne gösteriyor?
-- Goose uygulanmamış migration var mı?
+Herhangi bir aşama başarısız olduğunda sonraki aşamaya geçilmez. Foundation veya Goose hata verdiyse API/worker process'i başlatılmaz. Hata, generic bir initialize failed mesajına indirgenerek kök sebep kaybettirilmez.
 
-Bunların dışında ikinci bir initialization state store bulunamaz.
+## 3. Sıfırdan kurulum davranışı
 
-## İş kapsamı
+INITIALIZE yeni ve boş database için tasarlanır. Eski sistemin database'ini veya schema'sını algılayıp yeni sisteme uyarlamaya çalışmaz.
 
-- Mevcut setup CLI, operator, Taskfile, Compose ve deployment entrypoint'lerini incele.
-- Mevcut birden fazla initialize/bootstrap/migrate yolunu tek entrypoint etrafında sadeleştir.
-- Aynı Foundation işlemini iki farklı task'ın tekrar etmesini kaldır.
-- Migration manifest dosyası hazırlama/doğrulama veya migration release hazırlama adımlarını tamamen sil.
-- Initialize'ın yalnızca ilk kurulumda ve gerektiğinde yeni tenant schema'sının hazırlanmasında kullanılmasını sağla.
-- Normal uygulama process startup'ını initialize'dan ayır.
+Aşağıdaki durumlarda fail closed davranışı zorunludur:
 
-## Hata ve tekrar çalıştırma kuralları
+- Hedef database erişilemiyorsa.
+- Database yeni kurulum için boş değilse.
+- Beklenmeyen uygulama veya migration framework tabloları varsa.
+- Hedef schema veya role yapısı beklenen temiz kurulum durumuyla uyuşmuyorsa.
+- Gerekli credential bulunamıyorsa.
+- Foundation veya Goose başarısızsa.
 
-- Foundation ortasında hata: Application başlamaz. Tekrar denemede mevcut PostgreSQL nesneleri kontrol edilir, var olanlar korunur ve eksikler güvenli şekilde tamamlanır.
-- Goose ortasında hata: Application başlamaz. Goose native history baz alınarak Goose yeniden çağrılır. Custom resume/checkpoint mekanizması yazılmaz.
-- Application başlangıç hatası: Initialize veya Goose geriye dönük otomatik olarak çalıştırılmaz. Uygulama hatası kendi lifecycle'ında raporlanır.
-- Database bağlantı bilgileri veya bootstrap credential eksikse açık hata verilir; varsayılan/boş credential ile devam edilmez.
-- Kısmi kurulumda hiçbir aşama database'i drop/recreate ederek temizlemeye çalışmaz.
+Bu koşullarda INITIALIZE eski sistemi tanımaya, eski state'i dönüştürmeye, Goose version numarasını ileri almaya, özel baseline oluşturmaya veya mevcut database'i otomatik temizlemeye çalışmaz.
 
-## Yasaklar
+**Boş olmayan database'i otomatik olarak drop etme.** Yanlış hedefe bağlanıldığında veri silinmesini önlemek için işlem durmalı ve açık hata vermelidir. Fresh kurulum, eski database'in üzerine yazmak değil, açıkça ayrılmış yeni ve boş bir database kullanmaktır.
 
-- initialize_state, initialization_runs benzeri özel durum tabloları.
-- setup_generation, database_generation, runtime_generation veya bunlara karşılık gelen ikinci kurulum/version kaydı.
-- Bootstrap receipt, migration receipt, installation generation, release veya migration manifest bağımlılığı.
-- API/worker startup'ında goose.Up, DDL veya Foundation işlemi.
-- Ayrı bir migration daemon, migration API'si veya migration worker'ı.
-- Başarısız aşamayı "zaten tamamlanmıştır" gibi gösteren fallback.
+## 4. Idempotency ve tekrar çalıştırma
 
-## Test ve kabul
+INITIALIZE aynı yeni kurulum üzerinde tekrar çalıştırılabilir olmalıdır. Tekrar çalıştırma için özel state registry oluşturulmaz.
 
-Gerçek PostgreSQL kullanarak şu senaryoları doğrula:
+Idempotency şu gerçek kaynaklar üzerinden sağlanır:
 
-1. Boş ortamda INITIALIZE çağrılır; Foundation, Goose ve Application sırası korunur.
-2. Aynı INITIALIZE ikinci kez çağrılır; hiçbir data/schema reset işlemi yapılmaz.
-3. Foundation ortasında kontrollü hata üretilir; Application başlamaz; tekrar deneme güvenle tamamlar.
-4. Goose ortasında kontrollü migration hatası üretilir; Application başlamaz; tekrar deneme yalnız Goose history üzerinden devam eder.
-5. Var olan database üzerinde tekrar çağrı; mevcut business tabloları ve satırları korunur.
-6. API ve worker process'leri bağımsız restart edildiğinde migration başlatmaz.
-7. Setup ve local workflow içinde aynı adımın iki kere çalıştırılmadığı kanıtlanır.
+- PostgreSQL database/schema/role/extension nesnelerinin mevcut durumu.
+- Foundation işlemlerinin güvenli create-if-not-exists ve doğrulama davranışı.
+- Goose native version history.
+- Application process manager'ın mevcut servis durumu.
 
-## Tamamlanma şartı
+Bir aşama yarıda kesildiyse tekrar çalıştırma yalnızca eksik Foundation nesnelerini tamamlar ve Goose'u yeniden çağırır. Uygulanmış Goose migration'ı yeniden uygulanmaz. Var olan nesneleri silerek temiz kurulum taklidi yapılmaz.
 
-Tek bir INITIALIZE giriş noktası vardır. Bu nokta yalnız dört aşamalı akışı başlatır. Özel initialize/migration state tablosu yoktur. Repeat-safe davranış gerçek DB state ve Goose native history ile sağlanır. API/worker startup migration yapmaz.
+INITIALIZE aşağıdakilerden hiçbirini oluşturamaz:
+
+- Initialization state tablosu
+- Initialize run/attempt/receipt/checkpoint kaydı
+- Database veya runtime generation değeri
+- Release veya migration manifest kaydı
+- Custom completed-stage registry
+- Goose dışı migration version kaydı
+
+## 5. Eski akışın kaldırılması
+
+Mevcut initialize giriş noktasını satır satır düzeltme veya eski orchestrator'ı yeni bir wrapper arkasında tutma. Eski kurulum ve migration akışını çağıran bütün kodu sil ve gerekli yeni kodu temiz bir implementation olarak oluştur.
+
+Kontrol edilecek alanlar:
+
+- Go command/main package'ları
+- initialize/bootstrap/operator/orchestrator package'ları
+- Eski migration servislerine yapılan process ve RPC çağrıları
+- CLI flag ve subcommand'ları
+- Taskfile task'ları
+- Docker entrypoint ve CMD/ENTRYPOINT tanımları
+- Compose dependency ve healthcheck sıralaması
+- Local development script'leri
+- CI setup ve integration test adımları
+- Environment variable ve config struct'ları
+- Eski artifact, manifest veya release dosyası path'leri
+
+Aynı işlemi yapan ikinci bir yol kalırsa kaldır. Bir eski fonksiyonu yeni entrypoint'ten çağırmak, eski sistemi kaldırmak değildir.
+
+## 6. Hata modeli
+
+Hatalar hangi aşamada meydana geldiyse o aşamaya ait, korunmuş sebep ve bağlamla raporlanmalıdır:
+
+- Konfigürasyon/bağlantı doğrulama hatası
+- DATABASE FOUNDATION hatası
+- GOOSE migration hatası
+- APPLICATION process başlangıç hatası
+
+Hata raporu en azından aşama, hedef database/schema, işlemin güvenli biçimde tekrar denenebilir olup olmadığı ve alttaki hata bilgisini içermelidir. Password, DSN secret veya token loglanamaz.
+
+Hata sınıflandırması için migration-specific custom state machine oluşturulmaz. Goose hatası Goose çağrısının gerçek hata sonucu olarak korunur. Foundation hatası ilgili PostgreSQL işleminin hatası olarak korunur.
+
+Bir Goose migration başarısızsa Application başlamaz. Goose'un native history davranışı dışındaki bir checkpoint/reconcile tablosu ile devam kararı verilmez.
+
+## 7. APPLICATION başlatma sınırı
+
+APPLICATION yalnız Goose başarıyla döndükten sonra başlatılır. API veya worker kendi startup akışında Foundation ya da Goose çağırmaz.
+
+Normal API/worker restart'ı yalnız uygulama process'ini başlatır. Restart sırasında:
+
+- Goose komutu çalıştırılmaz.
+- Schema kontrolü adı altında DDL yürütülmez.
+- Eksik tablo otomatik oluşturulmaz.
+- Foundation tekrar tetiklenmez.
+- Eski migration state'i okunmaz.
+
+## 8. Konfigürasyon
+
+INITIALIZE için yalnızca gerçekten ihtiyaç duyulan bağlantı ve çalışma ayarları bulunur:
+
+- Yeni, boş hedef PostgreSQL database'i için bağlantı bilgisi.
+- Foundation işlemleri için gerekli ayrıcalıklı bağlantı bilgisi.
+- Goose'un hedef database/schema ve native migration source bilgisi.
+- Application servislerinin çalıştırılması için gereken process/config bilgisi.
+
+Eski manifest path, archive path, digest, release ID, generation, catalog veya migration run alanlarının hiçbir karşılığı yeni config'e eklenmez. Eski env isimlerini alias olarak kabul eden uyumluluk kodu yazılmaz.
+
+## 9. Zorunlu testler
+
+Gerçek PostgreSQL kullanarak:
+
+1. Boş database'de INITIALIZE sırasının tam dört aşama olduğunu doğrula.
+2. Foundation başarısız olduğunda Goose ve Application'ın çalışmadığını doğrula.
+3. Goose başarısız olduğunda Application'ın çalışmadığını doğrula.
+4. Tam kurulumdan sonra INITIALIZE tekrar çağrıldığında duplicate DDL/data oluşmadığını doğrula.
+5. Foundation ortasında kesilen kurulumun tekrar çağrıldığında güvenle tamamlandığını doğrula.
+6. Goose ortasında hata alan kurulumun Goose native history ile tekrar denenebildiğini doğrula.
+7. Boş olmayan/eski bir database hedeflendiğinde işlemin durduğunu doğrula.
+8. API/worker process restart'ının Goose çağırmadığını doğrula.
+9. Hata mesajında alttaki PostgreSQL/Goose hata sebebinin kaybolmadığını doğrula.
+10. Aynı işi yapan ikinci bir initialize/migrate entrypoint olmadığını doğrula.
+
+## 10. Tamamlanma şartı
+
+Tek bir yeni INITIALIZE entrypoint bulunur. Bu entrypoint yalnızca dört aşamayı sırasıyla çağırır. Eski initialization/migration orchestration kodu ve onun tüm tüketicileri kaldırılmıştır. Boş olmayan/eski database otomatik dönüştürülmez. Tekrar çalıştırma özel state tablosuna değil gerçek PostgreSQL nesnelerine ve Goose native history'ye dayanır.
