@@ -15,7 +15,7 @@ const (
 type Coordinator struct {
 	policy     DeploymentPolicy
 	onboarding Onboarding
-	migration  TenantMigration
+	provision  TenantSchemaProvisioner
 	offering   Offering
 	authority  ProtectedAuthority
 	finalizer  Finalizer
@@ -27,7 +27,7 @@ type Coordinator struct {
 
 func New(dependencies Dependencies) (*Coordinator, error) {
 	if dependencies.Policy == nil || dependencies.Onboarding == nil ||
-		dependencies.Migration == nil || dependencies.Offering == nil ||
+		dependencies.Provision == nil || dependencies.Offering == nil ||
 		dependencies.Finalizer == nil || dependencies.Entropy == nil ||
 		dependencies.Sleep == nil || len(dependencies.LeaseOwner) < 1 ||
 		len(dependencies.LeaseOwner) > 128 ||
@@ -37,7 +37,7 @@ func New(dependencies Dependencies) (*Coordinator, error) {
 		return nil, ErrInvalid
 	}
 	return &Coordinator{policy: dependencies.Policy,
-		onboarding: dependencies.Onboarding, migration: dependencies.Migration,
+		onboarding: dependencies.Onboarding, provision: dependencies.Provision,
 		offering: dependencies.Offering, authority: dependencies.Authority,
 		finalizer: dependencies.Finalizer, entropy: dependencies.Entropy,
 		sleep: dependencies.Sleep, leaseOwner: dependencies.LeaseOwner,

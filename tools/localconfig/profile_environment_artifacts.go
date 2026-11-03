@@ -18,10 +18,7 @@ func addProfileEnvironmentArtifacts(set *artifactSet, _ time.Time) error {
 		{"worker.env", workerEnvironment(set)},
 		{"initialize.env", initializeEnvironment()},
 		{"tenant-provisioning.env", initializeEnvironment()},
-		{"migrator.env", migratorEnvironment(set)},
-		{"schema-executor.env", schemaExecutorEnvironment(set)},
 		{"operator.env", operatorEnvironment(set)},
-		{"tenant-migration-executor.env", tenantMigrationExecutorEnvironment(set)},
 	}
 	for _, profile := range profiles {
 		content, err := renderProfileEnvironment(profile.values)

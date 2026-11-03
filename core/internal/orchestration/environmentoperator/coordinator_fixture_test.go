@@ -12,7 +12,7 @@ import (
 type operatorFixture struct {
 	coordinator *Coordinator
 	onboarding  *onboardingFixture
-	migration   *migrationFixture
+	provision   *provisionFixture
 	authority   *authorityFixture
 	finalizer   *finalizerFixture
 	sleepErr    *error
@@ -24,14 +24,12 @@ func newOperatorFixture(t *testing.T,
 	t.Helper()
 	createdAt := time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC)
 	onboarding := &onboardingFixture{}
-	migration := &migrationFixture{onboarding: onboarding, ready: true,
-		states: []string{"succeeded"}, createdAt: createdAt,
-		databaseStep: time.Second}
+	provision := &provisionFixture{onboarding: onboarding}
 	authority := &authorityFixture{}
 	finalizer := &finalizerFixture{onboarding: onboarding}
 	var sleepErr error
 	coordinator, err := New(Dependencies{Policy: policyFixture{createdAt},
-		Onboarding: onboarding, Migration: migration, Offering: offeringFixture{},
+		Onboarding: onboarding, Provision: provision, Offering: offeringFixture{},
 		Authority: authority, Finalizer: finalizer,
 		Entropy:    bytes.NewReader(bytes.Repeat([]byte{0x51}, 1024)),
 		Sleep:      func(context.Context, time.Duration) error { return sleepErr },
@@ -41,6 +39,6 @@ func newOperatorFixture(t *testing.T,
 		t.Fatal(err)
 	}
 	_ = manifest
-	return operatorFixture{coordinator, onboarding, migration, authority, finalizer,
+	return operatorFixture{coordinator, onboarding, provision, authority, finalizer,
 		&sleepErr}
 }

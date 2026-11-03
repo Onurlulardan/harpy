@@ -26,13 +26,7 @@ func buildAPIBilling(
 	if err != nil {
 		return nil, nil, err
 	}
-	billingV1HTTP, err := buildBillingV1HTTP(
-		ctx, settings, deployment.policy, pool, catalogs, iamRuntime.billingAccess,
-	)
-	if err != nil {
-		return nil, nil, err
-	}
-	billingGroups, err := buildBillingRouteGroups(billingHTTP, billingV1HTTP)
+	billingGroups, err := buildBillingRouteGroups(billingHTTP)
 	if err != nil {
 		return nil, nil, err
 	}

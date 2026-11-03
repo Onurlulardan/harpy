@@ -11,11 +11,6 @@ ENV CGO_ENABLED=0
 
 COPY . .
 
-RUN --mount=type=cache,target=/go/pkg/mod \
-    go run ./tools/localrelease contract \
-    -output /src/contracts/runtime/v1/binary-schema-contract.json \
-    -migration-output /out/migration-manifest.json
-
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \
     GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags="-s -w" -o /out/core-api ./core/cmd/api
@@ -67,8 +62,6 @@ RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \
     GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags="-s -w" -o /out/telemetry-archive ./ops/production/cmd/telemetry-archive
-
-RUN chmod 0444 /out/migration-manifest.json
 
 FROM gcr.io/distroless/base-debian13:nonroot@sha256:97b9d04bed1c754b756c3c4b6a04915c22fb0b5d96a59944eb3bf78c26e6e157
 

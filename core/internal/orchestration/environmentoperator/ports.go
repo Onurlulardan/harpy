@@ -27,10 +27,8 @@ type Onboarding interface {
 	)
 }
 
-type TenantMigration interface {
-	CurrentReady(context.Context) (tenantapi.TenantMigrationReady, bool, error)
-	Enqueue(context.Context, uuid.UUID) (tenantapi.TenantMigrationJob, error)
-	Get(context.Context, uuid.UUID) (tenantapi.TenantMigrationJob, bool, error)
+type TenantSchemaProvisioner interface {
+	Provision(context.Context, uuid.UUID) error
 }
 
 type Offering interface {
@@ -49,7 +47,7 @@ type Finalizer interface {
 type Dependencies struct {
 	Policy       DeploymentPolicy
 	Onboarding   Onboarding
-	Migration    TenantMigration
+	Provision    TenantSchemaProvisioner
 	Offering     Offering
 	Authority    ProtectedAuthority
 	Finalizer    Finalizer
