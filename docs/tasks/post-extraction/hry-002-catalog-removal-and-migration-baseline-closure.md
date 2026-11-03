@@ -1,7 +1,7 @@
 # HRY-002 — Catalog removal ve migration baseline işlerini kanıtlarıyla resmen kapat
 
 **Öncelik:** P0  
-**Durum:** Kod tarafı büyük ölçüde tamamlanmış görünüyor; dokümantasyon kapanışı eksik.
+**Durum:** Açık. Catalog modül ağacı yok. `catalogPackageKeyring` derleme kalıntısı HRY-001 ile temizlendi. Definition of Done kutuları kanıt raporu olmadan işaretlenmedi.
 
 ## Bulgu
 `docs/tasks/catalog-removal/04-kabul-ve-recovery.md` ve `docs/engineering/migration-baseline-rework/04-acceptance-and-recovery.md` içindeki Definition of Done kutuları hâlâ işaretlenmemiş. Son `main` CI çalışmasında PostgreSQL 18 cleanup kontrolü başarılı olsa da bu tek başına iki task setinin tüm kabul kriterlerinin tamamlandığını kanıtlamıyor.

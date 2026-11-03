@@ -25,7 +25,6 @@ func TestAnalyticsDashboardExportPlatformUnknownAgainstPostgreSQL184(t *testing.
 				applyAnalyticsDocuments(t, ctx, database, schema,
 					analyticsDocuments(t, origin, "tenant"))
 			}
-			assertAnalyticsCatalog(t, ctx, database)
 			assertAnalyticsTenantIsolation(t, ctx, database)
 			assertAnalyticsQueryPublishing(t, ctx, database)
 			assertAnalyticsDashboardPublishing(t, ctx, database)

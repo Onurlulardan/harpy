@@ -16,22 +16,18 @@ func TestBuiltEntrypointsAgainstCanonicalPostgreSQL184Contract(t *testing.T) {
 	stage := prepareBuiltEntrypointStage(t, ctx)
 	binaries := buildEntrypointBinaries(t, ctx, stage)
 	database := startBuiltEntrypointDatabase(t, ctx)
-	evidence := migrateBuiltEntrypointDatabase(
-		t, ctx, database, stage, binaries.migrator,
-	)
+	migrateBuiltEntrypointDatabase(t, ctx, database, stage, binaries.migrator)
 	profiles := []builtEntrypointProfile{
 		{name: "api", binary: binaries.api, dsn: database.runtimeDSN,
 			service: runtimev1.ServiceCoreAPI, sessionUser: "harpy_v2_runtime",
-			application: "harpy-v2:core-api", api: true,},
+			application: "harpy-v2:core-api", api: true},
 		{name: "worker", binary: binaries.worker, dsn: database.runtimeDSN,
 			service: runtimev1.ServiceCoreWorker, sessionUser: "harpy_v2_runtime",
-			application:           "harpy-v2:core-worker",
-			catalogPackageKeyring: evidence.catalog.catalogPackageKeyring},
+			application: "harpy-v2:core-worker"},
 		{name: "migrator", binary: binaries.migrator,
 			arguments: []string{"schema-executor"}, dsn: database.migratorDSN,
 			service: runtimev1.ServiceCoreMigrator, sessionUser: "harpy_migrator",
-			application:           "harpy-v2:core-schema-executor",
-			catalogPackageKeyring: evidence.catalog.catalogPackageKeyring},
+			application: "harpy-v2:core-schema-executor"},
 	}
 	for _, profile := range profiles {
 		profile := profile

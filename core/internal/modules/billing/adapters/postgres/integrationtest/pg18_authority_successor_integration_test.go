@@ -58,7 +58,7 @@ func assertBillingCompetingSuccessorRejected(
 	t.Helper()
 	seedBillingSuccessorOperation(
 		t, ctx, database, billingCompetingGlobalOp, billingCompetingGlobalRun,
-		"global", billingEnvironmentID, "billing",
+		"global", billingEnvironmentID, "billing", "billing",
 	)
 	_, err := callBillingSuccessor(
 		ctx, connection, billingCompetingGlobalOp, billingCompetingGlobalRun,

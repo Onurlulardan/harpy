@@ -41,11 +41,11 @@ func prepareBillingSuccessorFixture(
 	)
 	seedBillingSuccessorOperation(
 		t, ctx, database, billingGlobalSuccessorOp, billingGlobalSuccessorRun,
-		"global", billingEnvironmentID, "billing",
+		"global", billingEnvironmentID, "billing", "billing",
 	)
 	seedBillingSuccessorOperation(
 		t, ctx, database, billingTenantSuccessorOp, billingTenantSuccessorRun,
-		"tenant", billingTenantID, "billing",
+		"tenant", billingTenantID, "billing", "billing",
 	)
 	createBillingSuccessorCaller(t, ctx, database)
 }
