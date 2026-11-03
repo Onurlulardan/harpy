@@ -15,7 +15,6 @@ import (
 	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
 	recoverysigning "github.com/Onurlulardan/harpy/core/internal/platform/recoverysigning"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
 
 func initializeEnvironment(ctx context.Context) (
@@ -28,10 +27,6 @@ func initializeEnvironment(ctx context.Context) (
 		return environmentoperator.InitializeResult{}, "configuration", err
 	}
 	if _, err = buildinfo.ReadOperator(settings.Runtime().Environment()); err != nil {
-		return environmentoperator.InitializeResult{}, "build_contract", err
-	}
-	embedded, err := schemacontract.LoadStatic()
-	if err != nil {
 		return environmentoperator.InitializeResult{}, "build_contract", err
 	}
 	manifest, err := readInstallationManifest(settings.InstallationManifest())
@@ -49,7 +44,7 @@ func initializeEnvironment(ctx context.Context) (
 	databaseContext, cancel := context.WithTimeout(ctx,
 		settings.Runtime().Postgres().ConnectTimeout()+settings.Runtime().ReadinessTimeout())
 	pool, err := platformpostgres.Open(databaseContext, settings.Runtime().Postgres(),
-		platformpostgres.ProfileOperatorInitialize, embedded)
+		platformpostgres.ProfileOperatorInitialize)
 	cancel()
 	if err != nil {
 		return environmentoperator.InitializeResult{}, "database", err

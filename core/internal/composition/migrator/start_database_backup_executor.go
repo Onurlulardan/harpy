@@ -15,7 +15,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
 )
 
@@ -23,7 +22,6 @@ func startDatabaseBackupExecutor(
 	process *lifecycle.Process,
 	settings config.DatabaseBackupExecutor,
 	info buildinfo.Info,
-	embedded schemacontract.EmbeddedContract,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 ) processcode.Code {
@@ -32,7 +30,7 @@ func startDatabaseBackupExecutor(
 	defer cancel()
 	pool, err := postgres.Open(
 		startup, runtimeSettings.Postgres(),
-		postgres.ProfileDatabaseBackupExecutor, embedded,
+		postgres.ProfileDatabaseBackupExecutor,
 	)
 	if err != nil {
 		return failDatabaseBackupStartup(

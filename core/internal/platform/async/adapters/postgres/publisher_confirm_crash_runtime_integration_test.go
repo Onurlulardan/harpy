@@ -36,7 +36,6 @@ func preparePipelineRuntime(
 	loaded := loadPipelineWorkerConfig(t, runtimeDSN, rabbitURL)
 	pool, err := platformpostgres.Open(
 		ctx, loaded.LongRunning().Runtime().Postgres(), platformpostgres.ProfileWorker,
-		pipelineSchemaContract(t),
 	)
 	if err != nil {
 		t.Fatalf("open production worker pool: %v", err)

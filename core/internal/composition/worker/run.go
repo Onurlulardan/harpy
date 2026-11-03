@@ -11,18 +11,13 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/envfile"
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
 )
-
-type schemaContractLoader func() (schemacontract.EmbeddedContract, error)
 
 func Run(arguments []string) int {
 	process := lifecycle.NotifyProcess(context.Background())
 	defer process.Stop()
-	return runProcessWithContractLoader(
-		process, arguments, os.Stderr, loadSchemaContract,
-	).Int()
+	return runProcess(process, arguments, os.Stderr).Int()
 }
 
 func run(
@@ -30,27 +25,13 @@ func run(
 	arguments []string,
 	stderr io.Writer,
 ) processcode.Code {
-	return runProcessWithContractLoader(
-		lifecycle.LocalProcess(ctx), arguments, stderr, loadSchemaContract,
-	)
+	return runProcess(lifecycle.LocalProcess(ctx), arguments, stderr)
 }
 
-func runWithContractLoader(
-	ctx context.Context,
-	arguments []string,
-	stderr io.Writer,
-	loadContract schemaContractLoader,
-) processcode.Code {
-	return runProcessWithContractLoader(
-		lifecycle.LocalProcess(ctx), arguments, stderr, loadContract,
-	)
-}
-
-func runProcessWithContractLoader(
+func runProcess(
 	process *lifecycle.Process,
 	arguments []string,
 	stderr io.Writer,
-	loadContract schemaContractLoader,
 ) processcode.Code {
 	ctx := process.StartupContext()
 	arguments, err := envfile.Consume(arguments, "worker")
@@ -76,11 +57,6 @@ func runProcessWithContractLoader(
 		reportFailureCause(stderr, nil, "build_contract", err.Error())
 		return processcode.InvalidStartup
 	}
-	embedded, err := loadContract()
-	if err != nil {
-		reportFailureCause(stderr, nil, "build_contract", err.Error())
-		return processcode.InvalidStartup
-	}
 	logger, err := telemetry.NewLogger(
 		stderr, settings.LongRunning().Runtime().LogLevel(), info,
 	)
@@ -95,9 +71,5 @@ func runProcessWithContractLoader(
 		reportFailure(stderr, logger, "configuration")
 		return processcode.InvalidStartup
 	}
-	return startWorker(process, settings, info, embedded, logger, telemetryRuntime)
-}
-
-func loadSchemaContract() (schemacontract.EmbeddedContract, error) {
-	return schemacontract.LoadBoundStartup()
+	return startWorker(process, settings, info, logger, telemetryRuntime)
 }

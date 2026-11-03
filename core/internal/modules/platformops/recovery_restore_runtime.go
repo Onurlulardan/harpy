@@ -17,14 +17,12 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/modules/platformops/ports"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/randomid"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
 
 func RunDatabaseRestore(
 	ctx context.Context,
 	database any,
 	settings config.DatabaseRestore,
-	_ schemacontract.EmbeddedContract,
 	factories RecoveryFactories,
 	openScratch func(context.Context) (any, error),
 ) error {

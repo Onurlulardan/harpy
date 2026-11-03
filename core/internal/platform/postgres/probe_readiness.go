@@ -38,17 +38,6 @@ func (pool *Pool) ProbeReadiness(ctx context.Context) ReadinessObservation {
 		return result
 	}
 	result.databaseRole = true
-	result.schemaReason = SchemaContractMalformed
-	foundation, err := readFoundationPreflight(ctx, transaction, pool.binaryContract)
-	if err != nil {
-		return result
-	}
-	origin, err := validateFoundationEvidence(foundation, catalog)
-	if err != nil || origin != pool.startup.databaseOrigin {
-		return result
-	}
-	result.schemaReason = foundationSchemaReadiness(foundation, pool.binaryContract)
-	result.schemaContract = result.schemaReason == SchemaReady
 	return result
 }
 

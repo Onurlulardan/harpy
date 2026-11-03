@@ -33,11 +33,6 @@ func runDatabaseRestore(
 		reportFailure(stderr, nil, "build_contract", "database-restore")
 		return processcode.InvalidStartup
 	}
-	embedded, err := loadSchemaContract()
-	if err != nil {
-		reportFailure(stderr, nil, "build_contract", "database-restore")
-		return processcode.InvalidStartup
-	}
 	logger, err := telemetry.NewLogger(stderr, runtime.LogLevel(), info)
 	if err != nil {
 		return processcode.InvalidStartup
@@ -57,7 +52,7 @@ func runDatabaseRestore(
 		_ = telemetryRuntime.Shutdown(shutdown)
 	}()
 	pool, err := postgres.Open(
-		ctx, runtime.ControlPostgres(), postgres.ProfileDatabaseRestore, embedded,
+		ctx, runtime.ControlPostgres(), postgres.ProfileDatabaseRestore,
 	)
 	if err != nil {
 		reportFailure(stderr, logger, "dependency_preflight", "database-restore")
@@ -65,13 +60,12 @@ func runDatabaseRestore(
 	}
 	defer pool.Close()
 	readiness := pool.ProbeReadiness(ctx)
-	if !readiness.DatabaseReady() || !readiness.DatabaseRoleReady() ||
-		!readiness.SchemaContractReady() {
+	if !readiness.DatabaseReady() || !readiness.DatabaseRoleReady() {
 		reportFailure(stderr, logger, "dependency_preflight", "database-restore")
 		return processcode.DependencyPreflight
 	}
 	err = platformops.RunDatabaseRestore(
-		ctx, pool, settings, embedded,
+		ctx, pool, settings,
 		platformops.RecoveryFactories{
 			Documents:         documents.NewRecovery,
 			Targets:           tenancy.NewRecoveryTargets,
@@ -85,16 +79,15 @@ func runDatabaseRestore(
 			defer cancel()
 			scratch, openErr := postgres.Open(
 				connect, runtime.ScratchPostgres(),
-				postgres.ProfileDatabaseRestore, embedded,
+				postgres.ProfileDatabaseRestore,
 			)
 			if openErr != nil {
 				return nil, openErr
 			}
 			ready := scratch.ProbeReadiness(connect)
-			if !ready.DatabaseReady() || !ready.DatabaseRoleReady() ||
-				!ready.SchemaContractReady() {
+			if !ready.DatabaseReady() || !ready.DatabaseRoleReady() {
 				scratch.Close()
-				return nil, fmt.Errorf("restored schema contract differs")
+				return nil, fmt.Errorf("restored database is not ready")
 			}
 			return scratch, nil
 		},

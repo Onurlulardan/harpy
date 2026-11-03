@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -14,11 +13,10 @@ func installPoolHooks(
 	settings config.Postgres,
 	profile Profile,
 	contract profileContract,
-	binaryContract runtimev1.BinarySchemaContract,
 	collector *startupCollector,
 ) {
 	poolConfig.AfterConnect = func(ctx context.Context, connection *pgx.Conn) error {
-		result, err := validateStartup(ctx, connection, profile, contract, binaryContract)
+		result, err := validateStartup(ctx, connection, profile, contract)
 		if err != nil {
 			return err
 		}
