@@ -45,6 +45,19 @@ services:
       start_period: 10s
     networks: [local]
 
+  tenant-provisioning:
+    <<: *logging
+    image: harpy/backend-v2-local:dev
+    restart: "no"
+    entrypoint: ["/app/core-initialize"]
+    env_file: ./state/secrets/tenant-provisioning.env
+    volumes:
+      - local-secret-tenant-provisioning:/run/secrets:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [local]
+
   core-worker:
     <<: *logging
     image: harpy/backend-v2-local:dev

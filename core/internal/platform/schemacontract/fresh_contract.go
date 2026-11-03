@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	postgresv1 "github.com/Onurlulardan/harpy/contracts/postgres/v1"
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/Onurlulardan/harpy/internal/attestation"
 )
 
@@ -15,33 +13,6 @@ const (
 	pgTrgmControlFileSHA256 = "17c2745da2a706e1443ee363ab7424ced871a9a652e86bf55d25d139f43ee27b"
 	vectorControlFileSHA256 = "db4ad0045e6622228471acdcb8fc9aeeec0cd6cf9666569d26f723751ea95fcb"
 )
-
-func EncodeFreshBinaryContract(registry *migration.ReleaseRegistry) ([]byte, error) {
-	if registry == nil || registry.FreshEntryCount() == 0 || len(registry.Digests()) != 1 {
-		return nil, fmt.Errorf("fresh migration registry is incomplete")
-	}
-	extensionDigest, err := freshExtensionDigest()
-	if err != nil {
-		return nil, err
-	}
-	contract := runtimev1.BinarySchemaContract{
-		ContractVersion:           runtimev1.BinarySchemaContractVersion,
-		Component:                 "core",
-		RuntimeGeneration:         1,
-		MinimumDatabaseGeneration: 1,
-		MigrationManifestSHA256:   registry.Digests()[0],
-		ExtensionManifestSHA256:   extensionDigest,
-		PostgresImageDigest:       runtimev1.PostgresImageDigest,
-	}
-	document, err := attestation.MarshalCanonical(contract)
-	if err != nil {
-		return nil, fmt.Errorf("encode fresh binary schema contract: %w", err)
-	}
-	if _, err = attestation.VerifyBinarySchemaContract(document); err != nil {
-		return nil, fmt.Errorf("verify fresh binary schema contract: %w", err)
-	}
-	return document, nil
-}
 
 func freshExtensionDigest() (string, error) {
 	document, err := attestation.MarshalCanonical(freshExtensionManifest())

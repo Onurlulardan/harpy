@@ -46,12 +46,12 @@ func TestReportFailureCauseWritesPostgresConstraintWithoutSQL(t *testing.T) {
 func TestReportFailureStageWritesSafeStartupStage(t *testing.T) {
 	var output bytes.Buffer
 	reportFailureStage(
-		&output, nil, "build_contract", tenantMigrationCommand, "store_bind",
+		&output, nil, "build_contract", "database-backup-executor", "store_bind",
 	)
 	text := output.String()
 	for _, expected := range []string{
 		`"error_class":"build_contract"`,
-		`"command":"tenant-migration-executor"`,
+		`"command":"database-backup-executor"`,
 		`"startup_stage":"store_bind"`,
 	} {
 		if !strings.Contains(text, expected) {
