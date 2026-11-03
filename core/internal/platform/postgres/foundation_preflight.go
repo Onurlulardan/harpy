@@ -2,9 +2,11 @@ package postgres
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
+	"github.com/jackc/pgx/v5"
 )
 
 type foundationPreflight struct {
@@ -117,6 +119,9 @@ func readFoundationPreflight(
 		&result.extensionOrigin, &result.extensionVerifiedRunID,
 		&result.binaryReleaseKnown,
 	)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return readBaselineFoundation(ctx, queryer, binary)
+	}
 	if err != nil {
 		return foundationPreflight{}, fmt.Errorf("%w: foundation evidence query", ErrStartupPreflight)
 	}

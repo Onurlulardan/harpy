@@ -15,6 +15,7 @@ var runtimeReadinessTables = []string{
 	"schema_contracts",
 	"database_generation_manifests",
 	"release_generations",
+	"goose_db_version",
 }
 
 var readinessReaderRoles = []string{
