@@ -7,8 +7,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/foundation"
 )
 
-var errGooseNotInstalled = errors.New("goose runner is not installed")
-
 type StageError struct {
 	Stage     string
 	Phase     string

@@ -84,6 +84,7 @@ var baseArtifactNames = []string{
 	"smtp-auth.txt",
 	"smtp-password.txt",
 	"tenant-migration-executor.env",
+	"tenant-provisioning.env",
 	"worker.env",
 }
 

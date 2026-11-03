@@ -42,10 +42,6 @@ func runProcess(
 		return processcode.InvalidStartup
 	}
 	switch invocation.mode {
-	case invocationSchemaExecutor:
-		return runSchemaExecutorProcess(process, stderr)
-	case invocationTenantMigrationExecutor:
-		return runTenantMigrationExecutorProcess(process, stderr)
 	case invocationDatabaseBackupExecutor:
 		return runDatabaseBackupExecutorProcess(process, stderr)
 	case invocationDatabaseRestore:
@@ -55,6 +51,7 @@ func runProcess(
 	case invocationCutoverFinalization:
 		return runCutoverFinalization(process.StartupContext(), stdout, stderr)
 	default:
-		return runDeploy(process.StartupContext(), invocation.action, stdout, stderr)
+		reportFailureCause(stderr, nil, "invocation", "invalid", invalidInvocation())
+		return processcode.InvalidStartup
 	}
 }

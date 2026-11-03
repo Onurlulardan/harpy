@@ -32,7 +32,7 @@ func PrepareTenantNamespace(
 		return TenantNamespace{}, failed("tenant", cfg, false, err)
 	}
 	namespace := TenantNamespace{Schema: schemaName, Role: roleName}
-	if err := Preflight(ctx, cfg); err != nil {
+	if err := preflightTenant(ctx, cfg); err != nil {
 		return TenantNamespace{}, err
 	}
 	targetDSN, err := databaseDSN(cfg.AdminDSN, cfg.Database)

@@ -48,6 +48,10 @@ func buildCustomerProvisioningRuntime(
 	if err != nil {
 		return nil, fmt.Errorf("build customer provisioning store: %w", err)
 	}
+	schema, err := tenancymodule.NewTenantSchemaProvisioner(pool)
+	if err != nil {
+		return nil, fmt.Errorf("build tenant schema provisioner: %w", err)
+	}
 	reader, err := billingmodule.NewSaaSFreeBasePlatformReader(pool)
 	if err != nil {
 		return nil, fmt.Errorf("build SaaS base offering reader: %w", err)
@@ -77,7 +81,7 @@ func buildCustomerProvisioningRuntime(
 		Policy: policy, Access: customerProvisioningAccess{runtime: access},
 		Offering: customerProvisioningOffering{reader: reader}, Authority: authority,
 		Setup: customerProvisioningSetup{preparer: setup, reissuer: reissuer},
-		Store: store, Clock: clock,
+		Store: store, Clock: clock, Schema: schema,
 	})
 	if err != nil {
 		if client != nil {

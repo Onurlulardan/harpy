@@ -12,16 +12,16 @@ func TestTenantMigrationReleaseMustMatchEmbeddedBinaryContract(t *testing.T) {
 	digest := strings.Repeat("a", 64)
 	binary := runtimev1.BinarySchemaContract{
 		ContractVersion: runtimev1.BinarySchemaContractVersion,
-		Component: "core", RuntimeGeneration: 1, MinimumDatabaseGeneration: 1,
+		Component:       "core", RuntimeGeneration: 1, MinimumDatabaseGeneration: 1,
 		MigrationManifestSHA256: digest, ExtensionManifestSHA256: digest,
 		PostgresImageDigest: runtimev1.PostgresImageDigest,
 	}
 	manifest := attestation.ReleaseManifest{
-		ReleaseID: "11111111-1111-4111-8111-111111111111",
+		ReleaseID:         "11111111-1111-4111-8111-111111111111",
 		RuntimeGeneration: 1, MinimumDatabaseGeneration: 1,
 		MigrationManifestSHA256: digest, ExtensionManifestSHA256: digest,
-		PostgresImageDigest: runtimev1.PostgresImageDigest,
-		PostgresEngineVersion: runtimev1.PostgresEngineVersion,
+		PostgresImageDigest:    runtimev1.PostgresImageDigest,
+		PostgresEngineVersion:  runtimev1.PostgresEngineVersion,
 		VectorExtensionVersion: runtimev1.VectorExtensionVersion,
 	}
 	if err := validateTenantMigrationReleaseContract(manifest, binary); err != nil {
