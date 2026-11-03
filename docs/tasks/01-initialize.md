@@ -164,12 +164,24 @@ Yeni entrypoint:
 - Bir kez configuration/preflight yapar.
 - Hedef DB kimliğini ve boşluk koşulunu doğrular.
 - Foundation'ı çağırır.
-- Aynı Goose implementation ile platform source'unu, sonra gerekiyorsa tenant source'unu çağırır.
+- Platform Goose source'unu çağırır. Tenant source platform ilk kurulumunda topluca çalıştırılmaz; yeni tenant isteğinde aynı runner'ı kullanan one-shot provisioning Job yalnız hedef tenant schema'sını kurar.
 - Yalnız başarıdan sonra APPLICATION servislerini başlatır.
 - Hata durumunda aşama, güvenli retry niteliği ve redacted underlying cause döndürür.
 - Kendine ait migration/init run, generation, checkpoint, receipt veya completion tablosu yazmaz.
 
 Installation artifact, license, initial credential delivery ve recovery signing gibi mevcut installation domain davranışları sırf migration koduyla aynı binary'de diye silinmez. Bunların owner'ı ayrı tutulur ve INITIALIZE sırasındaki bağımlılıkları açıkça tanımlanır. Bu işlemlerin hiçbiri Goose version/history veya migrator release ledger'ı tüketemez.
+
+### Otomatik tenant provisioning çağrı sınırı
+
+Tenant schema kurulumu APPLICATION/tenancy isteğiyle orchestrator tarafından başlatılan kısa ömürlü one-shot Job üzerinden yapılır. Job aynı Harpy image digest'ini, aynı binary'yi ve tek Goose Runner'ı kullanır; ayrı migrator binary/implementation, sürekli executor/daemon/worker veya migration queue oluşturulmaz.
+
+API yalnız sabit trusted Job template'ini tenant ID ile tetikleyebilir. Image, command, service account, secret mount, volume ve network ayarları kullanıcı girdisiyle değiştirilemez; orchestrator policy/admission ile sabitlenir. Job Foundation tenant namespace/ownership işlemini ve aynı Goose Runner ile yalnız hedef tenant migration source'unu çalıştırır.
+
+DDL credential kısa ömürlü secret injection ile yalnız Job'a verilir. API/worker credential'ı okuyamaz veya DDL yapamaz. Tenant Job credential'ı yalnız hedef tenant schema'sında DDL yapabilir; platform ve diğer tenant schema'larına erişemediği PostgreSQL negative testleriyle kanıtlanır. Cluster-wide superuser/CREATEDB/CREATEROLE verilmez.
+
+Tenant domain kaydı işlem başında PROVISIONING, Job/Goose başarısında ACTIVE olur; hata durumunda aktif edilmez. Bu gerçek tenancy lifecycle state'idir, migration attempt/checkpoint/receipt değildir. Retry/concurrency custom migration state'i olmadan PostgreSQL/orchestrator native davranışıyla yönetilir. Orchestrator bu izolasyonu sağlayamıyorsa API'ye DDL yetkisi verilerek fallback yapılmaz; provisioning fail closed olur.
+
+Bu Job sürekli çalışan servis, daemon, queue consumer veya yeni lifecycle aşaması değildir. INITIALIZE platform kurulumunun tek entrypoint'i olarak kalır.
 
 ### 11.2 Legacy consumer kapatma prosedürü
 
