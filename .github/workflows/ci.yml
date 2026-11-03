@@ -43,8 +43,8 @@ jobs:
       - name: Compile integration-tagged tests
         run: go test -tags=integration -count=0 -run '^$' ./...
 
-  baseline-pg18:
-    name: baseline PostgreSQL 18
+  foundation-pg18:
+    name: foundation PostgreSQL 18
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -61,7 +61,7 @@ jobs:
           --health-timeout 5s
           --health-retries 12
     env:
-      HARPY_BASELINE_PG18_TEST_DSN: postgresql://postgres:postgres@localhost:5432/harpy_test?sslmode=disable
+      HARPY_FOUNDATION_TEST_ADMIN_DSN: postgresql://postgres:postgres@localhost:5432/harpy_test?sslmode=disable
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -69,8 +69,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.26.5"
-      - name: Test Catalog cleanup migrations on PostgreSQL 18
-        run: go test ./core/internal/platform/baseline -run 'TestCatalogRemovalPostgres18|TestBaselineDumpCleanupPostgres18' -count=1 -v
+      - name: Test foundation and initialize on PostgreSQL 18
+        run: go test -tags=integration -count=1 -timeout 20m ./core/internal/platform/foundation ./core/internal/platform/initialize
 
   fileguard:
     name: fileguard

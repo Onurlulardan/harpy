@@ -20,12 +20,10 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 	expected := []string{
 		"prepare",
 		"infra",
-		"bootstrap",
-		"migrate",
+		"initialize",
 		"installation:artifacts",
 		"license",
-		"tenant-executor",
-		"initialize",
+		"installation:deliver",
 		"services",
 		"verify",
 		"frontend:if-present",
@@ -36,20 +34,33 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 	}
 }
 
-func TestLocalMigrateStopsAtBaselineVerify(t *testing.T) {
+func TestLocalLifecycleHasOneInitializeEntrypoint(t *testing.T) {
 	document := readContractText(t, "../../.taskfiles/local.yml")
-	block := taskBlock(t, document, "migrate", "installation:artifacts")
-	if strings.Contains(block, "migrationmanifest") {
-		t.Fatal("local migrate still invokes the historical migration manifest tool")
+	for _, forbidden := range []string{
+		"\n  bootstrap:\n", "\n  migrate:\n", "\n  tenant-executor:\n",
+		"core-migrator", "local-release prepare", "schema-executor",
+		"migration-manifest", "deploy verify",
+	} {
+		if strings.Contains(document, forbidden) {
+			t.Fatalf("local lifecycle still contains %q", forbidden)
+		}
 	}
-	if !strings.Contains(block, "core-migrator deploy verify") {
-		t.Fatal("local migrate must verify the applied baseline")
+	block := taskBlock(t, document, "initialize", "installation:artifacts")
+	if !strings.Contains(block, "run --rm core-initialize") {
+		t.Fatal("initialize does not call the single entrypoint")
+	}
+	recovery := readContractText(t, "../../.taskfiles/local-recovery.yml")
+	if strings.Contains(recovery, ":local:bootstrap") || strings.Contains(recovery, ":local:migrate") {
+		t.Fatal("rehydrate still calls the retired bootstrap or migrate tasks")
+	}
+	if !strings.Contains(recovery, "task: :local:initialize") {
+		t.Fatal("rehydrate does not call initialize before restore")
 	}
 }
 
 func TestLocalInfraReloadsClamAVAfterSignatureUpdate(t *testing.T) {
 	document := readContractText(t, "../../.taskfiles/local.yml")
-	block := taskBlock(t, document, "infra", "bootstrap")
+	block := taskBlock(t, document, "infra", "initialize")
 	required := []string{
 		"local-kms mailpit",
 		"run --rm --no-deps clamav-update",
@@ -77,7 +88,7 @@ func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
 	}
 	if !strings.Contains(
 		build,
-		"build local-release",
+		"build core-initialize",
 	) {
 		t.Fatal("normal local:build must build the local images in one cache-sharing bake")
 	}
@@ -94,7 +105,7 @@ func TestLocalBuildUsesCacheUnlessRefreshIsExplicit(t *testing.T) {
 	refresh := taskBlock(t, operations, "build:refresh", "check")
 	if !strings.Contains(
 		refresh,
-		"build --pull local-release",
+		"build --pull core-initialize",
 	) {
 		t.Fatal("explicit build refresh must pull the two release images together")
 	}

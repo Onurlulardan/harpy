@@ -14,6 +14,7 @@ func TestInspectAllowsRemainingTree(t *testing.T) {
 		{"core/cmd/worker/main.go", goImports("os", mod+"/core/internal/composition/worker")},
 		{"core/cmd/migrator/main.go", goImports("os", mod+"/core/internal/composition/migrator")},
 		{"core/cmd/operator/main.go", goImports("os", mod+"/core/internal/composition/operator")},
+		{"core/cmd/initialize/main.go", goImports("os", mod+"/core/internal/composition/initialize")},
 		{"cmd/setup/main.go", goImports(
 			"os", "gopkg.in/yaml.v3",
 			mod+"/internal/platform/config", mod+"/internal/platform/rustfs",

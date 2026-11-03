@@ -36,6 +36,12 @@ func TestGeneratedConnectionFilesShareOnlyIntendedCredentials(t *testing.T) {
 		"postgres-cluster-admin-password.txt", "harpy_cluster_admin", "harpy")
 	assertDSN(t, set, "postgres-extension-admin-dsn.txt",
 		"postgres-extension-admin-password.txt", "harpy_extension_admin", "harpy")
+	assertDSN(t, set, "postgres-goose-dsn.txt", "postgres-goose-password.txt",
+		"harpy_goose", "harpy")
+	assertDSN(t, set, "postgres-api-dsn.txt", "postgres-api-password.txt",
+		"harpy_api", "harpy")
+	assertDSN(t, set, "postgres-worker-dsn.txt", "postgres-worker-password.txt",
+		"harpy_worker", "harpy")
 	rabbit, err := url.Parse(string(set.files["rabbitmq-url.txt"]))
 	if err != nil || rabbit.User.Username() != "harpy_worker" ||
 		rabbit.Host != "rabbitmq:5672" || rabbit.Path != "/harpy" {

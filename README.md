@@ -74,7 +74,7 @@ Bu tablo modüllerin ana sorumluluk alanlarını özetler. Bir modülün tüm us
 
 Harpy, **modular monolith** mimarisini kullanır. Modüller business ownership sınırlarıdır; bağımsız deployable servisler değildir. Her modül kendi domain kurallarının, application use-case'lerinin ve persistence adapter'larının sahibidir.
 
-API, worker, migrator ve operator süreçleri ihtiyaç duydukları modülleri ayrı composition root'ları üzerinden bir araya getirir. Böylece aynı process içindeki use-case çağrıları gereksiz HTTP veya message broker hop'larına dönüşmez. Ayrı process kullanımı ise HTTP trafiği, background workload, schema lifecycle ve yönetim operasyonlarının çalışma sınırlarını birbirinden ayırır.
+API, worker, initialize ve operator süreçleri ihtiyaç duydukları modülleri ayrı composition root'ları üzerinden bir araya getirir. Böylece aynı process içindeki use-case çağrıları gereksiz HTTP veya message broker hop'larına dönüşmez. Ayrı process kullanımı ise HTTP trafiği, background workload, veritabanı lifecycle ve yönetim operasyonlarının çalışma sınırlarını birbirinden ayırır.
 
 ### Runtime süreçleri
 
@@ -82,7 +82,7 @@ API, worker, migrator ve operator süreçleri ihtiyaç duydukları modülleri ay
 | --- | --- | --- |
 | **API** | `core/cmd/api` | Public HTTP API, route assembly, request admission ve runtime readiness |
 | **Worker** | `core/cmd/worker` | Database-backed jobs, event consumers, retry ve asenkron yan etkiler |
-| **Migrator** | `core/cmd/migrator` | Database migration yürütümü ve schema lifecycle |
+| **Initialize** | `core/cmd/initialize` | Tek veritabanı lifecycle girişi: foundation, goose, ardından application |
 | **Operator** | `core/cmd/operator` | Kurulum ve kontrollü platform operasyonları |
 | **Setup CLI** | `cmd/setup` | Deployment profil yapılandırması ve yerel secret hazırlığı |
 
@@ -121,13 +121,13 @@ flowchart TB
   subgraph P["Runtime süreçleri"]
     API["API"]
     W["Worker"]
-    M["Migrator"]
+    M["Initialize"]
     O["Operator"]
   end
   subgraph C["Process composition"]
     AC["API composition"]
     WC["Worker composition"]
-    MC["Migrator composition"]
+    MC["Initialize composition"]
     OC["Operator composition"]
   end
   subgraph A["Modüler uygulama"]
@@ -421,7 +421,7 @@ docs/
 | --- | --- |
 | API giriş ve route wiring | `core/cmd/api/`, `core/internal/composition/api/` |
 | Worker ve job wiring | `core/cmd/worker/`, `core/internal/composition/worker/` |
-| Migrator | `core/cmd/migrator/`, `core/internal/composition/migrator/` |
+| Initialize | `core/cmd/initialize/`, `core/internal/composition/initialize/` |
 | Operator | `core/cmd/operator/`, `core/internal/composition/operator/` |
 | Business modülleri | `core/internal/modules/` |
 | Platform primitive'leri | `core/internal/platform/` |

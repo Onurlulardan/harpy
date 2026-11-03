@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // Bump when generated artifact contents or semantics change, even if names do not.
-const currentArtifactContractRevision = 11
+const currentArtifactContractRevision = 12
 
 func validateCurrentArtifactContractRevision(manifest setManifest) error {
 	if manifest.ArtifactContractRevision != currentArtifactContractRevision {

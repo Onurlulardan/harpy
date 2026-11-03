@@ -84,7 +84,6 @@ ops/local/README.md'de verilen varsayılan portlar:
 | Core API | http://localhost:8000 |
 | API management | http://localhost:9001 |
 | Worker management | http://localhost:9002 |
-| Schema executor management | http://localhost:9003 |
 | PostgreSQL | localhost:55432 |
 | RabbitMQ AMQP | localhost:5673 |
 | RabbitMQ management | http://localhost:15673 |

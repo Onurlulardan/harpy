@@ -29,10 +29,12 @@ func TestRuntimeTargetsExcludePrivilegedMaterial(t *testing.T) {
 		}
 		forbidden := map[string]bool{
 			"local-ca.key": true, "kms-master-key.bin": true,
-			"postgres-bootstrap-dsn.txt": true,
-			"postgres-migrator-dsn.txt":  true,
-			"minio-root-access-key.txt":  true,
-			"minio-root-secret-key.txt":  true,
+			"postgres-bootstrap-dsn.txt":  true,
+			"postgres-migrator-dsn.txt":   true,
+			"postgres-goose-dsn.txt":      true,
+			"postgres-goose-password.txt": true,
+			"minio-root-access-key.txt":   true,
+			"minio-root-secret-key.txt":   true,
 		}
 		for _, file := range target.files {
 			if forbidden[file.name] {

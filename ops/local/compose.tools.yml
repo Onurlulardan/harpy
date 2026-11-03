@@ -13,6 +13,7 @@ services:
       - local-secret-mailpit:/targets/mailpit
       - local-secret-infra-check:/targets/infra-check
       - local-secret-local-release:/targets/local-release
+      - local-secret-initialize:/targets/initialize
       - local-secret-migrator:/targets/migrator
       - local-secret-schema:/targets/schema
       - local-secret-operator:/targets/operator
@@ -70,40 +71,21 @@ services:
       - -timeout
       - 2m
       - -http
-      - http://tenant-migration-executor:9000/readyz
-      - -http
-      - http://schema-executor:9000/readyz
-      - -http
       - http://core-api:9000/readyz
       - -http
       - http://core-worker:9000/readyz
     networks: [local]
 
-  local-release:
+  core-initialize:
     image: harpy/backend-v2-local:dev
     build:
       context: ../..
       dockerfile: ops/local/Dockerfile
-    entrypoint: ["/app/local-release"]
+    restart: "no"
+    entrypoint: ["/app/core-initialize"]
+    env_file: ./state/secrets/initialize.env
     volumes:
-      - local-secret-local-release:/run/secrets:ro
-      - release-state:/run/release
-      - ../../debug-66ab43.log:/tmp/debug-66ab43.log
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks: [local]
-
-  core-migrator:
-    image: harpy/backend-v2-local:dev
-    entrypoint: ["/app/core-migrator"]
-    env_file: ./state/secrets/migrator.env
-    environment:
-      HARPY_LOG_LEVEL: debug
-    volumes:
-      - local-secret-migrator:/run/secrets:ro
-      - release-state:/run/release:ro
-      - ../../debug-66ab43.log:/tmp/debug-66ab43.log
+      - local-secret-initialize:/run/secrets:ro
     depends_on:
       postgres:
         condition: service_healthy
