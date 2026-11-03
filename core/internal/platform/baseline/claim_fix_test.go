@@ -52,3 +52,20 @@ func TestTenantCompletionUsesSchemaHistoryAndReopensUnactivatedJobs(t *testing.T
 		}
 	}
 }
+
+func TestTenantClaimRefreshesClockAfterReopen(t *testing.T) {
+	for _, table := range []string{
+		"platform.release_generations",
+		"platform.schema_contracts",
+		"platform.tenant_migration_requirement_catalogs",
+		"platform.tenant_migration_checkpoints",
+	} {
+		if strings.Contains(platformTenantExecutorClaimClockScript, table) {
+			t.Fatalf("tenant claim clock baseline still reads %s", table)
+		}
+	}
+	const refreshed = "PERFORM platform.tenancy_tenant_migration_reopen_unactivated_v1();\n    v_now := pg_catalog.clock_timestamp();"
+	if !strings.Contains(platformTenantExecutorClaimClockScript, refreshed) {
+		t.Fatal("tenant claim clock baseline must refresh v_now after reopen")
+	}
+}
