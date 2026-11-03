@@ -356,3 +356,12 @@ Tam `task dev` komutu local release validation olarak çalışır; CI'da aynı I
 
 ## 18. Nihai teslim ve kanıt
 Tamamlanma raporu package/file disposition CSV/Markdown, SQL object disposition, migration-stream owner coverage, Taskfile/Compose dönüşüm tablosu, generated artifact farkı, fresh install/idempotency/tenant/permission test çıktıları ve eski referans taraması içermelidir. Sadece "grep temiz" veya "testler geçti" yeterli değildir.
+
+
+## 19. Uygulama sırası ve durdurma koşulları
+
+Task'lar 01 → 02 → 03 → 04 sırasıyla uygulanır; ancak 04'teki repository-wide consumer temizliği önceki aşamalarda ortaya çıkan consumer'ları da kapatır. Bir task'ın metninde hedeflenen mimariyi yazmak, kodun uygulandığı anlamına gelmez.
+
+Her aşama PR'ı şu çıktıları vermeden sonraki aşamaya geçemez: değişen/silinen dosya listesi, yeni owner ve consumer grafiği, ilgili PostgreSQL object disposition, gerçek test komutları/çıktısı ve kalan blocker. Özellikle mevcut ürün davranışı için owner/consumer belirsizliği varsa tahminle silme veya koruma yapılmaz; `BLOCKED` olarak açıkça raporlanır.
+
+PR'lar eski migration package'larını parça parça taşıyan bir geçiş mimarisi oluşturamaz. Her merge edilebilir dikey dilim kendi başına derlenebilir/test edilebilir olmalı; geçici compatibility binary, alias, state adapter veya dual-write/read path bırakmamalıdır. Bu koşul task setinin tamamlanma hükmünü gevşetmez.
