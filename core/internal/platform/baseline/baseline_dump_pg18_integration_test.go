@@ -24,13 +24,11 @@ func TestBaselineDumpCleanupPostgres18(t *testing.T) {
 	if err != nil {
 		t.Fatalf("apply platform baseline: %v", err)
 	}
-	if !platformResult.Applied || platformResult.Version != platformTenantExecutorClaimFixVersion ||
-		len(platformResult.AppliedVersions) != 5 ||
+	if !platformResult.Applied || platformResult.Version != platformTenantExecutorBaselineVersion ||
+		len(platformResult.AppliedVersions) != 3 ||
 		platformResult.AppliedVersions[0] != platformVersion ||
 		platformResult.AppliedVersions[1] != platformCatalogRemovalVersion ||
-		platformResult.AppliedVersions[2] != platformTenantExecutorReadinessVersion ||
-		platformResult.AppliedVersions[3] != platformTenantExecutorReadinessFixVersion ||
-		platformResult.AppliedVersions[4] != platformTenantExecutorClaimFixVersion {
+		platformResult.AppliedVersions[2] != platformTenantExecutorBaselineVersion {
 		t.Fatalf("platform baseline result = %+v", platformResult)
 	}
 	assertBaselineTenantExecutorCanRegister(t, ctx, dsn)
@@ -55,7 +53,7 @@ func TestBaselineDumpCleanupPostgres18(t *testing.T) {
 		t.Fatal(err)
 	}
 	if repeatedPlatform.Applied || repeatedTenant.Applied ||
-		repeatedPlatform.Version != platformTenantExecutorClaimFixVersion ||
+		repeatedPlatform.Version != platformTenantExecutorBaselineVersion ||
 		repeatedTenant.Version != 20261102000001 ||
 		len(repeatedPlatform.AppliedVersions) != 0 ||
 		len(repeatedTenant.AppliedVersions) != 0 {

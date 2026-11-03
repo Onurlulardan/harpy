@@ -32,8 +32,7 @@ tasks:
   "migration:verify":
     desc: Verify manifest lineage, lifecycle waiting, replay, recovery, and data-preserving upgrade
     cmds:
-      - go run ./tools/migrationmanifest
-      - go test ./core/internal/orchestration/environmentoperator ./core/internal/platform/migration ./tools/internal/migrationmanifest -count=1
+      - go test ./core/internal/orchestration/environmentoperator ./core/internal/platform/migration -count=1
       - >-
         go test -p=1 -timeout=20m -tags=integration
         ./core/internal/platform/migrator

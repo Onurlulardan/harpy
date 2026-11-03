@@ -2,11 +2,9 @@ package postgres
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
-	"github.com/jackc/pgx/v5"
 )
 
 type foundationPreflight struct {
@@ -100,30 +98,5 @@ func readFoundationPreflight(
 	queryer roleQueryer,
 	binary runtimev1.BinarySchemaContract,
 ) (foundationPreflight, error) {
-	var result foundationPreflight
-	err := queryer.QueryRow(
-		ctx, preflightFoundationSQL, runtimev1.VectorExtensionVersion,
-		binary.RuntimeGeneration, binary.MinimumDatabaseGeneration,
-		binary.MigrationManifestSHA256, binary.ExtensionManifestSHA256,
-		binary.PostgresImageDigest,
-	).Scan(
-		&result.count, &result.origin, &result.systemIdentifier, &result.databaseOID,
-		&result.environmentID, &result.bootstrapReleaseID, &result.activeReleaseID,
-		&result.runID, &result.runState,
-		&result.runCommand,
-		&result.runMigrationSHA256, &result.runExtensionSHA256,
-		&result.databaseGeneration, &result.minimumRuntimeGeneration,
-		&result.contractMigrationSHA256, &result.contractExtensionSHA256,
-		&result.contractStatus, &result.contractVerifiedRunID, &result.contractRevision,
-		&result.extensionVersion, &result.extensionSchema, &result.extensionOwner,
-		&result.extensionOrigin, &result.extensionVerifiedRunID,
-		&result.binaryReleaseKnown,
-	)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return readBaselineFoundation(ctx, queryer, binary)
-	}
-	if err != nil {
-		return foundationPreflight{}, fmt.Errorf("%w: foundation evidence query: %w", ErrStartupPreflight, err)
-	}
-	return result, nil
+	return readBaselineFoundation(ctx, queryer, binary)
 }

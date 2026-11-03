@@ -14,9 +14,9 @@ extension.extversion, namespace.nspname,
 pg_catalog.pg_get_userbyid(extension.extowner),
 (SELECT CASE
  WHEN pg_catalog.count(*) FILTER (
-   WHERE history.version_id IN (20261028000000, 20261102000000, 20261103000000)
-  ) = 3
- THEN 3 ELSE 0 END
+   WHERE history.version_id IN (20261028000000, 20261102000000)
+  ) = 2
+ THEN 2 ELSE 0 END
  FROM platform.goose_db_version AS history
  WHERE history.is_applied AND history.version_id <> 0)
 FROM platform.environment_identity AS identity
@@ -52,7 +52,7 @@ func assembleBaselineFoundation(
 	databaseOID, appliedVersions int64,
 	binary runtimev1.BinarySchemaContract,
 ) (foundationPreflight, error) {
-	if appliedVersions != 3 {
+	if appliedVersions != 2 {
 		return foundationPreflight{}, fmt.Errorf("%w: baseline foundation is incomplete", ErrStartupPreflight)
 	}
 	if binary.RuntimeGeneration != 1 || binary.MinimumDatabaseGeneration != 1 {

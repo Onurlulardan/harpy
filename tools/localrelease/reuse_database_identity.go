@@ -71,13 +71,7 @@ func verifyReuseDatabase(
 	); err != nil {
 		return err
 	}
-	if err := verifyStoredEnvironmentIdentity(ctx, target, expected, foundation); err != nil {
-		return err
-	}
-	if !foundation {
-		return verifyFoundationRelease(ctx, target, expected.environmentID)
-	}
-	return nil
+	return verifyStoredEnvironmentIdentity(ctx, target, expected, foundation)
 }
 
 func verifyApplicationLogin(

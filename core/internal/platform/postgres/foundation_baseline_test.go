@@ -22,8 +22,8 @@ func (queryer staticQueryer) QueryRow(context.Context, string, ...any) pgx.Row {
 
 func TestBaselineFoundationIgnoresGooseVersionZero(t *testing.T) {
 	if !strings.Contains(baselineFoundationSQL, "history.version_id <> 0") ||
-		!strings.Contains(baselineFoundationSQL, "20261028000000, 20261102000000, 20261103000000") {
-		t.Fatal("baseline foundation count must require the three baseline versions and ignore Goose version 0")
+		!strings.Contains(baselineFoundationSQL, "20261028000000, 20261102000000") {
+		t.Fatal("baseline foundation count must require the platform baseline versions and ignore Goose version 0")
 	}
 	if strings.Contains(baselineFoundationSQL, "pg_catalog.count(*)\n FROM") {
 		t.Fatal("baseline foundation still counts every applied Goose row")
@@ -55,7 +55,7 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		51019, 3, binary,
+		51019, 2, binary,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -80,7 +80,7 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"fresh", "1", "018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		1, 2, binary,
+		1, 1, binary,
 	); err == nil {
 		t.Fatal("partial goose history was treated as a complete baseline")
 	}
@@ -92,7 +92,7 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		51019, 3, nextGeneration,
+		51019, 2, nextGeneration,
 	); err == nil {
 		t.Fatal("baseline evidence accepted a newer runtime generation")
 	}

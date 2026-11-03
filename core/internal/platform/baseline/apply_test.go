@@ -7,13 +7,11 @@ import (
 
 func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 	for name, script := range map[string]string{
-		"platform":                      platformScript,
-		"tenant":                        tenantScript,
-		"platform cleanup":              platformCatalogRemovalScript,
-		"platform tenant readiness":     platformTenantExecutorReadinessScript,
-		"platform tenant readiness fix": platformTenantExecutorReadinessFixScript,
-		"platform tenant claim fix":     platformTenantExecutorClaimFixScript,
-		"tenant cleanup":                tenantCatalogRemovalScript,
+		"platform":                 platformScript,
+		"tenant":                   tenantScript,
+		"platform cleanup":         platformCatalogRemovalScript,
+		"platform tenant executor": platformTenantExecutorBaselineScript,
+		"tenant cleanup":           tenantCatalogRemovalScript,
 	} {
 		if strings.Contains(script, "\\restrict") || strings.Contains(script, "\\unrestrict") {
 			t.Fatalf("%s baseline contains a psql meta command", name)
@@ -33,36 +31,24 @@ func TestBaselineScriptsAreGooseSnapshots(t *testing.T) {
 }
 
 func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
-	fix := combineBaselineResults(
-		Result{Applied: true, Version: platformTenantExecutorReadinessFixVersion},
-		Result{Applied: true, Version: platformTenantExecutorClaimFixVersion},
-	)
 	applied := combineBaselineResults(
 		Result{Applied: true, Version: platformVersion},
 		Result{Applied: true, Version: platformCatalogRemovalVersion},
-		Result{Applied: true, Version: platformTenantExecutorReadinessVersion},
-		fix,
+		Result{Applied: true, Version: platformTenantExecutorBaselineVersion},
 	)
-	if !applied.Applied || applied.Version != platformTenantExecutorClaimFixVersion ||
-		len(applied.AppliedVersions) != 5 ||
+	if !applied.Applied || applied.Version != platformTenantExecutorBaselineVersion ||
+		len(applied.AppliedVersions) != 3 ||
 		applied.AppliedVersions[0] != platformVersion ||
 		applied.AppliedVersions[1] != platformCatalogRemovalVersion ||
-		applied.AppliedVersions[2] != platformTenantExecutorReadinessVersion ||
-		applied.AppliedVersions[3] != platformTenantExecutorReadinessFixVersion ||
-		applied.AppliedVersions[4] != platformTenantExecutorClaimFixVersion {
+		applied.AppliedVersions[2] != platformTenantExecutorBaselineVersion {
 		t.Fatalf("applied baseline result = %+v", applied)
 	}
-	repeatedFix := combineBaselineResults(
-		Result{Version: platformTenantExecutorReadinessFixVersion},
-		Result{Version: platformTenantExecutorClaimFixVersion},
-	)
 	repeated := combineBaselineResults(
 		Result{Version: platformVersion},
 		Result{Version: platformCatalogRemovalVersion},
-		Result{Version: platformTenantExecutorReadinessVersion},
-		repeatedFix,
+		Result{Version: platformTenantExecutorBaselineVersion},
 	)
-	if repeated.Applied || repeated.Version != platformTenantExecutorClaimFixVersion ||
+	if repeated.Applied || repeated.Version != platformTenantExecutorBaselineVersion ||
 		len(repeated.AppliedVersions) != 0 {
 		t.Fatalf("repeated baseline result = %+v", repeated)
 	}
@@ -70,30 +56,17 @@ func TestCombineBaselineResultsKeepsLatestPlatformVersion(t *testing.T) {
 
 func TestPlatformMigrationSetIsOrderedAndIncludesReadinessCompatibility(t *testing.T) {
 	migrations := PlatformMigrations()
-	if len(migrations) != 5 ||
+	if len(migrations) != 3 ||
 		migrations[0].Version != platformVersion ||
 		migrations[1].Version != platformCatalogRemovalVersion ||
-		migrations[2].Version != platformTenantExecutorReadinessVersion ||
-		migrations[3].Version != platformTenantExecutorReadinessFixVersion ||
-		migrations[4].Version != platformTenantExecutorClaimFixVersion ||
-		LatestPlatformVersion() != platformTenantExecutorClaimFixVersion {
+		migrations[2].Version != platformTenantExecutorBaselineVersion ||
+		LatestPlatformVersion() != platformTenantExecutorBaselineVersion {
 		t.Fatalf("platform baseline migration set = %+v", migrations)
 	}
 	for _, migration := range migrations {
 		if migration.Path == "" || len(migration.SHA256) != 64 {
 			t.Fatalf("invalid platform migration metadata = %+v", migration)
 		}
-	}
-}
-
-func TestTenantExecutorReadinessFixIgnoresGooseVersionZero(t *testing.T) {
-	const totalApplied = "WHERE history.is_applied\n          ) = 3"
-	if strings.Contains(platformTenantExecutorReadinessFixScript, totalApplied) {
-		t.Fatal("readiness fix still requires every applied Goose row to total 3")
-	}
-	if !strings.Contains(platformTenantExecutorReadinessFixScript, "history.version_id <> 0") ||
-		!strings.Contains(platformTenantExecutorReadinessFixScript, "20261028000000, 20261102000000, 20261103000000") {
-		t.Fatal("readiness fix must require the three baseline versions and ignore Goose version 0")
 	}
 }
 
