@@ -157,3 +157,38 @@ Gerçek desteklenen PostgreSQL sürümünde aşağıdaki testleri çalıştır:
 ## 10. Tamamlanma şartı
 
 Foundation yalnızca boş PostgreSQL database'inin altyapısını kurar. Domain tabloları, migration history veya custom state üretmez. Goose native history'sine hiçbir şekilde dokunmaz. Eski Foundation/migrator kodu ve ona bağlı config, SQL, test, CLI ve deployable kalıntıları silinmiştir.
+
+## 11. Mevcut PostgreSQL foundation kaynaklarının disposition'ı
+
+Bugünkü implementation `core/internal/platform/baseline/apply.go` içindeki özel baseline uygulayıcısını ve `core/internal/platform/postgres/foundation_baseline.go` bağlantısını içerir. Bunlar yeni Foundation veya Goose runner olarak korunamaz. Her biri sıfırdan tasarlanan yeni sınırda karşılanır.
+
+Kontrol edilecek mevcut package ve kaynaklar:
+
+- `core/internal/platform/baseline/` ve altındaki bütün Go/test/SQL dosyaları.
+- `core/internal/platform/postgres/foundation_baseline.go` ve `foundation_baseline_test.go`.
+- `core/internal/platform/migrator/` içindeki database preflight, extension evidence, owner/grant, foundation evidence ve baseline orchestration consumer'ları.
+- `core/internal/composition/migrator/` içindeki startup/bind/config wiring.
+- `contracts/storage/owners/platform_migrator.json` ve bu owner kaydını yükleyen/generating kod.
+- `ops/local/compose.tools.yml`, `ops/local/compose.lifecycle.yml`, `ops/local/compose.inventory.yml` ve `.taskfiles/local*.yml` içindeki secret, volume ve service tanımları.
+
+Foundation'a taşınabilecek tek sorumluluk PostgreSQL database/role/schema/extension/ownership/grant/default-privilege hazırlığıdır. Eski `environment_identity`, extension registry/evidence, foundation receipt/finalization, migration readiness, release generation veya manifest verileri isim değiştirerek korunamaz.
+
+### 11.1 PostgreSQL nesne allowlist'i
+
+Foundation'ın kurabileceği nesneler implementation öncesi bir allowlist olarak kod/test ile sabitlenir:
+
+- Database bağlantısı ve database-level güvenlik ayarları.
+- Açıkça listelenmiş login/no-login roller ve üyelikleri.
+- Platform namespace ve tenant schema namespace/ownership kuralları.
+- Gereken extension kurulumları.
+- Schema/database grants ve default privileges.
+
+Bu allowlist'in dışında tablo, view, function, procedure, trigger, type, sequence, policy veya Goose history oluşturulamaz. Foundation integration test'i katalog sorgularıyla yalnız allowlist nesnelerinin oluştuğunu kanıtlar. Goose sonrasında domain schema nesneleri yalnız Goose source tarafından gelir.
+
+### 11.2 Secret ve yetki sınırı
+
+Eski `migrator.env`, `schema-executor.env`, `tenant-migration-executor.env` ve local-release database secret üretimleri yeni Foundation credential modeline alias edilmez. Yeni ayrıcalıklı credential yalnız initialize process'ine verilir; API/worker environment, mounted secret volume veya artifact setinde bulunmadığı negatif testle gösterilir. Log ve hata mesajlarında DSN/password/token/private key redaction testleri bulunur.
+
+### 11.3 Tamamlanma
+
+Foundation task'ı tamamlanmış sayılmaz; gerçek PostgreSQL 18 disposable testinde boş database preflight, role/schema/extension/grant kurulumu, ikinci çağrıda idempotency, dolu/eski DB'de sıfır DDL, Goose history yokluğu ve API/worker DDL yetkisizliği kanıtlanana kadar.
