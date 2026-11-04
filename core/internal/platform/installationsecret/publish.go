@@ -1,6 +1,7 @@
 package installationsecret
 
 import (
+	"bytes"
 	"errors"
 	"os"
 	"path/filepath"
@@ -11,6 +12,9 @@ func Publish(path string, wire []byte) (err error) {
 		return ErrInvalid
 	}
 	target, err := validatedTarget(path, false)
+	if errors.Is(err, ErrExists) {
+		return acceptIdenticalExisting(path, wire)
+	}
 	if err != nil {
 		return err
 	}
@@ -47,6 +51,22 @@ func Publish(path string, wire []byte) (err error) {
 	published = true
 	if err = syncDirectory(filepath.Dir(target)); err != nil {
 		return ErrInterrupted
+	}
+	return nil
+}
+
+func acceptIdenticalExisting(path string, wire []byte) error {
+	identical := false
+	err := Read(path, func(existing []byte) error {
+		identical = bytes.Equal(existing, wire)
+		clear(existing)
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if !identical {
+		return ErrExists
 	}
 	return nil
 }

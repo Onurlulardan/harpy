@@ -34,6 +34,36 @@ func TestOwnerOnlyFilePublishReadRemove(t *testing.T) {
 	}
 }
 
+func TestOwnerOnlyFilePublishSameWireIsIdempotent(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "initial-password")
+	wire := canonicalWire(0x6e)
+	if err := Publish(path, wire); err != nil {
+		t.Fatal(err)
+	}
+	before, err := os.Lstat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = Publish(path, wire); err != nil {
+		t.Fatalf("same wire err=%v", err)
+	}
+	after, err := os.Lstat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !os.SameFile(before, after) {
+		t.Fatal("secret file was replaced")
+	}
+	if err = Read(path, func(value []byte) error {
+		if !bytes.Equal(value, wire) {
+			t.Fatal("wire changed")
+		}
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestOwnerOnlyFileRejectsMalformedAndConsumerError(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "initial-password")
 	if err := Publish(path, []byte("invalid")); err != ErrInvalid {

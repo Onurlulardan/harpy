@@ -61,13 +61,18 @@ func TestPublishDevelopmentBootstrapAuthorityReplacesOwnedOutput(t *testing.T) {
 		t.Fatal(err)
 	}
 	first := readPublishedAuthority(t, directory)
+	assertPublishedLifetime(t, first, now)
+	assertPublishedOmitsRetiredRoles(t, directory)
 	if err := publishDevelopmentBootstrapAuthority(directory, now.Add(time.Minute)); err != nil {
 		t.Fatal(err)
 	}
 	second := readPublishedAuthority(t, directory)
-	if first.EnvironmentID == second.EnvironmentID {
-		t.Fatal("replacement reused the previous environment ID")
+	if first.EnvironmentID != second.EnvironmentID ||
+		first.ReleaseID != second.ReleaseID ||
+		first.ManifestID != second.ManifestID {
+		t.Fatal("replacement changed the stored authority identity")
 	}
+	assertPublishedLifetime(t, second, now.Add(time.Minute))
 	if err := runArtifact([]string{"extra"}); err == nil {
 		t.Fatal("artifact accepted arguments")
 	}

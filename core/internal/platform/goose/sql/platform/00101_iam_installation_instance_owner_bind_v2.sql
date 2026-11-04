@@ -1,4 +1,38 @@
 -- +goose Up
+CREATE TABLE platform.iam_installation_instance_owner_inputs (
+    operation_id uuid NOT NULL CHECK (
+        operation_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    environment_id uuid PRIMARY KEY CHECK (
+        environment_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    tenant_id uuid NOT NULL CHECK (
+        tenant_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    schema_name name NOT NULL CHECK (schema_name::text <> ''),
+    user_id uuid NOT NULL CHECK (
+        user_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    subject_id uuid NOT NULL CHECK (
+        subject_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    owner_role_id uuid NOT NULL CHECK (
+        owner_role_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    role_permission_id uuid NOT NULL CHECK (
+        role_permission_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    owner_binding_id uuid NOT NULL CHECK (
+        owner_binding_id IS DISTINCT FROM '00000000-0000-0000-0000-000000000000'::uuid
+    ),
+    authorization_version bigint NOT NULL,
+    request_sha256 text NOT NULL CHECK (request_sha256 <> '')
+);
+
+REVOKE ALL ON TABLE platform.iam_installation_instance_owner_inputs FROM PUBLIC;
+
+GRANT SELECT, INSERT ON TABLE platform.iam_installation_instance_owner_inputs TO harpy_api, harpy_worker;
+
 -- +goose StatementBegin
 CREATE FUNCTION platform.iam_installation_instance_owner_bind_v2(
     in_operation_id uuid,
@@ -19,7 +53,62 @@ VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $fn$
-    SELECT false;
+    WITH accepted AS (
+        SELECT
+            in_operation_id AS operation_id,
+            in_environment_id AS environment_id,
+            in_tenant_id AS tenant_id,
+            in_schema_name AS schema_name,
+            in_user_id AS user_id,
+            in_subject_id AS subject_id,
+            in_owner_role_id AS owner_role_id,
+            in_role_permission_id AS role_permission_id,
+            in_owner_binding_id AS owner_binding_id,
+            in_authorization_version AS authorization_version,
+            in_request_sha256 AS request_sha256
+        WHERE in_operation_id IS NOT NULL
+          AND in_operation_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_environment_id IS NOT NULL
+          AND in_environment_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_tenant_id IS NOT NULL
+          AND in_tenant_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_user_id IS NOT NULL
+          AND in_user_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_subject_id IS NOT NULL
+          AND in_subject_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_owner_role_id IS NOT NULL
+          AND in_owner_role_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_role_permission_id IS NOT NULL
+          AND in_role_permission_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND in_owner_binding_id IS NOT NULL
+          AND in_owner_binding_id <> '00000000-0000-0000-0000-000000000000'::uuid
+          AND pg_catalog.length(in_schema_name::text) > 0
+          AND pg_catalog.length(in_request_sha256) > 0
+    ), inserted AS (
+        INSERT INTO platform.iam_installation_instance_owner_inputs (
+            operation_id, environment_id, tenant_id, schema_name, user_id,
+            subject_id, owner_role_id, role_permission_id, owner_binding_id,
+            authorization_version, request_sha256
+        )
+        SELECT
+            accepted.operation_id, accepted.environment_id, accepted.tenant_id,
+            accepted.schema_name, accepted.user_id, accepted.subject_id,
+            accepted.owner_role_id, accepted.role_permission_id,
+            accepted.owner_binding_id, accepted.authorization_version,
+            accepted.request_sha256
+        FROM accepted
+        ON CONFLICT (environment_id) DO NOTHING
+        RETURNING environment_id
+    )
+    SELECT CASE
+        WHEN EXISTS (SELECT 1 FROM inserted) THEN false
+        WHEN EXISTS (SELECT 1 FROM accepted) AND EXISTS (
+            SELECT 1
+            FROM platform.iam_installation_instance_owner_inputs AS stored
+            WHERE stored.environment_id = in_environment_id
+        ) THEN true
+        ELSE false
+    END;
 $fn$;
 -- +goose StatementEnd
 
@@ -29,3 +118,4 @@ GRANT EXECUTE ON FUNCTION platform.iam_installation_instance_owner_bind_v2(uuid,
 
 -- +goose Down
 DROP FUNCTION platform.iam_installation_instance_owner_bind_v2(uuid, uuid, uuid, name, uuid, uuid, uuid, uuid, uuid, bigint, text);
+DROP TABLE platform.iam_installation_instance_owner_inputs;

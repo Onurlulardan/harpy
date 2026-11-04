@@ -10,7 +10,6 @@ func TestValidateBootstrapAuthorityManifestAcceptsExactOrigins(t *testing.T) {
 	retained := validAuthorityManifest("v1_adopted", digest)
 	authorityDatabase(retained)["extension_owner"] = "oracle"
 	authorityDatabase(retained)["extension_owner_mode"] = "adopted_retained_inventory"
-	authorityRole(retained, 7)["enabled"] = false
 	fixtures := []map[string]any{
 		validAuthorityManifest("fresh", digest),
 		validAuthorityManifest("v1_adopted", digest),
@@ -31,12 +30,15 @@ func TestValidateBootstrapAuthorityManifestRejectsSemanticDrift(t *testing.T) {
 		mutate func(*BootstrapAuthorityManifest)
 	}{
 		{"environment identity", func(value *BootstrapAuthorityManifest) { value.EnvironmentID = "" }},
-		{"incomplete role set", func(value *BootstrapAuthorityManifest) { value.Roles = value.Roles[:14] }},
-		{"authority owner login", func(value *BootstrapAuthorityManifest) { value.Roles[1].Login = true }},
-		{"adopter replication", func(value *BootstrapAuthorityManifest) { value.Roles[8].Replication = true }},
-		{"decoder login", func(value *BootstrapAuthorityManifest) { value.Roles[9].Login = true }},
-		{"adopter connection", func(value *BootstrapAuthorityManifest) { value.Roles[8].ConnectionLimit = 1 }},
-		{"incomplete memberships", func(value *BootstrapAuthorityManifest) { value.Memberships = value.Memberships[:3] }},
+		{"wrong role count", func(value *BootstrapAuthorityManifest) { value.Roles = value.Roles[:3] }},
+		{"owner login", func(value *BootstrapAuthorityManifest) { value.Roles[0].Login = true }},
+		{"cutover role name", func(value *BootstrapAuthorityManifest) {
+			value.Roles[1].Name = "harpy_cutover_decoder"
+		}},
+		{"wrong membership", func(value *BootstrapAuthorityManifest) {
+			value.Memberships[0].Grantor = "harpy_cluster_admin"
+		}},
+		{"incomplete memberships", func(value *BootstrapAuthorityManifest) { value.Memberships = nil }},
 		{"two leases", func(value *BootstrapAuthorityManifest) { value.CredentialLeases = value.CredentialLeases[:1] }},
 		{"unique lease IDs", func(value *BootstrapAuthorityManifest) {
 			value.CredentialLeases[1].LeaseID = value.CredentialLeases[0].LeaseID

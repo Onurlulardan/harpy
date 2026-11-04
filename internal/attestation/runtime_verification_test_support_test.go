@@ -58,12 +58,7 @@ func validRuntimeAuthority() runtimev1.BootstrapAuthorityManifest {
 		},
 		CreateRoleSelfGrant: "", Roles: validRuntimeAuthorityRoles(),
 		Memberships: []runtimev1.BootstrapAuthorityMembership{
-			runtimeMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-			runtimeMembership(
-				"harpy_backup", "harpy_backup_reader", true, false, true,
-			),
-			runtimeMembership("harpy_restore", "harpy_owner", true, false, true),
-			runtimeMembership("harpy_v1_runtime", "harpy_runtime", false, true, false),
+			runtimeMembership("harpy_goose", "harpy_owner"),
 		},
 		CredentialLeases: []runtimev1.BootstrapCredentialLease{
 			runtimeLease("55555555-5555-4555-8555-555555555555", "harpy_cluster_admin"),
@@ -77,40 +72,25 @@ func validRuntimeAuthority() runtimev1.BootstrapAuthorityManifest {
 
 func validRuntimeAuthorityRoles() []runtimev1.BootstrapAuthorityRole {
 	return []runtimev1.BootstrapAuthorityRole{
-		runtimeRole("harpy_owner", true, "permanent", false, false, false, false, -1),
-		runtimeRole("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
-		runtimeRole("harpy_runtime", true, "permanent", false, false, false, false, -1),
-		runtimeRole("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
-		runtimeRole("harpy_v1_runtime", false, "coexistence", false, false, false, false, -1),
-		runtimeRole("harpy_cluster_admin", true, "leased", false, false, true, true, 1),
-		runtimeRole("harpy_extension_admin", true, "leased", false, true, false, false, 1),
-		runtimeRole("harpy_legacy_extension_owner", false, "adopted_only", false, false, false, false, -1),
-		runtimeRole("harpy_adopter", true, "cutover_leased", false, false, false, false, 0),
-		runtimeRole("harpy_cutover_decoder", true, "cutover_leased", false, false, false, false, 0),
-		runtimeRole("harpy_cutover_finalizer", true, "cutover_finalization_leased", false, false, false, false, 0),
-		runtimeRole("harpy_backup_reader", true, "permanent", false, false, false, false, -1),
-		runtimeRole("harpy_backup", true, "permanent", true, false, false, false, -1),
-		runtimeRole("harpy_restore", true, "permanent", true, false, false, false, -1),
-		runtimeRole("harpy_reactivation_observer", true, "permanent", true, false, false, false, -1),
+		runtimeRole("harpy_owner", false, false, -1),
+		runtimeRole("harpy_goose", true, false, 4),
+		runtimeRole("harpy_api", true, true, 20),
+		runtimeRole("harpy_worker", true, true, 20),
 	}
 }
 
-func runtimeRole(
-	name string, enabled bool, mode string, login, superuser, createDB, createRole bool, limit int,
-) runtimev1.BootstrapAuthorityRole {
+func runtimeRole(name string, login, inherit bool, limit int) runtimev1.BootstrapAuthorityRole {
 	return runtimev1.BootstrapAuthorityRole{
-		Name: name, Enabled: enabled, CredentialMode: mode, Login: login,
-		Inherit: false, Superuser: superuser, CreateDB: createDB, CreateRole: createRole,
+		Name: name, Enabled: true, CredentialMode: "permanent", Login: login,
+		Inherit: inherit, Superuser: false, CreateDB: false, CreateRole: false,
 		Replication: false, BypassRLS: false, ConnectionLimit: limit,
 	}
 }
 
-func runtimeMembership(
-	member, role string, enabled, inherit, set bool,
-) runtimev1.BootstrapAuthorityMembership {
+func runtimeMembership(member, role string) runtimev1.BootstrapAuthorityMembership {
 	return runtimev1.BootstrapAuthorityMembership{
-		Member: member, Role: role, Enabled: enabled, Admin: false,
-		Inherit: inherit, Set: set, Grantor: "harpy_cluster_admin",
+		Member: member, Role: role, Enabled: true, Admin: false,
+		Inherit: false, Set: true, Grantor: "harpy_owner",
 	}
 }
 
