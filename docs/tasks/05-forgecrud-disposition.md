@@ -6,10 +6,10 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 
 | Decision | Count |
 | --- | ---: |
-| REMOVE_FORGECRUD_PRODUCT | 7 |
+| REMOVE_FORGECRUD_PRODUCT | 8 |
 | KEEP_GENERIC_FOUNDATION | 11 |
 | REPLACE_WITH_GENERIC_PRIMITIVE | 0 |
-| UNRESOLVED | 615 |
+| UNRESOLVED | 601 |
 
 ## Rows
 
@@ -17,6 +17,7 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `core/internal/platform/cutover` | cutover adoption, finalization, rehearsal | Task 04 §16 and README §11: cutover_adoption and cutover_finalization are not carried | `core/internal/modules/*/cutover_apply_contract.go`, `core/public/cutover/full_rollout.go` | REMOVE_FORGECRUD_PRODUCT | platform cutover | delete package and contract callers | package tests removed with the package | Cutover is V1 adoption state, not a Harpy generic primitive |
 | `**/v1adoption/**` and `billingv1adoption` | V1 row adoption SQL | README §2 forbids adoption and compatibility | none after the trees and their billing integration tests were deleted | REMOVE_FORGECRUD_PRODUCT | each module adapter | trees deleted | `go test ./...` after deletion | Adoption copies old rows; the fresh Goose schema does not adopt them |
+| support and usage `adoption`, notifications `v1bridge` and `v1cutover` | legacy row copy and writer cutover | README §2 forbids adoption and compatibility | none; composition does not call them | REMOVE_FORGECRUD_PRODUCT | support, usage, notifications | packages and module facades deleted | `go test ./...` | These paths copy or fence legacy rows; ticket, usage, and notification behavior stays in the other adapters |
 | schema-executor and typed DDL IR | dynamic form DDL | `docs/tasks/05-forgecrud-residue-audit.md` §6 | `tools/localconfig` `schema-executor.env` | REMOVE_FORGECRUD_PRODUCT | localconfig | generator drops the artifact | `profile_environment_test.go` | No Harpy form product; no replacement form store |
 | form and workflow designer contracts | `workflow.forms.set-field`, forms module imports | Task 05 §3.2 search list | `core/internal/platform/transaction` tests, archguard fixture | REMOVE_FORGECRUD_PRODUCT | transaction tests and archguard fixture | remove product operation names from fixtures | transaction unit tests | Designer behavior is not a generic Harpy requirement |
 | `core/internal/modules/tenancy/application/tenantmigration` | tenant migration job enqueue | Task 03 §8 one-shot Goose container | `environmentoperator.migrate`, `tenancy.OperatorRuntime` | REMOVE_FORGECRUD_PRODUCT | tenancy | `provisionlaunch.Run` then onboarding accept | `environmentoperator` initialize tests | The job is an executor checkpoint, not tenant identity |
@@ -32,4 +33,4 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 | Audit entries | append-only entry | `docs/architecture/06` §8 | audit HTTP | KEEP_GENERIC_FOUNDATION | audit | keep module | audit unit tests | Generic audit |
 | Platformops recovery | backup, restore, signing | Task 04 §16 | `core/cmd/recovery` | KEEP_GENERIC_FOUNDATION | platformops | `core-recovery` | `composition/recovery` tests | Recovery is not migration |
 | HTTP, config, telemetry, health | runtime primitives | Task 05 §4 | API and worker | KEEP_GENERIC_FOUNDATION | platform | keep | composition tests | Generic foundation |
-| Historical `*_v1` routines called by KEEP modules | stored procedure bodies | Task 03 §14.1 forbids copying the signature | `docs/tasks/05-v1-routine-disposition.md` lists 615 SQL files | UNRESOLVED | each KEEP module | do not create the function; table DML only where the Go result rule is already typed | each path in that file | The Go call names the routine, and the result rule is not determined without the deleted dump body |
+| Historical `*_v1` routines called by KEEP modules | stored procedure bodies | Task 03 §14.1 forbids copying the signature | `docs/tasks/05-v1-routine-disposition.md` lists 601 SQL files | UNRESOLVED | each KEEP module | do not create the function; table DML only where the Go result rule is already typed | each path in that file | The Go call names the routine, and the result rule is not determined without the deleted dump body |

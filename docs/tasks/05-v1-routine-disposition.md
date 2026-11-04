@@ -437,7 +437,6 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 | `core/internal/modules/notifications/adapters/postgres/retention/sql/tenant/purge_receipts.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/notifications/adapters/postgres/retention/sql/tenant/redact_content.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/notifications/adapters/postgres/sql/tenant/resolve_notification_recipient.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/notifications/adapters/postgres/v1bridge/sql/tenant/lock_domain_authority.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/platformauthority/adapters/postgres/recoveryevidence/sql/platform/read_head.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/platformauthority/adapters/postgres/sql/platform/activate_signer.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/platformauthority/adapters/postgres/sql/platform/await_delivery_import.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
@@ -504,13 +503,6 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 | `core/internal/modules/platformops/adapters/postgres/sql/platform/test_alert_rule.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/platformops/adapters/postgres/sql/platform/trace_stats.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/platformops/adapters/postgres/sql/platform/update_alert_rule.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/advance.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/apply_bug.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/apply_contact.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/claim.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/complete.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/reconcile.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/support/adapters/postgres/adoption/sql/platform/start.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/support/adapters/postgres/sql/platform/bug_stats.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/support/adapters/postgres/sql/platform/contact_stats.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/support/adapters/postgres/sql/platform/create_bug.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
@@ -565,12 +557,6 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 | `core/internal/modules/tenancy/adapters/postgres/tenantsettings/sql/platform/read.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/tenancy/adapters/postgres/tenantsettings/sql/platform/update.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/tenancy/adapters/postgres/v1environment/sql/platform/cutover_apply.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/usage/adapters/postgres/adoption/sql/platform/advance.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/usage/adapters/postgres/adoption/sql/platform/apply.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/usage/adapters/postgres/adoption/sql/platform/claim.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/usage/adapters/postgres/adoption/sql/platform/complete.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/usage/adapters/postgres/adoption/sql/platform/reconcile.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/usage/adapters/postgres/adoption/sql/platform/start.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/usage/adapters/postgres/sql/platform/active_users.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/usage/adapters/postgres/sql/platform/features.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/usage/adapters/postgres/sql/platform/heatmap.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
@@ -620,4 +606,4 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 | `core/internal/platform/postgres/adapters/postgres/sql/resolve_tenant.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/platform/postgres/adapters/postgres/sql/resolve_tenant_slug.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 
-Count: 615
+Count: 601
