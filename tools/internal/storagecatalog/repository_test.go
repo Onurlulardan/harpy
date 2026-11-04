@@ -21,7 +21,7 @@ func TestRepositoryStorageCatalogLoadsWithoutSemanticDrift(t *testing.T) {
 	}
 	want := []string{
 		"analytics", "billing", "documents", "iam", "notifications",
-		"platform_async", "platform_backupreceipt", "platform_cutover", "platform_migrator",
+		"platform_async", "platform_backupreceipt", "platform_cutover",
 		"platform_postgres", "platformauthority", "platformops", "system_resource_layout",
 		"tenancy", "work",
 	}

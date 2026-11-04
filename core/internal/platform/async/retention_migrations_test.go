@@ -1,20 +1,9 @@
 package async
 
 import (
-	"os"
 	"strings"
 	"testing"
 )
-
-func readRetentionMigration(t *testing.T, name string) []byte {
-	t.Helper()
-	path := "migrations/fresh/" + name + ".fresh.sql"
-	content, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return content
-}
 
 func assertRetentionMarkers(t *testing.T, source string, markers []string) {
 	t.Helper()

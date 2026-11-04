@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/adoptionartifact"
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/archiveartifact"
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	asyncpostgres "github.com/Onurlulardan/harpy/core/internal/platform/async/adapters/postgres"
@@ -47,7 +46,7 @@ func buildConfiguredPlatformJobProcessors(dependencies ConfiguredPlatformJobDepe
 ) ([]jobexecution.Processor, error) {
 	required := []any{dependencies.Release, dependencies.Catalogs, dependencies.Store,
 		dependencies.Scopes, dependencies.ArchiveAccess, billing.archive,
-		resources.objects, resources.keyring, resources.cipher, resources.legacy}
+		resources.objects, resources.keyring, resources.cipher}
 	for _, port := range required {
 		if nilHTTPPort(port) {
 			return nil, fmt.Errorf("Documents configured worker graph is incomplete")
@@ -68,15 +67,10 @@ func buildConfiguredPlatformJobProcessors(dependencies ConfiguredPlatformJobDepe
 	if err != nil {
 		return nil, fmt.Errorf("build Documents archive writer: %w", err)
 	}
-	copier, err := adoptionartifact.New(resources.legacy, resources.legacy,
-		resources.keyring, resources.cipher, resources.objects)
-	if err != nil {
-		return nil, fmt.Errorf("build Documents adoption copier: %w", err)
-	}
 	configuredAccess := configuredArchiveAccess{upstream: dependencies.ArchiveAccess}
 	ports := PlatformJobDependencies{Release: dependencies.Release,
 		Store: dependencies.Store, Scopes: dependencies.Scopes,
-		IDs: platformIDs{}, Clock: platformClock{}, AdoptionCopier: copier}
+		IDs: platformIDs{}, Clock: platformClock{}}
 	ports.Archive.Authorizer = configuredAccess
 	ports.Archive.Jobs = jobs
 	ports.Archive.Billing = billing.archive

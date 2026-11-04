@@ -32,13 +32,10 @@ func addConnectionArtifacts(set *artifactSet, _ time.Time) error {
 		"postgres-bootstrap-dsn.txt": postgresDSN(
 			bootstrapPrincipal(), passwords.bootstrap, "postgres"),
 		"postgres-runtime-password.txt":         passwords.runtime,
-		"postgres-migrator-password.txt":        passwords.migrator,
 		"postgres-cluster-admin-password.txt":   passwords.clusterAdmin,
 		"postgres-extension-admin-password.txt": passwords.extensionAdmin,
 		"postgres-runtime-dsn.txt": postgresDSN(
 			"harpy_v2_runtime", passwords.runtime, "harpy"),
-		"postgres-migrator-dsn.txt": postgresDSN(
-			"harpy_migrator", passwords.migrator, "harpy"),
 		"postgres-goose-password.txt": passwords.goose,
 		"postgres-goose-dsn.txt": postgresDSN(
 			"harpy_goose", passwords.goose, "harpy"),
@@ -99,14 +96,14 @@ func newMinIORootCredentials(
 }
 
 type connectionPasswords struct {
-	bootstrap, runtime, migrator string
+	bootstrap, runtime           string
 	clusterAdmin, extensionAdmin string
 	observer, rabbitmq, smtp     string
 	goose, api, worker           string
 }
 
 func newConnectionPasswords() (connectionPasswords, error) {
-	values := make([]string, 11)
+	values := make([]string, 10)
 	for index := range values {
 		value, err := randomBase64(32)
 		if err != nil {
@@ -115,10 +112,10 @@ func newConnectionPasswords() (connectionPasswords, error) {
 		values[index] = value
 	}
 	return connectionPasswords{
-		bootstrap: values[0], runtime: values[1], migrator: values[2],
-		clusterAdmin: values[3], extensionAdmin: values[4],
-		observer: values[5], rabbitmq: values[6], smtp: values[7],
-		goose: values[8], api: values[9], worker: values[10],
+		bootstrap: values[0], runtime: values[1],
+		clusterAdmin: values[2], extensionAdmin: values[3],
+		observer: values[4], rabbitmq: values[5], smtp: values[6],
+		goose: values[7], api: values[8], worker: values[9],
 	}, nil
 }
 

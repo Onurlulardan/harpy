@@ -7,19 +7,14 @@ import (
 	"testing"
 	"time"
 
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	iammodule "github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	changeapp "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/identity/change"
 	profileapp "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/profile"
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
-	"github.com/Onurlulardan/harpy/core/internal/platform/binarycontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/configfixture"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	platformtx "github.com/Onurlulardan/harpy/core/internal/platform/transaction"
-	"github.com/Onurlulardan/harpy/internal/attestation"
 )
 
 const publicationCursorKeyring = `{"version":1,"current":{"kid":"current-1","key":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE"},"previous":{"kid":"previous-1","key":"AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI"}}`
@@ -65,7 +60,6 @@ func openPublicationRuntime(
 	}
 	pool, err := platformpostgres.Open(
 		ctx, loaded.LongRunning().Runtime().Postgres(), platformpostgres.ProfileAPI,
-		publicationSchemaContract(t),
 	)
 	if err != nil {
 		t.Fatalf("open publication runtime pool: %v", err)
@@ -109,47 +103,6 @@ func openPublicationRuntime(
 		pool: pool, coordinator: coordinator, application: application,
 		recoveries: recoveries,
 	}
-}
-
-func publicationMigrationDigest(t *testing.T) string {
-	t.Helper()
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		t.Fatal(err)
-	}
-	digests := registry.Digests()
-	if len(digests) == 0 {
-		t.Fatal("migration release registry is empty")
-	}
-	return digests[0]
-}
-
-func publicationSchemaContract(t *testing.T) schemacontract.EmbeddedContract {
-	t.Helper()
-	contract := runtimev1.BinarySchemaContract{
-		ContractVersion: runtimev1.BinarySchemaContractVersion, Component: "core",
-		RuntimeGeneration: 1, MinimumDatabaseGeneration: 1,
-		MigrationManifestSHA256: publicationMigrationDigest(t),
-		ExtensionManifestSHA256: publicationExtensionDigest,
-		PostgresImageDigest:     runtimev1.PostgresImageDigest,
-	}
-	document, err := attestation.MarshalCanonical(contract)
-	if err != nil {
-		t.Fatal(err)
-	}
-	artifact, err := binarycontract.Verify(document)
-	if err != nil {
-		t.Fatal(err)
-	}
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		t.Fatal(err)
-	}
-	authorized, err := schemacontract.AuthorizeIntegrationArtifact(registry, artifact)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return authorized
 }
 
 func grantPublicationRuntimeAccess(

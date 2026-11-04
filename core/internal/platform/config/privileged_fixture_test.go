@@ -45,26 +45,3 @@ func privilegedEnvironment(t *testing.T, current profile) []string {
 	entries = append(entries, dsns...)
 	return append(entries, artifacts...)
 }
-
-func migratorEnvironment(t *testing.T) []string {
-	t.Helper()
-	directory := t.TempDir()
-	return append(validEnvironment(),
-		"HARPY_RELEASE_MANIFEST_PATH="+filepath.Join(directory, "release.json"),
-		"HARPY_RELEASE_SIGNATURE_PATH="+filepath.Join(directory, "release.sig"),
-		"HARPY_RELEASE_TRUST_ROOT_PATH="+filepath.Join(directory, "trust.pem"),
-		"HARPY_BOOTSTRAP_RECEIPT_PATH="+filepath.Join(directory, "bootstrap.json"),
-		"HARPY_EXTENSION_RECEIPT_PATH="+filepath.Join(directory, "extension.json"),
-		"HARPY_BOOTSTRAP_AUTHORITY_MANIFEST_PATH="+filepath.Join(directory, "authority.json"),
-		"HARPY_BOOTSTRAP_AUTHORITY_SIGNATURE_PATH="+filepath.Join(directory, "authority.sig"),
-		"HARPY_CREDENTIAL_CLEANUP_RECEIPT_PATH="+filepath.Join(directory, "cleanup.json"),
-		"HARPY_MIGRATION_MANIFEST_PATH="+filepath.Join(directory, "migrations.json"),
-		"HARPY_EXTENSION_MANIFEST_PATH="+filepath.Join(directory, "extensions.json"),
-		"HARPY_ROLES_MANIFEST_PATH="+filepath.Join(directory, "roles.json"),
-		"HARPY_PRIVILEGES_MANIFEST_PATH="+filepath.Join(directory, "privileges.json"),
-		"HARPY_OWNERSHIP_MANIFEST_PATH="+filepath.Join(directory, "ownership.json"),
-		"HARPY_BOOTSTRAP_OPERATION_PATH="+filepath.Join(directory, "bootstrap-operation.json"),
-		"HARPY_EXTENSION_OPERATION_PATH="+filepath.Join(directory, "extension-operation.json"),
-		"HARPY_CREDENTIAL_CLEANUP_OPERATION_PATH="+filepath.Join(directory, "cleanup-operation.json"),
-	)
-}

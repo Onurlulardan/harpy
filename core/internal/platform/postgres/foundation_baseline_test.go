@@ -20,17 +20,15 @@ func (queryer staticQueryer) QueryRow(context.Context, string, ...any) pgx.Row {
 	return staticRow{err: queryer.err}
 }
 
-func TestBaselineFoundationIgnoresGooseVersionZero(t *testing.T) {
-	if !strings.Contains(baselineFoundationSQL, "history.version_id <> 0") ||
-		!strings.Contains(baselineFoundationSQL, "20261028000000, 20261102000000") {
-		t.Fatal("baseline foundation count must require the platform baseline versions and ignore Goose version 0")
-	}
-	if strings.Contains(baselineFoundationSQL, "pg_catalog.count(*)\n FROM") {
-		t.Fatal("baseline foundation still counts every applied Goose row")
+func TestBaselineFoundationDoesNotReadGooseHistory(t *testing.T) {
+	if strings.Contains(baselineFoundationSQL, "goose_db_version") ||
+		strings.Contains(baselineFoundationSQL, "20261028000000") {
+		t.Fatal("baseline foundation still reads Goose history")
 	}
 }
 
 func TestFoundationQueryKeepsPostgreSQLCause(t *testing.T) {
+	// PRESERVE_NON_MIGRATION: fixture text for a permission error, not a created history table.
 	cause := errors.New("ERROR: permission denied for table goose_db_version (SQLSTATE 42501)")
 	_, err := readBaselineFoundation(context.Background(), staticQueryer{err: cause}, runtimev1.BinarySchemaContract{})
 	if !errors.Is(err, ErrStartupPreflight) || !errors.Is(err, cause) {
@@ -55,7 +53,7 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		51019, 2, binary,
+		51019, binary,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -76,14 +74,6 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 	if _, err := validateFoundationEvidence(result, catalog); err == nil {
 		t.Fatal("baseline evidence accepted a different cluster")
 	}
-	if _, err := assembleBaselineFoundation(
-		"fresh", "1", "018f0000-0000-7000-8000-000000000102",
-		"018f0000-0000-7000-8000-000000000101",
-		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		1, 1, binary,
-	); err == nil {
-		t.Fatal("partial goose history was treated as a complete baseline")
-	}
 
 	nextGeneration := binary
 	nextGeneration.RuntimeGeneration = 2
@@ -92,7 +82,7 @@ func TestBaselineFoundationAdmitsAppliedGooseHistory(t *testing.T) {
 		"018f0000-0000-7000-8000-000000000102",
 		"018f0000-0000-7000-8000-000000000101",
 		runtimev1.VectorExtensionVersion, "platform_ext", "harpy_extension_admin",
-		51019, 2, nextGeneration,
+		51019, nextGeneration,
 	); err == nil {
 		t.Fatal("baseline evidence accepted a newer runtime generation")
 	}

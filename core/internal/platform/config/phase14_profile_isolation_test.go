@@ -12,7 +12,6 @@ func TestPhase14ProfilesRejectCrossProfileKeys(t *testing.T) {
 		{"initialize backup DSN", validOperatorInitializeEnvironment(DeploymentOnPrem), operatorInitializeError, "HARPY_BACKUP_POSTGRES_DSN_FILE=/foreign"},
 		{"identity license", validOperatorIdentityEnvironment(), operatorIdentityError, licenseSnapshotKey + "=/foreign"},
 		{"license IAM custody", validOperatorLicenseEnvironment(), operatorLicenseError, "HARPY_IAM_KEY_CUSTODY_MANIFEST_PATH=/foreign"},
-		{"tenant password", validTenantMigrationEnvironment(), tenantMigrationError, "HARPY_INITIAL_ADMIN_PASSWORD_FILE=/foreign"},
 		{"backup runtime DSN", validDatabaseBackupEnvironment(), databaseBackupError, "HARPY_POSTGRES_DSN=secret"},
 		{"restore license", validDatabaseRestoreEnvironment(), databaseRestoreError, licenseSnapshotKey + "=/foreign"},
 	}
@@ -48,10 +47,6 @@ func operatorIdentityError(entries []string) error {
 }
 func operatorLicenseError(entries []string) error {
 	_, err := loadOperatorLicenseReconcile(entries)
-	return err
-}
-func tenantMigrationError(entries []string) error {
-	_, err := loadTenantMigrationExecutor(entries)
 	return err
 }
 func databaseBackupError(entries []string) error {

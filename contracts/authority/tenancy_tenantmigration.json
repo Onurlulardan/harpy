@@ -1,3 +1,0 @@
-{"version":2,"authorities":[
-  {"id":"tenancy.tenant_migration.get","owner":"tenancy","scope_source":"environment_global","required_groups":["tenancy"],"ordered_domains":["tenancy"],"participants":["tenancy"]}
-]}

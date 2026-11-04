@@ -16,8 +16,7 @@
       {"path":"core/internal/modules/tenancy/adapters/postgres/onboarding/sql/platform","scope":"platform"},
       {"path":"core/internal/modules/tenancy/adapters/postgres/primarytarget/sql/platform","scope":"platform"},
       {"path":"core/internal/modules/tenancy/adapters/postgres/recoverytarget/sql/platform","scope":"platform"},
-      {"path":"core/internal/modules/tenancy/adapters/postgres/tenantmigration/sql/platform","scope":"platform"},
-      {"path":"core/internal/modules/tenancy/adapters/postgres/v1environment/sql/platform","scope":"platform"}
+      {"path":"core/internal/modules/tenancy/adapters/postgres/tenantmigration/sql/platform","scope":"platform"}
     ],
     "platform_schemas": [],
     "schema_usage_grants": [

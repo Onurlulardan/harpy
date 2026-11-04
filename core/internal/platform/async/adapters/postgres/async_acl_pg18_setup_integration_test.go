@@ -10,7 +10,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -23,11 +22,7 @@ GRANT harpy_runtime TO harpy_v2_runtime
 CREATE ROLE harpy_adopter LOGIN PASSWORD 'adopter_integration_only'
     NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
 CREATE ROLE harpy_cluster_admin LOGIN PASSWORD 'cluster_integration_only'
-    NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
-CREATE ROLE harpy_migrator LOGIN PASSWORD 'migrator_integration_only'
-    NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
-GRANT harpy_owner TO harpy_migrator
-    WITH INHERIT FALSE, SET TRUE;`
+    NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;`
 
 func TestAsyncRuntimeACLOnPostgreSQL184(t *testing.T) {
 	for _, origin := range []string{"fresh"} {
@@ -61,7 +56,7 @@ UPDATE platform.cutover_groups SET state='v2', writer='v2';
 UPDATE platform.domain_cutovers SET state='v2', writer='v2';`); err != nil {
 		t.Fatalf("activate async ACL authority: %v", err)
 	}
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatalf("load async ACL migrations: %v", err)
 	}

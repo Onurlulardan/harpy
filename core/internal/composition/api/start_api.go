@@ -10,7 +10,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/lifecycle"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/telemetry"
 )
 
@@ -18,12 +17,11 @@ func startAPI(
 	process *lifecycle.Process,
 	settings config.API,
 	info buildinfo.Info,
-	embedded schemacontract.EmbeddedContract,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 ) processcode.Code {
 	return startAPIWithOpen(
-		process, settings, info, embedded, logger, telemetryRuntime, postgres.Open,
+		process, settings, info, logger, telemetryRuntime, postgres.Open,
 	)
 }
 
@@ -31,14 +29,12 @@ type apiPoolOpener func(
 	context.Context,
 	config.Postgres,
 	postgres.Profile,
-	schemacontract.EmbeddedContract,
 ) (*postgres.Pool, error)
 
 func startAPIWithOpen(
 	process *lifecycle.Process,
 	settings config.API,
 	info buildinfo.Info,
-	embedded schemacontract.EmbeddedContract,
 	logger *slog.Logger,
 	telemetryRuntime *telemetry.Runtime,
 	openPool apiPoolOpener,
@@ -48,7 +44,7 @@ func startAPIWithOpen(
 		process.StartupContext(), runtimeSettings.ReadinessTimeout(),
 	)
 	pool, err := openPool(
-		startupContext, runtimeSettings.Postgres(), postgres.ProfileAPI, embedded,
+		startupContext, runtimeSettings.Postgres(), postgres.ProfileAPI,
 	)
 	if err != nil {
 		cancelStartup()

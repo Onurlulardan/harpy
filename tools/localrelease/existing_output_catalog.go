@@ -56,14 +56,9 @@ func loadExistingReleaseCatalog(
 	if err != nil {
 		return releaseCatalog{}, err
 	}
-	catalog.binaryContract, err = newArtifact("binary-schema-contract.json", contract)
-	if err != nil {
-		return releaseCatalog{}, err
-	}
 	catalog.schemaContract = contract
 	for _, item := range []artifact{
-		catalog.bootstrapOperation, catalog.extensionOperation,
-		catalog.cleanupOperation, catalog.binaryContract,
+		catalog.bootstrapOperation, catalog.extensionOperation, catalog.cleanupOperation,
 	} {
 		if err := requireExactOutputArtifact(directory, item); err != nil {
 			return releaseCatalog{}, err

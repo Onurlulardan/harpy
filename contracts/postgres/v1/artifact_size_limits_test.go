@@ -65,7 +65,7 @@ func maximumSizedMigrationEntry() MigrationEntry {
 		TargetDatabaseGeneration:     9007199254740991,
 		NextMinimumRuntimeGeneration: 9007199254740991,
 		Variants: MigrationVariants{
-			Fresh:     &MigrationVariant{Path: maximumPath(".fresh.sql"), SHA256: strings.Repeat("f", 64)},
+			Fresh:     &MigrationVariant{Path: maximumPath(".sql"), SHA256: strings.Repeat("f", 64)},
 			V1Adopted: &MigrationVariant{Path: maximumPath(".v1_adopted.sql"), SHA256: strings.Repeat("f", 64)},
 		},
 	}

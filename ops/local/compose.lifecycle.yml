@@ -17,8 +17,7 @@ services:
       - local-secret-infra-check:/catalog/secret-infra-check:ro
       - local-secret-local-release:/catalog/secret-local-release:ro
       - local-secret-initialize:/catalog/secret-initialize:ro
-      - local-secret-migrator:/catalog/secret-migrator:ro
-      - local-secret-schema:/catalog/secret-schema:ro
+      - local-secret-tenant-provisioning:/catalog/secret-tenant-provisioning:ro
       - local-secret-operator:/catalog/secret-operator:ro
       - local-secret-api:/catalog/secret-api:ro
       - local-secret-worker:/catalog/secret-worker:ro
@@ -47,8 +46,7 @@ volumes:
   local-secret-infra-check:
   local-secret-local-release:
   local-secret-initialize:
-  local-secret-migrator:
-  local-secret-schema:
+  local-secret-tenant-provisioning:
   local-secret-operator:
   local-secret-api:
   local-secret-worker:

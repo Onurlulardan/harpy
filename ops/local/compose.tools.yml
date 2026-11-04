@@ -14,8 +14,7 @@ services:
       - local-secret-infra-check:/targets/infra-check
       - local-secret-local-release:/targets/local-release
       - local-secret-initialize:/targets/initialize
-      - local-secret-migrator:/targets/migrator
-      - local-secret-schema:/targets/schema
+      - local-secret-tenant-provisioning:/targets/tenant-provisioning
       - local-secret-operator:/targets/operator
       - local-secret-api:/targets/api
       - local-secret-worker:/targets/worker

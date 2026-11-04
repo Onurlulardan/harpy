@@ -111,16 +111,12 @@ The integration owner must perform them once after all modules are frozen:
    fragment in `contracts/authority.yaml`; scope source is `actor_tenant`, owner
    and participant are `audit`, and required group/domain is `audit`.
 3. Add one Audit storage-owner fragment under `contracts/storage/owners/` and
-   include it in `contracts/storage/owners.yaml`. It must claim the tenant
-   migration directory, static SQL directory, four runtime routine grants, the
-   adopter-only routine grant and the `change_logs` legacy-table adapter.
-4. Add one Audit migration-stream fragment for versions
-   `20260801040000..20260801040006` and include it in
-   `contracts/storage/migration-streams.yaml`, using the generation selected by
-   the integration owner after all frozen streams are known.
-5. Add the Audit migration provider once to
-   `core/internal/composition/migrator/migration_documents.go` in the normalized
-   global migration order.
+   include it in `contracts/storage/owners.yaml`. It must claim the static SQL
+   directory and the four runtime routine grants. `change_logs` is not a
+   migration-state table.
+4. Do not add a migration-stream catalog. Schema changes go through Goose.
+5. Do not add an Audit provider to a migrator composition. Schema changes go
+   through Goose.
 6. Add the Audit HTTP facade and IAM verifier bridge once to API composition.
    IAM must accept only the five exact `changelog.read` operation pairs.
 7. Replace the global parity rule `audit-changelog-missing` in
@@ -128,10 +124,9 @@ The integration owner must perform them once after all modules are frozen:
    exact/redesigned decision; do not change the legacy expected route count of
    five and do not count the non-gateway ingest handler as a sixth route.
 8. Connect each owner mutation to the sealed append boundary and prove business
-   rollback also rolls back its audit fact. Compose the adoption executor under
-   the leased adopter authority.
+   rollback also rolls back its audit fact.
 
-After those one-time edits, run targeted IAM/API/migrator tests, the complete
-architecture and parity gates, apply migrations to the real local stack, and
+After those one-time edits, run targeted IAM/API tests, the complete
+architecture and parity gates, run initialize on an empty database, and
 exercise login, tenant selection and all five routes through gateway port 8000.
 Unit or PG18 module tests alone do not prove live gateway readiness.

@@ -50,7 +50,7 @@ cleanup_receipt_kind text,cleanup_receipt_run_id uuid)`,
 
 func pg18SeedFoundation(t *testing.T, ctx context.Context, admin *pgx.Conn) {
 	t.Helper()
-	migrationDigest := pg18MigrationDigest(t)
+	migrationDigest := pg18ExtensionDigest
 	statements := []struct {
 		query string
 		args  []any

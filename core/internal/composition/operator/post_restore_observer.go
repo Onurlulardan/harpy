@@ -10,7 +10,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
 
 const (
@@ -89,17 +88,13 @@ func openPostRestoreObserverPool(
 	ctx context.Context,
 	settings config.PostRestoreReactivationObserver,
 ) (*postgres.Pool, error) {
-	embedded, err := schemacontract.LoadBoundStartup()
-	if err != nil {
-		return nil, err
-	}
 	runtime := settings.Runtime()
 	connect, cancel := context.WithTimeout(
 		ctx, runtime.Postgres().ConnectTimeout()+5*time.Second,
 	)
 	defer cancel()
 	pool, err := postgres.Open(
-		connect, runtime.Postgres(), postgres.ProfilePostRestoreObserver, embedded,
+		connect, runtime.Postgres(), postgres.ProfilePostRestoreObserver,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("open post-restore observer database: %w", err)

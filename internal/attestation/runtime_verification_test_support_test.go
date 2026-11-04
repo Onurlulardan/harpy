@@ -59,7 +59,6 @@ func validRuntimeAuthority() runtimev1.BootstrapAuthorityManifest {
 		CreateRoleSelfGrant: "", Roles: validRuntimeAuthorityRoles(),
 		Memberships: []runtimev1.BootstrapAuthorityMembership{
 			runtimeMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-			runtimeMembership("harpy_migrator", "harpy_owner", true, false, true),
 			runtimeMembership(
 				"harpy_backup", "harpy_backup_reader", true, false, true,
 			),
@@ -82,7 +81,6 @@ func validRuntimeAuthorityRoles() []runtimev1.BootstrapAuthorityRole {
 		runtimeRole("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
 		runtimeRole("harpy_runtime", true, "permanent", false, false, false, false, -1),
 		runtimeRole("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
-		runtimeRole("harpy_migrator", true, "permanent", true, false, false, false, -1),
 		runtimeRole("harpy_v1_runtime", false, "coexistence", false, false, false, false, -1),
 		runtimeRole("harpy_cluster_admin", true, "leased", false, false, true, true, 1),
 		runtimeRole("harpy_extension_admin", true, "leased", false, true, false, false, 1),

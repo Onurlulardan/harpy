@@ -38,9 +38,6 @@ func upgradeAuthorityArtifactSet(
 	if err = refreshAuthorityProfileEnvironments(set); err != nil {
 		return ensureResult{}, false, err
 	}
-	if err = addTenantMigrationExecutorEnvironment(set); err != nil {
-		return ensureResult{}, false, err
-	}
 	manifest, err := buildSetManifest(set, now)
 	if err != nil {
 		return ensureResult{}, false, err
@@ -86,7 +83,6 @@ func validateAuthorityUpgradeManifest(value setManifest, now time.Time) error {
 	for _, name := range []string{
 		"local-authority-ack-signing-seed",
 		"local-authority-release-signing-seed",
-		"tenant-migration-executor.env",
 	} {
 		expected = removeArtifactName(expected, name)
 	}

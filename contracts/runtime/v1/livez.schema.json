@@ -7,6 +7,6 @@
   "required": ["status", "service"],
   "properties": {
     "status": {"const": "alive"},
-    "service": {"enum": ["core-api", "core-migrator", "core-worker"]}
+    "service": {"enum": ["core-api", "core-recovery", "core-worker"]}
   }
 }

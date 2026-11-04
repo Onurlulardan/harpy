@@ -7,6 +7,8 @@ type MigrationManifest struct {
 	HistoryTable    string           `json:"history_table"`
 	OutOfOrder      bool             `json:"out_of_order"`
 	Entries         []MigrationEntry `json:"entries"`
+	// PRESERVE_NON_MIGRATION: marks the embedded manifest. Goose native history is not a custom catalog.
+	Disposition string `json:"disposition,omitempty" harpyOptional:"allowed"`
 }
 
 type MigrationEntry struct {

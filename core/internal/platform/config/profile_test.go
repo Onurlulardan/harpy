@@ -13,7 +13,6 @@ func TestProfilesRejectUnknownHarpyKeys(t *testing.T) {
 	}{
 		{"api unknown", func(entries []string) error { _, err := loadAPI(entries); return err }, "HARPY_TYPO=value"},
 		{"worker public", func(entries []string) error { _, err := loadWorker(entries); return err }, "HARPY_PUBLIC_LISTEN_ADDR=127.0.0.1:8000"},
-		{"deploy management", func(entries []string) error { _, err := loadMigratorDeploy(entries); return err }, "HARPY_MANAGEMENT_LISTEN_ADDR=127.0.0.1:9000"},
 		{"wrong case", func(entries []string) error { _, err := loadAPI(entries); return err }, "harpy_log_level=debug"},
 	}
 	for _, test := range tests {
@@ -29,12 +28,6 @@ func TestProfilesRejectUnknownHarpyKeys(t *testing.T) {
 func TestProfilesAcceptOnlyTheirLongRunningSurface(t *testing.T) {
 	if _, err := loadWorker(validWorkerEnvironment()); err != nil {
 		t.Fatalf("worker defaults rejected: %v", err)
-	}
-	if _, err := loadSchemaExecutor(validEnvironment()); err != nil {
-		t.Fatalf("schema executor defaults rejected: %v", err)
-	}
-	if _, err := loadMigratorDeploy(migratorEnvironment(t)); err != nil {
-		t.Fatalf("migrator deploy defaults rejected: %v", err)
 	}
 }
 
@@ -52,7 +45,7 @@ func TestRequiredEnvironmentAndSecretAreFailClosed(t *testing.T) {
 
 func TestPostgresCleanupTimeoutRequiresExactFiveSeconds(t *testing.T) {
 	entries := append(validEnvironment(), "HARPY_POSTGRES_CLEANUP_TIMEOUT=4s")
-	if _, err := loadSchemaExecutor(entries); err == nil {
+	if _, err := loadAPI(entries); err == nil {
 		t.Fatal("non-contract cleanup timeout accepted")
 	}
 }

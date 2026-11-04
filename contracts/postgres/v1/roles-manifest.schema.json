@@ -42,10 +42,6 @@
       {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
       {"properties": {"name": {"const": "harpy_v2_runtime"}}}
     ]},
-    "migrator": {"allOf": [
-      {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
-      {"properties": {"name": {"const": "harpy_migrator"}}}
-    ]},
     "clusterAdmin": {"allOf": [
       {"$ref": "postgres-artifact-defs.schema.json#/$defs/roleEntry"},
       {"properties": {"name": {"const": "harpy_cluster_admin"}}}
@@ -95,11 +91,11 @@
       {"properties": {"name": {"const": "harpy_legacy_extension_owner"}}}
     ]},
     "freshRoles": {
-      "type": "array", "minItems": 15, "maxItems": 15, "items": false,
+      "type": "array", "minItems": 14, "maxItems": 14, "items": false,
       "prefixItems": [
         {"$ref": "#/$defs/owner"}, {"$ref": "#/$defs/cutoverAuthorityOwner"},
         {"$ref": "#/$defs/runtime"},
-        {"$ref": "#/$defs/v2Runtime"}, {"$ref": "#/$defs/migrator"},
+        {"$ref": "#/$defs/v2Runtime"},
         {"$ref": "#/$defs/clusterAdmin"}, {"$ref": "#/$defs/extensionAdmin"},
         {"$ref": "#/$defs/adopter"}, {"$ref": "#/$defs/decoder"},
         {"$ref": "#/$defs/finalizer"}, {"$ref": "#/$defs/backupReader"},
@@ -109,11 +105,11 @@
       ]
     },
     "adoptedRoles": {
-      "type": "array", "minItems": 17, "maxItems": 17, "items": false,
+      "type": "array", "minItems": 16, "maxItems": 16, "items": false,
       "prefixItems": [
         {"$ref": "#/$defs/owner"}, {"$ref": "#/$defs/cutoverAuthorityOwner"},
         {"$ref": "#/$defs/runtime"},
-        {"$ref": "#/$defs/v2Runtime"}, {"$ref": "#/$defs/migrator"},
+        {"$ref": "#/$defs/v2Runtime"},
         {"$ref": "#/$defs/clusterAdmin"}, {"$ref": "#/$defs/extensionAdmin"},
         {"$ref": "#/$defs/adopter"}, {"$ref": "#/$defs/decoder"},
         {"$ref": "#/$defs/finalizer"}, {"$ref": "#/$defs/backupReader"},

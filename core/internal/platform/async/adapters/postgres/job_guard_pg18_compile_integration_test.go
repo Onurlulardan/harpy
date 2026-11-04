@@ -8,8 +8,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 const asyncJobGuardLastVersion int64 = 20260715020910
@@ -46,14 +44,14 @@ ALTER TABLE platform.domain_cutovers
 	}
 }
 
-func jobGuardDocuments(t *testing.T, origin string) []migration.Document {
+func jobGuardDocuments(t *testing.T, origin string) []appliedSQL {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatalf("load async migrations: %v", err)
 	}
 	marker := "/migrations/" + origin + "/"
-	selected := make([]migration.Document, 0, 13)
+	selected := make([]appliedSQL, 0, 13)
 	for _, document := range documents {
 		version := asyncDocumentVersion(t, document.Path())
 		if strings.Contains(document.Path(), marker) &&

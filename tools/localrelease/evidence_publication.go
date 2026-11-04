@@ -20,6 +20,9 @@ func publishGeneratedEvidence(
 		evidence.cutoverReceipt.document, evidence.cutoverReceipt.signature,
 	)
 	for _, item := range artifacts {
+		if item.name == "" || len(item.document) == 0 {
+			continue
+		}
 		if err := publishArtifact(output.staging, item); err != nil {
 			return fmt.Errorf("publish %s: %w", item.name, err)
 		}

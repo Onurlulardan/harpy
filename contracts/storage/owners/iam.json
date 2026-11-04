@@ -5,7 +5,6 @@
     "scopes": ["platform", "tenant"],
     "migration_dirs": [{"path":"core/internal/modules/iam/migrations/platform","scope":"platform"}, {"path":"core/internal/modules/iam/migrations/tenant","scope":"tenant"}],
     "static_sql_dirs": [
-      {"path":"compat/iamactorv1/sql","scope":"tenant"},
       {"path":"core/internal/modules/iam/adapters/postgres/actorbridgeissue/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/iam/adapters/postgres/adoption/sql/tenant","scope":"tenant"},
 	  {"path":"core/internal/modules/iam/adapters/postgres/analyticsprincipal/sql/tenant","scope":"tenant"},
@@ -27,7 +26,6 @@
       {"path":"core/internal/modules/iam/adapters/postgres/securityepoch/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/serviceprincipal/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/sessionview/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/iam/adapters/postgres/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/sql/tenant","scope":"tenant"}, {"path":"core/internal/modules/iam/adapters/postgres/systemtransfer/sql/tenant","scope":"tenant"},
       {"path":"core/internal/modules/iam/adapters/postgres/systemtransfercleanup/sql/platform","scope":"platform"}, {"path":"core/internal/modules/iam/adapters/postgres/systemtransfercleanup/sql/tenant","scope":"tenant"},
-      {"path":"core/internal/modules/iam/adapters/postgres/v1authority/sql/platform","scope":"platform"},
       {"path":"core/internal/modules/iam/adapters/postgres/workflowpermission/sql/tenant","scope":"tenant"}
     ],
     "platform_schemas": [], "schema_usage_grants": [{"schema":"platform","role":"harpy_backup_reader","contract":"ADR-0123"},{"schema":"platform","role":"harpy_runtime","contract":"ADR-0062"}],

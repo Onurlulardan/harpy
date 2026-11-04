@@ -21,19 +21,19 @@ func (stub sqlStateStub) SQLState() string {
 func TestResumableKeepsCauseStageAndSQLState(t *testing.T) {
 	cause := sqlStateStub{code: "55000"}
 	err := Resumable(
-		"tenant_migration.refresh_onboarding", "onboarding_state_mismatch",
+		"tenant_schema.refresh_onboarding", "onboarding_state_mismatch",
 		"operation_id=11111111-1111-4111-8111-111111111111", cause,
 	)
 	if !errors.Is(err, ErrResumable) || !errors.Is(err, cause) {
 		t.Fatalf("chain = %v", err)
 	}
 	diagnostic := Diagnose(err)
-	if diagnostic.Stage != "tenant_migration.refresh_onboarding" ||
+	if diagnostic.Stage != "tenant_schema.refresh_onboarding" ||
 		diagnostic.ErrorCode != "onboarding_state_mismatch" ||
 		diagnostic.SQLState != "55000" || ObservedStage(err) != diagnostic.Stage {
 		t.Fatalf("diagnostic = %+v", diagnostic)
 	}
-	if !strings.Contains(err.Error(), "stage=tenant_migration.refresh_onboarding") ||
+	if !strings.Contains(err.Error(), "stage=tenant_schema.refresh_onboarding") ||
 		!strings.Contains(err.Error(), "sqlstate=55000") {
 		t.Fatalf("error = %s", err)
 	}

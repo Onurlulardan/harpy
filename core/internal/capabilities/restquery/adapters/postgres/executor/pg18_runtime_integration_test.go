@@ -6,16 +6,11 @@ import (
 	"context"
 	"testing"
 
-	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 	"github.com/Onurlulardan/harpy/core/internal/capabilities/restquery/cursor"
-	"github.com/Onurlulardan/harpy/core/internal/platform/binarycontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/configfixture"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/Onurlulardan/harpy/core/internal/platform/postgres"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 	"github.com/Onurlulardan/harpy/core/internal/platform/transaction"
-	"github.com/Onurlulardan/harpy/internal/attestation"
 	"github.com/google/uuid"
 )
 
@@ -39,7 +34,7 @@ func pg18OpenRuntime(
 	}
 	pool, err := postgres.Open(
 		ctx, loaded.LongRunning().Runtime().Postgres(),
-		postgres.ProfileAPI, pg18SchemaContract(t),
+		postgres.ProfileAPI,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -54,48 +49,6 @@ func pg18OpenRuntime(
 		t.Fatal(err)
 	}
 	return pool, codec
-}
-
-func pg18SchemaContract(t *testing.T) schemacontract.EmbeddedContract {
-	t.Helper()
-	contract := runtimev1.BinarySchemaContract{
-		ContractVersion: runtimev1.BinarySchemaContractVersion,
-		Component:       "core", RuntimeGeneration: 1,
-		MinimumDatabaseGeneration: 1,
-		MigrationManifestSHA256:   pg18MigrationDigest(t),
-		ExtensionManifestSHA256:   pg18ExtensionDigest,
-		PostgresImageDigest:       runtimev1.PostgresImageDigest,
-	}
-	document, err := attestation.MarshalCanonical(contract)
-	if err != nil {
-		t.Fatal(err)
-	}
-	artifact, err := binarycontract.Verify(document)
-	if err != nil {
-		t.Fatal(err)
-	}
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		t.Fatal(err)
-	}
-	authorized, err := schemacontract.AuthorizeIntegrationArtifact(registry, artifact)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return authorized
-}
-
-func pg18MigrationDigest(t *testing.T) string {
-	t.Helper()
-	registry, err := migration.LoadReleaseRegistry()
-	if err != nil {
-		t.Fatal(err)
-	}
-	digests := registry.Digests()
-	if len(digests) == 0 {
-		t.Fatal("migration release registry is empty")
-	}
-	return digests[0]
 }
 
 func pg18ScopeRequest(

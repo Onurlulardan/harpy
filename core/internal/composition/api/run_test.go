@@ -3,16 +3,14 @@ package api
 import (
 	"bytes"
 	"context"
-	"errors"
 	"strings"
 	"testing"
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/configfixture"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
-	"github.com/Onurlulardan/harpy/core/internal/platform/schemacontract"
 )
 
-func TestRunFailsBeforeDatabaseWhenBuildContractIsUnavailable(t *testing.T) {
+func TestRunReachesDatabaseWithoutSchemaContract(t *testing.T) {
 	t.Setenv("HARPY_ENVIRONMENT", "test")
 	t.Setenv("DEPLOYMENT_MODE", "saas")
 	t.Setenv("HARPY_POSTGRES_ENDPOINT_KIND", "direct_postgres")
@@ -22,18 +20,12 @@ func TestRunFailsBeforeDatabaseWhenBuildContractIsUnavailable(t *testing.T) {
 	)
 	t.Setenv("HARPY_REST_QUERY_CURSOR_KEYRING", apiTestCursorKeyring)
 	configfixture.SetAPI(t)
-	called := 0
-	loader := func() (schemacontract.EmbeddedContract, error) {
-		called++
-		return schemacontract.EmbeddedContract{}, errors.New("missing")
-	}
 	var stderr bytes.Buffer
-	code := runWithContractLoader(context.Background(), nil, &stderr, loader)
-	if code != processcode.InvalidStartup || called != 1 {
-		t.Fatalf("run code=%d loader calls=%d", code, called)
+	code := run(context.Background(), nil, &stderr)
+	if code != processcode.DependencyPreflight {
+		t.Fatalf("run code=%d stderr=%s", code, stderr.String())
 	}
-	if !strings.Contains(stderr.String(), `"error_class":"build_contract"`) ||
-		!strings.Contains(stderr.String(), "missing") {
-		t.Fatalf("stable build failure missing: %s", stderr.String())
+	if strings.Contains(stderr.String(), "schema contract") {
+		t.Fatalf("schema contract is still a startup gate: %s", stderr.String())
 	}
 }

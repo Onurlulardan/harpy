@@ -102,7 +102,7 @@ func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
 		return nil, fmt.Errorf("cutover authority operation: %w", err)
 	}
 	releaseDocument, releaseSignature, verifiedRelease, err := buildReleaseManifest(
-		keys, manifests, operations, authority.digest, operationDocument.digest,
+		sourceKeys, manifests, operations, authority.digest, operationDocument.digest,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("release manifest: %w", err)
@@ -123,10 +123,8 @@ func buildReleaseBundle(fresh, source releaseClock) ([]releaseFile, error) {
 	if err != nil {
 		return nil, fmt.Errorf("runtime receipts: %w", err)
 	}
-	receiptKeys := keys
-	receiptKeys.clock.adopted = source.adopted
 	cutoverReceipt, cutoverReceiptSignature, err := buildCutoverReceipt(
-		receiptKeys, operation, verifiedOperation, verifiedRelease, verifiedAuthority,
+		sourceKeys, operation, verifiedOperation, verifiedRelease, verifiedAuthority,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("cutover authority receipt: %w", err)

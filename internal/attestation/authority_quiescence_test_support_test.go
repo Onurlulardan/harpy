@@ -11,7 +11,7 @@ func authorityQuiescencePolicyFixture(
 	temporary.ConnectionLimit = 0
 	return cutoverv1.AuthorityQuiescencePolicy{
 		Roles: []cutoverv1.AuthorityQuiescedRolePolicy{{
-			Principal: "harpy_migrator", PreState: atRest,
+			Principal: "harpy_owner", PreState: atRest,
 			TemporaryState: temporary, PostState: atRest,
 			PasswordVerifierMustRemainUnchanged: true,
 		}},

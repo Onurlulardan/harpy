@@ -32,7 +32,7 @@ func TestIAMSystemResourcePublicUserDeleteAgainstPostgreSQL184(t *testing.T) {
 			applyPublicationDocuments(t, ctx, db,
 				publicationAsyncDocuments(t, origin), false)
 			grantPublicationRuntimeAccess(t, ctx, db)
-			seedPublicationStartup(t, ctx, db, publicationMigrationDigest(t))
+			seedPublicationStartup(t, ctx, db, publicationExtensionDigest)
 
 			runtime := openPublicationRuntime(t, ctx, db)
 			assertPublicationPublicUserDelete(t, ctx, db, runtime)

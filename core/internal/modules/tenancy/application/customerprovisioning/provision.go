@@ -61,6 +61,9 @@ func (coordinator *Coordinator) provision(
 	if err != nil {
 		return Operation{}, ErrUnavailable
 	}
+	if err = coordinator.beginSchema(ctx, command, plan); err != nil {
+		return Operation{}, err
+	}
 	operation, err := coordinator.dependencies.Store.Create(ctx, plan, AcceptedRequest{
 		RequestedBySubjectID: decision.SubjectID, ControlTenantID: controlID,
 		JobID:    stableID(uuid.UUID(plan.OperationID()), "tenant-migration-job"),
@@ -73,6 +76,9 @@ func (coordinator *Coordinator) provision(
 		operation.TenantID != uuid.UUID(plan.TenantID()) ||
 		operation.RequestedBySubjectID != decision.SubjectID {
 		return Operation{}, ErrUnavailable
+	}
+	if err = coordinator.activateSchema(ctx, plan); err != nil {
+		return Operation{}, err
 	}
 	return operation, nil
 }

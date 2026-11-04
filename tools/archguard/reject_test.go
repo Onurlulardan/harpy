@@ -7,7 +7,7 @@ func TestInspectRejectsForbiddenImports(t *testing.T) {
 	tests := []struct{ name, source, imported, want string }{
 		{"command platform", "cmd/api/main.go", mod + "/internal/platform/config", "matching composition entry"},
 		{"command other profile", "cmd/worker/main.go", mod + "/internal/composition/api", "matching composition entry"},
-		{"command third party", "cmd/migrator/main.go", "github.com/google/uuid", "matching composition entry"},
+		{"command third party", "cmd/recovery/main.go", "github.com/google/uuid", "matching composition entry"},
 		{"command module", "cmd/operator/main_test.go", mod + "/internal/modules/iam/api", "matching composition entry"},
 		{"flat command core entry", "cmd/api/main.go", mod + "/core/internal/composition/api", "matching composition entry"},
 		{"core command flat entry", "core/cmd/api/main.go", mod + "/internal/composition/api", "matching composition entry"},

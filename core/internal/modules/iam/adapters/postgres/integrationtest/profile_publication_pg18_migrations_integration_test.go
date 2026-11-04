@@ -10,8 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 func applyPublicationRuntimeAuthorityDocuments(
@@ -20,7 +18,7 @@ func applyPublicationRuntimeAuthorityDocuments(
 	t.Helper()
 	origin := db.tenant.origin
 	cutoverName := "20260718050601_create_cutover_runtime_locks_v1." + origin + ".sql"
-	documents := make([]migration.Document, 0, 5)
+	documents := make([]appliedSQL, 0, 5)
 	for _, base := range []string{
 		"20260718050600_create_tenancy_runtime_resolver_v1",
 		"20260725125320_create_tenancy_runtime_identity_resolver_v1",
@@ -43,22 +41,22 @@ func applyPublicationRuntimeAuthorityDocuments(
 
 func loadPublicationAuthorityDocument(
 	t *testing.T, owner, logicalPath, diskPath string,
-) migration.Document {
+) appliedSQL {
 	t.Helper()
 	content, err := os.ReadFile(diskPath)
 	if err != nil {
 		t.Fatalf("read publication authority migration %s: %v", logicalPath, err)
 	}
-	document, err := migration.NewDocument(owner, "platform", logicalPath, content)
+	document, err := newAppliedSQL(owner, "platform", logicalPath, content)
 	if err != nil {
 		t.Fatalf("bind publication authority migration %s: %v", logicalPath, err)
 	}
 	return document
 }
 
-func publicationIAMDocuments(t *testing.T, origin, scope, phase string) []migration.Document {
+func publicationIAMDocuments(t *testing.T, origin, scope, phase string) []appliedSQL {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,9 +92,9 @@ func publicationRuntimeVersion(version int64) bool {
 		version >= 20260716020002 && version <= 20260716020101
 }
 
-func publicationAsyncDocuments(t *testing.T, origin string) []migration.Document {
+func publicationAsyncDocuments(t *testing.T, origin string) []appliedSQL {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -107,12 +105,12 @@ func publicationAsyncDocuments(t *testing.T, origin string) []migration.Document
 
 func selectPublicationDocuments(
 	t *testing.T,
-	documents []migration.Document,
+	documents []appliedSQL,
 	origin, scope string,
 	selected func(int64) bool,
-) []migration.Document {
+) []appliedSQL {
 	t.Helper()
-	result := make([]migration.Document, 0)
+	result := make([]appliedSQL, 0)
 	needle := "/" + origin + "/"
 	for _, document := range documents {
 		path := filepath.ToSlash(document.Path())
@@ -141,7 +139,7 @@ func applyPublicationDocuments(
 	t *testing.T,
 	ctx context.Context,
 	db publicationDatabase,
-	documents []migration.Document,
+	documents []appliedSQL,
 	tenant bool,
 ) {
 	t.Helper()

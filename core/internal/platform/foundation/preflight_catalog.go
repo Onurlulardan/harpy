@@ -65,42 +65,52 @@ ORDER BY extension.extname`)
 }
 
 func preflightRelations(ctx context.Context, conn *pgx.Conn, cfg Config) error {
-	rows, err := conn.Query(ctx, `SELECT namespace.nspname, relation.relname, relation.relkind
+	rows, err := conn.Query(ctx, `SELECT namespace.nspname, relation.relname
 FROM pg_catalog.pg_class AS relation
 JOIN pg_catalog.pg_namespace AS namespace ON namespace.oid = relation.relnamespace
 WHERE namespace.nspname NOT IN ('pg_catalog', 'information_schema')
   AND namespace.nspname NOT LIKE 'pg\_%' ESCAPE '\'
   AND relation.relkind IN ('r', 'p', 'v', 'm', 'S', 'f')
   AND relation.relpersistence <> 't'
-ORDER BY 1, 2
-LIMIT 5`)
+ORDER BY 1, 2`)
 	if err != nil {
 		return failed("preflight", cfg, true, err)
 	}
-	found, err := pgx.CollectRows(rows, func(row pgx.CollectableRow) (relationName, error) {
-		var item relationName
-		scanErr := row.Scan(&item.schema, &item.name, &item.kind)
-		return item, scanErr
-	})
-	if err != nil {
+	defer rows.Close()
+	var outside []string
+	managed := 0
+	gooseHistory := false
+	for rows.Next() {
+		var schemaName, relationName string
+		if err = rows.Scan(&schemaName, &relationName); err != nil {
+			return failed("preflight", cfg, true, err)
+		}
+		if schemaName == PlatformSchema || tenantSchemaPattern.MatchString(schemaName) {
+			managed++
+			// PRESERVE_NON_MIGRATION: Goose native history already present means a rerun.
+			if schemaName == PlatformSchema && relationName == "goose_db_version" {
+				gooseHistory = true
+			}
+			continue
+		}
+		if len(outside) < 5 {
+			outside = append(outside, schemaName+"."+relationName)
+		}
+	}
+	if err = rows.Err(); err != nil {
 		return failed("preflight", cfg, true, err)
 	}
-	if len(found) == 0 {
-		return nil
+	if len(outside) > 0 {
+		return failed("preflight", cfg, false, fmt.Errorf(
+			"database is not an empty foundation target: %s", strings.Join(outside, ", "),
+		))
 	}
-	parts := make([]string, len(found))
-	for index, relation := range found {
-		parts[index] = relation.schema + "." + relation.name
+	if managed > 0 && !gooseHistory {
+		return failed("preflight", cfg, false, fmt.Errorf(
+			"database has relations without goose history",
+		))
 	}
-	return failed("preflight", cfg, false, fmt.Errorf(
-		"database is not an empty foundation target: %s", strings.Join(parts, ", "),
-	))
-}
-
-type relationName struct {
-	schema string
-	name   string
-	kind   string
+	return nil
 }
 
 func preflightSchemaPrivileges(ctx context.Context, conn *pgx.Conn, cfg Config) error {

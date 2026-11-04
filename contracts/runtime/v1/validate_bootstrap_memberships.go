@@ -6,12 +6,11 @@ func validateBootstrapAuthorityMemberships(
 	memberships []BootstrapAuthorityMembership,
 	origin DatabaseOrigin,
 ) error {
-	if len(memberships) != 5 {
-		return fmt.Errorf("bootstrap authority must contain exactly five memberships")
+	if len(memberships) != 4 {
+		return fmt.Errorf("bootstrap authority must contain exactly four memberships")
 	}
 	expected := []BootstrapAuthorityMembership{
 		membershipContract("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		membershipContract("harpy_migrator", "harpy_owner", true, false, true),
 		membershipContract(
 			"harpy_backup", "harpy_backup_reader", true, false, true,
 		),

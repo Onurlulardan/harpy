@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"sort"
-	"strings"
 	"testing"
 )
 
@@ -20,27 +19,6 @@ func notificationRepositoryRoot(t *testing.T) string {
 	return filepath.Clean(filepath.Join(filepath.Dir(filename), "..", "..", "..", ".."))
 }
 
-func assertNotificationMigrationPairs(t *testing.T, root, scope string, want int) {
-	t.Helper()
-	base := filepath.Join(root, "core", "internal", "modules", "notifications", "migrations", scope, "fresh")
-	fresh, err := os.ReadDir(base)
-	if err != nil || len(fresh) != want {
-		t.Fatalf("%s fresh migrations=%d want=%d err=%v", scope, len(fresh), want, err)
-	}
-	for _, entry := range fresh {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
-			t.Fatalf("%s fresh entry %s is not .fresh.sql", scope, entry.Name())
-		}
-		body, readErr := os.ReadFile(filepath.Join(base, entry.Name()))
-		if readErr != nil || len(body) == 0 {
-			t.Fatalf("%s migration %s did not load: %v", scope, entry.Name(), readErr)
-		}
-		if bytes.Count(body, []byte("-- +goose StatementBegin")) > 1 {
-			t.Fatalf("%s migration %s has multiple StatementBegin blocks", scope, entry.Name())
-		}
-	}
-}
-
 func assertNotificationFileBudget(t *testing.T, root string) {
 	t.Helper()
 	paths := []string{
@@ -51,7 +29,6 @@ func assertNotificationFileBudget(t *testing.T, root string) {
 		"contracts/authority/notifications.json",
 		"contracts/operations/notifications_adapters_postgres.json",
 		"contracts/operations/notifications_application.json",
-		"contracts/storage/migration-streams/notifications.json",
 		"contracts/storage/owners/notifications.json",
 	}
 	for _, relative := range files {

@@ -33,7 +33,7 @@ func extensionManifest() postgresv1.ExtensionManifest {
 func rolesManifest() postgresv1.RolesManifest {
 	names := []string{
 		"harpy_owner", "harpy_cutover_authority_owner", "harpy_runtime",
-		"harpy_v2_runtime", "harpy_migrator", "harpy_cluster_admin",
+		"harpy_v2_runtime", "harpy_cluster_admin",
 		"harpy_extension_admin", "harpy_adopter", "harpy_cutover_decoder",
 		"harpy_cutover_finalizer", "harpy_backup_reader",
 		"harpy_backup", "harpy_restore",
@@ -46,7 +46,7 @@ func rolesManifest() postgresv1.RolesManifest {
 			Name: name, ConnectionLimit: -1, PasswordState: "null", ValidUntil: "infinity",
 		}
 		switch name {
-		case "harpy_v2_runtime", "harpy_migrator",
+		case "harpy_v2_runtime",
 			"harpy_backup", "harpy_restore", "harpy_reactivation_observer":
 			role.Login = true
 		case "harpy_cluster_admin":
@@ -66,13 +66,12 @@ func rolesManifest() postgresv1.RolesManifest {
 func privilegesManifest() postgresv1.PrivilegesManifest {
 	memberships := []postgresv1.RoleMembership{
 		{Member: "harpy_v2_runtime", Role: "harpy_runtime", SetOption: true},
-		{Member: "harpy_migrator", Role: "harpy_owner", SetOption: true},
 		{Member: "harpy_backup", Role: "harpy_backup_reader", SetOption: true},
 		{Member: "harpy_restore", Role: "harpy_owner", SetOption: true},
 	}
 	grantees := []string{
 		"harpy_backup", "harpy_cluster_admin", "harpy_extension_admin",
-		"harpy_migrator", "harpy_reactivation_observer",
+		"harpy_reactivation_observer",
 		"harpy_restore", "harpy_runtime",
 		"harpy_v2_runtime",
 	}
@@ -91,7 +90,6 @@ func privilegesManifest() postgresv1.PrivilegesManifest {
 		ExecutorDecisions: postgresv1.ExecutorDecisionSet{
 			BootstrapRole: "harpy_cluster_admin", ExtensionRole: "harpy_extension_admin",
 			RuntimeSessionRole: "harpy_v2_runtime", RuntimeCurrentRole: "harpy_runtime",
-			MigratorSessionRole: "harpy_migrator", MigratorCurrentRole: "harpy_owner",
 			OwnershipExecutor: "cluster_bootstrap",
 		},
 	}

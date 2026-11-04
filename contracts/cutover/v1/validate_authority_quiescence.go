@@ -1,6 +1,6 @@
 package cutoverv1
 
-const authorityQuiescedPrincipal = "harpy_migrator"
+const authorityQuiescedPrincipal = "harpy_owner"
 
 func validateAuthorityQuiescencePolicy(
 	policy AuthorityQuiescencePolicy, objects []AuthorityAdoptionObject,

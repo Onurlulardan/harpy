@@ -32,14 +32,4 @@ func assertPipelineScopePrerequisites(
 	if err := transaction.VerifyTenantIdentity(ctx, tenantID, record); err != nil {
 		t.Fatalf("verify pipeline tenant identity: %v", err)
 	}
-	if err := transaction.LockCutoverGroup(ctx, tenantID, "workflow", 1); err != nil {
-		t.Fatalf("lock pipeline workflow group: %v", err)
-	}
-	members, err := transaction.ListCutoverGroupMembers(ctx, tenantID, "workflow")
-	if err != nil || len(members) != 1 || members[0] != "workflow" {
-		t.Fatalf("pipeline workflow members = %v: %v", members, err)
-	}
-	if err := transaction.LockDomainCutover(ctx, tenantID, "workflow", 1); err != nil {
-		t.Fatalf("lock pipeline workflow domain: %v", err)
-	}
 }

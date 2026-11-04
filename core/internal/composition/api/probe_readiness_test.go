@@ -8,16 +8,14 @@ import (
 
 func TestAllReadyRequiresEveryFixedObservation(t *testing.T) {
 	if !allReady(health.States{
-		Database: true, DatabaseRole: true,
-		DeploymentPolicy: true, SchemaContract: true,
+		Database: true, DatabaseRole: true, DeploymentPolicy: true,
 	}) {
 		t.Fatal("fully ready observation rejected")
 	}
 	for _, states := range []health.States{
-		{DatabaseRole: true, DeploymentPolicy: true, SchemaContract: true},
-		{Database: true, DeploymentPolicy: true, SchemaContract: true},
-		{Database: true, DatabaseRole: true, SchemaContract: true},
-		{Database: true, DatabaseRole: true, DeploymentPolicy: true},
+		{DatabaseRole: true, DeploymentPolicy: true},
+		{Database: true, DeploymentPolicy: true},
+		{Database: true, DatabaseRole: true},
 	} {
 		if allReady(states) {
 			t.Fatalf("partial observation accepted: %+v", states)

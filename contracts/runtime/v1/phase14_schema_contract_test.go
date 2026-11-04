@@ -18,9 +18,6 @@ func TestPhase14ProfileSchemasAcceptExactSnapshots(t *testing.T) {
 		{"core-operator-config.schema.json", "operator_identity_reconcile"},
 		{"core-operator-config.schema.json", "operator_license_reconcile"},
 		{"core-operator-config.schema.json", "operator_post_restore_reactivation_observer"},
-		{"core-migrator-config.schema.json", "tenant_migration_executor"},
-		{"core-migrator-config.schema.json", "database_backup_executor"},
-		{"core-migrator-config.schema.json", "database_restore"},
 	}
 	for _, test := range tests {
 		t.Run(test.profile, func(t *testing.T) {
@@ -59,11 +56,6 @@ func TestPhase14ProfileSchemasRejectModeAndSourceLeakage(t *testing.T) {
 			"identity with license source", "core-operator-config.schema.json",
 			withPhase14Variable(phase14ProfileSnapshot("operator_identity_reconcile"),
 				"HARPY_LICENSE_SNAPSHOT_FILE", "/license/snapshot.json"),
-		},
-		{
-			"restore branches combined", "core-migrator-config.schema.json",
-			withPhase14Variable(phase14ProfileSnapshot("database_restore"),
-				"HARPY_RECOVERY_KIT_FILE", "/recovery/kit"),
 		},
 	}
 	for _, test := range tests {

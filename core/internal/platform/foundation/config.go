@@ -19,7 +19,8 @@ func (cfg Config) Validate() error {
 		return errors.New("database name is not a safe identifier")
 	}
 	parsed, err := url.Parse(cfg.AdminDSN)
-	if err != nil || parsed.Scheme != "postgres" || parsed.Host == "" {
+	if err != nil || (parsed.Scheme != "postgres" && parsed.Scheme != "postgresql") ||
+		parsed.Host == "" {
 		return errors.New("admin DSN is invalid")
 	}
 	adminDatabase := strings.TrimPrefix(parsed.Path, "/")

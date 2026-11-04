@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
-	"strings"
 
 	installationpostgres "github.com/Onurlulardan/harpy/core/internal/platform/async/adapters/postgres/installationactivation"
 )
@@ -15,6 +14,8 @@ var ErrInstallationActivationEventInvalid = errors.New(
 )
 
 var installationEventDigestPattern = regexp.MustCompile(`^[0-9a-f]{64}$`)
+
+var installationEventSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 type InstallationActivationRow interface{ Scan(...any) error }
 
@@ -35,8 +36,7 @@ func RecordInstallationActivationEvent(
 	if ctx == nil || ctx.Err() != nil || executor.QueryRow == nil ||
 		input.OperationID == [16]byte{} || input.EnvironmentID == [16]byte{} ||
 		input.TenantID == [16]byte{} || input.ActorID == [16]byte{} ||
-		len(input.SchemaName) < 3 || len(input.SchemaName) > 63 ||
-		!strings.HasPrefix(input.SchemaName, "t_") ||
+		!installationEventSchemaPattern.MatchString(input.SchemaName) ||
 		!installationEventDigestPattern.MatchString(input.ManifestSHA256) {
 		return ErrInstallationActivationEventInvalid
 	}

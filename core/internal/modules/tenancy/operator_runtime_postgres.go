@@ -7,11 +7,8 @@ import (
 	deploymentpostgres "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/deploymentpolicy"
 	onboardingpostgres "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/onboarding"
 	operatorbindingpostgres "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/operatorbinding"
-	migrationpostgres "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/postgres/tenantmigration"
 	deploymentapp "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/deploymentpolicy"
 	onboardingapp "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/onboarding"
-	migrationapp "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/tenantmigration"
-	"github.com/google/uuid"
 )
 
 func BindOperatorRuntime(
@@ -51,20 +48,6 @@ func BindOperatorRuntime(
 		if err != nil {
 			return nil, fmt.Errorf("build operator onboarding: %w", err)
 		}
-		repository, err := migrationpostgres.NewRepository(func(
-			ctx context.Context,
-			statement string,
-			arguments ...any,
-		) migrationpostgres.Row {
-			return database.QueryRow(ctx, statement, arguments...)
-		})
-		if err != nil {
-			return nil, fmt.Errorf("bind operator tenant migration: %w", err)
-		}
-		migration, err := migrationapp.NewService(repository, uuid.NewV7)
-		if err != nil {
-			return nil, fmt.Errorf("build operator tenant migration: %w", err)
-		}
-		return NewOperatorRuntime(policy, onboarding, migration)
+		return NewOperatorRuntime(policy, onboarding)
 	})
 }

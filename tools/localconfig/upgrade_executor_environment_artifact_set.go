@@ -32,9 +32,6 @@ func upgradeExecutorEnvironmentArtifactSet(
 	if err != nil {
 		return ensureResult{}, false, err
 	}
-	if err = addTenantMigrationExecutorEnvironment(set); err != nil {
-		return ensureResult{}, false, err
-	}
 	manifest, err := buildSetManifest(set, now)
 	if err != nil {
 		return ensureResult{}, false, err
@@ -76,9 +73,7 @@ func validateExecutorEnvironmentUpgradeManifest(value setManifest, now time.Time
 	if err := validateManifestFileCatalog(value.Files); err != nil {
 		return err
 	}
-	expected := removeArtifactName(
-		expectedArtifactNames(), "tenant-migration-executor.env",
-	)
+	expected := expectedArtifactNames()
 	sort.Strings(expected)
 	if len(value.Files) != len(expected) {
 		return fmt.Errorf("executor environment upgrade source catalog differs")

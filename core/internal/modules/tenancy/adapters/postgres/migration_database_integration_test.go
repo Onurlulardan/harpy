@@ -86,13 +86,6 @@ LOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS`);
 NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS`); err != nil {
 		t.Fatalf("create adopter role: %v", err)
 	}
-	if _, err := database.ExecContext(ctx, `CREATE ROLE harpy_migrator
-LOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS`); err != nil {
-		t.Fatalf("create migrator role: %v", err)
-	}
-	if _, err := database.ExecContext(ctx, `GRANT harpy_owner TO harpy_migrator`); err != nil {
-		t.Fatalf("grant owner role to migrator: %v", err)
-	}
 	if _, err := database.ExecContext(
 		ctx, "GRANT harpy_runtime TO harpy_v2_runtime",
 	); err != nil {

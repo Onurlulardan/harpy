@@ -47,9 +47,6 @@ func (runtime *HTTPRuntime) Dispatch(ctx context.Context,
 	case "documents.archive.create", "documents.archive.get",
 		"documents.archive.download":
 		return runtime.dispatchArchive(ctx, request)
-	case "documents.compat.legacy_sync_archive",
-		"documents.compat.legacy_multipart_upload":
-		return runtime.dispatchCompatibility(ctx, request)
 	default:
 		return documentshttp.Response{}, documentshttp.ErrForbidden
 	}

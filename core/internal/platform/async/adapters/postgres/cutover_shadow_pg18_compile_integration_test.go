@@ -9,8 +9,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 const (
@@ -35,7 +33,7 @@ func applyCutoverShadowMigrations(
 	t *testing.T, ctx context.Context, database *sql.DB, origin string,
 ) {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,12 +46,12 @@ func applyCutoverShadowMigrations(
 }
 
 func cutoverShadowDocuments(
-	t *testing.T, documents []migration.Document, origin string,
-) []migration.Document {
+	t *testing.T, documents []appliedSQL, origin string,
+) []appliedSQL {
 	t.Helper()
 	marker := "/migrations/" + origin + "/"
 	supersessionMarker := "/migrations/supersessions/" + origin + "/"
-	selected := make([]migration.Document, 0, len(documents)/2)
+	selected := make([]appliedSQL, 0, len(documents)/2)
 	for _, document := range documents {
 		version := asyncDocumentVersion(t, document.Path())
 		if (strings.Contains(document.Path(), marker) ||

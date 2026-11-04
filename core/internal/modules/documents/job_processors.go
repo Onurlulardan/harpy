@@ -15,7 +15,6 @@ type JobProcessorDependencies struct {
 	Archive         ArchiveEffect
 	Deletion        DeletionEffect
 	UploadReconcile UploadReconcileEffect
-	AdoptionCopy    AdoptionCopyEffect
 	IDs             foundation.IDSource
 	Clock           foundation.Clock
 }
@@ -24,7 +23,7 @@ func NewJobProcessors(dependencies JobProcessorDependencies) (
 	[]jobexecution.Processor, error,
 ) {
 	ports := []any{dependencies.Release, dependencies.Store, dependencies.Archive,
-		dependencies.Deletion, dependencies.UploadReconcile, dependencies.AdoptionCopy,
+		dependencies.Deletion, dependencies.UploadReconcile,
 		dependencies.IDs, dependencies.Clock}
 	for _, port := range ports {
 		if nilArchivePort(port) {
@@ -66,11 +65,6 @@ func NewJobProcessors(dependencies JobProcessorDependencies) (
 	if err != nil {
 		return nil, err
 	}
-	adoption, err := NewAdoptionCopyJobProcessor(dependencies.Release,
-		dependencies.Store, dependencies.AdoptionCopy, dependencies.Clock.Now)
-	if err != nil {
-		return nil, err
-	}
 	return []jobexecution.Processor{archiveBuild, archiveExpire, blobDelete,
-		itemPurge, upload, adoption}, nil
+		itemPurge, upload}, nil
 }

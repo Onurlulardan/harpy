@@ -79,7 +79,7 @@
         "observed_post_state","terminated_session_count","remaining_session_count",
         "password_verifier_unchanged"],
       "properties":{
-        "principal":{"const":"harpy_migrator"},
+        "principal":{"const":"harpy_owner"},
         "observed_pre_state":{"$ref":"#/$defs/migratorAtRestState"},
         "observed_temporary_state":{"$ref":"#/$defs/migratorTemporaryState"},
         "observed_post_state":{"$ref":"#/$defs/migratorAtRestState"},

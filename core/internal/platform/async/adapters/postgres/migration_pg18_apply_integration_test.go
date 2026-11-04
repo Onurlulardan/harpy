@@ -9,8 +9,6 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 const (
@@ -26,7 +24,7 @@ func applyAsyncSliceA(
 ) {
 	t.Helper()
 	prepareAsyncAuthorityFixture(t, ctx, database)
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatalf("load async migration documents: %v", err)
 	}
@@ -48,14 +46,14 @@ func applyAsyncSliceA(
 
 func selectAsyncSliceA(
 	t *testing.T,
-	documents []migration.Document,
+	documents []appliedSQL,
 	origin string,
-) []migration.Document {
+) []appliedSQL {
 	t.Helper()
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("unsupported async migration origin: %s", origin)
 	}
-	selected := make([]migration.Document, 0, 7)
+	selected := make([]appliedSQL, 0, 7)
 	marker := "/migrations/" + origin + "/"
 	for _, document := range documents {
 		version := asyncDocumentVersion(t, document.Path())

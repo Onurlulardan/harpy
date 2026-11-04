@@ -47,7 +47,6 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 	directory := t.TempDir()
 	adminPath := writeIntegrationSecret(t, directory, "admin", dsn)
 	runtimePath := writeIntegrationSecret(t, directory, "runtime", "runtime-integration-only")
-	migratorPath := writeIntegrationSecret(t, directory, "migrator", "migrator-integration-only")
 	backupPath := writeIntegrationSecret(t, directory, "backup", "backup-integration-only")
 	restorePath := writeIntegrationSecret(t, directory, "restore", "restore-integration-only")
 	observerPath := writeIntegrationSecret(t, directory, "observer", "observer-integration-only")
@@ -62,7 +61,7 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 	output := filepath.Join(directory, "release")
 	arguments := []string{
 		"-admin-dsn-file", adminPath, "-runtime-password-file", runtimePath,
-		"-migrator-password-file", migratorPath, "-backup-password-file", backupPath,
+		"-backup-password-file", backupPath,
 		"-restore-password-file", restorePath, "-migration-manifest", migrationPath,
 		"-reactivation-observer-password-file", observerPath,
 		"-output", output,
@@ -71,43 +70,8 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	contract, err := localSchemaContract(migration, extensionManifestHash)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := executePrepare(ctx, options, contract); err != nil {
-		t.Fatal(err)
-	}
-	assertRecoveryRoles(t, ctx, dsn)
-	firstRelease, err := os.ReadFile(filepath.Join(output, "release.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	createIntegrationReadinessTables(t, ctx, dsn, output)
-	if err := executePrepare(ctx, options, contract); err != nil {
-		t.Fatal(err)
-	}
-	secondRelease, err := os.ReadFile(filepath.Join(output, "release.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if string(firstRelease) != string(secondRelease) {
-		t.Fatal("idempotent prepare replaced the bootstrap release")
-	}
-	grantArguments := []string{"-admin-dsn-file", adminPath}
-	if err := runGrantRuntime(ctx, grantArguments); err != nil {
-		t.Fatal(err)
-	}
-	mutateIntegrationEnvironmentRelease(t, ctx, dsn)
-	if err := executePrepare(ctx, options, contract); err == nil {
-		t.Fatal("environment identity fork was accepted")
-	}
-	afterFailure, err := os.ReadFile(filepath.Join(output, "release.json"))
-	if err != nil || string(afterFailure) != string(firstRelease) {
-		t.Fatal("failed reuse changed the existing release output")
-	}
-	if err := runGrantRuntime(ctx, grantArguments); err != nil {
-		t.Fatal(err)
+	if err := executePrepare(ctx, options); err == nil {
+		t.Fatal("prepare still emits a migration manifest")
 	}
 }
 

@@ -1,12 +1,8 @@
 package domain
 
-import "encoding/base32"
+import "encoding/hex"
 
-const TenantSchemaNameLength = 28
-
-var tenantSchemaEncoding = base32.NewEncoding(
-	"abcdefghijklmnopqrstuvwxyz234567",
-).WithPadding(base32.NoPadding)
+const TenantSchemaNameLength = 39
 
 type SchemaName struct {
 	value string
@@ -16,9 +12,7 @@ func SchemaNameForTenant(tenantID TenantID) (SchemaName, error) {
 	if tenantID == (TenantID{}) {
 		return SchemaName{}, ErrInvalidTenantID
 	}
-	return SchemaName{
-		value: "t_" + tenantSchemaEncoding.EncodeToString(tenantID[:]),
-	}, nil
+	return SchemaName{value: "tenant_" + hex.EncodeToString(tenantID[:])}, nil
 }
 
 func SchemaNameFromUUID(value string) (SchemaName, error) {

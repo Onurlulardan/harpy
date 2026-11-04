@@ -15,9 +15,6 @@ func TestGeneratedProfileEnvironmentsSatisfyExactRuntimeCatalog(t *testing.T) {
 	}{
 		{"api.env", "api"},
 		{"worker.env", "worker"},
-		{"migrator.env", "migrator_deploy"},
-		{"schema-executor.env", "schema_executor"},
-		{"tenant-migration-executor.env", "tenant_migration_executor"},
 	}
 	catalog := loadRuntimeCatalog(t)
 	for _, test := range tests {
@@ -154,8 +151,7 @@ func mountedRuntimeFile(path string) bool {
 func TestGeneratedOnPremiseEnvironmentOmitsDeploymentMode(t *testing.T) {
 	set, _ := generatedSetForTest(t)
 	for _, name := range []string{
-		"api.env", "worker.env", "migrator.env", "schema-executor.env",
-		"tenant-migration-executor.env",
+		"api.env", "worker.env", "initialize.env", "tenant-provisioning.env",
 	} {
 		variables := parseProfileEnvironment(t, set.files[name])
 		if _, exists := variables["DEPLOYMENT_MODE"]; exists {

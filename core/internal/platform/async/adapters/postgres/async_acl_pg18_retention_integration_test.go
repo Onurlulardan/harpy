@@ -78,7 +78,7 @@ func assertMigratorRetentionDenied(
 ) {
 	t.Helper()
 	pool := openAdoptionRole(
-		t, ctx, database, "harpy_migrator", "migrator_integration_only",
+		t, ctx, database, "harpy_adopter", "adopter_integration_only",
 	)
 	connection, err := pool.Acquire(ctx)
 	if err != nil {

@@ -2,9 +2,26 @@ package initialize
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 )
+
+func TestRunWiresUpPlatform(t *testing.T) {
+	content, err := os.ReadFile("run.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source := string(content)
+	if !strings.Contains(source, "harpygoose.UpPlatform") ||
+		strings.Contains(source, "not installed") {
+		t.Fatal("initialize does not call the goose runner")
+	}
+	provision, err := os.ReadFile("provision.go")
+	if err != nil || !strings.Contains(string(provision), "harpygoose.ProvisionTenant") {
+		t.Fatal("tenant provisioning does not call the goose runner")
+	}
+}
 
 func TestRunRejectsExtraArguments(t *testing.T) {
 	var stdout, stderr bytes.Buffer

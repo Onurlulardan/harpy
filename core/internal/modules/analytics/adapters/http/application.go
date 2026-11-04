@@ -3,7 +3,6 @@ package analyticshttp
 import (
 	"context"
 
-	compatibilityapp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/compatibility"
 	dashboardapp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/dashboard"
 	publicationapp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/publication"
 	queryapp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/application/query"
@@ -43,8 +42,4 @@ type Application interface {
 
 type PublicApplication interface {
 	Execute(context.Context, publicationapp.PublicRequest) (publicationapp.PublicResult, error)
-}
-
-type LegacyApplication interface {
-	AuthorizeLegacy(context.Context, compatibilityapp.LegacyKey) (compatibilityapp.LegacyMapping, error)
 }

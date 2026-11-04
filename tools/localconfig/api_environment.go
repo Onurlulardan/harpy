@@ -8,7 +8,7 @@ const (
 )
 
 func apiEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-runtime-dsn.txt")
+	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-api-dsn.txt")
 	addSharedStorageEnvironment(values)
 	addSharedKeyringEnvironment(values)
 	issuer := "http://localhost:8000"

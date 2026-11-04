@@ -8,6 +8,7 @@ import (
 )
 
 func (manifest MigrationManifest) Validate() error {
+	// PRESERVE_NON_MIGRATION: Goose native history table name.
 	if manifest.ContractVersion != "postgres-migration-manifest.v1" ||
 		manifest.Engine != "goose.v3" || manifest.PostgresMajor != 18 ||
 		manifest.HistoryTable != "platform.goose_db_version" || manifest.OutOfOrder {
@@ -86,6 +87,10 @@ func validateMigrationEntry(entry MigrationEntry, paths map[string]struct{}) err
 func validateMigrationVariant(version int64, origin DatabaseOrigin, variant MigrationVariant) error {
 	if err := validateArtifactPath(variant.Path, "variant path"); err != nil {
 		return err
+	}
+	if strings.HasPrefix(variant.Path, "core/internal/platform/goose/sql/") &&
+		strings.HasSuffix(variant.Path, ".sql") {
+		return validateDigest(variant.SHA256, "variant sha256")
 	}
 	base := variant.Path[strings.LastIndex(variant.Path, "/")+1:]
 	prefix := strconv.FormatInt(version, 10) + "_"

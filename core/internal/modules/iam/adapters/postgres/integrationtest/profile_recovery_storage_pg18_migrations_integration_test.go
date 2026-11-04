@@ -6,13 +6,11 @@ import (
 	"path/filepath"
 	"strconv"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
-func recoveryStorageDocuments(t *testing.T, origin string) []migration.Document {
+func recoveryStorageDocuments(t *testing.T, origin string) []appliedSQL {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +22,7 @@ func recoveryStorageDocuments(t *testing.T, origin string) []migration.Document 
 }
 
 func assertRecoveryStorageDocumentBounds(
-	t *testing.T, documents []migration.Document,
+	t *testing.T, documents []appliedSQL,
 ) {
 	t.Helper()
 	if len(documents) != 7 {

@@ -10,7 +10,7 @@ func TestBootstrapAuthoritySchemasAcceptExactContracts(t *testing.T) {
 	retained := validAuthorityManifest("v1_adopted", digest)
 	authorityDatabase(retained)["extension_owner"] = "oracle"
 	authorityDatabase(retained)["extension_owner_mode"] = "adopted_retained_inventory"
-	authorityRole(retained, 8)["enabled"] = false
+	authorityRole(retained, 7)["enabled"] = false
 	tests := []struct {
 		name   string
 		schema string
@@ -42,11 +42,11 @@ func TestBootstrapAuthorityRejectsPrivilegeOrOriginDrift(t *testing.T) {
 	}{
 		{"missing environment identity", "fresh", func(value map[string]any) { delete(value, "environment_id") }},
 		{"creator self grant", "fresh", func(value map[string]any) { value["createrole_self_grant"] = "set" }},
-		{"fresh V1 login", "fresh", func(value map[string]any) { authorityRole(value, 5)["login"] = true }},
-		{"leased role left login", "fresh", func(value map[string]any) { authorityRole(value, 6)["login"] = true }},
-		{"adopter left login", "fresh", func(value map[string]any) { authorityRole(value, 9)["login"] = true }},
-		{"decoder left replication", "fresh", func(value map[string]any) { authorityRole(value, 10)["replication"] = true }},
-		{"adopter connection enabled", "fresh", func(value map[string]any) { authorityRole(value, 9)["connection_limit"] = 1 }},
+		{"fresh V1 login", "fresh", func(value map[string]any) { authorityRole(value, 4)["login"] = true }},
+		{"leased role left login", "fresh", func(value map[string]any) { authorityRole(value, 5)["login"] = true }},
+		{"adopter left login", "fresh", func(value map[string]any) { authorityRole(value, 8)["login"] = true }},
+		{"decoder left replication", "fresh", func(value map[string]any) { authorityRole(value, 9)["replication"] = true }},
+		{"adopter connection enabled", "fresh", func(value map[string]any) { authorityRole(value, 8)["connection_limit"] = 1 }},
 		{"implicit admin membership", "fresh", func(value map[string]any) { authorityMembership(value, 0)["admin"] = true }},
 		{"fresh legacy extension owner", "fresh", func(value map[string]any) {
 			authorityDatabase(value)["extension_owner"] = "harpy_legacy_extension_owner"
@@ -69,7 +69,7 @@ func TestBootstrapAuthorityRejectsPrivilegeOrOriginDrift(t *testing.T) {
 		{"retained app owner", "v1_adopted", func(value map[string]any) {
 			authorityDatabase(value)["extension_owner"] = "harpy_owner"
 			authorityDatabase(value)["extension_owner_mode"] = "adopted_retained_inventory"
-			authorityRole(value, 8)["enabled"] = false
+			authorityRole(value, 7)["enabled"] = false
 		}},
 	}
 	for _, test := range tests {
@@ -126,7 +126,6 @@ func authorityRoles(adopted bool) []any {
 		authorityRoleFixture("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
 		authorityRoleFixture("harpy_runtime", true, "permanent", false, false, false, false, -1),
 		authorityRoleFixture("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
-		authorityRoleFixture("harpy_migrator", true, "permanent", true, false, false, false, -1),
 		authorityRoleFixture("harpy_v1_runtime", adopted, "coexistence", adopted, false, false, false, -1),
 		authorityRoleFixture("harpy_cluster_admin", true, "leased", false, false, true, true, 1),
 		authorityRoleFixture("harpy_extension_admin", true, "leased", false, true, false, false, 1),
@@ -153,7 +152,6 @@ func authorityRoleFixture(name string, enabled bool, mode string, login, superus
 func authorityMemberships(adopted bool) []any {
 	return []any{
 		authorityMembershipFixture("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		authorityMembershipFixture("harpy_migrator", "harpy_owner", true, false, true),
 		authorityMembershipFixture("harpy_backup", "harpy_backup_reader", true, false, true),
 		authorityMembershipFixture("harpy_restore", "harpy_owner", true, false, true),
 		authorityMembershipFixture("harpy_v1_runtime", "harpy_runtime", adopted, true, false),

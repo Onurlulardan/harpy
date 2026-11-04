@@ -31,6 +31,7 @@ func TestRuntimeTargetsExcludePrivilegedMaterial(t *testing.T) {
 			"local-ca.key": true, "kms-master-key.bin": true,
 			"postgres-bootstrap-dsn.txt":  true,
 			"postgres-migrator-dsn.txt":   true,
+			"postgres-runtime-dsn.txt":    true,
 			"postgres-goose-dsn.txt":      true,
 			"postgres-goose-password.txt": true,
 			"minio-root-access-key.txt":   true,

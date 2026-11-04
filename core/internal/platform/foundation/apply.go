@@ -29,6 +29,10 @@ func Apply(ctx context.Context, cfg Config) error {
 		return failed("connect", cfg, true, err)
 	}
 	defer target.Close(ctx)
+	beforeRelations, beforeGoose, err := catalogCensus(ctx, target)
+	if err != nil {
+		return failed("catalog", cfg, true, err)
+	}
 	if err := ensurePlatformSchema(ctx, target, cfg); err != nil {
 		return err
 	}
@@ -41,5 +45,5 @@ func Apply(ctx context.Context, cfg Config) error {
 	if err := ensureSessionDefaults(ctx, target, cfg); err != nil {
 		return err
 	}
-	return assertNoApplicationRelations(ctx, target, cfg)
+	return assertFoundationPreservedCatalog(ctx, target, cfg, beforeRelations, beforeGoose)
 }

@@ -54,7 +54,7 @@ func buildPostgresManifests() (postgresManifests, error) {
 func localRolesManifest() postgresv1.RolesManifest {
 	names := []string{
 		"harpy_owner", "harpy_cutover_authority_owner", "harpy_runtime", "harpy_v2_runtime",
-		"harpy_migrator", "harpy_cluster_admin", "harpy_extension_admin", "harpy_adopter",
+		"harpy_cluster_admin", "harpy_extension_admin", "harpy_adopter",
 		"harpy_cutover_decoder", "harpy_cutover_finalizer", "harpy_backup_reader",
 		"harpy_backup", "harpy_restore", "harpy_reactivation_observer",
 		"harpy_tenant_migration_executor",
@@ -65,7 +65,7 @@ func localRolesManifest() postgresv1.RolesManifest {
 			Name: name, ConnectionLimit: -1, PasswordState: "null", ValidUntil: "infinity",
 		}
 		switch name {
-		case "harpy_v2_runtime", "harpy_migrator", "harpy_backup",
+		case "harpy_v2_runtime", "harpy_backup",
 			"harpy_restore", "harpy_reactivation_observer":
 			role.Login = true
 		case "harpy_cluster_admin":
@@ -84,7 +84,7 @@ func localRolesManifest() postgresv1.RolesManifest {
 
 func localPrivilegesManifest() postgresv1.PrivilegesManifest {
 	grantees := []string{
-		"harpy_backup", "harpy_cluster_admin", "harpy_extension_admin", "harpy_migrator",
+		"harpy_backup", "harpy_cluster_admin", "harpy_extension_admin",
 		"harpy_reactivation_observer", "harpy_restore", "harpy_runtime", "harpy_v2_runtime",
 	}
 	grants := make([]postgresv1.ACLGrant, 0, len(grantees))
@@ -101,7 +101,6 @@ func localPrivilegesManifest() postgresv1.PrivilegesManifest {
 		DatabaseName: localDatabase, PublicDatabasePrivileges: []string{},
 		Memberships: []postgresv1.RoleMembership{
 			{Member: "harpy_v2_runtime", Role: "harpy_runtime", SetOption: true},
-			{Member: "harpy_migrator", Role: "harpy_owner", SetOption: true},
 			{Member: "harpy_backup", Role: "harpy_backup_reader", SetOption: true},
 			{Member: "harpy_restore", Role: "harpy_owner", SetOption: true},
 		},
@@ -109,7 +108,6 @@ func localPrivilegesManifest() postgresv1.PrivilegesManifest {
 		ExecutorDecisions: postgresv1.ExecutorDecisionSet{
 			BootstrapRole: "harpy_cluster_admin", ExtensionRole: "harpy_extension_admin",
 			RuntimeSessionRole: "harpy_v2_runtime", RuntimeCurrentRole: "harpy_runtime",
-			MigratorSessionRole: "harpy_migrator", MigratorCurrentRole: "harpy_owner",
 			OwnershipExecutor: "cluster_bootstrap",
 		},
 	}
@@ -155,14 +153,15 @@ func localExtension(name, version, capability string) postgresv1.PostgresExtensi
 func localMigrationManifest() postgresv1.MigrationManifest {
 	return postgresv1.MigrationManifest{
 		ContractVersion: "postgres-migration-manifest.v1", Engine: "goose.v3",
+		// PRESERVE_NON_MIGRATION: Goose native history table, not a custom catalog.
 		PostgresMajor: 18, HistoryTable: "platform.goose_db_version",
 		Entries: []postgresv1.MigrationEntry{{
 			Owner: "platform", Scope: "platform", Version: 20260713010100,
 			TransactionMode: "transactional", Phase: "foundation",
 			TargetDatabaseGeneration: 1, NextMinimumRuntimeGeneration: 1,
 			Variants: postgresv1.MigrationVariants{Fresh: &postgresv1.MigrationVariant{
-				Path:   "core/internal/platform/migrator/migrations/fresh/20260713010100_local_release.fresh.sql",
-				SHA256: localFixedDigest,
+				Path:   "core/internal/platform/goose/sql/platform/00001_tenants.sql",
+				SHA256: "e5c4c1ed910fd470f5e6adad46cd2ba3a59f4b10f64d6f9515daec8582179811",
 			}},
 		}},
 	}

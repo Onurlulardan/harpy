@@ -17,7 +17,7 @@ const runtimeExtensionRunID = "44444444-4444-4444-8444-444444444444"
 
 func seedRuntimeFoundation(t *testing.T, ctx context.Context, admin *pgx.Conn) {
 	t.Helper()
-	migrationDigest := runtimeMigrationDigest(t)
+	migrationDigest := runtimeExtensionDigest
 	statements := []string{
 		`INSERT INTO platform.environment_identity
 SELECT true,$1,'fresh',system_identifier::text,database.oid::bigint,$2

@@ -68,22 +68,6 @@ func TestPrivilegedProfilesRejectReceiptInputCollision(t *testing.T) {
 	}
 }
 
-func TestMigratorLoadsVerificationWithoutPrivilegedSigningKey(t *testing.T) {
-	loaded, err := loadMigratorDeploy(migratorEnvironment(t))
-	if err != nil {
-		t.Fatalf("migrator verification config: %v", err)
-	}
-	if loaded.Verification().BootstrapReceiptPath().Value() == "" ||
-		loaded.Verification().ExtensionReceiptPath().Value() == "" ||
-		loaded.Artifacts().MigrationManifestPath().Value() == "" {
-		t.Fatal("migrator verification receipts were not loaded")
-	}
-	entries := append(migratorEnvironment(t), "HARPY_ATTESTATION_SIGNING_KEY=forbidden")
-	if _, err := loadMigratorDeploy(entries); err == nil || !strings.Contains(err.Error(), "unknown key") {
-		t.Fatalf("migrator accepted privileged signing key: %v", err)
-	}
-}
-
 func TestPostgresArtifactPathCannotReuseReceipt(t *testing.T) {
 	entries := privilegedEnvironment(t, profileClusterBootstrap)
 	var receipt string

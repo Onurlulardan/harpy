@@ -44,6 +44,7 @@ type CustomerProvisioningDependencies struct {
 	Setup     CustomerProvisioningSetupPreparer
 	Store     provisioningapp.OperationStore
 	Clock     CustomerProvisioningClock
+	Schema    provisioningapp.SchemaProvisioner
 }
 
 func NewCustomerProvisioningApplication(
@@ -53,6 +54,7 @@ func NewCustomerProvisioningApplication(
 		Policy: dependencies.Policy, Access: dependencies.Access,
 		Offering: dependencies.Offering, Authority: dependencies.Authority,
 		Setup: dependencies.Setup, Store: dependencies.Store, Clock: dependencies.Clock,
+		Schema: dependencies.Schema,
 	})
 }
 

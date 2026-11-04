@@ -1,6 +1,12 @@
 package api
 
-import "github.com/google/uuid"
+import (
+	"regexp"
+
+	"github.com/google/uuid"
+)
+
+var tenantSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 func (binding Binding) valid() bool {
 	identities := []uuid.UUID{binding.OperationID, binding.EnvironmentID, binding.TenantID,
@@ -12,7 +18,7 @@ func (binding Binding) valid() bool {
 			return false
 		}
 	}
-	if !validProfile(binding) || binding.SchemaName == "" ||
+	if !validProfile(binding) || !tenantSchemaPattern.MatchString(binding.SchemaName) ||
 		!digestPattern.MatchString(binding.RequestSHA256) ||
 		!digestPattern.MatchString(binding.ManifestSHA256) ||
 		!digestPattern.MatchString(binding.StepPlanSHA256) ||

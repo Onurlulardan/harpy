@@ -1,6 +1,6 @@
 ---
 name: platform-runtime
-description: Build backend-v2 composition, HTTP runtime, configuration, telemetry, tenant transaction, database roles, migration runtime, and health surfaces. Use for core-api, core-worker, core-migrator, platform packages, bootstrap, or deployment wiring.
+description: Build backend-v2 composition, HTTP runtime, configuration, telemetry, tenant transaction, database roles, and health surfaces. Use for core-api, core-worker, core-initialize, core-recovery, platform packages, or deployment wiring.
 ---
 
 # Platform Runtime
@@ -30,7 +30,7 @@ description: Build backend-v2 composition, HTTP runtime, configuration, telemetr
   bu giris basarili olmadan baslamaz ve restart sirasinda onu tekrar calistirmaz.
 - `core-operator` yalniz kurulum, `reconcile-restored-identity` ve
   `reconcile-restored-license` exact one-shot ABI'laridir.
-- Surekli tenant migration executor veya schema-executor yoktur.
+- Surekli sema isi yoktur. Bu is kaldirildi.
 - Recovery backup/restore migration lifecycle'indan ayri kalir.
 - Forms/Workflow servis degil module'dur; async processor'lari worker'da calisir.
 - Composition yalniz constructor/wiring yapar; business policy tasimaz.

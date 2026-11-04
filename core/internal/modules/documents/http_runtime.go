@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	documentshttp "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/http"
-	adoptionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/adoption"
 	archiveapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archive"
 	archivedownloadapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archivedownload"
 	copyapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/copy"
@@ -38,7 +37,6 @@ type HTTPRuntimeDependencies struct {
 	Archives         *archiveapp.Application
 	ArchiveDownloads *archivedownloadapp.Application
 	Copies           *copyapp.Application
-	Adoption         *adoptionapp.Application
 	BuildID          string
 	IDs              foundation.IDSource
 }
@@ -56,7 +54,7 @@ func NewApplicationRuntime(dependencies HTTPRuntimeDependencies) (
 	ports := []any{dependencies.Generations, dependencies.Scopes, dependencies.Folders,
 		dependencies.Items, dependencies.Uploads, dependencies.Downloads,
 		dependencies.Archives, dependencies.ArchiveDownloads, dependencies.Copies,
-		dependencies.Adoption, dependencies.IDs}
+		dependencies.IDs}
 	for _, port := range ports {
 		if nilHTTPPort(port) {
 			return nil, fmt.Errorf("Documents application runtime dependencies are required")

@@ -3,10 +3,11 @@ package platformauthority
 import (
 	"context"
 	"regexp"
-	"strings"
 )
 
 var installationSHA256Pattern = regexp.MustCompile(`^[0-9a-f]{64}$`)
+
+var installationSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 type InstallationActivationRow interface{ Scan(...any) error }
 
@@ -38,8 +39,7 @@ func validInstallationCommon(
 	schemaName, manifestSHA256 string,
 ) bool {
 	return operationID != [16]byte{} && environmentID != [16]byte{} &&
-		tenantID != [16]byte{} && len(schemaName) >= 3 && len(schemaName) <= 63 &&
-		strings.HasPrefix(schemaName, "t_") &&
+		tenantID != [16]byte{} && installationSchemaPattern.MatchString(schemaName) &&
 		installationSHA256Pattern.MatchString(manifestSHA256)
 }
 

@@ -10,6 +10,7 @@ type Dependencies struct {
 	Setup     SetupPreparer
 	Store     OperationStore
 	Clock     Clock
+	Schema    SchemaProvisioner
 }
 
 type Coordinator struct{ dependencies Dependencies }

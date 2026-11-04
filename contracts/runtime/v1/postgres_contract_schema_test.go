@@ -68,7 +68,7 @@ func TestPostgresReceiptsRejectAttestationMismatch(t *testing.T) {
 			delete(payloadOf(value), "ownership_manifest_sha256")
 		}},
 		{"wrong bootstrap role", "bootstrap-receipt.schema.json", validBootstrapReceipt(digest), func(value map[string]any) {
-			payloadOf(value)["session_user"] = "harpy_migrator"
+			payloadOf(value)["session_user"] = "not_a_bootstrap_role"
 		}},
 		{"zero database oid", "bootstrap-receipt.schema.json", validBootstrapReceipt(digest), func(value map[string]any) {
 			payloadOf(value)["database_oid"] = 0

@@ -5,8 +5,11 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"net/mail"
+	"regexp"
 	"strings"
 )
+
+var installationSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 type InstallationActivationRow interface{ Scan(...any) error }
 
@@ -105,8 +108,7 @@ func validInstallationIdentity(input InstallationIdentityInput) bool {
 		input.Email == strings.ToLower(input.Email) && len(input.Email) <= 254 &&
 		input.DirectoryKeyID != "" && len(input.DirectoryKeyID) <= 64 &&
 		strings.TrimSpace(input.DirectoryKeyID) == input.DirectoryKeyID &&
-		len(input.SchemaName) >= 3 && len(input.SchemaName) <= 63 &&
-		strings.HasPrefix(input.SchemaName, "t_") &&
+		installationSchemaPattern.MatchString(input.SchemaName) &&
 		validInstallationText(input.DisplayName, 128) &&
 		validInstallationText(input.TenantName, 128)
 }

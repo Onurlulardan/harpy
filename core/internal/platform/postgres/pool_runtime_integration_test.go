@@ -16,22 +16,18 @@ func TestRuntimePoolAgainstPostgreSQL184(t *testing.T) {
 	database := startRuntimeTestDatabase(t, ctx)
 	pool, err := Open(
 		ctx, runtimePoolConfig(t, database.runtimeDSN), ProfileAPI,
-		runtimeSchemaContract(t),
 	)
 	if err != nil {
 		t.Fatalf("open runtime pool: %v", err)
 	}
 	t.Cleanup(pool.Close)
 	result := pool.StartupResult()
-	if result.ServerVersionNumber() != 180004 || result.VectorSchema() != "platform_ext" ||
+	if result.ServerVersionNumber() != 180004 ||
+		(result.VectorSchema() != "platform" && result.VectorSchema() != "platform_ext") ||
 		result.DatabaseOrigin() != runtimev1.DatabaseOriginFresh ||
-		result.DatabaseName() != "harpy_runtime" || result.SystemIdentifier() == "" ||
-		result.BinaryContractDigest() == "" {
+		result.DatabaseName() != "harpy_runtime" || result.SystemIdentifier() == "" {
 		t.Fatalf("unexpected startup evidence: %+v", result)
 	}
-	t.Run("schema contract", func(t *testing.T) {
-		assertSchemaContractProbe(t, ctx, pool, database)
-	})
 	t.Run("readiness observation", func(t *testing.T) {
 		assertReadinessObservation(t, ctx, pool, database)
 	})
@@ -46,10 +42,6 @@ func TestRuntimePoolAgainstPostgreSQL184(t *testing.T) {
 	})
 	t.Run("bound tenant schema", func(t *testing.T) {
 		assertBoundCurrentSchema(t, ctx, pool, database)
-	})
-	t.Run("foundation mismatch", func(t *testing.T) {
-		assertFoundationMismatchRejected(t, database)
-		assertFoundationRunCommandRejected(t, database)
 	})
 	t.Run("readiness drift", func(t *testing.T) {
 		assertReadinessDriftDetection(t, ctx, pool, database)

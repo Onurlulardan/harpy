@@ -7,8 +7,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 func analyticsDashboardExportOrigin(t *testing.T) string {
@@ -18,7 +16,7 @@ func analyticsDashboardExportOrigin(t *testing.T) string {
 
 func analyticsDashboardExportFoundationDocuments(t *testing.T,
 	origin string,
-) []platformmigration.Document {
+) []appliedSQL {
 	t.Helper()
 	wanted := map[string]bool{
 		"20260715020000": true, "20260715020100": true,
@@ -43,7 +41,7 @@ func analyticsDashboardExportFoundationDocuments(t *testing.T,
 
 func analyticsDashboardExportProtocolDocuments(t *testing.T, origin,
 	first, last string,
-) []platformmigration.Document {
+) []appliedSQL {
 	t.Helper()
 	wanted := make(map[string]bool)
 	for suffix := 0; suffix <= 49; suffix++ {
@@ -63,16 +61,16 @@ func twoDigitAnalyticsExportStamp(value int) string {
 
 func selectAnalyticsDashboardExportPlatformDocuments(t *testing.T, origin string,
 	wanted map[string]bool,
-) []platformmigration.Document {
+) []appliedSQL {
 	t.Helper()
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("Platform Analytics export origin %q is unsupported", origin)
 	}
-	documents, err := []platformmigration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	selected := make([]platformmigration.Document, 0, len(wanted))
+	selected := make([]appliedSQL, 0, len(wanted))
 	for _, document := range documents {
 		name := path.Base(document.Path())
 		stamp := strings.SplitN(name, "_", 2)[0]

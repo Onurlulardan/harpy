@@ -11,7 +11,6 @@ func sharedRuntimeSecretNames() []string {
 		"iam-system-export-fcart-kek-keyring.json",
 		"iam-system-import-source-fcart-kek-keyring.json",
 		"local-ca.crt",
-		"postgres-runtime-dsn.txt",
 		"rest-query-cursor-keyring.json",
 		"s3-access-key-id.txt",
 		"s3-secret-access-key.txt",
@@ -21,6 +20,7 @@ func sharedRuntimeSecretNames() []string {
 func apiSecretNames() []string {
 	names := append([]string{}, sharedRuntimeSecretNames()...)
 	return append(names,
+		"postgres-api-dsn.txt",
 		"actor-bridge-client.crt",
 		"actor-bridge-client.key",
 		"actor-bridge-public-keys.json",
@@ -43,6 +43,7 @@ func apiSecretNames() []string {
 func workerSecretNames() []string {
 	names := append([]string{}, sharedRuntimeSecretNames()...)
 	return append(names,
+		"postgres-worker-dsn.txt",
 		"invitation-template.json",
 		"local-authority-ack-signing-seed",
 		"notifications-kek-keyring.json",

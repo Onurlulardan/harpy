@@ -15,6 +15,8 @@ var operatorTenantSlugPattern = regexp.MustCompile(
 	`^[a-z0-9](?:[a-z0-9-]{0,98}[a-z0-9])?$`,
 )
 
+var operatorTenantSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
+
 type ActivateTenantInput struct {
 	OperationID, EnvironmentID, TenantID, OwnerUserID tenantapi.UUID
 	Name, Slug, SchemaName, Kind, BindingPurpose      string
@@ -62,8 +64,7 @@ func validActivateTenantInput(input ActivateTenantInput) bool {
 	if input.Name == "" || len(input.Name) > 255 ||
 		strings.TrimSpace(input.Name) != input.Name ||
 		!operatorTenantSlugPattern.MatchString(input.Slug) ||
-		len(input.SchemaName) < 1 || len(input.SchemaName) > 63 ||
-		!strings.HasPrefix(input.SchemaName, "t_") ||
+		!operatorTenantSchemaPattern.MatchString(input.SchemaName) ||
 		!validOperatorDigest(input.ManifestSHA256) {
 		return false
 	}

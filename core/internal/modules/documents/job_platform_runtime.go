@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	adoptionpostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/adoption"
 	archivepostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/archive"
 	deletionpostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/deletion"
 	uploadreconcilepostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/uploadreconcile"
-	adoptionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/adoption"
 	archiveapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archive"
 	deletionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/deletion"
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents/application/foundation"
@@ -40,7 +38,6 @@ type PlatformJobDependencies struct {
 		Billing   uploadreconcileapp.Billing
 		Jobs      uploadreconcileapp.Jobs
 	}
-	AdoptionCopier adoptionapp.Copier
 }
 
 func NewPlatformJobProcessors(dependencies PlatformJobDependencies) (
@@ -51,8 +48,7 @@ func NewPlatformJobProcessors(dependencies PlatformJobDependencies) (
 		dependencies.Archive.Jobs, dependencies.Archive.Billing,
 		dependencies.Archive.Writer, dependencies.Deletion.Objects,
 		dependencies.Deletion.Billing, dependencies.UploadReconcile.Inventory,
-		dependencies.UploadReconcile.Billing, dependencies.UploadReconcile.Jobs,
-		dependencies.AdoptionCopier}
+		dependencies.UploadReconcile.Billing, dependencies.UploadReconcile.Jobs}
 	for _, port := range ports {
 		if nilArchivePort(port) {
 			return nil, fmt.Errorf("Documents platform job dependencies are required")
@@ -91,17 +87,8 @@ func NewPlatformJobProcessors(dependencies PlatformJobDependencies) (
 	if err != nil {
 		return nil, err
 	}
-	adoptionWorker, err := adoptionapp.NewAdoptionCopyWorker(
-		adoptionpostgres.NewBinder(), dependencies.AdoptionCopier, dependencies.Clock)
-	if err != nil {
-		return nil, err
-	}
-	adoptionEffect, err := NewAdoptionCopyWorkerEffect(adoptionWorker, runner)
-	if err != nil {
-		return nil, err
-	}
 	return NewJobProcessors(JobProcessorDependencies{Release: dependencies.Release,
 		Store: dependencies.Store, Archive: archiveEffect, Deletion: deletionEffect,
-		UploadReconcile: uploadEffect, AdoptionCopy: adoptionEffect,
-		IDs: dependencies.IDs, Clock: dependencies.Clock})
+		UploadReconcile: uploadEffect, IDs: dependencies.IDs,
+		Clock: dependencies.Clock})
 }

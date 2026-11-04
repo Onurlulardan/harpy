@@ -20,12 +20,11 @@ func TestOnPremiseInitializeCompletesAndReplaysAsVerifiedNoop(t *testing.T) {
 		second.OperationID != first.OperationID || second.TenantID != first.TenantID {
 		t.Fatalf("replay initialize = %#v, %v", second, err)
 	}
-	if fixture.migration.enqueues != 1 || fixture.migration.readyCalls != 1 ||
-		fixture.finalizer.calls != 1 || fixture.onboarding.records != 0 ||
-		fixture.authority.prepares != 0 || fixture.authority.acknowledgements != 0 {
-		t.Fatalf("side effects migration=%d/%d finalizer=%d records=%d authority=%d/%d",
-			fixture.migration.enqueues, fixture.migration.readyCalls,
-			fixture.finalizer.calls, fixture.onboarding.records,
+	if fixture.provision.calls != 1 || fixture.finalizer.calls != 1 ||
+		fixture.onboarding.records != 0 || fixture.authority.prepares != 0 ||
+		fixture.authority.acknowledgements != 0 {
+		t.Fatalf("side effects provision=%d finalizer=%d records=%d authority=%d/%d",
+			fixture.provision.calls, fixture.finalizer.calls, fixture.onboarding.records,
 			fixture.authority.prepares, fixture.authority.acknowledgements)
 	}
 }

@@ -34,7 +34,7 @@ func TestProfileWorkerCommitWriterRaceAgainstPostgreSQL184(t *testing.T) {
 				publicationAsyncDocuments(t, origin), false)
 			grantPublicationRuntimeAccess(t, ctx, db)
 			seedPublicationStartup(
-				t, ctx, db, publicationMigrationDigest(t),
+				t, ctx, db, publicationExtensionDigest,
 			)
 			preparePublicationRaceTenant(t, ctx, db)
 			runtime := openPublicationRuntime(t, ctx, db)

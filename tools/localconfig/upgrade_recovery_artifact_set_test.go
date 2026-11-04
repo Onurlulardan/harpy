@@ -89,7 +89,6 @@ func writeRevisionFourArtifactSet(t *testing.T, now time.Time) string {
 	for _, name := range authorityArtifactNames {
 		recoveryNames[name] = true
 	}
-	recoveryNames["tenant-migration-executor.env"] = true
 	files := manifest.Files[:0]
 	for _, file := range manifest.Files {
 		if !recoveryNames[file.Name] {

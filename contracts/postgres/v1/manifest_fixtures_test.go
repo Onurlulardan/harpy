@@ -1,5 +1,7 @@
 package postgresv1
 
+// PRESERVE_NON_MIGRATION: fixtures name the Goose native history table.
+
 func validMigrationManifest() map[string]any {
 	return map[string]any{
 		"contract_version": "postgres-migration-manifest.v1",
@@ -13,7 +15,7 @@ func validMigrationManifest() map[string]any {
 			"target_database_generation": 1, "next_minimum_runtime_generation": 1,
 			"variants": map[string]any{
 				"fresh": map[string]any{
-					"path":   "core/internal/modules/tenancy/migrations/20260714010000_foundation.fresh.sql",
+					"path":   "core/internal/platform/goose/sql/platform/00001_tenants.sql",
 					"sha256": digest("a"),
 				},
 				"v1_adopted": map[string]any{
@@ -56,7 +58,7 @@ func validRolesManifest(origin string) map[string]any {
 	names := []string{
 		"harpy_owner", "harpy_cutover_authority_owner",
 		"harpy_runtime", "harpy_v2_runtime",
-		"harpy_migrator", "harpy_cluster_admin", "harpy_extension_admin",
+		"harpy_cluster_admin", "harpy_extension_admin",
 		"harpy_adopter", "harpy_cutover_decoder", "harpy_cutover_finalizer",
 		"harpy_backup_reader", "harpy_backup", "harpy_restore",
 		"harpy_reactivation_observer",
@@ -76,7 +78,7 @@ func validRolesManifest(origin string) map[string]any {
 }
 
 func validRole(name string) map[string]any {
-	login := name == "harpy_v2_runtime" || name == "harpy_migrator" ||
+	login := name == "harpy_v2_runtime" ||
 		name == "harpy_v1_runtime" || name == "harpy_backup" ||
 		name == "harpy_restore" || name == "harpy_reactivation_observer"
 	return map[string]any{

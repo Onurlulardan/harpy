@@ -26,7 +26,6 @@ func prepareCutoverShadowCompileFixture(
 const cutoverShadowRoles = `
 CREATE ROLE harpy_adopter NOLOGIN;
 CREATE ROLE harpy_cluster_admin NOLOGIN;
-CREATE ROLE harpy_migrator NOLOGIN;
 CREATE ROLE harpy_runtime NOLOGIN;
 CREATE ROLE harpy_v2_runtime LOGIN PASSWORD 'integration-runtime-only';
 GRANT harpy_runtime TO harpy_v2_runtime;`

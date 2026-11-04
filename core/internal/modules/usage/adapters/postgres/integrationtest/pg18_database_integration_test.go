@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/testcontainers/testcontainers-go"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
@@ -71,7 +70,7 @@ func resetAndApplyUsage(t *testing.T, ctx context.Context, database *sql.DB) {
 CREATE SCHEMA platform; GRANT USAGE ON SCHEMA platform TO harpy_runtime,harpy_adopter`); err != nil {
 		t.Fatal(err)
 	}
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

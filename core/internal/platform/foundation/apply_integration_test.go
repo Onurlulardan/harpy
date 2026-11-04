@@ -2,6 +2,8 @@
 
 package foundation
 
+// PRESERVE_NON_MIGRATION: asserts Foundation does not create Goose native history.
+
 import (
 	"context"
 	"strings"

@@ -8,11 +8,11 @@ func TestInspectAllowsRemainingTree(t *testing.T) {
 	for _, file := range []struct{ path, body string }{
 		{"cmd/api/main.go", goImports("os", mod+"/internal/composition/api")},
 		{"cmd/worker/main.go", goImports("fmt", mod+"/internal/composition/worker")},
-		{"cmd/migrator/main.go", goImports("context", mod+"/internal/composition/migrator")},
+		{"cmd/recovery/main.go", goImports("context", mod+"/internal/composition/recovery")},
 		{"cmd/operator/main.go", goImports("os", mod+"/internal/composition/operator")},
 		{"core/cmd/api/main.go", goImports("os", mod+"/core/internal/composition/api")},
 		{"core/cmd/worker/main.go", goImports("os", mod+"/core/internal/composition/worker")},
-		{"core/cmd/migrator/main.go", goImports("os", mod+"/core/internal/composition/migrator")},
+		{"core/cmd/recovery/main.go", goImports("os", mod+"/core/internal/composition/recovery")},
 		{"core/cmd/operator/main.go", goImports("os", mod+"/core/internal/composition/operator")},
 		{"core/cmd/initialize/main.go", goImports("os", mod+"/core/internal/composition/initialize")},
 		{"cmd/setup/main.go", goImports(

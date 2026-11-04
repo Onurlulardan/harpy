@@ -24,7 +24,8 @@ Her degisiklikte sunlari yaz:
 
 ## Schema-per-tenant
 
-- Tenant schema adini client slug'indan request basina uretme.
+- Tenant schema adini client slug'indan veya serbest metinden uretme.
+- Canonical ad `tenant_` + tire'siz lowercase UUID'dir ve yalniz server tenant ID'den turetilir.
 - Server-side kaydedilen immutable `schema_name` kullan.
 - Tenant transaction search path'ini yalniz `pg_catalog`, tenant schema sirasinda
   kur; runtime TEMP privilege'i veya `pg_temp` kullanmasin.
@@ -81,7 +82,7 @@ expand -> resumable backfill -> application switch -> soak -> contract
 
 ## Dynamic form DDL
 
-Dynamic form, schema-executor ve typed DDL IR Harpy urun kapsami disindadir.
+Dinamik form ve typed DDL Harpy urun kapsami disindadir. Bu is kaldirildi.
 Yerine form, EAV veya JSONB altyapisi kurulmaz.
 
 ## Index ve query

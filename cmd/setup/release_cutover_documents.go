@@ -34,7 +34,7 @@ func buildCutoverOperation(
 		DependencyContractSHA256: cutoverv1.AuthorityDependencyContractSHA256(dependencies),
 		QuiescencePolicy: cutoverv1.AuthorityQuiescencePolicy{
 			Roles: []cutoverv1.AuthorityQuiescedRolePolicy{{
-				Principal: "harpy_migrator", PreState: atRest, TemporaryState: temporary,
+				Principal: "harpy_owner", PreState: atRest, TemporaryState: temporary,
 				PostState: atRest, PasswordVerifierMustRemainUnchanged: true,
 			}},
 			TerminateSessions: true, RequireZeroRemainingSessions: true, RestoreBeforeCommit: true,

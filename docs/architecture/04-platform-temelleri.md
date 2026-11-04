@@ -17,7 +17,7 @@ Başlıca paket grupları:
 | Async runtime | `platform/async` |
 | Process lifecycle | `platform/lifecycle`, `processhost`, `processcode` |
 | Identity/actor context | `actorcontext`, `actorbridge`, `requestmeta`, `requestattribution` |
-| Schema/runtime contract | `schemacontract`, `binarycontract` |
+| Schema history | Goose native history and Foundation roles/grants |
 | Artifact and recovery foundations | `recoveryartifact`, `backupreceipt`, `recoverysigning` |
 
 ## 2. Typed configuration

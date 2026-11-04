@@ -2,7 +2,6 @@ package main
 
 type applicationPasswords struct {
 	runtime  string
-	migrator string
 	backup   string
 	restore  string
 	observer string
@@ -14,7 +13,6 @@ func readApplicationPasswords(options prepareOptions) (applicationPasswords, err
 		label string
 	}{
 		{options.runtimePassword, "runtime password"},
-		{options.migratorPassword, "migrator password"},
 		{options.backupPassword, "backup password"},
 		{options.restorePassword, "restore password"},
 		{options.observerPassword, "reactivation observer password"},
@@ -28,8 +26,8 @@ func readApplicationPasswords(options prepareOptions) (applicationPasswords, err
 		values[index] = value
 	}
 	return applicationPasswords{
-		runtime: values[0], migrator: values[1],
-		backup: values[2], restore: values[3],
-		observer: values[4],
+		runtime: values[0],
+		backup:  values[1], restore: values[2],
+		observer: values[3],
 	}, nil
 }

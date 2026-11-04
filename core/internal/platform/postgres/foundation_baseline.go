@@ -11,14 +11,7 @@ const baselineFoundationSQL = `SELECT identity.database_origin,
 identity.database_system_identifier, identity.database_oid,
 identity.environment_id::text, identity.release_id::text,
 extension.extversion, namespace.nspname,
-pg_catalog.pg_get_userbyid(extension.extowner),
-(SELECT CASE
- WHEN pg_catalog.count(*) FILTER (
-   WHERE history.version_id IN (20261028000000, 20261102000000)
-  ) = 2
- THEN 2 ELSE 0 END
- FROM platform.goose_db_version AS history
- WHERE history.is_applied AND history.version_id <> 0)
+pg_catalog.pg_get_userbyid(extension.extowner)
 FROM platform.environment_identity AS identity
 JOIN pg_catalog.pg_extension AS extension ON extension.extname='vector'
 JOIN pg_catalog.pg_namespace AS namespace ON namespace.oid=extension.extnamespace
@@ -31,10 +24,10 @@ func readBaselineFoundation(
 ) (foundationPreflight, error) {
 	var origin, systemID, environmentID, releaseID string
 	var extensionVersion, extensionSchema, extensionOwner string
-	var databaseOID, appliedVersions int64
+	var databaseOID int64
 	err := queryer.QueryRow(ctx, baselineFoundationSQL).Scan(
 		&origin, &systemID, &databaseOID, &environmentID, &releaseID,
-		&extensionVersion, &extensionSchema, &extensionOwner, &appliedVersions,
+		&extensionVersion, &extensionSchema, &extensionOwner,
 	)
 	if err != nil {
 		return foundationPreflight{}, fmt.Errorf("%w: baseline foundation query: %w", ErrStartupPreflight, err)
@@ -42,19 +35,16 @@ func readBaselineFoundation(
 	return assembleBaselineFoundation(
 		origin, systemID, environmentID, releaseID,
 		extensionVersion, extensionSchema, extensionOwner,
-		databaseOID, appliedVersions, binary,
+		databaseOID, binary,
 	)
 }
 
 func assembleBaselineFoundation(
 	origin, systemID, environmentID, releaseID string,
 	extensionVersion, extensionSchema, extensionOwner string,
-	databaseOID, appliedVersions int64,
+	databaseOID int64,
 	binary runtimev1.BinarySchemaContract,
 ) (foundationPreflight, error) {
-	if appliedVersions != 2 {
-		return foundationPreflight{}, fmt.Errorf("%w: baseline foundation is incomplete", ErrStartupPreflight)
-	}
 	if binary.RuntimeGeneration != 1 || binary.MinimumDatabaseGeneration != 1 {
 		return foundationPreflight{}, fmt.Errorf("%w: baseline foundation only supports generation 1", ErrStartupPreflight)
 	}

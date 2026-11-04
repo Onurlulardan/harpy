@@ -7,7 +7,6 @@ var permanentRoleOrder = []string{
 	"harpy_cutover_authority_owner",
 	"harpy_runtime",
 	"harpy_v2_runtime",
-	"harpy_migrator",
 	"harpy_cluster_admin",
 	"harpy_extension_admin",
 	"harpy_adopter",
@@ -49,7 +48,7 @@ func expectedPostgresRole(name string) PostgresRole {
 		PasswordState: "null", ValidUntil: "infinity",
 	}
 	switch name {
-	case "harpy_v2_runtime", "harpy_migrator", "harpy_v1_runtime",
+	case "harpy_v2_runtime", "harpy_v1_runtime",
 		"harpy_backup", "harpy_restore", "harpy_reactivation_observer":
 		role.Login = true
 	case "harpy_cluster_admin":

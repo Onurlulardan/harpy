@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/foundation"
+	harpygoose "github.com/Onurlulardan/harpy/core/internal/platform/goose"
 	lifecycle "github.com/Onurlulardan/harpy/core/internal/platform/initialize"
 )
 
@@ -30,8 +31,14 @@ func run(
 		_, _ = io.WriteString(stderr, foundation.Redact(err.Error(), nil)+"\n")
 		return 2
 	}
+	if tenant := lookup("HARPY_PROVISION_TENANT_ID"); tenant != "" {
+		return runTenantProvision(stdout, stderr, cfg, tenant)
+	}
 	result, err := lifecycle.Run(context.Background(), lifecycle.Request{
-		Config: cfg, Goose: lifecycle.UnavailableGoose,
+		Config: cfg,
+		Goose: func(ctx context.Context) error {
+			return harpygoose.UpPlatform(ctx, cfg)
+		},
 		Application: lifecycle.PermitApplication,
 	})
 	_, _ = io.WriteString(stdout, lifecycle.FormatReport(cfg.Database, result))

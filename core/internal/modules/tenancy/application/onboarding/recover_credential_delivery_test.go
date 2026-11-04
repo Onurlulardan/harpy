@@ -100,7 +100,7 @@ func credentialRecoveryFixture() (RecoveryRequest, RecoveryClaim) {
 		CurrentCredentialVersion: 1, NextCredentialVersion: 2, ExpectedRevision: 3,
 		RecoveryTokenSHA256:    repeatDigest("a"),
 		DeliveryManifestSHA256: credentialdeliveryv1.ManifestSHA256(),
-		SchemaName:             "t_aaaaaaaaaaaaaaaaaaaaaaaaaa", LeaseSeconds: 60}
+		SchemaName:             "tenant_019bfcc183627a0687576c7046864c89", LeaseSeconds: 60}
 	now := time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC)
 	binding := RecoveryBinding{OperationID: request.OperationID,
 		TenantID:                 uuid.MustParse("019bfcc1-8362-7a06-8757-6c7046864c89"),

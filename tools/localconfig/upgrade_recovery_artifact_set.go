@@ -41,9 +41,6 @@ func upgradeRecoveryArtifactSet(
 	if err := refreshAuthorityProfileEnvironments(set); err != nil {
 		return ensureResult{}, false, err
 	}
-	if err := addTenantMigrationExecutorEnvironment(set); err != nil {
-		return ensureResult{}, false, err
-	}
 	manifest, err := buildSetManifest(set, now)
 	if err != nil {
 		return ensureResult{}, false, err
@@ -92,7 +89,6 @@ func validateRecoveryUpgradeManifest(value setManifest, now time.Time) error {
 	for _, name := range authorityArtifactNames {
 		expected = removeArtifactName(expected, name)
 	}
-	expected = removeArtifactName(expected, "tenant-migration-executor.env")
 	sort.Strings(expected)
 	if len(value.Files) != len(expected) {
 		return fmt.Errorf("recovery upgrade source catalog differs")

@@ -16,12 +16,10 @@ const publicationCatalogSQL = `
 CREATE ROLE harpy_owner NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
 CREATE ROLE harpy_runtime NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
 CREATE ROLE harpy_v2_runtime LOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD '` + publicationPassword + `';
-CREATE ROLE harpy_migrator LOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD '` + publicationPassword + `';
 CREATE ROLE harpy_adopter LOGIN NOINHERIT;
 CREATE ROLE harpy_cluster_admin NOLOGIN NOINHERIT;
 CREATE ROLE harpy_extension_admin NOLOGIN NOINHERIT SUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
 GRANT harpy_runtime TO harpy_v2_runtime WITH ADMIN FALSE, INHERIT FALSE, SET TRUE;
-GRANT harpy_owner TO harpy_migrator WITH ADMIN FALSE, INHERIT FALSE, SET TRUE;
 CREATE SCHEMA platform AUTHORIZATION harpy_owner;
 CREATE SCHEMA platform_ext AUTHORIZATION harpy_owner;
 CREATE SCHEMA t_profile_publication AUTHORIZATION harpy_owner;
@@ -107,7 +105,7 @@ func preparePublicationCatalog(t *testing.T, ctx context.Context, db publication
 		"ALTER DATABASE " + database + " OWNER TO harpy_owner",
 		"REVOKE CONNECT, TEMPORARY ON DATABASE " + database + " FROM PUBLIC",
 		"GRANT CONNECT ON DATABASE " + database +
-			" TO harpy_runtime, harpy_v2_runtime, harpy_migrator",
+			" TO harpy_runtime, harpy_v2_runtime",
 	}
 	for _, statement := range statements {
 		if _, err := db.admin.Exec(ctx, statement); err != nil {
