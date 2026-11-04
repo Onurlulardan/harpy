@@ -45,9 +45,10 @@ SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $fn$
     WITH clock AS (
-        SELECT pg_catalog.greatest(
-            pg_catalog.clock_timestamp(), in_created_at
-        ) AS updated_at
+        SELECT CASE
+            WHEN pg_catalog.clock_timestamp() >= in_created_at THEN pg_catalog.clock_timestamp()
+            ELSE in_created_at
+        END AS updated_at
     ), current_row AS (
         SELECT operation.state, operation.revision
         FROM platform.tenancy_onboarding_operations AS operation

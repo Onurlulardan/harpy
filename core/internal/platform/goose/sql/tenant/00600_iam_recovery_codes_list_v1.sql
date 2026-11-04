@@ -13,7 +13,7 @@ RETURNS TABLE (
     authenticator_id uuid,
     authenticator_revision bigint,
     code_id uuid,
-    position smallint,
+    "position" smallint,
     state text,
     created_at timestamptz,
     consumed_at timestamptz,
