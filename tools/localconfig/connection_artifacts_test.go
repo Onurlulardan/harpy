@@ -26,8 +26,10 @@ func TestGeneratedConnectionFilesShareOnlyIntendedCredentials(t *testing.T) {
 	}
 	assertDSN(t, set, "postgres-bootstrap-dsn.txt", "postgres-bootstrap-password.txt",
 		"local_bootstrap_admin", "postgres")
-	assertDSN(t, set, "postgres-runtime-dsn.txt", "postgres-runtime-password.txt",
-		"harpy_v2_runtime", "harpy")
+	assertDSN(t, set, "postgres-runtime-dsn.txt", "postgres-api-password.txt",
+		"harpy_api", "harpy")
+	assertDSN(t, set, "postgres-backup-dsn.txt", "postgres-api-password.txt",
+		"harpy_api", "harpy")
 	assertDSN(t, set, "postgres-cluster-admin-maintenance-dsn.txt",
 		"postgres-cluster-admin-password.txt", "harpy_cluster_admin", "postgres")
 	assertDSN(t, set, "postgres-cluster-admin-target-dsn.txt",

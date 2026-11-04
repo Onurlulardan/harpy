@@ -35,7 +35,7 @@ func addConnectionArtifacts(set *artifactSet, _ time.Time) error {
 		"postgres-cluster-admin-password.txt":   passwords.clusterAdmin,
 		"postgres-extension-admin-password.txt": passwords.extensionAdmin,
 		"postgres-runtime-dsn.txt": postgresDSN(
-			"harpy_v2_runtime", passwords.runtime, "harpy"),
+			"harpy_api", passwords.api, "harpy"),
 		"postgres-goose-password.txt": passwords.goose,
 		"postgres-goose-dsn.txt": postgresDSN(
 			"harpy_goose", passwords.goose, "harpy"),

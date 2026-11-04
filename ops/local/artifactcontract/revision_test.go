@@ -11,8 +11,8 @@ import (
 )
 
 func TestCurrentRevisionIsTheSharedContract(t *testing.T) {
-	if CurrentRevision != 12 {
-		t.Fatalf("CurrentRevision = %d, want 12", CurrentRevision)
+	if CurrentRevision != 13 {
+		t.Fatalf("CurrentRevision = %d, want 13", CurrentRevision)
 	}
 	root := moduleRoot(t)
 	output := filepath.Join(t.TempDir(), "secrets")

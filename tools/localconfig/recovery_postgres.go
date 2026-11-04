@@ -1,6 +1,12 @@
 package main
 
+import "fmt"
+
 func addRecoveryPostgresArtifacts(set *artifactSet) error {
+	apiPassword := string(set.files["postgres-api-password.txt"])
+	if apiPassword == "" {
+		return fmt.Errorf("api password is required before the backup DSN")
+	}
 	backup, err := distinctRecoveryPassword(set, nil)
 	if err != nil {
 		return err
@@ -12,7 +18,7 @@ func addRecoveryPostgresArtifacts(set *artifactSet) error {
 	files := map[string]string{
 		"postgres-backup-password.txt": backup,
 		"postgres-backup-dsn.txt": postgresDSN(
-			"harpy_backup", backup, "harpy"),
+			"harpy_api", apiPassword, "harpy"),
 		"postgres-restore-password.txt": restore,
 		"postgres-restore-dsn.txt": postgresDSN(
 			"harpy_restore", restore, "harpy"),
