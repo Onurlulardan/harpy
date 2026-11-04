@@ -1,0 +1,42 @@
+-- +goose Up
+CREATE TABLE platform.jobs (
+    id uuid PRIMARY KEY,
+    tenant_id uuid,
+    scope_kind text NOT NULL,
+    scope_id uuid NOT NULL,
+    authority_group_id text NOT NULL,
+    authority_group_generation bigint NOT NULL,
+    authority_domain text NOT NULL,
+    cutover_generation bigint NOT NULL,
+    writer_origin text NOT NULL,
+    kind text NOT NULL,
+    payload_revision integer NOT NULL,
+    payload_ref text,
+    payload_sha256 text NOT NULL,
+    dedupe_key text NOT NULL,
+    effect_class text NOT NULL,
+    effect_idempotency_key text,
+    priority integer NOT NULL,
+    run_at timestamptz NOT NULL,
+    state text NOT NULL,
+    attempts integer NOT NULL,
+    max_attempts integer NOT NULL,
+    lease_generation bigint NOT NULL,
+    retry_of_job_id uuid,
+    lease_owner_id uuid,
+    lease_heartbeat_at timestamptz,
+    lease_until timestamptz,
+    effect_started_at timestamptz,
+    cancel_requested_at timestamptz,
+    last_error_class text,
+    last_error_code text,
+    last_error_sha256 text,
+    retain_until timestamptz,
+    updated_at timestamptz,
+    completed_at timestamptz,
+    parked_at timestamptz,
+    parked_code text
+);
+
+-- +goose Down
+DROP TABLE platform.jobs;
