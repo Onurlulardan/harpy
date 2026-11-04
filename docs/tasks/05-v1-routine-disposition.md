@@ -4,6 +4,7 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 
 | path | decision | reason |
 | --- | --- | --- |
+
 | `compat/iamactorv1/sql/consume.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/analytics/adapters/postgres/adoption/sql/tenant/cutover_apply.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/analytics/adapters/postgres/compatibility/sql/platform/acknowledge_consumers.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
