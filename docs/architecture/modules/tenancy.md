@@ -19,10 +19,11 @@ Bu katı parse davranışı tenant kimliği string'inin tek bir canonical biçim
 ## 3. Tenant schema naming
 
 SchemaName, tenant ID'den server-side üretilir:
-- TenantID base32 encoding kullanılır.
-- Prefix t_ eklenir.
+- Biçim `tenant_` + UUID'dir. UUID tireleri atılır ve harfler küçük yazılır.
+- Örnek: `00112233-4455-6677-8899-aabbccddeeff` → `tenant_00112233445566778899aabbccddeeff`.
 - Schema name tenant identity'nin deterministik türevidir.
 - Zero tenant ID için schema üretilemez.
+- İstemci, slug veya serbest schema metni adı belirleyemez. Gelen değer türetilen adla eşleşmezse reddedilir.
 
 SchemaName bir client input değildir. HTTP header, slug veya arbitrary schema string üzerinden SQL search_path kurulmaz. Runtime tenant resolution platform kayıtlarıyla doğrulanır.
 

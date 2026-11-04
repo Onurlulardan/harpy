@@ -12,7 +12,8 @@ func TestActivateTenantInputRequiresExactKindPurposePair(t *testing.T) {
 	id := func() tenantapi.UUID { return tenantapi.UUID(uuid.New()) }
 	base := ActivateTenantInput{
 		OperationID: id(), EnvironmentID: id(), TenantID: id(), OwnerUserID: id(),
-		Name: "Tenant", Slug: "tenant", SchemaName: "t_abcdefghijklmnopqrstuvwxyz",
+		Name: "Tenant", Slug: "tenant",
+		SchemaName:     "tenant_00112233445566778899aabbccddeeff",
 		ManifestSHA256: strings.Repeat("a", 64),
 	}
 	for _, test := range []struct {

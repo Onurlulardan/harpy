@@ -51,7 +51,7 @@ func TestInitializeInstallationRecoveryIdentityEnforcesModeShape(t *testing.T) {
 func installationRecoveryFixture(mode string) InstallationRecoveryIdentityInput {
 	return InstallationRecoveryIdentityInput{
 		OperationID: [16]byte{1}, EnvironmentID: [16]byte{2}, TenantID: [16]byte{3},
-		SchemaName: "t_primary", DeploymentMode: mode,
+		SchemaName: "tenant_00112233445566778899aabbccddeeff", DeploymentMode: mode,
 		SigningGeneration: 1, TrustBundleSHA256: repeatDigest("a"),
 		RecoverySigningPresent: true, ManifestSHA256: repeatDigest("b"),
 	}

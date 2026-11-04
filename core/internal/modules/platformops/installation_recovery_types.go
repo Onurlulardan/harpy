@@ -3,10 +3,11 @@ package platformops
 import (
 	"context"
 	"regexp"
-	"strings"
 )
 
 var installationDigestPattern = regexp.MustCompile(`^[0-9a-f]{64}$`)
+
+var installationSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 type InstallationActivationRow interface{ Scan(...any) error }
 
@@ -26,8 +27,8 @@ type InstallationRecoveryIdentityInput struct {
 
 func validInstallationRecoveryIdentity(input InstallationRecoveryIdentityInput) bool {
 	if input.OperationID == [16]byte{} || input.EnvironmentID == [16]byte{} ||
-		input.TenantID == [16]byte{} || len(input.SchemaName) < 3 ||
-		len(input.SchemaName) > 63 || !strings.HasPrefix(input.SchemaName, "t_") ||
+		input.TenantID == [16]byte{} ||
+		!installationSchemaPattern.MatchString(input.SchemaName) ||
 		!installationDigestPattern.MatchString(input.ManifestSHA256) {
 		return false
 	}

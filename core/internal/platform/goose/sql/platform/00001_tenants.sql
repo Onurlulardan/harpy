@@ -19,7 +19,7 @@ CREATE TABLE platform.tenants (
     CONSTRAINT tenants_status_check CHECK (
         status IN ('PROVISIONING', 'ACTIVE', 'TRIAL', 'SUSPENDED')
     ),
-    CONSTRAINT tenants_schema_name_check CHECK (schema_name ~ '^t_[a-z2-7]{26}$'),
+    CONSTRAINT tenants_schema_name_check CHECK (schema_name ~ '^tenant_[0-9a-f]{32}$'),
     CONSTRAINT tenants_settings_revision_check CHECK (settings_revision > 0),
     CONSTRAINT tenants_lifecycle_revision_check CHECK (lifecycle_revision > 0)
 );

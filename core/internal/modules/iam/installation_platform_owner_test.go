@@ -153,7 +153,7 @@ func installationPlatformOwnerTestInput() InstallationPlatformOwnerInput {
 		InstanceOwnerBindingID: uuid.MustParse(
 			"10000000-0000-4000-8000-000000000005",
 		),
-		SchemaName:    "t_harpy",
+		SchemaName:    "tenant_00112233445566778899aabbccddeeff",
 		RequestSHA256: strings.Repeat("a", 64),
 	}
 }

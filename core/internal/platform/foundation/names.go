@@ -1,7 +1,6 @@
 package foundation
 
 import (
-	"encoding/base32"
 	"encoding/hex"
 	"errors"
 	"regexp"
@@ -18,11 +17,8 @@ const (
 
 var (
 	databaseNamePattern = regexp.MustCompile(`^[a-z][a-z0-9_]{0,62}$`)
-	tenantSchemaPattern = regexp.MustCompile(`^t_[a-z2-7]{26}$`)
+	tenantSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 	tenantRolePattern   = regexp.MustCompile(`^harpy_td_[0-9a-f]{32}$`)
-	tenantEncoding      = base32.NewEncoding(
-		"abcdefghijklmnopqrstuvwxyz234567",
-	).WithPadding(base32.NoPadding)
 )
 
 func ValidDatabaseName(name string) bool {
@@ -38,7 +34,7 @@ func TenantSchemaName(tenantID [16]byte) (string, error) {
 	if tenantID == ([16]byte{}) {
 		return "", errors.New("tenant ID must be non-zero")
 	}
-	return "t_" + tenantEncoding.EncodeToString(tenantID[:]), nil
+	return "tenant_" + hex.EncodeToString(tenantID[:]), nil
 }
 
 func TenantRoleName(tenantID [16]byte) (string, error) {

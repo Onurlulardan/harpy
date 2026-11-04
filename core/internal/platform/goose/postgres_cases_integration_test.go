@@ -56,7 +56,7 @@ func TestUpPreservesPostgresError(t *testing.T) {
 	source := fstest.MapFS{"00099_bad.sql": {Data: []byte(
 		"-- +goose Up\nSELECT missing_goose_relation;\n-- +goose Down\nSELECT 1;\n",
 	)}}
-	err = up(ctx, dsn, source, foundation.RoleOwner)
+	err = up(ctx, dsn, source, foundation.RoleOwner, foundation.PlatformSchema)
 	if err == nil || !strings.Contains(err.Error(), "missing_goose_relation") {
 		t.Fatal(err)
 	}

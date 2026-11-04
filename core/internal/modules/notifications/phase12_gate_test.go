@@ -51,7 +51,6 @@ func assertNotificationFileBudget(t *testing.T, root string) {
 		"contracts/authority/notifications.json",
 		"contracts/operations/notifications_adapters_postgres.json",
 		"contracts/operations/notifications_application.json",
-		"contracts/storage/migration-streams/notifications.json",
 		"contracts/storage/owners/notifications.json",
 	}
 	for _, relative := range files {

@@ -1,17 +1,10 @@
 package api
 
-import (
-	"encoding/base32"
-	"encoding/hex"
-)
+import "encoding/hex"
 
 type UUID = [16]byte
 
 var NilUUID UUID
-
-var onboardingSchemaEncoding = base32.NewEncoding(
-	"abcdefghijklmnopqrstuvwxyz234567",
-).WithPadding(base32.NoPadding)
 
 func UUIDString(value UUID) string {
 	encoded := make([]byte, 32)
@@ -24,7 +17,7 @@ func onboardingSchemaName(value UUID) string {
 	if value == NilUUID {
 		return ""
 	}
-	return "t_" + onboardingSchemaEncoding.EncodeToString(value[:])
+	return "tenant_" + hex.EncodeToString(value[:])
 }
 
 func OnboardingSchemaName(value UUID) (string, error) {

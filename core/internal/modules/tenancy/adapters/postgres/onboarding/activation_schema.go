@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-var activationSchemaPattern = regexp.MustCompile(`^t_[a-z2-7]{26}$`)
+var activationSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 func (transaction *activationTransaction) bindTenantSchema(
 	ctx context.Context,

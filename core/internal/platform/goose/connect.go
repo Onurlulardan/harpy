@@ -11,7 +11,10 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
-func openGoose(ctx context.Context, dsn string) (*sql.DB, error) {
+func openGoose(ctx context.Context, dsn, schema string) (*sql.DB, error) {
+	if err := requireGooseSchema(schema); err != nil {
+		return nil, err
+	}
 	parsed, err := pgx.ParseConfig(dsn)
 	if err != nil {
 		return nil, fmt.Errorf("parse goose dsn: %w", err)
@@ -20,6 +23,7 @@ func openGoose(ctx context.Context, dsn string) (*sql.DB, error) {
 		parsed.RuntimeParams = map[string]string{}
 	}
 	parsed.RuntimeParams["application_name"] = "harpy-goose"
+	parsed.RuntimeParams["search_path"] = gooseSearchPath(schema)
 	database := stdlib.OpenDB(*parsed)
 	database.SetMaxOpenConns(1)
 	database.SetMaxIdleConns(1)

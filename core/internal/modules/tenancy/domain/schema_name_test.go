@@ -5,19 +5,32 @@ import (
 	"testing"
 )
 
-func TestSchemaNameFromUUIDUsesCanonicalBase32(t *testing.T) {
+func TestSchemaNameFromUUIDUsesCanonicalTenantPrefix(t *testing.T) {
 	name, err := SchemaNameFromUUID("00112233-4455-6677-8899-aabbccddeeff")
 	if err != nil {
 		t.Fatal(err)
 	}
-	const want = "t_aaisem2ekvthpcezvk54zxpo74"
+	const want = "tenant_00112233445566778899aabbccddeeff"
 	if name.String() != want {
 		t.Fatalf("schema name = %q, want %q", name.String(), want)
 	}
 }
 
+func TestSchemaNameRejectsCallerSuppliedIdentifier(t *testing.T) {
+	for _, input := range []string{
+		"tenant_00112233445566778899aabbccddeeff",
+		"t_aaisem2ekvthpcezvk54zxpo74",
+		"public",
+		"Tenant_00112233445566778899AABBCCDDEEFF",
+	} {
+		if _, err := SchemaNameFromUUID(input); err == nil {
+			t.Fatalf("caller schema %q was accepted", input)
+		}
+	}
+}
+
 func TestSchemaNameIsAlwaysCanonicalIdentifier(t *testing.T) {
-	pattern := regexp.MustCompile(`^t_[a-z2-7]{26}$`)
+	pattern := regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 	inputs := []string{
 		"00000000-0000-4000-8000-000000000000",
 		"550e8400-e29b-41d4-a716-446655440000",

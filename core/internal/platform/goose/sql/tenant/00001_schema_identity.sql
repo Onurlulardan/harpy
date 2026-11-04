@@ -8,7 +8,7 @@ CREATE TABLE tenancy_schema_identity (
     CONSTRAINT tenancy_schema_identity_singleton CHECK (singleton),
     CONSTRAINT tenancy_schema_identity_origin CHECK (origin IN ('new', 'v1_adopted')),
     CONSTRAINT tenancy_schema_identity_schema_name CHECK (
-        schema_name ~ '^t_[a-z2-7]{26}$'
+        schema_name ~ '^tenant_[0-9a-f]{32}$'
     )
 );
 

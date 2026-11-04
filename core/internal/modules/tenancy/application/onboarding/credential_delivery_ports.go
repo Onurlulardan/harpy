@@ -84,4 +84,4 @@ type RecoveryCallback func(
 	RecoveryOwnerExecutor,
 ) error
 
-var recoverySchemaPattern = regexp.MustCompile(`^t_[a-z2-7]{26}$`)
+var recoverySchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)

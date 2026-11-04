@@ -5,10 +5,13 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"regexp"
 
 	iampostgres "github.com/Onurlulardan/harpy/core/internal/modules/iam/adapters/postgres"
 	"github.com/google/uuid"
 )
+
+var installationOwnerSchemaPattern = regexp.MustCompile(`^tenant_[0-9a-f]{32}$`)
 
 var ErrInstallationPlatformOwnerUnverified = errors.New(
 	"IAM installation platform owner is not verified",
@@ -120,8 +123,8 @@ func validInstallationPlatformOwner(input InstallationPlatformOwnerInput) bool {
 		}
 	}
 	decoded, err := hex.DecodeString(input.RequestSHA256)
-	return err == nil && len(decoded) == 32 && len(input.SchemaName) >= 3 &&
-		len(input.SchemaName) <= 63
+	return err == nil && len(decoded) == 32 &&
+		installationOwnerSchemaPattern.MatchString(input.SchemaName)
 }
 
 func uuidBytes(value uuid.UUID) [16]byte { return [16]byte(value) }

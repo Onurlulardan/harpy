@@ -38,11 +38,14 @@ func ProvisionTenant(ctx context.Context, cfg foundation.Config, tenantID [16]by
 	if err != nil {
 		return fmt.Errorf("open tenant goose source: %w", err)
 	}
-	database, err := openGoose(ctx, dsn)
+	database, err := openGoose(ctx, dsn, schemaName)
 	if err != nil {
 		return err
 	}
 	defer database.Close()
+	if err = applySearchPath(ctx, database, schemaName); err != nil {
+		return err
+	}
 	if err = lockTenant(ctx, database, tenantID); err != nil {
 		return err
 	}
@@ -68,9 +71,14 @@ func formatUUID(id [16]byte) string {
 	return fmt.Sprintf("%x-%x-%x-%x-%x", id[0:4], id[4:6], id[6:8], id[8:10], id[10:16])
 }
 
-func lockTenant(ctx context.Context, database *sql.DB, tenantID [16]byte) error {
+func tenantAdvisoryKeys(tenantID [16]byte) (int32, int32) {
 	keyA := int32(int(tenantID[0])<<24 | int(tenantID[1])<<16 | int(tenantID[2])<<8 | int(tenantID[3]))
 	keyB := int32(int(tenantID[4])<<24 | int(tenantID[5])<<16 | int(tenantID[6])<<8 | int(tenantID[7]))
+	return keyA, keyB
+}
+
+func lockTenant(ctx context.Context, database *sql.DB, tenantID [16]byte) error {
+	keyA, keyB := tenantAdvisoryKeys(tenantID)
 	var locked bool
 	err := database.QueryRowContext(
 		ctx, "SELECT pg_catalog.pg_try_advisory_lock($1, $2)", keyA, keyB,

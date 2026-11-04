@@ -22,11 +22,11 @@ func UpPlatform(ctx context.Context, cfg foundation.Config) error {
 	if err != nil {
 		return fmt.Errorf("open platform goose source: %w", err)
 	}
-	return up(ctx, dsn, source, foundation.RoleOwner)
+	return up(ctx, dsn, source, foundation.RoleOwner, foundation.PlatformSchema)
 }
 
-func up(ctx context.Context, dsn string, source fs.FS, role string) error {
-	database, err := openGoose(ctx, dsn)
+func up(ctx context.Context, dsn string, source fs.FS, role, schema string) error {
+	database, err := openGoose(ctx, dsn, schema)
 	if err != nil {
 		return err
 	}
@@ -35,6 +35,9 @@ func up(ctx context.Context, dsn string, source fs.FS, role string) error {
 		if err = setRole(ctx, database, role); err != nil {
 			return err
 		}
+	}
+	if err = applySearchPath(ctx, database, schema); err != nil {
+		return err
 	}
 	provider, err := pressly.NewProvider(pressly.DialectPostgres, database, source)
 	if err != nil {

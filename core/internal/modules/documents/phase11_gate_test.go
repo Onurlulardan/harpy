@@ -65,7 +65,6 @@ func documentOwnedFiles() []string {
 		"contracts/operations/documents_adapters_postgres.json",
 		"contracts/operations/documents_application.json",
 		"contracts/storage/fragments/documents/01_external_accesses.json",
-		"contracts/storage/migration-streams/documents.json",
 		"contracts/storage/owners/documents.json",
 	}
 }

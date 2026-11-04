@@ -31,7 +31,7 @@ FROM pg_catalog.pg_namespace WHERE nspname = $1`, PlatformSchema).Scan(&owner)
 	return nil
 }
 
-func assertNoApplicationRelations(ctx context.Context, conn *pgx.Conn, cfg Config) error {
+func catalogCensus(ctx context.Context, conn *pgx.Conn) (int, int, error) {
 	var relations int
 	err := conn.QueryRow(ctx, `SELECT count(*)
 FROM pg_catalog.pg_class AS relation
@@ -41,12 +41,7 @@ WHERE namespace.nspname NOT IN ('pg_catalog', 'information_schema')
   AND relation.relkind IN ('r', 'p', 'v', 'm', 'S', 'f')
   AND relation.relpersistence <> 't'`).Scan(&relations)
 	if err != nil {
-		return failed("catalog", cfg, true, err)
-	}
-	if relations != 0 {
-		return failed("catalog", cfg, false, fmt.Errorf(
-			"foundation created %d application relations", relations,
-		))
+		return 0, 0, err
 	}
 	var goose int
 	err = conn.QueryRow(ctx, `SELECT count(*)
@@ -54,9 +49,24 @@ FROM pg_catalog.pg_class AS relation
 JOIN pg_catalog.pg_namespace AS namespace ON namespace.oid = relation.relnamespace
 WHERE relation.relname = 'goose_db_version'`).Scan(&goose)
 	if err != nil {
+		return 0, 0, err
+	}
+	return relations, goose, nil
+}
+
+func assertFoundationPreservedCatalog(
+	ctx context.Context, conn *pgx.Conn, cfg Config, beforeRelations, beforeGoose int,
+) error {
+	relations, goose, err := catalogCensus(ctx, conn)
+	if err != nil {
 		return failed("catalog", cfg, true, err)
 	}
-	if goose != 0 {
+	if relations != beforeRelations {
+		return failed("catalog", cfg, false, fmt.Errorf(
+			"foundation created %d application relations", relations-beforeRelations,
+		))
+	}
+	if goose != beforeGoose {
 		return failed("catalog", cfg, false, fmt.Errorf("goose history exists after foundation"))
 	}
 	return nil
