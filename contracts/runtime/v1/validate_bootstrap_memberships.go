@@ -2,15 +2,21 @@ package runtimev1
 
 import "fmt"
 
+func BootstrapAuthorityMemberships() []BootstrapAuthorityMembership {
+	return []BootstrapAuthorityMembership{
+		membershipContract("harpy_goose", "harpy_owner", true, false, true),
+	}
+}
+
 func validateBootstrapAuthorityMemberships(
 	memberships []BootstrapAuthorityMembership,
 	_ DatabaseOrigin,
 ) error {
-	if len(memberships) != 1 {
+	expected := BootstrapAuthorityMemberships()
+	if len(memberships) != len(expected) {
 		return fmt.Errorf("bootstrap authority must contain exactly one membership")
 	}
-	expected := membershipContract("harpy_goose", "harpy_owner", true, false, true)
-	if memberships[0] != expected {
+	if memberships[0] != expected[0] {
 		return fmt.Errorf("bootstrap authority membership 0 is invalid")
 	}
 	return nil

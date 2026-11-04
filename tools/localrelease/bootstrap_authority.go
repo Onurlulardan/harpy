@@ -38,7 +38,8 @@ func buildBootstrapAuthority(
 			EndpointKind: "direct_postgres", MaintenanceDatabase: "postgres",
 			TargetDatabase: databaseName, SameServerRequired: true,
 		},
-		Roles: authorityRoles(), Memberships: authorityMemberships(),
+		Roles:       runtimev1.BootstrapAuthorityRoles(),
+		Memberships: runtimev1.BootstrapAuthorityMemberships(),
 		CredentialLeases: []runtimev1.BootstrapCredentialLease{
 			authorityLease(ids.clusterLease, "harpy_cluster_admin", issuedAt, leaseExpiresAt),
 			authorityLease(ids.extensionLease, "harpy_extension_admin", issuedAt, leaseExpiresAt),
@@ -69,33 +70,6 @@ func buildBootstrapAuthority(
 	}
 	signed, err := newArtifact("bootstrap-authority.sig", signature)
 	return signedArtifactPair{document: document, signature: signed}, err
-}
-
-func authorityRoles() []runtimev1.BootstrapAuthorityRole {
-	return []runtimev1.BootstrapAuthorityRole{
-		authorityRole("harpy_owner", false, false, -1),
-		authorityRole("harpy_goose", true, false, 4),
-		authorityRole("harpy_api", true, true, 20),
-		authorityRole("harpy_worker", true, true, 20),
-	}
-}
-
-func authorityRole(name string, login, inherit bool, limit int) runtimev1.BootstrapAuthorityRole {
-	return runtimev1.BootstrapAuthorityRole{
-		Name: name, Enabled: true, CredentialMode: "permanent",
-		Login: login, Inherit: inherit, Superuser: false,
-		CreateDB: false, CreateRole: false, Replication: false, BypassRLS: false,
-		ConnectionLimit: limit,
-	}
-}
-
-func authorityMemberships() []runtimev1.BootstrapAuthorityMembership {
-	return []runtimev1.BootstrapAuthorityMembership{
-		{
-			Member: "harpy_goose", Role: "harpy_owner", Enabled: true,
-			Admin: false, Inherit: false, Set: true, Grantor: "harpy_owner",
-		},
-	}
 }
 
 func authorityLease(

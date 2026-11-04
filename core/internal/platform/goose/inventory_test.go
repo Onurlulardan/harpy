@@ -9,32 +9,43 @@ import (
 
 func TestRoutineDispositionIsClosed(t *testing.T) {
 	root := repositoryRoot(t)
-	body, err := os.ReadFile(filepath.Join(root, "docs/tasks/05-v1-routine-disposition.md"))
-	if err != nil {
+	catalog := filepath.Join(root, "docs", "tasks", "05-v1-routine-disposition.md")
+	if _, err := os.Stat(catalog); err == nil {
+		t.Fatal("retired routine disposition catalog is present")
+	} else if !os.IsNotExist(err) {
 		t.Fatal(err)
 	}
-	text := string(body)
-	if strings.Contains(text, "UNRESOLVED") && !strings.Contains(text, "`UNRESOLVED`: 0") &&
-		!strings.Contains(text, "- UNRESOLVED: 0") {
-		t.Fatal("routine disposition still has unresolved rows")
-	}
-	if strings.Count(text, "UNRESOLVED") != 2 {
-		t.Fatalf("unexpected UNRESOLVED mentions: %d", strings.Count(text, "UNRESOLVED"))
-	}
-	rows := 0
-	for _, line := range strings.Split(text, "\n") {
-		if !strings.HasPrefix(line, "| `") {
-			continue
+	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
 		}
-		rows++
-		if !strings.Contains(line, "PRESERVE_NON_MIGRATION") &&
-			!strings.Contains(line, "REMOVE") &&
-			!strings.Contains(line, "REPLACE_WITH_NEW_GOOSE") {
-			t.Fatalf("row has no disposition: %s", line)
+		if entry.IsDir() {
+			switch entry.Name() {
+			case ".git", "vendor":
+				return filepath.SkipDir
+			}
+			return nil
 		}
-	}
-	if rows == 0 {
-		t.Fatal("disposition table is empty")
+		if strings.HasSuffix(path, "_test.go") {
+			return nil
+		}
+		switch filepath.Ext(path) {
+		case ".go", ".sql":
+		default:
+			return nil
+		}
+		body, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		text := string(body)
+		if strings.Contains(text, "05-v1-routine-disposition") || strings.Contains(text, "UNRESOLVED") {
+			t.Fatalf("open routine disposition remains in %s", path)
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 

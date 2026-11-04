@@ -2,19 +2,23 @@ package runtimev1
 
 import "fmt"
 
+func BootstrapAuthorityRoles() []BootstrapAuthorityRole {
+	return []BootstrapAuthorityRole{
+		roleContract("harpy_owner", false, false, -1),
+		roleContract("harpy_goose", true, false, 4),
+		roleContract("harpy_api", true, true, 20),
+		roleContract("harpy_worker", true, true, 20),
+	}
+}
+
 func validateBootstrapAuthorityRoles(
 	roles []BootstrapAuthorityRole,
 	_ DatabaseOrigin,
 	_ BootstrapAuthorityDatabase,
 ) error {
-	if len(roles) != 4 {
+	expected := BootstrapAuthorityRoles()
+	if len(roles) != len(expected) {
 		return fmt.Errorf("bootstrap authority must contain exactly four roles")
-	}
-	expected := []BootstrapAuthorityRole{
-		roleContract("harpy_owner", false, false, -1),
-		roleContract("harpy_goose", true, false, 4),
-		roleContract("harpy_api", true, true, 20),
-		roleContract("harpy_worker", true, true, 20),
 	}
 	for index := range expected {
 		if roles[index] != expected[index] {
