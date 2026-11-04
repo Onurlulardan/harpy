@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_maintenance_profile_lineage_resources_read_v3(
     in_schema_name name,
     in_tenant_id uuid,
@@ -23,7 +24,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -33,7 +34,8 @@ AS $$
         false,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_maintenance_profile_lineage_resources_read_v3(name, uuid, uuid, uuid, bigint, text, bytea, uuid, bigint) FROM PUBLIC;
 

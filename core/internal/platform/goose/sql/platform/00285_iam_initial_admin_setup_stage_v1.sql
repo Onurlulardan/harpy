@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_initial_admin_setup_stage_v1(
     in_operation_id uuid,
     in_tenant_id uuid,
@@ -25,9 +26,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_initial_admin_setup_stage_v1(uuid, uuid, uuid, uuid, text, bytea, bytea, text, bytea, bytea, uuid, text, text, bytea, bytea, bytea, bytea, bytea, timestamptz) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_get_primary_tenant_target_v1()
 RETURNS TABLE (
     environment_id uuid,
@@ -11,7 +12,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::uuid,
         NULL::text,
@@ -19,7 +20,8 @@ AS $$
         NULL::text,
         NULL::text
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_get_primary_tenant_target_v1() FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_authenticator_list_v1(
     in_schema_name name,
     in_user_id uuid,
@@ -26,7 +27,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         in_user_id,
@@ -39,7 +40,8 @@ AS $$
         NULL::timestamptz,
         NULL::timestamptz
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_authenticator_list_v1(name, uuid, uuid, uuid, bigint, bigint, bigint, timestamptz, uuid) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_fence_signer_v1(
     in_binding_id text,
     in_expected_signer_generation bigint,
@@ -11,9 +12,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_fence_signer_v1(text, bigint, text, text, timestamptz) FROM PUBLIC;
 

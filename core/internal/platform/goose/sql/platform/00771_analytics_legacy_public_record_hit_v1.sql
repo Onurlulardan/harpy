@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: the hit is not stored.
+-- +goose StatementBegin
 CREATE FUNCTION platform.analytics_legacy_public_record_hit_v1(
     p_tenant_identity text,
     p_method text,
@@ -30,7 +31,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         p_tenant_identity,
         p_method,
@@ -45,7 +46,8 @@ AS $$
         p_at,
         NULL::timestamptz,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.analytics_legacy_public_record_hit_v1(text, text, text, text, uuid, uuid, bytea, uuid, timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_legacy_public_record_hit_v1(text, text, text, text, uuid, uuid, bytea, uuid, timestamptz) TO harpy_api, harpy_worker;

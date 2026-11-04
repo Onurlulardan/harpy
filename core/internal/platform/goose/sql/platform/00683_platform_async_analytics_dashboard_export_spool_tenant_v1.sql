@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_analytics_dashboard_export_spool_tenant_v1(
     in_export_id uuid
 )
@@ -7,9 +8,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT NULL::uuid;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_analytics_dashboard_export_spool_tenant_v1(uuid) FROM PUBLIC;
 

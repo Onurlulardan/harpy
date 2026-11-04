@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_recovery_head_evidence_v1(
     in_environment_id text
 )
@@ -34,7 +35,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -62,7 +63,8 @@ AS $$
         ''::bytea,
         0::bigint,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_recovery_head_evidence_v1(text) FROM PUBLIC;
 

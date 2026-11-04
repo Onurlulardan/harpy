@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_resolve_login_target_v7(
     in_tenant_id uuid,
     in_kind text,
@@ -20,7 +21,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_tenant_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -32,7 +33,8 @@ AS $$
         0::bigint,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_resolve_login_target_v7(uuid, text, text, bytea) FROM PUBLIC;
 

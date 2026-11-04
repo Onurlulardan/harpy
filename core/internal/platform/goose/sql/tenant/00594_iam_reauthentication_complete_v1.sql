@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_reauthentication_complete_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -66,7 +67,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         pg_catalog.clock_timestamp(),
         0::bigint,
@@ -90,7 +91,8 @@ AS $$
         NULL::timestamptz,
         NULL::timestamptz
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_reauthentication_complete_v1(name, uuid, bytea, uuid, bigint, smallint, uuid, uuid, bigint, bigint, bigint, bigint, uuid, text, bigint, uuid, bigint, uuid, uuid, bigint, bigint, uuid, bigint, bigint, bigint, bigint, bytea, bytea, text, bigint, boolean, boolean, bigint, uuid, bytea, text, bytea) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_onboarding_activate_v3(
     in_operation_id uuid,
     in_lease_token_sha256 text,
@@ -20,7 +21,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         operation.operation_id,
         operation.tenant_id,
@@ -35,7 +36,8 @@ AS $$
     FROM platform.tenancy_onboarding_operations AS operation
     WHERE operation.operation_id = in_operation_id
       AND operation.revision = in_expected_revision;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_activate_v3(uuid, text, bigint) FROM PUBLIC;
 

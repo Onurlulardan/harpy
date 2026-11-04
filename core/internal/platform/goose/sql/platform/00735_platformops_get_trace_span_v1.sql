@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_get_trace_span_v1(
     in_environment_id uuid,
     in_span_id text
@@ -26,7 +27,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -45,7 +46,8 @@ AS $$
         ''::text,
         NULL::text,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_get_trace_span_v1(uuid, text) FROM PUBLIC;
 

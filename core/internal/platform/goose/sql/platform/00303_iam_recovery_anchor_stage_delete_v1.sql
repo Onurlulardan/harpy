@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_recovery_anchor_stage_delete_v1(
     in_operation_id uuid,
     in_environment_id uuid,
@@ -18,13 +19,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::bytea,
         ''::bytea,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_recovery_anchor_stage_delete_v1(uuid, uuid, uuid, uuid, uuid, text, bytea, timestamptz) FROM PUBLIC;
 

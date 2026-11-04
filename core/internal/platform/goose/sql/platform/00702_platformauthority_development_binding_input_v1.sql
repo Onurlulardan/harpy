@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_development_binding_input_v1(
     in_environment_id text
 )
@@ -12,13 +13,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
         ''::text,
         ''::text;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_development_binding_input_v1(text) FROM PUBLIC;
 

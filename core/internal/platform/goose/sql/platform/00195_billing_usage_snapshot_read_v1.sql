@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: usage meter rows are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_usage_snapshot_read_v1(
     p_authority_id uuid,
     p_tenant_id uuid,
@@ -33,7 +34,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::bigint,
         NULL::bigint,
@@ -56,7 +57,8 @@ AS $$
         NULL::boolean,
         NULL::boolean
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_usage_snapshot_read_v1(
     uuid, uuid, uuid, uuid, uuid

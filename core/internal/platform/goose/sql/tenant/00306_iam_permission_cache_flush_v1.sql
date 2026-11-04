@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_permission_cache_flush_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -18,13 +19,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_permission_cache_flush_v1(name, uuid, uuid, bytea, uuid, bigint, bigint, bigint) FROM PUBLIC;
 

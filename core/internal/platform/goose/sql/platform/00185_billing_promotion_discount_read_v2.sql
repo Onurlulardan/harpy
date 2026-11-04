@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: promotion discount rows are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_promotion_discount_read_v2()
 RETURNS TABLE (
     discount_id uuid,
@@ -40,7 +41,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::uuid,
         NULL::uuid,
@@ -76,7 +77,8 @@ AS $$
         NULL::timestamptz,
         NULL::uuid
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_promotion_discount_read_v2() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_promotion_discount_read_v2() TO harpy_api, harpy_worker;

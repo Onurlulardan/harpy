@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_initial_password_start_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -22,13 +23,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         pg_catalog.clock_timestamp(),
         pg_catalog.clock_timestamp()
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_initial_password_start_v1(name, uuid, uuid, uuid, uuid, bigint, bigint, bytea, text, bytea, text, bytea) FROM PUBLIC;
 

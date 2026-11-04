@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_installation_open_usage_v2(
     in_operation_id uuid,
     in_tenant_id uuid,
@@ -12,11 +13,12 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::integer,
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_installation_open_usage_v2(uuid, uuid, text) FROM PUBLIC;
 

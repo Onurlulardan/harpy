@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_installation_delivery_stage_v1(
     in_operation_id uuid,
     in_attempt_id uuid,
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH identity AS (
         SELECT operation.tenant_id, operation.first_owner_user_id
         FROM platform.tenancy_onboarding_operations AS operation
@@ -56,7 +57,8 @@ AS $$
     FROM platform.tenancy_installation_deliveries AS delivery
     WHERE delivery.operation_id = in_operation_id
       AND EXISTS (SELECT 1 FROM identity);
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_stage_v1(uuid, uuid, uuid, bigint, text, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_stage_v1(uuid, uuid, uuid, bigint, text, text) TO harpy_api, harpy_worker;

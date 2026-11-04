@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_invitation_read_v2(
     in_schema_name name,
     in_actor_id uuid,
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_id,
         ''::text,
@@ -47,7 +48,8 @@ AS $$
         pg_catalog.clock_timestamp(),
         NULL::timestamptz
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_invitation_read_v2(name, uuid, uuid) FROM PUBLIC;
 

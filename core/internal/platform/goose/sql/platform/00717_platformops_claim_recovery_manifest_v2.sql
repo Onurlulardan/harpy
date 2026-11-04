@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_claim_recovery_manifest_v2(
     in_artifact_id text,
     in_tenant_id text,
@@ -13,11 +14,12 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::bytea;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_claim_recovery_manifest_v2(text, text, text, text) FROM PUBLIC;
 

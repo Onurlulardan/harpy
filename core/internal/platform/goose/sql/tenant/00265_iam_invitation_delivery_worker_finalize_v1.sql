@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_invitation_delivery_worker_finalize_v1(
     in_schema_name name,
     in_receipt_id uuid,
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_receipt_id,
         in_artifact_ref,
@@ -39,7 +40,8 @@ AS $$
         in_result_sha256,
         in_completed_at
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_invitation_delivery_worker_finalize_v1(name, uuid, text, uuid, text, text, text, text, text, bytea, timestamptz) FROM PUBLIC;
 

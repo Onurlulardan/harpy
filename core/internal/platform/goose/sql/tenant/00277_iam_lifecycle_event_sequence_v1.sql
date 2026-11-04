@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_lifecycle_event_sequence_v1(
     in_operation_id uuid,
     in_command_key text,
@@ -10,9 +11,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT 0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_lifecycle_event_sequence_v1(uuid, text, text, uuid) FROM PUBLIC;
 

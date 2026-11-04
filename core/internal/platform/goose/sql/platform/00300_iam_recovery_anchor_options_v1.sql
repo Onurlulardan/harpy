@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_recovery_anchor_options_v1(
     in_operation_id uuid,
     in_anchor_id uuid,
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::bytea,
         ''::bytea,
@@ -37,7 +38,8 @@ AS $$
         in_expires_at,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_recovery_anchor_options_v1(uuid, uuid, uuid, uuid, uuid, text, bytea, text, text, jsonb, bytea, timestamptz, timestamptz) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_start_restore_apply_v2(
     in_operation_id text,
     in_attempt_id text,
@@ -12,9 +13,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_start_restore_apply_v2(text, text, text, text, text, text) FROM PUBLIC;
 

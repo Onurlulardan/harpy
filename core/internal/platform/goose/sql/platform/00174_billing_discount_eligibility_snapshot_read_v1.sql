@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: eligibility snapshot is not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_discount_eligibility_snapshot_read_v1(
     p_tenant_authority_id uuid,
     p_tenant_id uuid,
@@ -44,7 +45,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::uuid,
         NULL::bigint,
@@ -77,7 +78,8 @@ AS $$
         NULL::boolean,
         NULL::boolean
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_discount_eligibility_snapshot_read_v1(
     uuid, uuid, text, uuid, timestamptz, uuid

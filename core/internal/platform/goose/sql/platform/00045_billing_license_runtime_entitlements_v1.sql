@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_license_runtime_entitlements_v1(
     p_environment_id uuid
 )
@@ -20,7 +21,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         snapshot.license_id,
         snapshot.environment_id,
@@ -56,7 +57,8 @@ AS $$
           WHERE latest.environment_id = p_environment_id
       )
       AND pg_catalog.jsonb_typeof(entry.value) IN ('boolean', 'number');
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_license_runtime_entitlements_v1(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_license_runtime_entitlements_v1(uuid) TO harpy_api, harpy_worker;

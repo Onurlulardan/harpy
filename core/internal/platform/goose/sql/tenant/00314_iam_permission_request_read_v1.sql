@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_permission_request_read_v1(
     in_schema_name name,
     in_actor_id uuid,
@@ -22,7 +23,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -37,7 +38,8 @@ AS $$
         pg_catalog.clock_timestamp(),
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_permission_request_read_v1(name, uuid, uuid) FROM PUBLIC;
 

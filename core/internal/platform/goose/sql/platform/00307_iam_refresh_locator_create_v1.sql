@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_refresh_locator_create_v1(
     in_selector bytea,
     in_tenant_id uuid,
@@ -19,9 +20,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT NULL::void;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_refresh_locator_create_v1(bytea, uuid, uuid, uuid, bigint, bigint, bigint, bytea, text, timestamptz, timestamptz, timestamptz, timestamptz) FROM PUBLIC;
 

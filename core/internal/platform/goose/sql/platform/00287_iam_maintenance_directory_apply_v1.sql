@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_maintenance_directory_apply_v1(
     in_arg uuid,
     in_id uuid,
@@ -14,9 +15,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT 0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_maintenance_directory_apply_v1(uuid, uuid, uuid, text, text, bigint, bytea, jsonb) FROM PUBLIC;
 

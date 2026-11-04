@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_maintenance_security_artifact_purge_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -21,7 +22,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_job_id,
         NULL::timestamptz,
@@ -30,7 +31,8 @@ AS $$
         NULL::text,
         NULL::integer
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_maintenance_security_artifact_purge_v1(name, uuid, uuid, uuid, bigint, text, bytea, uuid) FROM PUBLIC;
 

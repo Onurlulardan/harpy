@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_system_record_export_reconcile_claim_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -43,7 +44,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         false,
         NULL::uuid,
@@ -73,7 +74,8 @@ AS $$
         ''::bytea,
         NULL::timestamptz
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_system_record_export_reconcile_claim_v1(name, uuid, uuid, uuid, uuid, uuid, bigint, text) FROM PUBLIC;
 

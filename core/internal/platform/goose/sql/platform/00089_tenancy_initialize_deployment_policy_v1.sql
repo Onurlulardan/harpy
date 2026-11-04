@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_initialize_deployment_policy_v1(
     in_operation_id uuid,
     in_environment_id uuid,
@@ -18,7 +19,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_operation_id,
         in_environment_id,
@@ -27,7 +28,8 @@ AS $$
         pg_catalog.clock_timestamp(),
         pg_catalog.clock_timestamp(),
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_initialize_deployment_policy_v1(uuid, uuid, text, text) FROM PUBLIC;
 

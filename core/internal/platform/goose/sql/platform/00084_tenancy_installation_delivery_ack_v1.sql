@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_installation_delivery_ack_v1(
     in_operation_id uuid,
     in_attempt_id uuid,
@@ -26,7 +27,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     UPDATE platform.tenancy_installation_deliveries AS delivery
     SET delivery_state = 'acknowledged',
         delivery_revision = delivery.delivery_revision + 1,
@@ -43,7 +44,8 @@ AS $$
               delivery.delivery_revision, delivery.database_now, delivery.claim_adapter_id,
               delivery.claim_lease_until, delivery.acknowledged_at,
               delivery.secret_deleted_at, delivery.completed_at;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_ack_v1(uuid, uuid, bigint, text, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_ack_v1(uuid, uuid, bigint, text, text) TO harpy_api, harpy_worker;

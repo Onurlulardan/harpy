@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_release_job_retention_v1(
     in_job_id uuid,
     in_scope_id uuid,
@@ -15,9 +16,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_release_job_retention_v1(uuid, uuid, text, bigint, text, bigint, bigint, text, timestamptz) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_platform_operator_grant_v1(
     in_schema_name name,
     in_operation_id uuid,
@@ -35,7 +36,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_target_user_id,
         in_subject_id,
@@ -46,7 +47,8 @@ AS $$
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_platform_operator_grant_v1(name, uuid, bytea, uuid, bigint, bigint, bigint, bytea, timestamptz, text, boolean, boolean, boolean, uuid, bigint, uuid, uuid, uuid, uuid, text) FROM PUBLIC;
 

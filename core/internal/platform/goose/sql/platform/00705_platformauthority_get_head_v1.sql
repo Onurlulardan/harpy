@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_get_head_v1(
     in_registry_binding_id text,
     in_scope_kind text,
@@ -17,7 +18,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -26,7 +27,8 @@ AS $$
         ''::text,
         ''::text,
         0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_get_head_v1(text, text, text) FROM PUBLIC;
 

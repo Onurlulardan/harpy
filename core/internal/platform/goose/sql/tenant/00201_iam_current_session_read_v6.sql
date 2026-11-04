@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_current_session_read_v6(
     in_schema_name name,
     in_user_id uuid,
@@ -26,7 +27,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_user_id,
         in_session_id,
@@ -45,7 +46,8 @@ AS $$
         ''::text,
         ''::text
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_current_session_read_v6(name, uuid, uuid) FROM PUBLIC;
 

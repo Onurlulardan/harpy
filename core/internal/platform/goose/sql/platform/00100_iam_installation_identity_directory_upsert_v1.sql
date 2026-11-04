@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_installation_identity_directory_upsert_v1(
     in_operation_id uuid,
     in_environment_id uuid,
@@ -18,9 +19,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT 0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_installation_identity_directory_upsert_v1(uuid, uuid, uuid, name, bigint, bigint, uuid, uuid, text, bytea, bigint, bytea) FROM PUBLIC;
 

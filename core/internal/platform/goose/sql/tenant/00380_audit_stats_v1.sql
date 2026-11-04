@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION audit_stats_v1(
     arg_1 timestamptz
 )
@@ -8,9 +9,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT NULL::bytea;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION audit_stats_v1(timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION audit_stats_v1(timestamptz) TO harpy_api, harpy_worker;

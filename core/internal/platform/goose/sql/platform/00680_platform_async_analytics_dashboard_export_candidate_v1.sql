@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_analytics_dashboard_export_candidate_v1()
 RETURNS TABLE (
     tenant_id uuid,
@@ -11,14 +12,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         ''::text,
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
         0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_analytics_dashboard_export_candidate_v1() FROM PUBLIC;
 

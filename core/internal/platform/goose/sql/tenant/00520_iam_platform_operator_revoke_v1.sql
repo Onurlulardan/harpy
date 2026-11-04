@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_platform_operator_revoke_v1(
     in_schema_name name,
     in_operation_id uuid,
@@ -32,7 +33,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_target_user_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -43,7 +44,8 @@ AS $$
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_platform_operator_revoke_v1(name, uuid, bytea, uuid, bigint, bigint, bigint, bytea, timestamptz, text, boolean, boolean, boolean, uuid, bigint, text) FROM PUBLIC;
 

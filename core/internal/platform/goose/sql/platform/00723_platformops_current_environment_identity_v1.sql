@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_current_environment_identity_v1(
     in_expected_environment_id text
 )
@@ -16,7 +17,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -26,7 +27,8 @@ AS $$
         0::bigint,
         ''::text,
         ''::text;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_current_environment_identity_v1(text) FROM PUBLIC;
 

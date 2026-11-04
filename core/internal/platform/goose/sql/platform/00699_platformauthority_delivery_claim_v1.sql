@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_delivery_claim_v1(
     in_lease_owner_id text
 )
@@ -12,13 +13,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         0::bigint,
         0::bigint,
         0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_delivery_claim_v1(text) FROM PUBLIC;
 

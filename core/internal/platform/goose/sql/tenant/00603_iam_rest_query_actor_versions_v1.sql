@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_rest_query_actor_versions_v1(
     in_schema_name name,
     in_actor_id uuid
@@ -12,12 +13,13 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_rest_query_actor_versions_v1(name, uuid) FROM PUBLIC;
 

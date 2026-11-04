@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_customer_lifecycle_fail_v1(
     in_id uuid,
     in_worker_id uuid,
@@ -10,9 +11,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_customer_lifecycle_fail_v1(uuid, uuid, text, timestamptz) FROM PUBLIC;
 

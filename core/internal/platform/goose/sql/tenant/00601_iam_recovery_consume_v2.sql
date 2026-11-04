@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_recovery_consume_v2(
     in_schema_name name,
     in_binding bytea,
@@ -18,9 +19,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT 0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_recovery_consume_v2(name, bytea, text, bytea, uuid, bigint, uuid, bigint, uuid, bigint, bigint) FROM PUBLIC;
 

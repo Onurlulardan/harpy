@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_platform_license_refresh_request_v1(
     p_environment_id uuid,
     p_tenant_id uuid,
@@ -15,7 +16,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH existing AS (
         SELECT operation.operation_id, operation.created_at
         FROM platform.billing_license_refresh_operations AS operation
@@ -35,7 +36,8 @@ AS $$
     SELECT created.operation_id, false, created.created_at FROM created
     UNION ALL
     SELECT existing.operation_id, true, existing.created_at FROM existing;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_platform_license_refresh_request_v1(
     uuid, uuid, uuid, text, text

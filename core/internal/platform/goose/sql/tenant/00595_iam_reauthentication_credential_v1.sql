@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_reauthentication_credential_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -88,7 +89,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         0::smallint,
@@ -156,7 +157,8 @@ AS $$
         NULL::bigint,
         NULL::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_reauthentication_credential_v1(name, uuid, bytea, uuid, uuid, uuid, bigint, bigint, text, uuid, text, bytea, bigint, bytea, bytea) FROM PUBLIC;
 

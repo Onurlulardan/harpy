@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_run_retention_cycle_v1()
 RETURNS TABLE (
     lock_acquired boolean,
@@ -14,7 +15,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         false,
         0::integer,
@@ -24,7 +25,8 @@ AS $$
         0::integer,
         0::integer,
         0::integer;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_run_retention_cycle_v1() FROM PUBLIC;
 

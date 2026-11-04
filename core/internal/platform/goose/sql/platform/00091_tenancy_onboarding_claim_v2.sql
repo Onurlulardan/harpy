@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_onboarding_claim_v2(
     in_operation_id uuid,
     in_attempt_id uuid,
@@ -18,7 +19,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     UPDATE platform.tenancy_onboarding_operations AS operation
     SET attempt_number = operation.attempt_number + 1,
         updated_at = pg_catalog.clock_timestamp()
@@ -28,7 +29,8 @@ AS $$
               operation.revision,
               pg_catalog.clock_timestamp()
                   + (in_lease_seconds * pg_catalog.interval '1 second');
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_claim_v2(uuid, uuid, text, text, bigint, integer) FROM PUBLIC;
 

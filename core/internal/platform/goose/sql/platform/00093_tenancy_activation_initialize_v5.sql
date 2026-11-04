@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_activation_initialize_v5(
     in_operation_id uuid,
     in_environment_id uuid,
@@ -16,9 +17,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_activation_initialize_v5(uuid, uuid, uuid, text, text, uuid, text, text, text, text) FROM PUBLIC;
 

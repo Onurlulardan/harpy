@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_rbac_effective_permissions_v1(
     in_schema_name name,
     in_target text,
@@ -22,7 +23,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         ''::text,
@@ -33,7 +34,8 @@ AS $$
         ''::text,
         '00000000-0000-0000-0000-000000000000'::uuid
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_rbac_effective_permissions_v1(name, text, uuid, integer, uuid, uuid) FROM PUBLIC;
 

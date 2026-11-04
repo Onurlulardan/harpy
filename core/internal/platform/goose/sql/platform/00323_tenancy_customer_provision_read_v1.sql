@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_customer_provision_read_v1(
     in_operation_id uuid,
     in_subject_id uuid
@@ -19,7 +20,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_operation_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -32,7 +33,8 @@ AS $$
         pg_catalog.clock_timestamp(),
         pg_catalog.clock_timestamp()
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_customer_provision_read_v1(uuid, uuid) FROM PUBLIC;
 

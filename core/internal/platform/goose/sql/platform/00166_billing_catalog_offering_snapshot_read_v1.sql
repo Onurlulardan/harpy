@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: offering snapshot rows are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_catalog_offering_snapshot_read_v1()
 RETURNS TABLE (
     id uuid,
@@ -33,7 +34,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::uuid,
         NULL::text,
@@ -62,7 +63,8 @@ AS $$
         NULL::jsonb,
         NULL::jsonb
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_catalog_offering_snapshot_read_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_catalog_offering_snapshot_read_v1() TO harpy_api, harpy_worker;

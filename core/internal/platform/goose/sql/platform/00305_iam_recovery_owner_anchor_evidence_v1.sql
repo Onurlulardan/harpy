@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_recovery_owner_anchor_evidence_v1(
     in_environment_id text
 )
@@ -31,7 +32,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -57,7 +58,8 @@ AS $$
         ''::bytea,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_recovery_owner_anchor_evidence_v1(text) FROM PUBLIC;
 

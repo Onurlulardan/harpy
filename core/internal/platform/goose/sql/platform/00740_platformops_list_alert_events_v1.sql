@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_list_alert_events_v1(
     in_environment_id uuid,
     in_service_name text,
@@ -23,7 +24,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -36,7 +37,8 @@ AS $$
         NULL::timestamptz,
         pg_catalog.clock_timestamp(),
         0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_list_alert_events_v1(uuid, text, text, integer, integer) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_refresh_credential_v3(
     in_schema_name name,
     in_source_token_id uuid,
@@ -50,7 +51,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         0::bigint,
@@ -90,7 +91,8 @@ AS $$
         0::bigint,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_refresh_credential_v3(name, uuid, uuid, bytea, bigint, bytea) FROM PUBLIC;
 

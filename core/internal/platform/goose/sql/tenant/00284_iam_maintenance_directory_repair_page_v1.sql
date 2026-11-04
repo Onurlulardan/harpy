@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_maintenance_directory_repair_page_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -21,7 +22,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -31,7 +32,8 @@ AS $$
         ''::text,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_maintenance_directory_repair_page_v1(name, uuid, uuid, uuid, bigint, text, bytea) FROM PUBLIC;
 

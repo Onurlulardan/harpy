@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_delivery_retry_v1(
     in_operation_id text,
     in_lease_owner_id text,
@@ -11,9 +12,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_delivery_retry_v1(text, text, bigint, text, boolean) FROM PUBLIC;
 

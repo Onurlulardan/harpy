@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_assert_current_authority_v1(
     in_scope_kind text,
     in_scope_id uuid,
@@ -12,9 +13,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_assert_current_authority_v1(text, uuid, text, bigint, text, bigint) FROM PUBLIC;
 

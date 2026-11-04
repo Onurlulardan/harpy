@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: current tenant authority is not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_resolve_current_tenant_authority_v1(
     p_tenant_id uuid
 )
@@ -8,9 +9,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT '00000000-0000-0000-0000-000000000000'::uuid;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_resolve_current_tenant_authority_v1(
     uuid

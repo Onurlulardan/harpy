@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION analytics_dashboard_export_submit_v2(
     arg_1 name,
     arg_2 uuid,
@@ -43,7 +44,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -62,7 +63,8 @@ AS $$
         pg_catalog.clock_timestamp(),
         pg_catalog.clock_timestamp(),
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION analytics_dashboard_export_submit_v2(name, uuid, uuid, text, bytea, uuid, uuid, uuid, uuid, text, bytea, bigint, bigint, bigint, bigint, bigint, timestamptz, timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION analytics_dashboard_export_submit_v2(name, uuid, uuid, text, bytea, uuid, uuid, uuid, uuid, text, bytea, bigint, bigint, bigint, bigint, bigint, timestamptz, timestamptz) TO harpy_api, harpy_worker;

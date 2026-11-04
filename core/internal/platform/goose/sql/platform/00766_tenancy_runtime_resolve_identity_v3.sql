@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_runtime_resolve_identity_v3(
     in_tenant_id uuid
 )
@@ -12,13 +13,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::name,
         ''::text,
         ''::text,
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_runtime_resolve_identity_v3(uuid) FROM PUBLIC;
 

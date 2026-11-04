@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_authorization_evidence_read_v1(
     in_schema_name name,
     in_actor_id uuid,
@@ -17,7 +18,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::bytea,
         ''::bytea,
@@ -26,7 +27,8 @@ AS $$
         ''::bytea,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_authorization_evidence_read_v1(name, uuid, text, text) FROM PUBLIC;
 

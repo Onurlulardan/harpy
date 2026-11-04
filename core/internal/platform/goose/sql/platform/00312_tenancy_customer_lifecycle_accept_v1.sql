@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_customer_lifecycle_accept_v1(
     in_environment_id uuid,
     in_control_tenant_id uuid,
@@ -33,7 +34,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         NULL::uuid,
@@ -48,7 +49,8 @@ AS $$
         NULL::timestamptz,
         NULL::text
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_customer_lifecycle_accept_v1(uuid, uuid, uuid, uuid, text, bigint, text, bytea, uuid, uuid, uuid, bytea, timestamptz, timestamptz) FROM PUBLIC;
 

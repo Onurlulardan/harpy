@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_maintenance_profile_page_read_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -26,7 +27,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         ''::text,
@@ -41,7 +42,8 @@ AS $$
         ''::bytea,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_maintenance_profile_page_read_v1(name, uuid, uuid, uuid, bigint, text, bytea) FROM PUBLIC;
 

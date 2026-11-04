@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_import_restore_receipt_v3(
     in_operation_id text,
     in_recovery_set_id text,
@@ -23,9 +24,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_import_restore_receipt_v3(text, text, text, text, text, text, bytea, text, text, text, text, text, text, text, text, text, jsonb) FROM PUBLIC;
 

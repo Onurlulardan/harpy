@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_profile_backfill_source_resources_plan_v1(
     in_schema_name name,
     in_resource_kind text,
@@ -22,7 +23,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -30,7 +31,8 @@ AS $$
         ''::bytea,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_profile_backfill_source_resources_plan_v1(name, text, uuid, uuid, integer, uuid, uuid, bigint, bigint) FROM PUBLIC;
 

@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: activation assertion is not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_activation_assert_v2(
     p_operation_id uuid,
     p_tenant_id uuid,
@@ -10,9 +11,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_activation_assert_v2(
     uuid, uuid, name

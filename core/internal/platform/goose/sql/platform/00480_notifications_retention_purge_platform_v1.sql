@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION platform.notifications_retention_purge_platform_v1(
     arg_1 uuid,
     arg_2 timestamptz,
@@ -10,9 +11,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT 0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.notifications_retention_purge_platform_v1(uuid, timestamptz, integer) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.notifications_retention_purge_platform_v1(uuid, timestamptz, integer) TO harpy_api, harpy_worker;

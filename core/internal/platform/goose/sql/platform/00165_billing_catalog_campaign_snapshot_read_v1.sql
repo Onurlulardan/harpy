@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: campaign snapshot rows are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_catalog_campaign_snapshot_read_v1()
 RETURNS TABLE (
     campaign_id uuid,
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::uuid,
         NULL::uuid,
@@ -50,7 +51,8 @@ AS $$
         NULL::timestamptz,
         NULL::uuid
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_catalog_campaign_snapshot_read_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_catalog_campaign_snapshot_read_v1() TO harpy_api, harpy_worker;

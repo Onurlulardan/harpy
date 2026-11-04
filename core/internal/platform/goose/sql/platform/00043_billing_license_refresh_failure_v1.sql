@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_license_refresh_failure_v1(
     p_operation_id uuid,
     p_lease_token uuid,
@@ -9,7 +10,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     UPDATE platform.billing_license_refresh_operations AS operation
     SET state = CASE
             WHEN p_kind IN ('sequence_conflict', 'sequence_rollback') THEN 'fenced'
@@ -23,7 +24,8 @@ AS $$
         WHEN operation.state = 'fenced' THEN 'fenced'
         ELSE 'pending'
     END;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_license_refresh_failure_v1(uuid, uuid, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_license_refresh_failure_v1(uuid, uuid, text) TO harpy_api, harpy_worker;

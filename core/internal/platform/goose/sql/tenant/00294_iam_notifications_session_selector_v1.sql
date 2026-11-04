@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_notifications_session_selector_v1(
     in_schema_name name,
     in_principal_id uuid,
@@ -10,9 +11,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT ''::bytea;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_notifications_session_selector_v1(name, uuid, uuid, timestamptz) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_license_restore_binding_v1(
     p_environment_id uuid
 )
@@ -17,7 +18,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         snapshot.license_id,
         operation.licensee_organization_id,
@@ -40,7 +41,8 @@ AS $$
       )
     ORDER BY operation.database_now DESC
     LIMIT 1;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_license_restore_binding_v1(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_license_restore_binding_v1(uuid) TO harpy_api, harpy_worker;

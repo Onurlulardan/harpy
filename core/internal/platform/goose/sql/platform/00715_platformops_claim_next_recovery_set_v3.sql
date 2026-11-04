@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_claim_next_recovery_set_v3(
     in_attempt_id text,
     in_lease_token text
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -47,7 +48,8 @@ AS $$
         ''::text,
         '{}'::jsonb,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_claim_next_recovery_set_v3(text, text) FROM PUBLIC;
 

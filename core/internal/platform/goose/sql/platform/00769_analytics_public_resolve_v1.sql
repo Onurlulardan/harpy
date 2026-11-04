@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: no public route is stored. public_id is 16 bytes so Scan can copy it.
+-- +goose StatementBegin
 CREATE FUNCTION platform.analytics_public_resolve_v1(
     p_public_id bytea
 )
@@ -19,7 +20,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         p_public_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -31,7 +32,8 @@ AS $$
         0::bigint,
         ''::bytea,
         NULL::timestamptz;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.analytics_public_resolve_v1(bytea) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_public_resolve_v1(bytea) TO harpy_api, harpy_worker;

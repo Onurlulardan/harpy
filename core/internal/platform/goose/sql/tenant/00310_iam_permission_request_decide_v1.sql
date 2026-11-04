@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_permission_request_decide_v1(
     in_schema_name name,
     in_operation_id uuid,
@@ -28,14 +29,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         0::bigint,
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_permission_request_decide_v1(name, uuid, bytea, uuid, bigint, text, uuid, bigint, bigint, uuid, text, bytea, timestamptz, text, boolean, boolean, boolean) FROM PUBLIC;
 

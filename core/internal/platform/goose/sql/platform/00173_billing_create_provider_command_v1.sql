@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: provider account, provider key, state, revision, and replay are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_create_provider_command_v1(
     p_authority_id uuid,
     p_tenant_id uuid,
@@ -34,7 +35,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         p_command_id,
         p_finalizer_job_id,
@@ -51,7 +52,8 @@ AS $$
         p_requested_at,
         0::bigint,
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_create_provider_command_v1(
     uuid, uuid, uuid, uuid, uuid, uuid,

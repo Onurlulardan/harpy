@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_totp_enrollment_start_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -35,7 +36,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -44,7 +45,8 @@ AS $$
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_totp_enrollment_start_v1(name, uuid, uuid, bytea, uuid, uuid, uuid, uuid, text, text, bytea, bytea, bytea, bytea, text, bytea, bytea, uuid, uuid, bigint, bigint) FROM PUBLIC;
 

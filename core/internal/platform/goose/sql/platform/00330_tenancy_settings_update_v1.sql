@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_settings_update_v1(
     in_tenant_id uuid,
     in_name text,
@@ -15,13 +16,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         false,
         ''::text
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_settings_update_v1(uuid, text, bigint, text, bytea) FROM PUBLIC;
 

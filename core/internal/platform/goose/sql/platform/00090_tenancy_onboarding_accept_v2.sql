@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_onboarding_accept_v2(
     in_operation_id uuid,
     in_environment_id uuid,
@@ -42,7 +43,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH clock AS (
         SELECT pg_catalog.greatest(
             pg_catalog.clock_timestamp(), in_created_at
@@ -88,7 +89,8 @@ AS $$
     )
     SELECT stored.operation_id, stored.state, stored.revision, stored.updated_at
     FROM stored;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_accept_v2(uuid, uuid, text, text, text, text, text, text, uuid, name, text, uuid, uuid, uuid, uuid, uuid, bigint, text, timestamptz, bigint, text, bigint, text, uuid, text, uuid, bigint, text, text, text, timestamptz) FROM PUBLIC;
 

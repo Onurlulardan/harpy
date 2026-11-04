@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_finalize_stale_external_unknown_v1(
     in_arg_1 uuid,
     in_arg_2 uuid,
@@ -11,9 +12,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_finalize_stale_external_unknown_v1(uuid, uuid, bigint, uuid, timestamptz) FROM PUBLIC;
 

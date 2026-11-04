@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_customer_provision_claim_v1(
     in_attempt_id uuid,
     in_lease_owner text,
@@ -49,7 +50,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -90,7 +91,8 @@ AS $$
         0::bigint,
         pg_catalog.clock_timestamp()
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_customer_provision_claim_v1(uuid, text, text, integer) FROM PUBLIC;
 

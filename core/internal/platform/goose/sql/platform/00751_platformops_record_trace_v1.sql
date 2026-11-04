@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_record_trace_v1(
     in_new_string uuid,
     in_environment_id uuid,
@@ -23,9 +24,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_record_trace_v1(uuid, uuid, text, text, text, text, text, text, text, text, integer, timestamptz, timestamptz, numeric, text, text, timestamptz) FROM PUBLIC;
 

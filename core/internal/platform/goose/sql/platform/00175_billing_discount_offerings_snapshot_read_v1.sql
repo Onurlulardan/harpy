@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: discount offering links are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_discount_offerings_snapshot_read_v1(
     p_authority_id uuid,
     p_version_id uuid
@@ -11,11 +12,12 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::uuid
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_discount_offerings_snapshot_read_v1(
     uuid, uuid

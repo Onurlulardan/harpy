@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_password_reset_start_v2(
     in_schema_name name,
     in_tenant_id uuid,
@@ -35,7 +36,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         in_subject_user_id,
@@ -44,7 +45,8 @@ AS $$
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_password_reset_start_v2(name, uuid, uuid, bytea, bytea, text, bytea, bytea, text, bytea, bytea, uuid, uuid, uuid, uuid, text, text, bytea, bytea, bytea, bytea, bytea) FROM PUBLIC;
 

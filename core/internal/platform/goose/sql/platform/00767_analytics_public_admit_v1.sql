@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: admission does not determine a lease id.
+-- +goose StatementBegin
 CREATE FUNCTION platform.analytics_public_admit_v1(
     p_tenant_id uuid,
     p_release_id uuid,
@@ -12,9 +13,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT '00000000-0000-0000-0000-000000000000'::uuid;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.analytics_public_admit_v1(uuid, uuid, bigint, inet, timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.analytics_public_admit_v1(uuid, uuid, bigint, inet, timestamptz) TO harpy_api, harpy_worker;

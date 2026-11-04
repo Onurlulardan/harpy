@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_password_credential_read_v1(
     in_schema_name name,
     in_user_id uuid,
@@ -23,7 +24,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::bytea,
@@ -36,7 +37,8 @@ AS $$
         0::bigint,
         pg_catalog.clock_timestamp()
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_password_credential_read_v1(name, uuid, uuid, uuid, bigint, bigint) FROM PUBLIC;
 

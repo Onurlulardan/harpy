@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_onboarding_reconcile_v1(
     in_operation_id uuid,
     in_receipt_id uuid,
@@ -16,14 +17,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_operation_id,
         ''::text,
         0::bigint,
         pg_catalog.clock_timestamp()
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_reconcile_v1(uuid, uuid, text, text, bigint) FROM PUBLIC;
 

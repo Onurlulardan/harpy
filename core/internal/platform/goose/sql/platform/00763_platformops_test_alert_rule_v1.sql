@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_test_alert_rule_v1(
     in_new_string uuid,
     in_id uuid,
@@ -23,7 +24,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -35,7 +36,8 @@ AS $$
         ''::text,
         NULL::timestamptz,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_test_alert_rule_v1(uuid, uuid, uuid, uuid, text, timestamptz) FROM PUBLIC;
 

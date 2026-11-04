@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_system_record_import_receipts_v1(
     in_schema_name name,
     in_transfer_id uuid,
@@ -23,7 +24,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         ''::text,
@@ -33,7 +34,8 @@ AS $$
         ''::bytea,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_system_record_import_receipts_v1(name, uuid, uuid, text, bigint, bigint, bigint, bigint) FROM PUBLIC;
 

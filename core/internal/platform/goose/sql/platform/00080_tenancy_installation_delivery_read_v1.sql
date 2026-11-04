@@ -37,6 +37,7 @@ REVOKE ALL ON TABLE platform.tenancy_installation_deliveries FROM PUBLIC;
 GRANT SELECT, INSERT, UPDATE ON TABLE platform.tenancy_onboarding_operations TO harpy_api, harpy_worker;
 GRANT SELECT, INSERT, UPDATE ON TABLE platform.tenancy_installation_deliveries TO harpy_api, harpy_worker;
 
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_installation_delivery_read_v1(
     in_operation_id uuid
 )
@@ -60,7 +61,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT delivery.operation_id, delivery.tenant_id, delivery.first_owner_user_id,
            delivery.current_attempt_id, delivery.current_credential_id,
            delivery.current_credential_version, delivery.delivery_state,
@@ -69,7 +70,8 @@ AS $$
            delivery.completed_at
     FROM platform.tenancy_installation_deliveries AS delivery
     WHERE delivery.operation_id = in_operation_id;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_read_v1(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_read_v1(uuid) TO harpy_api, harpy_worker;

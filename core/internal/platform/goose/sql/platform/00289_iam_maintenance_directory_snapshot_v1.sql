@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_maintenance_directory_snapshot_v1(
     in_tenant_id uuid
 )
@@ -16,7 +17,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         ''::text,
@@ -27,7 +28,8 @@ AS $$
         ''::text,
         ''::bytea
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_maintenance_directory_snapshot_v1(uuid) FROM PUBLIC;
 

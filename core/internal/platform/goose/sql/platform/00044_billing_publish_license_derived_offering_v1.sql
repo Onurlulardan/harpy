@@ -13,6 +13,7 @@ CREATE TABLE platform.billing_license_offerings (
 REVOKE ALL ON TABLE platform.billing_license_offerings FROM PUBLIC;
 GRANT SELECT, INSERT, UPDATE ON TABLE platform.billing_license_offerings TO harpy_api, harpy_worker;
 
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_publish_license_derived_offering_v1(
     p_operation_id uuid,
     p_environment_id uuid,
@@ -41,7 +42,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH existing AS (
         SELECT offering.offering_version_id, offering.revision, offering.offering_sha256
         FROM platform.billing_license_offerings AS offering
@@ -79,7 +80,8 @@ AS $$
     SELECT p_operation_id, existing.offering_version_id, existing.revision,
            existing.offering_sha256, true
     FROM existing;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_publish_license_derived_offering_v1(
     uuid, uuid, uuid, uuid, text, text, text, bigint, text, uuid, bigint, text,

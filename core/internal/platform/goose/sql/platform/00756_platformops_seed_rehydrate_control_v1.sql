@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_seed_rehydrate_control_v1(
     in_trust_sha256 text,
     in_trust_bytes bytea,
@@ -12,9 +13,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_seed_rehydrate_control_v1(text, bytea, text, bytea, text, bytea) FROM PUBLIC;
 

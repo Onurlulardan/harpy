@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_maintenance_profile_backfill_apply_v3(
     in_schema_name name,
     in_tenant_id uuid,
@@ -21,9 +22,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT 0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_maintenance_profile_backfill_apply_v3(name, uuid, uuid, uuid, bigint, text, bytea, uuid, bigint, uuid, uuid, bigint, bytea, bytea, bytea) FROM PUBLIC;
 

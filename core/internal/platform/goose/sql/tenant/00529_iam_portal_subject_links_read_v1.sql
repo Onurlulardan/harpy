@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_portal_subject_links_read_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -22,7 +23,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -30,7 +31,8 @@ AS $$
         ''::text,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_portal_subject_links_read_v1(name, uuid, uuid, bigint, bigint, bigint, uuid, uuid, uuid[]) FROM PUBLIC;
 

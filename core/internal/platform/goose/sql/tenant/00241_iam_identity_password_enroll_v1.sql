@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_identity_password_enroll_v1(
     in_schema_name name,
     in_operation_id uuid,
@@ -21,14 +22,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         0::bigint,
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_identity_password_enroll_v1(name, uuid, bytea, uuid, bytea, bytea, uuid, uuid, bigint, bigint) FROM PUBLIC;
 

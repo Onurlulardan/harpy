@@ -1,5 +1,6 @@
 -- +goose Up
 -- No throttle row exists, so the probe is not blocked.
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_auth_throttle_blocked_v2(
     p_scope_kind text,
     p_tenant_id uuid,
@@ -15,9 +16,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_auth_throttle_blocked_v2(text, uuid, text, text, text, bytea, bigint, bigint) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.iam_auth_throttle_blocked_v2(text, uuid, text, text, text, bytea, bigint, bigint) TO harpy_api, harpy_worker;

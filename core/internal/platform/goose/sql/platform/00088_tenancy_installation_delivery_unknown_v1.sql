@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_installation_delivery_unknown_v1(
     in_operation_id uuid,
     in_attempt_id uuid,
@@ -16,7 +17,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     UPDATE platform.tenancy_installation_deliveries AS delivery
     SET delivery_state = 'outcome_unknown',
         delivery_revision = delivery.delivery_revision + 1,
@@ -28,7 +29,8 @@ AS $$
       AND delivery.claim_adapter_id = in_adapter_id
       AND delivery.delivery_state = 'claimed'
     RETURNING delivery.delivery_state, delivery.delivery_revision, delivery.database_now;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_unknown_v1(uuid, uuid, bigint, text, text, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_unknown_v1(uuid, uuid, bigint, text, text, text) TO harpy_api, harpy_worker;

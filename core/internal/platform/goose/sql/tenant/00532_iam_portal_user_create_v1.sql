@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_portal_user_create_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -47,7 +48,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_id,
         0::bigint,
@@ -58,7 +59,8 @@ AS $$
         '00000000-0000-0000-0000-000000000000'::uuid,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_portal_user_create_v1(name, uuid, uuid, bytea, uuid, uuid, bytea, bytea, uuid, text, text, bytea, uuid, text, text, bytea, uuid, uuid, text, uuid, uuid, uuid, uuid, bytea, text, text[], uuid[], uuid, uuid, bigint, bigint) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_identity_user_relations_replace_v1(
     in_schema_name name,
     in_operation_id uuid,
@@ -31,14 +32,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         0::bigint,
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_identity_user_relations_replace_v1(name, uuid, text, bytea, uuid, bigint, boolean, uuid, bytea, bytea, boolean, uuid[], uuid[], boolean, uuid[], uuid[], uuid, uuid, bigint, bigint) FROM PUBLIC;
 

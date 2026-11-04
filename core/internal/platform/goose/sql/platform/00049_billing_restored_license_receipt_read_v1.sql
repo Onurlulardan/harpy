@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_restored_license_receipt_read_v1(
     p_operation_id uuid,
     p_environment_id uuid
@@ -23,7 +24,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         true, receipt.operation_id, receipt.restore_receipt_id, receipt.restore_receipt_sha256,
         receipt.license_binding_id, receipt.license_id, receipt.licensee_organization_id,
@@ -47,7 +48,8 @@ AS $$
         WHERE receipt.operation_id = p_operation_id
           AND receipt.environment_id = p_environment_id
     );
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_restored_license_receipt_read_v1(uuid, uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_restored_license_receipt_read_v1(uuid, uuid) TO harpy_api, harpy_worker;

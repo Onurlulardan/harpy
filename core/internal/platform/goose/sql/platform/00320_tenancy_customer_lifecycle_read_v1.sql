@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_customer_lifecycle_read_v1(
     in_control_id uuid,
     in_operation_id uuid
@@ -20,7 +21,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_operation_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -34,7 +35,8 @@ AS $$
         NULL::timestamptz,
         NULL::text
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_customer_lifecycle_read_v1(uuid, uuid) FROM PUBLIC;
 

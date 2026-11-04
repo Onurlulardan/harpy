@@ -46,6 +46,7 @@ GRANT SELECT, INSERT, UPDATE ON TABLE platform.billing_license_refresh_operation
 GRANT SELECT, INSERT, UPDATE ON TABLE platform.billing_license_snapshots TO harpy_api, harpy_worker;
 
 -- 32 bytes from two random UUIDs. Foundation rejects pgcrypto, so gen_random_bytes is unavailable.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_license_refresh_claim_v1(
     p_operation_id uuid,
     p_license_id uuid,
@@ -73,7 +74,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH clock AS (
         SELECT pg_catalog.clock_timestamp() AS database_now
     ), issued AS (
@@ -129,7 +130,8 @@ AS $$
         ORDER BY snapshot.sequence DESC
         LIMIT 1
     ) AS head ON true;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_license_refresh_claim_v1(
     uuid, uuid, uuid, uuid, text, text, bigint

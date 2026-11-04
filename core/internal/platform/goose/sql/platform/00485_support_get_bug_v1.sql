@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION platform.support_get_bug_v1(
     arg_1 uuid,
     arg_2 bigint,
@@ -15,10 +16,11 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::bytea;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.support_get_bug_v1(uuid, bigint, bigint, uuid, uuid, uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.support_get_bug_v1(uuid, bigint, bigint, uuid, uuid, uuid) TO harpy_api, harpy_worker;

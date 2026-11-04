@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_analytics_dashboard_export_expired_candidate_v1()
 RETURNS TABLE (
     tenant_id uuid,
@@ -18,7 +19,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         ''::text,
@@ -32,7 +33,8 @@ AS $$
         ''::bytea,
         false,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_analytics_dashboard_export_expired_candidate_v1() FROM PUBLIC;
 

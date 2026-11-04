@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: run time, dedupe key, priority, purge counts, and checkpoint are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_execute_retention_cycle_v1(
     p_authority_id uuid,
     p_tenant_id uuid,
@@ -27,7 +28,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         p_next_job_id,
         pg_catalog.clock_timestamp(),
@@ -41,7 +42,8 @@ AS $$
         0::bigint,
         0::bigint,
         0::bigint;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_execute_retention_cycle_v1(
     uuid, uuid, uuid, uuid, uuid, text,

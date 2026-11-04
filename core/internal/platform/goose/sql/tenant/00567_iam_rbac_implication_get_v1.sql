@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_rbac_implication_get_v1(
     in_schema_name name,
     in_id uuid,
@@ -19,7 +20,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_id,
         '00000000-0000-0000-0000-000000000000'::uuid,
@@ -29,7 +30,8 @@ AS $$
         0::bigint,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_rbac_implication_get_v1(name, uuid, uuid, uuid) FROM PUBLIC;
 

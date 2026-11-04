@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_initial_admin_setup_enqueue_v2(
     in_operation_id uuid,
     in_environment_id uuid,
@@ -13,9 +14,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_initial_admin_setup_enqueue_v2(uuid, uuid, uuid, uuid, text, name, text) FROM PUBLIC;
 

@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: previous version, revision, version, lifecycle, and replay are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_create_discount_version_v2(
     p_authority_id uuid,
     p_operation_id uuid,
@@ -42,7 +43,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         p_discount_id,
         p_version_id,
@@ -51,7 +52,8 @@ AS $$
         0::bigint,
         ''::text,
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_create_discount_version_v2(
     uuid, uuid, uuid, uuid, uuid, text,

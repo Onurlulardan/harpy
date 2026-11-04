@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_invitation_delivery_worker_release_v1(
     in_schema_name name,
     in_artifact_ref text,
@@ -12,11 +13,12 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_invitation_delivery_worker_release_v1(name, text, uuid, text) FROM PUBLIC;
 

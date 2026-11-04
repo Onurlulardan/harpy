@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_claim_recovery_kit_v1(
     in_operation_id text,
     in_actor_user_id text,
@@ -14,12 +15,13 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::bytea,
         ''::text,
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_claim_recovery_kit_v1(text, text, text, timestamptz) FROM PUBLIC;
 

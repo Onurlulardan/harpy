@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_identity_role_retire_v1(
     in_schema_name name,
     in_operation_id uuid,
@@ -20,14 +21,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_id,
         0::bigint,
         0::bigint,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_identity_role_retire_v1(name, uuid, bytea, uuid, bigint, uuid, uuid, bigint, bigint) FROM PUBLIC;
 

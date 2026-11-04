@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: decision, actor, provider, active job, state, revision, reference, and error are not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_finalize_provider_command_v1(
     p_tenant_id uuid,
     p_job_id uuid,
@@ -31,7 +32,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         p_command_id,
@@ -45,7 +46,8 @@ AS $$
         p_observed_at,
         NULL::text,
         NULL::text;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_finalize_provider_command_v1(
     uuid, uuid, uuid, bigint, integer, text,

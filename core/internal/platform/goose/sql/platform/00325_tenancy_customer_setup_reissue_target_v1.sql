@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.tenancy_customer_setup_reissue_target_v1(
     in_tenant_id uuid
 )
@@ -22,7 +23,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         '00000000-0000-0000-0000-000000000000'::uuid,
         in_tenant_id,
@@ -39,7 +40,8 @@ AS $$
         '00000000-0000-0000-0000-000000000000'::uuid,
         ''::text
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.tenancy_customer_setup_reissue_target_v1(uuid) FROM PUBLIC;
 

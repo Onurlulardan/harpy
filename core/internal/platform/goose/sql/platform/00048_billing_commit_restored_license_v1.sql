@@ -18,6 +18,7 @@ CREATE TABLE platform.billing_license_restore_receipts (
 REVOKE ALL ON TABLE platform.billing_license_restore_receipts FROM PUBLIC;
 GRANT SELECT, INSERT, UPDATE ON TABLE platform.billing_license_restore_receipts TO harpy_api, harpy_worker;
 
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_commit_restored_license_v1(
     p_operation_id uuid,
     p_restore_receipt_id uuid,
@@ -63,7 +64,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH existing AS (
         SELECT receipt.operation_id, receipt.restore_receipt_id, receipt.license_binding_id,
                receipt.previous_sequence, receipt.previous_sha256, receipt.accepted_sequence,
@@ -107,7 +108,8 @@ AS $$
            existing.previous_sequence, existing.previous_sha256, existing.accepted_sequence,
            existing.accepted_sha256, existing.authority_revision, true
     FROM existing;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_commit_restored_license_v1(
     uuid, uuid, text, uuid, uuid, uuid, uuid, bigint, text, bigint, text, bigint,

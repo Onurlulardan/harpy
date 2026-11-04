@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_recovery_anchor_list_v1(
     in_environment_id uuid,
     in_tenant_id uuid,
@@ -18,7 +19,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::bytea,
         0::bigint,
@@ -29,7 +30,8 @@ AS $$
         false,
         ''::text
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_recovery_anchor_list_v1(uuid, uuid, uuid) FROM PUBLIC;
 

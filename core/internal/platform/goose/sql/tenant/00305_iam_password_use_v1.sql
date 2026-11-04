@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_password_use_v1(
     in_schema_name name,
     in_user_id uuid,
@@ -25,7 +26,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         0::bigint,
         0::bigint,
@@ -33,7 +34,8 @@ AS $$
         0::bigint,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_password_use_v1(name, uuid, bigint, bigint, bigint, bigint, bigint, boolean, bytea, bytea, integer, smallint, smallint) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformops_get_recovery_set_v1(
     in_recovery_set_id text
 )
@@ -22,7 +23,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -38,7 +39,8 @@ AS $$
         NULL::timestamptz,
         pg_catalog.clock_timestamp(),
         pg_catalog.clock_timestamp();
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformops_get_recovery_set_v1(text) FROM PUBLIC;
 

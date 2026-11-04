@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_license_refresh_target_acquire_v1()
 RETURNS TABLE (
     target_found boolean,
@@ -16,7 +17,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH clock AS (
         SELECT pg_catalog.clock_timestamp() AS database_now
     ), candidate AS (
@@ -53,7 +54,8 @@ AS $$
         ''::text, 0, clock.database_now, clock.database_now
     FROM clock
     WHERE NOT EXISTS (SELECT 1 FROM candidate);
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_license_refresh_target_acquire_v1() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION platform.billing_license_refresh_target_acquire_v1() TO harpy_api, harpy_worker;

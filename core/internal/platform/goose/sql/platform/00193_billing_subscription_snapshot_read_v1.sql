@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: current subscription snapshot is not determined by the caller.
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_subscription_snapshot_read_v1(
     p_authority_id uuid,
     p_tenant_id uuid
@@ -38,7 +39,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         NULL::bigint,
         NULL::uuid,
@@ -69,7 +70,8 @@ AS $$
         NULL::boolean,
         NULL::jsonb
     WHERE false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_subscription_snapshot_read_v1(
     uuid, uuid

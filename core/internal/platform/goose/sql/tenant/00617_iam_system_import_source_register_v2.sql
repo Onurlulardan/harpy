@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION iam_system_import_source_register_v2(
     in_schema_name name,
     in_source_id uuid,
@@ -36,7 +37,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         in_source_id,
         ''::text,
@@ -46,7 +47,8 @@ AS $$
         in_uploaded_at,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_system_import_source_register_v2(name, uuid, uuid, uuid, text, bigint, bigint, bytea, text, text, text, bytea, bytea, bigint, bytea, bigint, text, bytea, bytea, text, timestamptz) FROM PUBLIC;
 

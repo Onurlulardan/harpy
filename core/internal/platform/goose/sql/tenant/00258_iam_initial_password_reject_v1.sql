@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_initial_password_reject_v1(
     in_schema_name name,
     in_tenant_id uuid,
@@ -16,13 +17,14 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         0::smallint,
         0::bigint
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_initial_password_reject_v1(name, uuid, bytea, bytea, bytea, bigint) FROM PUBLIC;
 

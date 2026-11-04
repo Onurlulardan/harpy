@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.iam_post_restore_reconcile_v1(
     in_restore_operation_id uuid,
     in_environment_id uuid,
@@ -23,12 +24,13 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         false
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.iam_post_restore_reconcile_v1(uuid, uuid, uuid, uuid, uuid, uuid, uuid, bytea, bytea, bytea, bigint, bytea, bytea, timestamptz) FROM PUBLIC;
 

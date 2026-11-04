@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platformauthority_get_operation_v1(
     in_operation_id text
 )
@@ -25,7 +26,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         ''::text,
@@ -44,7 +45,8 @@ AS $$
         ''::bytea,
         NULL::bigint,
         NULL::timestamptz;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platformauthority_get_operation_v1(text) FROM PUBLIC;
 

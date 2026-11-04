@@ -1,5 +1,6 @@
 -- +goose Up
 -- BELIRSIZ: caller does not define routine behavior.
+-- +goose StatementBegin
 CREATE FUNCTION documents_recovery_fail_hold_v2(
     arg_1 uuid,
     arg_2 text
@@ -9,9 +10,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION documents_recovery_fail_hold_v2(uuid, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION documents_recovery_fail_hold_v2(uuid, text) TO harpy_api, harpy_worker;

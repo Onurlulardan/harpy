@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_lifecycle_delivery_release_claim_v1(
     in_artifact_ref text,
     in_effect_id uuid,
@@ -9,9 +10,10 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT NULL::void;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_lifecycle_delivery_release_claim_v1(text, uuid, text) FROM PUBLIC;
 

@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION iam_refresh_rotate_v4(
     in_schema_name name,
     in_token_id uuid,
@@ -45,7 +46,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         ''::text,
         NULL::timestamptz,
@@ -65,7 +66,8 @@ AS $$
         NULL::timestamptz,
         NULL::timestamptz
     ;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION iam_refresh_rotate_v4(name, uuid, uuid, bigint, bigint, uuid, bigint, uuid, bigint, bigint, bigint, uuid, bigint, uuid, bigint, uuid, bytea, text, bytea, bigint, bytea) FROM PUBLIC;
 

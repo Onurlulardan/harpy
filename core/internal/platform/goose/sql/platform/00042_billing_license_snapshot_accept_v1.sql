@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.billing_license_snapshot_accept_v1(
     p_operation_id uuid,
     p_lease_token uuid,
@@ -29,7 +30,7 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     WITH head AS (
         SELECT snapshot.sequence, snapshot.payload_sha256
         FROM platform.billing_license_snapshots AS snapshot
@@ -60,7 +61,8 @@ AS $$
         RETURNING sequence
     )
     SELECT decision.outcome FROM decision;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.billing_license_snapshot_accept_v1(
     uuid, uuid, uuid, uuid, uuid, text, text, text, text, text, bigint,

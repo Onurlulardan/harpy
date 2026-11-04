@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE FUNCTION platform.platform_async_dispose_stale_job_v1(
     in_job_id uuid,
     in_decision text,
@@ -35,14 +36,15 @@ LANGUAGE sql
 VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
-AS $$
+AS $fn$
     SELECT
         pg_catalog.clock_timestamp(),
         '00000000-0000-0000-0000-000000000000'::uuid,
         NULL::uuid,
         NULL::uuid,
         false;
-$$;
+$fn$;
+-- +goose StatementEnd
 
 REVOKE ALL ON FUNCTION platform.platform_async_dispose_stale_job_v1(uuid, text, uuid, uuid, uuid, uuid, text, uuid, text, bigint, text, bigint, text, text, bytea, text, text, text, uuid, uuid, text, text, text) FROM PUBLIC;
 
