@@ -61,6 +61,10 @@ tasks:
     desc: Run the single database lifecycle entrypoint
     cmds:
       - "{{.COMPOSE}} run --rm core-initialize"
+  local-release-artifact:
+    desc: Write the development bootstrap authority into the release volume
+    cmds:
+      - "{{.COMPOSE}} run --rm --no-deps local-release-artifact"
   installation:artifacts:
     desc: Reconcile the immutable local manifest and signed development license
     cmds:
@@ -110,6 +114,7 @@ tasks:
       - task: prepare
       - task: infra
       - task: initialize
+      - task: local-release-artifact
       - task: installation:artifacts
       - task: license
       - task: installation:deliver

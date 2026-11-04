@@ -7,6 +7,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Onurlulardan/harpy/ops/local/artifactcontract"
 )
 
 func TestVerifySourceAcceptsExactHashedCatalog(t *testing.T) {
@@ -62,7 +64,7 @@ func TestVerifySourceRejectsDifferentArtifactContract(t *testing.T) {
 	}
 	updated := []byte(strings.Replace(
 		string(content),
-		fmt.Sprintf(`"artifact_contract_revision":%d`, supportedArtifactContractRevision),
+		fmt.Sprintf(`"artifact_contract_revision":%d`, artifactcontract.CurrentRevision),
 		`"artifact_contract_revision":4`, 1,
 	))
 	if err := os.WriteFile(path, updated, 0o600); err != nil {

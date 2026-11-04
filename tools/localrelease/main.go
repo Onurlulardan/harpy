@@ -15,7 +15,7 @@ func main() {
 
 func run(ctx context.Context, arguments []string) error {
 	if len(arguments) == 0 {
-		return fmt.Errorf("command is required: contract, release-applied, prepare, refresh-signed-release, or grant-runtime")
+		return fmt.Errorf("command is required: contract, release-applied, prepare, refresh-signed-release, grant-runtime, or artifact")
 	}
 	switch arguments[0] {
 	case "contract":
@@ -28,6 +28,8 @@ func run(ctx context.Context, arguments []string) error {
 		return runRefreshSignedRelease(arguments[1:])
 	case "grant-runtime":
 		return runGrantRuntime(ctx, arguments[1:])
+	case "artifact":
+		return runArtifact(arguments[1:])
 	default:
 		return fmt.Errorf("unknown command %q", arguments[0])
 	}
