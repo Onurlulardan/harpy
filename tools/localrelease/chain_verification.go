@@ -44,11 +44,13 @@ func verifyGeneratedEvidence(
 	if err != nil || !bound.IsVerified() {
 		return fmt.Errorf("bind PostgreSQL artifact set: %w", err)
 	}
-	binary, err := attestation.BuildBinarySchemaContract(
-		release, artifacts.Migration, artifacts.Extension,
-	)
-	if err != nil || !bytes.Equal(binary.CanonicalJSON(), catalog.binaryContract.document) {
-		return fmt.Errorf("binary schema contract binding differs: %w", err)
+	if len(catalog.binaryContract.document) != 0 {
+		binary, err := attestation.BuildBinarySchemaContract(
+			release, artifacts.Migration, artifacts.Extension,
+		)
+		if err != nil || !bytes.Equal(binary.CanonicalJSON(), catalog.binaryContract.document) {
+			return fmt.Errorf("binary schema contract binding differs: %w", err)
+		}
 	}
 	bootstrap, err := attestation.VerifyBootstrapReceipt(
 		evidence.bootstrapReceipt.document, root, now,
@@ -73,6 +75,9 @@ func verifyGeneratedEvidence(
 		bootstrap.Value(), extension.Value(), cleanup.Value(),
 	); err != nil {
 		return err
+	}
+	if len(evidence.cutoverOperation.document.document) == 0 {
+		return nil
 	}
 	operation, err := attestation.VerifyAuthorityAdoptionOperation(
 		evidence.cutoverOperation.document.document,

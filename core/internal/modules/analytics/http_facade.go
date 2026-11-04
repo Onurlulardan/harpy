@@ -5,7 +5,6 @@ import (
 	"time"
 
 	analyticshttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http"
-	compatibilityhttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/compatibility"
 	dashboardhttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard"
 	dashboardexporthttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboardexport"
 	publicationhttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/publication"
@@ -18,7 +17,6 @@ import (
 type HTTPAccess = analyticshttp.Access
 type HTTPAccessRequest = analyticshttp.AccessRequest
 type HTTPAccessVerifier = analyticshttp.AccessVerifier
-type HTTPLegacyApplication = analyticshttp.LegacyApplication
 type HTTPPermission = analyticshttp.Permission
 type HTTPRoute = analyticshttp.Route
 type HTTPErrorSink = analyticshttp.ErrorSink
@@ -27,14 +25,13 @@ type HTTPTrustedClientIPResolver = analyticshttp.TrustedClientIPResolver
 
 type HTTPHandler struct{ routes []HTTPRoute }
 
-const analyticsHTTPRouteCount = 38
+const analyticsHTTPRouteCount = 34
 
 type HTTPHandlerDependencies struct {
 	Access      HTTPAccessVerifier
 	Application analyticshttp.Application
 	Exports     dashboardexporthttp.Application
 	Public      analyticshttp.PublicApplication
-	Legacy      HTTPLegacyApplication
 	Report      HTTPErrorSink
 	Correlation HTTPCorrelationResolver
 	ClientIP    HTTPTrustedClientIPResolver
@@ -51,7 +48,7 @@ func NewHTTPAccess(
 
 func NewHTTPHandler(dependencies HTTPHandlerDependencies) (*HTTPHandler, error) {
 	if httptransport.PortMissing(dependencies.Application) ||
-		httptransport.PortMissing(dependencies.Public) || httptransport.PortMissing(dependencies.Legacy) {
+		httptransport.PortMissing(dependencies.Public) {
 		return nil, fmt.Errorf("analytics HTTP dependencies are required")
 	}
 	runtime, err := httptransport.NewRuntime(dependencies.Access, dependencies.Report,
@@ -79,16 +76,11 @@ func NewHTTPHandler(dependencies HTTPHandlerDependencies) (*HTTPHandler, error) 
 	if err != nil {
 		return nil, err
 	}
-	compatibilityHandler, err := compatibilityhttp.NewHandler(runtime, dependencies.Legacy, dependencies.Public)
-	if err != nil {
-		return nil, err
-	}
 	routes := append([]HTTPRoute{}, queryHandler.Routes()...)
 	routes = append(routes, queryExecutionHandler.Routes()...)
 	routes = append(routes, dashboardHandler.Routes()...)
 	routes = append(routes, exportHandler.Routes()...)
 	routes = append(routes, publicationHandler.Routes()...)
-	routes = append(routes, compatibilityHandler.Routes()...)
 	if err := validateAnalyticsRoutes(routes); err != nil {
 		return nil, fmt.Errorf("analytics HTTP route manifest is invalid: %w", err)
 	}

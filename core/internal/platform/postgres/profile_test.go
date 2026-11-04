@@ -16,9 +16,6 @@ func TestProfilesPinRolesAndApplicationNames(t *testing.T) {
 		{ProfileOperatorLicenseReconcile, "harpy_v2_runtime", "harpy_runtime", true},
 		{ProfilePostRestoreObserver, "harpy_reactivation_observer",
 			"harpy_reactivation_observer", false},
-		{ProfileMigratorDeploy, "harpy_migrator", "harpy_owner", false},
-		{ProfileSchemaExecutor, "harpy_migrator", "harpy_owner", false},
-		{ProfileTenantMigrationExecutor, "harpy_migrator", "harpy_owner", false},
 		{ProfileDatabaseBackupExecutor, "harpy_backup", "harpy_backup_reader", false},
 		{ProfileDatabaseRestore, "harpy_restore", "harpy_restore", false},
 	}

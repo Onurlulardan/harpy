@@ -5,13 +5,6 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 | path | decision | reason |
 | --- | --- | --- |
 | `compat/iamactorv1/sql/consume.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/adoption/sql/tenant/cutover_apply.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/compatibility/sql/platform/acknowledge_consumers.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/compatibility/sql/platform/record_hit.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/compatibility/sql/platform/resolve.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/compatibility/sql/platform/retire.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/compatibility/sql/tenant/accept.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
-| `core/internal/modules/analytics/adapters/postgres/compatibility/sql/tenant/record_item.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/analytics/adapters/postgres/dashboard/sql/tenant/create.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/analytics/adapters/postgres/dashboard/sql/tenant/delete.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/modules/analytics/adapters/postgres/dashboard/sql/tenant/get.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
@@ -606,4 +599,4 @@ These files call a `*_v1` or `*_v2` routine. Task 03 §14.1 forbids copying the 
 | `core/internal/platform/postgres/adapters/postgres/sql/resolve_tenant.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 | `core/internal/platform/postgres/adapters/postgres/sql/resolve_tenant_slug.sql` | UNRESOLVED | current SQL names a historical routine whose body is not a Goose source |
 
-Count: 601
+Count: 594

@@ -11,7 +11,10 @@ import (
 )
 
 func runContract(arguments []string) error {
-	return exportContract(arguments, loadMigrationArtifact, freshBinarySchemaContract)
+	if _, err := parseContractOptions(arguments); err != nil {
+		return err
+	}
+	return fmt.Errorf("localrelease contract command is removed")
 }
 
 func exportContract(

@@ -54,7 +54,6 @@
     "contracts/authority/tenancy_onboarding.json",
     "contracts/authority/tenancy_primarytarget.json",
     "contracts/authority/tenancy_recoverytarget.json",
-    "contracts/authority/tenancy_tenantmigration.json",
     "contracts/authority/work_board.json",
     "contracts/authority/work_collaboration.json",
     "contracts/authority/work_task.json",

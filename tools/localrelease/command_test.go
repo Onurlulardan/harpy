@@ -1,11 +1,8 @@
 package main
 
 import (
-	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/internal/attestation"
 )
 
 func TestPrepareRequiresEveryAbsolutePath(t *testing.T) {
@@ -33,46 +30,15 @@ func TestPrepareRequiresEveryAbsolutePath(t *testing.T) {
 	}
 }
 
-func TestContractExportsCanonicalBuildInputsIdempotently(t *testing.T) {
+func TestContractCommandIsRemoved(t *testing.T) {
 	directory := t.TempDir()
 	contractPath := filepath.Join(directory, "binary-schema-contract.json")
 	migrationPath := filepath.Join(directory, "migration-manifest.json")
 	arguments := []string{
 		"-output", contractPath, "-migration-output", migrationPath,
 	}
-	if err := runContract(arguments); err != nil {
-		t.Fatal(err)
-	}
-	if err := runContract(arguments); err != nil {
-		t.Fatal(err)
-	}
-	contractDocument, err := os.ReadFile(contractPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	contract, err := attestation.VerifyBinarySchemaContract(contractDocument)
-	if err != nil {
-		t.Fatal(err)
-	}
-	migrationDocument, err := os.ReadFile(migrationPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	migration, err := attestation.VerifyMigrationManifestArtifact(migrationDocument)
-	if err != nil {
-		t.Fatal(err)
-	}
-	exported := contract.Value()
-	if exported.MigrationManifestSHA256 != migration.DigestSHA256() {
-		t.Fatal("exported contract and migration manifest differ")
-	}
-	embedded, err := readEmbeddedBuildContract()
-	if err != nil {
-		t.Fatal(err)
-	}
-	exported.MigrationManifestSHA256 = embedded.MigrationManifestSHA256
-	if exported != embedded {
-		t.Fatal("contract export changed a field other than migration_manifest_sha256")
+	if err := runContract(arguments); err == nil {
+		t.Fatal("contract command still exports a migration manifest")
 	}
 }
 

@@ -9,15 +9,15 @@ import (
 )
 
 type prepareOptions struct {
-	adminDSNFile       string
-	runtimePassword    string
-	migratorPassword   string
-	backupPassword     string
-	restorePassword    string
-	observerPassword   string
-	migrationManifest  string
-	outputDirectory    string
-	replaceOwned       bool
+	adminDSNFile      string
+	runtimePassword   string
+	migratorPassword  string
+	backupPassword    string
+	restorePassword   string
+	observerPassword  string
+	migrationManifest string
+	outputDirectory   string
+	replaceOwned      bool
 }
 
 type contractOptions struct {

@@ -45,15 +45,7 @@ func loadExistingEvidence(
 	if err != nil {
 		return existingEvidenceIdentity{}, err
 	}
-	operation, err := loadPair("cutover-authority-operation.json", "cutover-authority-operation.sig")
-	if err != nil {
-		return existingEvidenceIdentity{}, err
-	}
 	release, err := loadPair("release.json", "release.sig")
-	if err != nil {
-		return existingEvidenceIdentity{}, err
-	}
-	cutoverReceipt, err := loadPair("cutover-authority-receipt.json", "cutover-authority-receipt.sig")
 	if err != nil {
 		return existingEvidenceIdentity{}, err
 	}
@@ -70,8 +62,7 @@ func loadExistingEvidence(
 		return existingEvidenceIdentity{}, err
 	}
 	evidence := generatedEvidence{
-		authority: authority, cutoverOperation: operation, release: release,
-		cutoverReceipt: cutoverReceipt, bootstrapReceipt: bootstrap,
+		authority: authority, release: release, bootstrapReceipt: bootstrap,
 		extensionReceipt: extension, cleanupReceipt: cleanup,
 	}
 	if err := verifyGeneratedEvidence(

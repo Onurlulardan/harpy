@@ -8,7 +8,6 @@ import (
 
 	effectsv1 "github.com/Onurlulardan/harpy/contracts/effects/v1"
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents/api/jobcontract"
-	adoptionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/adoption"
 	archiveapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archive"
 	deletionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/deletion"
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents/application/foundation"
@@ -28,14 +27,6 @@ func (stub archiveEffectStub) Execute(context.Context, foundation.ID, foundation
 	foundation.ID,
 ) (archiveapp.Snapshot, error) {
 	return stub.snapshot, nil
-}
-
-type adoptionCopyEffectStub struct{ checkpoint adoptionapp.Checkpoint }
-
-func (stub adoptionCopyEffectStub) Execute(context.Context, adoptionapp.Authority,
-	foundation.ID,
-) (adoptionapp.Checkpoint, error) {
-	return stub.checkpoint, nil
 }
 
 type deletionEffectStub struct{ result deletionapp.Result }
@@ -109,25 +100,6 @@ func TestUploadReconcileProviderReturnsDefinitiveReceipt(t *testing.T) {
 	}
 }
 
-func TestAdoptionCopyProviderReturnsVerifiedReceipt(t *testing.T) {
-	digest := sha256.Sum256([]byte("adoption ciphertext"))
-	provider, err := newAdoptionCopyProvider(adoptionCopyEffectStub{
-		checkpoint: adoptionapp.Checkpoint{RunID: jobTestResource,
-			SourceVersionID: jobTestID, State: adoptionapp.CheckpointVerified,
-			TargetObject: adoptionapp.ObjectReceipt{Version: "adoption-object-v1",
-				CiphertextSHA256: digest}},
-	}, func() time.Time { return jobTestNow })
-	if err != nil {
-		t.Fatal(err)
-	}
-	result := provider.Execute(context.Background(), documentsEffectRequest(t, "adoption"))
-	receipt, ok := result.Receipt()
-	if !ok || receipt.Code != "DOCUMENT_ADOPTION_COPY_VERIFIED" ||
-		receipt.Status != effectsv1.ReceiptSucceeded {
-		t.Fatalf("adoption copy receipt=%+v", receipt)
-	}
-}
-
 func documentsEffectRequest(t *testing.T, kind string) effectsv1.Request {
 	t.Helper()
 	provider, operation, effectKind := "documents.archive", "build", "documents.archive.build"
@@ -147,16 +119,6 @@ func documentsEffectRequest(t *testing.T, kind string) effectsv1.Request {
 		key = uploadReconcileKey(jobTestResource.String(), 1)
 		reference, digest, err = jobcontract.UploadReconcile(jobcontract.ID(jobTestTenant),
 			jobcontract.ID(jobTestResource), 1)
-	}
-	if kind == "adoption" {
-		provider, operation, effectKind = "documents.adoption", "copy",
-			"documents.adoption.copy"
-		manifest := sha256.Sum256([]byte("documents adoption manifest"))
-		cutoverGeneration = 17
-		key = adoptionCopyKey(jobTestResource.String(), jobTestID.String())
-		reference, digest, err = jobcontract.AdoptionCopy(jobcontract.ID(jobTestTenant),
-			jobcontract.ID(jobTestResource), jobcontract.ID(jobTestID),
-			uint64(cutoverGeneration), manifest)
 	}
 	if err != nil {
 		t.Fatal(err)

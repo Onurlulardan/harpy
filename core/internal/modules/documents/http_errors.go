@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	documentshttp "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/http"
-	adoptionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/adoption"
 	archiveapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archive"
 	archivedownloadapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archivedownload"
 	copyapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/copy"
@@ -22,7 +21,7 @@ func mapHTTPApplicationError(err error) error {
 	case errors.Is(err, folderapp.ErrInvalid), errors.Is(err, itemapp.ErrInvalid),
 		errors.Is(err, uploadapp.ErrInvalid), errors.Is(err, downloadapp.ErrInvalid),
 		errors.Is(err, copyapp.ErrInvalid), errors.Is(err, archiveapp.ErrInvalid),
-		errors.Is(err, archivedownloadapp.ErrInvalid), errors.Is(err, adoptionapp.ErrInvalid):
+		errors.Is(err, archivedownloadapp.ErrInvalid):
 		return documentshttp.ErrInvalid
 	case errors.Is(err, folderapp.ErrForbidden), errors.Is(err, itemapp.ErrForbidden),
 		errors.Is(err, uploadapp.ErrForbidden), errors.Is(err, downloadapp.ErrForbidden),
@@ -38,8 +37,7 @@ func mapHTTPApplicationError(err error) error {
 		errors.Is(err, itemapp.ErrLegalHold), errors.Is(err, uploadapp.ErrConflict),
 		errors.Is(err, uploadapp.ErrInProgress), errors.Is(err, uploadapp.ErrQuota),
 		errors.Is(err, copyapp.ErrConflict), errors.Is(err, archiveapp.ErrConflict),
-		errors.Is(err, archiveapp.ErrLimit), errors.Is(err, archiveapp.ErrCancelled),
-		errors.Is(err, adoptionapp.ErrConflict), errors.Is(err, adoptionapp.ErrBlocked):
+		errors.Is(err, archiveapp.ErrLimit), errors.Is(err, archiveapp.ErrCancelled):
 		return documentshttp.ErrConflict
 	case errors.Is(err, uploadapp.ErrContentRejected):
 		return documentshttp.ErrContentRejected

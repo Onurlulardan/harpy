@@ -3,7 +3,6 @@ package analytics
 import (
 	"testing"
 
-	compatibilityhttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/compatibility"
 	dashboardhttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboard"
 	dashboardexporthttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/dashboardexport"
 	publicationhttp "github.com/Onurlulardan/harpy/core/internal/modules/analytics/adapters/http/publication"
@@ -17,7 +16,6 @@ func TestHTTPRouteCountMatchesCanonicalAdapterInventory(t *testing.T) {
 	routes = append(routes, (&dashboardhttp.Handler{}).Routes()...)
 	routes = append(routes, (&dashboardexporthttp.Handler{}).Routes()...)
 	routes = append(routes, (&publicationhttp.Handler{}).Routes()...)
-	routes = append(routes, (&compatibilityhttp.Handler{}).Routes()...)
 	if err := validateAnalyticsRoutes(routes); err != nil {
 		t.Fatalf("Analytics HTTP route manifest is invalid: %v", err)
 	}

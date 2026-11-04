@@ -11,9 +11,6 @@ const (
 	ProfileOperatorIdentityReconcile Profile = "operator_identity_reconcile"
 	ProfileOperatorLicenseReconcile  Profile = "operator_license_reconcile"
 	ProfilePostRestoreObserver       Profile = "operator_post_restore_reactivation_observer"
-	ProfileMigratorDeploy            Profile = "migrator_deploy"
-	ProfileSchemaExecutor            Profile = "schema_executor"
-	ProfileTenantMigrationExecutor   Profile = "tenant_migration_executor"
 	ProfileDatabaseBackupExecutor    Profile = "database_backup_executor"
 	ProfileDatabaseRestore           Profile = "database_restore"
 )
@@ -46,12 +43,6 @@ func (profile Profile) contract() (profileContract, error) {
 		return runtimeProfile("core-operator-license-reconcile"), nil
 	case ProfilePostRestoreObserver:
 		return postRestoreObserverProfile(), nil
-	case ProfileMigratorDeploy:
-		return migratorProfile("core-migrator-deploy"), nil
-	case ProfileSchemaExecutor:
-		return migratorProfile("core-schema-executor"), nil
-	case ProfileTenantMigrationExecutor:
-		return migratorProfile("core-tenant-migration-executor"), nil
 	case ProfileDatabaseBackupExecutor:
 		return backupProfile(), nil
 	case ProfileDatabaseRestore:
@@ -66,14 +57,6 @@ func runtimeProfile(application string) profileContract {
 		sessionUser: "harpy_v2_runtime", currentUser: "harpy_runtime",
 		applicationName: "harpy-v2:" + application, runtime: true,
 		foundation: true, profileTx: true, memberships: 1, memberSet: true,
-	}
-}
-
-func migratorProfile(application string) profileContract {
-	return profileContract{
-		sessionUser: "harpy_migrator", currentUser: "harpy_owner",
-		applicationName: "harpy-v2:" + application,
-		memberships:     1, memberSet: true, currentTemp: true, currentCreate: true,
 	}
 }
 

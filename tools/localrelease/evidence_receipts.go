@@ -30,15 +30,9 @@ func buildAllReceipts(
 	if err != nil {
 		return generatedEvidence{}, err
 	}
-	cutoverReceipt, err := buildCutoverReceipt(
-		now, ids, operation, cutoverOperation, authority, release, signer,
-	)
-	if err != nil {
-		return generatedEvidence{}, err
-	}
 	return generatedEvidence{
 		authority: authority, cutoverOperation: cutoverOperation, release: release,
-		cutoverReceipt: cutoverReceipt, bootstrapReceipt: bootstrap,
+		bootstrapReceipt: bootstrap,
 		extensionReceipt: extension, cleanupReceipt: cleanup,
 	}, nil
 }

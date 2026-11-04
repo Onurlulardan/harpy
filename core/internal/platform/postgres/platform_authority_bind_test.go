@@ -14,7 +14,7 @@ func TestPlatformAuthorityStoreAllowsAuthorizedRuntimeProfiles(t *testing.T) {
 }
 
 func TestPlatformAuthorityStoreRejectsOtherProfiles(t *testing.T) {
-	pool := &Pool{profile: ProfileMigratorDeploy,
+	pool := &Pool{profile: ProfileDatabaseBackupExecutor,
 		contract: profileContract{runtime: true}}
 	_, err := BindPlatformAuthorityStore(pool,
 		func(PlatformAuthorityTransactions) (bool, error) { return true, nil })

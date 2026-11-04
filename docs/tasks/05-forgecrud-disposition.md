@@ -9,7 +9,7 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 | REMOVE_FORGECRUD_PRODUCT | 8 |
 | KEEP_GENERIC_FOUNDATION | 11 |
 | REPLACE_WITH_GENERIC_PRIMITIVE | 0 |
-| UNRESOLVED | 601 |
+| UNRESOLVED | 594 |
 
 ## Rows
 
@@ -33,4 +33,4 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 | Audit entries | append-only entry | `docs/architecture/06` §8 | audit HTTP | KEEP_GENERIC_FOUNDATION | audit | keep module | audit unit tests | Generic audit |
 | Platformops recovery | backup, restore, signing | Task 04 §16 | `core/cmd/recovery` | KEEP_GENERIC_FOUNDATION | platformops | `core-recovery` | `composition/recovery` tests | Recovery is not migration |
 | HTTP, config, telemetry, health | runtime primitives | Task 05 §4 | API and worker | KEEP_GENERIC_FOUNDATION | platform | keep | composition tests | Generic foundation |
-| Historical `*_v1` routines called by KEEP modules | stored procedure bodies | Task 03 §14.1 forbids copying the signature | `docs/tasks/05-v1-routine-disposition.md` lists 601 SQL files | UNRESOLVED | each KEEP module | do not create the function; table DML only where the Go result rule is already typed | each path in that file | The Go call names the routine, and the result rule is not determined without the deleted dump body |
+| Historical `*_v1` routines called by KEEP modules | stored procedure bodies | Task 03 §14.1 forbids copying the signature | `docs/tasks/05-v1-routine-disposition.md` lists 594 SQL files | UNRESOLVED | each KEEP module | do not create the function; table DML only where the Go result rule is already typed | each path in that file | The Go call names the routine, and the result rule is not determined without the deleted dump body |

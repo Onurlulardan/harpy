@@ -65,10 +65,6 @@ func TestIAMProfilesEnforceProcessSecretBoundary(t *testing.T) {
 	if _, err := loadWorkerAt(worker, now); err == nil || !strings.Contains(err.Error(), "unknown key") {
 		t.Fatalf("worker accepted access signing material: %v", err)
 	}
-	if _, err := loadSchemaExecutor(append(validEnvironment(),
-		validIAMDirectoryEnvironmentEntry(now))); err == nil || !strings.Contains(err.Error(), "unknown key") {
-		t.Fatalf("schema executor accepted IAM material: %v", err)
-	}
 	rawKey := "HARPY_IAM_TOTP_KEY=" + iamFixtureMaterial(31)
 	if _, err := loadAPIAt(append(validAPIEnvironmentAt(now), rawKey), now); err == nil {
 		t.Fatal("API accepted raw TOTP key environment surface")

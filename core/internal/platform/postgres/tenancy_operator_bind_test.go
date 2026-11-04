@@ -16,7 +16,7 @@ func TestBindTenancyOperatorAllowsOnlyInitializeProfile(t *testing.T) {
 		t.Fatalf("operator binding = %#v, %v", bound, err)
 	}
 	for _, profile := range []Profile{ProfileAPI, ProfileWorker,
-		ProfileMigratorDeploy, ProfileTenantMigrationExecutor} {
+		ProfileDatabaseBackupExecutor, ProfileDatabaseRestore} {
 		called := false
 		_, err := BindTenancyOperator(
 			tenancyPolicyPool(profile),

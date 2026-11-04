@@ -90,14 +90,3 @@ func entriesAllowedForMode(entries []string, profileName, mode string) []string 
 	}
 	return allowed
 }
-
-func TestTenantMigrationExecutorOwnsModeAndReleaseInputs(t *testing.T) {
-	loaded, err := loadTenantMigrationExecutor(validTenantMigrationEnvironment())
-	if err != nil {
-		t.Fatal(err)
-	}
-	if loaded.DeploymentMode() != DeploymentOnPrem ||
-		loaded.Release().ManifestPath().Value() == "" {
-		t.Fatal("tenant migration profile contract drifted")
-	}
-}

@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	cutoverv1 "github.com/Onurlulardan/harpy/contracts/cutover/v1"
 	runtimev1 "github.com/Onurlulardan/harpy/contracts/runtime/v1"
 )
 
@@ -29,25 +30,16 @@ func TestGeneratedEvidencePassesProductionVerifiers(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	operationArtifacts, operation, err := buildCutoverOperation(
-		now, ids, live, catalog, authority, signer,
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-	release, releaseManifest, err := buildReleaseManifest(
+	var operationArtifacts signedArtifactPair
+	release, _, err := buildReleaseManifest(
 		now, ids, catalog, authority, operationArtifacts, signer,
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if releaseManifest.RuntimeGeneration != catalog.schemaContract.RuntimeGeneration ||
-		releaseManifest.MinimumDatabaseGeneration !=
-			catalog.schemaContract.MinimumDatabaseGeneration {
-		t.Fatal("release manifest generations differ from the binary contract")
-	}
 	evidence, err := buildAllReceipts(
-		now, ids, live, catalog, authority, operationArtifacts, operation, release, signer,
+		now, ids, live, catalog, authority, operationArtifacts,
+		cutoverv1.AuthorityAdoptionOperation{}, release, signer,
 	)
 	if err != nil {
 		t.Fatal(err)

@@ -51,12 +51,6 @@ func buildAnalyticsHTTP(
 	if err != nil {
 		return analyticsHTTPRuntime{}, err
 	}
-	legacyStore, err := analyticsmodule.NewLegacyPublicStore(
-		analyticsLegacyPublicDatabase{pool: pool},
-	)
-	if err != nil {
-		return analyticsHTTPRuntime{}, fmt.Errorf("build Analytics legacy public store: %w", err)
-	}
 	entitlements, err := billingmodule.NewMeteredResourceEntitlements(
 		catalogs, uuid.NewV7, time.Now,
 	)
@@ -71,10 +65,9 @@ func buildAnalyticsHTTP(
 	if err != nil {
 		return analyticsHTTPRuntime{}, err
 	}
-	application, public, legacy, err := analyticsmodule.NewPlatformHTTPRuntime(
+	application, public, err := analyticsmodule.NewPlatformHTTPRuntime(
 		analyticsmodule.PlatformHTTPRuntimeDependencies{
 			Generations: pool, Scopes: coordinator, PublicDB: pool,
-			Legacy:       legacyStore,
 			Principals:   iam.analyticsPrincipals,
 			Entitlements: entitlements, Catalogs: catalogs,
 			ExportScheduler: exportScheduler, ExportContent: exportContent,
@@ -84,7 +77,7 @@ func buildAnalyticsHTTP(
 	}
 	handler, err := analyticsmodule.NewHTTPHandler(analyticsmodule.HTTPHandlerDependencies{
 		Access: access, Application: application, Exports: application,
-		Public: public, Legacy: legacy,
+		Public:      public,
 		Report:      analyticsmodule.HTTPErrorSink(report),
 		Correlation: analyticsCorrelationResolver(),
 		ClientIP:    newAnalyticsClientIPResolver(settings.AnalyticsTrustedProxies()),

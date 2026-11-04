@@ -3,13 +3,11 @@ package documents
 import (
 	"fmt"
 
-	adoptionpostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/adoption"
 	archivepostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/archive"
 	downloadpostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/download"
 	folderpostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/folder"
 	itempostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/item"
 	uploadpostgres "github.com/Onurlulardan/harpy/core/internal/modules/documents/adapters/postgres/upload"
-	adoptionapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/adoption"
 	archiveapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archive"
 	archivedownloadapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/archivedownload"
 	copyapp "github.com/Onurlulardan/harpy/core/internal/modules/documents/application/copy"
@@ -97,16 +95,10 @@ func NewPlatformApplicationRuntime(dependencies PlatformHTTPRuntimeDependencies)
 	if err != nil {
 		return nil, err
 	}
-	adoption, err := adoptionapp.NewHTTPApplication(adoptionpostgres.NewBinder(),
-		dependencies.Clock)
-	if err != nil {
-		return nil, err
-	}
 	return NewApplicationRuntime(HTTPRuntimeDependencies{Generations: dependencies.Generations,
 		Scopes: dependencies.Scopes, Folders: folders, Items: items, Uploads: uploads,
 		Downloads: downloads, Archives: archives, ArchiveDownloads: archiveDownloads,
-		Copies: copies, Adoption: adoption, BuildID: dependencies.BuildID,
-		IDs: dependencies.IDs})
+		Copies: copies, BuildID: dependencies.BuildID, IDs: dependencies.IDs})
 }
 
 func NewPlatformHTTPRuntime(dependencies PlatformHTTPRuntimeDependencies) (

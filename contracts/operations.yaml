@@ -121,7 +121,6 @@
 	"contracts/operations/tenancy_adapters_postgres_onboarding.json",
 	"contracts/operations/tenancy_adapters_postgres_primarytarget.json",
 	"contracts/operations/tenancy_adapters_postgres_recoverytarget.json",
-	"contracts/operations/tenancy_adapters_postgres_tenantmigration.json",
 	"contracts/operations/tenancy_application_customerprovisioning.json",
 	"contracts/operations/tenancy_application_customerworker.json",
 	"contracts/operations/tenancy_application_deploymentpolicy.json",
@@ -129,7 +128,6 @@
 	"contracts/operations/tenancy_application_onboarding.json",
 	"contracts/operations/tenancy_application_primarytarget.json",
 	"contracts/operations/tenancy_application_recoverytarget.json",
-	"contracts/operations/tenancy_application_tenantmigration.json",
     "contracts/operations/work_adapters_postgres.json",
     "contracts/operations/work_application.json"
   ]

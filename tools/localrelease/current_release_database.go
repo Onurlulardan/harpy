@@ -50,13 +50,6 @@ func runReleaseApplied(ctx context.Context, arguments []string) error {
 	if err != nil {
 		return err
 	}
-	contract, err := readEmbeddedBuildContract()
-	if err != nil {
-		return err
-	}
-	if err := validateCurrentReleaseContract(contract); err != nil {
-		return err
-	}
 	dsn, err := readSecret(path, "admin DSN")
 	if err != nil {
 		return err

@@ -7,18 +7,13 @@ type profile string
 const (
 	profileAPI                       profile = "api"
 	profileClusterBootstrap          profile = "cluster_bootstrap"
-	profileCutoverAdoption           profile = "cutover_adoption"
-	profileCutoverFinalization       profile = "cutover_finalization"
 	profileDatabaseBackupExecutor    profile = "database_backup_executor"
 	profileDatabaseRestore           profile = "database_restore"
 	profileExtensionAdmin            profile = "extension_admin"
-	profileMigratorDeploy            profile = "migrator_deploy"
 	profileOperatorIdentityReconcile profile = "operator_identity_reconcile"
 	profileOperatorInitialize        profile = "operator_initialize"
 	profileOperatorLicenseReconcile  profile = "operator_license_reconcile"
 	profilePostRestoreObserver       profile = "operator_post_restore_reactivation_observer"
-	profileSchemaExecutor            profile = "schema_executor"
-	profileTenantMigrationExecutor   profile = "tenant_migration_executor"
 	profileWorker                    profile = "worker"
 )
 
@@ -75,19 +70,10 @@ func allowedKeys(current profile) map[string]bool {
 		groups = [][]string{runtimeKeys(), operatorLicenseReconcileKeys()}
 	case profilePostRestoreObserver:
 		groups = [][]string{postRestoreObserverKeys()}
-	case profileTenantMigrationExecutor:
-		groups = [][]string{
-			runtimeKeys(), longRunningKeys(), releaseInputKeys(),
-			{deploymentModeEnvironmentKey},
-		}
 	case profileDatabaseBackupExecutor:
 		groups = [][]string{databaseBackupExecutorKeys()}
 	case profileDatabaseRestore:
 		groups = [][]string{databaseRestoreKeys()}
-	case profileSchemaExecutor:
-		groups = [][]string{runtimeKeys(), longRunningKeys()}
-	case profileMigratorDeploy:
-		groups = [][]string{runtimeKeys(), releaseVerificationKeys()}
 	case profileClusterBootstrap:
 		groups = [][]string{clusterBootstrapKeys()}
 	case profileExtensionAdmin:
@@ -95,10 +81,6 @@ func allowedKeys(current profile) map[string]bool {
 			privilegedKeys("HARPY_EXTENSION_ADMIN_POSTGRES_DSN", "HARPY_EXTENSION_RECEIPT_PATH"),
 			extensionArtifactKeys(),
 		}
-	case profileCutoverAdoption:
-		groups = [][]string{cutoverAdoptionKeys()}
-	case profileCutoverFinalization:
-		groups = [][]string{cutoverFinalizationKeys()}
 	default:
 		return map[string]bool{}
 	}
@@ -120,7 +102,7 @@ func StartupProfileAllows(profileName, key string) bool {
 }
 
 func StartupProfilesRecognize(key string) bool {
-	for _, name := range []string{"api", "worker", "migrator_deploy", "operator_initialize"} {
+	for _, name := range []string{"api", "worker", "operator_initialize"} {
 		if StartupProfileAllows(name, key) {
 			return true
 		}
@@ -130,7 +112,7 @@ func StartupProfilesRecognize(key string) bool {
 
 func startupProfile(name string) (profile, bool) {
 	switch profile(name) {
-	case profileAPI, profileWorker, profileMigratorDeploy, profileOperatorInitialize:
+	case profileAPI, profileWorker, profileOperatorInitialize:
 		return profile(name), true
 	default:
 		return "", false

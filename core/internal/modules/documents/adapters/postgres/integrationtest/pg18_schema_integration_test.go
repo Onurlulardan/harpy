@@ -21,7 +21,6 @@ func TestDocumentsMigrationsAgainstPostgreSQL184(t *testing.T) {
 		})
 	}
 	assertDocumentsTenantIsolation(t, ctx, database)
-	assertDocumentsAdoptionSQL(t, ctx, database)
 	assertDocumentsUploadSQL(t, ctx, database)
 	assertDocumentsArchiveSQL(t, ctx, database)
 	assertDocumentsReferenceSQL(t, ctx, database)

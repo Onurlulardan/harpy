@@ -23,7 +23,7 @@ func TestBindTenancyPolicyReaderAllowsRuntimeProfiles(t *testing.T) {
 
 func TestBindTenancyPolicyReaderRejectsOtherProfiles(t *testing.T) {
 	t.Parallel()
-	for _, profile := range []Profile{ProfileMigratorDeploy, ProfileSchemaExecutor} {
+	for _, profile := range []Profile{ProfileDatabaseBackupExecutor, ProfileDatabaseRestore} {
 		called := false
 		_, err := BindTenancyPolicyReader(
 			tenancyPolicyPool(profile),

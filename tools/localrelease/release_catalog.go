@@ -53,18 +53,17 @@ func buildReleaseCatalog(migration artifact) (releaseCatalog, error) {
 	if err != nil {
 		return releaseCatalog{}, err
 	}
-	catalog.schemaContract, err = localSchemaContract(
-		catalog.migration, catalog.extension.digest,
-	)
+	verifiedMigration, err := attestation.VerifyMigrationManifestArtifact(catalog.migration.document)
 	if err != nil {
 		return releaseCatalog{}, err
 	}
-	catalog.binaryContract, err = newArtifact(
-		"binary-schema-contract.json", catalog.schemaContract,
-	)
-	if err != nil {
-		return releaseCatalog{}, err
+	entries := verifiedMigration.Value().Entries
+	if len(entries) == 0 {
+		return releaseCatalog{}, fmt.Errorf("migration artifact has no frontier")
 	}
+	frontier := entries[len(entries)-1]
+	catalog.schemaContract.RuntimeGeneration = frontier.NextMinimumRuntimeGeneration
+	catalog.schemaContract.MinimumDatabaseGeneration = frontier.TargetDatabaseGeneration
 	return catalog, verifyPostgresCatalog(catalog)
 }
 
