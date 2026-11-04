@@ -27,25 +27,25 @@ VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $$
-    SELECT
-        in_operation_id,
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        in_attempt_id,
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        0::bigint,
-        ''::text,
-        in_expected_revision,
-        pg_catalog.clock_timestamp(),
-        in_adapter_id,
-        NULL::timestamptz,
-        NULL::timestamptz,
-        NULL::timestamptz,
-        NULL::timestamptz;
+    UPDATE platform.tenancy_installation_deliveries AS delivery
+    SET delivery_state = 'acknowledged',
+        delivery_revision = delivery.delivery_revision + 1,
+        acknowledged_at = pg_catalog.clock_timestamp(),
+        database_now = pg_catalog.clock_timestamp()
+    WHERE delivery.operation_id = in_operation_id
+      AND delivery.current_attempt_id = in_attempt_id
+      AND delivery.delivery_revision = in_expected_revision
+      AND delivery.claim_adapter_id = in_adapter_id
+      AND delivery.delivery_state IN ('claimed', 'outcome_unknown')
+    RETURNING delivery.operation_id, delivery.tenant_id, delivery.first_owner_user_id,
+              delivery.current_attempt_id, delivery.current_credential_id,
+              delivery.current_credential_version, delivery.delivery_state,
+              delivery.delivery_revision, delivery.database_now, delivery.claim_adapter_id,
+              delivery.claim_lease_until, delivery.acknowledged_at,
+              delivery.secret_deleted_at, delivery.completed_at;
 $$;
 
 REVOKE ALL ON FUNCTION platform.tenancy_installation_delivery_ack_v1(uuid, uuid, bigint, text, text) FROM PUBLIC;
-
 GRANT EXECUTE ON FUNCTION platform.tenancy_installation_delivery_ack_v1(uuid, uuid, bigint, text, text) TO harpy_api, harpy_worker;
 
 -- +goose Down

@@ -1,5 +1,4 @@
 -- +goose Up
--- BELIRSIZ: SaaS free base offering is not determined by the caller.
 CREATE FUNCTION platform.billing_saas_free_base_read_v1()
 RETURNS TABLE (
     offering_version_id uuid,
@@ -12,11 +11,12 @@ VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $$
-    SELECT
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        0::bigint,
-        ''::text,
-        pg_catalog.clock_timestamp();
+    SELECT offering.offering_version_id, offering.revision, offering.offering_sha256,
+           offering.effective_at
+    FROM platform.billing_license_offerings AS offering
+    WHERE offering.deployment_mode = 'saas'
+    ORDER BY offering.revision DESC
+    LIMIT 1;
 $$;
 
 REVOKE ALL ON FUNCTION platform.billing_saas_free_base_read_v1() FROM PUBLIC;

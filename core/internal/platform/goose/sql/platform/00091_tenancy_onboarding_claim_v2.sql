@@ -19,12 +19,15 @@ VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $$
-    SELECT
-        in_operation_id,
-        in_attempt_id,
-        0::bigint,
-        in_expected_revision,
-        pg_catalog.clock_timestamp();
+    UPDATE platform.tenancy_onboarding_operations AS operation
+    SET attempt_number = operation.attempt_number + 1,
+        updated_at = pg_catalog.clock_timestamp()
+    WHERE operation.operation_id = in_operation_id
+      AND operation.revision = in_expected_revision
+    RETURNING operation.operation_id, in_attempt_id, operation.attempt_number,
+              operation.revision,
+              pg_catalog.clock_timestamp()
+                  + (in_lease_seconds * pg_catalog.interval '1 second');
 $$;
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_claim_v2(uuid, uuid, text, text, bigint, integer) FROM PUBLIC;

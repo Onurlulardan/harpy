@@ -22,16 +22,19 @@ SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $$
     SELECT
-        in_operation_id,
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        ''::text,
-        ''::text,
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        ''::text,
+        operation.operation_id,
+        operation.tenant_id,
+        operation.kind,
+        operation.step_plan_sha256,
+        pg_catalog.gen_random_uuid(),
+        pg_catalog.md5(operation.operation_id::text) || pg_catalog.md5(operation.tenant_id::text),
         NULL::text,
-        in_expected_revision,
+        operation.revision,
         pg_catalog.clock_timestamp(),
-        pg_catalog.clock_timestamp();
+        pg_catalog.clock_timestamp() + pg_catalog.interval '1 minute'
+    FROM platform.tenancy_onboarding_operations AS operation
+    WHERE operation.operation_id = in_operation_id
+      AND operation.revision = in_expected_revision;
 $$;
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_activate_v3(uuid, text, bigint) FROM PUBLIC;

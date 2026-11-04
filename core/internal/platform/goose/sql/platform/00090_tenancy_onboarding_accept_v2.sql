@@ -43,11 +43,51 @@ VOLATILE
 SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $$
-    SELECT
-        in_operation_id,
-        ''::text,
-        0::bigint,
-        pg_catalog.clock_timestamp();
+    WITH clock AS (
+        SELECT pg_catalog.greatest(
+            pg_catalog.clock_timestamp(), in_created_at
+        ) AS updated_at
+    ), current_row AS (
+        SELECT operation.state, operation.revision
+        FROM platform.tenancy_onboarding_operations AS operation
+        WHERE operation.operation_id = in_operation_id
+    ), nxt AS (
+        SELECT
+            CASE
+                WHEN current_row.state IS NULL THEN 'accepted'
+                WHEN current_row.state = 'accepted' AND in_deployment_mode = 'saas'
+                    THEN 'authority_pending'
+                WHEN current_row.state = 'accepted' THEN 'migration_ready'
+                WHEN current_row.state = 'migration_ready' THEN 'succeeded'
+                WHEN current_row.state = 'authority_pending' THEN 'authority_acknowledged'
+                WHEN current_row.state = 'authority_acknowledged' THEN 'succeeded'
+                ELSE current_row.state
+            END AS state,
+            CASE
+                WHEN current_row.state IS NULL THEN 1
+                WHEN current_row.state = 'succeeded' THEN current_row.revision
+                ELSE current_row.revision + 1
+            END AS revision
+        FROM clock
+        LEFT JOIN current_row ON true
+    ), stored AS (
+        INSERT INTO platform.tenancy_onboarding_operations (
+            operation_id, tenant_id, first_owner_user_id, kind, step_plan_sha256,
+            deployment_mode, state, revision, attempt_number, updated_at
+        )
+        SELECT in_operation_id, in_tenant_id, in_first_user_id, in_kind,
+               in_step_plan_sha256, in_deployment_mode, nxt.state, nxt.revision,
+               0, clock.updated_at
+        FROM nxt
+        CROSS JOIN clock
+        ON CONFLICT (operation_id) DO UPDATE SET
+            state = EXCLUDED.state,
+            revision = EXCLUDED.revision,
+            updated_at = EXCLUDED.updated_at
+        RETURNING operation_id, state, revision, updated_at
+    )
+    SELECT stored.operation_id, stored.state, stored.revision, stored.updated_at
+    FROM stored;
 $$;
 
 REVOKE ALL ON FUNCTION platform.tenancy_onboarding_accept_v2(uuid, uuid, text, text, text, text, text, text, uuid, name, text, uuid, uuid, uuid, uuid, uuid, bigint, text, timestamptz, bigint, text, bigint, text, uuid, text, uuid, bigint, text, text, text, timestamptz) FROM PUBLIC;

@@ -1,5 +1,4 @@
 -- +goose Up
--- BELIRSIZ: stored restore binding columns are not determined by the caller.
 CREATE FUNCTION platform.billing_license_restore_binding_v1(
     p_environment_id uuid
 )
@@ -20,15 +19,27 @@ SECURITY INVOKER
 SET search_path TO pg_catalog
 AS $$
     SELECT
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        '00000000-0000-0000-0000-000000000000'::uuid,
-        p_environment_id,
-        ''::text,
-        ''::text,
-        0::bigint,
-        ''::text,
-        0::bigint,
-        pg_catalog.clock_timestamp();
+        snapshot.license_id,
+        operation.licensee_organization_id,
+        snapshot.environment_id,
+        operation.delivery_kind,
+        snapshot.issuer,
+        snapshot.sequence,
+        snapshot.payload_sha256,
+        snapshot.sequence,
+        pg_catalog.clock_timestamp()
+    FROM platform.billing_license_snapshots AS snapshot
+    JOIN platform.billing_license_refresh_operations AS operation
+      ON operation.license_id = snapshot.license_id
+     AND operation.environment_id = snapshot.environment_id
+    WHERE snapshot.environment_id = p_environment_id
+      AND snapshot.sequence = (
+          SELECT pg_catalog.max(latest.sequence)
+          FROM platform.billing_license_snapshots AS latest
+          WHERE latest.environment_id = p_environment_id
+      )
+    ORDER BY operation.database_now DESC
+    LIMIT 1;
 $$;
 
 REVOKE ALL ON FUNCTION platform.billing_license_restore_binding_v1(uuid) FROM PUBLIC;
