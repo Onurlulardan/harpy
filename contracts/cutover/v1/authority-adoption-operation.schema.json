@@ -69,7 +69,7 @@
       "required":["principal","pre_state","temporary_state","post_state",
         "password_verifier_must_remain_unchanged"],
       "properties":{
-        "principal":{"const":"harpy_migrator"},
+        "principal":{"const":"harpy_owner"},
         "pre_state":{"$ref":"authority-adoption-receipt.schema.json#/$defs/migratorAtRestState"},
         "temporary_state":{"$ref":"authority-adoption-receipt.schema.json#/$defs/migratorTemporaryState"},
         "post_state":{"$ref":"authority-adoption-receipt.schema.json#/$defs/migratorAtRestState"},

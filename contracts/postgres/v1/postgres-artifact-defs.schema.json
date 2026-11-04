@@ -46,7 +46,7 @@
         "name": {"enum": [
           "harpy_owner", "harpy_cutover_authority_owner",
           "harpy_runtime", "harpy_v2_runtime",
-          "harpy_migrator", "harpy_cluster_admin",
+          "harpy_cluster_admin",
           "harpy_extension_admin", "harpy_adopter",
           "harpy_cutover_decoder", "harpy_cutover_finalizer",
           "harpy_backup_reader", "harpy_backup", "harpy_restore",
@@ -67,7 +67,7 @@
       "allOf": [
         {
           "if": {"properties": {"name": {"enum": [
-            "harpy_v2_runtime", "harpy_migrator", "harpy_backup",
+            "harpy_v2_runtime", "harpy_backup",
             "harpy_restore", "harpy_reactivation_observer",
             "harpy_v1_runtime"
           ]}}},

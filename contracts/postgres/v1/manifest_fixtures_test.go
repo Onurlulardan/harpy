@@ -58,7 +58,7 @@ func validRolesManifest(origin string) map[string]any {
 	names := []string{
 		"harpy_owner", "harpy_cutover_authority_owner",
 		"harpy_runtime", "harpy_v2_runtime",
-		"harpy_migrator", "harpy_cluster_admin", "harpy_extension_admin",
+		"harpy_cluster_admin", "harpy_extension_admin",
 		"harpy_adopter", "harpy_cutover_decoder", "harpy_cutover_finalizer",
 		"harpy_backup_reader", "harpy_backup", "harpy_restore",
 		"harpy_reactivation_observer",
@@ -78,7 +78,7 @@ func validRolesManifest(origin string) map[string]any {
 }
 
 func validRole(name string) map[string]any {
-	login := name == "harpy_v2_runtime" || name == "harpy_migrator" ||
+	login := name == "harpy_v2_runtime" ||
 		name == "harpy_v1_runtime" || name == "harpy_backup" ||
 		name == "harpy_restore" || name == "harpy_reactivation_observer"
 	return map[string]any{

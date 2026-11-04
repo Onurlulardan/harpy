@@ -75,7 +75,6 @@ func authorityLease(keys releaseKeys, id, principal string) runtimev1.BootstrapC
 func authorityMemberships() []runtimev1.BootstrapAuthorityMembership {
 	return []runtimev1.BootstrapAuthorityMembership{
 		authorityMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		authorityMembership("harpy_migrator", "harpy_owner", true, false, true),
 		authorityMembership("harpy_backup", "harpy_backup_reader", true, false, true),
 		authorityMembership("harpy_restore", "harpy_owner", true, false, true),
 		authorityMembership("harpy_v1_runtime", "harpy_runtime", false, true, false),
@@ -102,7 +101,6 @@ func authorityRoles() []runtimev1.BootstrapAuthorityRole {
 		{"harpy_cutover_authority_owner", "externally_provisioned", true, false, false, false, false, -1},
 		{"harpy_runtime", "permanent", true, false, false, false, false, -1},
 		{"harpy_v2_runtime", "permanent", true, true, false, false, false, -1},
-		{"harpy_migrator", "permanent", true, true, false, false, false, -1},
 		{"harpy_v1_runtime", "coexistence", false, false, false, false, false, -1},
 		{"harpy_cluster_admin", "leased", true, false, false, true, true, 1},
 		{"harpy_extension_admin", "leased", true, false, true, false, false, 1},

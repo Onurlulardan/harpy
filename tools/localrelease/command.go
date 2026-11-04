@@ -11,7 +11,6 @@ import (
 type prepareOptions struct {
 	adminDSNFile      string
 	runtimePassword   string
-	migratorPassword  string
 	backupPassword    string
 	restorePassword   string
 	observerPassword  string
@@ -30,7 +29,6 @@ func parsePrepareOptions(arguments []string) (prepareOptions, error) {
 	var options prepareOptions
 	flags.StringVar(&options.adminDSNFile, "admin-dsn-file", "", "admin DSN secret file")
 	flags.StringVar(&options.runtimePassword, "runtime-password-file", "", "runtime password secret file")
-	flags.StringVar(&options.migratorPassword, "migrator-password-file", "", "migrator password secret file")
 	flags.StringVar(&options.backupPassword, "backup-password-file", "", "backup password secret file")
 	flags.StringVar(&options.restorePassword, "restore-password-file", "", "restore password secret file")
 	flags.StringVar(
@@ -49,7 +47,7 @@ func parsePrepareOptions(arguments []string) (prepareOptions, error) {
 	}
 	paths := []*string{
 		&options.adminDSNFile, &options.runtimePassword,
-		&options.migratorPassword, &options.backupPassword, &options.restorePassword,
+		&options.backupPassword, &options.restorePassword,
 		&options.observerPassword,
 		&options.migrationManifest, &options.outputDirectory,
 	}

@@ -35,7 +35,6 @@ func (manifest PrivilegesManifest) Validate() error {
 func validateMemberships(actual []RoleMembership, origin DatabaseOrigin) error {
 	expected := []RoleMembership{
 		{Member: "harpy_v2_runtime", Role: "harpy_runtime", SetOption: true},
-		{Member: "harpy_migrator", Role: "harpy_owner", SetOption: true},
 		{Member: "harpy_backup", Role: "harpy_backup_reader", SetOption: true},
 		{Member: "harpy_restore", Role: "harpy_owner", SetOption: true},
 	}
@@ -113,8 +112,7 @@ func validateExecutorDecisions(value ExecutorDecisionSet, origin DatabaseOrigin)
 		value.ExtensionRole != "harpy_extension_admin" ||
 		value.RuntimeSessionRole != "harpy_v2_runtime" ||
 		value.RuntimeCurrentRole != "harpy_runtime" ||
-		value.MigratorSessionRole != "harpy_migrator" ||
-		value.MigratorCurrentRole != "harpy_owner" || value.OwnershipExecutor != executor {
+		value.OwnershipExecutor != executor {
 		return fmt.Errorf("executor decisions are invalid")
 	}
 	return nil

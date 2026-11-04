@@ -63,7 +63,7 @@ func startIAMPlatformGuardPG18(
 	database := iamPlatformGuardDatabase{
 		dsn:      dsn,
 		admin:    admin,
-		migrator: openIAMPlatformGuardRole(t, dsn, "harpy_migrator", "guard-migrator", "harpy_owner"),
+		migrator: openIAMPlatformGuardRole(t, dsn, "harpy_owner", "guard-owner", ""),
 		runtime:  openIAMPlatformGuardRole(t, dsn, "harpy_v2_runtime", "guard-runtime", "harpy_runtime"),
 		adopter:  openIAMPlatformGuardRole(t, dsn, "harpy_adopter", "guard-adopter", ""),
 	}
@@ -103,11 +103,8 @@ func prepareIAMPlatformGuardRoles(
 ) {
 	t.Helper()
 	_, err := admin.ExecContext(ctx, `
-CREATE ROLE harpy_owner NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB
-NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 0 PASSWORD NULL;
-CREATE ROLE harpy_migrator LOGIN NOINHERIT NOSUPERUSER NOCREATEDB
-NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD 'guard-migrator';
-GRANT harpy_owner TO harpy_migrator WITH INHERIT FALSE, SET TRUE;
+CREATE ROLE harpy_owner LOGIN NOINHERIT NOSUPERUSER NOCREATEDB
+NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD 'guard-owner';
 CREATE ROLE harpy_runtime NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB
 NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 0 PASSWORD NULL;
 CREATE ROLE harpy_restore NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB

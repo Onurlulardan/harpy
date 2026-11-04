@@ -7,10 +7,6 @@ func validPrivilegesManifest(origin string) map[string]any {
 			"admin_option": false, "inherit_option": false, "set_option": true,
 		},
 		map[string]any{
-			"member": "harpy_migrator", "role": "harpy_owner",
-			"admin_option": false, "inherit_option": false, "set_option": true,
-		},
-		map[string]any{
 			"member": "harpy_backup", "role": "harpy_backup_reader",
 			"admin_option": false, "inherit_option": false, "set_option": true,
 		},
@@ -36,7 +32,6 @@ func validPrivilegesManifest(origin string) map[string]any {
 			databaseConnectGrant("harpy_backup"),
 			databaseConnectGrant("harpy_cluster_admin"),
 			databaseConnectGrant("harpy_extension_admin"),
-			databaseConnectGrant("harpy_migrator"),
 			databaseConnectGrant("harpy_reactivation_observer"),
 			databaseConnectGrant("harpy_restore"),
 			databaseConnectGrant("harpy_runtime"),
@@ -49,13 +44,11 @@ func validPrivilegesManifest(origin string) map[string]any {
 			"grant_option": false,
 		}},
 		"executor_decisions": map[string]any{
-			"bootstrap_role":        "harpy_cluster_admin",
-			"extension_role":        "harpy_extension_admin",
-			"runtime_session_role":  "harpy_v2_runtime",
-			"runtime_current_role":  "harpy_runtime",
-			"migrator_session_role": "harpy_migrator",
-			"migrator_current_role": "harpy_owner",
-			"ownership_executor":    executor,
+			"bootstrap_role":       "harpy_cluster_admin",
+			"extension_role":       "harpy_extension_admin",
+			"runtime_session_role": "harpy_v2_runtime",
+			"runtime_current_role": "harpy_runtime",
+			"ownership_executor":   executor,
 		},
 	}
 }

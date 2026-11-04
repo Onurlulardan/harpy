@@ -47,7 +47,6 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 	directory := t.TempDir()
 	adminPath := writeIntegrationSecret(t, directory, "admin", dsn)
 	runtimePath := writeIntegrationSecret(t, directory, "runtime", "runtime-integration-only")
-	migratorPath := writeIntegrationSecret(t, directory, "migrator", "migrator-integration-only")
 	backupPath := writeIntegrationSecret(t, directory, "backup", "backup-integration-only")
 	restorePath := writeIntegrationSecret(t, directory, "restore", "restore-integration-only")
 	observerPath := writeIntegrationSecret(t, directory, "observer", "observer-integration-only")
@@ -62,7 +61,7 @@ func TestPrepareProvisionsCanonicalPostgresAndReusesOwnedOutput(t *testing.T) {
 	output := filepath.Join(directory, "release")
 	arguments := []string{
 		"-admin-dsn-file", adminPath, "-runtime-password-file", runtimePath,
-		"-migrator-password-file", migratorPath, "-backup-password-file", backupPath,
+		"-backup-password-file", backupPath,
 		"-restore-password-file", restorePath, "-migration-manifest", migrationPath,
 		"-reactivation-observer-password-file", observerPath,
 		"-output", output,

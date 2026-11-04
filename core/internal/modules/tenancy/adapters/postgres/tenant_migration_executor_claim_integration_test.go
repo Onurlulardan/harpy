@@ -51,7 +51,7 @@ func tenantMigratorConnection(
 		t.Fatal(err)
 	}
 	if _, err := connection.ExecContext(
-		ctx, `SET SESSION AUTHORIZATION harpy_migrator`,
+		ctx, `SET SESSION AUTHORIZATION harpy_owner`,
 	); err != nil {
 		connection.Close()
 		t.Fatalf("set migrator session authorization: %v", err)

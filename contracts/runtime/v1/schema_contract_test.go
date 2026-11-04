@@ -1,7 +1,5 @@
 package runtimev1
 
-// PRESERVE_NON_MIGRATION: tests still name the historical config schema file.
-
 import (
 	"os"
 	"path/filepath"
@@ -24,10 +22,6 @@ func TestProfileSchemasAcceptMinimalExactSnapshots(t *testing.T) {
 	}{
 		{"core-api-config.schema.json", profileSnapshot("api")},
 		{"core-worker-config.schema.json", profileSnapshot("worker")},
-		{"core-migrator-config.schema.json", profileSnapshot("migrator_deploy")},
-		{"core-migrator-config.schema.json", profileSnapshot("schema_executor")},
-		{"core-migrator-config.schema.json", profileSnapshot("cluster_bootstrap")},
-		{"core-migrator-config.schema.json", profileSnapshot("extension_admin")},
 	}
 	for _, test := range tests {
 		t.Run(test.snapshot["profile"].(string), func(t *testing.T) {
@@ -51,14 +45,7 @@ func TestProfileSchemasRejectInvalidSnapshots(t *testing.T) {
 			"HARPY_POSTGRES_DSN": "postgresql://user@example.invalid/harpy?sslmode=verify-full",
 		})},
 		{"worker public listener", "core-worker-config.schema.json", snapshotWith("worker", map[string]any{"HARPY_PUBLIC_LISTEN_ADDR": "127.0.0.1:8000"})},
-		{"deploy management listener", "core-migrator-config.schema.json", snapshotWith("migrator_deploy", map[string]any{"HARPY_MANAGEMENT_LISTEN_ADDR": "127.0.0.1:9000"})},
 		{"headers without endpoint", "core-api-config.schema.json", snapshotWith("api", map[string]any{"HARPY_OTLP_HEADERS": "authorization=value"})},
-		{"bootstrap runtime DSN", "core-migrator-config.schema.json", snapshotWith("cluster_bootstrap", map[string]any{
-			"HARPY_POSTGRES_DSN": "postgresql://user@example.invalid/harpy?sslmode=disable",
-		})},
-		{"extension bootstrap receipt", "core-migrator-config.schema.json", snapshotWith("extension_admin", map[string]any{
-			"HARPY_BOOTSTRAP_RECEIPT_PATH": "/receipt.json",
-		})},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

@@ -22,7 +22,6 @@ func preparePostgres(
 	}
 	credentials := map[string]string{
 		"harpy_v2_runtime":            passwords.runtime,
-		"harpy_migrator":              passwords.migrator,
 		"harpy_backup":                passwords.backup,
 		"harpy_restore":               passwords.restore,
 		"harpy_reactivation_observer": passwords.observer,
@@ -77,7 +76,7 @@ func preparePostgres(
 
 func verifyApplicationCredentials(ctx context.Context, admin *pgx.Conn) error {
 	for _, role := range []string{
-		"harpy_v2_runtime", "harpy_migrator",
+		"harpy_v2_runtime",
 		"harpy_backup", "harpy_restore",
 		"harpy_reactivation_observer",
 	} {

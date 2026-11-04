@@ -57,7 +57,7 @@ func testRolesManifest() postgresv1.RolesManifest {
 	names := []string{
 		"harpy_owner", "harpy_cutover_authority_owner",
 		"harpy_runtime", "harpy_v2_runtime",
-		"harpy_migrator", "harpy_cluster_admin", "harpy_extension_admin",
+		"harpy_cluster_admin", "harpy_extension_admin",
 		"harpy_adopter", "harpy_cutover_decoder", "harpy_cutover_finalizer",
 		"harpy_backup_reader", "harpy_backup", "harpy_restore",
 		"harpy_reactivation_observer", "harpy_tenant_migration_executor",
@@ -76,7 +76,7 @@ func testRole(name string) postgresv1.PostgresRole {
 		Name: name, ConnectionLimit: -1, PasswordState: "null", ValidUntil: "infinity",
 	}
 	switch name {
-	case "harpy_v2_runtime", "harpy_migrator", "harpy_backup",
+	case "harpy_v2_runtime", "harpy_backup",
 		"harpy_restore", "harpy_reactivation_observer":
 		role.Login = true
 	case "harpy_cluster_admin":
@@ -99,7 +99,6 @@ func testPrivilegesManifest() postgresv1.PrivilegesManifest {
 		PublicDatabasePrivileges: []string{},
 		Memberships: []postgresv1.RoleMembership{
 			{Member: "harpy_v2_runtime", Role: "harpy_runtime", SetOption: true},
-			{Member: "harpy_migrator", Role: "harpy_owner", SetOption: true},
 			{Member: "harpy_backup", Role: "harpy_backup_reader", SetOption: true},
 			{Member: "harpy_restore", Role: "harpy_owner", SetOption: true},
 		},
@@ -107,7 +106,6 @@ func testPrivilegesManifest() postgresv1.PrivilegesManifest {
 			testDatabaseConnectGrant(database, "harpy_backup"),
 			testDatabaseConnectGrant(database, "harpy_cluster_admin"),
 			testDatabaseConnectGrant(database, "harpy_extension_admin"),
-			testDatabaseConnectGrant(database, "harpy_migrator"),
 			testDatabaseConnectGrant(database, "harpy_reactivation_observer"),
 			testDatabaseConnectGrant(database, "harpy_restore"),
 			testDatabaseConnectGrant(database, "harpy_runtime"),
@@ -120,7 +118,6 @@ func testPrivilegesManifest() postgresv1.PrivilegesManifest {
 		ExecutorDecisions: postgresv1.ExecutorDecisionSet{
 			BootstrapRole: "harpy_cluster_admin", ExtensionRole: "harpy_extension_admin",
 			RuntimeSessionRole: "harpy_v2_runtime", RuntimeCurrentRole: "harpy_runtime",
-			MigratorSessionRole: "harpy_migrator", MigratorCurrentRole: "harpy_owner",
 			OwnershipExecutor: "cluster_bootstrap",
 		},
 	}

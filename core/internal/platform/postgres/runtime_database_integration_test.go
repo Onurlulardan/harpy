@@ -20,9 +20,8 @@ const runtimeIntegrationImage = "pgvector/pgvector:0.8.3-pg18-bookworm@sha256:" 
 const runtimeIntegrationPassword = "runtime-integration-only"
 
 type runtimeTestDatabase struct {
-	admin       *pgx.Conn
-	runtimeDSN  string
-	migratorDSN string
+	admin      *pgx.Conn
+	runtimeDSN string
 }
 
 func startRuntimeTestDatabase(t *testing.T, ctx context.Context) runtimeTestDatabase {
@@ -69,9 +68,7 @@ func startRuntimeTestDatabase(t *testing.T, ctx context.Context) runtimeTestData
 		t.Fatal(err)
 	}
 	parsed.User = url.UserPassword("harpy_v2_runtime", runtimeIntegrationPassword)
-	runtimeDSN := parsed.String()
-	parsed.User = url.UserPassword("harpy_migrator", runtimeIntegrationPassword)
 	return runtimeTestDatabase{
-		admin: admin, runtimeDSN: runtimeDSN, migratorDSN: parsed.String(),
+		admin: admin, runtimeDSN: parsed.String(),
 	}
 }

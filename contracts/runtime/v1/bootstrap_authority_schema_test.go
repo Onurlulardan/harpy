@@ -126,7 +126,6 @@ func authorityRoles(adopted bool) []any {
 		authorityRoleFixture("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
 		authorityRoleFixture("harpy_runtime", true, "permanent", false, false, false, false, -1),
 		authorityRoleFixture("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
-		authorityRoleFixture("harpy_migrator", true, "permanent", true, false, false, false, -1),
 		authorityRoleFixture("harpy_v1_runtime", adopted, "coexistence", adopted, false, false, false, -1),
 		authorityRoleFixture("harpy_cluster_admin", true, "leased", false, false, true, true, 1),
 		authorityRoleFixture("harpy_extension_admin", true, "leased", false, true, false, false, 1),
@@ -153,7 +152,6 @@ func authorityRoleFixture(name string, enabled bool, mode string, login, superus
 func authorityMemberships(adopted bool) []any {
 	return []any{
 		authorityMembershipFixture("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		authorityMembershipFixture("harpy_migrator", "harpy_owner", true, false, true),
 		authorityMembershipFixture("harpy_backup", "harpy_backup_reader", true, false, true),
 		authorityMembershipFixture("harpy_restore", "harpy_owner", true, false, true),
 		authorityMembershipFixture("harpy_v1_runtime", "harpy_runtime", adopted, true, false),

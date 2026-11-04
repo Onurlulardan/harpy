@@ -1,6 +1,10 @@
 package runtimev1
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/google/uuid"
+)
 
 const (
 	CutoverCommandResultVersion = "cutover-command-result.v1"
@@ -63,7 +67,7 @@ func NewCutoverFinalizationCommandResult(
 
 func (result CutoverCommandResult) Validate() error {
 	if result.ContractVersion != CutoverCommandResultVersion ||
-		!validMigratorUUID(result.OperationID) || !validMigratorUUID(result.RunID) {
+		!validCutoverUUID(result.OperationID) || !validCutoverUUID(result.RunID) {
 		return fmt.Errorf("cutover command result identity is invalid")
 	}
 	switch result.Action {
@@ -74,6 +78,15 @@ func (result CutoverCommandResult) Validate() error {
 	default:
 		return fmt.Errorf("cutover command result action is invalid")
 	}
+}
+
+func validCutoverUUID(value string) bool {
+	parsed, err := uuid.Parse(value)
+	return err == nil && parsed != uuid.Nil && parsed.String() == value
+}
+
+func validCutoverDigest(value string) bool {
+	return validateDigest(value, "sha256") == nil
 }
 
 func cutoverString(value string) *string {

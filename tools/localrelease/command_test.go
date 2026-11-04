@@ -10,7 +10,6 @@ func TestPrepareRequiresEveryAbsolutePath(t *testing.T) {
 	arguments := []string{
 		"-admin-dsn-file", filepath.Join(root, "admin"),
 		"-runtime-password-file", filepath.Join(root, "runtime"),
-		"-migrator-password-file", filepath.Join(root, "migrator"),
 		"-backup-password-file", filepath.Join(root, "backup"),
 		"-restore-password-file", filepath.Join(root, "restore"),
 		"-reactivation-observer-password-file", filepath.Join(root, "observer"),

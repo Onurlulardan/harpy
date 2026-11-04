@@ -45,7 +45,7 @@ LOCALE_PROVIDER libc LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8'`)
 		return fmt.Errorf("assume database owner: %w", err)
 	}
 	if _, err := tx.Exec(ctx, `GRANT CONNECT ON DATABASE harpy TO
-harpy_owner, harpy_runtime, harpy_v2_runtime, harpy_migrator,
+harpy_owner, harpy_runtime, harpy_v2_runtime,
 harpy_cluster_admin, harpy_extension_admin, harpy_backup,
 harpy_backup_reader, harpy_restore, harpy_reactivation_observer`); err != nil {
 		return fmt.Errorf("grant target database connect: %w", err)

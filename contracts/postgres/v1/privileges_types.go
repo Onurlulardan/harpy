@@ -46,11 +46,9 @@ type DefaultPrivilege struct {
 }
 
 type ExecutorDecisionSet struct {
-	BootstrapRole       string `json:"bootstrap_role"`
-	ExtensionRole       string `json:"extension_role"`
-	RuntimeSessionRole  string `json:"runtime_session_role"`
-	RuntimeCurrentRole  string `json:"runtime_current_role"`
-	MigratorSessionRole string `json:"migrator_session_role"`
-	MigratorCurrentRole string `json:"migrator_current_role"`
-	OwnershipExecutor   string `json:"ownership_executor"`
+	BootstrapRole      string `json:"bootstrap_role"`
+	ExtensionRole      string `json:"extension_role"`
+	RuntimeSessionRole string `json:"runtime_session_role"`
+	RuntimeCurrentRole string `json:"runtime_current_role"`
+	OwnershipExecutor  string `json:"ownership_executor"`
 }

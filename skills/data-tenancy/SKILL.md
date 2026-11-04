@@ -82,8 +82,7 @@ expand -> resumable backfill -> application switch -> soak -> contract
 
 ## Dynamic form DDL
 
-<!-- PRESERVE_NON_MIGRATION: prohibition. The product does not run this executor. -->
-Dynamic form, schema-executor ve typed DDL IR Harpy urun kapsami disindadir.
+Dinamik form ve typed DDL Harpy urun kapsami disindadir. Bu is kaldirildi.
 Yerine form, EAV veya JSONB altyapisi kurulmaz.
 
 ## Index ve query

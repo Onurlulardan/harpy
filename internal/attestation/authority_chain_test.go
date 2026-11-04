@@ -111,7 +111,7 @@ func TestVerifiedAuthorityValuesAreMutationIsolated(t *testing.T) {
 	firstOperation.QuiescencePolicy.Roles[0].Principal = "returned_mutation"
 	*firstOperation.UpgradeArtifactSHA256 = strings.Repeat("4", 64)
 	if verifiedOperation.Value().Objects[0].ObjectName != "catalog_v1" ||
-		verifiedOperation.Value().QuiescencePolicy.Roles[0].Principal != "harpy_migrator" ||
+		verifiedOperation.Value().QuiescencePolicy.Roles[0].Principal != "harpy_owner" ||
 		*verifiedOperation.Value().PreviousAuthorityReceiptSHA256 != previous ||
 		*verifiedOperation.Value().UpgradeArtifactSHA256 != artifact {
 		t.Fatal("verified authority operation leaked mutable state")
@@ -124,7 +124,7 @@ func TestVerifiedAuthorityValuesAreMutationIsolated(t *testing.T) {
 	returned.Objects[0].ObjectOID++
 	returned.QuiescenceEvidence.Roles[0].Principal = "returned_mutation"
 	if verifiedReceipt.Value().Objects[0].ObjectOID != 17001 ||
-		verifiedReceipt.Value().QuiescenceEvidence.Roles[0].Principal != "harpy_migrator" {
+		verifiedReceipt.Value().QuiescenceEvidence.Roles[0].Principal != "harpy_owner" {
 		t.Fatal("verified authority receipt leaked mutable state")
 	}
 	initial := authorityInitialReceiptFixture()

@@ -31,10 +31,6 @@
         ]}},
         {"contains": {"allOf": [
           {"$ref": "#/$defs/directDatabaseConnectGrant"},
-          {"properties": {"grantee": {"const": "harpy_migrator"}}}
-        ]}},
-        {"contains": {"allOf": [
-          {"$ref": "#/$defs/directDatabaseConnectGrant"},
           {"properties": {"grantee": {"const": "harpy_runtime"}}}
         ]}},
         {"contains": {"allOf": [
@@ -63,7 +59,7 @@
       "type": "object", "additionalProperties": false,
       "required": [
         "bootstrap_role", "extension_role", "runtime_session_role",
-        "runtime_current_role", "migrator_session_role", "migrator_current_role",
+        "runtime_current_role",
         "ownership_executor"
       ],
       "properties": {
@@ -71,8 +67,6 @@
         "extension_role": {"const": "harpy_extension_admin"},
         "runtime_session_role": {"const": "harpy_v2_runtime"},
         "runtime_current_role": {"const": "harpy_runtime"},
-        "migrator_session_role": {"const": "harpy_migrator"},
-        "migrator_current_role": {"const": "harpy_owner"},
         "ownership_executor": {
           "enum": ["cluster_bootstrap", "external_root_provisioner"]
         }
@@ -117,10 +111,6 @@
       "member": "harpy_v2_runtime", "role": "harpy_runtime",
       "admin_option": false, "inherit_option": false, "set_option": true
     }},
-    "migratorMembership": {"const": {
-      "member": "harpy_migrator", "role": "harpy_owner",
-      "admin_option": false, "inherit_option": false, "set_option": true
-    }},
     "backupMembership": {"const": {
       "member": "harpy_backup", "role": "harpy_backup_reader",
       "admin_option": false, "inherit_option": false, "set_option": true
@@ -134,19 +124,17 @@
       "admin_option": false, "inherit_option": true, "set_option": false
     }},
     "freshMemberships": {
-      "type": "array", "minItems": 4, "maxItems": 4, "items": false,
+      "type": "array", "minItems": 3, "maxItems": 3, "items": false,
       "prefixItems": [
         {"$ref": "#/$defs/v2RuntimeMembership"},
-        {"$ref": "#/$defs/migratorMembership"},
         {"$ref": "#/$defs/backupMembership"},
         {"$ref": "#/$defs/restoreMembership"}
       ]
     },
     "adoptedMemberships": {
-      "type": "array", "minItems": 5, "maxItems": 5, "items": false,
+      "type": "array", "minItems": 4, "maxItems": 4, "items": false,
       "prefixItems": [
         {"$ref": "#/$defs/v2RuntimeMembership"},
-        {"$ref": "#/$defs/migratorMembership"},
         {"$ref": "#/$defs/backupMembership"},
         {"$ref": "#/$defs/restoreMembership"},
         {"$ref": "#/$defs/v1RuntimeMembership"}

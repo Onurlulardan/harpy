@@ -51,11 +51,6 @@ func verifyReuseDatabase(
 		return err
 	}
 	if err := verifyApplicationLogin(
-		ctx, config, "harpy_migrator", "harpy_owner", passwords.migrator,
-	); err != nil {
-		return err
-	}
-	if err := verifyApplicationLogin(
 		ctx, config, "harpy_backup", "harpy_backup_reader", passwords.backup,
 	); err != nil {
 		return err

@@ -88,7 +88,7 @@ func assertIAMPlatformGuardSessions(
 	assertIAMPlatformSession(t, ctx, database.runtime,
 		"harpy_v2_runtime", "harpy_runtime")
 	assertIAMPlatformSession(t, ctx, database.migrator,
-		"harpy_migrator", "harpy_owner")
+		"harpy_owner", "harpy_owner")
 }
 
 func assertIAMPlatformSession(
@@ -113,26 +113,25 @@ func assertIAMPlatformRoleContract(
 	t.Helper()
 	var rolesValid, membershipsValid, schemaValid bool
 	err := database.admin.QueryRowContext(ctx, `
-SELECT count(*)=5 AND bool_and(
+SELECT count(*)=4 AND bool_and(
  NOT rolsuper AND NOT rolinherit AND NOT rolbypassrls AND NOT rolcreatedb AND
  NOT rolcreaterole AND NOT rolreplication AND
- rolcanlogin=(rolname IN ('harpy_migrator','harpy_v2_runtime','harpy_adopter')))
+ rolcanlogin=(rolname IN ('harpy_owner','harpy_v2_runtime','harpy_adopter')))
 FROM pg_catalog.pg_roles WHERE rolname IN (
- 'harpy_owner','harpy_migrator','harpy_runtime',
+ 'harpy_owner','harpy_runtime',
  'harpy_v2_runtime','harpy_adopter')`).Scan(&rolesValid)
 	if err != nil {
 		t.Fatal(err)
 	}
 	err = database.admin.QueryRowContext(ctx, `
-SELECT count(*)=2 AND bool_and(
+SELECT count(*)=1 AND bool_and(
  NOT membership.admin_option AND NOT membership.inherit_option AND membership.set_option AND
- ((granted.rolname='harpy_owner' AND member.rolname='harpy_migrator') OR
-  (granted.rolname='harpy_runtime' AND member.rolname='harpy_v2_runtime')))
+ (granted.rolname='harpy_runtime' AND member.rolname='harpy_v2_runtime'))
 FROM pg_catalog.pg_auth_members AS membership
 JOIN pg_catalog.pg_roles AS granted ON granted.oid=membership.roleid
 JOIN pg_catalog.pg_roles AS member ON member.oid=membership.member
 WHERE member.rolname IN (
- 'harpy_migrator','harpy_v2_runtime','harpy_adopter')`).Scan(&membershipsValid)
+ 'harpy_v2_runtime','harpy_adopter')`).Scan(&membershipsValid)
 	if err != nil {
 		t.Fatal(err)
 	}

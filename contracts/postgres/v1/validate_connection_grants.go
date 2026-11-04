@@ -5,7 +5,6 @@ import "fmt"
 var directDatabaseConnectGrantees = []string{
 	"harpy_cluster_admin",
 	"harpy_extension_admin",
-	"harpy_migrator",
 	"harpy_runtime",
 	"harpy_v2_runtime",
 	"harpy_backup",

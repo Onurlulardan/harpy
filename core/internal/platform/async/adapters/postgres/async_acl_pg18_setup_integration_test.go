@@ -22,11 +22,7 @@ GRANT harpy_runtime TO harpy_v2_runtime
 CREATE ROLE harpy_adopter LOGIN PASSWORD 'adopter_integration_only'
     NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
 CREATE ROLE harpy_cluster_admin LOGIN PASSWORD 'cluster_integration_only'
-    NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
-CREATE ROLE harpy_migrator LOGIN PASSWORD 'migrator_integration_only'
-    NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
-GRANT harpy_owner TO harpy_migrator
-    WITH INHERIT FALSE, SET TRUE;`
+    NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;`
 
 func TestAsyncRuntimeACLOnPostgreSQL184(t *testing.T) {
 	for _, origin := range []string{"fresh"} {
