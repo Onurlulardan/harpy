@@ -12,7 +12,6 @@ import (
 	"time"
 
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
-	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/google/uuid"
 )
 
@@ -83,15 +82,15 @@ t_analytics_a.analytics_dashboard_exports WHERE export_id=$1`,
 
 func analyticsMaintenancePlatformDocuments(t *testing.T,
 	first, last string,
-) []platformmigration.Document {
+) []appliedSQL {
 	t.Helper()
-	documents, err := []platformmigration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	already := map[string]bool{"20260802020001": true, "20260802020007": true,
 		"20260802020014": true, "20260802020021": true}
-	selected := make([]platformmigration.Document, 0, 24)
+	selected := make([]appliedSQL, 0, 24)
 	for _, document := range documents {
 		name := path.Base(document.Path())
 		stamp := strings.SplitN(name, "_", 2)[0]

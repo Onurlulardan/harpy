@@ -36,7 +36,7 @@ func TestProfilePublicationApplicationAgainstPostgreSQL184(t *testing.T) {
 				publicationAsyncDocuments(t, origin), false)
 			grantPublicationRuntimeAccess(t, ctx, db)
 			assertProfileRecoveryACL(t, ctx, db)
-			seedPublicationStartup(t, ctx, db, publicationMigrationDigest(t))
+			seedPublicationStartup(t, ctx, db, publicationExtensionDigest)
 			runtime := openPublicationRuntime(t, ctx, db)
 			assertPublicationRuntimeAuthority(t, ctx, db, runtime)
 			assertProfilePublicationLifecycle(t, ctx, db, runtime)

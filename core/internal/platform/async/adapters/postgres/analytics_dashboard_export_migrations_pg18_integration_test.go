@@ -12,7 +12,6 @@ import (
 	"time"
 
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
@@ -101,7 +100,7 @@ func applyAnalyticsDashboardExportPG18MigrationsThrough(
     ADD COLUMN deleted_at timestamptz;`); err != nil {
 		t.Fatalf("extend Analytics export tenant catalog: %v", err)
 	}
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -120,11 +119,11 @@ func applyAnalyticsDashboardExportPG18MigrationsThrough(
 }
 
 func analyticsDashboardExportPG18Documents(
-	t *testing.T, documents []migration.Document, origin string, end int64,
-) []migration.Document {
+	t *testing.T, documents []appliedSQL, origin string, end int64,
+) []appliedSQL {
 	t.Helper()
 	marker := "/migrations/" + origin + "/"
-	selected := make([]migration.Document, 0, 100)
+	selected := make([]appliedSQL, 0, 100)
 	for _, document := range documents {
 		if !strings.Contains(document.Path(), marker) {
 			continue

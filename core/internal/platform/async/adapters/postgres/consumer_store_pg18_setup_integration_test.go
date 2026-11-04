@@ -8,8 +8,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 const consumerStoreLastVersion int64 = 20260715021500
@@ -35,11 +33,11 @@ func applyConsumerStoreMigrations(
 	origin string,
 ) {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	selected := make([]migration.Document, 0, 32)
+	selected := make([]appliedSQL, 0, 32)
 	marker := "/migrations/" + origin + "/"
 	for _, document := range documents {
 		version := asyncDocumentVersion(t, document.Path())

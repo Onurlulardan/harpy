@@ -8,8 +8,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 var documentsSchemas = []string{
@@ -37,7 +35,7 @@ CREATE ROLE harpy_cutover_finalizer NOLOGIN NOINHERIT CONNECTION LIMIT 0;`
 
 func applyDocumentsMigrations(t *testing.T, ctx context.Context, database *sql.DB) {
 	t.Helper()
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

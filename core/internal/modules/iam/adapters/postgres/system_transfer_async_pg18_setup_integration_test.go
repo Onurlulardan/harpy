@@ -5,11 +5,10 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"sort"
 	"strings"
 	"testing"
-
-	platformpostgresfixture "github.com/Onurlulardan/harpy/core/internal/platform/postgres/integrationfixture"
 )
 
 const iamSystemTransferAsyncAuthorityFixture = `
@@ -49,33 +48,10 @@ func applyIAMSystemTransferAsyncPlatform(
 
 func loadIAMSystemTransferAsyncDocuments(
 	t *testing.T,
-	origin string,
+	_ string,
 ) ([]iamFoundationDocument, error) {
 	t.Helper()
-	documents, err := platformpostgresfixture.LoadAsyncMigrationDocuments()
-	if err != nil {
-		return nil, err
-	}
-	selected := make([]iamFoundationDocument, 0, len(documents)/2)
-	for _, document := range documents {
-		if !iamAsyncDocumentMatchesOrigin(document.Path(), origin) {
-			continue
-		}
-		version := iamMigrationVersion(t, document.Path())
-		if version > 20260715022010 &&
-			(version < 20260718020117 || version > 20260718020143) {
-			continue
-		}
-		selected = append(selected, iamFoundationDocument{
-			path: document.Path(), content: document.Content(),
-		})
-	}
-	return selected, nil
-}
-
-func iamAsyncDocumentMatchesOrigin(name, origin string) bool {
-	return strings.Contains(name, "/migrations/"+origin+"/") ||
-		strings.Contains(name, "/migrations/supersessions/"+origin+"/")
+	return nil, errors.New("async migration corpus is not a Goose source")
 }
 
 func assertIAMAsyncRecoveryDocuments(

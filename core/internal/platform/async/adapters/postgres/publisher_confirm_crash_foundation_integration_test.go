@@ -14,13 +14,14 @@ const pipelineEnvironmentID = "91000000-0000-4000-8000-000000000001"
 const pipelineReleaseID = "91000000-0000-4000-8000-000000000002"
 const pipelineMigrationRunID = "91000000-0000-4000-8000-000000000003"
 const pipelineExtensionRunID = "91000000-0000-4000-8000-000000000004"
+const pipelineExtensionDigest = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
 func preparePipelineFoundation(t *testing.T, ctx context.Context, database *sql.DB) {
 	t.Helper()
 	if _, err := database.ExecContext(ctx, pipelineFoundationTables); err != nil {
 		t.Fatalf("create pipeline runtime foundation: %v", err)
 	}
-	digest := pipelineMigrationDigest(t)
+	digest := pipelineExtensionDigest
 	statements := []struct {
 		query string
 		args  []any

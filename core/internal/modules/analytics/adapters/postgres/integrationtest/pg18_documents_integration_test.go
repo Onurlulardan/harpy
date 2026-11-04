@@ -9,23 +9,21 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 func analyticsDocuments(
 	t *testing.T, origin, scope string,
-) []platformmigration.Document {
+) []appliedSQL {
 	t.Helper()
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("Analytics migration origin %q is unsupported", origin)
 	}
-	documents, err := []platformmigration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	needle := "/fresh/"
-	selected := make([]platformmigration.Document, 0, len(documents)/2)
+	selected := make([]appliedSQL, 0, len(documents)/2)
 	for _, document := range documents {
 		if document.Scope() == scope && strings.Contains(document.Path(), needle) {
 			selected = append(selected, document)
@@ -42,7 +40,7 @@ func analyticsDocuments(
 
 func applyAnalyticsDocuments(
 	t *testing.T, ctx context.Context, database *sql.DB, schema string,
-	documents []platformmigration.Document,
+	documents []appliedSQL,
 ) {
 	t.Helper()
 	for _, document := range documents {

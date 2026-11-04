@@ -11,8 +11,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	platformmigration "github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 const (
@@ -48,7 +46,7 @@ func prepareAnalyticsPlatformProtocolPG18(t *testing.T, ctx context.Context) *sq
 	return database
 }
 
-func analyticsPlatformProtocolDocuments(t *testing.T) []platformmigration.Document {
+func analyticsPlatformProtocolDocuments(t *testing.T) []appliedSQL {
 	t.Helper()
 	wanted := map[string]bool{
 		"20260715020000_create_async_reject_mutation_routine.fresh.sql":                     true,
@@ -65,11 +63,11 @@ func analyticsPlatformProtocolDocuments(t *testing.T) []platformmigration.Docume
 		"20260802020014_create_analytics_dashboard_export_cleanup_owner_v1.fresh.sql":       true,
 		"20260802020021_create_analytics_dashboard_export_control_v1.fresh.sql":             true,
 	}
-	documents, err := []platformmigration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	selected := make([]platformmigration.Document, 0, len(wanted))
+	selected := make([]appliedSQL, 0, len(wanted))
 	for _, document := range documents {
 		name := path.Base(document.Path())
 		if wanted[name] && strings.Contains(document.Path(), "/fresh/") {

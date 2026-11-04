@@ -49,7 +49,7 @@ cleanup_receipt_run_id uuid)`,
 
 func seedScopeFoundation(t *testing.T, ctx context.Context, admin *pgx.Conn) {
 	t.Helper()
-	migrationDigest := scopeMigrationDigest(t)
+	migrationDigest := scopeMigrationDigest
 	statements := []struct {
 		query string
 		args  []any

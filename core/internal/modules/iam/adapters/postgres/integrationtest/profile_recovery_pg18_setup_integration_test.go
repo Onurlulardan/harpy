@@ -39,7 +39,7 @@ func prepareRecoveryPG18Scenario(
 		publicationAsyncDocuments(t, origin), false)
 	grantPublicationRuntimeAccess(t, ctx, db)
 	assertProfileRecoveryACL(t, ctx, db)
-	seedPublicationStartup(t, ctx, db, publicationMigrationDigest(t))
+	seedPublicationStartup(t, ctx, db, publicationExtensionDigest)
 	setPublicationJobInsert(t, ctx, db, true)
 	runtime := openPublicationRuntime(t, ctx, db)
 	return recoveryPG18Scenario{

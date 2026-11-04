@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	asyncadoption "github.com/Onurlulardan/harpy/core/internal/platform/async/adoption"
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 const adoptionAuthorityFixture = `
@@ -64,11 +63,11 @@ func applyAdoptionMigrations(
 	if _, err := database.ExecContext(ctx, adoptionAuthorityFixture); err != nil {
 		t.Fatalf("prepare adoption authority: %v", err)
 	}
-	asyncDocuments, err := []migration.Document(nil), error(nil)
+	asyncDocuments, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	cutoverDocuments, err := []migration.Document(nil), error(nil)
+	cutoverDocuments, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,14 +80,14 @@ func applyAdoptionMigrations(
 }
 
 func selectAdoptionDocuments(
-	t *testing.T, origin string, asyncDocuments, cutoverDocuments []migration.Document,
-) []migration.Document {
+	t *testing.T, origin string, asyncDocuments, cutoverDocuments []appliedSQL,
+) []appliedSQL {
 	t.Helper()
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("unsupported origin %q", origin)
 	}
 	marker := "/migrations/" + origin + "/"
-	selected := make([]migration.Document, 0, len(asyncDocuments)+1)
+	selected := make([]appliedSQL, 0, len(asyncDocuments)+1)
 	for _, document := range asyncDocuments {
 		version := adoptionDocumentVersion(t, document.Path())
 		if strings.Contains(document.Path(), marker) &&

@@ -6,7 +6,7 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 
 | Decision | Count |
 | --- | ---: |
-| REMOVE_FORGECRUD_PRODUCT | 6 |
+| REMOVE_FORGECRUD_PRODUCT | 7 |
 | KEEP_GENERIC_FOUNDATION | 11 |
 | REPLACE_WITH_GENERIC_PRIMITIVE | 0 |
 | UNRESOLVED | 616 |
@@ -20,7 +20,8 @@ Decisions use the consumer graph. A token match is not a delete or keep decision
 | schema-executor and typed DDL IR | dynamic form DDL | `docs/tasks/05-forgecrud-residue-audit.md` §6 | `tools/localconfig` `schema-executor.env` | REMOVE_FORGECRUD_PRODUCT | localconfig | generator drops the artifact | `profile_environment_test.go` | No Harpy form product; no replacement form store |
 | form and workflow designer contracts | `workflow.forms.set-field`, forms module imports | Task 05 §3.2 search list | `core/internal/platform/transaction` tests, archguard fixture | REMOVE_FORGECRUD_PRODUCT | transaction tests and archguard fixture | remove product operation names from fixtures | transaction unit tests | Designer behavior is not a generic Harpy requirement |
 | `core/internal/modules/tenancy/application/tenantmigration` | tenant migration job enqueue | Task 03 §8 one-shot Goose container | `environmentoperator.migrate`, `tenancy.OperatorRuntime` | REMOVE_FORGECRUD_PRODUCT | tenancy | `provisionlaunch.Run` then onboarding accept | `environmentoperator` initialize tests | The job is an executor checkpoint, not tenant identity |
-| `core/internal/platform/schemacontract` | binary migration manifest gate | Task 04 §2: startup does not read a schema contract | postgres integration fixtures, `tools/localrelease` | REMOVE_FORGECRUD_PRODUCT | platform postgres | connection and role readiness only | `open_pool_api_test.go` | Manifest digest is migration state |
+| `core/internal/platform/schemacontract` | binary migration manifest gate | Task 04 §2: startup does not read a schema contract | none after `Open` dropped the contract argument | REMOVE_FORGECRUD_PRODUCT | platform postgres | package deleted; readiness is connection and role | `go test ./...`; `go test -tags=integration -count=0 ./...` | Manifest digest is migration state |
+| `core/internal/platform/binarycontract` | embedded binary schema contract loader | Task 03 removes this package with schemacontract | none; `contracts/runtime/v1` and `internal/attestation` still own the document type | REMOVE_FORGECRUD_PRODUCT | platform | package deleted; contract type stays until localrelease consumers close | `go test ./...` | Unused loader around the migration manifest |
 | IAM identity and authorization | users, roles, sessions | `docs/architecture/06` and `skills/iam-system-resources` | API and worker composition | KEEP_GENERIC_FOUNDATION | iam | keep module; table DDL already in Goose | iam unit tests | Generic identity, not a product preset |
 | Tenancy registry and onboarding | tenant id, schema name, installation delivery | `docs/architecture/06` and `skills/data-tenancy` | operator initialize, customer provisioning | KEEP_GENERIC_FOUNDATION | tenancy | keep onboarding and license delivery | operator initialize tests | Installation and tenant identity stay |
 | Billing license and subscription | offering, entitlement, invoice | `docs/architecture/15` §3 and `skills/billing` | billing HTTP runtime | KEEP_GENERIC_FOUNDATION | billing | keep module | billing unit tests | Platform license is a Harpy requirement |

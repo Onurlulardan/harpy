@@ -9,8 +9,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	"github.com/Onurlulardan/harpy/core/internal/platform/migration"
 )
 
 var billingCutoverPlatformMigrations = map[string]bool{
@@ -39,7 +37,7 @@ func applyBillingCutoverPlatformMigrations(
 	if origin != "fresh" && origin != "v1_adopted" {
 		t.Fatalf("Billing cutover origin %q is unsupported", origin)
 	}
-	documents, err := []migration.Document(nil), error(nil)
+	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)
 	}

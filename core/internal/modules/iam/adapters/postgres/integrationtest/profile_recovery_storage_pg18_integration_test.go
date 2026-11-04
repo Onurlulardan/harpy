@@ -18,7 +18,7 @@ func TestProfileRecoveryStorageAgainstPostgreSQL184(t *testing.T) {
 			db := startRecoveryStoragePG18(t, ctx, origin)
 			assertProfileRecoveryACL(t, ctx, db)
 			assertRecoveryRuntimeRoleBoundary(t, ctx, db)
-			seedPublicationStartup(t, ctx, db, publicationMigrationDigest(t))
+			seedPublicationStartup(t, ctx, db, publicationExtensionDigest)
 			seedRecoveryStorageSecondUser(t, ctx, db)
 			runtime := openPublicationRuntime(t, ctx, db)
 			setPublicationJobInsert(t, ctx, db, true)
