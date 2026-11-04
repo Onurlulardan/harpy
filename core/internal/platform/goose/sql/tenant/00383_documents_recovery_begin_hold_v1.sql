@@ -1,0 +1,22 @@
+-- +goose Up
+-- BELIRSIZ: caller does not define routine behavior.
+CREATE FUNCTION documents_recovery_begin_hold_v1(
+    arg_1 uuid,
+    arg_2 uuid,
+    arg_3 uuid,
+    arg_4 bytea
+)
+RETURNS text
+LANGUAGE sql
+VOLATILE
+SECURITY INVOKER
+SET search_path TO pg_catalog
+AS $$
+    SELECT ''::text;
+$$;
+
+REVOKE ALL ON FUNCTION documents_recovery_begin_hold_v1(uuid, uuid, uuid, bytea) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION documents_recovery_begin_hold_v1(uuid, uuid, uuid, bytea) TO harpy_api, harpy_worker;
+
+-- +goose Down
+DROP FUNCTION documents_recovery_begin_hold_v1(uuid, uuid, uuid, bytea);

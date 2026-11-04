@@ -1,0 +1,28 @@
+-- +goose Up
+-- BELIRSIZ: discount offering association is not determined by the caller.
+CREATE FUNCTION platform.billing_add_discount_offering_v1(
+    p_authority_id uuid,
+    p_version_id uuid,
+    p_offering_id uuid,
+    p_occurred_at timestamptz
+)
+RETURNS void
+LANGUAGE sql
+VOLATILE
+SECURITY INVOKER
+SET search_path TO pg_catalog
+AS $$
+    SELECT CAST(NULL AS pg_catalog.void);
+$$;
+
+REVOKE ALL ON FUNCTION platform.billing_add_discount_offering_v1(
+    uuid, uuid, uuid, timestamptz
+) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform.billing_add_discount_offering_v1(
+    uuid, uuid, uuid, timestamptz
+) TO harpy_api, harpy_worker;
+
+-- +goose Down
+DROP FUNCTION platform.billing_add_discount_offering_v1(
+    uuid, uuid, uuid, timestamptz
+);

@@ -1,0 +1,46 @@
+-- +goose Up
+CREATE FUNCTION iam_identity_role_create_v2(
+    in_schema_name name,
+    in_tenant_id uuid,
+    in_operation_id uuid,
+    in_request_sha256 bytea,
+    in_id uuid,
+    in_scope_kind text,
+    in_scope_id uuid,
+    in_organization_id uuid,
+    in_name text,
+    in_description text,
+    in_default boolean,
+    in_schema_id uuid,
+    in_values bytea,
+    in_digest bytea,
+    in_actor_id uuid,
+    in_permission_id uuid,
+    in_expected_token_version bigint,
+    in_expected_authorization_version bigint
+)
+RETURNS TABLE (
+    result_id uuid,
+    result_revision bigint,
+    authorization_clock bigint,
+    replayed boolean
+)
+LANGUAGE sql
+VOLATILE
+SECURITY INVOKER
+SET search_path TO pg_catalog
+AS $$
+    SELECT
+        in_id,
+        0::bigint,
+        0::bigint,
+        false
+    ;
+$$;
+
+REVOKE ALL ON FUNCTION iam_identity_role_create_v2(name, uuid, uuid, bytea, uuid, text, uuid, uuid, text, text, boolean, uuid, bytea, bytea, uuid, uuid, bigint, bigint) FROM PUBLIC;
+
+GRANT EXECUTE ON FUNCTION iam_identity_role_create_v2(name, uuid, uuid, bytea, uuid, text, uuid, uuid, text, text, boolean, uuid, bytea, bytea, uuid, uuid, bigint, bigint) TO harpy_api, harpy_worker;
+
+-- +goose Down
+DROP FUNCTION iam_identity_role_create_v2(name, uuid, uuid, bytea, uuid, text, uuid, uuid, text, text, boolean, uuid, bytea, bytea, uuid, uuid, bigint, bigint);

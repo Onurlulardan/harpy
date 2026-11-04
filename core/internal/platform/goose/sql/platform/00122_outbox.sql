@@ -1,0 +1,43 @@
+-- +goose Up
+CREATE TABLE platform.outbox (
+    event_id uuid PRIMARY KEY,
+    tenant_id uuid,
+    scope_kind text NOT NULL,
+    scope_id uuid NOT NULL,
+    authority_group_id text NOT NULL,
+    authority_group_generation bigint NOT NULL,
+    authority_domain text NOT NULL,
+    cutover_generation bigint NOT NULL,
+    writer_origin text NOT NULL,
+    envelope_contract_version text NOT NULL,
+    event_type text NOT NULL,
+    event_version integer NOT NULL,
+    aggregate_type text NOT NULL,
+    aggregate_id uuid NOT NULL,
+    aggregate_version bigint NOT NULL,
+    event_sequence bigint NOT NULL,
+    occurred_at timestamptz NOT NULL,
+    actor_id uuid NOT NULL,
+    correlation_id text NOT NULL,
+    causation_id uuid NOT NULL,
+    idempotency_key text NOT NULL,
+    business_effect_idempotency_key text NOT NULL,
+    payload_canonical bytea,
+    payload_sha256 text NOT NULL,
+    payload_schema_sha256 text NOT NULL,
+    delivery_state text NOT NULL,
+    delivery_attempts integer NOT NULL,
+    lease_generation bigint NOT NULL,
+    next_attempt_at timestamptz NOT NULL,
+    lease_owner_id uuid,
+    lease_heartbeat_at timestamptz,
+    lease_until timestamptz,
+    updated_at timestamptz,
+    confirm_sha256 text,
+    delivered_at timestamptz,
+    last_error_code text,
+    last_error_sha256 text
+);
+
+-- +goose Down
+DROP TABLE platform.outbox;
