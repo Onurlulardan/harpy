@@ -28,7 +28,8 @@ func buildAuthority(
 			EndpointKind: "direct_postgres", MaintenanceDatabase: "postgres",
 			TargetDatabase: localDatabase, SameServerRequired: true,
 		},
-		Roles: authorityRoles(), Memberships: authorityMemberships(),
+		Roles:       runtimev1.BootstrapAuthorityRoles(),
+		Memberships: runtimev1.BootstrapAuthorityMemberships(),
 		CredentialLeases: []runtimev1.BootstrapCredentialLease{
 			authorityLease(keys, localClusterLease, "harpy_cluster_admin"),
 			authorityLease(keys, localExtensionLease, "harpy_extension_admin"),
@@ -70,56 +71,4 @@ func authorityLease(keys releaseKeys, id, principal string) runtimev1.BootstrapC
 		MaxDurationSeconds: 900, MaxConnections: 1,
 		CleanupPolicy: "disable_login_clear_password_terminate_sessions",
 	}
-}
-
-func authorityMemberships() []runtimev1.BootstrapAuthorityMembership {
-	return []runtimev1.BootstrapAuthorityMembership{
-		authorityMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		authorityMembership("harpy_backup", "harpy_backup_reader", true, false, true),
-		authorityMembership("harpy_restore", "harpy_owner", true, false, true),
-		authorityMembership("harpy_v1_runtime", "harpy_runtime", false, true, false),
-	}
-}
-
-func authorityMembership(
-	member, role string, enabled, inherit, set bool,
-) runtimev1.BootstrapAuthorityMembership {
-	return runtimev1.BootstrapAuthorityMembership{
-		Member: member, Role: role, Enabled: enabled, Inherit: inherit, Set: set,
-		Grantor: "harpy_cluster_admin",
-	}
-}
-
-func authorityRoles() []runtimev1.BootstrapAuthorityRole {
-	type spec struct {
-		name, mode                                      string
-		enabled, login, superuser, createDB, createRole bool
-		limit                                           int
-	}
-	specs := []spec{
-		{"harpy_owner", "permanent", true, false, false, false, false, -1},
-		{"harpy_cutover_authority_owner", "externally_provisioned", true, false, false, false, false, -1},
-		{"harpy_runtime", "permanent", true, false, false, false, false, -1},
-		{"harpy_v2_runtime", "permanent", true, true, false, false, false, -1},
-		{"harpy_v1_runtime", "coexistence", false, false, false, false, false, -1},
-		{"harpy_cluster_admin", "leased", true, false, false, true, true, 1},
-		{"harpy_extension_admin", "leased", true, false, true, false, false, 1},
-		{"harpy_legacy_extension_owner", "adopted_only", false, false, false, false, false, -1},
-		{"harpy_adopter", "cutover_leased", true, false, false, false, false, 0},
-		{"harpy_cutover_decoder", "cutover_leased", true, false, false, false, false, 0},
-		{"harpy_cutover_finalizer", "cutover_finalization_leased", true, false, false, false, false, 0},
-		{"harpy_backup_reader", "permanent", true, false, false, false, false, -1},
-		{"harpy_backup", "permanent", true, true, false, false, false, -1},
-		{"harpy_restore", "permanent", true, true, false, false, false, -1},
-		{"harpy_reactivation_observer", "permanent", true, true, false, false, false, -1},
-	}
-	roles := make([]runtimev1.BootstrapAuthorityRole, 0, len(specs))
-	for _, item := range specs {
-		roles = append(roles, runtimev1.BootstrapAuthorityRole{
-			Name: item.name, Enabled: item.enabled, CredentialMode: item.mode, Login: item.login,
-			Superuser: item.superuser, CreateDB: item.createDB, CreateRole: item.createRole,
-			ConnectionLimit: item.limit,
-		})
-	}
-	return roles
 }

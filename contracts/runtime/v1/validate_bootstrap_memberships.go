@@ -2,28 +2,22 @@ package runtimev1
 
 import "fmt"
 
+func BootstrapAuthorityMemberships() []BootstrapAuthorityMembership {
+	return []BootstrapAuthorityMembership{
+		membershipContract("harpy_goose", "harpy_owner", true, false, true),
+	}
+}
+
 func validateBootstrapAuthorityMemberships(
 	memberships []BootstrapAuthorityMembership,
-	origin DatabaseOrigin,
+	_ DatabaseOrigin,
 ) error {
-	if len(memberships) != 4 {
-		return fmt.Errorf("bootstrap authority must contain exactly four memberships")
+	expected := BootstrapAuthorityMemberships()
+	if len(memberships) != len(expected) {
+		return fmt.Errorf("bootstrap authority must contain exactly one membership")
 	}
-	expected := []BootstrapAuthorityMembership{
-		membershipContract("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		membershipContract(
-			"harpy_backup", "harpy_backup_reader", true, false, true,
-		),
-		membershipContract("harpy_restore", "harpy_owner", true, false, true),
-		membershipContract(
-			"harpy_v1_runtime", "harpy_runtime",
-			origin == DatabaseOriginV1Adopted, true, false,
-		),
-	}
-	for index := range expected {
-		if memberships[index] != expected[index] {
-			return fmt.Errorf("bootstrap authority membership %d is invalid", index)
-		}
+	if memberships[0] != expected[0] {
+		return fmt.Errorf("bootstrap authority membership 0 is invalid")
 	}
 	return nil
 }
@@ -35,6 +29,6 @@ func membershipContract(
 	return BootstrapAuthorityMembership{
 		Member: member, Role: role, Enabled: enabled,
 		Admin: false, Inherit: inherit, Set: set,
-		Grantor: "harpy_cluster_admin",
+		Grantor: "harpy_owner",
 	}
 }

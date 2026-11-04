@@ -14,13 +14,15 @@ type signedArtifactPair struct {
 func buildBootstrapAuthority(
 	now time.Time, ids releaseIDs, catalog releaseCatalog, signer signingAuthority,
 ) (signedArtifactPair, error) {
-	issuedAt, expiresAt := now.Add(-time.Minute), now.Add(14*time.Minute)
+	issuedAt := now.Add(-time.Minute)
+	authorityExpiresAt := now.Add(24 * time.Hour)
+	leaseExpiresAt := issuedAt.Add(15 * time.Minute)
 	template := "template0"
 	manifest := runtimev1.BootstrapAuthorityManifest{
 		ContractVersion: "bootstrap-authority-manifest.v1",
 		ManifestID:      ids.authorityManifest, EnvironmentID: ids.environment,
 		ReleaseID: ids.release, IssuedAt: issuedAt.Format(time.RFC3339),
-		ExpiresAt: expiresAt.Format(time.RFC3339), DatabaseOrigin: "fresh",
+		ExpiresAt: authorityExpiresAt.Format(time.RFC3339), DatabaseOrigin: "fresh",
 		Database: runtimev1.BootstrapAuthorityDatabase{
 			Name: databaseName, CreateDatabase: true, Owner: "harpy_owner",
 			ExtensionOwner:       "harpy_extension_admin",
@@ -36,10 +38,11 @@ func buildBootstrapAuthority(
 			EndpointKind: "direct_postgres", MaintenanceDatabase: "postgres",
 			TargetDatabase: databaseName, SameServerRequired: true,
 		},
-		Roles: authorityRoles(), Memberships: authorityMemberships(),
+		Roles:       runtimev1.BootstrapAuthorityRoles(),
+		Memberships: runtimev1.BootstrapAuthorityMemberships(),
 		CredentialLeases: []runtimev1.BootstrapCredentialLease{
-			authorityLease(ids.clusterLease, "harpy_cluster_admin", issuedAt, expiresAt),
-			authorityLease(ids.extensionLease, "harpy_extension_admin", issuedAt, expiresAt),
+			authorityLease(ids.clusterLease, "harpy_cluster_admin", issuedAt, leaseExpiresAt),
+			authorityLease(ids.extensionLease, "harpy_extension_admin", issuedAt, leaseExpiresAt),
 		},
 		RolesManifestSHA256:              catalog.roles.digest,
 		PrivilegesManifestSHA256:         catalog.privileges.digest,
@@ -67,52 +70,6 @@ func buildBootstrapAuthority(
 	}
 	signed, err := newArtifact("bootstrap-authority.sig", signature)
 	return signedArtifactPair{document: document, signature: signed}, err
-}
-
-func authorityRoles() []runtimev1.BootstrapAuthorityRole {
-	return []runtimev1.BootstrapAuthorityRole{
-		authorityRole("harpy_owner", true, "permanent", false, false, false, false, -1),
-		authorityRole("harpy_cutover_authority_owner", true, "externally_provisioned", false, false, false, false, -1),
-		authorityRole("harpy_runtime", true, "permanent", false, false, false, false, -1),
-		authorityRole("harpy_v2_runtime", true, "permanent", true, false, false, false, -1),
-		authorityRole("harpy_v1_runtime", false, "coexistence", false, false, false, false, -1),
-		authorityRole("harpy_cluster_admin", true, "leased", false, false, true, true, 1),
-		authorityRole("harpy_extension_admin", true, "leased", false, true, false, false, 1),
-		authorityRole("harpy_legacy_extension_owner", false, "adopted_only", false, false, false, false, -1),
-		authorityRole("harpy_adopter", true, "cutover_leased", false, false, false, false, 0),
-		authorityRole("harpy_cutover_decoder", true, "cutover_leased", false, false, false, false, 0),
-		authorityRole("harpy_cutover_finalizer", true, "cutover_finalization_leased", false, false, false, false, 0),
-		authorityRole("harpy_backup_reader", true, "permanent", false, false, false, false, -1),
-		authorityRole("harpy_backup", true, "permanent", true, false, false, false, -1),
-		authorityRole("harpy_restore", true, "permanent", true, false, false, false, -1),
-		authorityRole("harpy_reactivation_observer", true, "permanent", true, false, false, false, -1),
-	}
-}
-
-func authorityRole(
-	name string, enabled bool, mode string, login, superuser, createDB, createRole bool, limit int,
-) runtimev1.BootstrapAuthorityRole {
-	return runtimev1.BootstrapAuthorityRole{
-		Name: name, Enabled: enabled, CredentialMode: mode, Login: login,
-		Superuser: superuser, CreateDB: createDB, CreateRole: createRole,
-		ConnectionLimit: limit,
-	}
-}
-
-func authorityMemberships() []runtimev1.BootstrapAuthorityMembership {
-	return []runtimev1.BootstrapAuthorityMembership{
-		authorityMembership("harpy_v2_runtime", "harpy_runtime", true, false, true),
-		authorityMembership("harpy_backup", "harpy_backup_reader", true, false, true),
-		authorityMembership("harpy_restore", "harpy_owner", true, false, true),
-		authorityMembership("harpy_v1_runtime", "harpy_runtime", false, true, false),
-	}
-}
-
-func authorityMembership(member, role string, enabled, inherit, set bool) runtimev1.BootstrapAuthorityMembership {
-	return runtimev1.BootstrapAuthorityMembership{
-		Member: member, Role: role, Enabled: enabled, Inherit: inherit, Set: set,
-		Grantor: "harpy_cluster_admin",
-	}
 }
 
 func authorityLease(

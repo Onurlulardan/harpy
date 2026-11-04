@@ -25,7 +25,7 @@ func publishDevelopmentBootstrapAuthority(directory string, now time.Time) error
 	if !filepath.IsAbs(directory) {
 		return fmt.Errorf("bootstrap authority output must be absolute")
 	}
-	pair, err := buildDevelopmentBootstrapAuthority(now)
+	pair, err := buildDevelopmentBootstrapAuthority(now, releaseIDsForDirectory(directory))
 	if err != nil {
 		return err
 	}
@@ -50,7 +50,9 @@ func publishDevelopmentBootstrapAuthority(directory string, now time.Time) error
 	return output.commit()
 }
 
-func buildDevelopmentBootstrapAuthority(now time.Time) (signedArtifactPair, error) {
+func buildDevelopmentBootstrapAuthority(
+	now time.Time, ids releaseIDs,
+) (signedArtifactPair, error) {
 	catalog, err := developmentAuthorityCatalog()
 	if err != nil {
 		return signedArtifactPair{}, err
@@ -59,7 +61,7 @@ func buildDevelopmentBootstrapAuthority(now time.Time) (signedArtifactPair, erro
 	if err != nil {
 		return signedArtifactPair{}, err
 	}
-	return buildBootstrapAuthority(now, newReleaseIDs(), catalog, signer)
+	return buildBootstrapAuthority(now, ids, catalog, signer)
 }
 
 func developmentAuthorityCatalog() (releaseCatalog, error) {
