@@ -26,7 +26,7 @@ func TestBindPostgresArtifactSetAcceptsFreshOnlyVariant(t *testing.T) {
 	}
 	selected := bound.SelectedMigrations()
 	if !bound.IsVerified() || len(selected) != 1 || selected[0].Origin != "fresh" ||
-		selected[0].Path != "migrations/20260714010000_foundation.fresh.sql" {
+		selected[0].Path != "core/internal/platform/goose/sql/platform/00001_tenants.sql" {
 		t.Fatal("fresh-only migration was not selected")
 	}
 }

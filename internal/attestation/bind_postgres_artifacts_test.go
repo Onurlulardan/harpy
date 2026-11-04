@@ -16,7 +16,7 @@ func TestBindPostgresArtifactSetClosesHashOriginAndVariantChain(t *testing.T) {
 	if !bound.IsVerified() || bound.DatabaseName() != "harpy" ||
 		bound.DatabaseOrigin() != "fresh" || len(selected) != 1 ||
 		selected[0].Origin != "fresh" || selected[0].Path !=
-		"migrations/20260714010000_foundation.fresh.sql" {
+		"core/internal/platform/goose/sql/platform/00001_tenants.sql" {
 		t.Fatal("bound artifact set lost release-selected migration identity")
 	}
 	selected[0].Path = "mutated"

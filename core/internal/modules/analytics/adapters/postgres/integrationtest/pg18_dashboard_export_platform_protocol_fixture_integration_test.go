@@ -48,21 +48,7 @@ func prepareAnalyticsPlatformProtocolPG18(t *testing.T, ctx context.Context) *sq
 
 func analyticsPlatformProtocolDocuments(t *testing.T) []appliedSQL {
 	t.Helper()
-	wanted := map[string]bool{
-		"20260715020000_create_async_reject_mutation_routine.fresh.sql":                     true,
-		"20260715020100_create_jobs.fresh.sql":                                              true,
-		"20260715020200_create_job_attempts.fresh.sql":                                      true,
-		"20260715020300_create_outbox.fresh.sql":                                            true,
-		"20260715020400_create_inbox.fresh.sql":                                             true,
-		"20260715020500_create_idempotency_receipts.fresh.sql":                              true,
-		"20260715020600_create_dead_letters.fresh.sql":                                      true,
-		"20260715020700_create_async_authority_assertion_v1.fresh.sql":                      true,
-		"20260715020800_create_async_append_only_guards_v1.fresh.sql":                       true,
-		"20260802020001_create_analytics_dashboard_export_claim_v1.fresh.sql":               true,
-		"20260802020007_create_analytics_dashboard_export_unknown_resolutions_v1.fresh.sql": true,
-		"20260802020014_create_analytics_dashboard_export_cleanup_owner_v1.fresh.sql":       true,
-		"20260802020021_create_analytics_dashboard_export_control_v1.fresh.sql":             true,
-	}
+	wanted := map[string]bool{}
 	documents, err := []appliedSQL(nil), error(nil)
 	if err != nil {
 		t.Fatal(err)

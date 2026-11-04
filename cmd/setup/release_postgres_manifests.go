@@ -160,8 +160,8 @@ func localMigrationManifest() postgresv1.MigrationManifest {
 			TransactionMode: "transactional", Phase: "foundation",
 			TargetDatabaseGeneration: 1, NextMinimumRuntimeGeneration: 1,
 			Variants: postgresv1.MigrationVariants{Fresh: &postgresv1.MigrationVariant{
-				Path:   "core/internal/platform/migrator/migrations/fresh/20260713010100_local_release.fresh.sql",
-				SHA256: localFixedDigest,
+				Path:   "core/internal/platform/goose/sql/platform/00001_tenants.sql",
+				SHA256: "e5c4c1ed910fd470f5e6adad46cd2ba3a59f4b10f64d6f9515daec8582179811",
 			}},
 		}},
 	}

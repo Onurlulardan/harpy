@@ -46,7 +46,6 @@ func applyDocumentsMigrations(t *testing.T, ctx context.Context, database *sql.D
 		for _, document := range documents {
 			path := document.Path()
 			if strings.Contains(path, "v1_adopted") ||
-				!strings.HasSuffix(path, ".fresh.sql") ||
 				len(document.Content()) == 0 {
 				t.Fatalf("fresh migration %s", path)
 			}

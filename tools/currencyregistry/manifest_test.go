@@ -16,7 +16,7 @@ func TestManifestRewriteTwiceIsByteIdentical(t *testing.T) {
 	const (
 		keptSpace = `"generator":  "keep-bytes"`
 		adopted   = "core/internal/modules/billing/migrations/platform/v1_adopted/old.v1_adopted.sql"
-		baseline  = "core/internal/platform/baseline/sql/20261028000001_tenant_baseline.fresh.sql"
+		baseline  = "core/internal/platform/goose/sql/tenant/00001_schema_identity.sql"
 		staleGo   = "1111111111111111111111111111111111111111111111111111111111111111"
 		staleSQL  = "2222222222222222222222222222222222222222222222222222222222222222"
 		nextGo    = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -75,7 +75,7 @@ func TestManifestRewriteTwiceIsByteIdentical(t *testing.T) {
 		t.Fatal("non-currency record bytes were rewritten")
 	}
 	if !bytes.Contains(second, []byte(nextGo)) || !bytes.Contains(second, []byte(staleSQL)) {
-		t.Fatal("currency provenance was not recorded without rewriting the baseline dump")
+		t.Fatal("currency provenance was not recorded without rewriting the unrelated goose file")
 	}
 	if bytes.Contains(second, []byte(staleGo)) {
 		t.Fatal("stale currency provenance remained")

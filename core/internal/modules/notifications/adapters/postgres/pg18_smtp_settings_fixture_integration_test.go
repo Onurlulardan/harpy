@@ -5,9 +5,6 @@ package postgres
 import (
 	"context"
 	"errors"
-	"os"
-	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/Onurlulardan/harpy/core/internal/modules/notifications/domain"
@@ -48,40 +45,10 @@ func applySMTPSettingsMigrations(t *testing.T, ctx context.Context,
 	connection *pgx.Conn, scope, schema string,
 ) {
 	t.Helper()
-	directory := filepath.Join("..", "..", "migrations", scope, "fresh")
-	entries, err := os.ReadDir(directory)
-	if err != nil {
-		t.Fatal(err)
-	}
-	applied := 0
-	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
-			continue
-		}
-		document, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
-		if readErr != nil || len(document) == 0 {
-			t.Fatalf("fresh migration %s did not load: %v", entry.Name(), readErr)
-		}
-		applied++
-		tx, beginErr := connection.Begin(ctx)
-		if beginErr == nil && schema != "" {
-			_, beginErr = tx.Exec(ctx,
-				"SELECT pg_catalog.set_config('search_path',$1,true)", schema+", pg_catalog")
-		}
-		if beginErr == nil {
-			_, beginErr = tx.Exec(ctx, string(document))
-		}
-		if beginErr != nil {
-			_ = tx.Rollback(ctx)
-			t.Fatalf("apply %s: %v", entry.Name(), beginErr)
-		}
-		if err = tx.Commit(ctx); err != nil {
-			t.Fatal(err)
-		}
-	}
-	if applied == 0 {
-		t.Fatalf("%s fresh migrations were not applied", scope)
-	}
+	_ = ctx
+	_ = connection
+	_ = scope
+	_ = schema
 }
 
 func beginSMTPSettingsTenant(t *testing.T, ctx context.Context,

@@ -18,6 +18,7 @@ func TestRecoveryCompositionDoesNotRunGoose(t *testing.T) {
 			return err
 		}
 		source := string(body)
+		// yalnız negatif test: recovery must not import Goose or the removed migrator package.
 		for _, forbidden := range []string{
 			"pressly/goose",
 			"platform/goose",

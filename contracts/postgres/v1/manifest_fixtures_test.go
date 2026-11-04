@@ -15,7 +15,7 @@ func validMigrationManifest() map[string]any {
 			"target_database_generation": 1, "next_minimum_runtime_generation": 1,
 			"variants": map[string]any{
 				"fresh": map[string]any{
-					"path":   "core/internal/modules/tenancy/migrations/20260714010000_foundation.fresh.sql",
+					"path":   "core/internal/platform/goose/sql/platform/00001_tenants.sql",
 					"sha256": digest("a"),
 				},
 				"v1_adopted": map[string]any{

@@ -12,8 +12,6 @@ import (
 	"github.com/Onurlulardan/harpy/internal/attestation"
 )
 
-const releaseArtifactDirectory = "core/internal/platform/migration/release"
-
 func findRepositoryRoot() (string, error) {
 	current, err := os.Getwd()
 	if err != nil {

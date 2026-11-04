@@ -38,6 +38,7 @@ func TestRoutineDispositionIsClosed(t *testing.T) {
 	}
 }
 
+// yalnız negatif test: migration-streams must not exist and runtime Go must not name it.
 func TestMigrationStreamCatalogIsNotRuntime(t *testing.T) {
 	root := repositoryRoot(t)
 	if _, err := os.Stat(filepath.Join(root, "contracts/storage/migration-streams.yaml")); err == nil {

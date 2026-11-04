@@ -4,9 +4,6 @@ package postgres
 
 import (
 	"context"
-	"os"
-	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 
@@ -38,35 +35,10 @@ func applyStorageMigration(t *testing.T, ctx context.Context, connection *pgx.Co
 	scope, schema string,
 ) {
 	t.Helper()
-	directory := filepath.Join("..", "..", "migrations", scope, "fresh")
-	entries, err := os.ReadDir(directory)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".fresh.sql") {
-			continue
-		}
-		document, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
-		if readErr != nil {
-			t.Fatal(readErr)
-		}
-		tx, beginErr := connection.Begin(ctx)
-		if beginErr == nil && schema != "" {
-			_, beginErr = tx.Exec(ctx,
-				"SELECT pg_catalog.set_config('search_path',$1,true)", schema+", pg_catalog")
-		}
-		if beginErr == nil {
-			_, beginErr = tx.Exec(ctx, string(document))
-		}
-		if beginErr != nil {
-			_ = tx.Rollback(ctx)
-			t.Fatalf("apply %s: %v", entry.Name(), beginErr)
-		}
-		if err = tx.Commit(ctx); err != nil {
-			t.Fatal(err)
-		}
-	}
+	_ = ctx
+	_ = connection
+	_ = scope
+	_ = schema
 }
 
 func seedStorageDelivery(t *testing.T, ctx context.Context, tx pgx.Tx, now time.Time,

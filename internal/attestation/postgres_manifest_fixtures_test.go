@@ -20,7 +20,7 @@ func testMigrationManifest() postgresv1.MigrationManifest {
 			TargetDatabaseGeneration: 1, NextMinimumRuntimeGeneration: 1,
 			Variants: postgresv1.MigrationVariants{
 				Fresh: &postgresv1.MigrationVariant{
-					Path: "migrations/20260714010000_foundation.fresh.sql", SHA256: testHash("a"),
+					Path: "core/internal/platform/goose/sql/platform/00001_tenants.sql", SHA256: testHash("a"),
 				},
 				V1Adopted: &postgresv1.MigrationVariant{
 					Path: "migrations/20260714010000_foundation.v1_adopted.sql", SHA256: testHash("b"),

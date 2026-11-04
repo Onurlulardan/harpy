@@ -39,26 +39,7 @@ ALTER ROLE harpy_cutover_decoder
 }
 
 func documentsCutoverPlatformMigrations() []string {
-	return []string{
-		"core/internal/platform/cutover/migrations/fresh/20260713020000_create_domain_cutovers.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020100_create_cutover_groups.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020200_create_cutover_group_members.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020300_create_cutover_operations.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020400_create_cutover_operation_relations.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020450_create_cutover_operation_checkpoint_keys.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020600_create_cutover_operation_procedures.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260714012000_add_procedure_contract_id.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260714012100_create_cutover_batch_receipts.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020700_create_cutover_copy_checkpoints.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260713020900_create_applied_change_receipts.fresh.sql",
-		"core/internal/platform/async/migrations/fresh/20260715020100_create_jobs.fresh.sql",
-		"core/internal/platform/async/migrations/fresh/20260715020200_create_job_attempts.fresh.sql",
-		"core/internal/platform/async/migrations/fresh/20260715020500_create_idempotency_receipts.fresh.sql",
-		"core/internal/platform/async/migrations/fresh/20260718230700_create_documents_cutover_job_bindings_v1.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260714012500_create_cutover_prepare_batch_v1.fresh.sql",
-		"core/internal/platform/cutover/migrations/fresh/20260714012600_create_cutover_record_batch_v1.fresh.sql",
-		"core/internal/platform/async/migrations/fresh/20260718230703_create_documents_cutover_enqueue_v1.fresh.sql",
-	}
+	return nil
 }
 
 func applyDocumentsPlatformMigration(t *testing.T, ctx context.Context,

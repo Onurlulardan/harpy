@@ -88,6 +88,10 @@ func validateMigrationVariant(version int64, origin DatabaseOrigin, variant Migr
 	if err := validateArtifactPath(variant.Path, "variant path"); err != nil {
 		return err
 	}
+	if strings.HasPrefix(variant.Path, "core/internal/platform/goose/sql/") &&
+		strings.HasSuffix(variant.Path, ".sql") {
+		return validateDigest(variant.SHA256, "variant sha256")
+	}
 	base := variant.Path[strings.LastIndex(variant.Path, "/")+1:]
 	prefix := strconv.FormatInt(version, 10) + "_"
 	if !strings.HasPrefix(base, prefix) || !strings.HasSuffix(base, "."+string(origin)+".sql") {
