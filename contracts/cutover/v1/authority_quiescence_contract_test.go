@@ -8,7 +8,7 @@ import (
 func TestAuthorityQuiescenceRejectsPolicyDrift(t *testing.T) {
 	tests := map[string]func(*AuthorityAdoptionOperation){
 		"principal": func(value *AuthorityAdoptionOperation) {
-			value.QuiescencePolicy.Roles[0].Principal = "harpy_owner"
+			value.QuiescencePolicy.Roles[0].Principal = "harpy_runtime"
 		},
 		"temporary login": func(value *AuthorityAdoptionOperation) {
 			value.QuiescencePolicy.Roles[0].TemporaryState.Login = true

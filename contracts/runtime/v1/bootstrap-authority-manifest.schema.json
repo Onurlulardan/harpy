@@ -104,23 +104,23 @@
   "allOf": [
     {"if": {"properties": {"database_origin": {"const": "fresh"}}}, "then": {"properties": {
       "database": {"properties": {"create_database": {"const": true}, "source_owner": {"type": "null"}, "extension_owner": {"const": "harpy_extension_admin"}, "extension_owner_mode": {"const": "fresh_leased_admin"}, "ownership_executor": {"const": "cluster_bootstrap"}, "template": {"const": "template0"}}},
-      "roles": {"prefixItems": [{}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}, "login": {"const": false}}}, {}, {}, {"properties": {"enabled": {"const": false}}}]},
-      "memberships": {"prefixItems": [{}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
+      "roles": {"prefixItems": [{}, {}, {}, {}, {"properties": {"enabled": {"const": false}, "login": {"const": false}}}, {}, {}, {"properties": {"enabled": {"const": false}}}]},
+      "memberships": {"prefixItems": [{}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
     }}},
     {"if": {"properties": {"database_origin": {"const": "v1_adopted"}}}, "then": {
       "properties": {
         "database": {"properties": {"create_database": {"const": false}, "source_owner": {"$ref": "signed-receipt-defs.schema.json#/$defs/roleName"}, "ownership_executor": {"const": "external_root_provisioner"}, "template": {"type": "null"}}},
-        "roles": {"prefixItems": [{}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}, "login": {"const": true}}}]},
-        "memberships": {"prefixItems": [{}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
+        "roles": {"prefixItems": [{}, {}, {}, {}, {"properties": {"enabled": {"const": true}, "login": {"const": true}}}]},
+        "memberships": {"prefixItems": [{}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
       },
       "oneOf": [
         {"properties": {
           "database": {"properties": {"extension_owner": {"const": "harpy_legacy_extension_owner"}, "extension_owner_mode": {"const": "adopted_reassigned"}}},
-          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
+          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": true}}}]}
         }},
         {"properties": {
           "database": {"properties": {"extension_owner": {"$ref": "#/$defs/externalExtensionOwner"}, "extension_owner_mode": {"const": "adopted_retained_inventory"}}},
-          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
+          "roles": {"prefixItems": [{}, {}, {}, {}, {}, {}, {}, {"properties": {"enabled": {"const": false}}}]}
         }}
       ]
     }}

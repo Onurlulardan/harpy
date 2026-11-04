@@ -27,6 +27,12 @@ func TestMain(m *testing.M) {
 func runGooseIntegration(m *testing.M) int {
 	if dsn := os.Getenv("HARPY_FOUNDATION_TEST_ADMIN_DSN"); dsn != "" {
 		gooseAdminDSN = dsn
+		release, err := foundation.LockSharedTestCluster(dsn)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "lock shared foundation database: %v\n", err)
+			return 1
+		}
+		defer release()
 		return m.Run()
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)

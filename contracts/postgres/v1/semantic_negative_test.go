@@ -36,7 +36,7 @@ func TestInventorySemanticValidationRejectsDangerousDrift(t *testing.T) {
 	}
 
 	roles := validRolesContract(t, "fresh")
-	roles.Roles[6].Superuser = false
+	roles.Roles[5].Superuser = false
 	if err := roles.Validate(); err == nil {
 		t.Fatal("role catalog drift accepted")
 	}
