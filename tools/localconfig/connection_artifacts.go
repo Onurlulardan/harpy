@@ -39,6 +39,15 @@ func addConnectionArtifacts(set *artifactSet, _ time.Time) error {
 			"harpy_v2_runtime", passwords.runtime, "harpy"),
 		"postgres-migrator-dsn.txt": postgresDSN(
 			"harpy_migrator", passwords.migrator, "harpy"),
+		"postgres-goose-password.txt": passwords.goose,
+		"postgres-goose-dsn.txt": postgresDSN(
+			"harpy_goose", passwords.goose, "harpy"),
+		"postgres-api-password.txt": passwords.api,
+		"postgres-api-dsn.txt": postgresDSN(
+			"harpy_api", passwords.api, "harpy"),
+		"postgres-worker-password.txt": passwords.worker,
+		"postgres-worker-dsn.txt": postgresDSN(
+			"harpy_worker", passwords.worker, "harpy"),
 		"postgres-reactivation-observer-password.txt": passwords.observer,
 		"postgres-cluster-admin-maintenance-dsn.txt": postgresDSN(
 			"harpy_cluster_admin", passwords.clusterAdmin, "postgres"),
@@ -93,10 +102,11 @@ type connectionPasswords struct {
 	bootstrap, runtime, migrator string
 	clusterAdmin, extensionAdmin string
 	observer, rabbitmq, smtp     string
+	goose, api, worker           string
 }
 
 func newConnectionPasswords() (connectionPasswords, error) {
-	values := make([]string, 8)
+	values := make([]string, 11)
 	for index := range values {
 		value, err := randomBase64(32)
 		if err != nil {
@@ -108,6 +118,7 @@ func newConnectionPasswords() (connectionPasswords, error) {
 		bootstrap: values[0], runtime: values[1], migrator: values[2],
 		clusterAdmin: values[3], extensionAdmin: values[4],
 		observer: values[5], rabbitmq: values[6], smtp: values[7],
+		goose: values[8], api: values[9], worker: values[10],
 	}, nil
 }
 

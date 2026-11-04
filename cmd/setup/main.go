@@ -135,7 +135,7 @@ func resultText(profile string) string {
 func nextCommands(profile string) string {
 	envFlag := "--env-file deploy/" + profile + "/.env"
 	return fmt.Sprintf("docker compose -f deploy/%s/compose.yml up -d\n", profile) +
-		"go run ./core/cmd/migrator " + envFlag + " deploy up\n" +
+		"go run ./core/cmd/initialize\n" +
 		"go run ./core/cmd/operator " + envFlag + " initialize\n" +
 		"go run ./core/cmd/api " + envFlag + "\n" +
 		"go run ./core/cmd/worker " + envFlag + "\n"

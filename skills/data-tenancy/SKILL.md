@@ -61,12 +61,10 @@ application command
 
 ## Migration
 
-- Migration'i yalniz `core-migrator` calistirsin.
-- API ve worker startup migration calistirmasin.
-- Applied migration'i degistirme; yeni forward migration yaz.
-- Baslangic semasi `core/internal/platform/baseline` icindeki Goose baseline'idir. History Goose version tablosudur.
-- DDL ve modul kurulumu icin advisory lock kullan.
-- Tenant schema'si kendi Goose version tablosunu tutar.
+- Veritabani lifecycle girisi yalniz `core/cmd/initialize` olsun.
+- Foundation yalniz rol, schema namespace, extension, ownership ve grant kurar.
+- Platform ve tenant schema DDL'i ayni Goose runner ile task 03'te gelir; bu asamada runner kurulmaz.
+- API ve worker startup migration veya DDL calistirmaz.
 - Existing schema'yi otomatik drop etme.
 - Uninstall disable eder; purge ayri, onayli ve audit'li use-case'tir.
 
@@ -83,13 +81,8 @@ expand -> resumable backfill -> application switch -> soak -> contract
 
 ## Dynamic form DDL
 
-- Public slug'i fiziksel tablo veya kolon kimligi yapma.
-- Stable form ve field ID mapping kullan.
-- Config publish'te validate ve compile edilmis DDL plan uret.
-- Restricted typed DDL IR'yi yalniz `core-migrator schema-executor` ile uygula;
-  onceki active version'i failure'da koru.
-- Normal form record'u ADR-0010 typed physical storage'inda tut; EAV veya tek
-  JSONB generic fallback acma.
+Dynamic form, schema-executor ve typed DDL IR Harpy urun kapsami disindadir.
+Yerine form, EAV veya JSONB altyapisi kurulmaz.
 
 ## Index ve query
 

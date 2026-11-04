@@ -16,6 +16,7 @@ services:
       - local-secret-mailpit:/catalog/secret-mailpit:ro
       - local-secret-infra-check:/catalog/secret-infra-check:ro
       - local-secret-local-release:/catalog/secret-local-release:ro
+      - local-secret-initialize:/catalog/secret-initialize:ro
       - local-secret-migrator:/catalog/secret-migrator:ro
       - local-secret-schema:/catalog/secret-schema:ro
       - local-secret-operator:/catalog/secret-operator:ro
@@ -45,6 +46,7 @@ volumes:
   local-secret-mailpit:
   local-secret-infra-check:
   local-secret-local-release:
+  local-secret-initialize:
   local-secret-migrator:
   local-secret-schema:
   local-secret-operator:

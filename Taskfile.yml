@@ -28,13 +28,3 @@ tasks:
     desc: Pin the Go toolchain, CI, images, and runtime contract to VERSION
     cmds:
       - go run ./tools/gotoolchain -version "{{.VERSION}}"
-
-  "migration:verify":
-    desc: Verify manifest lineage, lifecycle waiting, replay, recovery, and data-preserving upgrade
-    cmds:
-      - go test ./core/internal/orchestration/environmentoperator ./core/internal/platform/migration -count=1
-      - >-
-        go test -p=1 -timeout=20m -tags=integration
-        ./core/internal/platform/migrator
-        -run "^(TestRunnerPlanVerifyUpAgainstPostgreSQL184|TestRunnerGenerationTwoExpandAndFinalizedReplayOnPostgreSQL184|TestTenantMigrationExecutorPostgreSQL184CrashRetryAndV1Sentinel|TestTenantMigrationPostgreSQL184RollsBackDDLAndRetriesNewRun|TestTenantMigrationPostgreSQL184IncrementalReleasePreservesIdentity)$"
-        -count=1 -v

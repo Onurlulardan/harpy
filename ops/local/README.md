@@ -51,10 +51,9 @@ task local:build:refresh # digest-pinned build girdilerini explicit yenile
 task local:prepare    # init + build + secret/state volume projection
 task local:project    # yalniz volume projection adimi
 task local:infra      # PostgreSQL, RabbitMQ, S3, KMS, SMTP, ClamAV
-task local:bootstrap  # cluster rolleri ve signed local release evidence
-task local:migrate    # migration up, runtime grant ve verify
-task local:services   # schema executor, API ve worker
-task local:verify     # uc runtime readiness kontrolu
+task local:initialize # foundation ve goose lifecycle girisi
+task local:services   # API, worker ve backup executor
+task local:verify     # API ve worker readiness kontrolu
 task local:frontend   # sahiplik kontrollu frontend-v3 dev server
 task local:frontend:status
 task local:frontend:stop
@@ -73,7 +72,6 @@ yoldur.
 | Core API | `http://localhost:8000` |
 | API management | `http://localhost:9001` |
 | Worker management | `http://localhost:9002` |
-| Schema executor management | `http://localhost:9003` |
 | PostgreSQL | `localhost:55432` |
 | RabbitMQ AMQP | `localhost:5673` |
 | RabbitMQ UI | `http://localhost:15673` |
@@ -93,7 +91,7 @@ ayni modular-monolith authority sinirlariyla yuruturler.
 ## Log, durdurma ve sifirlama
 
 ```powershell
-task local:logs          # API, worker ve schema executor
+task local:logs          # API, worker ve backup executor
 task local:logs:api
 task local:logs:worker
 task local:logs:infra
@@ -104,9 +102,9 @@ task local:cleanup:all   # local:cleanup ile ayni
 task local:cleanup:disk  # prune + Windows docker_data.vhdx compact (yonetici)
 ```
 
-Normal kapatma icin `local:down` kullan. Sonraki `local:up`, tamamlanmis
-foundation/current release'i imzali dosyanin omrune degil PostgreSQL'deki exact
-release kanitina gore atlar. `local:destroy` PostgreSQL, RabbitMQ,
+Normal kapatma icin `local:down` kullan. Sonraki `local:up` ayni initialize
+girisini tekrar calistirir. Eski veya dolu bir veritabani fail closed durur ve
+volume otomatik silinmez. `local:destroy` PostgreSQL, RabbitMQ,
 S3, Mailpit, ClamAV, signed release evidence, spool ve projected secret
 volume'larini kalici olarak siler; ardindan exact manifest/hash ile dogrulanan
 host localconfig setini de resetler.
@@ -116,8 +114,8 @@ PID ve process-start identity birlikte tutulur; `local:down` yalniz bu stack'in
 baslattigi process tree'yi kapatir ve 5173'teki yabanci process'i oldurmez.
 
 Host'taki `state/secrets` dizinini yalniz root one-shot projector gorur. API,
-worker, migrator, schema executor ve local sidecar'lar non-root calisir ve her
-biri yalniz kendi explicit allowlist secret volume'ini mount eder.
+worker, initialize ve local sidecar'lar non-root calisir ve her biri yalniz
+kendi explicit allowlist secret volume'ini mount eder.
 
 ## Sorun giderme
 

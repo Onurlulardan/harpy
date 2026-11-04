@@ -76,8 +76,7 @@ tasks:
         {{.COMPOSE}} run --rm local-recovery-state prepare-empty
         -recovery-set-id "{{.RECOVERY_SET_ID}}"
       - task: :local:infra
-      - task: :local:bootstrap
-      - task: :local:migrate
+      - task: :local:initialize
       - "{{.COMPOSE}} rm -sf database-rehydrate"
       - "{{.COMPOSE}} up -d --force-recreate database-rehydrate"
       - "{{.COMPOSE}} run --rm local-recovery-state wait-ready"

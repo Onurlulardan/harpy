@@ -16,6 +16,7 @@ func addProfileEnvironmentArtifacts(set *artifactSet, _ time.Time) error {
 	}{
 		{"api.env", apiEnvironment(set)},
 		{"worker.env", workerEnvironment(set)},
+		{"initialize.env", initializeEnvironment()},
 		{"migrator.env", migratorEnvironment(set)},
 		{"schema-executor.env", schemaExecutorEnvironment(set)},
 		{"operator.env", operatorEnvironment(set)},

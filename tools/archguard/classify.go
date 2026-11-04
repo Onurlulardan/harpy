@@ -19,7 +19,7 @@ func classifySource(source string) guardedSource {
 	guarded := guardedSource{path: source, prefix: prefix}
 	if len(rest) >= 2 && rest[0] == "cmd" {
 		switch rest[1] {
-		case "api", "worker", "migrator", "operator":
+		case "api", "worker", "migrator", "operator", "initialize":
 			guarded.kind = "cmd"
 			guarded.profile = rest[1]
 			return guarded

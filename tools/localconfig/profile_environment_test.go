@@ -120,6 +120,17 @@ func TestGeneratedServiceEnvironmentsUseMountedSecretsOnly(t *testing.T) {
 	if worker["HARPY_IAM_INVITATION_SMTP_USERNAME"] != "harpy-local" {
 		t.Fatal("worker and Mailpit SMTP identities differ")
 	}
+	for _, name := range []string{"api.env", "worker.env"} {
+		text := string(set.files[name])
+		for _, forbidden := range []string{
+			"HARPY_FOUNDATION_ADMIN_DSN_FILE", "postgres-bootstrap-dsn.txt",
+			"postgres-goose-password.txt", "postgres-goose-dsn.txt",
+		} {
+			if strings.Contains(text, forbidden) {
+				t.Fatalf("%s contains privileged foundation material %s", name, forbidden)
+			}
+		}
+	}
 	api := parseProfileEnvironment(t, set.files["api.env"])
 	if api["HARPY_RECOVERY_TRUST_BUNDLE_PATH"] !=
 		"/run/recovery-signing/current/recovery-trust-bundle.v1.json" ||

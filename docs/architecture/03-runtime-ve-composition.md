@@ -9,6 +9,7 @@ flowchart TB
   setup[cmd/setup]
   apiCmd[core/cmd/api] --> apiComp[composition/api]
   workerCmd[core/cmd/worker] --> workerComp[composition/worker]
+  initCmd[core/cmd/initialize] --> initComp[composition/initialize]
   opCmd[core/cmd/operator] --> opComp[composition/operator]
   apiComp --> apiModules[HTTP module runtimes]
   workerComp --> workerModules[Job and event workloads]
@@ -123,6 +124,9 @@ Composition constructor wiring yapar; business decision veya domain state transi
 | Worker runtime | `core/internal/composition/worker/` |
 | Async workload | `build_async_workload.go` |
 | Async supervision | `async_supervisor.go` |
+| Initialize entrypoint | `core/cmd/initialize/main.go` |
+| Initialize runtime | `core/internal/composition/initialize/` |
+| Database foundation | `core/internal/platform/foundation/` |
 | Operator entrypoint | `core/cmd/operator/main.go` |
 | Operator runtime | `core/internal/composition/operator/` |
 | Setup CLI | `cmd/setup/` |

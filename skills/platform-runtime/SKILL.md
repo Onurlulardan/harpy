@@ -25,11 +25,13 @@ description: Build backend-v2 composition, HTTP runtime, configuration, telemetr
 
 ## Deployable siniri
 
-- `core-api`, `core-worker` ve `core-migrator` ayni modular core'u compose eder.
-- `core-operator` yalniz `initialize`, `reconcile-restored-identity` ve
+- `core-api`, `core-worker` ve `core-initialize` ayni modular core'u compose eder.
+- `core-initialize` foundation ve goose asamasini sirayla calistirir; API ve worker
+  bu giris basarili olmadan baslamaz ve restart sirasinda onu tekrar calistirmaz.
+- `core-operator` yalniz kurulum, `reconcile-restored-identity` ve
   `reconcile-restored-license` exact one-shot ABI'laridir.
-- New-tenant DDL yalniz `core-migrator tenant-migration-executor` profilindedir.
-- Recovery-set DB backup/restore yalniz ADR-0121/0123 isolated migrator profillerindedir.
+- Surekli tenant migration executor veya schema-executor yoktur.
+- Recovery backup/restore migration lifecycle'indan ayri kalir.
 - Forms/Workflow servis degil module'dur; async processor'lari worker'da calisir.
 - Composition yalniz constructor/wiring yapar; business policy tasimaz.
 - Core ici modul iletisiminde HTTP veya broker kullanma.
@@ -68,12 +70,9 @@ business transition secmez.
 - Tenant'i verified actor'dan turet; caller/header tenant argumani kabul etme.
 - Tenant registry, schema sentinel ve authority group/domain lock'larini callback
   oncesi al; success'i yalniz commit tamamlandiktan sonra uret.
-- Runtime login DDL yapamaz; migrator typed manifest/IR disina cikamaz.
-- Normal migrator privileged islemi calistirmaz; signed bootstrap/extension
-  receipt'lerini dogrulamadan foundation DDL'ine baslamaz.
-- Runtime/database generation ve manifest hash'leri schema-contract readiness
-  denklemini gecmeden trafik, claim veya schema lease acma.
-- Startup migration yoktur; deploy migration'i ayri one-shot authority'dir.
+- Runtime login DDL yapamaz.
+- Foundation yalniz bos veritabaninda rol, schema, extension ve grant kurar.
+- API ve worker startup migration calistirmaz.
 
 ## Tamamlama kapisi
 

@@ -31,7 +31,7 @@ tasks:
   build:
     desc: Build pinned images from the local Docker and Go caches
     cmds:
-      - "{{.COMPOSE}} build local-release"
+      - "{{.COMPOSE}} build core-initialize"
   project:
     desc: Project least-authority secrets and initialize non-root state volumes
     cmds:
@@ -57,54 +57,10 @@ tasks:
       - "{{.COMPOSE}} run --rm --no-deps recovery-infra-check"
       - "{{.COMPOSE}} run --rm s3-init"
       - "{{.COMPOSE}} run --rm recovery-s3-init"
-  bootstrap:
-    desc: Install the current fresh release when no baseline exists
-    status:
-      - >-
-        {{.COMPOSE}} run --rm local-release release-applied
-        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
+  initialize:
+    desc: Run the single database lifecycle entrypoint
     cmds:
-      - >-
-        {{.COMPOSE}} run --rm local-release prepare
-        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
-        -runtime-password-file /run/secrets/postgres-runtime-password.txt
-        -migrator-password-file /run/secrets/postgres-migrator-password.txt
-        -backup-password-file /run/secrets/postgres-backup-password.txt
-        -restore-password-file /run/secrets/postgres-restore-password.txt
-        -reactivation-observer-password-file
-        /run/secrets/postgres-reactivation-observer-password.txt
-        -migration-manifest /app/migration-manifest.json
-        -replace-owned-output
-        -output /run/release/current
-      - "{{.COMPOSE}} run --rm core-migrator deploy up"
-      - >-
-        {{.COMPOSE}} run --rm local-release grant-runtime
-        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
-      - "{{.COMPOSE}} run --rm core-migrator deploy verify"
-  migrate:
-    desc: Prepare, apply, authorize and verify the current migration release
-    status:
-      - >-
-        {{.COMPOSE}} run --rm local-release release-applied
-        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
-    cmds:
-      - >-
-        {{.COMPOSE}} run --rm local-release prepare
-        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
-        -runtime-password-file /run/secrets/postgres-runtime-password.txt
-        -migrator-password-file /run/secrets/postgres-migrator-password.txt
-        -backup-password-file /run/secrets/postgres-backup-password.txt
-        -restore-password-file /run/secrets/postgres-restore-password.txt
-        -reactivation-observer-password-file
-        /run/secrets/postgres-reactivation-observer-password.txt
-        -migration-manifest /app/migration-manifest.json
-        -replace-owned-output
-        -output /run/release/current
-      - "{{.COMPOSE}} run --rm core-migrator deploy up"
-      - >-
-        {{.COMPOSE}} run --rm local-release grant-runtime
-        -admin-dsn-file /run/secrets/postgres-bootstrap-dsn.txt
-      - "{{.COMPOSE}} run --rm core-migrator deploy verify"
+      - "{{.COMPOSE}} run --rm core-initialize"
   installation:artifacts:
     desc: Reconcile the immutable local manifest and signed development license
     cmds:
@@ -113,14 +69,8 @@ tasks:
     desc: Verify and publish the environment-bound development license offering
     cmds:
       - "{{.COMPOSE}} run --rm dev-license"
-  tenant-executor:
-    desc: Start the new-tenant migration executor and wait for claim readiness
-    cmds:
-      - >-
-        {{.COMPOSE}} up -d --wait --wait-timeout 180
-        tenant-migration-executor
-  initialize:
-    desc: Atomically initialize the tenant and complete one-time credential delivery
+  installation:deliver:
+    desc: Deliver installation credentials after the database lifecycle
     cmds:
       - "{{.COMPOSE}} run --rm installation-delivery prepare"
       - "{{.COMPOSE}} run --rm core-operator"
@@ -129,14 +79,13 @@ tasks:
       - "{{.COMPOSE}} run --rm installation-delivery deliver"
       - "{{.COMPOSE}} run --rm installation-delivery verify"
   services:
-    desc: Start schema executor, API and worker after login readiness
+    desc: Start API, worker and the backup executor after initialize
     cmds:
-      - "{{.COMPOSE}} up -d --wait --wait-timeout 180 schema-executor"
       - >-
         {{.COMPOSE}} up -d --wait --wait-timeout 180
         core-api core-worker database-backup-executor
   verify:
-    desc: Verify schema executor, API and worker readiness from the local network
+    desc: Verify API and worker readiness from the local network
     cmds:
       - "{{.COMPOSE}} run --rm --no-deps runtime-check"
   frontend:
@@ -160,12 +109,10 @@ tasks:
     cmds:
       - task: prepare
       - task: infra
-      - task: bootstrap
-      - task: migrate
+      - task: initialize
       - task: installation:artifacts
       - task: license
-      - task: tenant-executor
-      - task: initialize
+      - task: installation:deliver
       - task: services
       - task: verify
       - task: frontend:if-present

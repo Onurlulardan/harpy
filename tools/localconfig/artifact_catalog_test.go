@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-const expectedGeneratedArtifactCount = 96
+const expectedGeneratedArtifactCount = 103
 
 func TestArtifactCatalogAndManifestHaveExactCount(t *testing.T) {
 	set, now := generatedSetForTest(t)

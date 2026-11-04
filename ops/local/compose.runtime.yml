@@ -6,52 +6,6 @@ x-logging: &logging
       max-file: "3"
 
 services:
-  tenant-migration-executor:
-    <<: *logging
-    image: harpy/backend-v2-local:dev
-    restart: unless-stopped
-    entrypoint: ["/app/core-migrator", "tenant-migration-executor"]
-    env_file: ./state/secrets/tenant-migration-executor.env
-    environment:
-      HARPY_MANAGEMENT_LISTEN_ADDR: 0.0.0.0:9000
-    ports:
-      - "127.0.0.1:${LOCAL_TENANT_MIGRATION_MANAGEMENT_PORT}:9000"
-    volumes:
-      - local-secret-migrator:/run/secrets:ro
-      - release-state:/run/release:ro
-      - ../../debug-66ab43.log:/tmp/debug-66ab43.log
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/readyz", "-timeout", "2s"]
-      interval: 5s
-      timeout: 3s
-      retries: 30
-      start_period: 5s
-    networks: [local]
-
-  schema-executor:
-    <<: *logging
-    image: harpy/backend-v2-local:dev
-    restart: unless-stopped
-    entrypoint: ["/app/core-migrator", "schema-executor"]
-    env_file: ./state/secrets/schema-executor.env
-    ports:
-      - "127.0.0.1:${LOCAL_SCHEMA_MANAGEMENT_PORT}:9000"
-    volumes:
-      - local-secret-schema:/run/secrets:ro
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "/app/local-health", "-http", "http://127.0.0.1:9000/readyz", "-timeout", "2s"]
-      interval: 5s
-      timeout: 3s
-      retries: 30
-      start_period: 5s
-    networks: [local]
-
   core-api:
     <<: *logging
     image: harpy/backend-v2-local:dev
@@ -61,6 +15,7 @@ services:
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-wif.json
       SSL_CERT_FILE: /run/secrets/local-ca.crt
+      HARPY_MANAGEMENT_LISTEN_ADDR: 0.0.0.0:9000
       HARPY_IAM_ACCESS_TOKEN_ISSUER: http://localhost:${LOCAL_API_PORT}
       HARPY_IAM_ACCESS_TOKEN_AUDIENCE: http://localhost:${LOCAL_API_PORT}/api
     ports:
@@ -74,8 +29,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      schema-executor:
-        condition: service_healthy
+      core-initialize:
+        condition: service_completed_successfully
       s3-owner:
         condition: service_healthy
       local-kms:
@@ -99,6 +54,7 @@ services:
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-wif.json
       SSL_CERT_FILE: /run/secrets/local-ca.crt
+      HARPY_MANAGEMENT_LISTEN_ADDR: 0.0.0.0:9000
       HARPY_IAM_INVITATION_PUBLIC_BASE_URL: ${LOCAL_PUBLIC_BASE_URL}
     ports:
       - "127.0.0.1:${LOCAL_WORKER_MANAGEMENT_PORT}:9000"
@@ -110,8 +66,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      schema-executor:
-        condition: service_healthy
+      core-initialize:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
       s3-owner:

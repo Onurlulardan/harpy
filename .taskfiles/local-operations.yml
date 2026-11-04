@@ -12,13 +12,12 @@ vars:
     -f ops/local/compose.inventory.yml -f ops/local/compose.lifecycle.yml
 tasks:
   logs:
-    desc: Follow API, worker and migration executor logs
+    desc: Follow API, worker and backup executor logs
     dir: "{{.ROOT_DIR}}"
     cmds:
       - >-
         {{.COMPOSE}} logs --tail=200 --follow
-        core-api core-worker schema-executor tenant-migration-executor
-        database-backup-executor
+        core-api core-worker database-backup-executor
   logs:api:
     desc: Follow Core API logs
     dir: "{{.ROOT_DIR}}"
@@ -84,7 +83,7 @@ tasks:
     desc: Explicitly refresh digest-pinned build inputs from their registries
     dir: "{{.ROOT_DIR}}"
     cmds:
-      - "{{.COMPOSE}} build --pull local-release"
+      - "{{.COMPOSE}} build --pull core-initialize"
       - docker builder prune --filter type=regular -f
       - docker builder prune --filter type=source.local -f
       - docker builder prune --max-used-space 2gb -f
