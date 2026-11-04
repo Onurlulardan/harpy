@@ -30,8 +30,7 @@ func distinctRecoveryPassword(
 	additional map[string]bool,
 ) (string, error) {
 	used := map[string]bool{
-		string(set.files["postgres-runtime-password.txt"]):  true,
-		string(set.files["postgres-migrator-password.txt"]): true,
+		string(set.files["postgres-runtime-password.txt"]): true,
 	}
 	for value := range additional {
 		used[value] = true

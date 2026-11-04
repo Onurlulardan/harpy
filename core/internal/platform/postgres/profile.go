@@ -27,14 +27,16 @@ type profileContract struct {
 	currentLogin    bool
 	currentTemp     bool
 	currentCreate   bool
+	roleInherit     bool
+	connLimit       int
 }
 
 func (profile Profile) contract() (profileContract, error) {
 	switch profile {
 	case ProfileAPI:
-		return runtimeProfile("core-api"), nil
+		return applicationProfile(foundationRoleAPI, "core-api"), nil
 	case ProfileWorker:
-		return runtimeProfile("core-worker"), nil
+		return applicationProfile(foundationRoleWorker, "core-worker"), nil
 	case ProfileOperatorInitialize:
 		return runtimeProfile("core-operator-initialize"), nil
 	case ProfileOperatorIdentityReconcile:
@@ -52,11 +54,26 @@ func (profile Profile) contract() (profileContract, error) {
 	}
 }
 
+const (
+	foundationRoleAPI    = "harpy_api"
+	foundationRoleWorker = "harpy_worker"
+)
+
+func applicationProfile(role, application string) profileContract {
+	return profileContract{
+		sessionUser: role, currentUser: role,
+		applicationName: "harpy-v2:" + application, runtime: true,
+		foundation: true, profileTx: true, currentLogin: true,
+		roleInherit: true, connLimit: 20,
+	}
+}
+
 func runtimeProfile(application string) profileContract {
 	return profileContract{
 		sessionUser: "harpy_v2_runtime", currentUser: "harpy_runtime",
 		applicationName: "harpy-v2:" + application, runtime: true,
 		foundation: true, profileTx: true, memberships: 1, memberSet: true,
+		connLimit: -1,
 	}
 }
 
@@ -65,6 +82,7 @@ func backupProfile() profileContract {
 		sessionUser: "harpy_backup", currentUser: "harpy_backup_reader",
 		applicationName: "harpy-v2:core-database-backup-executor",
 		foundation:      true, profileTx: true, memberships: 1, memberSet: true,
+		connLimit: -1,
 	}
 }
 
@@ -74,6 +92,7 @@ func restoreProfile() profileContract {
 		applicationName: "harpy-v2:core-database-restore",
 		profileTx:       true,
 		currentLogin:    true, currentTemp: true, currentCreate: true,
+		connLimit: -1,
 	}
 }
 
@@ -84,5 +103,6 @@ func postRestoreObserverProfile() profileContract {
 		applicationName: "harpy-v2:core-operator-post-restore-reactivation-observer",
 		profileTx:       true,
 		currentLogin:    true,
+		connLimit:       -1,
 	}
 }

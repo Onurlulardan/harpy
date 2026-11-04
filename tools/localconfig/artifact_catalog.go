@@ -66,8 +66,6 @@ var baseArtifactNames = []string{
 	"postgres-extension-admin-password.txt",
 	"postgres-goose-dsn.txt",
 	"postgres-goose-password.txt",
-	"postgres-migrator-dsn.txt",
-	"postgres-migrator-password.txt",
 	"postgres-runtime-dsn.txt",
 	"postgres-runtime-password.txt",
 	"postgres-worker-dsn.txt",

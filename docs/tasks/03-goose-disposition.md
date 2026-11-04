@@ -1,6 +1,6 @@
 # 03 Goose PostgreSQL object disposition
 
-Stream recount from this branch: **312** (`contracts/storage/migration-streams.yaml` includes). The previous 312 figure matches; it is a checksum, not the object list.
+Stream recount from the removed historical catalog was **312**. That figure is a checksum, not the object list. The catalog files are not a runtime source.
 
 Phase status: no `UNRESOLVED` rows. Legacy routines stay out of Goose under 03 §14.1. Tables with a current Go SQL column contract are new Goose DDL. Historical dump-only objects are `REMOVE_LEGACY_STATE`.
 

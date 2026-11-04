@@ -52,48 +52,6 @@ func (a ExtensionArtifacts) paths() []AbsolutePath {
 	return []AbsolutePath{a.extension, a.ownership, a.operation}
 }
 
-type MigrationArtifacts struct {
-	migration AbsolutePath
-	extension AbsolutePath
-	roles     AbsolutePath
-	privilege AbsolutePath
-	ownership AbsolutePath
-	bootstrap AbsolutePath
-	extend    AbsolutePath
-	cleanup   AbsolutePath
-}
-
-func loadMigrationArtifacts(values environmentValues) (MigrationArtifacts, error) {
-	paths, err := loadPostgresArtifactPaths(values, []string{
-		"HARPY_MIGRATION_MANIFEST_PATH", "HARPY_EXTENSION_MANIFEST_PATH",
-		"HARPY_ROLES_MANIFEST_PATH", "HARPY_PRIVILEGES_MANIFEST_PATH",
-		"HARPY_OWNERSHIP_MANIFEST_PATH", "HARPY_BOOTSTRAP_OPERATION_PATH",
-		"HARPY_EXTENSION_OPERATION_PATH", "HARPY_CREDENTIAL_CLEANUP_OPERATION_PATH",
-	})
-	if err != nil {
-		return MigrationArtifacts{}, err
-	}
-	return MigrationArtifacts{
-		migration: paths[0], extension: paths[1], roles: paths[2], privilege: paths[3],
-		ownership: paths[4], bootstrap: paths[5], extend: paths[6], cleanup: paths[7],
-	}, nil
-}
-
-func (a MigrationArtifacts) MigrationManifestPath() AbsolutePath  { return a.migration }
-func (a MigrationArtifacts) ExtensionManifestPath() AbsolutePath  { return a.extension }
-func (a MigrationArtifacts) RolesManifestPath() AbsolutePath      { return a.roles }
-func (a MigrationArtifacts) PrivilegesManifestPath() AbsolutePath { return a.privilege }
-func (a MigrationArtifacts) OwnershipManifestPath() AbsolutePath  { return a.ownership }
-func (a MigrationArtifacts) BootstrapOperationPath() AbsolutePath { return a.bootstrap }
-func (a MigrationArtifacts) ExtensionOperationPath() AbsolutePath { return a.extend }
-func (a MigrationArtifacts) CleanupOperationPath() AbsolutePath   { return a.cleanup }
-func (a MigrationArtifacts) paths() []AbsolutePath {
-	return []AbsolutePath{
-		a.migration, a.extension, a.roles, a.privilege, a.ownership,
-		a.bootstrap, a.extend, a.cleanup,
-	}
-}
-
 func loadPostgresArtifactPaths(
 	values environmentValues,
 	keys []string,

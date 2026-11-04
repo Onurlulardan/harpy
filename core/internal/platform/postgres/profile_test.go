@@ -9,8 +9,8 @@ func TestProfilesPinRolesAndApplicationNames(t *testing.T) {
 		current string
 		runtime bool
 	}{
-		{ProfileAPI, "harpy_v2_runtime", "harpy_runtime", true},
-		{ProfileWorker, "harpy_v2_runtime", "harpy_runtime", true},
+		{ProfileAPI, "harpy_api", "harpy_api", true},
+		{ProfileWorker, "harpy_worker", "harpy_worker", true},
 		{ProfileOperatorInitialize, "harpy_v2_runtime", "harpy_runtime", true},
 		{ProfileOperatorIdentityReconcile, "harpy_v2_runtime", "harpy_runtime", true},
 		{ProfileOperatorLicenseReconcile, "harpy_v2_runtime", "harpy_runtime", true},

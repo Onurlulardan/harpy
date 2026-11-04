@@ -114,8 +114,7 @@ The integration owner must perform them once after all modules are frozen:
    include it in `contracts/storage/owners.yaml`. It must claim the static SQL
    directory and the four runtime routine grants. `change_logs` is not a
    migration-state table.
-4. `contracts/storage/migration-streams.yaml` is historical inventory only.
-   Do not add a stream fragment and do not load that catalog at runtime.
+4. Do not add a migration-stream catalog. Schema changes go through Goose.
 5. Do not add an Audit provider to a migrator composition. Schema changes go
    through Goose.
 6. Add the Audit HTTP facade and IAM verifier bridge once to API composition.

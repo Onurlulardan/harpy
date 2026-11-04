@@ -1,7 +1,7 @@
 package main
 
 func workerEnvironment(set *artifactSet) profileEnvironment {
-	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-runtime-dsn.txt")
+	values := baseRuntimeEnvironmentFor(secretRoot + "postgres-worker-dsn.txt")
 	values["GOMEMLIMIT"] = "512MiB"
 	values["HARPY_RABBITMQ_URL_FILE"] = secretRoot + "rabbitmq-url.txt"
 	addSharedStorageEnvironment(values)

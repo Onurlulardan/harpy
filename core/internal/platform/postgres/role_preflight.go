@@ -42,8 +42,8 @@ func validateRolePreflight(
 	if err != nil {
 		return fmt.Errorf("%w: role query", ErrStartupPreflight)
 	}
-	if !safeRole(sessionRole, contract.sessionUser, true) ||
-		!safeRole(currentRole, contract.currentUser, contract.currentLogin) ||
+	if !safeRole(sessionRole, contract.sessionUser, true, contract) ||
+		!safeRole(currentRole, contract.currentUser, contract.currentLogin, contract) ||
 		admin || inherit || set != contract.memberSet ||
 		membershipCount != contract.memberships ||
 		sessionTemp || (!contract.currentTemp && currentTemp) ||
@@ -57,8 +57,8 @@ type roleQueryer interface {
 	QueryRow(context.Context, string, ...any) pgx.Row
 }
 
-func safeRole(role roleCatalog, name string, login bool) bool {
+func safeRole(role roleCatalog, name string, login bool, contract profileContract) bool {
 	return role.name == name && role.login == login && !role.superuser &&
-		!role.inherit && !role.createRole && !role.createDB &&
-		!role.replication && !role.bypassRLS && role.connLimit == -1
+		role.inherit == contract.roleInherit && !role.createRole && !role.createDB &&
+		!role.replication && !role.bypassRLS && role.connLimit == contract.connLimit
 }

@@ -7,7 +7,6 @@ import (
 	"io/fs"
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/foundation"
-	pressly "github.com/pressly/goose/v3"
 )
 
 func UpPlatform(ctx context.Context, cfg foundation.Config) error {
@@ -25,6 +24,14 @@ func UpPlatform(ctx context.Context, cfg foundation.Config) error {
 	return up(ctx, dsn, source, foundation.RoleOwner, foundation.PlatformSchema)
 }
 
+func UpTenant(ctx context.Context, dsn, schema string) error {
+	source, err := fs.Sub(tenantRoot, "sql/tenant")
+	if err != nil {
+		return fmt.Errorf("open tenant goose source: %w", err)
+	}
+	return up(ctx, dsn, source, "", schema)
+}
+
 func up(ctx context.Context, dsn string, source fs.FS, role, schema string) error {
 	database, err := openGoose(ctx, dsn, schema)
 	if err != nil {
@@ -39,12 +46,7 @@ func up(ctx context.Context, dsn string, source fs.FS, role, schema string) erro
 	if err = applySearchPath(ctx, database, schema); err != nil {
 		return err
 	}
-	provider, err := pressly.NewProvider(pressly.DialectPostgres, database, source)
-	if err != nil {
-		return err
-	}
-	_, err = provider.Up(ctx)
-	return err
+	return upDatabase(ctx, database, source)
 }
 
 func setRole(ctx context.Context, database *sql.DB, role string) error {

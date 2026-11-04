@@ -40,16 +40,13 @@ func TestRoutineDispositionIsClosed(t *testing.T) {
 
 func TestMigrationStreamCatalogIsNotRuntime(t *testing.T) {
 	root := repositoryRoot(t)
-	catalog, err := os.ReadFile(filepath.Join(root, "contracts/storage/migration-streams.yaml"))
-	if err != nil {
-		t.Fatal(err)
+	if _, err := os.Stat(filepath.Join(root, "contracts/storage/migration-streams.yaml")); err == nil {
+		t.Fatal("migration stream catalog is still in the tree")
 	}
-	text := string(catalog)
-	if !strings.Contains(text, "role: historical-inventory") ||
-		!strings.Contains(text, "runtime: false") {
-		t.Fatal("migration stream catalog is not marked historical")
+	if _, err := os.Stat(filepath.Join(root, "contracts/storage/migration-streams")); err == nil {
+		t.Fatal("migration stream directory is still in the tree")
 	}
-	err = filepath.WalkDir(root, func(path string, entry os.DirEntry, walkErr error) error {
+	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, walkErr error) error {
 		if walkErr != nil || entry.IsDir() {
 			return walkErr
 		}

@@ -6,7 +6,6 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
-	"io/fs"
 
 	"github.com/Onurlulardan/harpy/core/internal/platform/foundation"
 )
@@ -34,10 +33,6 @@ func ProvisionTenant(ctx context.Context, cfg foundation.Config, tenantID [16]by
 	if err != nil {
 		return err
 	}
-	source, err := fs.Sub(tenantRoot, "sql/tenant")
-	if err != nil {
-		return fmt.Errorf("open tenant goose source: %w", err)
-	}
 	database, err := openGoose(ctx, dsn, schemaName)
 	if err != nil {
 		return err
@@ -49,7 +44,7 @@ func ProvisionTenant(ctx context.Context, cfg foundation.Config, tenantID [16]by
 	if err = lockTenant(ctx, database, tenantID); err != nil {
 		return err
 	}
-	if err = upDatabase(ctx, database, source); err != nil {
+	if err = UpTenant(ctx, dsn, schemaName); err != nil {
 		return err
 	}
 	_, err = database.ExecContext(ctx, `INSERT INTO tenancy_schema_identity (
