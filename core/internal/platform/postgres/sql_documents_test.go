@@ -12,7 +12,6 @@ func TestRuntimeSQLDocumentsAreEmbedded(t *testing.T) {
 		probeSchemaContractSQL, resolveTenantSQL, resolveTenantSnapshotSQL,
 		setTenantSearchPathSQL,
 		verifyTenantSearchPathSQL, verifyTenantIdentitySQL,
-		lockCutoverGroupSQL, listCutoverGroupMembersSQL, lockDomainCutoverSQL,
 		verifyDomainCutoverSQL,
 		resolveSnapshotDomainsSQL, resolveAnalyticsPublicRouteSQL,
 		resolveAnalyticsLegacyPublicSQL, recordAnalyticsLegacyPublicHitSQL,
@@ -49,9 +48,6 @@ func TestCommandLocksUseOwnerRoutines(t *testing.T) {
 		direct   string
 	}{
 		{resolveTenantSQL, "tenancy_runtime_resolve_command_v1", "FROM platform.tenants"},
-		{lockCutoverGroupSQL, "cutover_runtime_lock_group_v1", "FROM platform.cutover_groups"},
-		{listCutoverGroupMembersSQL, "cutover_runtime_lock_group_members_v1", "FROM platform.cutover_group_members"},
-		{lockDomainCutoverSQL, "cutover_runtime_lock_domain_v1", "FROM platform.domain_cutovers"},
 		{lockGlobalBillingGroupSQL, "cutover_runtime_lock_group_v1", "FROM platform.cutover_groups"},
 		{lockGlobalBillingMembersSQL, "cutover_runtime_lock_group_members_v1", "FROM platform.cutover_group_members"},
 		{lockGlobalBillingDomainSQL, "cutover_runtime_lock_domain_v1", "FROM platform.domain_cutovers"},

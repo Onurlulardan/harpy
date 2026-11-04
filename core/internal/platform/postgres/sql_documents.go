@@ -47,15 +47,6 @@ var verifyTenantSearchPathSQL string
 //go:embed adapters/postgres/sql/verify_tenant_identity.sql
 var verifyTenantIdentitySQL string
 
-//go:embed adapters/postgres/sql/lock_cutover_group.sql
-var lockCutoverGroupSQL string
-
-//go:embed adapters/postgres/sql/list_cutover_group_members.sql
-var listCutoverGroupMembersSQL string
-
-//go:embed adapters/postgres/sql/lock_domain_cutover.sql
-var lockDomainCutoverSQL string
-
 //go:embed adapters/postgres/sql/verify_domain_cutover.sql
 var verifyDomainCutoverSQL string
 
