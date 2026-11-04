@@ -93,7 +93,7 @@ AS $fn$
             p_operation_id, p_environment_id, p_restore_receipt_id, p_restore_receipt_sha256,
             p_license_binding_id, p_license_id, p_licensee_organization_id, p_previous_sequence,
             p_previous_sha256, p_next_sequence, p_next_sha256,
-            pg_catalog.greatest(p_expected_revision, 1), pg_catalog.clock_timestamp()
+            pg_catalog.greatest(p_expected_revision, 1::bigint), pg_catalog.clock_timestamp()
         WHERE NOT EXISTS (SELECT 1 FROM existing)
         RETURNING operation_id, restore_receipt_id, license_binding_id, previous_sequence,
                   previous_sha256, accepted_sequence, accepted_sha256, authority_revision
