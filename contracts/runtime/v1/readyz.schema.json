@@ -7,7 +7,7 @@
   "required": ["status", "service", "reason", "checks"],
   "properties": {
     "status": {"enum": ["not_ready", "ready"]},
-    "service": {"enum": ["core-api", "core-migrator", "core-worker"]},
+    "service": {"enum": ["core-api", "core-recovery", "core-worker"]},
     "reason": {"enum": ["dependency_failed", "draining", "none", "starting"]},
     "checks": {
       "type": "array",

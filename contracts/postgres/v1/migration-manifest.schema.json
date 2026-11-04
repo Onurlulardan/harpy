@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://harpy.io/contracts/postgres/v1/migration-manifest.schema.json",
   "title": "Harpy PostgreSQL Migration Manifest v1",
+  "description": "PRESERVE_NON_MIGRATION: history_table names the Goose native version table.",
   "type": "object", "additionalProperties": false,
   "required": [
     "contract_version", "engine", "postgres_major", "history_table",
@@ -13,6 +14,7 @@
     "postgres_major": {"const": 18},
     "history_table": {"const": "platform.goose_db_version"},
     "out_of_order": {"const": false},
+    "disposition": {"const": "PRESERVE_NON_MIGRATION"},
     "entries": {
       "type": "array", "minItems": 1, "maxItems": 10000, "uniqueItems": true,
       "items": {"$ref": "#/$defs/entry"}

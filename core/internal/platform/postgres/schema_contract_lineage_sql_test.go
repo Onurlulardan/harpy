@@ -1,5 +1,7 @@
 package postgres
 
+// PRESERVE_NON_MIGRATION: asserts startup SQL does not read Goose native history.
+
 import (
 	"strings"
 	"testing"
@@ -16,14 +18,12 @@ func TestSchemaContractProbeUsesBaselineIdentity(t *testing.T) {
 			t.Fatalf("schema contract probe still reads %s", removed)
 		}
 	}
-	for _, required := range []string{
-		"platform.environment_identity AS identity",
-		"platform.goose_db_version AS history",
-		"20261028000000, 20261102000000",
-	} {
-		if !strings.Contains(probeSchemaContractSQL, required) {
-			t.Fatalf("schema contract probe omitted %q", required)
-		}
+	if !strings.Contains(probeSchemaContractSQL, "platform.environment_identity AS identity") {
+		t.Fatal("schema contract probe omitted environment identity")
+	}
+	if strings.Contains(probeSchemaContractSQL, "goose_db_version") ||
+		strings.Contains(probeSchemaContractSQL, "20261028000000") {
+		t.Fatal("schema contract probe still reads Goose history")
 	}
 }
 
@@ -37,7 +37,8 @@ func TestFoundationPreflightUsesBaselineIdentity(t *testing.T) {
 			t.Fatalf("foundation preflight still reads %s", removed)
 		}
 	}
-	if !strings.Contains(baselineFoundationSQL, "20261028000000, 20261102000000") {
-		t.Fatal("foundation preflight must require the platform baseline versions")
+	if strings.Contains(baselineFoundationSQL, "goose_db_version") ||
+		strings.Contains(baselineFoundationSQL, "20261028000000") {
+		t.Fatal("foundation preflight still reads Goose history")
 	}
 }

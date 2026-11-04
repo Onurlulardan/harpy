@@ -87,6 +87,7 @@ ORDER BY 1, 2`)
 		}
 		if schemaName == PlatformSchema || tenantSchemaPattern.MatchString(schemaName) {
 			managed++
+			// PRESERVE_NON_MIGRATION: Goose native history already present means a rerun.
 			if schemaName == PlatformSchema && relationName == "goose_db_version" {
 				gooseHistory = true
 			}

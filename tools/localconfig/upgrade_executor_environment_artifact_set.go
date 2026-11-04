@@ -73,9 +73,7 @@ func validateExecutorEnvironmentUpgradeManifest(value setManifest, now time.Time
 	if err := validateManifestFileCatalog(value.Files); err != nil {
 		return err
 	}
-	expected := removeArtifactName(
-		expectedArtifactNames(), "tenant-migration-executor.env",
-	)
+	expected := expectedArtifactNames()
 	sort.Strings(expected)
 	if len(value.Files) != len(expected) {
 		return fmt.Errorf("executor environment upgrade source catalog differs")

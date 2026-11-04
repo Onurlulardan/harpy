@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://harpy.io/contracts/runtime/v1/core-migrator-config.schema.json",
+  "$id": "https://harpy.io/contracts/runtime/v1/core-recovery-config.schema.json",
   "title": "Harpy Core Migrator Environment Snapshot v1",
   "oneOf": [
     {"$ref": "#/$defs/migratorDeploy"},

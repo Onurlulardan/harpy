@@ -30,6 +30,7 @@ description: Build backend-v2 composition, HTTP runtime, configuration, telemetr
   bu giris basarili olmadan baslamaz ve restart sirasinda onu tekrar calistirmaz.
 - `core-operator` yalniz kurulum, `reconcile-restored-identity` ve
   `reconcile-restored-license` exact one-shot ABI'laridir.
+<!-- PRESERVE_NON_MIGRATION: prohibition. No continuous executor is part of runtime. -->
 - Surekli tenant migration executor veya schema-executor yoktur.
 - Recovery backup/restore migration lifecycle'indan ayri kalir.
 - Forms/Workflow servis degil module'dur; async processor'lari worker'da calisir.

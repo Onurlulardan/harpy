@@ -2,6 +2,8 @@
 
 package goose
 
+// PRESERVE_NON_MIGRATION: asserts Goose native history stays in platform and tenant schemas.
+
 import (
 	"context"
 	"testing"

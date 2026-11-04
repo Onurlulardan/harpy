@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+// PRESERVE_NON_MIGRATION: embedded document names the Goose native history table.
+//
 //go:embed fresh-migration-manifest.json
 var freshMigrationManifest []byte
 

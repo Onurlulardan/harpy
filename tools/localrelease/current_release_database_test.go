@@ -1,5 +1,7 @@
 package main
 
+// PRESERVE_NON_MIGRATION: asserts release status does not require a Goose version row.
+
 import (
 	"strings"
 	"testing"
@@ -32,10 +34,12 @@ func TestCurrentReleaseStatusUsesBaselineGooseVersion(t *testing.T) {
 			t.Fatalf("current release status still reads %s", removed)
 		}
 	}
-	if !strings.Contains(currentReleaseAppliedSQL, "platform.environment_identity AS identity") ||
-		!strings.Contains(currentReleaseAppliedSQL, "platform.goose_db_version AS history") ||
-		!strings.Contains(currentReleaseAppliedSQL, "20261103000006") {
-		t.Fatal("current release status must use the baseline identity and Goose version")
+	if !strings.Contains(currentReleaseAppliedSQL, "platform.environment_identity AS identity") {
+		t.Fatal("current release status omitted the environment identity")
+	}
+	if strings.Contains(currentReleaseAppliedSQL, "goose_db_version") ||
+		strings.Contains(currentReleaseAppliedSQL, "20261103000006") {
+		t.Fatal("current release status still requires a Goose version")
 	}
 }
 

@@ -1,5 +1,7 @@
 package postgresv1
 
+// PRESERVE_NON_MIGRATION: fixtures name the Goose native history table.
+
 func validMigrationManifest() map[string]any {
 	return map[string]any{
 		"contract_version": "postgres-migration-manifest.v1",

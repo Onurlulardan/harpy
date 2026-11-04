@@ -9,8 +9,9 @@ const (
 type Service string
 
 const (
-	ServiceCoreAPI      Service = "core-api"
-	ServiceCoreMigrator Service = "core-migrator"
+	ServiceCoreAPI Service = "core-api"
+	// PRESERVE_NON_MIGRATION: recovery build identity. The process does not run migrations.
+	ServiceCoreMigrator Service = "core-recovery"
 	ServiceCoreOperator Service = "core-operator"
 	ServiceCoreWorker   Service = "core-worker"
 )

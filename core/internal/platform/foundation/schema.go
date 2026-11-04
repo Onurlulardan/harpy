@@ -44,6 +44,7 @@ WHERE namespace.nspname NOT IN ('pg_catalog', 'information_schema')
 		return 0, 0, err
 	}
 	var goose int
+	// PRESERVE_NON_MIGRATION: counts Goose native history. Foundation must not create it.
 	err = conn.QueryRow(ctx, `SELECT count(*)
 FROM pg_catalog.pg_class AS relation
 JOIN pg_catalog.pg_namespace AS namespace ON namespace.oid = relation.relnamespace

@@ -1,5 +1,7 @@
 package attestation
 
+// PRESERVE_NON_MIGRATION: fixture names the Goose native history table.
+
 import (
 	"encoding/json"
 	"strings"

@@ -38,6 +38,7 @@ func TestLocalLifecycleHasOneInitializeEntrypoint(t *testing.T) {
 	document := readContractText(t, "../../.taskfiles/local.yml")
 	for _, forbidden := range []string{
 		"\n  bootstrap:\n", "\n  migrate:\n", "\n  tenant-executor:\n",
+		// PRESERVE_NON_MIGRATION: task graph must not call removed migrator commands.
 		"core-migrator", "local-release prepare", "schema-executor",
 		"migration-manifest", "deploy verify",
 	} {

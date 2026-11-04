@@ -83,7 +83,6 @@ func validateAuthorityUpgradeManifest(value setManifest, now time.Time) error {
 	for _, name := range []string{
 		"local-authority-ack-signing-seed",
 		"local-authority-release-signing-seed",
-		"tenant-migration-executor.env",
 	} {
 		expected = removeArtifactName(expected, name)
 	}

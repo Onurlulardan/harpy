@@ -28,6 +28,7 @@ func TestSourceOmitsLegacyCorpus(t *testing.T) {
 				return err
 			}
 			text := string(body)
+			// PRESERVE_NON_MIGRATION: Goose SQL must not create the native history table itself.
 			if strings.Contains(text, "goose_db_version") || strings.Contains(text, "CREATE FUNCTION") {
 				t.Fatalf("legacy body in %s", path)
 			}

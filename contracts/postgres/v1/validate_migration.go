@@ -8,6 +8,7 @@ import (
 )
 
 func (manifest MigrationManifest) Validate() error {
+	// PRESERVE_NON_MIGRATION: Goose native history table name.
 	if manifest.ContractVersion != "postgres-migration-manifest.v1" ||
 		manifest.Engine != "goose.v3" || manifest.PostgresMajor != 18 ||
 		manifest.HistoryTable != "platform.goose_db_version" || manifest.OutOfOrder {

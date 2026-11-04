@@ -1,5 +1,7 @@
 package runtimev1
 
+// PRESERVE_NON_MIGRATION: tests still name the historical config schema file.
+
 import "testing"
 
 func TestCutoverProfileSchemaAcceptsExactOneShotSnapshots(t *testing.T) {

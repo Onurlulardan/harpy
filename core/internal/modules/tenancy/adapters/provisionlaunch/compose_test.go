@@ -31,6 +31,7 @@ func TestRuntimeComposeKeepsProvisioningOneShot(t *testing.T) {
 		!strings.Contains(text, "entrypoint: [\"/app/core-initialize\"]") {
 		t.Fatal("tenant-provisioning is not a one-shot initialize service")
 	}
+	// PRESERVE_NON_MIGRATION: absence guard for removed executor service names.
 	for _, forbidden := range []string{
 		"HARPY_GOOSE_PASSWORD", "HARPY_FOUNDATION_ADMIN",
 		"tenant-migration-executor", "schema-executor", "core-migrator",

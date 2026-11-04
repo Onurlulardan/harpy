@@ -9,7 +9,6 @@ import (
 
 var runtimeReadinessTables = []string{
 	"environment_identity",
-	"goose_db_version",
 }
 
 var readinessReaderRoles = []string{

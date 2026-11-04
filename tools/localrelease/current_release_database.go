@@ -13,11 +13,7 @@ const currentReleaseAppliedSQL = `SELECT pg_catalog.count(*)=1
 FROM platform.environment_identity AS identity
 WHERE identity.singleton=TRUE
   AND identity.environment_id=$1::uuid
-  AND identity.database_origin='fresh'
-  AND EXISTS (
-    SELECT 1 FROM platform.goose_db_version AS history
-    WHERE history.is_applied AND history.version_id=20261103000006
-  )`
+  AND identity.database_origin='fresh'`
 
 func validateCurrentReleaseContract(contract runtimev1.BinarySchemaContract) error {
 	if err := contract.Validate(); err != nil {

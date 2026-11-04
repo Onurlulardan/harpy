@@ -155,6 +155,7 @@ func localExtension(name, version, capability string) postgresv1.PostgresExtensi
 func localMigrationManifest() postgresv1.MigrationManifest {
 	return postgresv1.MigrationManifest{
 		ContractVersion: "postgres-migration-manifest.v1", Engine: "goose.v3",
+		// PRESERVE_NON_MIGRATION: Goose native history table, not a custom catalog.
 		PostgresMajor: 18, HistoryTable: "platform.goose_db_version",
 		Entries: []postgresv1.MigrationEntry{{
 			Owner: "platform", Scope: "platform", Version: 20260713010100,

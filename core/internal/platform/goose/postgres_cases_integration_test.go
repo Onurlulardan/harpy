@@ -2,6 +2,8 @@
 
 package goose
 
+// PRESERVE_NON_MIGRATION: asserts Goose native history lands in the target schema.
+
 import (
 	"context"
 	"net/url"

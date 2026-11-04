@@ -44,7 +44,7 @@ func TestContractCommandIsRemoved(t *testing.T) {
 
 func TestRuntimeReadinessAllowlistIsExact(t *testing.T) {
 	expected := []string{
-		"environment_identity", "goose_db_version",
+		"environment_identity",
 	}
 	if len(runtimeReadinessTables) != len(expected) {
 		t.Fatalf("readiness table count = %d", len(runtimeReadinessTables))

@@ -26,6 +26,7 @@ func TestParseInvocationRejectsMigrationCommands(t *testing.T) {
 		{"deploy", "up"},
 		{"cutover_adoption"},
 		{"cutover_finalization"},
+		// PRESERVE_NON_MIGRATION: recovery must reject removed executor commands.
 		{"schema-executor"},
 		{"tenant-migration-executor"},
 		{"database-backup-executor", "--once"},
