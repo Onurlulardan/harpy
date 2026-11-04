@@ -26,8 +26,8 @@ var probeRuntimeRoleSQL string
 //go:embed adapters/postgres/sql/probe_owner_role.sql
 var probeOwnerRoleSQL string
 
-//go:embed adapters/postgres/sql/probe_backup_role.sql
-var probeBackupRoleSQL string
+//go:embed adapters/postgres/sql/probe_api_role.sql
+var probeAPIRoleSQL string
 
 //go:embed adapters/postgres/sql/resolve_tenant.sql
 var resolveTenantSQL string

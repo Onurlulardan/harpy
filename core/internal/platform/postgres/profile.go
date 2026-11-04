@@ -69,20 +69,15 @@ func applicationProfile(role, application string) profileContract {
 }
 
 func runtimeProfile(application string) profileContract {
-	return profileContract{
-		sessionUser: "harpy_v2_runtime", currentUser: "harpy_runtime",
-		applicationName: "harpy-v2:" + application, runtime: true,
-		foundation: true, profileTx: true, memberships: 1, memberSet: true,
-		connLimit: -1,
-	}
+	return applicationProfile(foundationRoleAPI, application)
 }
 
 func backupProfile() profileContract {
 	return profileContract{
-		sessionUser: "harpy_backup", currentUser: "harpy_backup_reader",
+		sessionUser: foundationRoleAPI, currentUser: foundationRoleAPI,
 		applicationName: "harpy-v2:core-database-backup-executor",
-		foundation:      true, profileTx: true, memberships: 1, memberSet: true,
-		connLimit: -1,
+		foundation:      true, profileTx: true, currentLogin: true,
+		roleInherit: true, connLimit: 20,
 	}
 }
 

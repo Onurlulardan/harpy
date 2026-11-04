@@ -42,11 +42,21 @@ func (pool *Pool) ProbeReadiness(ctx context.Context) ReadinessObservation {
 }
 
 func (pool *Pool) probeRoleSQL() string {
+	if foundationAPIProbe(pool.profile) {
+		return probeAPIRoleSQL
+	}
 	if pool.contract.runtime {
 		return probeRuntimeRoleSQL
 	}
-	if pool.profile == ProfileDatabaseBackupExecutor {
-		return probeBackupRoleSQL
-	}
 	return probeOwnerRoleSQL
+}
+
+func foundationAPIProbe(profile Profile) bool {
+	switch profile {
+	case ProfileOperatorInitialize, ProfileOperatorIdentityReconcile,
+		ProfileOperatorLicenseReconcile, ProfileDatabaseBackupExecutor:
+		return true
+	default:
+		return false
+	}
 }

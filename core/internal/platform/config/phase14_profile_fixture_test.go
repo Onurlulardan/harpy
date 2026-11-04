@@ -60,7 +60,7 @@ func validTenantMigrationEnvironment() []string {
 
 func validDatabaseBackupEnvironment() []string {
 	directory := phase14FixtureDirectory("database-backup")
-	entries := dedicatedDatabaseEnvironment(directory, "backup-dsn", "harpy_backup")
+	entries := dedicatedDatabaseEnvironment(directory, "backup-dsn", "harpy_api")
 	entries = append(entries, releaseFixtureEntries(directory)...)
 	return append(entries,
 		"HARPY_RECOVERY_STORAGE_MANIFEST_PATH="+phase14FixtureFile(directory, "storage.json", false),

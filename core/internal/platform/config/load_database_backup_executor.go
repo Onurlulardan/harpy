@@ -15,7 +15,7 @@ func LoadDatabaseBackupExecutor() (DatabaseBackupExecutor, error) {
 
 func loadDatabaseBackupExecutor(entries []string) (DatabaseBackupExecutor, error) {
 	values, runtimeConfig, err := loadDedicatedRuntime(entries,
-		profileDatabaseBackupExecutor, "HARPY_BACKUP_POSTGRES_DSN_FILE", "harpy_backup")
+		profileDatabaseBackupExecutor, "HARPY_BACKUP_POSTGRES_DSN_FILE", "harpy_api")
 	if err != nil {
 		return DatabaseBackupExecutor{}, err
 	}
