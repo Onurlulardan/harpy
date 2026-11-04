@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-// Bump when generated artifact contents or semantics change, even if names do not.
-const currentArtifactContractRevision = 12
+	"github.com/Onurlulardan/harpy/ops/local/artifactcontract"
+)
+
+const currentArtifactContractRevision = artifactcontract.CurrentRevision
 
 func validateCurrentArtifactContractRevision(manifest setManifest) error {
 	if manifest.ArtifactContractRevision != currentArtifactContractRevision {

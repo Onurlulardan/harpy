@@ -90,6 +90,14 @@ services:
         condition: service_healthy
     networks: [local]
 
+  local-release-artifact:
+    image: harpy/backend-v2-local:dev
+    network_mode: none
+    restart: "no"
+    entrypoint: ["/app/local-release", "artifact"]
+    volumes:
+      - release-state:/run/release
+
   installation-artifacts:
     image: harpy/backend-v2-local:dev
     entrypoint: ["/app/core-operator", "local-artifacts"]

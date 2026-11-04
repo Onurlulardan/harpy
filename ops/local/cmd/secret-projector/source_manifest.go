@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 	"sort"
 	"time"
-)
 
-const supportedArtifactContractRevision = 11
+	"github.com/Onurlulardan/harpy/ops/local/artifactcontract"
+)
 
 type sourceManifest struct {
 	Version                  int          `json:"version"`
@@ -54,7 +54,7 @@ func validateManifest(
 ) error {
 	identifier, err := base64.RawURLEncoding.DecodeString(manifest.GenerationID)
 	if err != nil || len(identifier) != 16 || manifest.Version != 1 ||
-		manifest.ArtifactContractRevision != supportedArtifactContractRevision {
+		manifest.ArtifactContractRevision != artifactcontract.CurrentRevision {
 		return fmt.Errorf("source manifest identity is invalid")
 	}
 	generated, err := canonicalTime(manifest.GeneratedAt)

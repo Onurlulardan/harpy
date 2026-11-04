@@ -10,6 +10,8 @@ import (
 	"sort"
 	"testing"
 	"time"
+
+	"github.com/Onurlulardan/harpy/ops/local/artifactcontract"
 )
 
 func writeTestSource(t *testing.T, now time.Time) string {
@@ -29,7 +31,7 @@ func writeTestSource(t *testing.T, now time.Time) string {
 	sort.Strings(sorted)
 	manifest := sourceManifest{
 		Version:                  1,
-		ArtifactContractRevision: supportedArtifactContractRevision,
+		ArtifactContractRevision: artifactcontract.CurrentRevision,
 		GenerationID:             base64.RawURLEncoding.EncodeToString(make([]byte, 16)),
 		GeneratedAt:              now.Format(time.RFC3339),
 		RenewAfter:               now.Add(23 * 24 * time.Hour).Format(time.RFC3339),
