@@ -1,9 +1,11 @@
 package installationdelivery
 
 import (
+	"errors"
 	"testing"
 	"time"
 
+	installationdelivery "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/installationdelivery"
 	"github.com/google/uuid"
 )
 
@@ -32,6 +34,21 @@ func TestScanDeliveryNormalizesDatabaseTimeToUTC(t *testing.T) {
 	if delivery.DatabaseNow.Location() != time.UTC || !delivery.Valid() {
 		t.Fatalf("scanDelivery() database time = %v, delivery valid = %t",
 			delivery.DatabaseNow.Location(), delivery.Valid())
+	}
+}
+
+func TestScanDeliveryRejectsNilIdentity(t *testing.T) {
+	row := deliveryRow(func(destinations ...any) error {
+		*destinations[0].(*uuid.UUID) = uuid.Nil
+		*destinations[6].(*string) = "ready_to_display"
+		*destinations[5].(*int64) = 1
+		*destinations[7].(*int64) = 1
+		*destinations[8].(*time.Time) = time.Now().UTC()
+		return nil
+	})
+	_, err := scanDelivery(row)
+	if !errors.Is(err, installationdelivery.ErrNotFound) {
+		t.Fatal(err)
 	}
 }
 

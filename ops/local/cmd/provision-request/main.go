@@ -15,8 +15,12 @@ func main() {
 }
 
 func execute(ctx context.Context, arguments []string) error {
-	if len(arguments) != 0 {
-		return errors.New("usage: provision-request")
+	switch {
+	case len(arguments) == 0:
+		return provisionTenant(ctx, processRunner{})
+	case len(arguments) == 1 && arguments[0] == "wait-operator":
+		return waitOperator(ctx, processRunner{})
+	default:
+		return errors.New("usage: provision-request [wait-operator]")
 	}
-	return provisionTenant(ctx, processRunner{})
 }

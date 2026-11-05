@@ -6,12 +6,10 @@ import (
 	"io"
 	"time"
 
-	"github.com/Onurlulardan/harpy/core/internal/modules/tenancy/adapters/provisionlaunch"
 	"github.com/Onurlulardan/harpy/core/internal/orchestration/environmentoperator"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	installationmanifest "github.com/Onurlulardan/harpy/core/internal/platform/installationmanifest"
 	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
-	"github.com/google/uuid"
 )
 
 func composeEnvironmentCoordinator(
@@ -42,9 +40,13 @@ func composeEnvironmentCoordinator(
 	if err != nil {
 		return nil, authorityCloser, err
 	}
+	provisioner, err := newComposeTenantProvisioner(pool)
+	if err != nil {
+		return nil, authorityCloser, err
+	}
 	coordinator, err := environmentoperator.New(environmentoperator.Dependencies{
 		Policy: runtime.DeploymentPolicy, Onboarding: runtime.Onboarding,
-		Provision: composeTenantProvisioner{}, Offering: offering,
+		Provision: provisioner, Offering: offering,
 		Authority: authority, Finalizer: finalizer, Entropy: rand.Reader,
 		Sleep: sleepContext, LeaseOwner: "core-operator-initialize",
 		PollInterval: 250 * time.Millisecond,
@@ -53,10 +55,4 @@ func composeEnvironmentCoordinator(
 		return nil, authorityCloser, err
 	}
 	return coordinator, authorityCloser, nil
-}
-
-type composeTenantProvisioner struct{}
-
-func (composeTenantProvisioner) Provision(ctx context.Context, tenantID uuid.UUID) error {
-	return provisionlaunch.Run(ctx, tenantID.String())
 }

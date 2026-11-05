@@ -28,7 +28,8 @@ func stageInstallationDelivery(
 	if err == nil {
 		return validateExistingDelivery(existing, result)
 	}
-	if !errors.Is(err, installationdelivery.ErrUnavailable) {
+	if !errors.Is(err, installationdelivery.ErrUnavailable) &&
+		!errors.Is(err, installationdelivery.ErrNotFound) {
 		return err
 	}
 	if err = installationsecret.Read(passwordPath.Path().Value(),
