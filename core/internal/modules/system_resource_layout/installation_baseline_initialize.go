@@ -12,7 +12,12 @@ import (
 	"github.com/google/uuid"
 )
 
-var ErrInstallationBaselineInvalid = errors.New("system resource installation baseline is invalid")
+var (
+	ErrInstallationBaselineInvalid = errors.New("system resource installation baseline is invalid")
+	ErrInstallationActivationUnverified = errors.New(
+		"system resource installation activation is not verified",
+	)
+)
 
 func InitializeInstallationBaseline(
 	ctx context.Context,
@@ -33,8 +38,12 @@ func InitializeInstallationBaseline(
 	}
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.TenantID), input.SchemaName)
-	if err != nil || !valid {
+	if err != nil {
 		return fmt.Errorf("assert system resource installation activation: %w", err)
+	}
+	if !valid {
+		return fmt.Errorf("assert system resource installation activation: %w",
+			ErrInstallationActivationUnverified)
 	}
 	clock := presentationClock(func() time.Time { return input.ActivatedAt })
 	layouts, err := layoutapp.NewLayoutApplication(binding.Store, layoutIDSource(uuid.NewV7), clock)
