@@ -26,6 +26,7 @@ services:
       - local-dev-authority:/run/dev-authority:ro
       - local-recovery-signing:/run/recovery-signing:ro
       - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
+      - local-installation-state:/run/installation
     depends_on:
       postgres:
         condition: service_healthy

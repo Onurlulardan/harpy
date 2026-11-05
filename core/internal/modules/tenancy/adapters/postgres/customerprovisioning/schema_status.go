@@ -45,10 +45,14 @@ func (status *SchemaStatus) Begin(
 	if err != nil || id != tenantID {
 		return fmt.Errorf("mark tenant provisioning: %w", err)
 	}
-	if err = status.run(ctx, tenantID.String()); err != nil {
+	ready, err := status.tenantSchemaProvisioned(ctx, schemaName)
+	if err != nil {
 		return err
 	}
-	return nil
+	if ready {
+		return nil
+	}
+	return status.run(ctx, tenantID.String())
 }
 
 func (status *SchemaStatus) Activate(ctx context.Context, tenantID uuid.UUID) error {

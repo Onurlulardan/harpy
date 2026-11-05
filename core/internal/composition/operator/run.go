@@ -23,6 +23,9 @@ func run(
 	stdout io.Writer,
 	stderr io.Writer,
 ) processcode.Code {
+	if len(arguments) == 1 && arguments[0] == "show-provision-request" {
+		return showProvisionRequest(stdout, stderr)
+	}
 	arguments, err := envfile.Consume(arguments, "operator_initialize")
 	if err != nil {
 		writeFailureCause(stderr, "configuration", processcode.InvalidStartup, err.Error())
