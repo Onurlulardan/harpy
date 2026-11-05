@@ -74,8 +74,9 @@ tasks:
     cmds:
       - "{{.COMPOSE}} run --rm dev-license"
   installation:deliver:
-    desc: Deliver installation credentials after the database lifecycle
+    desc: Prepare and deliver installation credentials after the database lifecycle
     cmds:
+      - "{{.COMPOSE}} run --rm installation-delivery prepare-initial-credential"
       - go run ./ops/local/cmd/provision-request wait-operator
       - "{{.COMPOSE}} run --rm core-operator"
       - "{{.COMPOSE}} run --rm installation-delivery prepare"
