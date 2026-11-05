@@ -15,12 +15,25 @@ func TestInstallationDeliverProvisionsPendingTenant(t *testing.T) {
 		":local:inventory:verify", "installation-delivery deliver", "installation-delivery verify",
 	})
 	provision := taskBlock(t, tasks, "provision-tenant", "services")
-	assertOrdered(t, provision, []string{
-		"show-provision-request", "run --rm --no-deps",
-		"HARPY_PROVISION_TENANT_ID=${tenant_id}", "tenant-provisioning",
+	if strings.TrimSpace(provision) == "" ||
+		!strings.Contains(provision, "go run ./ops/local/cmd/provision-request") {
+		t.Fatal(provision)
+	}
+	for _, forbidden := range []string{
+		"tr ", "printf", "case ", "sed ", "awk ", "set -eu", "bash",
+		"show-provision-request", "docker compose",
+	} {
+		if strings.Contains(provision, forbidden) {
+			t.Fatalf("provision-tenant contains %q", forbidden)
+		}
+	}
+	command := readContractText(t, "cmd/provision-request/compose_args.go")
+	assertOrdered(t, command, []string{
+		"run", "-T", "--rm", "--no-deps", "show-provision-request",
+		"HARPY_PROVISION_TENANT_ID=", "tenant-provisioning",
 	})
 	api := runtime[:strings.Index(runtime, "\n  tenant-provisioning:\n")]
-	if !strings.HasSuffix(strings.TrimSpace(provision), "tenant-provisioning") ||
+	if strings.Contains(command, "docker.sock") ||
 		strings.Contains(tasks, "docker.sock") || strings.Contains(runtime, "docker.sock") ||
 		strings.Count(runtime, "local-installation-state:/run/installation") != 1 ||
 		strings.Count(runtime, "env_file: ./state/secrets/tenant-provisioning.env") != 1 ||
