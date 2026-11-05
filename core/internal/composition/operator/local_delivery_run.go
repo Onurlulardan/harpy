@@ -12,6 +12,8 @@ func runLocalDelivery(ctx context.Context, action string, stdout io.Writer) erro
 	}
 	defer runtime.close()
 	switch action {
+	case "prepare-initial-credential":
+		return runtime.prepareInitialCredential(ctx)
 	case "prepare":
 		return runtime.prepare(ctx)
 	case "deliver":
