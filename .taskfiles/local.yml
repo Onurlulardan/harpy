@@ -98,16 +98,7 @@ tasks:
   provision-tenant:
     desc: Run one-shot tenant provisioning for the installation request file
     cmds:
-      - |
-        set -eu
-        tenant_id="$({{.COMPOSE}} run -T --rm --no-deps core-operator show-provision-request)"
-        tenant_id="$(printf '%s' "$tenant_id" | tr -d '[:space:]')"
-        hex4='[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]'
-        case "$tenant_id" in
-          $hex4$hex4-$hex4-$hex4-$hex4-$hex4$hex4$hex4) ;;
-          *) echo "tenant provisioning request is invalid" >&2; exit 1 ;;
-        esac
-        {{.COMPOSE}} run --rm --no-deps -e "HARPY_PROVISION_TENANT_ID=${tenant_id}" tenant-provisioning
+      - go run ./ops/local/cmd/provision-request
   services:
     desc: Start API, worker and the backup executor after initialize
     cmds:
