@@ -26,8 +26,10 @@ func TestInstallationSecretInventoryIsPreDisplayAndFailClosed(t *testing.T) {
 	tasks := readContractText(t, "../../.taskfiles/local.yml")
 	initialize := taskBlock(t, tasks, "initialize", "services")
 	assertOrdered(t, initialize, []string{
-		"installation-delivery prepare",
+		"installation-delivery prepare-initial-credential",
+		"wait-operator",
 		"run --rm core-operator",
+		"run --rm installation-delivery prepare\\\"",
 		"task: :local:inventory:verify",
 		"installation-delivery deliver",
 		"installation-delivery verify",
