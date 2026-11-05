@@ -7,9 +7,9 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/installationsecret"
 )
 
-func ensurePassword(path string) error {
+func ensureInitialPassword(path string) error {
 	if _, err := os.Lstat(path); err == nil {
-		return installationsecret.Read(path, func([]byte) error { return nil })
+		return requireInitialPassword(path)
 	} else if !os.IsNotExist(err) {
 		return err
 	}
@@ -21,6 +21,19 @@ func ensurePassword(path string) error {
 	return password.Consume(func(wire []byte) error {
 		return installationsecret.Publish(path, wire)
 	})
+}
+
+func requireInitialPassword(path string) error {
+	return installationsecret.Read(path, func([]byte) error { return nil })
+}
+
+func requireInitialPasswordAbsent(path string) error {
+	if _, err := os.Lstat(path); err == nil {
+		return installationsecret.ErrFenced
+	} else if !os.IsNotExist(err) {
+		return err
+	}
+	return nil
 }
 
 func createPreparedPassword(path string) (iam.PreparedInstallationCredential, error) {
