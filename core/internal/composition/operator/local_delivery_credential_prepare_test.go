@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	installationdelivery "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/installationdelivery"
 	"github.com/Onurlulardan/harpy/core/internal/modules/tenancy"
+	installationdelivery "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/installationdelivery"
 	"github.com/Onurlulardan/harpy/core/internal/platform/installationsecret"
 )
 
