@@ -76,8 +76,7 @@ func TestPrepareDeliveryRejectsUnstagedAndUnavailableRecords(t *testing.T) {
 		installationdelivery.ErrNotFound,
 		installationdelivery.ErrUnavailable,
 	} {
-		if err := prepareDeliveryCredential(path, tenancy.InstallationDelivery{}, readErr);
-			!errors.Is(err, readErr) {
+		if err := prepareDeliveryCredential(path, tenancy.InstallationDelivery{}, readErr); !errors.Is(err, readErr) {
 			t.Fatalf("read error=%v returned=%v", readErr, err)
 		}
 	}
@@ -117,8 +116,7 @@ func TestPrepareDeliveryFencesPasswordAfterSecretDeletion(t *testing.T) {
 		tenancy.InstallationDeliveryStateCompleted,
 	} {
 		if err := prepareDeliveryCredential(path,
-			tenancy.InstallationDelivery{State: state}, nil);
-			!errors.Is(err, installationsecret.ErrFenced) {
+			tenancy.InstallationDelivery{State: state}, nil); !errors.Is(err, installationsecret.ErrFenced) {
 			t.Fatalf("state=%s err=%v", state, err)
 		}
 	}
