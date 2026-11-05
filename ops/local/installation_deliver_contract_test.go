@@ -13,7 +13,7 @@ func TestInstallationDeliverProvisionsPendingTenant(t *testing.T) {
 		"run --rm installation-delivery prepare-initial-credential",
 		"go run ./ops/local/cmd/provision-request wait-operator",
 		"run --rm core-operator",
-		"run --rm installation-delivery prepare\\\"",
+		"run --rm installation-delivery prepare\"",
 		"publish-local-authority", ":local:inventory:verify",
 		"installation-delivery deliver", "installation-delivery verify",
 	})
