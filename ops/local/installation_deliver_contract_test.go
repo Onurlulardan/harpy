@@ -10,11 +10,12 @@ func TestInstallationDeliverProvisionsPendingTenant(t *testing.T) {
 	runtime := readContractText(t, "compose.runtime.yml")
 	deliver := taskBlock(t, tasks, "installation:deliver", "provision-tenant")
 	assertOrdered(t, deliver, []string{
+		"run --rm installation-delivery prepare-initial-credential",
 		"go run ./ops/local/cmd/provision-request wait-operator",
 		"run --rm core-operator",
-		"installation-delivery prepare", "publish-local-authority",
-		":local:inventory:verify", "installation-delivery deliver",
-		"installation-delivery verify",
+		"run --rm installation-delivery prepare\\\"",
+		"publish-local-authority", ":local:inventory:verify",
+		"installation-delivery deliver", "installation-delivery verify",
 	})
 	if strings.Contains(deliver, "tr ") || strings.Contains(deliver, "case ") ||
 		strings.Contains(deliver, "status -ne 5") {
