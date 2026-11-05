@@ -29,7 +29,7 @@ func TestInstallationSecretInventoryIsPreDisplayAndFailClosed(t *testing.T) {
 		"installation-delivery prepare-initial-credential",
 		"wait-operator",
 		"run --rm core-operator",
-		"run --rm installation-delivery prepare\\\"",
+		"run --rm installation-delivery prepare\"",
 		"task: :local:inventory:verify",
 		"installation-delivery deliver",
 		"installation-delivery verify",
