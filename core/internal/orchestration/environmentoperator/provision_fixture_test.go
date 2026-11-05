@@ -12,7 +12,21 @@ type provisionFixture struct {
 	calls              int
 	tenantID           uuid.UUID
 	err                error
+	schemaErr          error
 	preserveOnboarding bool
+	trackActivation    bool
+	activated          bool
+}
+
+func (fixture *provisionFixture) SchemaReady(context.Context, uuid.UUID) error {
+	return fixture.schemaErr
+}
+
+func (fixture *provisionFixture) TenantActivated(context.Context, uuid.UUID) (bool, error) {
+	if !fixture.trackActivation {
+		return true, nil
+	}
+	return fixture.activated, nil
 }
 
 func (fixture *provisionFixture) Provision(_ context.Context, tenantID uuid.UUID) error {

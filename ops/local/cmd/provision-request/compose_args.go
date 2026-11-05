@@ -14,6 +14,10 @@ func composeArgs(extra ...string) []string {
 	return append(args, extra...)
 }
 
+func operatorInitializeArgs() []string {
+	return composeArgs("run", "--rm", "core-operator")
+}
+
 func showProvisionArgs() []string {
 	return composeArgs(
 		"run", "-T", "--rm", "--no-deps",

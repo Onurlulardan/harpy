@@ -8,10 +8,12 @@ import (
 )
 
 type scriptRunner struct {
-	stdout []byte
-	show   error
-	run    error
-	calls  [][]string
+	stdout   []byte
+	show     error
+	run      error
+	combined []byte
+	code     int
+	calls    [][]string
 }
 
 func (runner *scriptRunner) Output(_ context.Context, argv []string) ([]byte, error) {
@@ -25,6 +27,14 @@ func (runner *scriptRunner) Output(_ context.Context, argv []string) ([]byte, er
 func (runner *scriptRunner) Run(_ context.Context, argv []string) error {
 	runner.calls = append(runner.calls, append([]string(nil), argv...))
 	return runner.run
+}
+
+func (runner *scriptRunner) Combined(_ context.Context, argv []string) ([]byte, int, error) {
+	runner.calls = append(runner.calls, append([]string(nil), argv...))
+	if runner.code == 0 {
+		return runner.combined, 0, nil
+	}
+	return runner.combined, runner.code, errors.New("exit")
 }
 
 func TestProvisionTenantUsesTheUUIDFromShow(t *testing.T) {
@@ -68,5 +78,34 @@ func TestProvisionTenantDoesNotStartComposeWhenShowFails(t *testing.T) {
 func TestExecuteRejectsArguments(t *testing.T) {
 	if err := execute(context.Background(), []string{"tenant"}); err == nil {
 		t.Fatal("expected usage error")
+	}
+}
+
+func TestWaitOperatorProvisionsOnlyForHostWait(t *testing.T) {
+	const tenantID = "00112233-4455-6677-8899-aabbccddeeff"
+	runner := &scriptRunner{
+		combined: []byte("tenant provisioning is waiting for host execution\n"),
+		code:     5,
+		stdout:   []byte(tenantID + "\n"),
+	}
+	if err := waitOperator(context.Background(), runner); err != nil {
+		t.Fatal(err)
+	}
+	if len(runner.calls) != 3 {
+		t.Fatalf("calls=%d", len(runner.calls))
+	}
+	if !strings.Contains(strings.Join(runner.calls[2], " "), "HARPY_PROVISION_TENANT_ID="+tenantID) {
+		t.Fatal(runner.calls[2])
+	}
+}
+
+func TestWaitOperatorStopsOnAnotherExitFive(t *testing.T) {
+	runner := &scriptRunner{
+		combined: []byte("tenant schema name is invalid: harpy\n"),
+		code:     5,
+	}
+	err := waitOperator(context.Background(), runner)
+	if err == nil || len(runner.calls) != 1 {
+		t.Fatalf("err=%v calls=%d", err, len(runner.calls))
 	}
 }

@@ -4,6 +4,8 @@ import (
 	"time"
 
 	installationdelivery "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/application/installationdelivery"
+	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
+	"github.com/google/uuid"
 )
 
 func scanDelivery(row Row) (installationdelivery.Delivery, error) {
@@ -15,6 +17,9 @@ func scanDelivery(row Row) (installationdelivery.Delivery, error) {
 		&result.CurrentAttemptID, &result.CurrentCredentialID,
 		&result.CurrentCredentialVersion, &state, &result.Revision,
 		&result.DatabaseNow, &adapter, &lease, &acknowledged, &deleted, &completed)
+	if platformpostgres.RowNotFound(err) || (err == nil && result.OperationID == uuid.Nil) {
+		return installationdelivery.Delivery{}, installationdelivery.ErrNotFound
+	}
 	if err != nil {
 		return installationdelivery.Delivery{}, installationdelivery.ErrUnavailable
 	}

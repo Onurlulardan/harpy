@@ -16,6 +16,9 @@ func Read(ctx context.Context, store Store, query ReadQuery) (Delivery, error) {
 	if err != nil {
 		return Delivery{}, err
 	}
+	if delivery.OperationID == uuid.Nil {
+		return Delivery{}, ErrNotFound
+	}
 	if !delivery.Valid() || delivery.OperationID != query.OperationID {
 		return Delivery{}, ErrUnavailable
 	}

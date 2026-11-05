@@ -41,6 +41,9 @@ func (coordinator *Coordinator) Initialize(
 	if err != nil {
 		return InitializeResult{}, err
 	}
+	if err = coordinator.prepareSchema(ctx, prepared.plan); err != nil {
+		return InitializeResult{}, err
+	}
 	operation, err := coordinator.onboarding.Accept(ctx, prepared.plan)
 	if err != nil {
 		if errors.Is(err, tenantapi.ErrOnboardingConflict) {
@@ -57,7 +60,18 @@ func (coordinator *Coordinator) Initialize(
 		if err := coordinator.verifyNoopPinMatch(request, prepared.plan); err != nil {
 			return InitializeResult{}, err
 		}
-		result.Outcome = OutcomeNoop
+		activated, err := coordinator.tenantActivated(ctx, prepared.plan)
+		if err != nil {
+			return InitializeResult{}, err
+		}
+		if activated {
+			result.Outcome = OutcomeNoop
+			return result, nil
+		}
+		if err = coordinator.continueOperation(ctx, request, prepared, operation); err != nil {
+			return InitializeResult{}, err
+		}
+		result.Outcome = OutcomeCompleted
 		return result, nil
 	}
 	if err := terminalStateError(operation.State()); err != nil {

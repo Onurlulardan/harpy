@@ -7,6 +7,7 @@ import (
 
 	"github.com/Onurlulardan/harpy/core/internal/orchestration/environmentoperator"
 	"github.com/Onurlulardan/harpy/core/internal/platform/operatorresult"
+	platformpostgres "github.com/Onurlulardan/harpy/core/internal/platform/postgres"
 	"github.com/Onurlulardan/harpy/core/internal/platform/processcode"
 )
 
@@ -68,7 +69,8 @@ func writeSuccess(
 
 func classifyInitializeError(err error) processcode.Code {
 	switch {
-	case errors.Is(err, environmentoperator.ErrInvalid):
+	case errors.Is(err, platformpostgres.ErrTenantSchemaInvalid),
+		errors.Is(err, environmentoperator.ErrInvalid):
 		return processcode.InvalidStartup
 	case errors.Is(err, environmentoperator.ErrDependencyMismatch):
 		return processcode.DependencyPreflight

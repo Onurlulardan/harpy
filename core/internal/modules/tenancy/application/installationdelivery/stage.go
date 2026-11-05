@@ -24,6 +24,9 @@ func Stage(ctx context.Context, store Store, command StageCommand) (Delivery, er
 	if err != nil {
 		return Delivery{}, err
 	}
+	if delivery.OperationID == uuid.Nil {
+		return Delivery{}, ErrNotFound
+	}
 	if !delivery.Valid() || delivery.State != StateReady ||
 		delivery.OperationID != command.OperationID ||
 		delivery.CurrentAttemptID != command.AttemptID ||

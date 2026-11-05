@@ -26,6 +26,17 @@ func (coordinator *Coordinator) continueOperation(
 		}
 		state = migrationNextState(prepared.plan.DeploymentMode())
 	}
+	if state == tenantapi.OnboardingSucceeded {
+		if claim.attemptID == [16]byte{} {
+			claim, err = coordinator.claim(
+				ctx, request.Manifest, prepared.plan.OperationID(), revision,
+			)
+			if err != nil {
+				return err
+			}
+		}
+		return coordinator.finalize(ctx, request, prepared.plan, claim)
+	}
 	if state == tenantapi.OnboardingAuthorityPending {
 		if prepared.plan.DeploymentMode() != tenantapi.DeploymentModeSaaS {
 			return ErrFenced

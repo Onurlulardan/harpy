@@ -77,19 +77,7 @@ tasks:
     desc: Deliver installation credentials after the database lifecycle
     cmds:
       - "{{.COMPOSE}} run --rm installation-delivery prepare"
-      - |
-        set -eu
-        set +e
-        {{.COMPOSE}} run --rm core-operator
-        status=$?
-        set -e
-        if [ "$status" -eq 0 ]; then
-          exit 0
-        fi
-        if [ $status -ne 5 ]; then
-          exit "$status"
-        fi
-        task local:provision-tenant
+      - go run ./ops/local/cmd/provision-request wait-operator
       - "{{.COMPOSE}} run --rm core-operator"
       - "{{.COMPOSE}} run --rm core-operator publish-local-authority"
       - task: :local:inventory:verify

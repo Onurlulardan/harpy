@@ -14,6 +14,9 @@ func (coordinator *Coordinator) migrate(
 ) (int64, error) {
 	tenantID := uuid.UUID(plan.TenantID())
 	if err := coordinator.provision.Provision(ctx, tenantID); err != nil {
+		if errorsIsTerminal(err) {
+			return 0, err
+		}
 		return 0, Resumable("tenant_schema.provision", "provision_failed", "", err)
 	}
 	return coordinator.refreshAfterProvision(ctx, plan, claim)
