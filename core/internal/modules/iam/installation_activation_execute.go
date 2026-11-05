@@ -36,22 +36,14 @@ func InitializeInstallationIdentity(
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.EnvironmentID), uuid.UUID(input.TenantID),
 		input.SchemaName)
-	if err != nil {
-		return fmt.Errorf("assert IAM installation activation: %w", err)
-	}
-	if !valid {
-		return fmt.Errorf("assert IAM installation activation: %w",
-			ErrInstallationActivationUnverified)
+	if err := checkInstallationActivationAssertion(valid, err); err != nil {
+		return err
 	}
 	epochReady, err := binding.Epoch(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.EnvironmentID), uuid.UUID(input.TenantID),
 		input.SchemaName)
-	if err != nil {
-		return fmt.Errorf("initialize IAM installation security epoch: %w", err)
-	}
-	if !epochReady {
-		return fmt.Errorf("initialize IAM installation security epoch: %w",
-			ErrInstallationSecurityEpochNotReady)
+	if err := checkInstallationSecurityEpoch(epochReady, err); err != nil {
+		return err
 	}
 	ids := installationIDs(input.OperationID)
 	bindingSet := ProtectedAdminBindingSetSHA256(input.OperationID,
@@ -80,12 +72,8 @@ func InitializeInstallationIdentity(
 		IdentifierID: uuid.UUID(ids.identifier), KeyID: input.DirectoryKeyID,
 		IdentifierHMAC: input.IdentifierHMAC, SourceSHA256: input.SourceSHA256,
 	})
-	if err != nil {
-		return fmt.Errorf("initialize IAM installation directory: %w", err)
-	}
-	if revision != 1 {
-		return fmt.Errorf("initialize IAM installation directory: revision=%d: %w",
-			revision, ErrInstallationDirectoryNotInitialized)
+	if err := checkInstallationDirectoryRevision(revision, err); err != nil {
+		return err
 	}
 	return nil
 }
