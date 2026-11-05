@@ -76,9 +76,9 @@ tasks:
   installation:deliver:
     desc: Deliver installation credentials after the database lifecycle
     cmds:
-      - "{{.COMPOSE}} run --rm installation-delivery prepare"
       - go run ./ops/local/cmd/provision-request wait-operator
       - "{{.COMPOSE}} run --rm core-operator"
+      - "{{.COMPOSE}} run --rm installation-delivery prepare"
       - "{{.COMPOSE}} run --rm core-operator publish-local-authority"
       - task: :local:inventory:verify
       - "{{.COMPOSE}} run --rm installation-delivery deliver"
