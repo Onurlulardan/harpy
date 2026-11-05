@@ -38,12 +38,8 @@ func InitializeInstallationBaseline(
 	}
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.TenantID), input.SchemaName)
-	if err != nil {
-		return fmt.Errorf("assert system resource installation activation: %w", err)
-	}
-	if !valid {
-		return fmt.Errorf("assert system resource installation activation: %w",
-			ErrInstallationActivationUnverified)
+	if err := checkInstallationBaselineActivation(valid, err); err != nil {
+		return err
 	}
 	clock := presentationClock(func() time.Time { return input.ActivatedAt })
 	layouts, err := layoutapp.NewLayoutApplication(binding.Store, layoutIDSource(uuid.NewV7), clock)
