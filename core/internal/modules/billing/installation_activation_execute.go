@@ -30,12 +30,10 @@ func AssignInstallationBaseOffering(
 	}
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.TenantID), input.SchemaName)
-	if err != nil {
-		return fmt.Errorf("assert billing installation activation: %w", err)
-	}
-	if !valid {
-		return fmt.Errorf("assert billing installation activation: %w",
-			ErrInstallationActivationUnverified)
+	if err := checkBillingInstallationActivation(
+		"assert billing installation activation", valid, err,
+	); err != nil {
+		return err
 	}
 	authorityID := billingInstallationID(input.OperationID, "tenant-authority")
 	assignmentID := billingInstallationID(input.OperationID, "base-offering-assignment")
@@ -77,23 +75,17 @@ func OpenInstallationUsage(
 	}
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.TenantID), input.SchemaName)
-	if err != nil {
-		return fmt.Errorf("assert billing usage activation: %w", err)
-	}
-	if !valid {
-		return fmt.Errorf("assert billing usage activation: %w",
-			ErrInstallationActivationUnverified)
+	if err := checkBillingInstallationActivation(
+		"assert billing usage activation", valid, err,
+	); err != nil {
+		return err
 	}
 	meterCount, replay, err := binding.Open(ctx, installationpostgres.Opening{
 		OperationID: uuid.UUID(input.OperationID), TenantID: uuid.UUID(input.TenantID),
 		ManifestSHA256: input.ManifestSHA256,
 	})
-	if err != nil {
-		return fmt.Errorf("open billing installation usage: %w", err)
-	}
-	if meterCount < 1 {
-		return fmt.Errorf("open billing installation usage: meters=%d replay=%t: %w",
-			meterCount, replay, ErrInstallationUsageNotOpened)
+	if err := checkBillingInstallationUsage(meterCount, replay, err); err != nil {
+		return err
 	}
 	return nil
 }
