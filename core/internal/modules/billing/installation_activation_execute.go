@@ -9,7 +9,11 @@ import (
 	"github.com/google/uuid"
 )
 
-var ErrInstallationActivationInvalid = errors.New("billing installation activation is invalid")
+var (
+	ErrInstallationActivationInvalid = errors.New("billing installation activation is invalid")
+	ErrInstallationActivationUnverified = errors.New("billing installation activation is not verified")
+	ErrInstallationUsageNotOpened = errors.New("billing installation usage was not opened")
+)
 
 func AssignInstallationBaseOffering(
 	ctx context.Context,
@@ -26,8 +30,12 @@ func AssignInstallationBaseOffering(
 	}
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.TenantID), input.SchemaName)
-	if err != nil || !valid {
+	if err != nil {
 		return fmt.Errorf("assert billing installation activation: %w", err)
+	}
+	if !valid {
+		return fmt.Errorf("assert billing installation activation: %w",
+			ErrInstallationActivationUnverified)
 	}
 	authorityID := billingInstallationID(input.OperationID, "tenant-authority")
 	assignmentID := billingInstallationID(input.OperationID, "base-offering-assignment")
@@ -69,16 +77,23 @@ func OpenInstallationUsage(
 	}
 	valid, err := binding.Assert(ctx, uuid.UUID(input.OperationID),
 		uuid.UUID(input.TenantID), input.SchemaName)
-	if err != nil || !valid {
+	if err != nil {
 		return fmt.Errorf("assert billing usage activation: %w", err)
+	}
+	if !valid {
+		return fmt.Errorf("assert billing usage activation: %w",
+			ErrInstallationActivationUnverified)
 	}
 	meterCount, replay, err := binding.Open(ctx, installationpostgres.Opening{
 		OperationID: uuid.UUID(input.OperationID), TenantID: uuid.UUID(input.TenantID),
 		ManifestSHA256: input.ManifestSHA256,
 	})
-	if err != nil || meterCount < 1 {
+	if err != nil {
+		return fmt.Errorf("open billing installation usage: %w", err)
+	}
+	if meterCount < 1 {
 		return fmt.Errorf("open billing installation usage: meters=%d replay=%t: %w",
-			meterCount, replay, err)
+			meterCount, replay, ErrInstallationUsageNotOpened)
 	}
 	return nil
 }
