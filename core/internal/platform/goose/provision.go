@@ -48,6 +48,10 @@ func ProvisionTenant(ctx context.Context, cfg foundation.Config, tenantID [16]by
 		return err
 	}
 	if err = UpTenant(ctx, dsn, schemaName); err != nil {
+		_ = revokeActivationGrantOption(ctx, cfg, namespace.Role)
+		return err
+	}
+	if err = revokeActivationGrantOption(ctx, cfg, namespace.Role); err != nil {
 		return err
 	}
 	_, err = database.ExecContext(ctx, `INSERT INTO tenancy_schema_identity (

@@ -14,6 +14,9 @@ CREATE TABLE IF NOT EXISTS iam_installation_identity_bindings (
 );
 
 REVOKE ALL ON TABLE iam_installation_identity_bindings FROM PUBLIC, harpy_api, harpy_worker;
+GRANT EXECUTE ON FUNCTION platform.tenancy_activation_assert_v2(uuid, uuid, name) TO CURRENT_USER;
+GRANT EXECUTE ON FUNCTION platform.tenancy_activation_step_context_assert_v1(uuid, text, uuid, name) TO CURRENT_USER;
+GRANT EXECUTE ON FUNCTION platform.tenancy_activation_step_consume_v1(uuid, text, uuid, name) TO CURRENT_USER;
 
 DROP FUNCTION iam_installation_initialize_v4(uuid, uuid, uuid, uuid, uuid, uuid, text, text, text, text, uuid, uuid, uuid, uuid, uuid, uuid, uuid, uuid, uuid, uuid, uuid, uuid);
 
