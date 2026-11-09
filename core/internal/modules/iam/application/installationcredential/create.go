@@ -2,6 +2,7 @@ package installationcredential
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -21,7 +22,7 @@ func Create(
 		return Receipt{}, err
 	}
 	if !receipt.valid(command) {
-		return Receipt{}, ErrStorage
+		return Receipt{}, fmt.Errorf("%w: installation credential marker was not stored", ErrStorage)
 	}
 	return receipt, nil
 }

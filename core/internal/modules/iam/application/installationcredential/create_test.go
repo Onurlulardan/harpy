@@ -2,6 +2,8 @@ package installationcredential
 
 import (
 	"context"
+	"errors"
+	"strings"
 	"testing"
 )
 
@@ -50,5 +52,29 @@ func TestCreateRejectsWrongFirstUser(t *testing.T) {
 	if _, err := Create(context.Background(), binding, store, command); err != ErrInvalid ||
 		called {
 		t.Fatalf("wrong user error=%v called=%t", err, called)
+	}
+}
+
+func TestCreateRejectsUnstoredMarker(t *testing.T) {
+	binding := activationBindingFixture()
+	credentialID, err := InitialCredentialID(binding.OperationID, binding.FirstUserID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	command := CreateCommand{
+		OperationID: binding.OperationID, TenantID: binding.TenantID,
+		UserID: binding.FirstUserID, CredentialID: credentialID,
+		CredentialVersion: 1, Credential: credentialFixture(t),
+	}
+	store := &memoryStore{create: func(ActivationBinding, CreateCommand) (Receipt, error) {
+		return Receipt{
+			OperationID: command.OperationID, TenantID: command.TenantID,
+			UserID: command.UserID, CredentialID: command.CredentialID,
+			CredentialVersion: 1,
+		}, nil
+	}}
+	_, err = Create(context.Background(), binding, store, command)
+	if !errors.Is(err, ErrStorage) || !strings.Contains(err.Error(), "marker was not stored") {
+		t.Fatal(err)
 	}
 }

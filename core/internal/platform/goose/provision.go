@@ -29,6 +29,9 @@ func ProvisionTenant(ctx context.Context, cfg foundation.Config, tenantID [16]by
 	if namespace.Schema != schemaName {
 		return fmt.Errorf("tenant schema %s was not prepared", schemaName)
 	}
+	if err = grantActivationRoutines(ctx, cfg, namespace.Role); err != nil {
+		return err
+	}
 	dsn, err := userDSN(cfg.AdminDSN, namespace.Role, password, cfg.Database)
 	if err != nil {
 		return err

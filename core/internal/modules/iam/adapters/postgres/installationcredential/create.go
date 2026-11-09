@@ -3,8 +3,11 @@ package installationcredentialpostgres
 import (
 	"context"
 	_ "embed"
+	"errors"
+	"fmt"
 
 	installationcredential "github.com/Onurlulardan/harpy/core/internal/modules/iam/application/installationcredential"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 //go:embed sql/tenant/create.sql
@@ -30,7 +33,19 @@ func (storage *store) Create(
 	clear(salt[:])
 	clear(tag[:])
 	if err != nil {
-		return installationcredential.Receipt{}, installationcredential.ErrStorage
+		return installationcredential.Receipt{}, fmt.Errorf("%w: %s", installationcredential.ErrStorage, sqlFailure(err))
 	}
 	return receipt, nil
+}
+
+func sqlFailure(err error) string {
+	var pgErr *pgconn.PgError
+	if !errors.As(err, &pgErr) {
+		return err.Error()
+	}
+	detail := pgErr.Message
+	if pgErr.Detail != "" {
+		detail += ": " + pgErr.Detail
+	}
+	return "SQLSTATE " + pgErr.Code + ": " + detail
 }
