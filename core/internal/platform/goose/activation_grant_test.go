@@ -24,29 +24,12 @@ func TestActivationGrantSQLNamesTheTenantRole(t *testing.T) {
 		"platform.tenancy_activation_step_context_assert_v1(uuid, text, uuid, name)",
 		"platform.tenancy_activation_step_consume_v1(uuid, text, uuid, name)",
 		"GRANT USAGE ON SCHEMA platform",
-		"WITH GRANT OPTION",
 	} {
 		if !strings.Contains(joined, signature) {
 			t.Fatalf("missing %s", signature)
 		}
 	}
-	if strings.Count(joined, "WITH GRANT OPTION") != 3 {
-		t.Fatal(joined)
-	}
-}
-
-func TestActivationGrantOptionRevokeKeepsExecute(t *testing.T) {
-	role := "harpy_td_0123456789abcdef0123456789abcdef"
-	statements, err := activationGrantOptionRevokeSQL(role)
-	if err != nil || len(statements) != 3 {
-		t.Fatalf("statements=%d err=%v", len(statements), err)
-	}
-	joined := strings.Join(statements, "\n")
-	if !strings.Contains(joined, "REVOKE GRANT OPTION FOR EXECUTE") ||
-		!strings.Contains(joined, "CASCADE") ||
-		strings.Contains(joined, "REVOKE EXECUTE") ||
-		strings.Contains(joined, "REVOKE USAGE") ||
-		strings.Contains(joined, "REVOKE ALL") {
+	if strings.Contains(joined, "GRANT OPTION") || strings.Contains(joined, "WITH ") {
 		t.Fatal(joined)
 	}
 }
