@@ -14,6 +14,7 @@ func probeSchemaReadiness(pool *postgres.Pool) health.Probe {
 			Database:         observation.DatabaseReady(),
 			DatabaseRole:     observation.DatabaseRoleReady(),
 			DeploymentPolicy: true,
+			SchemaContract:   observation.SchemaContractReady(),
 		}
 	}
 }

@@ -19,6 +19,7 @@ func probeReadiness(
 			Database:         observation.DatabaseReady(),
 			DatabaseRole:     observation.DatabaseRoleReady(),
 			DeploymentPolicy: policy,
+			SchemaContract:   observation.SchemaContractReady(),
 		}
 	}
 }

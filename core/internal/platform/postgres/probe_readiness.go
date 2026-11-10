@@ -38,6 +38,31 @@ func (pool *Pool) ProbeReadiness(ctx context.Context) ReadinessObservation {
 		return result
 	}
 	result.databaseRole = true
+	return pool.attachSchemaContract(ctx, transaction, result)
+}
+
+type schemaQueryer interface {
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+}
+
+func (pool *Pool) attachSchemaContract(
+	ctx context.Context,
+	queryer schemaQueryer,
+	result ReadinessObservation,
+) ReadinessObservation {
+	schema, err := probeSchemaContractRow(queryer.QueryRow(
+		ctx, probeSchemaContractSQL,
+		pool.binaryContract.RuntimeGeneration,
+		pool.binaryContract.MinimumDatabaseGeneration,
+		pool.binaryContract.MigrationManifestSHA256,
+		pool.binaryContract.ExtensionManifestSHA256,
+		pool.binaryContract.PostgresImageDigest,
+	), pool.binaryContract)
+	if err != nil {
+		return result
+	}
+	result.schemaReason = schema.Reason()
+	result.schemaContract = schema.Ready()
 	return result
 }
 
