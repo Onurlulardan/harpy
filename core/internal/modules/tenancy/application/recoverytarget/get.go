@@ -3,6 +3,7 @@ package recoverytarget
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	tenantapi "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/api"
 )
@@ -30,7 +31,10 @@ func (service *Service) Get(ctx context.Context) (tenantapi.RecoveryTarget, erro
 		return tenantapi.RecoveryTarget{}, ErrUnavailable
 	}
 	target, found, err := service.reader.Get(ctx, service.purpose)
-	if err != nil || !found {
+	if err != nil {
+		return tenantapi.RecoveryTarget{}, fmt.Errorf("%w: %v", ErrUnavailable, err)
+	}
+	if !found {
 		return tenantapi.RecoveryTarget{}, ErrUnavailable
 	}
 	return target, nil

@@ -30,7 +30,7 @@ func bindDatabaseBackupRuntime(
 	)
 	if err != nil {
 		return failDatabaseBackupStartup(
-			settings, pool, telemetryRuntime, logger, processcode.InvalidStartup,
+			settings, pool, telemetryRuntime, logger, processcode.InvalidStartup, err,
 		)
 	}
 	management, err := httpserver.Bind(
@@ -38,7 +38,7 @@ func bindDatabaseBackupRuntime(
 	)
 	if err != nil {
 		return failDatabaseBackupStartup(
-			settings, pool, telemetryRuntime, logger, processcode.ServeFailure,
+			settings, pool, telemetryRuntime, logger, processcode.ServeFailure, err,
 		)
 	}
 	return serveDatabaseBackupExecutor(
@@ -61,7 +61,7 @@ func serveDatabaseBackupExecutor(
 		_ = management.Close()
 		return failDatabaseBackupStartup(
 			settings, pool, runtime.telemetryRuntime, logger,
-			processcode.InvalidStartup,
+			processcode.InvalidStartup, err,
 		)
 	}
 	longRunning := settings.LongRunning()
@@ -81,7 +81,7 @@ func serveDatabaseBackupExecutor(
 		_ = management.Close()
 		return failDatabaseBackupStartup(
 			settings, pool, runtime.telemetryRuntime, logger,
-			processcode.InvalidStartup,
+			processcode.InvalidStartup, err,
 		)
 	}
 	outcome := host.RunProcess(process)
