@@ -56,7 +56,7 @@ func validRecoveryPin(input OnboardingPlanInput) bool {
 	value := input.RecoverySigning
 	if input.DeploymentMode == DeploymentModeOnPremise {
 		return value.Present && value.Generation > 0 &&
-			validOnboardingDigest(value.TrustBundleSHA256) && input.Offering.Source.Present
+			validOnboardingDigest(value.TrustBundleSHA256)
 	}
 	return !value.Present && value.Generation == 0 && value.TrustBundleSHA256 == ""
 }

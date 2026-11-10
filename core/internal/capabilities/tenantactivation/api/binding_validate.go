@@ -56,7 +56,7 @@ func validRecovery(binding Binding) bool {
 	pin := binding.RecoverySigning
 	if binding.DeploymentMode == "onpremise" {
 		return pin.Present && pin.Generation > 0 &&
-			digestPattern.MatchString(pin.TrustBundleSHA256) && binding.Offering.Source.Present
+			digestPattern.MatchString(pin.TrustBundleSHA256)
 	}
 	return !pin.Present && pin.Generation == 0 && pin.TrustBundleSHA256 == ""
 }

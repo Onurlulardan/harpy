@@ -2,6 +2,8 @@ package billing
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"regexp"
@@ -31,6 +33,18 @@ func (pin SaaSFreeBasePin) IsValid() bool {
 	return pin.VersionID != uuid.Nil && pin.VersionID.Version() == 7 &&
 		pin.Revision == 1 && saaSFreeBaseSHA256.MatchString(pin.SHA256) &&
 		!pin.EffectiveAt.IsZero() && pin.EffectiveAt.Location() == time.UTC
+}
+
+func SaaSFreeBaseInstallationPin() SaaSFreeBasePin {
+	digest := sha256.Sum256([]byte("harpy/billing/" + SaaSFreeBaseOfferingKey))
+	version := uuid.UUID(digest[:16])
+	version[6] = version[6]&0x0f | 0x70
+	version[8] = version[8]&0x3f | 0x80
+	return SaaSFreeBasePin{
+		VersionID: version, Revision: 1,
+		SHA256:      hex.EncodeToString(digest[:]),
+		EffectiveAt: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC),
+	}
 }
 
 func ReadSaaSFreeBase(

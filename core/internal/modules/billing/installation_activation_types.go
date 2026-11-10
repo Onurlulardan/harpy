@@ -52,9 +52,14 @@ func validInstallationBaseOffering(input InstallationBaseOfferingInput) bool {
 	}
 	switch input.DeploymentMode {
 	case "onpremise":
-		return input.BindingPurpose == "onpremise_primary" &&
-			input.Source.Present && input.Source.Sequence > 0 &&
-			installationSHA256Pattern.MatchString(input.Source.SHA256)
+		if input.BindingPurpose != "onpremise_primary" {
+			return false
+		}
+		if input.Source.Present {
+			return input.Source.Sequence > 0 &&
+				installationSHA256Pattern.MatchString(input.Source.SHA256)
+		}
+		return input.Source.Sequence == 0 && input.Source.SHA256 == ""
 	case "saas":
 		return (input.BindingPurpose == "saas_control" ||
 			input.BindingPurpose == "saas_customer") &&
