@@ -119,6 +119,12 @@ var assertLiveJobCatalogSQL string
 //go:embed sql/assert_live_outbox_catalog.sql
 var assertLiveOutboxCatalogSQL string
 
+//go:embed sql/list_incompatible_outbox_catalog.sql
+var listIncompatibleOutboxCatalogSQL string
+
+//go:embed sql/list_incompatible_job_catalog.sql
+var listIncompatibleJobCatalogSQL string
+
 //go:embed sql/insert_job_attempts.sql
 var insertJobAttemptsSQL string
 

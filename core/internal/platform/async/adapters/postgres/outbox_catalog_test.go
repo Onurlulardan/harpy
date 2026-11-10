@@ -3,7 +3,10 @@ package postgres
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
+
+	"github.com/jackc/pgx/v5"
 )
 
 func TestAssertOutboxCatalogRejectsUnsupportedLiveRows(t *testing.T) {
@@ -25,6 +28,22 @@ func TestAssertOutboxCatalogRejectsUnsupportedLiveRows(t *testing.T) {
 				t.Fatalf("catalog assertion error = %v", err)
 			}
 		})
+	}
+}
+
+func TestAssertOutboxCatalogNamesTheIncompatibleEvent(t *testing.T) {
+	repository := newWorkerTestRepository()
+	repository.database = &workerTestDatabase{querySets: []pgx.Rows{
+		&workerTestRows{values: [][]any{{false}}},
+		&workerTestRows{values: [][]any{{
+			"installation.activation.recorded", int64(1), "installation",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		}}},
+	}}
+	err := repository.AssertOutboxCatalog(context.Background(), validPublisherCatalog(t))
+	if !errors.Is(err, ErrOutboxCatalogIncompatible) ||
+		!strings.Contains(err.Error(), "installation.activation.recorded version 1 domain installation schema aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
+		t.Fatalf("incompatible outbox detail = %v", err)
 	}
 }
 

@@ -14,6 +14,7 @@ type workerTestDatabase struct {
 	transaction *workerTestTransaction
 	beginCalls  int
 	queryRows   pgx.Rows
+	querySets   []pgx.Rows
 	querySQL    string
 	queryArgs   []any
 }
@@ -25,6 +26,11 @@ func (database *workerTestDatabase) Query(
 ) (pgx.Rows, error) {
 	database.querySQL = statement
 	database.queryArgs = append([]any(nil), arguments...)
+	if len(database.querySets) > 0 {
+		rows := database.querySets[0]
+		database.querySets = database.querySets[1:]
+		return rows, nil
+	}
 	if database.queryRows != nil {
 		return database.queryRows, nil
 	}
