@@ -23,17 +23,12 @@ func writeServiceMaterial(dir string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	transfer, err := writeTransferMaterial(dir)
-	if err != nil {
-		return nil, err
-	}
 	notifications, err := writeNotificationsMaterial(dir)
 	if err != nil {
 		return nil, err
 	}
 	lines = append(lines, documents...)
 	lines = append(lines, analytics...)
-	lines = append(lines, transfer...)
 	return append(lines, notifications...), nil
 }
 
@@ -65,26 +60,6 @@ func writeAnalyticsMaterial(dir string) ([]string, error) {
 		runtimeLine("HARPY_ANALYTICS_DASHBOARD_EXPORT_SPOOL_DIR", spool),
 	)
 	return lines, nil
-}
-
-func writeTransferMaterial(dir string) ([]string, error) {
-	exportKey, err := writeFCARTKeyring(dir, "iam-export-keyring.json", "iam-export-local", 13)
-	if err != nil {
-		return nil, err
-	}
-	importKey, err := writeFCARTKeyring(dir, "iam-import-keyring.json", "iam-import-local", 14)
-	if err != nil {
-		return nil, err
-	}
-	spool, err := runtimeDirectory(dir, "iam-transfer-spool")
-	if err != nil {
-		return nil, err
-	}
-	lines := []string{runtimeLine("HARPY_IAM_SYSTEM_TRANSFER_SPOOL_DIR", spool)}
-	lines = append(lines, artifactS3Lines("HARPY_IAM_SYSTEM_EXPORT_S3", "harpy-iam-exports")...)
-	lines = append(lines, runtimeLine("HARPY_IAM_SYSTEM_EXPORT_FCART_KEK_KEYRING_FILE", exportKey))
-	lines = append(lines, artifactS3Lines("HARPY_IAM_SYSTEM_IMPORT_SOURCE_S3", "harpy-iam-imports")...)
-	return append(lines, runtimeLine("HARPY_IAM_SYSTEM_IMPORT_SOURCE_FCART_KEK_KEYRING_FILE", importKey)), nil
 }
 
 func writeFCARTKeyring(dir, name, kid string, marker byte) (string, error) {

@@ -22,7 +22,6 @@ func jobPolicies() []jobsv1.KindPolicy {
 	policies := BillingJobPolicies()
 	policies = append(policies, DocumentsJobPolicies()...)
 	policies = append(policies, NotificationsJobPolicies()...)
-	policies = append(policies, IAMSystemTransferJobPolicies()...)
 	for _, kind := range kinds {
 		effect := jobsv1.EffectDatabaseTransactional
 		if kind == "iam.invitation.delivery" || kind == "iam.lifecycle.delivery" {

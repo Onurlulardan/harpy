@@ -31,10 +31,7 @@ func (port *identitySystemResourcePort) beginSystemResourceCommand(
 	exactScope := identitySystemResourceScope(
 		ctx, scope, evidence, platformtx.Command, authorityOperation,
 	) == nil
-	delegatedScope := identitySystemResourceImportMutationScope(
-		ctx, scope, evidence, resource, authorityOperation, action,
-	)
-	if err != nil || !resource.Valid() || !exactScope && !delegatedScope {
+	if err != nil || !resource.Valid() || !exactScope {
 		return identitySystemResourceCommand{}, publicresource.ErrContract
 	}
 	authority, err := newIdentitySystemResourceAuthorization(

@@ -22,7 +22,7 @@ func (*ports) Catalog(
 	}
 	custom, err := reader.ActiveQueryCatalog(ctx, resource)
 	if err != nil {
-		return catalog.Published{}, catalog.ErrContract
+		return catalog.BuildCore(resource)
 	}
 	return catalog.Build(custom)
 }

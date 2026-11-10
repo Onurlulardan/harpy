@@ -48,27 +48,13 @@ func (runtime *iamAPIRuntime) buildHTTP(
 	if err != nil {
 		return fmt.Errorf("build IAM identity application: %w", err)
 	}
-	if err = runtime.buildSystemResources(coordinator); err != nil {
-		return err
-	}
 	identityHTTP, err := runtime.security.NewIdentityHTTP(
 		runtime.identityApplication, iammodule.HTTPErrorSink(report),
 	)
 	if err != nil {
 		return fmt.Errorf("build IAM identity HTTP: %w", err)
 	}
-	systemResourceHTTP, err := buildSystemResourceRecordHTTP(
-		runtime.systemResources, runtime.systemLayoutAccess, report,
-	)
-	if err != nil {
-		return err
-	}
-	identityRoutes, err := rebindIdentitySystemResourceRoutes(
-		identityHTTP.Routes(), systemResourceHTTP.Routes(),
-	)
-	if err != nil {
-		return fmt.Errorf("rebind IAM system resource HTTP: %w", err)
-	}
+	identityRoutes := identityHTTP.Routes()
 	runtime.postRestore, err = iammodule.NewPostRestoreRuntime(
 		pool, iamSettings, runtime.passwordBlocklists.Common(),
 		runtime.passwordBlocklists.Compromised(), authHTTP, iammodule.HTTPErrorSink(report),
@@ -77,12 +63,8 @@ func (runtime *iamAPIRuntime) buildHTTP(
 		return fmt.Errorf("build IAM post-restore runtime: %w", err)
 	}
 	runtime.routes = [][]httpedge.Route{
-		authHTTP.Routes(), identityRoutes, systemResourceHTTP.Routes(),
+		authHTTP.Routes(), identityRoutes,
 		runtime.postRestore.Routes(),
-	}
-	if err := runtime.buildSystemTransferHTTP(ctx, settings, pool, coordinator,
-		cursorKeys, catalogs, report); err != nil {
-		return err
 	}
 	if err := runtime.buildProfileHTTP(
 		pool, coordinator, identityChanges, report,

@@ -14,4 +14,3 @@ func (application *identityHTTPApplication) SystemResources() publicresource.Por
 }
 
 var _ publicresource.Port = (*identitySystemResourcePort)(nil)
-var _ publicresource.LayoutCatalogPort = (*identitySystemResourcePort)(nil)

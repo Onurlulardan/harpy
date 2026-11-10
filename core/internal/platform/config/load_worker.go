@@ -6,16 +6,15 @@ import (
 )
 
 type Worker struct {
-	longRunning          LongRunning
-	deploymentMode       DeploymentMode
-	authority            WorkerAuthority
-	memoryLimit          WorkerMemoryLimit
-	rabbitMQ             RabbitMQ
-	iam                  IAMWorker
-	restQueryCursorKeys  CursorKeyring
-	iamTransferArtifacts IAMSystemTransferArtifacts
-	documents            DocumentsWorker
-	notificationsKeys    NotificationsKEKKeyring
+	longRunning         LongRunning
+	deploymentMode      DeploymentMode
+	authority           WorkerAuthority
+	memoryLimit         WorkerMemoryLimit
+	rabbitMQ            RabbitMQ
+	iam                 IAMWorker
+	restQueryCursorKeys CursorKeyring
+	documents           DocumentsWorker
+	notificationsKeys   NotificationsKEKKeyring
 }
 
 func LoadWorker() (Worker, error) {
@@ -59,11 +58,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 	if err != nil {
 		return Worker{}, err
 	}
-	iamTransferArtifacts, err := loadIAMSystemTransferArtifacts(values,
-		runtimeConfig.Environment())
-	if err != nil {
-		return Worker{}, err
-	}
 	documents, err := loadDocumentsWorker(values, runtimeConfig.Environment())
 	if err != nil {
 		return Worker{}, err
@@ -76,9 +70,8 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 		longRunning: longRunning, deploymentMode: deploymentMode,
 		authority: authority, memoryLimit: memoryLimit,
 		rabbitMQ: rabbitMQ, iam: iamConfig,
-		restQueryCursorKeys:  cursorKeys,
-		iamTransferArtifacts: iamTransferArtifacts,
-		documents:            documents,
-		notificationsKeys:    notificationsKeys,
+		restQueryCursorKeys: cursorKeys,
+		documents:           documents,
+		notificationsKeys:   notificationsKeys,
 	}, nil
 }

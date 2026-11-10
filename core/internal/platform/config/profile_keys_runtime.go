@@ -29,7 +29,6 @@ func apiKeys() []string {
 		notificationsConsumerKeyringFileKey,
 	}
 	keys = append(keys, analyticsDashboardExportArtifactKeys()...)
-	keys = append(keys, iamSystemTransferArtifactKeys()...)
 	keys = append(keys, documentsArtifactKeys()...)
 	keys = append(keys, documentsClamAVAddressKey)
 	return append(keys, iamAPIKeys()...)
@@ -54,7 +53,6 @@ func workerKeys() []string {
 	}
 	keys = append(keys, analyticsDashboardExportArtifactKeys()...)
 	keys = append(keys, analyticsExportSpoolKey)
-	keys = append(keys, iamSystemTransferArtifactKeys()...)
 	keys = append(keys, documentsArtifactKeys()...)
 	keys = append(keys, documentsLegacyArtifactKeys()...)
 	keys = append(keys, documentsClamAVAddressKey)

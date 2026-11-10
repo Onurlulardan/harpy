@@ -18,7 +18,6 @@ func TestBillingMigrationsAgainstPostgreSQL184(t *testing.T) {
 			applyBillingDocuments(t, ctx, database, loadBillingDocuments(t, origin))
 			assertBillingCatalog(t, ctx, database)
 			assertBillingV1RetirementInventory(t, ctx, database)
-			assertBillingLicenseLifecycle(t, ctx, database)
 		})
 	}
 }

@@ -10,7 +10,6 @@ func SetAPI(setter APISetter) {
 	setter.Helper()
 	SetIAMAPI(setter)
 	setPhase14API(setter)
-	setIAMSystemTransfer(setter)
 	setDocuments(setter, false)
 	setNotifications(setter, false)
 }
@@ -25,7 +24,6 @@ func SetWorker(setter WorkerSetter) {
 	SetIAMWorker(setter)
 	setPhase14Worker(setter)
 	setRestQueryCursorKeyring(setter)
-	setIAMSystemTransfer(setter)
 	setDocuments(setter, true)
 	setNotifications(setter, true)
 }
@@ -34,7 +32,6 @@ func APIEnvironment(fixture ArtifactFixture, now time.Time) []string {
 	fixture.Helper()
 	values := append([]string{}, IAMAPIEnvironment(fixture, now)...)
 	values = append(values, phase14APIEnvironment(fixture)...)
-	values = append(values, iamSystemTransferEnvironment(fixture)...)
 	values = append(values, documentsEnvironment(fixture, false)...)
 	values = append(values, notificationsEnvironment(fixture, false))
 	return values
@@ -47,7 +44,6 @@ func WorkerEnvironment(fixture ArtifactFixture, now time.Time) []string {
 	}, IAMWorkerEnvironment(fixture, now)...)
 	values = append(values, phase14WorkerEnvironment(fixture)...)
 	values = append(values, restQueryCursorKeyringEnvironment())
-	values = append(values, iamSystemTransferEnvironment(fixture)...)
 	values = append(values, documentsEnvironment(fixture, true)...)
 	values = append(values, notificationsEnvironment(fixture, true))
 	return values

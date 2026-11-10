@@ -17,8 +17,6 @@ func TestGeneratedTypedKeyringsSatisfyRuntimeSchemas(t *testing.T) {
 		{"iam-one-time-token-keyring.json", "iam-hmac-keyring.schema.json"},
 		{"iam-recovery-code-keyring.json", "iam-hmac-keyring.schema.json"},
 		{"iam-password-blocklists.json", "iam-password-blocklists.schema.json"},
-		{"iam-system-export-fcart-kek-keyring.json", "iam-system-transfer-fcart-kek-keyring.schema.json"},
-		{"iam-system-import-source-fcart-kek-keyring.json", "iam-system-transfer-fcart-kek-keyring.schema.json"},
 		{"notifications-consumer-keyring.json", "notifications-consumer-keyring.schema.json"},
 		{"notifications-kek-keyring.json", "notifications-kek-keyring.schema.json"},
 	}

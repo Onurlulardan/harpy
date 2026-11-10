@@ -431,47 +431,11 @@
       "/api/iam/password/change": {
         "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/passwordChange"
       },
-      "/api/iam/profile-schemas/{resource}/active": {
-        "$ref": "iam-profile-v1.paths.json#/pathItems/active"
-      },
-      "/api/iam/profile-schemas/{resource}/backfills/{plan_id}/recover": {
-        "$ref": "iam-profile-v1.paths.json#/pathItems/recovery"
-      },
-      "/api/iam/profile-schemas/{resource}/fields/{field_id}/retire": {
-        "$ref": "iam-profile-v1.paths.json#/pathItems/retire"
-      },
-      "/api/iam/profile-schemas/{resource}/publish": {
-        "$ref": "iam-profile-v1.paths.json#/pathItems/publish"
-      },
-      "/api/iam/profile-schemas/{resource}/{schema_id}": {
-        "$ref": "iam-profile-v1.paths.json#/pathItems/historical"
-      },
       "/api/iam/sessions": {
         "$ref": "iam-lifecycle-sessions-v1.paths.json#/pathItems/sessions"
       },
       "/api/iam/sessions/{id}": {
         "$ref": "iam-lifecycle-sessions-v1.paths.json#/pathItems/session"
-      },
-      "/api/iam/system-resources/{resource}/record-exports": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-exports"
-      },
-      "/api/iam/system-resources/{resource}/record-exports/{export_id}": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-exports~1{export_id}"
-      },
-      "/api/iam/system-resources/{resource}/record-exports/{export_id}/content": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-exports~1{export_id}~1content"
-      },
-      "/api/iam/system-resources/{resource}/record-import-sources": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-import-sources"
-      },
-      "/api/iam/system-resources/{resource}/record-imports": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-imports"
-      },
-      "/api/iam/system-resources/{resource}/record-imports/{import_id}": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-imports~1{import_id}"
-      },
-      "/api/iam/system-resources/{resource}/record-imports/{import_id}/report": {
-        "$ref": "iam-system-transfer-v1.paths.json#/paths/~1api~1iam~1system-resources~1{resource}~1record-imports~1{import_id}~1report"
       },
       "/api/invitations": {
         "$ref": "iam-invitations-v1.paths.json#/pathItems/collection"
@@ -763,18 +727,6 @@
       },
       "/api/roles/{id}/state": {
         "$ref": "iam-roles-v1.paths.json#/pathItems/state"
-      },
-      "/api/system-resources/{resource}/layout-revisions": {
-        "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1layout-revisions"
-      },
-      "/api/system-resources/{resource}/layout-revisions/{revision_id}": {
-        "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1layout-revisions~1{revision_id}"
-      },
-      "/api/system-resources/{resource}/layout-revisions/{revision_id}/publication": {
-        "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1layout-revisions~1{revision_id}~1publication"
-      },
-      "/api/system-resources/{resource}/presentation": {
-        "$ref": "system-resource-layout-v2.paths.json#/paths/~1api~1system-resources~1{resource}~1presentation"
       },
       "/api/users": {
         "$ref": "iam-users-v1.paths.json#/pathItems/collection"

@@ -72,7 +72,6 @@ Harpy'nin ana uzun yaşayan süreçleri API ve worker'dır. Operator ise belirli
 | Platform Authority | Signed authority proposal, acknowledgement, checkpoint |
 | Platform Ops | Diagnostics, recovery set, restore operation, traces/alerts |
 | Support | Bug report ve support contact |
-| System Resource Layout | Revisioned system form/layout/presentation catalog |
 
 ## 6. Harpy'nin mimari yaklaşımı
 

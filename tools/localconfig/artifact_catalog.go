@@ -36,8 +36,6 @@ var baseArtifactNames = []string{
 	"iam-recovery-code-keyring.json",
 	"iam-refresh-token-keyring.json",
 	"iam-session-network-keyring.json",
-	"iam-system-export-fcart-kek-keyring.json",
-	"iam-system-import-source-fcart-kek-keyring.json",
 	"initialize.env",
 	"invitation-template.json",
 	"kms-master-key.bin",

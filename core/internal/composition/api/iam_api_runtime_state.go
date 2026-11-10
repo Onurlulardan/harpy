@@ -2,8 +2,6 @@ package api
 
 import (
 	iammodule "github.com/Onurlulardan/harpy/core/internal/modules/iam"
-	systemresourcelayouts "github.com/Onurlulardan/harpy/core/internal/orchestration/systemresourcelayouts"
-	systemresources "github.com/Onurlulardan/harpy/core/internal/orchestration/systemresources"
 	"github.com/Onurlulardan/harpy/core/internal/platform/httpedge"
 	platformtx "github.com/Onurlulardan/harpy/core/internal/platform/transaction"
 )
@@ -27,11 +25,8 @@ type iamAPIRuntime struct {
 	documentsArchiveAccess     *iammodule.DocumentsArchiveAccessRuntime
 	notificationsAccess        *iammodule.NotificationsAccessRuntime
 	servicePrincipals          *iammodule.ServicePrincipalRuntime
-	systemLayoutAccess         *iammodule.SystemLayoutAccessRuntime
 	authApplication            iammodule.AuthHTTPApplication
 	identityApplication        iammodule.IdentityHTTPApplication
-	systemResources            *systemresources.Application
-	systemLayouts              *systemresourcelayouts.Application
 	profileHTTP                iammodule.ProfileHTTPApplication
 	invitationRuntime          *iammodule.InvitationRuntime
 	invitationHTTP             iammodule.InvitationHTTPApplication
@@ -45,7 +40,6 @@ type iamAPIRuntime struct {
 	totpDecryptor              iamTOTPDecryptor
 	totpSealer                 *iammodule.TOTPSealer
 	actorBridge                *iammodule.ActorBridgeRuntime
-	systemTransferHTTP         *iammodule.SystemTransferHTTP
 	postRestore                *iammodule.PostRestoreRuntime
 	coordinator                *platformtx.Coordinator
 	identityChanges            iammodule.IdentityMutationSink
@@ -77,6 +71,5 @@ func (runtime *iamAPIRuntime) Close() {
 }
 
 func (runtime *iamAPIRuntime) actorBridgeReady() bool {
-	return runtime != nil && runtime.actorBridge != nil && runtime.actorBridge.Ready() &&
-		runtime.systemTransferHTTP != nil && runtime.systemTransferHTTP.Ready()
+	return runtime != nil && runtime.actorBridge != nil && runtime.actorBridge.Ready()
 }

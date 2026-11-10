@@ -23,7 +23,7 @@ func (*adapter) List(
 	}
 	custom, err := reader.ActiveQueryCatalog(ctx, profile.ResourceUser)
 	if err != nil {
-		return catalog.Published{}, catalog.ErrContract
+		return catalog.BuildCore(profile.ResourceUser)
 	}
 	return catalog.Build(custom)
 }

@@ -8,8 +8,6 @@ func sharedRuntimeSecretNames() []string {
 		"gcp-wif.json",
 		"iam-login-directory-keyring.json",
 		"iam-one-time-token-keyring.json",
-		"iam-system-export-fcart-kek-keyring.json",
-		"iam-system-import-source-fcart-kek-keyring.json",
 		"local-ca.crt",
 		"rest-query-cursor-keyring.json",
 		"s3-access-key-id.txt",

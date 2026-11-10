@@ -111,7 +111,6 @@
 	"contracts/operations/platformops_application.json",
 	"contracts/operations/platformops_application_recoveryexecution.json",
 	"contracts/operations/platformops_application_restoreexecution.json",
-    "contracts/operations/system_resource_layout.json",
 	"contracts/operations/tenancy_adapters_postgres_customerprovisioning.json",
 	"contracts/operations/tenancy_adapters_postgres_customerworker.json",
 	"contracts/operations/tenancy_adapters_postgres_deploymentpolicy.json",

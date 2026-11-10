@@ -22,7 +22,7 @@ func TestRepositoryStorageCatalogLoadsWithoutSemanticDrift(t *testing.T) {
 	want := []string{
 		"billing", "documents", "iam", "notifications",
 		"platform_async", "platform_backupreceipt", "platform_cutover",
-		"platform_postgres", "platformauthority", "platformops", "system_resource_layout",
+		"platform_postgres", "platformauthority", "platformops",
 		"tenancy",
 	}
 	if manifest.Version != catalogVersion || !reflect.DeepEqual(owners, want) {

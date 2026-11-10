@@ -13,12 +13,7 @@ func TestIAMProfileHTTPOpenAPIContractIsExactAndSecretFree(t *testing.T) {
 	assertLocalReferences(t, directory, paths)
 	items := paths["pathItems"].(map[string]any)
 	want := map[string][]string{
-		"self":       {"get", "put"},
-		"active":     {"get"},
-		"historical": {"get"},
-		"publish":    {"post"},
-		"recovery":   {"post"},
-		"retire":     {"post"},
+		"self": {"get", "put"},
 	}
 	if len(items) != len(want) {
 		t.Fatalf("IAM profile path item count=%d want=%d", len(items), len(want))
@@ -36,21 +31,9 @@ func TestIAMProfileHTTPOpenAPIContractIsExactAndSecretFree(t *testing.T) {
 
 	assertProfileParameterRef(t, items, "self", "put",
 		"iam-profile-v1.schemas.json#/parameters/SelfIdempotencyKey")
-	assertProfileParameterRef(t, items, "publish", "post",
-		"iam-profile-v1.schemas.json#/parameters/IdempotencyKey")
-	assertProfileParameterRef(t, items, "retire", "post",
-		"iam-profile-v1.schemas.json#/parameters/IdempotencyKey")
-	assertProfileParameterRef(t, items, "recovery", "post",
-		"iam-profile-v1.schemas.json#/parameters/IdempotencyKey")
-	assertProfileParameterRef(t, items, "recovery", "post",
-		"iam-profile-v1.schemas.json#/parameters/PlanID")
 	selfConflict := items["self"].(map[string]any)["put"].(map[string]any)["responses"].(map[string]any)["409"].(map[string]any)
 	if selfConflict["$ref"] != "iam-profile-v1.schemas.json#/responses/ProfileWriteConflict" {
 		t.Fatalf("IAM self profile recovery conflict=%v", selfConflict)
-	}
-	recoveryConflict := items["recovery"].(map[string]any)["post"].(map[string]any)["responses"].(map[string]any)["409"].(map[string]any)
-	if recoveryConflict["$ref"] != "iam-profile-v1.schemas.json#/responses/RecoveryConflict" {
-		t.Fatalf("IAM profile recovery conflict=%v", recoveryConflict)
 	}
 
 	requests := readOpenAPIDocument(t, filepath.Join(directory, "iam-profile-v1.requests.json"))

@@ -3,8 +3,8 @@
   "files": [
     {
       "generator": "go run ./tools/coreopenapi",
-      "input_sha256": "c956ac94613365c9c07513bf9e289a40b4f34abfb8f8972a4a99bffe6811cabc",
-      "output_sha256": "c956ac94613365c9c07513bf9e289a40b4f34abfb8f8972a4a99bffe6811cabc",
+      "input_sha256": "70bfc2d58861c04d13875f976d328ad413cf37bb8859599fc0bccf2f3a4adc25",
+      "output_sha256": "70bfc2d58861c04d13875f976d328ad413cf37bb8859599fc0bccf2f3a4adc25",
       "path": "contracts/http/core-api-v1.openapi.yaml"
     },
     {

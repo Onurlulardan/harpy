@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	iam "github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/platform/admission"
 	"github.com/Onurlulardan/harpy/core/internal/platform/async"
 	asyncpostgres "github.com/Onurlulardan/harpy/core/internal/platform/async/adapters/postgres"
@@ -76,10 +75,6 @@ func buildAsyncWorkload(
 	if err != nil {
 		return nil, nil, fmt.Errorf("bind job worker store: %w", err)
 	}
-	exportRecovery, err := iam.OpenSystemTransferExportReconciliationRecovery(coordinator)
-	if err != nil {
-		return nil, nil, fmt.Errorf("bind IAM export reconciliation recovery: %w", err)
-	}
 	processors, err := buildCoreJobProcessors(
 		workerSettings, release, writeCatalogs, jobStore, pool, coordinator,
 	)
@@ -114,11 +109,7 @@ func buildAsyncWorkload(
 	if err := jobStore.AssertJobCatalog(ctx, jobCatalog); err != nil {
 		return nil, nil, fmt.Errorf("assert live job processor compatibility: %w", err)
 	}
-	runnerStore, err := newIAMExportReconciliationRecoveryStore(jobStore, exportRecovery)
-	if err != nil {
-		return nil, nil, err
-	}
-	jobRunner, err := jobexecution.NewRunner(runnerStore, registry, gate)
+	jobRunner, err := jobexecution.NewRunner(jobStore, registry, gate)
 	if err != nil {
 		return nil, nil, fmt.Errorf("build job runner: %w", err)
 	}
@@ -140,7 +131,6 @@ func buildAsyncWorkload(
 		ctx, pool, workerSettings, iamSettings, settings, catalogs, gate, version,
 		[]managedAsyncWorkload{
 			outboxRunner, jobRunner, eventRunner, retentionRunner,
-			iamResources.cleanup,
 		},
 	)
 	if err != nil {

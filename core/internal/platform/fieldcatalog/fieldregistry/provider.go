@@ -1,6 +1,6 @@
 package fieldregistry
 
-const ContractVersion = "forms-field-registry.v1"
+const ContractVersion = "iam-field-registry.v1"
 
 type Snapshot struct {
 	ContractVersion string

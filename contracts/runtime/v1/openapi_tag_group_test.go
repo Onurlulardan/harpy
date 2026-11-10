@@ -62,7 +62,6 @@ func openAPIFileTags() map[string]string {
 		"iam-invitations-v1.paths.json": "Invitations", "iam-rbac-v1.paths.json": "Permissions",
 		"iam-permission-requests-v1.paths.json": "Permissions", "iam-users-v1.paths.json": "Directory",
 		"iam-roles-v1.paths.json": "Directory", "iam-organizations-v1.paths.json": "Directory",
-		"iam-system-transfer-v1.paths.json": "Directory", "system-resource-layout-v2.paths.json": "Directory",
 		"billing-platform-campaigns-v2.paths.json": "Billing", "billing-platform-discounts-v2.paths.json": "Billing",
 		"billing-platform-offerings-v2.paths.json": "Billing", "billing-platform-reports-v2.paths.json": "Billing",
 		"billing-public-tenant-v2.paths.json": "Billing", "billing-webhook-v2.paths.json": "Billing",

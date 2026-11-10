@@ -5,15 +5,10 @@ import (
 	"testing"
 )
 
-func TestProfileHTTPRoutesAreExactSeven(t *testing.T) {
+func TestProfileHTTPRoutesAreSelfOnly(t *testing.T) {
 	want := []string{
 		http.MethodGet + " /api/profile",
 		http.MethodPut + " /api/profile",
-		http.MethodGet + " /api/iam/profile-schemas/{resource}/active",
-		http.MethodGet + " /api/iam/profile-schemas/{resource}/{schema_id}",
-		http.MethodPost + " /api/iam/profile-schemas/{resource}/publish",
-		http.MethodPost + " /api/iam/profile-schemas/{resource}/backfills/{plan_id}/recover",
-		http.MethodPost + " /api/iam/profile-schemas/{resource}/fields/{field_id}/retire",
 	}
 	routes := (&ProfileHTTP{}).Routes()
 	if len(routes) != len(want) {
@@ -33,19 +28,5 @@ func TestProfileHTTPRoutesAreExactSeven(t *testing.T) {
 	var handler *ProfileHTTP
 	if routes := handler.Routes(); routes != nil {
 		t.Fatalf("nil handler routes=%v", routes)
-	}
-}
-
-func TestProfileHTTPActiveLiteralWinsOverSchemaParameter(t *testing.T) {
-	fixture := newProfileHTTPTestFixture(t)
-	fixture.app.results["GetActiveSchema"] = ProfileSchemaView{
-		ID: profileHTTPTestSchemaID, Version: 1,
-	}
-	response := fixture.serve(fixture.request(
-		http.MethodGet, "/api/iam/profile-schemas/user/active", "",
-	))
-	if response.Code != http.StatusOK || len(fixture.app.calls) != 1 ||
-		fixture.app.calls[0].operation != "GetActiveSchema" {
-		t.Fatalf("status=%d calls=%+v body=%s", response.Code, fixture.app.calls, response.Body)
 	}
 }

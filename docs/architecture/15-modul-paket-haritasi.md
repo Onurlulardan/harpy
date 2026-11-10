@@ -96,7 +96,7 @@ Platform Ops application grupları:
 
 Adapters: backuparchive, pgtools, postgres, recoveryplansigner, recoverys3.
 
-## 10. Support ve System Resource Layout
+## 10. Support
 
 Support application:
 - contact
@@ -105,11 +105,6 @@ Support application:
 - tenantbug
 
 Adapters: http, postgres.
-
-System Resource Layout:
-- Public API package ve application entrypoint'leri modül root altında bulunur.
-- PostgreSQL adapter persistence owner'dır.
-- Presentation compile/publish akışı platform fieldcatalog ile çalışır.
 
 ## 11. Dizin haritası nasıl kullanılmalı?
 

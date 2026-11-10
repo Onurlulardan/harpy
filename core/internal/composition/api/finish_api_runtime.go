@@ -32,8 +32,7 @@ func finishAPIRuntime(
 		groups,
 		[][]httpedge.Route{domains.documents.Routes(), domains.notifications.Routes()},
 		domains.secondary.RouteGroups(),
-		[][]httpedge.Route{domains.systemLayouts.Routes(),
-			domains.customerProvisioning.Routes()},
+		[][]httpedge.Route{domains.customerProvisioning.Routes()},
 	)
 	routes, err := buildPublicRoutes(iamRuntime.security, report, groups...)
 	if err != nil {

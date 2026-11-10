@@ -72,11 +72,5 @@ func (runtime *iamAPIRuntime) buildHTTPAccess(
 		return fmt.Errorf("build IAM Notifications access runtime: %w", err)
 	}
 	_ = catalogs
-	runtime.systemLayoutAccess, err = iammodule.NewSystemLayoutAccessRuntime(
-		pool, coordinator, runtime.security, time.Now,
-	)
-	if err != nil {
-		return fmt.Errorf("build IAM system layout access runtime: %w", err)
-	}
 	return nil
 }

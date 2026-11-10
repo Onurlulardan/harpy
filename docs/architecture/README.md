@@ -13,7 +13,7 @@ Bu dokümantasyon, Harpy'nin kaynak kodda implement edilmiş mimarisini gelişti
 | 3 | [Runtime ve composition](03-runtime-ve-composition.md) | Setup, API, worker, operator ve süreç yaşam döngüsü |
 | 4 | [Platform temelleri](04-platform-temelleri.md) | Config, PostgreSQL, transaction, telemetry, health |
 | 5 | [HTTP, API ve contracts](05-http-api-ve-kontratlar.md) | Route assembly, API contract, hata modeli, REST Query |
-| 5a | [API endpoint kataloğu](../api-endpoints.md) | Yayındaki 240 işlemin gruplu listesi |
+| 5a | [API endpoint kataloğu](../api-endpoints.md) | Yayındaki 219 işlemin gruplu listesi |
 | 6 | [Veri ve tenant izolasyonu](06-veri-ve-tenant-izolasyonu.md) | Schema-per-tenant, scope, data ownership, Unit of Work |
 | 7 | [Event, job ve worker](07-event-job-ve-worker.md) | Outbox, RabbitMQ, DB job, retry, lease, worker |
 | 8 | [Güvenlik modeli](08-guvenlik-modeli.md) | Actor, IAM, RBAC, token, tenant güvenliği, secrets |
@@ -36,7 +36,7 @@ Bu dokümantasyon, Harpy'nin kaynak kodda implement edilmiş mimarisini gelişti
 | [Documents](modules/documents.md) | Folder, item, version, upload, encryption, scan, archive |
 | [Notifications](modules/notifications.md) | Inbox, preference, template, provider, delivery |
 | [Analytics](modules/analytics.md) | Query, dashboard, publication, ACL, execution |
-| [Diğer modüller](modules/diger-moduller.md) | Audit, Usage, Support, System Resource Layout, Platform Authority/Ops |
+| [Diğer modüller](modules/diger-moduller.md) | Audit, Usage, Support, Platform Authority/Ops |
 
 ## Mimariyi doğrulamak için başlıca kaynaklar
 

@@ -41,10 +41,3 @@ func (c API) RestQueryCursorKeyring() (CursorKeyring, error) {
 func (c API) AnalyticsTrustedProxies() AnalyticsTrustedProxies {
 	return c.analyticsProxies
 }
-
-func (c API) IAMSystemTransferArtifacts() (IAMSystemTransferArtifacts, error) {
-	if err := c.iamTransferArtifacts.Validate(); err != nil {
-		return IAMSystemTransferArtifacts{}, err
-	}
-	return c.iamTransferArtifacts, nil
-}
