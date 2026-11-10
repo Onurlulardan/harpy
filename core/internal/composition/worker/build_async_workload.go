@@ -94,6 +94,13 @@ func buildAsyncWorkload(
 		return nil, nil, err
 	}
 	processors = append(processors, analyticsExport.processors...)
+	documentsProduction, err := buildDocumentsJobProcessors(
+		ctx, workerSettings, release, writeCatalogs, jobStore, pool, coordinator, version,
+	)
+	if err != nil {
+		return nil, nil, err
+	}
+	processors = append(processors, documentsProduction.JobProcessors()...)
 	iamProcessors, iamResources, err := buildIAMJobProcessors(
 		ctx, pool, workerSettings, iamSettings, coordinator, release,
 		writeCatalogs, jobStore, gate,
