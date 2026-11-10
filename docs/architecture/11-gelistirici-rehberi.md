@@ -9,11 +9,6 @@ Backend geliştirme için:
 - Go Task (task)
 - İlk image build'inde internet erişimi
 
-Sister frontend-v3 projesini de çalıştıracaksan:
-- Node.js 22+
-- Yarn 1
-- Sibling frontend repository'sinin local kurulumu
-
 ClamAV signature ilk kurulumunda Docker'a en az 4 GB RAM ayrılması önerilir.
 
 ## 2. Repository'yi tanı

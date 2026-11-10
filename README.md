@@ -304,8 +304,6 @@ Backend geliştirme ve local stack için:
 - İlk dependency ve image build işlemleri için internet erişimi.
 - Local stack ClamAV imza yüklemesi için Docker'a en az 4 GB RAM ayrılması.
 
-Local stack kardeş `frontend-v3` projesini de çalıştıracak şekilde yapılandırılmıştır. Frontend de kullanılacaksa Node.js 22+, Yarn 1 ve kardeş frontend repository'sinin kurulu olması gerekir. Yalnız backend geliştirme için frontend toolchain'i gerekli değildir.
-
 ### Tam local development stack'i başlatma
 
 Repository'yi klonlayıp kök dizinde çalıştırın:

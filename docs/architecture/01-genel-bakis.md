@@ -8,7 +8,7 @@ Harpy'nin temel çalışma profilleri:
 - **Single-tenant / on-premise:** Bir müşteri kurulumu için ayrılmış çalışma ortamı.
 - **Multi-tenant / SaaS:** Aynı platform runtime'ında birden fazla tenant'ın yönetilmesi.
 
-Harpy bir frontend repository'si değildir. Kaynak ağacında React/Vue/Svelte gibi bir frontend uygulamasının yerleşik yapısı bulunmaz. Yerel çalışma görevleri kardeş `frontend-v3` projesini ayrıca çalıştırabilir; backend API ve worker bu repository'dedir.
+Harpy bir frontend repository'si değildir. Kaynak ağacında React/Vue/Svelte gibi bir frontend uygulamasının yerleşik yapısı bulunmaz. Backend API ve worker bu repository'dedir.
 
 ## 2. Teknoloji seti
 

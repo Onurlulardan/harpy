@@ -1,6 +1,6 @@
 ---
 name: data-tenancy
-description: Govern backend-v2 PostgreSQL ownership, schema-per-tenant isolation, Unit of Work, repositories, migrations, backfills, indexes, transactions, and data rollout. Use for every SQL, model, repository, tenant lifecycle, or migration change.
+description: Govern Harpy PostgreSQL ownership, schema-per-tenant isolation, Unit of Work, repositories, migrations, backfills, indexes, transactions, and data rollout. Use for every SQL, model, repository, tenant lifecycle, or migration change.
 ---
 
 # Data and Tenancy

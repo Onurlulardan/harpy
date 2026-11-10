@@ -58,11 +58,11 @@ func (resolve KeyResolverFunc) LicenseKey(
 
 type FeatureClaims struct {
 	FormBuilder, WorkflowBuilder, APIBuilder bool
-	DashboardBuilder, AIAssistant            bool
+	AIAssistant                              bool
 }
 
 type LimitClaims struct {
 	MaxUsers, MaxForms, MaxWorkflows int64
-	MaxAPIEndpoints, MaxDashboards   int64
+	MaxAPIEndpoints                  int64
 	MaxTenants                       int64
 }

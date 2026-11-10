@@ -1,6 +1,6 @@
 ---
 name: events-jobs
-description: Design backend-v2 transactional outbox, inbox, integration events, database jobs, workers, retries, leases, idempotency, RabbitMQ delivery, DLQ, projections, and external side effects. Use for every asynchronous or cross-process flow.
+description: Design Harpy transactional outbox, inbox, integration events, database jobs, workers, retries, leases, idempotency, RabbitMQ delivery, DLQ, projections, and external side effects. Use for every asynchronous or cross-process flow.
 ---
 
 # Events and Jobs

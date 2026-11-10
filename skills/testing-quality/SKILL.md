@@ -1,6 +1,6 @@
 ---
 name: testing-quality
-description: Define and enforce backend-v2 unit, integration, contract, architecture, migration, tenant isolation, no-code fixture, differential, performance, and rollout verification. Use for every change and for CI or quality-gate work.
+description: Define and enforce Harpy unit, integration, contract, architecture, migration, tenant isolation, no-code fixture, differential, performance, and rollout verification. Use for every change and for CI or quality-gate work.
 ---
 
 # Testing Quality
@@ -34,7 +34,7 @@ description: Define and enforce backend-v2 unit, integration, contract, architec
 - OpenAPI request/response/error semantic diff.
 - Event ve job envelope version fixture'i.
 - SSE, WS, multipart ve binary protokol testi.
-- frontend-v3 ve MCP tarafindan kullanilan wire shape fixture'i.
+- Yayinlanmis consumer wire shape fixture'i.
 
 ### Architecture
 

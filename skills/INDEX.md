@@ -10,7 +10,7 @@ Komut, kod veya dokuman degisikliginden once bu tabloyu kullan.
 | Core runtime, composition, config, telemetry, health | `platform-runtime`, `data-tenancy`, `testing-quality` |
 | Deployment mode, installation, Instance Owner, first admin | `platform-runtime`, `data-tenancy`, `iam-system-resources`, `billing`, `events-jobs`, `impact-analysis` |
 | V1 adapter, shadow, adoption, fence, rollout | `cutover-compatibility`, ilgili domain skill'i, `impact-analysis` |
-| AI, MCP, updater veya yeni deployable | `impact-analysis` |
+| Updater veya yeni deployable | `impact-analysis` |
 | Yeni modul veya sinir degisikligi | `modular-architecture`, `impact-analysis` |
 | Birden fazla modulu etkileyen is | `impact-analysis`, `modular-architecture` |
 | Yeni veya degisen endpoint | `api-contract`, ilgili domain skill'i |

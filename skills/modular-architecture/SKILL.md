@@ -1,6 +1,6 @@
 ---
 name: modular-architecture
-description: Protect backend-v2 module ownership, dependency direction, data boundaries, composition, and service extraction decisions. Use for new modules, cross-module behavior, shared code, package moves, or deployable boundary changes.
+description: Protect Harpy module ownership, dependency direction, data boundaries, composition, and service extraction decisions. Use for new modules, cross-module behavior, shared code, package moves, or deployable boundary changes.
 ---
 
 # Modular Architecture

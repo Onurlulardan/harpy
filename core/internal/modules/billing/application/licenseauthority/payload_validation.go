@@ -72,7 +72,7 @@ func validTimeline(value parsedPayload) bool {
 func validLimits(value wireLimits) bool {
 	limits := []int64{
 		value.MaxUsers, value.MaxForms, value.MaxWorkflows,
-		value.MaxAPIEndpoints, value.MaxDashboards, value.MaxTenants,
+		value.MaxAPIEndpoints, value.MaxTenants,
 	}
 	for _, limit := range limits {
 		if limit < 0 || limit > maximumSafeInteger {

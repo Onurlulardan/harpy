@@ -41,20 +41,19 @@
         "release_channel": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
         "features": {
           "type": "object", "additionalProperties": false,
-          "required": ["formBuilder", "workflowBuilder", "apiBuilder", "dashboardBuilder", "aiAssistant"],
+          "required": ["formBuilder", "workflowBuilder", "apiBuilder", "aiAssistant"],
           "properties": {
             "formBuilder": {"type": "boolean"}, "workflowBuilder": {"type": "boolean"},
-            "apiBuilder": {"type": "boolean"}, "dashboardBuilder": {"type": "boolean"},
-            "aiAssistant": {"type": "boolean"}
+            "apiBuilder": {"type": "boolean"}, "aiAssistant": {"type": "boolean"}
           }
         },
         "limits": {
           "type": "object", "additionalProperties": false,
-          "required": ["maxUsers", "maxForms", "maxWorkflows", "maxApiEndpoints", "maxDashboards", "maxTenants"],
+          "required": ["maxUsers", "maxForms", "maxWorkflows", "maxApiEndpoints", "maxTenants"],
           "properties": {
             "maxUsers": {"$ref": "#/$defs/limit"}, "maxForms": {"$ref": "#/$defs/limit"},
             "maxWorkflows": {"$ref": "#/$defs/limit"}, "maxApiEndpoints": {"$ref": "#/$defs/limit"},
-            "maxDashboards": {"$ref": "#/$defs/limit"}, "maxTenants": {"$ref": "#/$defs/limit"}
+            "maxTenants": {"$ref": "#/$defs/limit"}
           }
         }
       }

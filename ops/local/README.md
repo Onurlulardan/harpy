@@ -1,4 +1,4 @@
-# Backend V2 local stack
+# Harpy local stack
 
 Bu stack production composition yolunu yerel bagimliliklarla calistirir. API,
 worker ve migrator ayni current release image'ini kullanir; API/worker startup
@@ -9,11 +9,10 @@ Compose icindeki migration detayi olarak kalir, `.env.local` ayari degildir.
 
 - Docker Desktop veya Docker Engine + Compose v2
 - Go Task (`task` komutu)
-- Node.js 22+, Yarn 1 ve `frontend-v3` icin kurulmus paketler
 - Ilk build icin internet erisimi
 - ClamAV imza yuklemesi nedeniyle Docker'a en az 4 GB RAM
 
-Komutlari `backend-v2` kokunden calistir.
+Komutlari repository kokunden calistir.
 
 ## Tek komutla baslatma
 
@@ -24,10 +23,7 @@ task local:up
 Bu komut sirayla local secret/sertifika uretir, release image'larini build eder,
 servis bazli least-authority secret volume'larini project eder, altyapiyi
 baslatir, fresh cluster bootstrap'unu yapar, canonical migration'i uygular,
-runtime servislerini acar. Kardes `frontend-v3` checkout'u varsa onu `yarn dev`
-ile baslatir; checkout yoksa backend stack'i frontend olmadan devam eder.
-`task local:down` ve `task local:destroy` de checkout yokken frontend
-durdurmayi basarili sayar.
+runtime servislerini acar.
 
 Normal `local:build` ve `local:up`, digest-pinned build girdilerini mevcut
 Docker/BuildKit cache'inden kullanir ve registry refresh'i zorlamaz. Ilk build
@@ -54,11 +50,8 @@ task local:infra      # PostgreSQL, RabbitMQ, S3, KMS, SMTP, ClamAV
 task local:initialize # foundation ve goose lifecycle girisi
 task local:services   # API, worker ve backup executor
 task local:verify     # API ve worker readiness kontrolu
-task local:frontend   # sahiplik kontrollu frontend-v3 dev server
-task local:frontend:status
-task local:frontend:stop
 task local:check      # config, unit test ve mimari guard'lar
-task local:status     # backend containerlari + frontend sagligi
+task local:status     # backend container sagligi
 ```
 
 `task dev`, `task local:up` icin; `task stop`, `task local:down` icin kisa
@@ -108,10 +101,6 @@ volume otomatik silinmez. `local:destroy` PostgreSQL, RabbitMQ,
 S3, Mailpit, ClamAV, signed release evidence, spool ve projected secret
 volume'larini kalici olarak siler; ardindan exact manifest/hash ile dogrulanan
 host localconfig setini de resetler.
-
-Frontend logu `ops/local/state/frontend-v3/frontend.log` altindadir. Receipt,
-PID ve process-start identity birlikte tutulur; `local:down` yalniz bu stack'in
-baslattigi process tree'yi kapatir ve 5173'teki yabanci process'i oldurmez.
 
 Host'taki `state/secrets` dizinini yalniz root one-shot projector gorur. API,
 worker, initialize ve local sidecar'lar non-root calisir ve her biri yalniz

@@ -1,6 +1,6 @@
 ---
 name: analytics
-description: Build and change backend-v2 saved queries, dashboards, publications, ACLs, public or capability access, REST Query execution, result caching, analytics jobs, and V1 cutover. Use for every analytics-owned table, API, event, permission, cache, or migration change.
+description: Build and change Harpy saved queries, dashboards, publications, ACLs, public or capability access, REST Query execution, result caching, analytics jobs, and V1 cutover. Use for every analytics-owned table, API, event, permission, cache, or migration change.
 ---
 
 # Analytics

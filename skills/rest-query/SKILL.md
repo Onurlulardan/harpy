@@ -1,6 +1,6 @@
 ---
 name: rest-query
-description: Build backend-v2 typed REST Query parsing, QuerySpec AST, field catalog resolution, authorization, PostgreSQL compilation, filtering, search, sort, projection, relation, aggregation, pagination, and V1 query compatibility. Use for every dynamic read surface.
+description: Build Harpy typed REST Query parsing, QuerySpec AST, field catalog resolution, authorization, PostgreSQL compilation, filtering, search, sort, projection, relation, aggregation, pagination, and V1 query compatibility. Use for every dynamic read surface.
 ---
 
 # REST Query

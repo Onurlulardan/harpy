@@ -117,7 +117,7 @@ func buildDevelopmentSnapshot(
 		GraceUntil:          instant(10*365*24*time.Hour + 24*time.Hour),
 		CommercialExpiresAt: instant(10 * 365 * 24 * time.Hour),
 		Features: licensev2.Features{FormBuilder: true, WorkflowBuilder: true,
-			APIBuilder: true, DashboardBuilder: true, AIAssistant: true},
+			APIBuilder: true, AIAssistant: true},
 		Limits: licensev2.Limits{}, ReleaseChannel: "stable",
 	}
 	return signDevelopmentSnapshot(payload, signer)
