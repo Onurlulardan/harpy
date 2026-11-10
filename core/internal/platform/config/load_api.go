@@ -14,7 +14,6 @@ type API struct {
 	deploymentMode        DeploymentMode
 	authority             APIAuthority
 	iam                   IAMAPI
-	iamTransferArtifacts  IAMSystemTransferArtifacts
 	documents             DocumentsAPI
 	notificationConsumers NotificationsConsumerKeyring
 }
@@ -71,11 +70,6 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 	if err != nil {
 		return API{}, err
 	}
-	iamTransferArtifacts, err := loadIAMSystemTransferArtifacts(values,
-		runtimeConfig.Environment())
-	if err != nil {
-		return API{}, err
-	}
 	documents, err := loadDocumentsAPI(values, runtimeConfig.Environment())
 	if err != nil {
 		return API{}, err
@@ -90,7 +84,6 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 		analyticsProxies: analyticsProxies,
 		deploymentMode:   deploymentMode, authority: authority,
 		iam:                   iamConfig,
-		iamTransferArtifacts:  iamTransferArtifacts,
 		documents:             documents,
 		notificationConsumers: notificationConsumers,
 	}, nil

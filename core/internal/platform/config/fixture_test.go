@@ -38,7 +38,6 @@ func validWorkerEnvironmentAt(now time.Time) []string {
 		"HARPY_RABBITMQ_URL=amqp://worker:secret@rabbit.invalid/%2f",
 		cursorKeyringEnvironmentEntry(),
 	)
-	entries = append(entries, validIAMSystemTransferEnvironment()...)
 	entries = append(entries, validDocumentsEnvironment(true)...)
 	entries = append(entries, validNotificationsKeyringEnvironmentEntry())
 	entries = append(entries, validWorkerDevelopmentAuthorityEnvironment()...)
@@ -76,7 +75,6 @@ func validWorkerEnvironmentAt(now time.Time) []string {
 func validAPIEnvironmentAt(now time.Time) []string {
 	entries := append(validEnvironment(), cursorKeyringEnvironmentEntry(),
 		deploymentModeEnvironmentKey+"=saas")
-	entries = append(entries, validIAMSystemTransferEnvironment()...)
 	entries = append(entries, validDocumentsEnvironment(false)...)
 	entries = append(entries, validNotificationsConsumerKeyringEnvironmentEntry())
 	entries = append(entries, validAPISaaSAuthorityEnvironment()...)

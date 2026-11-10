@@ -19,11 +19,7 @@ done
 for bucket in \
   harpy-documents \
   harpy-documents-legacy \
-  harpy-analytics-dashboard-exports \
-  harpy-form-exports \
-  harpy-form-import-sources \
-  harpy-iam-system-exports \
-  harpy-iam-system-import-sources
+  harpy-analytics-dashboard-exports
 do
   mc mb --ignore-existing "local/$bucket" >/dev/null
   mc version enable "local/$bucket" >/dev/null

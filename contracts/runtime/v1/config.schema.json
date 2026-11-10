@@ -11,7 +11,7 @@
     "profiles": {"type": "array", "minItems": 8, "maxItems": 8, "prefixItems": [{"const": "api"}, {"const": "worker"}, {"const": "migrator_deploy"}, {"const": "schema_executor"}, {"const": "cluster_bootstrap"}, {"const": "extension_admin"}, {"const": "cutover_adoption"}, {"const": "cutover_finalization"}], "items": false},
     "unknown_harpy_key": {"const": "reject_per_profile"},
     "secret_file": {"$ref": "#/$defs/secretFilePolicy"},
-    "variables": {"type": "array", "minItems": 149, "maxItems": 149, "uniqueItems": true, "items": {"$ref": "#/$defs/catalogVariable"}}
+    "variables": {"type": "array", "minItems": 128, "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/catalogVariable"}}
   },
   "$defs": {
     "profile": {"enum": ["api", "worker", "migrator_deploy", "schema_executor", "cluster_bootstrap", "extension_admin", "cutover_adoption", "cutover_finalization"]},
@@ -61,7 +61,7 @@
         "maximum": {"type": "string"},
         "maximum_ref": {"type": "string", "pattern": "^HARPY_[A-Z0-9_]+$"},
         "semantic": {"enum": ["postgres_dsn", "rabbitmq_url", "ed25519_signing_key", "rest_query_cursor_keyring_v1", "iam_access_token_keyring_v1", "iam_hmac_keyring_v1", "iam_password_blocklists_v1", "analytics_dashboard_export_fcart_kek_keyring_v1", "iam_system_export_fcart_kek_keyring_v1", "iam_system_import_source_fcart_kek_keyring_v1", "documents_kek_keyring_v1", "iam_service_principal_uuidv7", "notifications_consumer_keyring_v1", "notifications_kek_keyring_v1"]},
-        "content_schema": {"enum": ["rest-query-cursor-keyring.schema.json", "iam-access-token-keyring.schema.json", "iam-hmac-keyring.schema.json", "iam-password-blocklists.schema.json", "analytics-dashboard-export-fcart-kek-keyring.schema.json", "iam-system-transfer-fcart-kek-keyring.schema.json", "documents-kek-keyring.schema.json", "notifications-consumer-keyring.schema.json", "notifications-kek-keyring.schema.json"]},
+        "content_schema": {"enum": ["rest-query-cursor-keyring.schema.json", "iam-access-token-keyring.schema.json", "iam-hmac-keyring.schema.json", "iam-password-blocklists.schema.json", "analytics-dashboard-export-fcart-kek-keyring.schema.json", "documents-kek-keyring.schema.json", "notifications-consumer-keyring.schema.json", "notifications-kek-keyring.schema.json"]},
         "key_purpose": {"enum": ["access_token_v1", "refresh_token_v1", "csrf_v1", "login_directory_v1", "auth_throttle_v1", "session_network_v1", "one_time_token_v1", "recovery_code_v1", "totp_kms_v1", "delivery_kms_v1"]},
         "path_mode": {"enum": ["read", "write_new"]},
         "profile_path_modes": {"type": "object", "minProperties": 1, "propertyNames": {"$ref": "#/$defs/profile"}, "additionalProperties": {"enum": ["read", "write_new"]}},

@@ -23,7 +23,6 @@ services:
       - local-secret-worker:/catalog/secret-worker:ro
       - release-state:/catalog/release:ro
       - analytics-dashboard-export-spool:/catalog/analytics-dashboard-export:ro
-      - iam-transfer-spool:/catalog/iam-transfer:ro
       - local-installation-state:/catalog/installation:ro
       - local-dev-authority:/catalog/dev-authority:ro
       - local-recovery-signing:/catalog/recovery-signing:ro
@@ -52,7 +51,6 @@ volumes:
   local-secret-worker:
   release-state:
   analytics-dashboard-export-spool:
-  iam-transfer-spool:
   local-installation-state:
   local-dev-authority:
   local-recovery-signing:

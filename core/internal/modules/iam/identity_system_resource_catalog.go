@@ -24,20 +24,6 @@ func (port *identitySystemResourcePort) Catalog(
 	return port.authorizedCatalog(ctx, scope, evidence, resource)
 }
 
-func (port *identitySystemResourcePort) CatalogForLayoutPublish(
-	ctx context.Context,
-	scope platformtx.TenantScope,
-	actor publicresource.ActorEvidence,
-	resource publicresource.Resource,
-) (publicresource.FieldCatalog, error) {
-	evidence, err := newIdentityPublicEvidence(actor)
-	if err != nil ||
-		identitySystemResourceLayoutPublishScope(ctx, scope, evidence) != nil {
-		return publicresource.FieldCatalog{}, publicresource.ErrContract
-	}
-	return port.authorizedCatalog(ctx, scope, evidence, resource)
-}
-
 func (port *identitySystemResourcePort) authorizedCatalog(
 	ctx context.Context,
 	scope platformtx.TenantScope,

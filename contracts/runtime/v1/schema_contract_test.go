@@ -115,14 +115,12 @@ func profileSnapshot(profile string) map[string]any {
 	}
 	if profile == "api" {
 		variables["HARPY_REST_QUERY_CURSOR_KEYRING"] = validCursorKeyringContractValue()
-		addIAMSystemTransferProfileSnapshot(variables)
 		addIAMAPIProfileSnapshot(variables)
 	}
 	if profile == "worker" {
 		variables["GOMEMLIMIT"] = "512MiB"
 		variables["HARPY_RABBITMQ_URL"] = "amqp://worker:secret@rabbit.invalid/%2f"
 		variables["HARPY_REST_QUERY_CURSOR_KEYRING"] = validCursorKeyringContractValue()
-		addIAMSystemTransferProfileSnapshot(variables)
 		addIAMWorkerProfileSnapshot(variables)
 	}
 	addPhase14RuntimeSnapshot(profile, variables)

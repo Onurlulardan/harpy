@@ -35,10 +35,3 @@ func (c Worker) RestQueryCursorKeyring() (CursorKeyring, error) {
 	}
 	return c.restQueryCursorKeys, nil
 }
-
-func (c Worker) IAMSystemTransferArtifacts() (IAMSystemTransferArtifacts, error) {
-	if err := c.iamTransferArtifacts.Validate(); err != nil {
-		return IAMSystemTransferArtifacts{}, err
-	}
-	return c.iamTransferArtifacts, nil
-}

@@ -30,7 +30,6 @@ func TestS3RuntimePolicyNamesOnlyRuntimeBuckets(t *testing.T) {
 	buckets := []string{
 		"harpy-documents", "harpy-documents-legacy",
 		"harpy-analytics-dashboard-exports",
-		"harpy-iam-system-exports", "harpy-iam-system-import-sources",
 	}
 	expected := make([]string, 0, 12)
 	for _, bucket := range buckets {

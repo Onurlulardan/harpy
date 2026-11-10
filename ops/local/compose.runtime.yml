@@ -25,7 +25,6 @@ services:
       - local-secret-api:/run/secrets:ro
       - local-dev-authority:/run/dev-authority:ro
       - local-recovery-signing:/run/recovery-signing:ro
-      - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
       - local-installation-state:/run/installation
     depends_on:
       postgres:
@@ -76,7 +75,6 @@ services:
       - local-secret-worker:/run/secrets:ro
       - local-dev-authority:/run/dev-authority
       - analytics-dashboard-export-spool:/var/lib/harpy/analytics-dashboard-export-spool
-      - iam-transfer-spool:/var/lib/harpy/iam-system-transfer
     depends_on:
       postgres:
         condition: service_healthy

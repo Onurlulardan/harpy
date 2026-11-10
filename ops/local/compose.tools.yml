@@ -20,7 +20,6 @@ services:
       - local-secret-worker:/targets/worker
       - release-state:/targets/release
       - analytics-dashboard-export-spool:/targets/analytics-dashboard-export
-      - iam-transfer-spool:/targets/iam-transfer
       - mailpit-data:/targets/mailpit-data
       - local-installation-state:/targets/installation
       - local-dev-authority:/targets/dev-authority

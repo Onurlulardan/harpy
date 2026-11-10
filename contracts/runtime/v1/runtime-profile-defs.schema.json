@@ -46,7 +46,6 @@
           }
         },
         {"$ref": "config.schema.json#/$defs/cursorKeyringXor"},
-        {"$ref": "iam-system-transfer-config-fragment.schema.json"},
         {"$ref": "iam-api-config-fragment.schema.json"}
       ]
     },
@@ -67,7 +66,6 @@
         {"$ref": "#/$defs/rabbitMQURLXor"},
         {"$ref": "#/$defs/rabbitMQTLSRules"},
         {"$ref": "config.schema.json#/$defs/cursorKeyringXor"},
-        {"$ref": "iam-system-transfer-config-fragment.schema.json"},
         {"$ref": "iam-worker-config-fragment.schema.json"}
       ]
     },
