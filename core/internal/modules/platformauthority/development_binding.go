@@ -92,9 +92,11 @@ func developmentBindingProof(
 	}
 	defer clear(bundleDocument)
 	bundle, err := recoveryv1.Parse(bundleDocument)
-	if err != nil || bundle.EnvironmentID() != dependencies.EnvironmentID ||
-		bundle.SHA256() != input.RecoveryTrustBundleSHA256 {
-		return nil, nil, fmt.Errorf("development recovery trust is invalid")
+	if trustErr := developmentRecoveryTrustError(
+		dependencies.RecoveryTrustPath, dependencies.EnvironmentID,
+		input.RecoveryTrustBundleSHA256, bundle, err,
+	); trustErr != nil {
+		return nil, nil, trustErr
 	}
 	seed, err := readDevelopmentBindingSeed(dependencies.RecoverySeedPath)
 	if err != nil {
@@ -127,6 +129,31 @@ func developmentBindingProof(
 		return nil, nil, err
 	}
 	return signer, proof, nil
+}
+
+func developmentRecoveryTrustError(
+	path string,
+	environmentID string,
+	storedDigest string,
+	bundle recoveryv1.Bundle,
+	parseErr error,
+) error {
+	if parseErr != nil {
+		return fmt.Errorf("development recovery trust %s is invalid: %w", path, parseErr)
+	}
+	if bundle.EnvironmentID() != environmentID {
+		return fmt.Errorf(
+			"development recovery trust %s environment %s does not match installation %s",
+			path, bundle.EnvironmentID(), environmentID,
+		)
+	}
+	if bundle.SHA256() != storedDigest {
+		return fmt.Errorf(
+			"development recovery trust %s digest %s does not match activation digest %s",
+			path, bundle.SHA256(), storedDigest,
+		)
+	}
+	return nil
 }
 
 func readDevelopmentBindingSeed(path string) ([]byte, error) {
