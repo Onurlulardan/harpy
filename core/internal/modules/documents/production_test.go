@@ -22,9 +22,11 @@ func (*productionApplicationFixture) Dispatch(context.Context,
 
 type productionKnowledgeFixture struct{}
 
-type productionProcessorFixture struct{}
+type productionProcessorFixture struct{ kind string }
 
-func (*productionProcessorFixture) Policy() jobsv1.KindPolicy { return jobsv1.KindPolicy{} }
+func (fixture *productionProcessorFixture) Policy() jobsv1.KindPolicy {
+	return jobsv1.KindPolicy{Kind: fixture.kind}
+}
 
 func (*productionProcessorFixture) Process(context.Context, asyncpostgres.JobClaim) error {
 	return nil
@@ -110,9 +112,10 @@ func TestNewWorkerProductionExposesOwnerInterfacesAndCopiesProcessors(t *testing
 	if err != nil {
 		t.Fatalf("new production: %v", err)
 	}
-	processors := make([]jobexecution.Processor, 6)
-	for index := range processors {
-		processors[index] = &productionProcessorFixture{}
+	kinds := documentWorkerProcessorKinds()
+	processors := make([]jobexecution.Processor, len(kinds))
+	for index, kind := range kinds {
+		processors[index] = &productionProcessorFixture{kind: kind}
 	}
 	worker, err := newWorkerProduction(production, processors)
 	if err != nil {
@@ -121,7 +124,7 @@ func TestNewWorkerProductionExposesOwnerInterfacesAndCopiesProcessors(t *testing
 	first := worker.JobProcessors()
 	first[0] = nil
 	if worker.KnowledgeFileOwner() == nil ||
-		len(worker.JobProcessors()) != 6 || worker.JobProcessors()[0] == nil {
+		len(worker.JobProcessors()) != len(kinds) || worker.JobProcessors()[0] == nil {
 		t.Fatal("worker production exposed mutable or incomplete owners")
 	}
 }

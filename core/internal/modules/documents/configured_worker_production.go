@@ -65,14 +65,13 @@ func NewConfiguredWorkerProduction(ctx context.Context,
 func newWorkerProduction(production *Production,
 	processors []jobexecution.Processor,
 ) (*WorkerProduction, error) {
-	if production == nil || production.KnowledgeFileOwner() == nil ||
-		len(processors) != 6 {
-		return nil, fmt.Errorf("Documents worker production graph is incomplete")
+	if production == nil || production.KnowledgeFileOwner() == nil {
+		return nil, fmt.Errorf(
+			"Documents worker production graph is incomplete: knowledge owner is unavailable")
 	}
-	for _, processor := range processors {
-		if nilHTTPPort(processor) {
-			return nil, fmt.Errorf("Documents worker production graph is incomplete")
-		}
+	if missing := missingDocumentWorkerProcessors(processors); missing != "" {
+		return nil, fmt.Errorf(
+			"Documents worker production graph is incomplete: %s", missing)
 	}
 	return &WorkerProduction{knowledge: production.KnowledgeFileOwner(),
 		processors: append([]jobexecution.Processor(nil), processors...)}, nil
