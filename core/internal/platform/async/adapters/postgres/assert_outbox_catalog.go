@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	eventsv1 "github.com/Onurlulardan/harpy/contracts/events/v1"
 )
@@ -51,9 +52,43 @@ func (repository *workerRepository) AssertOutboxCatalog(
 		return fmt.Errorf("inspect live outbox catalog cardinality: %w", ErrOutboxCatalogIncompatible)
 	}
 	if !compatible {
-		return ErrOutboxCatalogIncompatible
+		detail := incompatibleOutboxDetail(ctx, repository, policies)
+		if detail == "" {
+			return ErrOutboxCatalogIncompatible
+		}
+		return fmt.Errorf("%w: %s", ErrOutboxCatalogIncompatible, detail)
 	}
 	return nil
+}
+
+func incompatibleOutboxDetail(
+	ctx context.Context,
+	repository *workerRepository,
+	policies outboxCatalogArrays,
+) string {
+	rows, err := repository.database.Query(
+		ctx, listIncompatibleOutboxCatalogSQL, policies.types, policies.versions,
+		policies.domains, policies.schemaSHA256s,
+	)
+	if err != nil {
+		return ""
+	}
+	defer rows.Close()
+	var mismatches []string
+	for rows.Next() {
+		var eventType, domain, schema string
+		var version int64
+		if rows.Scan(&eventType, &version, &domain, &schema) != nil {
+			return ""
+		}
+		mismatches = append(mismatches, fmt.Sprintf(
+			"%s version %d domain %s schema %s", eventType, version, domain, schema,
+		))
+	}
+	if rows.Err() != nil {
+		return ""
+	}
+	return strings.Join(mismatches, "; ")
 }
 
 func validatedOutboxPolicies(catalog eventsv1.ProducerCatalog) (outboxCatalogArrays, error) {
