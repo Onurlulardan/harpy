@@ -70,7 +70,7 @@ func startAPIWithOpen(
 	initial := probeReadiness(pool, policyRuntime.Ready)(startupContext)
 	cancelStartup()
 	if !allReady(initial) {
-		reportFailure(nil, logger, "dependency_preflight")
+		reportFailureCause(nil, logger, "dependency_preflight", readinessFailure(initial))
 		pool.Close()
 		shutdownStartupTelemetry(runtimeSettings, telemetryRuntime)
 		return processcode.DependencyPreflight

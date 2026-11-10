@@ -10,7 +10,7 @@ import (
 const manifestFileName = "manifest.json"
 
 var actorBridgeDomains = []string{
-	"analytics", "billing", "documents",
+	"analytics", "billing", "catalog", "documents",
 	"notifications", "work",
 }
 
