@@ -354,6 +354,7 @@ Varsayılan local endpoint ve portlar:
 | --- | --- |
 | Frontend v3 | `http://localhost:5173` |
 | Core API | `http://localhost:8000` |
+| API referansı | `http://localhost:8000/docs` |
 | API management | `http://localhost:9001` |
 | Worker management | `http://localhost:9002` |
 | Schema executor management | `http://localhost:9003` |
@@ -497,7 +498,7 @@ Harpy'nin mimarisi, runtime davranışı ve modül sorumlulukları [docs/archite
 | [Runtime ve composition](docs/architecture/03-runtime-ve-composition.md) | Setup, API, worker, migrator, operator ve process lifecycle |
 | [Platform temelleri](docs/architecture/04-platform-temelleri.md) | Config, PostgreSQL, transaction, telemetry ve health |
 | [HTTP API ve contracts](docs/architecture/05-http-api-ve-kontratlar.md) | Routing, HTTP contracts, hata modeli ve REST Query |
-| [API referansı](docs/api/index.html) | Core ve management OpenAPI yüzeyi |
+| API referansı | Çalışan Core API: `http://localhost:8000/docs` |
 | [Veri ve tenant izolasyonu](docs/architecture/06-veri-ve-tenant-izolasyonu.md) | Schema-per-tenant, scope, data ownership ve Unit of Work |
 | [Event, job ve worker](docs/architecture/07-event-job-ve-worker.md) | Outbox, RabbitMQ, kalıcı job'lar, retry, lease ve worker |
 | [Güvenlik modeli](docs/architecture/08-guvenlik-modeli.md) | Actor, IAM, RBAC, token, tenant güvenliği ve secrets |

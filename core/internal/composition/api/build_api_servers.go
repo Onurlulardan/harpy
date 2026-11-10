@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	platformactorbridge "github.com/Onurlulardan/harpy/core/internal/platform/actorbridge"
+	"github.com/Onurlulardan/harpy/core/internal/platform/apidocs"
 	"github.com/Onurlulardan/harpy/core/internal/platform/buildinfo"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/health"
@@ -29,9 +30,13 @@ func buildAPIServers(
 	if err != nil {
 		return nil, nil, err
 	}
-	publicHandler, err := platformactorbridge.RejectPublicActorAssertion(publicCore)
+	guarded, err := platformactorbridge.RejectPublicActorAssertion(publicCore)
 	if err != nil {
 		return nil, nil, fmt.Errorf("build public actor assertion guard: %w", err)
+	}
+	publicHandler, err := apidocs.Mount(guarded)
+	if err != nil {
+		return nil, nil, fmt.Errorf("build API reference: %w", err)
 	}
 	managementHandler, err := management.NewHandler(monitor, info, management.ErrorSink(report))
 	if err != nil {
