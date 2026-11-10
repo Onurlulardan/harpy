@@ -3,6 +3,7 @@ package jobexecution
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	jobsv1 "github.com/Onurlulardan/harpy/contracts/jobs/v1"
 )
@@ -28,8 +29,45 @@ func NewRegistryForCatalogWithDelegates(
 	if err != nil {
 		return Registry{}, fmt.Errorf("build delegated processor catalog: %w", err)
 	}
-	if !reflect.DeepEqual(expected.Policies(), actual.Policies()) {
-		return Registry{}, ErrProcessorCatalogDrift
+	if err := catalogDrift(expected.Policies(), actual.Policies()); err != nil {
+		return Registry{}, err
 	}
 	return registry, nil
+}
+
+func catalogDrift(expected, actual []jobsv1.KindPolicy) error {
+	if reflect.DeepEqual(expected, actual) {
+		return nil
+	}
+	return fmt.Errorf("%w: %s", ErrProcessorCatalogDrift, policyDrift(expected, actual))
+}
+
+func policyDrift(expected, actual []jobsv1.KindPolicy) string {
+	missing := policyDifference(expected, actual)
+	extra := policyDifference(actual, expected)
+	switch {
+	case missing != "" && extra != "":
+		return "missing " + missing + "; extra " + extra
+	case missing != "":
+		return "missing " + missing
+	case extra != "":
+		return "extra " + extra
+	default:
+		return "policy fields differ"
+	}
+}
+
+func policyDifference(left, right []jobsv1.KindPolicy) string {
+	present := make(map[string]jobsv1.KindPolicy, len(right))
+	for _, policy := range right {
+		present[policy.Kind+"\x00"+fmt.Sprint(policy.PayloadRevision)] = policy
+	}
+	names := make([]string, 0)
+	for _, policy := range left {
+		other, ok := present[policy.Kind+"\x00"+fmt.Sprint(policy.PayloadRevision)]
+		if !ok || other != policy {
+			names = append(names, policy.Kind)
+		}
+	}
+	return strings.Join(names, ", ")
 }

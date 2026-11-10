@@ -36,8 +36,8 @@ func NewRegistryForCatalog(
 	}
 	expectedPolicies := expected.Policies()
 	actualPolicies := registry.catalog.Policies()
-	if !reflect.DeepEqual(expectedPolicies, actualPolicies) {
-		return Registry{}, ErrProcessorCatalogDrift
+	if err := catalogDrift(expectedPolicies, actualPolicies); err != nil {
+		return Registry{}, err
 	}
 	return registry, nil
 }

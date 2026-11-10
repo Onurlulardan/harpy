@@ -2,6 +2,7 @@ package jobexecution
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	jobsv1 "github.com/Onurlulardan/harpy/contracts/jobs/v1"
@@ -56,7 +57,8 @@ func TestRegistryDelegatesRejectCoverageDriftAndOverlap(t *testing.T) {
 	_, err := NewRegistryForCatalogWithDelegates(
 		release, []Processor{processor}, nil,
 	)
-	if !errors.Is(err, ErrProcessorCatalogDrift) {
+	if !errors.Is(err, ErrProcessorCatalogDrift) ||
+		!strings.Contains(err.Error(), "missing forms.record-export") {
 		t.Fatalf("coverage error = %v", err)
 	}
 }
