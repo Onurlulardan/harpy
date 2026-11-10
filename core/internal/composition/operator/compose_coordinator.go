@@ -22,10 +22,7 @@ func composeEnvironmentCoordinator(
 	if err != nil {
 		return nil, nil, err
 	}
-	offering, err := NewEnvironmentOffering(pool)
-	if err != nil {
-		return nil, nil, err
-	}
+	offering := NewEnvironmentOffering()
 	authority, authorityCloser, err := BuildEnvironmentAuthority(ctx, settings, manifest, pool)
 	if err != nil {
 		return nil, authorityCloser, err

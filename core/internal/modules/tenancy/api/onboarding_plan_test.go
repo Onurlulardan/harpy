@@ -24,6 +24,14 @@ func TestNewOnboardingPlanPinsStableEnvironmentIdentity(t *testing.T) {
 	}
 }
 
+func TestNewOnboardingPlanAcceptsOnPremWithoutLicenseOffering(t *testing.T) {
+	input := validPlanInput(t, DeploymentModeOnPremise)
+	input.Offering.Source = OfferingSourcePin{}
+	if _, err := NewOnboardingPlan(input); err != nil {
+		t.Fatalf("on-prem plan rejected without a license offering: %v", err)
+	}
+}
+
 func TestNewOnboardingPlanRejectsModeAndSigningDrift(t *testing.T) {
 	input := validPlanInput(t, DeploymentModeOnPremise)
 	input.RecoverySigning = RecoverySigningPin{}

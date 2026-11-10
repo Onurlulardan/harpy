@@ -91,3 +91,12 @@ func validGrant(now time.Time, kind string) Grant {
 	}
 	return Grant{Binding: binding, Revision: 4, LeaseUntil: now.Add(time.Minute)}
 }
+
+func TestOnPremBindingDoesNotRequireLicenseOffering(t *testing.T) {
+	binding := validGrant(time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC),
+		"environment_initialize").Binding
+	binding.Offering.Source = OfferingSourcePin{}
+	if !binding.valid() {
+		t.Fatal("on-prem activation rejected without a license offering")
+	}
+}

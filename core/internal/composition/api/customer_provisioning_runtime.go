@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	billingmodule "github.com/Onurlulardan/harpy/core/internal/modules/billing"
 	iammodule "github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	platformauthority "github.com/Onurlulardan/harpy/core/internal/modules/platformauthority"
 	tenancymodule "github.com/Onurlulardan/harpy/core/internal/modules/tenancy"
@@ -52,10 +51,6 @@ func buildCustomerProvisioningRuntime(
 	if err != nil {
 		return nil, fmt.Errorf("build tenant schema provisioner: %w", err)
 	}
-	reader, err := billingmodule.NewSaaSFreeBasePlatformReader(pool)
-	if err != nil {
-		return nil, fmt.Errorf("build SaaS base offering reader: %w", err)
-	}
 	iamSettings, err := settings.IAM()
 	if err != nil {
 		return nil, err
@@ -79,7 +74,7 @@ func buildCustomerProvisioningRuntime(
 	}
 	coordinator, err := tenancymodule.NewCustomerProvisioningApplication(tenancymodule.CustomerProvisioningDependencies{
 		Policy: policy, Access: customerProvisioningAccess{runtime: access},
-		Offering: customerProvisioningOffering{reader: reader}, Authority: authority,
+		Offering: customerProvisioningOffering{}, Authority: authority,
 		Setup: customerProvisioningSetup{preparer: setup, reissuer: reissuer},
 		Store: store, Clock: clock, Schema: schema,
 	})

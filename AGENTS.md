@@ -18,7 +18,7 @@ AGENTS, INDEX, SKILL ve ilgili mimari dosyalarını salt okunur keşfetme komutl
 
 Gerekli skill'ler okunmadan implementasyon değişikliği yapma.
 
-Local API ve worker, `ops/local/compose.runtime.yml` içinde container olarak çalışır. Desteklenen tam local workflow `task dev` ( `local:up` kısa yolu) komutudur. Akış sırasıyla `prepare`, `infra`, `initialize`, `local-release-artifact`, `installation:artifacts`, `installation:deliver`, `services` ve `verify` adımlarını yürütür (bkz. `.taskfiles/local.yml`). `initialize` tek veritabanı lifecycle girişidir: foundation, ardından goose, ardından application. API ve worker imzalı bir lisans, lisans issuer veya `billing_license_heads` satırı olmadan açılır. Tek başına `go run ./core/cmd/api` çalıştırmak bu akışın yerine geçmez.
+Local API ve worker, `ops/local/compose.runtime.yml` içinde container olarak çalışır. Desteklenen tam local workflow `task dev` ( `local:up` kısa yolu) komutudur. Akış sırasıyla `prepare`, `infra`, `initialize`, `local-release-artifact`, `installation:artifacts`, `installation:deliver`, `services` ve `verify` adımlarını yürütür (bkz. `.taskfiles/local.yml`). `initialize` tek veritabanı lifecycle girişidir: foundation, ardından goose, ardından application. API, worker ve operator imzalı bir lisans, lisans issuer, `billing_license_heads` veya `billing_license_offerings` satırı olmadan açılır. Tek başına `go run ./core/cmd/api` çalıştırmak bu akışın yerine geçmez.
 
 ## Kurallar
 

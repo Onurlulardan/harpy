@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	installationv1 "github.com/Onurlulardan/harpy/contracts/installation/v1"
 	tenantapi "github.com/Onurlulardan/harpy/core/internal/modules/tenancy/api"
 	"github.com/google/uuid"
 )
@@ -32,14 +31,9 @@ type offeringFixture struct{}
 func (offeringFixture) Resolve(_ context.Context,
 	request OfferingRequest,
 ) (tenantapi.BaseOfferingPin, error) {
-	pin := tenantapi.BaseOfferingPin{VersionID: stableID(request.Manifest, "offering"),
+	return tenantapi.BaseOfferingPin{VersionID: stableID(request.Manifest, "offering"),
 		Revision: 1, SHA256: strings.Repeat("4", 64),
-		EffectiveAt: request.CreatedAt}
-	if request.Manifest.DeploymentMode() == installationv1.DeploymentOnPremise {
-		pin.Source = tenantapi.OfferingSourcePin{Present: true, Sequence: 1,
-			SHA256: strings.Repeat("5", 64)}
-	}
-	return pin, nil
+		EffectiveAt: request.CreatedAt}, nil
 }
 
 type authorityFixture struct{ prepares, acknowledgements int }

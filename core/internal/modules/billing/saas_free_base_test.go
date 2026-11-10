@@ -15,6 +15,16 @@ func (reader freeBaseReader) FetchSaaSFreeBase(context.Context) (SaaSFreeBasePin
 	return reader.pin, nil
 }
 
+func TestSaaSFreeBaseInstallationPinDoesNotReadLicenseOffering(t *testing.T) {
+	pin := SaaSFreeBaseInstallationPin()
+	if !pin.IsValid() || pin.Revision != 1 {
+		t.Fatalf("free base pin = %#v", pin)
+	}
+	if again := SaaSFreeBaseInstallationPin(); again != pin {
+		t.Fatal("free base pin is not stable")
+	}
+}
+
 func TestReadSaaSFreeBaseRequiresExactReleasePin(t *testing.T) {
 	now := time.Date(2026, 7, 22, 0, 0, 0, 0, time.UTC)
 	version := uuid.MustParse("019b0000-0000-7000-8000-000000000201")
