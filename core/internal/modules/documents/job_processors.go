@@ -2,7 +2,9 @@ package documents
 
 import (
 	"fmt"
+	"strings"
 
+	asyncmanifestv1 "github.com/Onurlulardan/harpy/contracts/asyncmanifest/v1"
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents/application/foundation"
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	asyncpostgres "github.com/Onurlulardan/harpy/core/internal/platform/async/adapters/postgres"
@@ -65,6 +67,39 @@ func NewJobProcessors(dependencies JobProcessorDependencies) (
 	if err != nil {
 		return nil, err
 	}
+	adoptionCopy, err := NewAdoptionCopyJobProcessor(dependencies.Release,
+		dependencies.Store, dependencies.Clock.Now)
+	if err != nil {
+		return nil, err
+	}
 	return []jobexecution.Processor{archiveBuild, archiveExpire, blobDelete,
-		itemPurge, upload}, nil
+		itemPurge, upload, adoptionCopy}, nil
+}
+
+func documentWorkerProcessorKinds() []string {
+	return []string{
+		asyncmanifestv1.DocumentsArchiveBuildJobKind,
+		asyncmanifestv1.DocumentsArchiveExpireJobKind,
+		asyncmanifestv1.DocumentsBlobDeleteJobKind,
+		asyncmanifestv1.DocumentsItemPurgeJobKind,
+		asyncmanifestv1.DocumentsUploadReconcileJobKind,
+		asyncmanifestv1.DocumentsAdoptionCopyJobKind,
+	}
+}
+
+func missingDocumentWorkerProcessors(processors []jobexecution.Processor) string {
+	seen := map[string]bool{}
+	for _, processor := range processors {
+		if nilArchivePort(processor) {
+			return "nil processor"
+		}
+		seen[processor.Policy().Kind] = true
+	}
+	var missing []string
+	for _, kind := range documentWorkerProcessorKinds() {
+		if !seen[kind] {
+			missing = append(missing, kind)
+		}
+	}
+	return strings.Join(missing, ", ")
 }
