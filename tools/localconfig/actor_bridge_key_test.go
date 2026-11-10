@@ -4,6 +4,7 @@ import (
 	"crypto/ed25519"
 	"encoding/base64"
 	"encoding/json"
+	"strings"
 	"testing"
 )
 
@@ -43,7 +44,11 @@ func TestGeneratedActorBridgeSeedMatchesPublishedKeyAndExactTargets(t *testing.T
 	if err := json.Unmarshal(set.files["actor-bridge-targets.json"], &targets); err != nil {
 		t.Fatal(err)
 	}
-	if len(targets.Targets) != len(actorBridgeDomains) {
+	expectedDomains := []string{
+		"analytics", "billing", "catalog", "documents", "notifications", "work",
+	}
+	if strings.Join(actorBridgeDomains, ",") != strings.Join(expectedDomains, ",") ||
+		len(targets.Targets) != len(actorBridgeDomains) {
 		t.Fatal("actor target domain set is incomplete")
 	}
 	for index, domain := range actorBridgeDomains {

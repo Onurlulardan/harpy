@@ -38,3 +38,16 @@ func localDependenciesReady(checks []func() bool) bool {
 func allReady(states health.States) bool {
 	return states.Database && states.DatabaseRole && states.DeploymentPolicy
 }
+
+func readinessFailure(states health.States) string {
+	switch {
+	case !states.Database:
+		return "database readiness probe failed"
+	case !states.DatabaseRole:
+		return "database role readiness probe failed"
+	case !states.DeploymentPolicy:
+		return "deployment policy readiness probe failed"
+	default:
+		return "initial readiness probe failed"
+	}
+}

@@ -1,4 +1,4 @@
 package artifactcontract
 
 // Bump only when generated artifact contents or semantics change.
-const CurrentRevision = 13
+const CurrentRevision = 14

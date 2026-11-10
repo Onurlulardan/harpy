@@ -71,7 +71,7 @@ func startWorkerWithOpen(
 	initial := probeReadiness(pool, policyRuntime.Ready)(startupContext)
 	if !allReady(initial) {
 		cancelStartup()
-		reportFailureCause(nil, logger, "dependency_preflight", "initial readiness probe failed")
+		reportFailureCause(nil, logger, "dependency_preflight", readinessFailure(initial))
 		pool.Close()
 		shutdownStartupTelemetry(runtimeSettings, telemetryRuntime)
 		return processcode.DependencyPreflight
