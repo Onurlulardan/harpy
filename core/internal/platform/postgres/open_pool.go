@@ -17,6 +17,10 @@ func Open(
 	if err != nil {
 		return nil, err
 	}
+	binaryContract, err := loadEmbeddedBinaryContract()
+	if err != nil {
+		return nil, err
+	}
 	poolConfig, err := pgxpool.ParseConfig(settings.DSN().Value())
 	if err != nil {
 		return nil, fmt.Errorf("postgres pool config is invalid")
@@ -32,8 +36,8 @@ func Open(
 	}
 	pool := &Pool{
 		inner: inner, profile: profile, contract: contract,
-		cleanupTimeout: settings.CleanupTimeout(),
-		probeConfig:    probeConfig,
+		binaryContract: binaryContract, cleanupTimeout: settings.CleanupTimeout(),
+		probeConfig: probeConfig,
 	}
 	connection, err := inner.Acquire(ctx)
 	if err != nil {

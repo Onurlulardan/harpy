@@ -39,6 +39,12 @@ func TestWorkerSchemaContractsStayIdle(t *testing.T) {
 
 	appliedCleanup := readMigration(t,
 		"sql/platform/00311_platform_async_iam_import_cleanup_tenant_v1.sql")
+	identity := readMigration(t, "sql/platform/00807_platform_schema_contract_identity.sql")
+	if !strings.Contains(identity, "CREATE TABLE platform.environment_identity") ||
+		!strings.Contains(identity, "CREATE TABLE platform.extension_registry") ||
+		strings.Contains(identity, "goose_db_version") {
+		t.Fatal("schema identity migration is incomplete")
+	}
 	appliedCandidate := readMigration(t,
 		"sql/platform/00680_platform_async_analytics_dashboard_export_candidate_v1.sql")
 	if strings.Contains(appliedCleanup, "tenant_schema text") ||

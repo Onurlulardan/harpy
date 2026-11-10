@@ -18,8 +18,9 @@ func TestSchemaContractProbeUsesBaselineIdentity(t *testing.T) {
 			t.Fatalf("schema contract probe still reads %s", removed)
 		}
 	}
-	if !strings.Contains(probeSchemaContractSQL, "platform.environment_identity AS identity") {
-		t.Fatal("schema contract probe omitted environment identity")
+	if !strings.Contains(probeSchemaContractSQL, "platform.environment_identity AS identity") ||
+		!strings.Contains(probeSchemaContractSQL, "platform.extension_registry AS registry") {
+		t.Fatal("schema contract probe omitted baseline identity")
 	}
 	if strings.Contains(probeSchemaContractSQL, "goose_db_version") ||
 		strings.Contains(probeSchemaContractSQL, "20261028000000") {
