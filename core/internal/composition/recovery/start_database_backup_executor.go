@@ -2,6 +2,7 @@ package recovery
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 
 	"github.com/Onurlulardan/harpy/core/internal/modules/documents"
@@ -34,12 +35,13 @@ func startDatabaseBackupExecutor(
 	)
 	if err != nil {
 		return failDatabaseBackupStartup(
-			settings, nil, telemetryRuntime, logger, processcode.DependencyPreflight,
+			settings, nil, telemetryRuntime, logger, processcode.DependencyPreflight, err,
 		)
 	}
 	if !schemaReady(probeSchemaReadiness(pool)(startup)) {
 		return failDatabaseBackupStartup(
 			settings, pool, telemetryRuntime, logger, processcode.DependencyPreflight,
+			fmt.Errorf("database backup schema contract is not ready"),
 		)
 	}
 	executor, err := platformops.NewDatabaseBackupExecutor(
@@ -53,7 +55,7 @@ func startDatabaseBackupExecutor(
 	)
 	if err != nil {
 		return failDatabaseBackupStartup(
-			settings, pool, telemetryRuntime, logger, processcode.InvalidStartup,
+			settings, pool, telemetryRuntime, logger, processcode.InvalidStartup, err,
 		)
 	}
 	defer executor.Close()
@@ -62,7 +64,7 @@ func startDatabaseBackupExecutor(
 	)
 	if err != nil {
 		return failDatabaseBackupStartup(
-			settings, pool, telemetryRuntime, logger, processcode.InvalidStartup,
+			settings, pool, telemetryRuntime, logger, processcode.InvalidStartup, err,
 		)
 	}
 	return bindDatabaseBackupRuntime(
@@ -76,12 +78,13 @@ func failDatabaseBackupStartup(
 	telemetryRuntime *telemetry.Runtime,
 	logger *slog.Logger,
 	code processcode.Code,
+	cause error,
 ) processcode.Code {
 	failureClass := "build_contract"
 	if code == processcode.DependencyPreflight {
 		failureClass = "dependency_preflight"
 	}
-	reportFailure(nil, logger, failureClass, "database-backup-executor")
+	reportFailureCause(nil, logger, failureClass, "database-backup-executor", cause)
 	if pool != nil {
 		pool.Close()
 	}

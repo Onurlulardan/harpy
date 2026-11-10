@@ -52,11 +52,13 @@ func NewDatabaseBackupExecutor(
 	factories RecoveryFactories,
 ) (RecoveryExecutor, error) {
 	if !factories.Valid() {
-		return nil, fmt.Errorf("database backup module factories are unavailable")
+		return nil, backupContract("factories",
+			fmt.Errorf("database backup module factories are unavailable"))
 	}
 	owned, ok := database.(interface{ RuntimeOwnerDatabase() })
 	if !ok {
-		return nil, fmt.Errorf("database backup pool is unavailable")
+		return nil, backupContract("pool",
+			fmt.Errorf("database backup pool is unavailable"))
 	}
 	runtime := settings.LongRunning().Runtime()
 	trustDocument, err := readRecoveryRuntimeFile(
@@ -64,18 +66,19 @@ func NewDatabaseBackupExecutor(
 		recoverysigningv1.MaximumBundleBytes, false,
 	)
 	if err != nil {
-		return nil, err
+		return nil, backupContract("trust_bundle", err)
 	}
 	trust, err := recoverysigningv1.Parse(trustDocument)
 	if err != nil {
-		return nil, err
+		return nil, backupContract("trust_bundle", err)
 	}
 	seed, err := readRecoveryRuntimeFile(
 		settings.ManifestSigningKey().Path().Value(), ed25519.SeedSize, true,
 	)
 	if err != nil || len(seed) != ed25519.SeedSize {
 		clear(seed)
-		return nil, fmt.Errorf("recovery signing key is invalid")
+		return nil, backupContract("manifest_signing_key",
+			fmt.Errorf("recovery signing key is invalid"))
 	}
 	signer := ed25519.NewKeyFromSeed(seed)
 	clear(seed)
@@ -85,17 +88,17 @@ func NewDatabaseBackupExecutor(
 	)
 	if err != nil {
 		clear(signer)
-		return nil, err
+		return nil, backupContract("storage_manifest", err)
 	}
 	targets, err := factories.Targets(database, "backup")
 	if err != nil {
 		clear(signer)
-		return nil, err
+		return nil, backupContract("recovery_target", err)
 	}
 	target, err := targets.Get(ctx)
 	if err != nil {
 		clear(signer)
-		return nil, err
+		return nil, backupContract("recovery_target", err)
 	}
 	documents, err := factories.Documents(database, documentsapi.RecoveryIdentity{
 		EnvironmentID: target.EnvironmentID(), TenantID: target.TenantID(),
@@ -103,7 +106,7 @@ func NewDatabaseBackupExecutor(
 	})
 	if err != nil {
 		clear(signer)
-		return nil, err
+		return nil, backupContract("documents_recovery", err)
 	}
 	executionStore, err := executionpostgres.Bind(owned)
 	if err != nil {
@@ -119,7 +122,8 @@ func NewDatabaseBackupExecutor(
 	if err != nil || snapshotErr != nil || copyErr != nil || verifyErr != nil ||
 		iamErr != nil || authorityErr != nil {
 		clear(signer)
-		return nil, fmt.Errorf("database backup owner bindings are unavailable")
+		return nil, backupContract("owner_bindings",
+			fmt.Errorf("database backup owner bindings are unavailable"))
 	}
 	tools := pgtools.New(
 		pgtools.OSRunner{}, "/usr/bin/pg_dump", "/usr/bin/pg_restore",
@@ -142,7 +146,7 @@ func NewDatabaseBackupExecutor(
 	})
 	if err != nil {
 		clear(signer)
-		return nil, err
+		return nil, backupContract("backup_dependencies", err)
 	}
 	return &backupRecoveryExecutor{executor: executor}, nil
 }

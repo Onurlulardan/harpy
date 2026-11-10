@@ -24,7 +24,7 @@ func runDatabaseBackupExecutorProcess(
 	runtimeSettings := settings.LongRunning().Runtime()
 	info, err := buildinfo.ReadMigrator(runtimeSettings.Environment())
 	if err != nil {
-		reportFailure(stderr, nil, "build_contract", "database-backup-executor")
+		reportFailureCause(stderr, nil, "build_contract", "database-backup-executor", err)
 		return processcode.InvalidStartup
 	}
 	logger, err := telemetry.NewLogger(stderr, runtimeSettings.LogLevel(), info)
