@@ -124,6 +124,7 @@ HTTP request senkron command/query yüzeyidir. Commit sonrası başka process'e 
 - Normatif endpoint prosedürü: `skills/api-contract/SKILL.md`
 - REST Query prosedürü: `skills/rest-query/SKILL.md`
 - HTTP schemas/paths: `contracts/http/`
+- Okunur yüzey: [docs/api/index.html](../api/index.html). Repo kökünden statik bir sunucu ile açılır (`python3 -m http.server`) ve `/docs/api/` adresinden Core ile management OpenAPI dosyalarını Scalar ile gösterir. API sürecine doküman route'u eklenmez.
 - Runtime error envelope: `contracts/runtime/v1/error-envelope.schema.json`
 - API route composition: `core/internal/composition/api/`
 - Modül handler: `core/internal/modules/<module>/adapters/http/` veya modül root HTTP adapter dosyaları

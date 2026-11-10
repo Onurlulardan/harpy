@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Harpy API</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+    <script>
+      Scalar.createApiReference("#app", {
+        sources: [
+          {
+            title: "Core API",
+            slug: "core",
+            url: "../../contracts/http/core-api-v1.openapi.yaml"
+          },
+          {
+            title: "Management",
+            slug: "management",
+            url: "../../contracts/http/management-v1.openapi.yaml"
+          }
+        ]
+      })
+    </script>
+  </body>
+</html>
