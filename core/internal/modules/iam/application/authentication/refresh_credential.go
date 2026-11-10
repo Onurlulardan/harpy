@@ -78,14 +78,9 @@ func (credential RefreshCredential) statesInvalid() bool {
 }
 
 func (credential RefreshCredential) bindingShapeInvalid() bool {
-	if credential.AccessMode == AccessModeOperator {
-		return credential.PortalBindingID != uuid.Nil ||
-			credential.PortalBindingState != "" || credential.PortalBindingRevision != 0
-	}
-	return credential.AccessMode != AccessModePortal ||
-		credential.PortalBindingID == uuid.Nil ||
-		!oneOf(credential.PortalBindingState, "pending", "active", "suspended", "retired") ||
-		credential.PortalBindingRevision <= 0
+	return credential.AccessMode != AccessModeOperator ||
+		credential.PortalBindingID != uuid.Nil ||
+		credential.PortalBindingState != "" || credential.PortalBindingRevision != 0
 }
 
 func (credential RefreshCredential) contextInvalid() bool {

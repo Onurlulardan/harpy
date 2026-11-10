@@ -20,10 +20,10 @@ func TestRepositoryStorageCatalogLoadsWithoutSemanticDrift(t *testing.T) {
 		owners[index] = owner.Name
 	}
 	want := []string{
-		"analytics", "billing", "documents", "iam", "notifications",
+		"billing", "documents", "iam", "notifications",
 		"platform_async", "platform_backupreceipt", "platform_cutover",
 		"platform_postgres", "platformauthority", "platformops", "system_resource_layout",
-		"tenancy", "work",
+		"tenancy",
 	}
 	if manifest.Version != catalogVersion || !reflect.DeepEqual(owners, want) {
 		t.Fatalf("repository catalog version/owners = %d/%v", manifest.Version, owners)

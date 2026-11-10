@@ -35,12 +35,8 @@ func TestAccessTokenRoundTrip(t *testing.T) {
 	}
 }
 
-func TestPortalStepUpRoundTrip(t *testing.T) {
+func TestOperatorStepUpRoundTrip(t *testing.T) {
 	fixture := newTokenFixture(t)
-	binding := fixture.input.Session
-	fixture.input.Client = ClientPortal
-	fixture.input.AccessMode = AccessModePortal
-	fixture.input.PortalBinding = &binding
 	fixture.input.Assurance = AssuranceStepUp
 	fixture.input.Methods = []AuthMethod{AuthMethodPassword, AuthMethodWebAuthn}
 	fixture.input.StepUpPurposeHash = make([]byte, 32)
@@ -55,8 +51,8 @@ func TestPortalStepUpRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if actual, ok := verified.PortalBinding(); !ok || actual != binding {
-		t.Fatalf("portal binding mismatch: %s %t", actual, ok)
+	if _, ok := verified.PortalBinding(); ok {
+		t.Fatal("operator step-up carried a portal binding")
 	}
 	if hash, ok := verified.StepUpPurposeHash(); !ok || hash[0] != 9 {
 		t.Fatal("step-up purpose was not preserved")

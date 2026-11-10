@@ -27,8 +27,7 @@ func bindFinishedAPIRuntime(
 		settings, monitor, info, logger, admission, restrictedRoutes, report,
 		platformOpsHTTP.Observe, domains.secondary.Observe, pool, policyRuntime,
 		apiRuntimeReadiness(
-			iamRuntime, domains.analytics,
-			domains.documents, domains.notifications, domains.work, domains.secondary,
+			iamRuntime, domains.documents, domains.notifications, domains.secondary,
 			domains.systemLayouts,
 		),
 	)
@@ -39,12 +38,10 @@ func bindFinishedAPIRuntime(
 		admission: admission, poller: serving.poller,
 		management: serving.management, public: serving.public,
 		telemetryRuntime: telemetryRuntime, asyncWriteCatalogs: writeCatalogs,
-		analytics:            domains.analytics,
 		deploymentPolicy:     policyRuntime,
 		documents:            domains.documents,
 		documentsProduction:  domains.documentsProduction,
 		notifications:        domains.notifications,
-		work:                 domains.work,
 		secondary:            domains.secondary,
 		systemLayouts:        domains.systemLayouts,
 		customerProvisioning: domains.customerProvisioning,

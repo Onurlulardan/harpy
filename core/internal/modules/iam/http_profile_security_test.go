@@ -16,14 +16,6 @@ func TestProfileHTTPRequiresVerifiedOperatorAndMatchingTenant(t *testing.T) {
 		"foreign tenant": func(_ *profileHTTPTestFixture, request *http.Request, _ *testing.T) {
 			request.Header.Set("X-Tenant-ID", "90000000-0000-4000-8000-000000000001")
 		},
-		"portal bearer": func(fixture *profileHTTPTestFixture, request *http.Request, t *testing.T) {
-			claims := fixture.auth.newClaims(t, true)
-			access, err := fixture.auth.security.accessSigner.Sign(claims)
-			if err != nil {
-				t.Fatal(err)
-			}
-			request.Header.Set("Authorization", "Bearer "+access)
-		},
 	}
 	for name, mutate := range tests {
 		t.Run(name, func(t *testing.T) {

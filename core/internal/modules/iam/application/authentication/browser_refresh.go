@@ -42,12 +42,8 @@ func (authenticator Authenticator) rotateBrowser(
 }
 
 func browserClientForMode(mode AccessMode) ClientID {
-	switch mode {
-	case AccessModeOperator:
+	if mode == AccessModeOperator {
 		return ClientOperatorConsole
-	case AccessModePortal:
-		return ClientPortal
-	default:
-		return ""
 	}
+	return ""
 }

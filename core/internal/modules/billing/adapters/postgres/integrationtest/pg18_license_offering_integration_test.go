@@ -92,19 +92,9 @@ func billingLicenseOfferingDocument(
 		Unlimited bool   `json:"unlimited"`
 	}
 	booleans := []booleanGrant{}
-	for _, key := range []string{"analytics.dashboard_builder.enabled", "api.access",
-		"api.builder.enabled", "workflow.builder.enabled", "workflow.enabled"} {
-		booleans = append(booleans, booleanGrant{Key: key, Value: true})
-	}
 	limits := []integerGrant{}
-	for _, key := range []string{"analytics.active_dashboards", "api.active_endpoints",
-		"documents.storage_bytes",
-		"iam.active_users", "workflow.active_definitions"} {
-		grant := integerGrant{Key: key, Value: 10}
-		if key == "iam.active_users" {
-			grant.Value, grant.Unlimited = 0, true
-		}
-		limits = append(limits, grant)
+	for _, key := range []string{"documents.storage_bytes", "iam.active_users"} {
+		limits = append(limits, integerGrant{Key: key, Value: 10})
 	}
 	document := map[string]any{
 		"schema":              "harpy-license-derived-offering.v1",

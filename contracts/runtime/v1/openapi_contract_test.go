@@ -35,12 +35,11 @@ func TestCoreAndManagementRoutesAreExact(t *testing.T) {
 		t.Fatal("core API does not publish exact JWKS GET/HEAD operations")
 	}
 	authPaths := map[string]string{
-		"/api/auth/login":        "operatorLogin",
-		"/api/auth/portal/login": "portalLogin",
-		"/api/auth/refresh":      "refresh",
-		"/api/auth/logout":       "logout",
-		"/api/auth/csrf":         "csrf",
-		"/api/auth/session":      "currentSession",
+		"/api/auth/login":   "operatorLogin",
+		"/api/auth/refresh": "refresh",
+		"/api/auth/logout":  "logout",
+		"/api/auth/csrf":    "csrf",
+		"/api/auth/session": "currentSession",
 	}
 	for route, pathItem := range authPaths {
 		entry, found := corePaths[route].(map[string]any)

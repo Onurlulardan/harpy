@@ -35,7 +35,7 @@ func TestLifecycleDeliverySealBindsPurposeAndResource(t *testing.T) {
 		t.Fatal("lifecycle delivery did not use the exact KMS resource")
 	}
 	tampered := envelope
-	tampered.Purpose = lifecycledeliveryv1.PurposePortalSetup
+	tampered.Purpose = "portal_setup_v1"
 	if tampered.Validate(tenantID) == nil {
 		t.Fatal("cross-purpose lifecycle delivery was accepted")
 	}

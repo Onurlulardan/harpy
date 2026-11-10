@@ -23,24 +23,6 @@
   "/api/auth/password/reset/complete": {
     "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePasswordReset"
   },
-  "/api/auth/portal/login": {
-    "$ref": "iam-auth-v1.paths.json#/pathItems/portalLogin"
-  },
-  "/api/auth/portal/setup/complete": {
-    "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePortalSetup"
-  },
-  "/api/auth/portal-users": {
-    "$ref": "iam-portal-users-v1.paths.json#/pathItems/collection"
-  },
-  "/api/auth/portal-users/{id}/console-access": {
-    "$ref": "iam-portal-users-v1.paths.json#/pathItems/consoleAccess"
-  },
-  "/api/auth/portal-users/{id}/invite": {
-    "$ref": "iam-portal-users-v1.paths.json#/pathItems/invite"
-  },
-  "/api/auth/portal-users/{id}/status": {
-    "$ref": "iam-portal-users-v1.paths.json#/pathItems/status"
-  },
   "/api/auth/post-restore/challenge": {
     "$ref": "iam-post-restore-v1.paths.json#/pathItems/challenge"
   },
@@ -97,15 +79,6 @@
   },
   "/api/iam/password/change": {
     "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/passwordChange"
-  },
-  "/api/iam/portal-setups/{binding_id}": {
-    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetup"
-  },
-  "/api/iam/portal-setups/{binding_id}/decision": {
-    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetupDecision"
-  },
-  "/api/iam/portal-setups/{binding_id}/token": {
-    "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetupToken"
   },
   "/api/iam/sessions": {
     "$ref": "iam-lifecycle-sessions-v1.paths.json#/pathItems/sessions"

@@ -38,14 +38,6 @@ func (normalizer recoveryTextNormalizer) NormalizeEmailV1(value string) (string,
 	return result.Normalized(), nil
 }
 
-func (recoveryTextNormalizer) NormalizePortalV1(value string) (string, error) {
-	result, err := identifierapp.NormalizePortalV1(value)
-	if err != nil {
-		return "", err
-	}
-	return result.Normalized(), nil
-}
-
 func recoveryUserTargetV3(t *testing.T) profileapp.Schema {
 	t.Helper()
 	retired, err := profileapp.RetiredField(

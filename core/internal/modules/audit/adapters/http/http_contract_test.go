@@ -21,7 +21,7 @@ func (verifier *permissionVerifier) Verify(
 		request.Permission, request.Operation)
 }
 
-func TestRoutesExposeOnlyFiveAuthenticatedReadSurfaces(t *testing.T) {
+func TestRoutesExposeOnlyFourAuthenticatedReadSurfaces(t *testing.T) {
 	handler := fixtureHandler(t, &applicationFixture{entry: fixtureEntry("public")})
 	routes := handler.Routes()
 	want := []string{
@@ -29,7 +29,6 @@ func TestRoutesExposeOnlyFiveAuthenticatedReadSurfaces(t *testing.T) {
 		"GET /api/changelog/stats",
 		"GET /api/changelog/{id}",
 		"GET /api/changelog/history/{entity_type}/{entity_id}",
-		"GET /api/changelog/forms/{form_slug}/records/{record_id}/history",
 	}
 	if len(routes) != len(want) {
 		t.Fatalf("route count = %d", len(routes))
@@ -61,8 +60,6 @@ func TestEachRouteRequestsExactReadPermissionAndOperation(t *testing.T) {
 		{"/api/changelog/stats", application.OperationStats},
 		{"/api/changelog/019c0000-0000-7000-8000-000000000203", application.OperationGet},
 		{"/api/changelog/history/form_record/record-1", application.OperationEntityHistory},
-		{"/api/changelog/forms/orders/records/record-1/history",
-			application.OperationFormRecordHistory},
 	}
 	for _, target := range targets {
 		response := httptest.NewRecorder()
@@ -106,11 +103,11 @@ func TestSecretHistoryNeverReturnsValuesOrDigests(t *testing.T) {
 	app := &applicationFixture{entry: fixtureEntry("secret")}
 	handler := fixtureHandler(t, app)
 	request := httptest.NewRequest(http.MethodGet,
-		"/api/changelog/forms/orders/records/record-1/history?page=1&limit=50", nil)
-	request.SetPathValue("form_slug", "orders")
-	request.SetPathValue("record_id", "record-1")
+		"/api/changelog/history/form_record/record-1?page=1&limit=50", nil)
+	request.SetPathValue("entity_type", "form_record")
+	request.SetPathValue("entity_id", "record-1")
 	response := httptest.NewRecorder()
-	handler.formRecordHistory(response, request)
+	handler.entityHistory(response, request)
 	if response.Code != http.StatusOK {
 		t.Fatalf("status = %d, body = %s", response.Code, response.Body.String())
 	}

@@ -17,7 +17,6 @@ func TestLifecycleTemplatesIncludeTenantQuery(t *testing.T) {
 	}{
 		{lifecycledeliveryv1.PurposeEmailVerification, "/verify-email/"},
 		{lifecycledeliveryv1.PurposePasswordReset, "/reset-password/"},
-		{lifecycledeliveryv1.PurposePortalSetup, "/portal/setup/"},
 		{lifecycledeliveryv1.PurposeInitialAdminSetup, "/initial-admin/setup/"},
 	}
 	for _, testCase := range cases {

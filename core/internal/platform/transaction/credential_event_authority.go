@@ -20,8 +20,7 @@ func MintIAMCredentialEventAuthority(
 	}
 	switch scope.Purpose() {
 	case CredentialPasswordReset, CredentialInitialAdminSetup,
-		CredentialEmailVerification,
-		CredentialPortalSetup, CredentialInvitation:
+		CredentialEmailVerification, CredentialInvitation:
 	default:
 		return IAMCredentialEventAuthority{}, ErrCredentialPurpose
 	}
@@ -91,8 +90,7 @@ func (authority IAMCredentialEventAuthority) valid() bool {
 	}
 	switch authority.state.target.purpose {
 	case CredentialPasswordReset, CredentialInitialAdminSetup,
-		CredentialEmailVerification,
-		CredentialPortalSetup, CredentialInvitation:
+		CredentialEmailVerification, CredentialInvitation:
 		return true
 	default:
 		return false

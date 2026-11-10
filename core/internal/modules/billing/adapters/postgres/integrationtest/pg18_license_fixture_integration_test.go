@@ -91,7 +91,8 @@ $19::jsonb,$20::jsonb,$21,$22,$23::jsonb)`,
 		fixture.issuer, fixture.keyID, snapshot.digest, snapshot.status,
 		snapshot.sequence, snapshot.issuedAt, snapshot.notBefore,
 		snapshot.refreshAfter, snapshot.grantUntil, snapshot.graceUntil,
-		snapshot.expiresAt, fixture.channel, `{}`, `{}`, snapshot.canonical,
+		snapshot.expiresAt, fixture.channel, `{}`,
+		`{"documents.storage_bytes":10,"iam.active_users":10}`, snapshot.canonical,
 		snapshot.signed, billingLicenseProjection(),
 	).Scan(&outcome)
 	return outcome, err
@@ -116,20 +117,10 @@ func billingLicenseProjection() string {
 		Integer   *int64 `json:"integer_value"`
 		Unlimited bool   `json:"unlimited"`
 	}
-	truth, ten := true, int64(10)
-	booleans := []string{"analytics.dashboard_builder.enabled", "api.access",
-		"api.builder.enabled", "workflow.builder.enabled", "workflow.enabled"}
-	limits := []string{"analytics.active_dashboards", "api.active_endpoints", "documents.storage_bytes",
-		"iam.active_users", "workflow.active_definitions"}
-	grants := make([]grant, 0, 10)
-	for _, key := range booleans {
-		grants = append(grants, grant{Key: key, Type: "boolean", Boolean: &truth})
-	}
+	ten := int64(10)
+	limits := []string{"documents.storage_bytes", "iam.active_users"}
+	grants := make([]grant, 0, len(limits))
 	for _, key := range limits {
-		if key == "iam.active_users" {
-			grants = append(grants, grant{Key: key, Type: "integer", Unlimited: true})
-			continue
-		}
 		grants = append(grants, grant{Key: key, Type: "integer", Integer: &ten})
 	}
 	document, _ := json.Marshal(grants)

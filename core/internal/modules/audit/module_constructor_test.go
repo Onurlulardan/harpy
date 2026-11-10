@@ -50,7 +50,7 @@ func (constructorAccess) Verify(
 		2, 3, 4, request.Permission, request.Operation)
 }
 
-func TestModuleConstructorsProduceReadyFiveRouteRuntime(t *testing.T) {
+func TestModuleConstructorsProduceReadyFourRouteRuntime(t *testing.T) {
 	if _, err := NewApplication(nil, constructorClock{}); err == nil {
 		t.Fatal("nil ID source was accepted")
 	}
@@ -70,7 +70,7 @@ func TestModuleConstructorsProduceReadyFiveRouteRuntime(t *testing.T) {
 	if handler != nil {
 		routes = len(handler.Routes())
 	}
-	if err != nil || handler == nil || !handler.Ready() || routes != 5 {
+	if err != nil || handler == nil || !handler.Ready() || routes != 4 {
 		t.Fatalf("handler ready=%v routes=%d err=%v",
 			handler != nil && handler.Ready(), routes, err)
 	}

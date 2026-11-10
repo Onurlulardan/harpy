@@ -11,8 +11,8 @@ import (
 func (application *Application) List(
 	ctx context.Context, scope platformtx.TenantScope, filter domain.Filter, operation string,
 ) (domain.Page, error) {
-	if operation != OperationList && operation != OperationEntityHistory &&
-		operation != OperationFormRecordHistory || filter.Validate() != nil {
+	if operation != OperationList && operation != OperationEntityHistory ||
+		filter.Validate() != nil {
 		return domain.Page{}, ErrInvalid
 	}
 	permission := PermissionRead

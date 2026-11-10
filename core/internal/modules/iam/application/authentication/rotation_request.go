@@ -7,8 +7,7 @@ type RotateRequest struct {
 
 func (request RotateRequest) validate() error {
 	if nilInterface(request.Presented) ||
-		(request.Client != ClientOperatorConsole &&
-			request.Client != ClientPortal) {
+		request.Client != ClientOperatorConsole {
 		return ErrAuthenticationContract
 	}
 	return nil

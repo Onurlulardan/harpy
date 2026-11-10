@@ -120,7 +120,7 @@ an internal durable job and has no HTTP route.
 
 ## Verification evidence
 
-Executed from the `backend-v2` repository root on 2026-08-02:
+Executed from the `harpy` repository root on 2026-08-02:
 
 ```text
 go test -count=1 ./core/internal/modules/support/...                         PASS

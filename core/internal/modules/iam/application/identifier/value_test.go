@@ -7,11 +7,11 @@ import (
 
 func TestNormalizedSHA256HashesCanonicalBytes(t *testing.T) {
 	t.Parallel()
-	value, err := NormalizePortalV1(" Example ")
+	value, err := NormalizeEmailV1(" Example@Mail.Example ")
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := sha256.Sum256([]byte("example"))
+	want := sha256.Sum256([]byte(value.Normalized()))
 	if value.NormalizedSHA256() != want {
 		t.Fatal("identifier digest does not bind canonical bytes")
 	}

@@ -19,7 +19,7 @@ func (port *APIAsyncPort) EnqueuePurge(ctx context.Context,
 	if err != nil {
 		return ErrDocumentsRuntime
 	}
-	key := "documents:forms-cleanup:purge:" + itemID.String()
+	key := "documents:item-purge:" + itemID.String()
 	return port.enqueue(ctx, scope, jobID,
 		asyncmanifestv1.DocumentsItemPurgeJobKind, reference, digest, key,
 		runAt, payload)

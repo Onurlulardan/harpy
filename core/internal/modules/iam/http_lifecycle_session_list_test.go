@@ -11,10 +11,9 @@ import (
 
 func TestLifecycleHTTPSessionListEmitsCanonicalEnvelope(t *testing.T) {
 	auth := newAuthHTTPTestFixture(t)
-	portalID := uuid.New()
 	created := auth.now.Add(-time.Hour).UTC()
 	app := &lifecycleHTTPTestApplication{sessions: []lifecycle.Session{{
-		ID: uuid.New(), PortalBindingID: portalID, AccessMode: "portal",
+		ID: uuid.New(), AccessMode: "operator_console",
 		DeviceKind: "desktop", BrowserFamily: "chromium", OSFamily: "windows",
 		Revision: 4, CreatedAt: created, LastSeenAt: created.Add(time.Minute),
 		AbsoluteExpiry: created.Add(24 * time.Hour),
@@ -38,8 +37,8 @@ func TestLifecycleHTTPSessionListEmitsCanonicalEnvelope(t *testing.T) {
 		t.Fatalf("status/items/calls=%d/%v/%d", response.Code, document["items"], app.listSessionCalls)
 	}
 	item, ok := items[0].(map[string]any)
-	if !ok || len(item) != 10 || item["id"] != app.sessions[0].ID.String() ||
-		item["portal_binding_id"] != portalID.String() || item["access_mode"] != "portal" ||
+	if !ok || len(item) != 9 || item["id"] != app.sessions[0].ID.String() ||
+		item["portal_binding_id"] != nil || item["access_mode"] != "operator_console" ||
 		item["device_kind"] != "desktop" || item["browser_family"] != "chromium" ||
 		item["os_family"] != "windows" || item["revision"] != float64(4) ||
 		item["created_at"] != created.Format(time.RFC3339Nano) {

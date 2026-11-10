@@ -38,7 +38,7 @@ func TestLicenseSchemasRejectAuthorityDrift(t *testing.T) {
 	rootReuse := validTrustContract()
 	rootReuse["purpose"] = "protected-authority"
 	weakOffering := validDerivedOfferingContract()
-	weakOffering["booleans"].([]any)[0].(map[string]any)["temporary"] = true
+	weakOffering["limits"].([]any)[0].(map[string]any)["temporary"] = true
 	tests := []struct {
 		path  string
 		value map[string]any

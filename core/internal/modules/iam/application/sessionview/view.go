@@ -13,9 +13,7 @@ type AccessMode string
 
 const (
 	ClientOperatorConsole ClientID   = "harpy-operator-console-v1"
-	ClientPortal          ClientID   = "harpy-portal-v1"
 	AccessModeOperator    AccessMode = "operator_console"
-	AccessModePortal      AccessMode = "portal"
 )
 
 type View struct {
@@ -62,14 +60,7 @@ func (view View) valid(scopeTenantID uuid.UUID, userID, sessionID uuid.UUID) boo
 	} else if view.PlatformAuthorizationClock < 1 {
 		return false
 	}
-	switch view.AccessMode {
-	case AccessModeOperator:
-		return view.ClientID == ClientOperatorConsole &&
-			view.PortalBindingID == uuid.Nil
-	case AccessModePortal:
-		return view.ClientID == ClientPortal &&
-			view.PortalBindingID != uuid.Nil
-	default:
-		return false
-	}
+	return view.AccessMode == AccessModeOperator &&
+		view.ClientID == ClientOperatorConsole &&
+		view.PortalBindingID == uuid.Nil
 }

@@ -13,7 +13,6 @@ type storageSurface struct {
 
 var sharedStorageSurfaces = []storageSurface{
 	{"HARPY_DOCUMENTS", "harpy-documents"},
-	{"HARPY_ANALYTICS_DASHBOARD_EXPORT", "harpy-analytics-dashboard-exports"},
 	{"HARPY_IAM_SYSTEM_EXPORT", "harpy-iam-system-exports"},
 	{"HARPY_IAM_SYSTEM_IMPORT_SOURCE", "harpy-iam-system-import-sources"},
 }
@@ -26,8 +25,6 @@ func addSharedStorageEnvironment(values profileEnvironment) {
 		secretRoot + "documents-kek-keyring.json"
 	values["HARPY_DOCUMENTS_BILLING_ACTOR_ID"] =
 		"019b1234-5678-7abc-8def-0123456789ab"
-	values["HARPY_ANALYTICS_DASHBOARD_EXPORT_FCART_KEK_KEYRING_FILE"] =
-		secretRoot + "analytics-dashboard-export-fcart-kek-keyring.json"
 	values["HARPY_IAM_SYSTEM_EXPORT_FCART_KEK_KEYRING_FILE"] =
 		secretRoot + "iam-system-export-fcart-kek-keyring.json"
 	values["HARPY_IAM_SYSTEM_IMPORT_SOURCE_FCART_KEK_KEYRING_FILE"] =

@@ -13,14 +13,12 @@ func TestRuntimeEntitlementsPreserveGraceAndBuildOffOnlyWidening(t *testing.T) {
 	grace := ProjectRuntimeEntitlements(
 		snapshot, snapshot.LicenseGrantDeadline().Add(1),
 	)
-	if grace.State != RuntimeGrace || !grace.Projection.Boolean["api.builder.enabled"] ||
+	if grace.State != RuntimeGrace || len(grace.Projection.Boolean) != 0 ||
 		grace.Projection.Limits["iam.active_users"].Value != 25 {
 		t.Fatalf("grace narrowed signed grants: %+v", grace)
 	}
 	buildOff := ProjectRuntimeEntitlements(snapshot, snapshot.GraceUntil().Add(1))
-	if buildOff.State != RuntimeBuildOff ||
-		buildOff.Projection.Boolean["api.builder.enabled"] ||
-		!buildOff.Projection.Boolean["api.access"] ||
+	if buildOff.State != RuntimeBuildOff || len(buildOff.Projection.Boolean) != 0 ||
 		buildOff.Projection.Limits["iam.active_users"].Unlimited ||
 		buildOff.Projection.Limits["iam.active_users"].Value != 0 {
 		t.Fatalf("build-off safety projection drifted: %+v", buildOff)

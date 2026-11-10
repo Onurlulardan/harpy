@@ -40,10 +40,7 @@ func (credential LoginCredential) validate(
 	operator := kind == platformtx.CredentialEmailIdentifier &&
 		credential.AccessMode == AccessModeOperator &&
 		credential.PortalBindingID == uuid.Nil && credential.PortalBindingRevision == 0
-	portal := kind == platformtx.CredentialPortalIdentifier &&
-		credential.AccessMode == AccessModePortal &&
-		credential.PortalBindingID != uuid.Nil && credential.PortalBindingRevision > 0
-	if !operator && !portal {
+	if !operator {
 		return ErrAuthenticationStorage
 	}
 	return nil

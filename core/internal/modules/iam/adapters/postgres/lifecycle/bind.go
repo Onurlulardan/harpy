@@ -22,7 +22,6 @@ const (
 	credentialEmailVerification = platformtx.CredentialEmailVerification
 	credentialPasswordReset     = platformtx.CredentialPasswordReset
 	credentialInitialAdminSetup = platformtx.CredentialInitialAdminSetup
-	credentialPortalSetup       = platformtx.CredentialPortalSetup
 )
 
 func rowNotFound(err error) bool { return platformpostgres.RowNotFound(err) }

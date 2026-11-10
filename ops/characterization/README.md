@@ -25,7 +25,7 @@ database'ine baglanamaz. `cmd/reset-db` bu lifecycle'in parcasi degildir.
 
 `.env.example` yalniz degisken adlarini tasir. `.env` commit edilmez. Image
 degerleri tam `name:tag@sha256:digest` olmali; PostgreSQL PG15, V1 build Go
-1.25 ve backend-v2 characterizer build Go 1.26.5 baseline'ini gostermelidir.
+1.25 ve Harpy characterizer build Go 1.26.5 baseline'ini gostermelidir.
 `V1_ORACLE_SOURCE_VERSION`, build edilen V1 source snapshot'inin lowercase
 hash'idir.
 

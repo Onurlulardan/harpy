@@ -89,7 +89,7 @@ FROM platform.billing_license_runtime_entitlements_v1($1)`, fixture.environmentI
 	if err = rows.Err(); err != nil {
 		t.Fatal(err)
 	}
-	if count != 13 {
+	if count != 2 {
 		t.Fatalf("runtime grant count=%d", count)
 	}
 	assertBillingTypedRuntimeRead(t, ctx, connection, fixture, expected)
@@ -97,28 +97,10 @@ FROM platform.billing_license_runtime_entitlements_v1($1)`, fixture.environmentI
 
 func assertBillingRuntimeGrant(t *testing.T, grant billingRuntimeGrant, state string) {
 	t.Helper()
-	if state != "build_off" {
-		if grant.valueType == "boolean" && (!grant.boolean.Valid || !grant.boolean.Bool) {
-			t.Fatalf("runtime boolean grant=%+v", grant)
-		}
-		if grant.key == "iam.active_users" && (grant.integer.Valid || !grant.unlimited) {
-			t.Fatalf("runtime unlimited grant=%+v", grant)
-		}
-		if grant.valueType == "integer" && grant.key != "iam.active_users" &&
-			(!grant.integer.Valid || grant.integer.Int64 != 10 || grant.unlimited) {
-			t.Fatalf("runtime integer grant=%+v", grant)
-		}
-		return
-	}
-	if grant.valueType == "integer" {
-		if !grant.integer.Valid || grant.integer.Int64 != 0 || grant.unlimited {
-			t.Fatalf("build-off integer grant=%+v", grant)
-		}
-		return
-	}
-	want := grant.key == "workflow.enabled" || grant.key == "api.access"
-	if !grant.boolean.Valid || grant.boolean.Bool != want {
-		t.Fatalf("build-off boolean grant=%+v want=%t", grant, want)
+	if grant.valueType != "integer" || grant.boolean.Valid || grant.unlimited ||
+		!grant.integer.Valid || grant.integer.Int64 != 10 ||
+		(grant.key != "iam.active_users" && grant.key != "documents.storage_bytes") {
+		t.Fatalf("runtime grant=%+v state=%s", grant, state)
 	}
 }
 
@@ -143,7 +125,7 @@ func assertBillingTypedRuntimeRead(
 		ctx, fixture.environmentID.String(),
 	)
 	if err != nil || string(result.State) != expected ||
-		len(result.Projection.Boolean) != 5 || len(result.Projection.Limits) != 5 ||
+		len(result.Projection.Boolean) != 0 || len(result.Projection.Limits) != 2 ||
 		result.Projection.Channel != fixture.channel || result.DatabaseNow.IsZero() {
 		t.Fatalf("typed runtime projection=%+v err=%v", result, err)
 	}

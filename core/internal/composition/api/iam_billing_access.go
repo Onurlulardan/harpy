@@ -51,21 +51,11 @@ func (runtime *iamAPIRuntime) buildHTTPAccess(
 	if err != nil {
 		return fmt.Errorf("build IAM customer provisioning access runtime: %w", err)
 	}
-	runtime.portalAccess, err = iammodule.NewPortalAccessRuntime(
-		pool, coordinator, runtime.security, time.Now,
-	)
-	if err != nil {
-		return fmt.Errorf("build IAM portal access runtime: %w", err)
-	}
 	shared, err := iammodule.NewSharedAccessDependencies(
 		pool, coordinator, runtime.security, time.Now,
 	)
 	if err != nil {
 		return fmt.Errorf("build IAM shared access dependencies: %w", err)
-	}
-	runtime.analyticsAccess, err = iammodule.NewAnalyticsAccessRuntime(shared)
-	if err != nil {
-		return fmt.Errorf("build IAM Analytics access runtime: %w", err)
 	}
 	runtime.documentsAccess, err = iammodule.NewDocumentsAccessRuntime(shared)
 	if err != nil {
@@ -80,14 +70,6 @@ func (runtime *iamAPIRuntime) buildHTTPAccess(
 	runtime.notificationsAccess, err = iammodule.NewNotificationsAccessRuntime(shared)
 	if err != nil {
 		return fmt.Errorf("build IAM Notifications access runtime: %w", err)
-	}
-	runtime.workAccess, err = iammodule.NewWorkAccessRuntime(shared)
-	if err != nil {
-		return fmt.Errorf("build IAM Work access runtime: %w", err)
-	}
-	runtime.analyticsPrincipals, err = iammodule.NewAnalyticsPrincipalPermissionRuntime()
-	if err != nil {
-		return fmt.Errorf("build IAM Analytics principal permission runtime: %w", err)
 	}
 	_ = catalogs
 	runtime.systemLayoutAccess, err = iammodule.NewSystemLayoutAccessRuntime(

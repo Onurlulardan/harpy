@@ -11,7 +11,7 @@ func TestIAMCredentialEventAuthorityAcceptsOnlyCredentialEventPurposes(t *testin
 	subjectID := uuid.MustParse("ab000000-0000-4000-8000-000000000001")
 	for _, purpose := range []CredentialPurpose{
 		CredentialPasswordReset, CredentialEmailVerification,
-		CredentialPortalSetup, CredentialInvitation,
+		CredentialInvitation,
 	} {
 		scope := credentialScopeForPurpose(t, purpose)
 		authority, err := MintIAMCredentialEventAuthority(scope, subjectID)

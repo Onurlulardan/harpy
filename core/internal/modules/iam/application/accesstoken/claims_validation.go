@@ -13,11 +13,7 @@ func (claims Claims) validShape() bool {
 		!validClientMode(claims.client, claims.accessMode) || !validMethods(claims.methods) {
 		return false
 	}
-	if claims.accessMode == AccessModePortal {
-		if !claims.hasPortalBinding || !validUUID(claims.portalBinding) {
-			return false
-		}
-	} else if claims.hasPortalBinding {
+	if claims.accessMode != AccessModeOperator || claims.hasPortalBinding {
 		return false
 	}
 	if claims.assurance == AssuranceStepUp {
@@ -27,14 +23,7 @@ func (claims Claims) validShape() bool {
 }
 
 func validClientMode(client ClientID, mode AccessMode) bool {
-	switch client {
-	case ClientPortal:
-		return mode == AccessModePortal
-	case ClientOperatorConsole:
-		return mode == AccessModeOperator
-	default:
-		return false
-	}
+	return client == ClientOperatorConsole && mode == AccessModeOperator
 }
 
 func validMethods(methods []AuthMethod) bool {

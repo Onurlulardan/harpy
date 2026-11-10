@@ -30,9 +30,7 @@ func finishAPIRuntime(
 	)
 	groups = joinAPIRouteGroups(
 		groups,
-		[][]httpedge.Route{domains.analytics.Routes(),
-			domains.documents.Routes(), domains.notifications.Routes(),
-			domains.work.Routes()},
+		[][]httpedge.Route{domains.documents.Routes(), domains.notifications.Routes()},
 		domains.secondary.RouteGroups(),
 		[][]httpedge.Route{domains.systemLayouts.Routes(),
 			domains.customerProvisioning.Routes()},

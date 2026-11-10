@@ -9,7 +9,6 @@ const (
 	CredentialInitialAdminSetup CredentialPurpose = "initial_admin_setup"
 	CredentialInitialPassword   CredentialPurpose = "initial_password"
 	CredentialEmailVerification CredentialPurpose = "email_verification"
-	CredentialPortalSetup       CredentialPurpose = "portal_setup"
 	CredentialInvitation        CredentialPurpose = "invitation"
 	CredentialReauthentication  CredentialPurpose = "reauth"
 )
@@ -19,7 +18,7 @@ func (purpose CredentialPurpose) valid() bool {
 	case CredentialLogin, CredentialRefresh, CredentialPasswordReset,
 		CredentialInitialAdminSetup,
 		CredentialInitialPassword,
-		CredentialEmailVerification, CredentialPortalSetup,
+		CredentialEmailVerification,
 		CredentialInvitation, CredentialReauthentication:
 		return true
 	default:

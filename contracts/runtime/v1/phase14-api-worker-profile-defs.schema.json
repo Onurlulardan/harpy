@@ -5,7 +5,6 @@
     "apiVariables": {
       "allOf": [
         {"$ref": "runtime-profile-defs.schema.json#/$defs/apiVariables"},
-        {"$ref": "analytics-dashboard-export-artifact-config-fragment.schema.json#/$defs/common"},
         {"$ref": "#/$defs/apiSpecialized"}
       ],
       "unevaluatedProperties": false
@@ -41,7 +40,6 @@
     "workerVariables": {
       "allOf": [
         {"$ref": "runtime-profile-defs.schema.json#/$defs/workerVariables"},
-        {"$ref": "analytics-dashboard-export-artifact-config-fragment.schema.json#/$defs/worker"},
         {"$ref": "#/$defs/workerSpecialized"}
       ],
       "unevaluatedProperties": false

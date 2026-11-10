@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	analyticsmodule "github.com/Onurlulardan/harpy/core/internal/modules/analytics"
 	iam "github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/platform/admission"
 	"github.com/Onurlulardan/harpy/core/internal/platform/async"
@@ -87,13 +86,6 @@ func buildAsyncWorkload(
 	if err != nil {
 		return nil, nil, err
 	}
-	analyticsExport, err := buildAnalyticsDashboardExportRuntime(
-		ctx, workerSettings, release, writeCatalogs, jobStore, pool, coordinator, gate,
-	)
-	if err != nil {
-		return nil, nil, err
-	}
-	processors = append(processors, analyticsExport.processors...)
 	documentsProduction, err := buildDocumentsJobProcessors(
 		ctx, workerSettings, release, writeCatalogs, jobStore, pool, coordinator, version,
 	)
@@ -115,9 +107,7 @@ func buildAsyncWorkload(
 			_ = iamResources.Close()
 		}
 	}()
-	registry, err := analyticsmodule.NewDashboardExportWorkerJobRegistry(
-		jobCatalog, processors, nil,
-	)
+	registry, err := jobexecution.NewRegistryForCatalog(jobCatalog, processors)
 	if err != nil {
 		return nil, nil, fmt.Errorf("build job processor registry: %w", err)
 	}
@@ -150,7 +140,7 @@ func buildAsyncWorkload(
 		ctx, pool, workerSettings, iamSettings, settings, catalogs, gate, version,
 		[]managedAsyncWorkload{
 			outboxRunner, jobRunner, eventRunner, retentionRunner,
-			analyticsExport.workload, iamResources.cleanup,
+			iamResources.cleanup,
 		},
 	)
 	if err != nil {

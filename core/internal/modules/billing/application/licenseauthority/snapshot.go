@@ -16,7 +16,6 @@ type VerifiedSnapshot struct {
 	issuedAt, notBefore, refreshAfter        time.Time
 	grantValidUntil, graceUntil              time.Time
 	commercialExpiresAt                      time.Time
-	features                                 FeatureClaims
 	limits                                   LimitClaims
 	canonicalPayload, signedDocument         []byte
 }
@@ -40,9 +39,8 @@ func (snapshot VerifiedSnapshot) GraceUntil() time.Time { return snapshot.graceU
 func (snapshot VerifiedSnapshot) CommercialExpiresAt() time.Time {
 	return snapshot.commercialExpiresAt
 }
-func (snapshot VerifiedSnapshot) Channel() string         { return snapshot.releaseChannel }
-func (snapshot VerifiedSnapshot) Features() FeatureClaims { return snapshot.features }
-func (snapshot VerifiedSnapshot) Limits() LimitClaims     { return snapshot.limits }
+func (snapshot VerifiedSnapshot) Channel() string     { return snapshot.releaseChannel }
+func (snapshot VerifiedSnapshot) Limits() LimitClaims { return snapshot.limits }
 
 func (snapshot VerifiedSnapshot) LicenseIdentity() billingapi.LicenseIdentity {
 	return billingapi.LicenseIdentity{

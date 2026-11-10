@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -71,29 +70,5 @@ func TestRBACBatchCheckRejectsNestedAuthorityAndDuplicateDecisions(t *testing.T)
 		if response.Code != http.StatusBadRequest || len(fixture.app.calls) != 0 {
 			t.Fatalf("body=%s status=%d calls=%d", body, response.Code, len(fixture.app.calls))
 		}
-	}
-}
-
-func TestRBACHTTPRejectsPortalBearer(t *testing.T) {
-	auth := newAuthHTTPTestFixture(t)
-	app := &rbacHTTPTestApplication{}
-	handler, err := newRBACHTTP(
-		auth.security, app, func(error) {}, func() time.Time { return auth.now },
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-	portal := auth.newClaims(t, true)
-	token, err := auth.security.accessSigner.Sign(portal)
-	if err != nil {
-		t.Fatal(err)
-	}
-	request := invitationProtectedRequest(
-		http.MethodGet, "/api/permissions", "", token, portal.Tenant(),
-	)
-	response := httptest.NewRecorder()
-	handler.listPermissions(response, request)
-	if response.Code != http.StatusUnauthorized || len(app.calls) != 0 {
-		t.Fatalf("portal bearer=%d calls=%d", response.Code, len(app.calls))
 	}
 }

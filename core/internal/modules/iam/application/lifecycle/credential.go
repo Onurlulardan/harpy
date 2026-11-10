@@ -5,7 +5,6 @@ import lifecyclecredential "github.com/Onurlulardan/harpy/core/internal/modules/
 const (
 	PurposeEmailVerification CredentialPurpose = "email_verification_v1"
 	PurposePasswordReset     CredentialPurpose = "password_reset_v1"
-	PurposePortalSetup       CredentialPurpose = "portal_setup_v1"
 	PurposeInitialAdminSetup CredentialPurpose = "initial_admin_setup.v1"
 )
 

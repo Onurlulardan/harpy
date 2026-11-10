@@ -20,19 +20,14 @@ type projectionWire struct {
 }
 
 func encodeSnapshot(snapshot licenseapp.VerifiedSnapshot) (snapshotDocuments, error) {
-	features := snapshot.Features()
-	featureDocument, err := json.Marshal(map[string]bool{
-		"formBuilder": features.FormBuilder, "workflowBuilder": features.WorkflowBuilder,
-		"apiBuilder": features.APIBuilder, "aiAssistant": features.AIAssistant,
-	})
+	featureDocument, err := json.Marshal(map[string]bool{})
 	if err != nil {
 		return snapshotDocuments{}, err
 	}
 	limits := snapshot.Limits()
 	limitDocument, err := json.Marshal(map[string]int64{
-		"maxUsers": limits.MaxUsers, "maxForms": limits.MaxForms,
-		"maxWorkflows": limits.MaxWorkflows, "maxApiEndpoints": limits.MaxAPIEndpoints,
-		"maxTenants": limits.MaxTenants,
+		"documents.storage_bytes": 0,
+		"iam.active_users":        limits.MaxUsers,
 	})
 	if err != nil {
 		return snapshotDocuments{}, err

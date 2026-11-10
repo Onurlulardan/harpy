@@ -20,16 +20,8 @@ func (handler *LifecycleHTTP) claims(r *http.Request) (accesstoken.Claims, bool)
 	if err != nil || !optionalTenantIDMatches(r.Header.Values(authTenantIDHeader), claims.Tenant()) {
 		return accesstoken.Claims{}, false
 	}
-	switch claims.Client() {
-	case accesstoken.ClientOperatorConsole:
-		if claims.AccessMode() != accesstoken.AccessModeOperator {
-			return accesstoken.Claims{}, false
-		}
-	case accesstoken.ClientPortal:
-		if claims.AccessMode() != accesstoken.AccessModePortal {
-			return accesstoken.Claims{}, false
-		}
-	default:
+	if claims.Client() != accesstoken.ClientOperatorConsole ||
+		claims.AccessMode() != accesstoken.AccessModeOperator {
 		return accesstoken.Claims{}, false
 	}
 	return claims, true

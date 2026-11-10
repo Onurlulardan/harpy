@@ -29,19 +29,6 @@ func (c Worker) IAM() (IAMWorker, error) {
 	return c.iam, nil
 }
 
-func (c Worker) AnalyticsDashboardExportArtifacts() (
-	AnalyticsDashboardExportArtifacts, error,
-) {
-	if err := c.analyticsExports.Validate(); err != nil {
-		return AnalyticsDashboardExportArtifacts{}, err
-	}
-	return c.analyticsExports, nil
-}
-
-func (c Worker) AnalyticsDashboardExportSpoolDirectory() AbsolutePath {
-	return c.analyticsExportSpool
-}
-
 func (c Worker) RestQueryCursorKeyring() (CursorKeyring, error) {
 	if err := c.restQueryCursorKeys.Validate(); err != nil {
 		return CursorKeyring{}, err

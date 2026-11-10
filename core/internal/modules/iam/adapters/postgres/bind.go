@@ -2,8 +2,6 @@ package postgres
 
 import (
 	"context"
-	"encoding/json"
-	"strings"
 
 	eventsv1 "github.com/Onurlulardan/harpy/contracts/events/v1"
 	jobsv1 "github.com/Onurlulardan/harpy/contracts/jobs/v1"
@@ -99,69 +97,4 @@ func profileScopeUsable(ctx context.Context, scope platformtx.TenantScope) bool 
 	}
 	return platformtx.RequireActive(scope, platformtx.Command) == nil ||
 		platformtx.RequireActive(scope, platformtx.SnapshotQuery) == nil
-}
-
-type workPrincipalTenantScope = platformtx.TenantScope
-
-type workPrincipalQueryer interface {
-	QueryRow(context.Context, string, ...any) platformpostgres.Row
-}
-
-type boundWorkPrincipalPort struct{ database workPrincipalQueryer }
-
-type workPrincipalPort struct {
-	binder platformpostgres.OwnerBinder[*boundWorkPrincipalPort]
-}
-
-func NewWorkPrincipalReader() (WorkPrincipalReader, error) {
-	binder, err := platformpostgres.NewOwnerBinder(
-		"work", func(database platformpostgres.BoundExecutor) *boundWorkPrincipalPort {
-			return &boundWorkPrincipalPort{database: database}
-		},
-	)
-	if err != nil || workPrincipalEvidenceSQL == "" || workAvailableUsersSQL == "" {
-		return nil, ErrWorkPrincipalRead
-	}
-	return &workPrincipalReader{port: &workPrincipalPort{binder: binder}}, nil
-}
-
-func (port *workPrincipalPort) evidence(
-	ctx context.Context, scope workPrincipalTenantScope,
-	targetKind string, targetID uuid.UUID,
-) (WorkPrincipalEvidence, error) {
-	if port == nil || !workPrincipalScopeUsable(ctx, scope) || targetID == uuid.Nil ||
-		(targetKind != "USER" && targetKind != "ROLE" && targetKind != "ORGANIZATION") {
-		return WorkPrincipalEvidence{}, ErrWorkPrincipalRead
-	}
-	bound, err := platformtx.Bind(scope, port.binder)
-	if err != nil || bound == nil || bound.database == nil {
-		return WorkPrincipalEvidence{}, ErrWorkPrincipalRead
-	}
-	return scanWorkPrincipalEvidence(
-		ctx, bound.database, scope.TenantID(), scope.ActorID(), targetKind, targetID,
-	)
-}
-
-func (port *workPrincipalPort) availableUsers(
-	ctx context.Context, scope workPrincipalTenantScope, search string, limit int,
-) (json.RawMessage, error) {
-	search = strings.TrimSpace(search)
-	if port == nil || !workPrincipalScopeUsable(ctx, scope) || len(search) > 200 ||
-		limit < 1 || limit > 50 {
-		return nil, ErrWorkPrincipalRead
-	}
-	bound, err := platformtx.Bind(scope, port.binder)
-	if err != nil || bound == nil || bound.database == nil {
-		return nil, ErrWorkPrincipalRead
-	}
-	return scanWorkAvailableUsers(
-		ctx, bound.database, scope.TenantID(), scope.ActorID(), search, limit,
-	)
-}
-
-func workPrincipalScopeUsable(
-	ctx context.Context, scope workPrincipalTenantScope,
-) bool {
-	return ctx != nil && ctx.Err() == nil && !platformtx.NetworkAllowed(ctx) &&
-		platformtx.ContextOwnsScope(ctx, scope) && platformtx.RequireOwner(scope, "work") == nil
 }

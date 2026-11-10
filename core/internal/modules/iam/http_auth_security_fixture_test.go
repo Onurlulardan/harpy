@@ -117,9 +117,7 @@ func (fixture *authHTTPTestFixture) newClaims(
 		Methods:            []accesstoken.AuthMethod{accesstoken.AuthMethodPassword},
 	}
 	if portal {
-		binding := uuid.MustParse("50000000-0000-4000-8000-000000000001")
-		input.Client, input.AccessMode = accesstoken.ClientPortal, accesstoken.AccessModePortal
-		input.PortalBinding = &binding
+		t.Fatal("portal access tokens are not issued")
 	}
 	claims, err := accesstoken.NewClaims(fixture.profile, input)
 	if err != nil {

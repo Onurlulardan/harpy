@@ -23,7 +23,6 @@ type AuthHTTPLoginMode string
 
 const (
 	AuthHTTPLoginOperator AuthHTTPLoginMode = "operator_console"
-	AuthHTTPLoginPortal   AuthHTTPLoginMode = "portal"
 )
 
 type AuthHTTPLoginInput struct {

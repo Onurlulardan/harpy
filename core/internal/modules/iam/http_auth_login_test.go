@@ -43,15 +43,6 @@ func TestAuthHTTPLoginIssuesAccessAndExactBrowserCookies(t *testing.T) {
 	}
 }
 
-func TestAuthHTTPPortalLoginSelectsPortalApplicationMode(t *testing.T) {
-	fixture := newAuthHTTPTestFixture(t)
-	fixture.successfulLogin(t, true)
-	if fixture.app.loginInput.Mode != AuthHTTPLoginPortal ||
-		fixture.app.loginInput.Identifier != "P-100" || fixture.app.loginCalls != 1 {
-		t.Fatalf("unexpected portal input: %+v", fixture.app.loginInput)
-	}
-}
-
 func TestAuthHTTPLoginFailsClosedWithoutIdentityEnumeration(t *testing.T) {
 	fixture := newAuthHTTPTestFixture(t)
 	fixture.app.loginError = ErrAuthHTTPInvalidCredentials

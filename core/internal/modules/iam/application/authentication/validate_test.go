@@ -17,7 +17,7 @@ func TestValidateRefreshFailsClosedAndDestroysCredentialOutsideScope(t *testing.
 
 func TestBrowserClientComesOnlyFromAuthoritativeAccessMode(t *testing.T) {
 	if browserClientForMode(AccessModeOperator) != ClientOperatorConsole ||
-		browserClientForMode(AccessModePortal) != ClientPortal ||
+		browserClientForMode("portal") != "" ||
 		browserClientForMode("unknown") != "" {
 		t.Fatal("browser client mapping is not fail-closed")
 	}

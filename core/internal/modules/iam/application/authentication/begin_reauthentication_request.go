@@ -31,8 +31,7 @@ func (request BeginReauthenticationRequest) validate() error {
 	if request.UserID == uuid.Nil || request.SessionID == uuid.Nil ||
 		request.TokenVersion <= 0 || request.AuthorizationVersion <= 0 ||
 		!clientMatchesMode(request.Client, request.AccessMode) ||
-		(request.AccessMode == AccessModeOperator && request.PortalBindingID != uuid.Nil) ||
-		(request.AccessMode == AccessModePortal && request.PortalBindingID == uuid.Nil) ||
+		request.AccessMode != AccessModeOperator || request.PortalBindingID != uuid.Nil ||
 		!request.Method.valid() || !authenticatorShape ||
 		request.PurposeSHA256 == [32]byte{} || request.ActionPolicyVersion <= 0 ||
 		request.Origin == "" || len(request.Origin) > 2048 ||

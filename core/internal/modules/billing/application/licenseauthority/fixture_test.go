@@ -47,8 +47,7 @@ func newAuthorityFixture(t *testing.T) authorityFixture {
 			GrantValidUntil:     now.Add(2 * time.Hour).Format(time.RFC3339),
 			GraceUntil:          now.Add(3 * time.Hour).Format(time.RFC3339),
 			CommercialExpiresAt: now.Add(24 * time.Hour).Format(time.RFC3339),
-			Features:            wireFeatures{FormBuilder: true, APIBuilder: true},
-			Limits:              wireLimits{MaxUsers: 25, MaxForms: 0, MaxTenants: 1},
+			Limits:              wireLimits{MaxUsers: 25, MaxTenants: 1},
 			ReleaseChannel:      "stable",
 		},
 	}

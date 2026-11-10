@@ -22,10 +22,6 @@ func (fixtureTextNormalizer) NormalizeEmailV1(value string) (string, error) {
 	return strings.ToLower(strings.TrimSpace(value)), nil
 }
 
-func (fixtureTextNormalizer) NormalizePortalV1(value string) (string, error) {
-	return strings.ToLower(strings.TrimSpace(value)), nil
-}
-
 func baseFieldInput(id uuid.UUID, key string, kind LogicalType) FieldInput {
 	return FieldInput{
 		ID: id, Resource: ResourceUser, Key: key, Type: kind,

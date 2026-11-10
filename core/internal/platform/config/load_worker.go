@@ -12,8 +12,6 @@ type Worker struct {
 	memoryLimit          WorkerMemoryLimit
 	rabbitMQ             RabbitMQ
 	iam                  IAMWorker
-	analyticsExports     AnalyticsDashboardExportArtifacts
-	analyticsExportSpool AbsolutePath
 	restQueryCursorKeys  CursorKeyring
 	iamTransferArtifacts IAMSystemTransferArtifacts
 	documents            DocumentsWorker
@@ -57,16 +55,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 	if err != nil {
 		return Worker{}, err
 	}
-	analyticsExports, err := loadAnalyticsDashboardExportArtifacts(
-		values, runtimeConfig.Environment(),
-	)
-	if err != nil {
-		return Worker{}, err
-	}
-	analyticsExportSpool, err := loadAbsolutePath(values, analyticsExportSpoolKey)
-	if err != nil {
-		return Worker{}, err
-	}
 	cursorKeys, err := loadCursorKeyring(values)
 	if err != nil {
 		return Worker{}, err
@@ -74,11 +62,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 	iamTransferArtifacts, err := loadIAMSystemTransferArtifacts(values,
 		runtimeConfig.Environment())
 	if err != nil {
-		return Worker{}, err
-	}
-	if err = validateAnalyticsDashboardExportSeparation(
-		analyticsExports, iamTransferArtifacts,
-	); err != nil {
 		return Worker{}, err
 	}
 	documents, err := loadDocumentsWorker(values, runtimeConfig.Environment())
@@ -93,7 +76,6 @@ func loadWorkerAt(entries []string, now time.Time) (Worker, error) {
 		longRunning: longRunning, deploymentMode: deploymentMode,
 		authority: authority, memoryLimit: memoryLimit,
 		rabbitMQ: rabbitMQ, iam: iamConfig,
-		analyticsExports: analyticsExports, analyticsExportSpool: analyticsExportSpool,
 		restQueryCursorKeys:  cursorKeys,
 		iamTransferArtifacts: iamTransferArtifacts,
 		documents:            documents,

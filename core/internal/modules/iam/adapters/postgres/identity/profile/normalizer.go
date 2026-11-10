@@ -11,11 +11,3 @@ func (profileNormalizer) NormalizeEmailV1(value string) (string, error) {
 	}
 	return normalized.Normalized(), nil
 }
-
-func (profileNormalizer) NormalizePortalV1(value string) (string, error) {
-	normalized, err := identifier.NormalizePortalV1(value)
-	if err != nil {
-		return "", err
-	}
-	return normalized.Normalized(), nil
-}

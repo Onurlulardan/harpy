@@ -84,35 +84,6 @@ func TestAuthHTTPCurrentSessionRejectsTenantAndVersionSubstitution(t *testing.T)
 	}
 }
 
-func TestAuthHTTPCurrentPortalSessionRequiresExactPortalBinding(t *testing.T) {
-	fixture := newAuthHTTPTestFixture(t)
-	claims := fixture.newClaims(t, true)
-	token, err := fixture.security.accessSigner.Sign(claims)
-	if err != nil {
-		t.Fatal(err)
-	}
-	fixture.app.currentSession = fixture.sessionView(claims)
-	request := httptest.NewRequest(http.MethodGet, "/api/auth/session", nil)
-	request.Header.Set("Authorization", "Bearer "+token)
-	response := httptest.NewRecorder()
-	fixture.handler.currentSession(response, request)
-	if response.Code != http.StatusOK {
-		t.Fatalf("portal session status=%d body=%s", response.Code, response.Body.String())
-	}
-	document := decodeAuthResponse(t, response)
-	if document["portal_binding_id"] == nil || document["access_mode"] != "portal" {
-		t.Fatalf("portal binding missing: %v", document)
-	}
-	fixture.app.currentSession.PortalBindingID = uuid.New()
-	response = httptest.NewRecorder()
-	request = httptest.NewRequest(http.MethodGet, "/api/auth/session", nil)
-	request.Header.Set("Authorization", "Bearer "+token)
-	fixture.handler.currentSession(response, request)
-	if response.Code != http.StatusUnauthorized {
-		t.Fatalf("portal substitution status=%d", response.Code)
-	}
-}
-
 func TestAuthHTTPCurrentSessionRejectsAmbiguousBearer(t *testing.T) {
 	fixture := newAuthHTTPTestFixture(t)
 	request := httptest.NewRequest(http.MethodGet, "/api/auth/session", nil)

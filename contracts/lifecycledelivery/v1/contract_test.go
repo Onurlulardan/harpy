@@ -27,7 +27,7 @@ func TestLifecycleEnvelopeAndReferenceArePurposeBound(t *testing.T) {
 	if err := envelope.Validate(tenant); err != nil {
 		t.Fatal(err)
 	}
-	envelope.Purpose = PurposePortalSetup
+	envelope.Purpose = "portal_setup_v1"
 	if envelope.Validate(tenant) == nil {
 		t.Fatal("cross-purpose envelope substitution was accepted")
 	}

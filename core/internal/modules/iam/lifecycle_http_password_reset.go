@@ -83,14 +83,9 @@ func (application *lifecycleHTTPApplication) StartPasswordReset(
 
 func normalizeResetIdentifier(kind, raw string) (identifier.Value, string,
 	platformtx.CredentialIdentifierKind, error) {
-	switch kind {
-	case "email_v1":
-		value, err := identifier.NormalizeEmailV1(raw)
-		return value, kind, platformtx.CredentialEmailIdentifier, err
-	case "portal_v1":
-		value, err := identifier.NormalizePortalV1(raw)
-		return value, kind, platformtx.CredentialPortalIdentifier, err
-	default:
+	if kind != "email_v1" {
 		return identifier.Value{}, "", "", ErrLifecycleHTTPInvalid
 	}
+	value, err := identifier.NormalizeEmailV1(raw)
+	return value, kind, platformtx.CredentialEmailIdentifier, err
 }

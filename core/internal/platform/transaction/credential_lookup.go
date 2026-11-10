@@ -9,13 +9,10 @@ import (
 
 type CredentialIdentifierKind string
 
-const (
-	CredentialEmailIdentifier  CredentialIdentifierKind = "email_v1"
-	CredentialPortalIdentifier CredentialIdentifierKind = "portal_v1"
-)
+const CredentialEmailIdentifier CredentialIdentifierKind = "email_v1"
 
 func (kind CredentialIdentifierKind) valid() bool {
-	return kind == CredentialEmailIdentifier || kind == CredentialPortalIdentifier
+	return kind == CredentialEmailIdentifier
 }
 
 type CredentialLookup struct {
@@ -164,8 +161,7 @@ func (lookup CredentialLookup) valid() bool {
 	}
 	if lookup.locatorKind == CredentialLoginDirectory {
 		return lookup.tenantID != uuid.Nil && lookup.keyLength == 32 &&
-			(lookup.identifier == CredentialEmailIdentifier ||
-				lookup.identifier == CredentialPortalIdentifier) &&
+			lookup.identifier == CredentialEmailIdentifier &&
 			validCredentialKeyID(lookup.keyID)
 	}
 	return lookup.identifier == "" && lookup.keyID == "" &&

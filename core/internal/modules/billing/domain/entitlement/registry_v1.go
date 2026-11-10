@@ -18,8 +18,6 @@ func RegistryV1() []RegistryEntry {
 	return []RegistryEntry{
 		integerEntry("iam.active_users", Gauge, Never, "iam", UnitCount),
 		integerEntry("documents.storage_bytes", Gauge, Never, "documents", UnitByte),
-		booleanEntry("workflow.enabled", "workflow"),
-		booleanEntry("api.access", "platform"),
 	}
 }
 
@@ -42,12 +40,4 @@ func integerEntry(
 	key, _ := NewKey(keyValue)
 	definition, _ := NewDefinition(key, Integer, meter, reset, Hard, true)
 	return RegistryEntry{Definition: definition, Unit: unit, Owner: owner}
-}
-
-func booleanEntry(keyValue string, owner string) RegistryEntry {
-	key, _ := NewKey(keyValue)
-	definition, _ := NewDefinition(
-		key, Boolean, NoMeter, Never, NoEnforcement, false,
-	)
-	return RegistryEntry{Definition: definition, Unit: UnitBoolean, Owner: owner}
 }

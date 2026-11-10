@@ -24,8 +24,7 @@ func (change Change) Validate() error {
 		return ErrInvalid
 	}
 	deliveryCommand := change.CommandKey == "iam.email_verification.start" ||
-		change.CommandKey == "iam.password_reset.start" ||
-		change.CommandKey == "iam.portal_setup.start"
+		change.CommandKey == "iam.password_reset.start"
 	if deliveryCommand != (change.DeliveryArtifactRef != "") {
 		return ErrInvalid
 	}
@@ -38,7 +37,7 @@ func (change Change) Validate() error {
 }
 
 var aggregateKinds = map[string]bool{
-	"identifier": true, "one_time_token": true, "portal_binding": true,
+	"identifier": true, "one_time_token": true,
 	"password_credential": true, "authenticator": true, "session": true,
 }
 
@@ -46,9 +45,8 @@ var commandKeys = map[string]bool{
 	"iam.identifier.add": true, "iam.identifier.verify": true,
 	"iam.identifier.tombstone": true, "iam.identifier.retire": true,
 	"iam.email_verification.start": true, "iam.password_reset.start": true,
-	"iam.password_reset.complete": true, "iam.portal_setup.start": true,
-	"iam.portal_setup.complete": true, "iam.portal_approval.decide": true,
-	"iam.password.change": true, "iam.authenticator.suspend": true,
+	"iam.password_reset.complete": true,
+	"iam.password.change":         true, "iam.authenticator.suspend": true,
 	"iam.authenticator.retire": true, "iam.webauthn.enrollment.start": true,
 	"iam.webauthn.enrollment.complete": true, "iam.totp.enrollment.start": true,
 	"iam.totp.enrollment.complete": true, "iam.recovery_codes.issue": true,

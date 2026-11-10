@@ -13,7 +13,6 @@ func (handler *AuthHTTP) Routes() []httpedge.Route {
 	return []httpedge.Route{
 		{Method: http.MethodPost, Pattern: "/api/auth/login", Handler: http.HandlerFunc(handler.login)},
 		{Method: http.MethodPost, Pattern: "/api/auth/initial-password", Handler: http.HandlerFunc(handler.initialPassword)},
-		{Method: http.MethodPost, Pattern: "/api/auth/portal/login", Handler: http.HandlerFunc(handler.portalLogin)},
 		{Method: http.MethodPost, Pattern: "/api/auth/refresh", Handler: http.HandlerFunc(handler.refresh)},
 		{Method: http.MethodPost, Pattern: "/api/auth/logout", Handler: http.HandlerFunc(handler.logout)},
 		{Method: http.MethodGet, Pattern: "/api/auth/csrf", Handler: http.HandlerFunc(handler.csrf)},

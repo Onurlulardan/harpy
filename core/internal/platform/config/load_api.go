@@ -14,7 +14,6 @@ type API struct {
 	deploymentMode        DeploymentMode
 	authority             APIAuthority
 	iam                   IAMAPI
-	analyticsExports      AnalyticsDashboardExportArtifacts
 	iamTransferArtifacts  IAMSystemTransferArtifacts
 	documents             DocumentsAPI
 	notificationConsumers NotificationsConsumerKeyring
@@ -72,20 +71,9 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 	if err != nil {
 		return API{}, err
 	}
-	analyticsExports, err := loadAnalyticsDashboardExportArtifacts(
-		values, runtimeConfig.Environment(),
-	)
-	if err != nil {
-		return API{}, err
-	}
 	iamTransferArtifacts, err := loadIAMSystemTransferArtifacts(values,
 		runtimeConfig.Environment())
 	if err != nil {
-		return API{}, err
-	}
-	if err = validateAnalyticsDashboardExportSeparation(
-		analyticsExports, iamTransferArtifacts,
-	); err != nil {
 		return API{}, err
 	}
 	documents, err := loadDocumentsAPI(values, runtimeConfig.Environment())
@@ -101,7 +89,7 @@ func loadAPIAt(entries []string, now time.Time) (API, error) {
 		http: httpConfig, restQueryCursorKeys: cursorKeys,
 		analyticsProxies: analyticsProxies,
 		deploymentMode:   deploymentMode, authority: authority,
-		iam: iamConfig, analyticsExports: analyticsExports,
+		iam:                   iamConfig,
 		iamTransferArtifacts:  iamTransferArtifacts,
 		documents:             documents,
 		notificationConsumers: notificationConsumers,
