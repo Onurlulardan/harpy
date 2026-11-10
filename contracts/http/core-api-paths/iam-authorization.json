@@ -44,24 +44,6 @@
   "/api/permissions/batch-check": {
     "$ref": "iam-rbac-v1.paths.json#/pathItems/batchCheck"
   },
-  "/api/permissions/cache/invalidate/all": {
-    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateAll"
-  },
-  "/api/permissions/cache/invalidate/org/{org_id}": {
-    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateOrganization"
-  },
-  "/api/permissions/cache/invalidate/role/{role_id}": {
-    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateRole"
-  },
-  "/api/permissions/cache/invalidate/tenant/{tenant_id}": {
-    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateTenant"
-  },
-  "/api/permissions/cache/invalidate/{user_id}": {
-    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheInvalidateUser"
-  },
-  "/api/permissions/cache/stats": {
-    "$ref": "iam-rbac-v1.paths.json#/pathItems/cacheStats"
-  },
   "/api/permissions/check": {
     "$ref": "iam-rbac-v1.paths.json#/pathItems/check"
   },

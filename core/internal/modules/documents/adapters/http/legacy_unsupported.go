@@ -11,19 +11,6 @@ func (handler *Handler) legacyFolderArchive(w http.ResponseWriter, r *http.Reque
 	handler.recordLegacyHit(w, r, permissionFolderRead, operationLegacyArchive, id)
 }
 
-func (handler *Handler) legacyCreateDocument(w http.ResponseWriter, r *http.Request) {
-	handler.recordLegacyHit(w, r, permissionItemCreate, operationLegacyUpload, "")
-}
-
-func (handler *Handler) legacyCreateVersion(w http.ResponseWriter, r *http.Request) {
-	id, valid := pathID(r, "document_id")
-	if !valid {
-		handler.writeFailure(w, r, errRequestInvalid)
-		return
-	}
-	handler.recordLegacyHit(w, r, permissionItemVersion, operationLegacyUpload, id)
-}
-
 func (handler *Handler) recordLegacyHit(w http.ResponseWriter, r *http.Request,
 	permission, operation, resourceID string,
 ) {

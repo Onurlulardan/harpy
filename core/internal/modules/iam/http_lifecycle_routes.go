@@ -37,5 +37,5 @@ func (handler *LifecycleHTTP) Routes() []httpedge.Route {
 		{Method: http.MethodDelete, Pattern: "/api/iam/sessions/{id}", Handler: http.HandlerFunc(handler.revokeSession)},
 		{Method: http.MethodDelete, Pattern: "/api/iam/sessions", Handler: http.HandlerFunc(handler.revokeAllSessions)},
 	}
-	return append(routes, handler.retiredRoutes()...)
+	return routes
 }

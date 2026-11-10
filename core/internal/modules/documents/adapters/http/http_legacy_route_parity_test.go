@@ -25,7 +25,6 @@ func TestRoutesContainExactLegacyGatewaySurface(t *testing.T) {
 		"GET /api/folders/{folder_id}/contents",
 		"GET /api/folders/{folder_id}/download",
 		"GET /api/documents",
-		"POST /api/documents",
 		"POST /api/documents/batch",
 		"GET /api/documents/{document_id}",
 		"PUT /api/documents/{document_id}",
@@ -34,7 +33,6 @@ func TestRoutesContainExactLegacyGatewaySurface(t *testing.T) {
 		"POST /api/documents/{document_id}/copy",
 		"GET /api/documents/{document_id}/download",
 		"GET /api/documents/{document_id}/versions",
-		"POST /api/documents/{document_id}/versions",
 		"GET /api/documents/{document_id}/versions/latest",
 	}
 	for _, route := range legacy {

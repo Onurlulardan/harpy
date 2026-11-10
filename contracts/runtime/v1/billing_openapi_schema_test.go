@@ -15,8 +15,6 @@ func TestBillingOpenAPIDocumentsAreStrictJSONAndResolveLocalFiles(t *testing.T) 
 		"billing-public-tenant-v2.paths.json", "billing-platform-offerings-v2.paths.json",
 		"billing-platform-discounts-v2.paths.json", "billing-platform-campaigns-v2.paths.json",
 		"billing-platform-reports-v2.paths.json", "billing-webhook-v2.paths.json",
-		"billing-v1-public-tenant.paths.json", "billing-v1-admin-core.paths.json",
-		"billing-v1-admin-promotions.paths.json",
 	}
 	for _, name := range files {
 		document := readOpenAPIDocument(t, filepath.Join(directory, name))

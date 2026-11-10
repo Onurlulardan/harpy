@@ -31,11 +31,5 @@ func (handler *RBACHTTP) Routes() []httpedge.Route {
 		{Method: http.MethodGet, Pattern: "/api/users/{id}/permissions", Handler: http.HandlerFunc(handler.userEffective)},
 		{Method: http.MethodGet, Pattern: "/api/roles/{id}/permissions", Handler: http.HandlerFunc(handler.roleEffective)},
 		{Method: http.MethodGet, Pattern: "/api/organizations/{id}/permissions", Handler: http.HandlerFunc(handler.organizationEffective)},
-		{Method: http.MethodGet, Pattern: "/api/permissions/cache/stats", Handler: http.HandlerFunc(handler.cacheRetired)},
-		{Method: http.MethodPost, Pattern: "/api/permissions/cache/invalidate/{user_id}", Handler: http.HandlerFunc(handler.cacheRetired)},
-		{Method: http.MethodPost, Pattern: "/api/permissions/cache/invalidate/role/{role_id}", Handler: http.HandlerFunc(handler.cacheRetired)},
-		{Method: http.MethodPost, Pattern: "/api/permissions/cache/invalidate/org/{org_id}", Handler: http.HandlerFunc(handler.cacheRetired)},
-		{Method: http.MethodPost, Pattern: "/api/permissions/cache/invalidate/tenant/{tenant_id}", Handler: http.HandlerFunc(handler.cacheRetired)},
-		{Method: http.MethodPost, Pattern: "/api/permissions/cache/invalidate/all", Handler: http.HandlerFunc(handler.cacheRetired)},
 	}
 }

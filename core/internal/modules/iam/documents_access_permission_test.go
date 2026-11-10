@@ -8,7 +8,7 @@ func TestDocumentsAccessPermissionsMapOnlyExactOperations(t *testing.T) {
 			t.Fatalf("Documents access target %q is incomplete", key)
 		}
 	}
-	if len(documentsAccessTargets) != 32 {
+	if len(documentsAccessTargets) != 30 {
 		t.Fatalf("Documents access target count = %d", len(documentsAccessTargets))
 	}
 	if _, ok := resolveDocumentsAccess(

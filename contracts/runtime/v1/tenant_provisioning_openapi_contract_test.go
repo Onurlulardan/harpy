@@ -11,7 +11,6 @@ func TestTenantProvisioningOpenAPIExposesExactPhase14Routes(t *testing.T) {
 		filepath.Join(directory, "core-api-paths", "platform.json"))
 	expected := map[string]string{
 		"/api/platform/tenants": "tenant-provisioning-v1.paths.json#/pathItems/tenants",
-		"/api/admin/tenants":    "tenant-provisioning-v1.paths.json#/pathItems/legacyAdminTenants",
 		"/api/platform/tenant-provisioning-operations/{operation_id}": "tenant-provisioning-v1.paths.json#/pathItems/operation",
 		"/api/platform/tenants/{tenant_id}/admin-setup/reissue":       "tenant-provisioning-v1.paths.json#/pathItems/reissue",
 	}
@@ -29,13 +28,6 @@ func TestTenantProvisioningOpenAPIExposesExactPhase14Routes(t *testing.T) {
 	}
 	assertTenantProvisioningCapability(t, items, "tenants", "post",
 		"platform.tenants.create", true)
-	assertTenantProvisioningCapability(t, items, "legacyAdminTenants", "post",
-		"platform.tenants.create", true)
-	legacy := items["legacyAdminTenants"].(map[string]any)["post"].(map[string]any)
-	if legacy["deprecated"] != true ||
-		legacy["x-harpy-compat-policy"] != "exact-canonical-command-no-dual-writer" {
-		t.Fatal("legacy tenant create route is not pinned to the canonical command")
-	}
 	assertTenantProvisioningCapability(t, items, "operation", "get",
 		"platform.tenants.read", false)
 	assertTenantProvisioningCapability(t, items, "reissue", "post",

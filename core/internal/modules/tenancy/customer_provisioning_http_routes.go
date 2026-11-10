@@ -15,10 +15,6 @@ func (handler *CustomerProvisioningHTTP) Routes() []httpedge.Route {
 	return []httpedge.Route{
 		{Method: http.MethodPost, Pattern: "/api/platform/tenants",
 			Handler: http.HandlerFunc(handler.create)},
-		{Method: http.MethodPost, Pattern: "/api/admin/tenants",
-			Handler: http.HandlerFunc(handler.create)},
-		{Method: http.MethodPost, Pattern: "/api/auth/register-tenant",
-			Handler: http.HandlerFunc(handler.legacyAnonymousRegistration)},
 		{Method: http.MethodGet, Pattern: customerProvisioningOperationsPath + "{operation_id}",
 			Handler: http.HandlerFunc(handler.read)},
 		{Method: http.MethodPost,

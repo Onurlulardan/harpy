@@ -22,6 +22,5 @@ func (handler *Handler) Routes() []Route {
 		{http.MethodPost, "/api/notification-intents", http.HandlerFunc(handler.createIntent)},
 		{http.MethodPost, "/api/notification-realtime-tickets", http.HandlerFunc(handler.createTicket)},
 		{http.MethodGet, "/ws/notifications", http.HandlerFunc(handler.connect)},
-		{http.MethodGet, "/ws/notifications/{user_id}", http.HandlerFunc(handler.connectLegacy)},
 	}
 }

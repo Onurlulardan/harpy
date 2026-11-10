@@ -31,7 +31,6 @@ const (
 	operationArchiveGet     = "documents.archive.get"
 	operationArchiveContent = "documents.archive.download"
 	operationLegacyArchive  = "documents.compat.legacy_sync_archive"
-	operationLegacyUpload   = "documents.compat.legacy_multipart_upload"
 )
 
 const (
