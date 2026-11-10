@@ -2,12 +2,12 @@
   "pathItems": {
     "collection": {
       "get": {
-        "operationId": "billingListCampaigns", "security": [{"bearerAuth": []}],
+        "operationId": "billingListCampaigns","tags":["Billing"], "security": [{"bearerAuth": []}],
         "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "GET v1",
         "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
       },
       "post": {
-        "operationId": "billingCreateCampaign", "security": [{"bearerAuth": []}],
+        "operationId": "billingCreateCampaign","tags":["Billing"], "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
         "x-harpy-permission": "platform.billing.manage",
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/CreateCampaign"}}}},
@@ -15,26 +15,26 @@
       }
     },
     "query": {"post": {
-      "operationId": "billingQueryCampaigns", "security": [{"bearerAuth": []}],
+      "operationId": "billingQueryCampaigns","tags":["Billing"], "security": [{"bearerAuth": []}],
       "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "POST v1",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}}
     }},
     "item": {"get": {
-      "operationId": "billingGetCampaign", "security": [{"bearerAuth": []}],
+      "operationId": "billingGetCampaign","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/CampaignID"}],
       "x-harpy-permission": "platform.billing.read",
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "404": {"$ref": "billing-common-v2.schemas.json#/responses/NotFound"}}
     }},
     "versions": {"post": {
-      "operationId": "billingCreateCampaignVersion", "security": [{"bearerAuth": []}],
+      "operationId": "billingCreateCampaignVersion","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/CampaignID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
       "x-harpy-permission": "platform.billing.manage", "x-harpy-cas": "expected_revision",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/CampaignVersionMutation"}}}},
       "responses": {"201": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
     }},
     "retire": {"post": {
-      "operationId": "billingRetireCampaign", "security": [{"bearerAuth": []}],
+      "operationId": "billingRetireCampaign","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/CampaignID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
       "x-harpy-permission": "platform.billing.manage", "x-harpy-cas": "expected_revision",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/Retire"}}}},

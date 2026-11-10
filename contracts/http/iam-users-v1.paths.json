@@ -2,7 +2,7 @@
   "pathItems": {
     "collection": {
       "get": {
-        "operationId": "iamListUsers",
+        "operationId": "iamListUsers","tags":["Directory"],
         "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/TenantID"}],
         "responses": {
@@ -15,7 +15,7 @@
         }
       },
       "post": {
-        "operationId": "iamCreateUser",
+        "operationId": "iamCreateUser","tags":["Directory"],
         "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/TenantID"},
@@ -35,7 +35,7 @@
         }
       },
       "delete": {
-        "operationId": "iamDeleteUsers", "security": [{"bearerAuth": []}],
+        "operationId": "iamDeleteUsers","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/BulkDelete"}}}},
         "responses": {
@@ -52,7 +52,7 @@
     },
     "query": {
       "post": {
-        "operationId": "iamQueryUsers",
+        "operationId": "iamQueryUsers","tags":["Directory"],
         "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/TenantID"}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
@@ -71,7 +71,7 @@
     "item": {
       "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/ResourceID"}],
       "get": {
-        "operationId": "iamGetUser", "security": [{"bearerAuth": []}],
+        "operationId": "iamGetUser","tags":["Directory"], "security": [{"bearerAuth": []}],
         "responses": {
           "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Record"},
           "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
@@ -82,7 +82,7 @@
         }
       },
       "put": {
-        "operationId": "iamUpdateUser", "security": [{"bearerAuth": []}],
+        "operationId": "iamUpdateUser","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
@@ -103,7 +103,7 @@
         }
       },
       "delete": {
-        "operationId": "iamDeleteUser", "security": [{"bearerAuth": []}],
+        "operationId": "iamDeleteUser","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
@@ -122,7 +122,7 @@
     },
     "state": {
       "patch": {
-        "operationId": "iamChangeUserState", "security": [{"bearerAuth": []}],
+        "operationId": "iamChangeUserState","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/ResourceID"},
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},

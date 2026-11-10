@@ -2,7 +2,7 @@
   "pathItems": {
     "operatorLogin": {
       "post": {
-        "operationId": "iamOperatorLogin",
+        "operationId": "iamOperatorLogin","tags":["Auth"],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"}
         ],
@@ -24,7 +24,7 @@
     },
     "portalLogin": {
       "post": {
-        "operationId": "iamPortalLogin",
+        "operationId": "iamPortalLogin","tags":["Auth"],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"}
         ],
@@ -46,7 +46,7 @@
     },
     "refresh": {
       "post": {
-        "operationId": "iamRefreshBrowserSession",
+        "operationId": "iamRefreshBrowserSession","tags":["Auth"],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
           {"$ref": "iam-auth-v1.schemas.json#/parameters/CSRFHeader"},
@@ -71,7 +71,7 @@
     },
     "logout": {
       "post": {
-        "operationId": "iamLogoutBrowserSession",
+        "operationId": "iamLogoutBrowserSession","tags":["Auth"],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
           {"$ref": "iam-auth-v1.schemas.json#/parameters/CSRFHeader"},
@@ -96,7 +96,7 @@
     },
     "csrf": {
       "get": {
-        "operationId": "iamIssueBrowserCSRF",
+        "operationId": "iamIssueBrowserCSRF","tags":["Auth"],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
           {"$ref": "iam-auth-v1.schemas.json#/parameters/RefreshCookie"}
@@ -110,7 +110,7 @@
         }
       },
       "post": {
-        "operationId": "iamRenewBrowserCSRF",
+        "operationId": "iamRenewBrowserCSRF","tags":["Auth"],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
           {"$ref": "iam-auth-v1.schemas.json#/parameters/RefreshCookie"}
@@ -126,7 +126,7 @@
     },
     "currentSession": {
       "get": {
-        "operationId": "iamReadCurrentSession",
+        "operationId": "iamReadCurrentSession","tags":["Auth"],
         "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/TenantID"},
@@ -142,7 +142,7 @@
     },
     "reauthenticationStart": {
       "post": {
-        "operationId": "iamStartReauthentication",
+        "operationId": "iamStartReauthentication","tags":["Auth"],
         "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},
@@ -167,7 +167,7 @@
     },
     "reauthenticationComplete": {
       "post": {
-        "operationId": "iamCompleteReauthentication",
+        "operationId": "iamCompleteReauthentication","tags":["Auth"],
         "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-auth-v1.schemas.json#/parameters/Origin"},

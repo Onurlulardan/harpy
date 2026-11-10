@@ -22,7 +22,7 @@
   "pathItems": {
     "stats": {
       "get": {
-        "operationId": "readPlatformDatabaseStats",
+        "operationId": "readPlatformDatabaseStats","tags":["Platform"],
         "security": [{"bearerAuth": []}],
         "x-harpy-capability": "platform.database.stats.read",
         "responses": {
@@ -33,7 +33,7 @@
     },
     "schema": {
       "get": {
-        "operationId": "readPlatformDatabaseSchema",
+        "operationId": "readPlatformDatabaseSchema","tags":["Platform"],
         "security": [{"bearerAuth": []}],
         "x-harpy-capability": "platform.database.schema.read",
         "responses": {
@@ -44,7 +44,7 @@
     },
     "recoveryReadiness": {
       "get": {
-        "operationId": "readPlatformRecoveryReadiness",
+        "operationId": "readPlatformRecoveryReadiness","tags":["Platform"],
         "security": [{"bearerAuth": []}],
         "x-harpy-capability": "platform.database.diagnostics.read",
         "responses": {

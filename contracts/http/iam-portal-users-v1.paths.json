@@ -2,7 +2,7 @@
   "pathItems": {
     "collection": {
       "post": {
-        "operationId": "iamCreatePortalUser", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.create", "x-harpy-authority": "iam.portal_user.create",
+        "operationId": "iamCreatePortalUser","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.create", "x-harpy-authority": "iam.portal_user.create",
         "parameters": [
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/IdempotencyKey"}
@@ -24,7 +24,7 @@
     "invite": {
       "parameters": [{"$ref": "iam-portal-users-v1.schemas.json#/parameters/ID"}],
       "post": {
-        "operationId": "iamInvitePortalUser", "security": [{"bearerAuth": []}], "x-harpy-permission": ["iam.users.read", "iam.users.update"], "x-harpy-authority": "iam.portal_setup.start",
+        "operationId": "iamInvitePortalUser","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": ["iam.users.read", "iam.users.update"], "x-harpy-authority": "iam.portal_setup.start",
         "parameters": [
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/IdempotencyKey"}
@@ -46,7 +46,7 @@
     "status": {
       "parameters": [{"$ref": "iam-portal-users-v1.schemas.json#/parameters/ID"}],
       "patch": {
-        "operationId": "iamChangePortalUserStatus", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.portal_user.status",
+        "operationId": "iamChangePortalUserStatus","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.portal_user.status",
         "parameters": [
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/IdempotencyKey"},
@@ -70,7 +70,7 @@
     "consoleAccess": {
       "parameters": [{"$ref": "iam-portal-users-v1.schemas.json#/parameters/ID"}],
       "post": {
-        "operationId": "iamGrantPortalUserConsoleAccess", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.portal_user.console.grant",
+        "operationId": "iamGrantPortalUserConsoleAccess","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.portal_user.console.grant",
         "parameters": [
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/IdempotencyKey"},
@@ -91,7 +91,7 @@
         }
       },
       "delete": {
-        "operationId": "iamRevokePortalUserConsoleAccess", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.portal_user.console.revoke",
+        "operationId": "iamRevokePortalUserConsoleAccess","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.portal_user.console.revoke",
         "parameters": [
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-portal-users-v1.schemas.json#/parameters/IdempotencyKey"},

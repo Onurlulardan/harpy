@@ -9,24 +9,24 @@
   "paths": {
     "/livez": {
       "get": {
-        "operationId": "getLivez",
+        "operationId": "getLivez","tags":["Management"],
         "responses": {"200": {"$ref": "#/components/responses/Livez"}}
       },
       "head": {
-        "operationId": "headLivez",
+        "operationId": "headLivez","tags":["Management"],
         "responses": {"200": {"$ref": "#/components/responses/LivezHead"}}
       }
     },
     "/readyz": {
       "get": {
-        "operationId": "getReadyz",
+        "operationId": "getReadyz","tags":["Management"],
         "responses": {
           "200": {"$ref": "#/components/responses/Readyz"},
           "503": {"$ref": "#/components/responses/NotReadyz"}
         }
       },
       "head": {
-        "operationId": "headReadyz",
+        "operationId": "headReadyz","tags":["Management"],
         "responses": {
           "200": {"$ref": "#/components/responses/ReadyzHead"},
           "503": {"$ref": "#/components/responses/NotReadyzHead"}
@@ -35,11 +35,11 @@
     },
     "/version": {
       "get": {
-        "operationId": "getVersion",
+        "operationId": "getVersion","tags":["Management"],
         "responses": {"200": {"$ref": "#/components/responses/Version"}}
       },
       "head": {
-        "operationId": "headVersion",
+        "operationId": "headVersion","tags":["Management"],
         "responses": {"200": {"$ref": "#/components/responses/VersionHead"}}
       }
     }

@@ -1,7 +1,7 @@
 {
   "pathItems": {
     "ingress": {"post": {
-      "operationId": "billingReceiveProviderWebhook", "security": [],
+      "operationId": "billingReceiveProviderWebhook","tags":["Billing"], "security": [],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/Provider"}],
       "x-harpy-authentication": "provider-specific signature over exact body; no actor or tenant headers",
       "requestBody": {"required": true, "content": {"application/octet-stream": {"schema": {"type": "string", "format": "binary", "maxLength": 1048576}}}},

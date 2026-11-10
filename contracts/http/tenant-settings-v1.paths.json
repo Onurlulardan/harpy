@@ -9,7 +9,7 @@
   "pathItems": {
     "settings": {
       "get": {
-        "operationId":"tenancyGetTenantSettings",
+        "operationId":"tenancyGetTenantSettings","tags":["Tenancy"],
         "security":[{"bearerAuth":[]}],
         "x-harpy-capability":"tenancy.settings.read",
         "x-harpy-operation":"tenancy.settings.get",
@@ -20,7 +20,7 @@
         }
       },
       "put": {
-        "operationId":"tenancyUpdateTenantSettings",
+        "operationId":"tenancyUpdateTenantSettings","tags":["Tenancy"],
         "security":[{"bearerAuth":[]}],
         "x-harpy-capability":"tenancy.settings.manage",
         "x-harpy-operation":"tenancy.settings.update",
@@ -35,7 +35,7 @@
     },
     "testEmail": {
       "post": {
-        "operationId":"tenancyTestTenantEmail",
+        "operationId":"tenancyTestTenantEmail","tags":["Tenancy"],
         "security":[{"bearerAuth":[]}],
         "x-harpy-capability":"tenancy.settings.manage",
         "x-harpy-operation":"tenancy.settings.test_email",
