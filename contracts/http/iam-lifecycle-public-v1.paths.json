@@ -2,7 +2,7 @@
   "pathItems": {
     "initialPassword": {
       "post": {
-        "operationId": "iamCompleteInitialPassword",
+        "operationId": "iamCompleteInitialPassword","tags":["Auth"],
         "security": [],
         "parameters": [
           {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/Origin"},
@@ -24,7 +24,7 @@
     },
     "verifyIdentifier": {
       "post": {
-        "operationId": "iamVerifyIdentifier",
+        "operationId": "iamVerifyIdentifier","tags":["Auth"],
         "security": [],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/CredentialRequest"}}}},
         "responses": {
@@ -40,7 +40,7 @@
     },
     "startPasswordReset": {
       "post": {
-        "operationId": "iamStartPasswordReset",
+        "operationId": "iamStartPasswordReset","tags":["Auth"],
         "security": [],
         "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetStartRequest"}}}},
@@ -55,7 +55,7 @@
     },
     "completePasswordReset": {
       "post": {
-        "operationId": "iamCompletePasswordReset",
+        "operationId": "iamCompletePasswordReset","tags":["Auth"],
         "security": [],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetCompleteRequest"}}}},
         "responses": {
@@ -71,7 +71,7 @@
     },
     "completeInitialAdminSetup": {
       "post": {
-        "operationId": "iamCompleteInitialAdminSetup",
+        "operationId": "iamCompleteInitialAdminSetup","tags":["Auth"],
         "security": [],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetCompleteRequest"}}}},
         "responses": {
@@ -87,7 +87,7 @@
     },
     "completePortalSetup": {
       "post": {
-        "operationId": "iamCompletePortalSetup",
+        "operationId": "iamCompletePortalSetup","tags":["Auth"],
         "security": [],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-lifecycle-v1.schemas.json#/schemas/PasswordResetCompleteRequest"}}}},
         "responses": {

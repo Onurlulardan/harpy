@@ -2,7 +2,7 @@
   "pathItems": {
     "self": {
       "get": {
-        "operationId": "iamGetSelfProfile", "security": [{"bearerAuth": []}],
+        "operationId": "iamGetSelfProfile","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"}],
         "responses": {
           "200": {"$ref": "iam-profile-v1.schemas.json#/responses/Self"},
@@ -13,7 +13,7 @@
         }
       },
       "put": {
-        "operationId": "iamUpdateSelfProfile", "security": [{"bearerAuth": []}],
+        "operationId": "iamUpdateSelfProfile","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-profile-v1.schemas.json#/parameters/SelfIdempotencyKey"}
@@ -35,7 +35,7 @@
     },
     "active": {
       "get": {
-        "operationId": "iamGetActiveProfileSchema", "security": [{"bearerAuth": []}],
+        "operationId": "iamGetActiveProfileSchema","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"}
@@ -52,7 +52,7 @@
     },
     "historical": {
       "get": {
-        "operationId": "iamGetProfileSchema", "security": [{"bearerAuth": []}],
+        "operationId": "iamGetProfileSchema","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
@@ -70,7 +70,7 @@
     },
     "publish": {
       "post": {
-        "operationId": "iamPublishProfileSchema", "security": [{"bearerAuth": []}],
+        "operationId": "iamPublishProfileSchema","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
@@ -91,7 +91,7 @@
     },
     "recovery": {
       "post": {
-        "operationId": "iamRecoverProfileBackfill", "security": [{"bearerAuth": []}],
+        "operationId": "iamRecoverProfileBackfill","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},
@@ -110,7 +110,7 @@
     },
     "retire": {
       "post": {
-        "operationId": "iamRetireProfileField", "security": [{"bearerAuth": []}],
+        "operationId": "iamRetireProfileField","tags":["Profile"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-profile-v1.schemas.json#/parameters/TenantID"},
           {"$ref": "iam-profile-v1.schemas.json#/parameters/Resource"},

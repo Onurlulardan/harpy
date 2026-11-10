@@ -15,7 +15,7 @@
   "pathItems": {
     "tenants": {
       "post": {
-        "operationId":"provisionCustomerTenant",
+        "operationId":"provisionCustomerTenant","tags":["Tenancy"],
         "security":[{"bearerAuth":[]}],
         "x-harpy-capability":"platform.tenants.create",
         "parameters":[{"$ref":"#/parameters/idempotency"}],
@@ -26,7 +26,7 @@
     "operation": {
       "parameters":[{"$ref":"#/parameters/operation"}],
       "get": {
-        "operationId":"readCustomerTenantProvisioningOperation",
+        "operationId":"readCustomerTenantProvisioningOperation","tags":["Tenancy"],
         "security":[{"bearerAuth":[]}],
         "x-harpy-capability":"platform.tenants.read",
         "responses": {
@@ -41,7 +41,7 @@
     "reissue": {
       "parameters":[{"$ref":"#/parameters/tenant"}],
       "post": {
-        "operationId":"reissueCustomerTenantInitialAdminSetup",
+        "operationId":"reissueCustomerTenantInitialAdminSetup","tags":["Tenancy"],
         "security":[{"bearerAuth":[]}],
         "x-harpy-capability":"platform.tenants.admin_setup.reissue",
         "parameters":[{"$ref":"#/parameters/idempotency"}],

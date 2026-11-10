@@ -91,7 +91,10 @@
             "503": {
               "$ref": "#/components/responses/ServiceUnavailable"
             }
-          }
+          },
+          "tags": [
+            "Application"
+          ]
         },
         "head": {
           "operationId": "iamHeadJWKS",
@@ -108,7 +111,10 @@
             "503": {
               "$ref": "#/components/responses/ServiceUnavailable"
             }
-          }
+          },
+          "tags": [
+            "Application"
+          ]
         }
       },
       "/api/analytics/dashboard-defaults/{surface}": {
@@ -285,7 +291,10 @@
             "503": {
               "$ref": "#/components/responses/ServiceUnavailable"
             }
-          }
+          },
+          "tags": [
+            "Application"
+          ]
         },
         "head": {
           "operationId": "headRuntimeConfig",
@@ -299,7 +308,10 @@
             "503": {
               "$ref": "#/components/responses/ServiceUnavailable"
             }
-          }
+          },
+          "tags": [
+            "Application"
+          ]
         }
       },
       "/api/auth/csrf": {
@@ -1018,6 +1030,56 @@
       "malformed-request",
       "header-limit",
       "read-header-timeout"
+    ],
+    "x-tagGroups": [
+      {
+        "name": "Identity",
+        "tags": [
+          "Auth",
+          "Profile",
+          "Invitations",
+          "Permissions",
+          "Directory"
+        ]
+      },
+      {
+        "name": "Billing",
+        "tags": [
+          "Billing"
+        ]
+      },
+      {
+        "name": "Documents",
+        "tags": [
+          "Documents"
+        ]
+      },
+      {
+        "name": "Notifications",
+        "tags": [
+          "Notifications"
+        ]
+      },
+      {
+        "name": "Analytics",
+        "tags": [
+          "Analytics"
+        ]
+      },
+      {
+        "name": "Work",
+        "tags": [
+          "Work"
+        ]
+      },
+      {
+        "name": "Platform",
+        "tags": [
+          "Platform",
+          "Tenancy",
+          "Application"
+        ]
+      }
     ]
   
 }

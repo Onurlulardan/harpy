@@ -2,12 +2,12 @@
   "pathItems": {
     "collection": {
       "get": {
-        "operationId": "billingListOfferings", "security": [{"bearerAuth": []}],
+        "operationId": "billingListOfferings","tags":["Billing"], "security": [{"bearerAuth": []}],
         "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "GET v1",
         "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}}
       },
       "post": {
-        "operationId": "billingCreateOffering", "security": [{"bearerAuth": []}],
+        "operationId": "billingCreateOffering","tags":["Billing"], "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
         "x-harpy-permission": "platform.billing.manage",
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/CreateOffering"}}}},
@@ -15,26 +15,26 @@
       }
     },
     "query": {"post": {
-      "operationId": "billingQueryOfferings", "security": [{"bearerAuth": []}],
+      "operationId": "billingQueryOfferings","tags":["Billing"], "security": [{"bearerAuth": []}],
       "x-harpy-permission": "platform.billing.read", "x-harpy-rest-query": "POST v1",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}}
     }},
     "item": {"get": {
-      "operationId": "billingGetOffering", "security": [{"bearerAuth": []}],
+      "operationId": "billingGetOffering","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/OfferingID"}],
       "x-harpy-permission": "platform.billing.read",
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}, "404": {"$ref": "billing-common-v2.schemas.json#/responses/NotFound"}}
     }},
     "versions": {"post": {
-      "operationId": "billingCreateOfferingVersion", "security": [{"bearerAuth": []}],
+      "operationId": "billingCreateOfferingVersion","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/OfferingID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
       "x-harpy-permission": "platform.billing.manage", "x-harpy-cas": "expected_revision",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/OfferingVersionMutation"}}}},
       "responses": {"201": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/RevisionStale"}}
     }},
     "retire": {"post": {
-      "operationId": "billingRetireOffering", "security": [{"bearerAuth": []}],
+      "operationId": "billingRetireOffering","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/OfferingID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}],
       "x-harpy-permission": "platform.billing.manage", "x-harpy-cas": "expected_revision",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-catalog-v2.schemas.json#/schemas/Retire"}}}},

@@ -2,7 +2,7 @@
   "pathItems": {
     "collection": {
       "get": {
-        "operationId": "iamListRoles", "security": [{"bearerAuth": []}],
+        "operationId": "iamListRoles","tags":["Directory"], "security": [{"bearerAuth": []}],
         "responses": {
           "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/CanonicalQueryResult"},
           "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryInvalid"},
@@ -13,7 +13,7 @@
         }
       },
       "post": {
-        "operationId": "iamCreateRole", "security": [{"bearerAuth": []}],
+        "operationId": "iamCreateRole","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/RoleCreate"}}}},
         "responses": {
@@ -29,7 +29,7 @@
         }
       },
       "delete": {
-        "operationId": "iamDeleteRoles", "security": [{"bearerAuth": []}],
+        "operationId": "iamDeleteRoles","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "iam-system-resources-v1.requests.json#/schemas/BulkDelete"}}}},
         "responses": {
@@ -46,7 +46,7 @@
     },
     "query": {
       "post": {
-        "operationId": "iamQueryRoles", "security": [{"bearerAuth": []}],
+        "operationId": "iamQueryRoles","tags":["Directory"], "security": [{"bearerAuth": []}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "rest-query-v1.schemas.json#/schemas/QueryRequest"}}}},
         "responses": {
           "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/QueryResult"},
@@ -63,7 +63,7 @@
     "item": {
       "parameters": [{"$ref": "iam-system-resources-v1.schemas.json#/parameters/ResourceID"}],
       "get": {
-        "operationId": "iamGetRole", "security": [{"bearerAuth": []}],
+        "operationId": "iamGetRole","tags":["Directory"], "security": [{"bearerAuth": []}],
         "responses": {
           "200": {"$ref": "iam-system-resources-v1.schemas.json#/responses/Record"},
           "400": {"$ref": "iam-system-resources-v1.schemas.json#/responses/RequestInvalid"},
@@ -74,7 +74,7 @@
         }
       },
       "put": {
-        "operationId": "iamUpdateRole", "security": [{"bearerAuth": []}],
+        "operationId": "iamUpdateRole","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
@@ -95,7 +95,7 @@
         }
       },
       "delete": {
-        "operationId": "iamDeleteRole", "security": [{"bearerAuth": []}],
+        "operationId": "iamDeleteRole","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IfMatch"}
@@ -114,7 +114,7 @@
     },
     "state": {
       "patch": {
-        "operationId": "iamChangeRoleState", "security": [{"bearerAuth": []}],
+        "operationId": "iamChangeRoleState","tags":["Directory"], "security": [{"bearerAuth": []}],
         "parameters": [
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/ResourceID"},
           {"$ref": "iam-system-resources-v1.schemas.json#/parameters/IdempotencyKey"},

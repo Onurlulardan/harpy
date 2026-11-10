@@ -2,7 +2,7 @@
   "pathItems": {
     "sessions": {
       "get": {
-        "operationId": "iamListSessions", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.read",
+        "operationId": "iamListSessions","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.read",
         "x-harpy-keyset-pair": ["after_time", "after_id"],
         "parameters": [
           {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/Limit"},
@@ -15,7 +15,7 @@
         }
       },
       "delete": {
-        "operationId": "iamRevokeAllSessions", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.session.revoke_all",
+        "operationId": "iamRevokeAllSessions","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.session.revoke_all",
         "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}],
         "responses": {
           "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},
@@ -27,7 +27,7 @@
     "session": {
       "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/ID"}],
       "delete": {
-        "operationId": "iamRevokeSession", "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.session.revoke_one",
+        "operationId": "iamRevokeSession","tags":["Auth"], "security": [{"bearerAuth": []}], "x-harpy-permission": "iam.users.update", "x-harpy-authority": "iam.session.revoke_one",
         "parameters": [{"$ref": "iam-lifecycle-v1.schemas.json#/parameters/TenantID"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "iam-lifecycle-v1.schemas.json#/parameters/IfMatch"}],
         "responses": {
           "204": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/NoContent"}, "400": {"$ref": "iam-lifecycle-v1.schemas.json#/responses/RequestInvalid"},

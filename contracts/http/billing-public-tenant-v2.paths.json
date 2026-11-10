@@ -1,12 +1,12 @@
 {
   "pathItems": {
     "publicOfferings": {"get": {
-      "operationId": "billingListPublicOfferings", "security": [],
+      "operationId": "billingListPublicOfferings","tags":["Billing"], "security": [],
       "x-harpy-rest-query": "GET v1", "x-harpy-permission": "public active offerings only",
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "503": {"$ref": "billing-common-v2.schemas.json#/responses/Unavailable"}}
     }},
     "activeCampaign": {"get": {
-      "operationId": "billingGetActiveCampaign", "security": [],
+      "operationId": "billingGetActiveCampaign","tags":["Billing"], "security": [],
       "x-harpy-selection": {
         "window": "starts_at <= now AND (ends_at IS NULL OR now < ends_at)",
         "campaign_order": ["priority DESC", "campaign_version_id ASC"],
@@ -15,47 +15,47 @@
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "503": {"$ref": "billing-common-v2.schemas.json#/responses/Unavailable"}}
     }},
     "currentSubscription": {"get": {
-      "operationId": "billingGetCurrentSubscription", "security": [{"bearerAuth": []}],
+      "operationId": "billingGetCurrentSubscription","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.read",
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "401": {"$ref": "billing-common-v2.schemas.json#/responses/Unauthorized"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}, "404": {"$ref": "billing-common-v2.schemas.json#/responses/NotFound"}}
     }},
     "usage": {"get": {
-      "operationId": "billingGetUsage", "security": [{"bearerAuth": []}],
+      "operationId": "billingGetUsage","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.usage.read",
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "401": {"$ref": "billing-common-v2.schemas.json#/responses/Unauthorized"}, "403": {"$ref": "billing-common-v2.schemas.json#/responses/Forbidden"}, "503": {"$ref": "billing-common-v2.schemas.json#/responses/Unavailable"}}
     }},
     "scheduleChange": {"post": {
-      "operationId": "billingScheduleSubscriptionChange", "security": [{"bearerAuth": []}],
+      "operationId": "billingScheduleSubscriptionChange","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.manage",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-subscription-v2.schemas.json#/schemas/ScheduleChange"}}}},
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/Conflict"}, "402": {"$ref": "billing-common-v2.schemas.json#/responses/UsageLimit"}, "503": {"$ref": "billing-common-v2.schemas.json#/responses/Unavailable"}}
     }},
     "scheduleCancellation": {"post": {
-      "operationId": "billingScheduleCancellation", "security": [{"bearerAuth": []}],
+      "operationId": "billingScheduleCancellation","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.manage",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-subscription-v2.schemas.json#/schemas/ScheduleCancellation"}}}},
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/Conflict"}}
     }},
     "resumeCancellation": {"post": {
-      "operationId": "billingResumeCancellation", "security": [{"bearerAuth": []}],
+      "operationId": "billingResumeCancellation","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.manage",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-subscription-v2.schemas.json#/schemas/ResumeCancellation"}}}},
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/Conflict"}}
     }},
     "redeemDiscount": {"post": {
-      "operationId": "billingRedeemDiscount", "security": [{"bearerAuth": []}],
+      "operationId": "billingRedeemDiscount","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/IdempotencyKey"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.manage",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-subscription-v2.schemas.json#/schemas/RedeemDiscount"}}}},
       "responses": {"200": {"$ref": "billing-common-v2.schemas.json#/responses/Success"}, "400": {"$ref": "billing-common-v2.schemas.json#/responses/Invalid"}, "409": {"$ref": "billing-common-v2.schemas.json#/responses/Conflict"}}
     }},
     "validateDiscount": {"post": {
-      "operationId": "billingValidateDiscount", "security": [{"bearerAuth": []}],
+      "operationId": "billingValidateDiscount","tags":["Billing"], "security": [{"bearerAuth": []}],
       "parameters": [{"$ref": "billing-common-v2.schemas.json#/parameters/TenantID"}, {"$ref": "billing-common-v2.schemas.json#/parameters/TenantSlug"}],
       "x-harpy-permission": "billing.read",
       "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "billing-subscription-v2.schemas.json#/schemas/ValidateDiscount"}}}},
