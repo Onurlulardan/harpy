@@ -40,7 +40,6 @@ API composition'da modül bazlı builder dosyaları bulunur. Örnekler:
 - `build_audit_http.go`
 - `build_platformops_http.go`
 - `build_support_http.go`
-- `build_system_resource_layout_http.go`
 
 Bu dosyalar concrete constructor, shared dependency ve handler'ları kurar. Route path ve wire contract için `contracts/http/` ve modül adapter testlerine bakılır.
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-var ErrInvalid = errors.New("forms presentation is invalid")
+var ErrInvalid = errors.New("field catalog is invalid")
 
 func invalid(path, reason string) error {
 	return fmt.Errorf("%w: %s: %s", ErrInvalid, path, reason)

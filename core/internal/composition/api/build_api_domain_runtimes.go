@@ -17,7 +17,6 @@ type apiDomainRuntimes struct {
 	documentsProduction  *documentsmodule.Production
 	notifications        notificationsHTTPRuntime
 	secondary            secondaryHTTPRuntime
-	systemLayouts        *systemResourceLayoutHTTPHandler
 	customerProvisioning *customerProvisioningRuntime
 }
 
@@ -44,12 +43,6 @@ func buildAPIDomainRuntimes(
 	if err != nil {
 		return apiDomainRuntimes{}, err
 	}
-	systemLayoutHTTP, err := buildSystemResourceLayoutHTTP(
-		iam.systemLayouts, iam.systemLayoutAccess, report,
-	)
-	if err != nil {
-		return apiDomainRuntimes{}, err
-	}
 	customerProvisioning, err := buildCustomerProvisioningRuntime(ctx, settings,
 		pool, policyRuntime, iam.customerProvisioningAccess, iam.deliverySealer, report)
 	if err != nil {
@@ -58,6 +51,6 @@ func buildAPIDomainRuntimes(
 	return apiDomainRuntimes{
 		documents: documentsHTTP, documentsProduction: documentsProduction,
 		notifications: notificationsHTTP, secondary: secondaryHTTP,
-		systemLayouts: systemLayoutHTTP, customerProvisioning: customerProvisioning,
+		customerProvisioning: customerProvisioning,
 	}, nil
 }

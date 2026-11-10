@@ -8,6 +8,7 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/httpedge"
 	"github.com/Onurlulardan/harpy/core/internal/platform/httpwire"
+	"github.com/Onurlulardan/harpy/core/internal/platform/requestmeta"
 )
 
 type runtimeConfigSnapshot struct {
@@ -79,12 +80,21 @@ func (handler *runtimeConfigHandler) ServeHTTP(w http.ResponseWriter, r *http.Re
 		return
 	}
 	err := httpwire.WriteJSON(
-		w, http.StatusOK, layoutHTTPCorrelationID(r), handler.response,
+		w, http.StatusOK, runtimeConfigCorrelationID(r), handler.response,
 		r.Method == http.MethodHead,
 	)
 	if err != nil {
 		handler.report(fmt.Errorf("write runtime config response: %w", err))
 	}
+}
+
+func runtimeConfigCorrelationID(r *http.Request) requestmeta.CorrelationID {
+	if r != nil {
+		if value, found := requestmeta.CorrelationIDFromContext(r.Context()); found {
+			return value
+		}
+	}
+	return requestmeta.EntropyFailureCorrelationID
 }
 
 func runtimeConfigRoutes(handler *runtimeConfigHandler) ([]httpedge.Route, error) {

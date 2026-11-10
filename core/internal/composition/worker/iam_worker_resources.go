@@ -11,33 +11,24 @@ type iamWorkerResources struct {
 	maintenance *iammodule.MaintenanceJobRuntime
 	invitation  *iammodule.InvitationDeliveryJobRuntime
 	lifecycle   *iammodule.LifecycleDeliveryJobRuntime
-	imports     *iammodule.SystemTransferImportJobRuntime
-	exports     *iammodule.SystemTransferExportJobRuntime
-	cleanup     *iammodule.SystemTransferImportCleanupRuntime
 }
 
 func newIAMWorkerResources(
 	maintenance *iammodule.MaintenanceJobRuntime,
 	invitation *iammodule.InvitationDeliveryJobRuntime,
 	lifecycle *iammodule.LifecycleDeliveryJobRuntime,
-	imports *iammodule.SystemTransferImportJobRuntime,
-	exports *iammodule.SystemTransferExportJobRuntime,
-	cleanup *iammodule.SystemTransferImportCleanupRuntime,
 ) (*iamWorkerResources, error) {
-	if maintenance == nil || invitation == nil || lifecycle == nil || imports == nil ||
-		exports == nil || cleanup == nil {
+	if maintenance == nil || invitation == nil || lifecycle == nil {
 		return nil, fmt.Errorf("IAM worker resources are incomplete")
 	}
 	return &iamWorkerResources{maintenance: maintenance,
-		invitation: invitation, lifecycle: lifecycle, imports: imports,
-		exports: exports, cleanup: cleanup}, nil
+		invitation: invitation, lifecycle: lifecycle}, nil
 }
 
 func (resources *iamWorkerResources) Close() error {
 	if resources == nil {
 		return nil
 	}
-	return errors.Join(resources.exports.Close(), resources.imports.Close(),
-		resources.lifecycle.Close(),
+	return errors.Join(resources.lifecycle.Close(),
 		resources.invitation.Close(), resources.maintenance.Close())
 }

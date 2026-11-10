@@ -16,14 +16,13 @@ const (
 
 var environmentCommands = []Command{
 	ActivateTenant, InitializeTenantIdentity, AssignTenantBaseOffering,
-	OpenTenantUsage, InitializeSystemBaseline, InitializeRecoverySigning,
+	OpenTenantUsage, InitializeRecoverySigning,
 	BindInstanceOwner, PinProtectedAuthorityHead, CompleteTenantActivation,
 }
 
 var customerCommands = []Command{
 	ActivateTenant, InitializeTenantIdentity, AssignTenantBaseOffering,
-	OpenTenantUsage, InitializeSystemBaseline,
-	PinProtectedAuthorityHead, CompleteTenantActivation,
+	OpenTenantUsage, PinProtectedAuthorityHead, CompleteTenantActivation,
 }
 
 func Manifest(kind string) []Command {

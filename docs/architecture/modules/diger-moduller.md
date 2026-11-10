@@ -70,24 +70,7 @@ Bug status:
 
 BugReport tenant/reporter identity, tenant ve reporter snapshot bilgileri, priority, resolution/admin notes, revision ve timestamps taşır. Tenant user report ile platform support operations ayrı access path'leri kullanır.
 
-## 4. System Resource Layout
-
-Kaynak: core/internal/modules/system_resource_layout/
-
-Bu modül sistem kaynaklarının layout/form-like definition ve presentation catalog'unu yönetir. Domain-specific forms engine olarak genellenmemelidir; mevcut kaynakta system resource presentation owner'ıdır.
-
-Application yüzeyi:
-- Definition create/get/list/update/delete
-- Publish/presentation revision
-- Installation default ve catalog
-- Reference resolution
-- Runtime hydration ve presentation compile
-
-Publish akışı expected row revision ister, source definition SHA-256 değerini alır, field catalog contract ile presentation document'ını compile eder ve canonical JSON/SHA-256 üretir. Published record compiler version, field catalog contract, presentation contract ve digest taşır. Persist edilen sonuç tekrar doğrulanır.
-
-Presentation field identity, label, section, surface ve widget metadata'sı typed field catalog ile çözülür; client'ın verdiği arbitrary field key kabul edilmez.
-
-## 5. Platform Authority
+## 4. Platform Authority
 
 Kaynak: core/internal/modules/platformauthority/
 
@@ -133,7 +116,6 @@ Backup crypto, recovery storage ve signer adapter'ları domain/application katma
 | Audit | modules/audit/domain | modules/audit/application | modules/audit/adapters |
 | Usage | modules/usage/domain | modules/usage/application | modules/usage/adapters |
 | Support | modules/support/domain | modules/support/application | modules/support/adapters |
-| System Resource Layout | modules/system_resource_layout/api | modules/system_resource_layout/application | modules/system_resource_layout/adapters |
 | Platform Authority | modules/platformauthority/domain | modules/platformauthority/application | modules/platformauthority/adapters |
 | Platform Ops | modules/platformops/domain | modules/platformops/application | modules/platformops/adapters |
 
@@ -142,7 +124,6 @@ Backup crypto, recovery storage ve signer adapter'ları domain/application katma
 - Audit ve audit policy: contracts/authority/ ve contracts/events/
 - Usage: core/internal/modules/usage/ ve contracts/authority/
 - Support: core/internal/modules/support/ ve contracts/http/
-- System resource layout: contracts/authority/system_resource_layout.json
 - Platform authority: contracts/authority/platformauthority.json
 - Platform ops: contracts/authority/platformops.json
 - Recovery contracts: contracts/environmentrecovery/, contracts/recoverykit/, contracts/recoverysigning/

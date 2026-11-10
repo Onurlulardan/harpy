@@ -25,6 +25,9 @@ type IAMSystemTransferArtifacts struct {
 func loadIAMSystemTransferArtifacts(values environmentValues, environment Environment) (
 	IAMSystemTransferArtifacts, error,
 ) {
+	if values[iamTransferSpoolKey] == "" {
+		return IAMSystemTransferArtifacts{}, nil
+	}
 	exportStorage, err := loadArtifactS3(values, environment, iamExportStorageKeys())
 	if err != nil {
 		return IAMSystemTransferArtifacts{}, err

@@ -85,7 +85,7 @@ Bir business policy yalnızca teknik olarak ortak diye platforma taşınmaz; ilg
 
 ## 7. Orchestration
 
-`core/internal/orchestration` çok adımlı platform işlemlerini koordine eder. Örneğin `systemresources` ve `systemresourcelayouts` sistem kaynakları ile presentation akışlarını, `environmentoperator` kurulum/işletim aşamalarını yönetir.
+`core/internal/orchestration` çok adımlı platform işlemlerini koordine eder. `environmentoperator` kurulum ve işletim aşamalarını yönetir.
 
 Orchestration kendi başına yeni bir veri owner'ı değildir. İlgili owner modülün kontratını çağırır, adım sırasını ve operation state'ini koordine eder.
 

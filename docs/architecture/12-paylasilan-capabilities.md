@@ -16,8 +16,6 @@ Kaynak kök: core/internal/capabilities/
 | credentialdelivery | Credential delivery artifact ve envelope kontratı |
 | restoredlicense | Restore receipt binding capability; local boot bunu çağırmaz |
 | tenantactivation | Tenant activation grant ve activation scope |
-| tabularmapping | Tabular file mapping ve schema/field mapping |
-| tabulartransfer | Tabular import/export operation contract ve transfer |
 
 ## 3. REST Query
 
@@ -76,26 +74,19 @@ bağlamlarını doğrular.
 
 Tenancy onboarding application, capability'yi doğrulanmış plan/claim ile çağırır. Capability kendi başına tenant provisioning UI veya business domain değildir.
 
-## 8. Tabular mapping/transfer
+## 8. Orchestration
 
-tabularmapping file column/field mapping tanımları ve validation'ı sağlar. tabulartransfer import/export transfer state ve receipt contract'larını taşır. İlgili consumer'ın data owner'ı, target resource authorization ve transaction kararını vermeye devam eder.
-
-## 9. Orchestration
-
-core/internal/orchestration birden fazla owner/capability arasındaki sıralı operasyonları koordine eder. Önemli paket aileleri:
-- systemresources
-- systemresourcelayouts
+core/internal/orchestration birden fazla owner/capability arasındaki sıralı operasyonları koordine eder. Paket aileleri:
 - environmentoperator
 - recoveryanchors
 
 Orchestration modüllerin internal persistence'ına erişmek yerine owner API/port ve platform scope kullanır. Operation state, plan hash ve execution result doğrulanabilir olmalıdır.
 
-## 10. Kaynak haritası
+## 9. Kaynak haritası
 
 - Capabilities: core/internal/capabilities/
 - Artifact object: core/internal/capabilities/artifactobject/
 - REST Query: core/internal/capabilities/restquery/
-- Tabular: core/internal/capabilities/tabularmapping/, tabulartransfer/
 - Tenant activation: core/internal/capabilities/tenantactivation/
 - Orchestration: core/internal/orchestration/
 - Contract packages: contracts/

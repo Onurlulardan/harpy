@@ -7,7 +7,6 @@ import (
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam"
 	"github.com/Onurlulardan/harpy/core/internal/modules/platformauthority"
 	"github.com/Onurlulardan/harpy/core/internal/modules/platformops"
-	systemresourcelayout "github.com/Onurlulardan/harpy/core/internal/modules/system_resource_layout"
 	"github.com/Onurlulardan/harpy/core/internal/modules/tenancy"
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 )
@@ -26,16 +25,6 @@ func billingExecutor(
 	return billing.InstallationActivationExecutor{QueryRow: func(
 		ctx context.Context, statement string, arguments ...any,
 	) billing.InstallationActivationRow {
-		return owner.QueryRow(ctx, statement, arguments...)
-	}}
-}
-
-func layoutExecutor(
-	owner tenancy.OperatorActivationExecutor,
-) systemresourcelayout.InstallationActivationExecutor {
-	return systemresourcelayout.InstallationActivationExecutor{QueryRow: func(
-		ctx context.Context, statement string, arguments ...any,
-	) systemresourcelayout.InstallationActivationRow {
 		return owner.QueryRow(ctx, statement, arguments...)
 	}}
 }

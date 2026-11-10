@@ -1,6 +1,6 @@
 # Harpy API endpoint kataloğu
 
-Yayındaki işlem sayısı **240**. Bunun 234’ü Core API, 6’sı ayrı management portu. Sayı method ile path çiftidir: `GET` ve `HEAD` iki işlemdir. `HEAD` aynı adresin gövdesiz kontrolüdür.
+Yayındaki işlem sayısı **219**. Bunun 213’ü Core API, 6’sı ayrı management portu. Sayı method ile path çiftidir: `GET` ve `HEAD` iki işlemdir. `HEAD` aynı adresin gövdesiz kontrolüdür.
 
 Kaynak, `contracts/http/core-api-v1.openapi.yaml` ve `contracts/http/management-v1.openapi.yaml` dosyalarıdır.
 
@@ -66,17 +66,12 @@ Giriş yaptıktan sonra parolanı, ikinci faktörünü ve açık oturumlarını 
 - `DELETE /api/iam/sessions/{id}` — Tek bir oturumu kapatır.
 - `DELETE /api/iam/sessions` — Hesabın bütün oturumlarını kapatır.
 
-## Profil (7)
+## Profil (2)
 
-Giriş yapan kişinin kendi kartı ve kullanıcı, rol, organizasyon kayıtlarına eklenen özel alanlar içindir.
+Giriş yapan kişinin kendi kartını okumak ve güncellemek içindir.
 
 - `GET /api/profile` — Giriş yapan kişinin profilini döner.
 - `PUT /api/profile` — Giriş yapan kişinin profilini günceller.
-- `GET /api/iam/profile-schemas/{resource}/active` — Kullanıcı, rol veya organizasyon için yürürlükteki özel alan şemasını döner.
-- `GET /api/iam/profile-schemas/{resource}/{schema_id}` — Belirli bir şema sürümünü döner.
-- `POST /api/iam/profile-schemas/{resource}/publish` — Yeni şema sürümünü yürürlüğe alır.
-- `POST /api/iam/profile-schemas/{resource}/fields/{field_id}/retire` — Bir özel alanı kullanımdan çıkarır.
-- `POST /api/iam/profile-schemas/{resource}/backfills/{plan_id}/recover` — Yarım kalmış şema doldurma işini sürdürür.
 
 ## Kullanıcı, rol ve organizasyon (27)
 
@@ -157,32 +152,6 @@ Birini tenant’a e-posta davetiyle almak içindir.
 - `DELETE /api/invitations/{id}` — Daveti geri alır.
 - `GET /api/invitations/verify` — Davet bağlantısının geçerli olup olmadığına bakar.
 - `POST /api/invitations/accept` — Daveti kabul edip hesabı bağlar.
-
-## Kayıt aktarımı (9)
-
-Kullanıcı, rol ve organizasyon kayıtlarını dosyayla dışarı ve içeri almak içindir.
-
-- `POST /api/iam/system-resources/{resource}/record-exports` — Dışa aktarma işi başlatır.
-- `GET /api/iam/system-resources/{resource}/record-exports/{export_id}` — Dışa aktarma işinin durumunu döner.
-- `GET /api/iam/system-resources/{resource}/record-exports/{export_id}/content` — Hazır dışa aktarma dosyasını indirir.
-- `DELETE /api/iam/system-resources/{resource}/record-exports/{export_id}` — Dışa aktarma işini iptal eder.
-- `POST /api/iam/system-resources/{resource}/record-import-sources` — İçe aktarılacak dosyayı yükler.
-- `POST /api/iam/system-resources/{resource}/record-imports` — İçe aktarma işi başlatır.
-- `GET /api/iam/system-resources/{resource}/record-imports/{import_id}` — İçe aktarma işinin durumunu döner.
-- `GET /api/iam/system-resources/{resource}/record-imports/{import_id}/report` — İçe aktarma sonucunun raporunu döner.
-- `DELETE /api/iam/system-resources/{resource}/record-imports/{import_id}` — İçe aktarma işini iptal eder.
-
-## Ekran düzeni (7)
-
-Kullanıcı, rol ve organizasyon ekranında hangi alanın nerede duracağını tutmak içindir. Form uygulaması değildir.
-
-- `GET /api/system-resources/{resource}/presentation` — Ekranda kullanılacak yayımlanmış düzeni döner.
-- `GET /api/system-resources/{resource}/layout-revisions` — Düzen sürümlerini listeler.
-- `GET /api/system-resources/{resource}/layout-revisions/{revision_id}` — Tek düzen sürümünü döner.
-- `PUT /api/system-resources/{resource}/layout-revisions/{revision_id}` — Düzen sürümünü yazar.
-- `PATCH /api/system-resources/{resource}/layout-revisions/{revision_id}` — Düzen sürümünü kısmen günceller.
-- `DELETE /api/system-resources/{resource}/layout-revisions/{revision_id}` — Düzen sürümünü siler.
-- `PUT /api/system-resources/{resource}/layout-revisions/{revision_id}/publication` — Bu sürümü ekranda yürürlüğe alır.
 
 ## Kiracı (3)
 

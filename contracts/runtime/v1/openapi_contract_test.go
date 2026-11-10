@@ -96,11 +96,6 @@ func TestCoreAndManagementRoutesAreExact(t *testing.T) {
 	}
 	profilePaths := map[string]string{
 		"/api/profile": "iam-profile-v1.paths.json#/pathItems/self",
-		"/api/iam/profile-schemas/{resource}/active":                      "iam-profile-v1.paths.json#/pathItems/active",
-		"/api/iam/profile-schemas/{resource}/{schema_id}":                 "iam-profile-v1.paths.json#/pathItems/historical",
-		"/api/iam/profile-schemas/{resource}/publish":                     "iam-profile-v1.paths.json#/pathItems/publish",
-		"/api/iam/profile-schemas/{resource}/backfills/{plan_id}/recover": "iam-profile-v1.paths.json#/pathItems/recovery",
-		"/api/iam/profile-schemas/{resource}/fields/{field_id}/retire":    "iam-profile-v1.paths.json#/pathItems/retire",
 	}
 	for route, reference := range profilePaths {
 		entry, found := corePaths[route].(map[string]any)

@@ -18,11 +18,6 @@ func stableUUIDText(value string) bool {
 	return false
 }
 
-func stableUUIDv7(value string) bool {
-	decoded, valid := decodeUUID(value)
-	return valid && decoded[6]>>4 == 7 && decoded[8]&0xc0 == 0x80
-}
-
 func decodeUUID(value string) ([16]byte, bool) {
 	var result [16]byte
 	if len(value) != 36 || value != strings.ToLower(value) || value[8] != '-' ||

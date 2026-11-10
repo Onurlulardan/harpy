@@ -66,7 +66,6 @@ Harpy'nin business yetenekleri, veri ve iş kuralı sahipliği belirlenmiş mod�
 | **Platform Authority** | Authority kanıtları, imzalı öneriler, acknowledgement ve checkpoint süreçleri |
 | **Platform Operations** | Diagnostics, health, alerts, traces, recovery sets, restore planları ve restore operasyonları |
 | **Support** | Platform ve tenant destek kayıtları, support contact ve bug reports |
-| **System Resource Layout** | Sürümlenen system resource layout'ları ve presentation metadata |
 
 Bu tablo modüllerin ana sorumluluk alanlarını özetler. Bir modülün tüm use-case ve adapter ayrıntıları için [modül dokümantasyonuna](docs/architecture/README.md#modül-belgeleri) ve kaynak koduna bakılmalıdır.
 
@@ -518,7 +517,7 @@ Modüllere özel dokümanlar:
 - [Documents](docs/architecture/modules/documents.md) — Folder, item, version, upload, encryption, scan ve archive.
 - [Notifications](docs/architecture/modules/notifications.md) — Inbox, preference, template, provider ve delivery.
 - [Analytics](docs/architecture/modules/analytics.md) — Query, dashboard, publication, ACL ve execution.
-- [Diğer modüller](docs/architecture/modules/diger-moduller.md) — Audit, Usage, Support, System Resource Layout ve Platform Authority/Ops.
+- [Diğer modüller](docs/architecture/modules/diger-moduller.md) — Audit, Usage, Support ve Platform Authority/Ops.
 
 ## Proje Kapsamı ve Lisans
 

@@ -11,7 +11,6 @@
     "contracts/storage/owners/platform_postgres.json",
     "contracts/storage/owners/platformauthority.json",
     "contracts/storage/owners/platformops.json",
-    "contracts/storage/owners/system_resource_layout.json",
     "contracts/storage/owners/tenancy.json"
   ]
 }

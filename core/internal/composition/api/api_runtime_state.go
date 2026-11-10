@@ -24,7 +24,6 @@ type apiRuntime struct {
 	platformOps          *platformOpsHTTPRuntime
 	notifications        notificationsHTTPRuntime
 	secondary            secondaryHTTPRuntime
-	systemLayouts        *systemResourceLayoutHTTPHandler
 	customerProvisioning *customerProvisioningRuntime
 	iam                  iamAPIRuntime
 }

@@ -28,7 +28,6 @@ func bindFinishedAPIRuntime(
 		platformOpsHTTP.Observe, domains.secondary.Observe, pool, policyRuntime,
 		apiRuntimeReadiness(
 			iamRuntime, domains.documents, domains.notifications, domains.secondary,
-			domains.systemLayouts,
 		),
 	)
 	if err != nil {
@@ -43,7 +42,6 @@ func bindFinishedAPIRuntime(
 		documentsProduction:  domains.documentsProduction,
 		notifications:        domains.notifications,
 		secondary:            domains.secondary,
-		systemLayouts:        domains.systemLayouts,
 		customerProvisioning: domains.customerProvisioning,
 		platformOps:          platformOpsHTTP,
 		iam:                  iamRuntime,
