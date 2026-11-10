@@ -47,8 +47,9 @@ func TestCoordinatorPreservesServeFailureCodeAfterCleanDrain(t *testing.T) {
 	failures := make(chan error, 1)
 	failures <- errors.New("listener failed")
 	outcome := coordinator.Run(context.Background(), make(chan os.Signal), failures)
-	if outcome.ExitCode() != runtimev1.ExitCodeServeFailure || outcome.Reason() != ReasonServeFailure {
-		t.Fatalf("outcome = %d/%s", outcome.ExitCode(), outcome.Reason())
+	if outcome.ExitCode() != runtimev1.ExitCodeServeFailure || outcome.Reason() != ReasonServeFailure ||
+		outcome.Cause() == nil || outcome.Cause().Error() != "listener failed" {
+		t.Fatalf("outcome = %d/%s/%v", outcome.ExitCode(), outcome.Reason(), outcome.Cause())
 	}
 }
 

@@ -46,6 +46,7 @@ func serveWorker(
 		return processcode.InvalidStartup
 	}
 	if err := runtime.asyncWorkload.Start(process.RuntimeContext()); err != nil {
+		reportFailureCause(nil, logger, "runtime", err.Error())
 		_ = management.Close()
 		pool.Close()
 		shutdownStartupTelemetry(longRunning.Runtime(), runtime.telemetryRuntime)
@@ -53,7 +54,11 @@ func serveWorker(
 	}
 	outcome := host.RunProcess(process)
 	if outcome.ExitCode() == processcode.ServeFailure {
-		reportFailure(nil, logger, "runtime")
+		cause := ""
+		if err := outcome.Cause(); err != nil {
+			cause = err.Error()
+		}
+		reportFailureCause(nil, logger, "runtime", cause)
 	}
 	if outcome.ExitCode() == processcode.DrainForced {
 		reportFailure(nil, logger, "drain")

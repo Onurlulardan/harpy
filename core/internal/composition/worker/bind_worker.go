@@ -46,7 +46,7 @@ func bindWorker(
 		process.StartupContext(), runtime.management, net.ListenConfig{},
 	)
 	if err != nil {
-		reportFailure(nil, logger, "runtime")
+		reportFailureCause(nil, logger, "runtime", err.Error())
 		_ = runtime.iamResources.Close()
 		pool.Close()
 		shutdownStartupTelemetry(settings.LongRunning().Runtime(), telemetryRuntime)
