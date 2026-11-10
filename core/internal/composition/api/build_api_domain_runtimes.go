@@ -13,11 +13,9 @@ import (
 )
 
 type apiDomainRuntimes struct {
-	analytics            analyticsHTTPRuntime
 	documents            *documentsmodule.HTTPHandler
 	documentsProduction  *documentsmodule.Production
 	notifications        notificationsHTTPRuntime
-	work                 workHTTPRuntime
 	secondary            secondaryHTTPRuntime
 	systemLayouts        *systemResourceLayoutHTTPHandler
 	customerProvisioning *customerProvisioningRuntime
@@ -29,12 +27,6 @@ func buildAPIDomainRuntimes(
 	policyRuntime *tenancymodule.DeploymentPolicyRuntime,
 	report httpedge.ErrorSink, info buildinfo.Info, environmentID string,
 ) (apiDomainRuntimes, error) {
-	analyticsHTTP, err := buildAnalyticsHTTP(
-		ctx, settings, pool, catalogs, *iam, report,
-	)
-	if err != nil {
-		return apiDomainRuntimes{}, err
-	}
 	documentsHTTP, documentsProduction, err := buildDocumentsHTTP(
 		ctx, settings, pool, catalogs, *iam, report, info,
 	)
@@ -43,10 +35,6 @@ func buildAPIDomainRuntimes(
 	}
 	notificationsHTTP, err := buildNotificationsHTTP(
 		settings, pool, catalogs, iam.notificationsAccess, report)
-	if err != nil {
-		return apiDomainRuntimes{}, err
-	}
-	workHTTP, err := buildWorkHTTP(settings, pool, catalogs, iam.workAccess, report)
 	if err != nil {
 		return apiDomainRuntimes{}, err
 	}
@@ -68,9 +56,8 @@ func buildAPIDomainRuntimes(
 		return apiDomainRuntimes{}, err
 	}
 	return apiDomainRuntimes{
-		analytics: analyticsHTTP,
 		documents: documentsHTTP, documentsProduction: documentsProduction,
-		notifications: notificationsHTTP, work: workHTTP, secondary: secondaryHTTP,
+		notifications: notificationsHTTP, secondary: secondaryHTTP,
 		systemLayouts: systemLayoutHTTP, customerProvisioning: customerProvisioning,
 	}, nil
 }

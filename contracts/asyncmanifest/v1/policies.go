@@ -20,8 +20,6 @@ func jobPolicies() []jobsv1.KindPolicy {
 		"iam.security-artifact-purge",
 	}
 	policies := BillingJobPolicies()
-	policies = append(policies, AnalyticsJobPolicies()...)
-	policies = append(policies, WorkJobPolicies()...)
 	policies = append(policies, DocumentsJobPolicies()...)
 	policies = append(policies, NotificationsJobPolicies()...)
 	policies = append(policies, IAMSystemTransferJobPolicies()...)
@@ -49,8 +47,6 @@ func producerPolicies() []eventsv1.ProducerPolicy {
 		{"iam.rbac.changed", "ec25ad29fe3139a6db7b0ee837d3b9a28371867a671c88322a1bfa14dca64657"},
 	}
 	policies := BillingProducerPolicies()
-	policies = append(policies, AnalyticsProducerPolicies()...)
-	policies = append(policies, WorkProducerPolicies()...)
 	for _, definition := range definitions {
 		policy, _ := eventsv1.NewProducerPolicy(definition[0], 1, "iam", definition[1])
 		policies = append(policies, policy)

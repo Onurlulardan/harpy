@@ -77,7 +77,7 @@ New paired SHA-256 values:
 
 ## Verification evidence
 
-Commands run from the `backend-v2` root:
+Commands run from the `harpy` root:
 
 | Check | Result |
 | --- | --- |

@@ -42,15 +42,6 @@ func (c API) AnalyticsTrustedProxies() AnalyticsTrustedProxies {
 	return c.analyticsProxies
 }
 
-func (c API) AnalyticsDashboardExportArtifacts() (
-	AnalyticsDashboardExportArtifacts, error,
-) {
-	if err := c.analyticsExports.Validate(); err != nil {
-		return AnalyticsDashboardExportArtifacts{}, err
-	}
-	return c.analyticsExports, nil
-}
-
 func (c API) IAMSystemTransferArtifacts() (IAMSystemTransferArtifacts, error) {
 	if err := c.iamTransferArtifacts.Validate(); err != nil {
 		return IAMSystemTransferArtifacts{}, err

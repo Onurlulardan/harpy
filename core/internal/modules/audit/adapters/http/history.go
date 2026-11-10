@@ -15,14 +15,6 @@ func (handler *Handler) entityHistory(response http.ResponseWriter, request *htt
 	})
 }
 
-func (handler *Handler) formRecordHistory(response http.ResponseWriter, request *http.Request) {
-	handler.history(response, request, application.OperationFormRecordHistory, func(filter *domain.Filter) error {
-		filter.FormSlug, filter.EntityID = request.PathValue("form_slug"),
-			request.PathValue("record_id")
-		return filter.Validate()
-	})
-}
-
 func (handler *Handler) history(
 	response http.ResponseWriter, request *http.Request, operation string,
 	bind func(*domain.Filter) error,
@@ -41,12 +33,7 @@ func (handler *Handler) history(
 		if err == nil {
 			data := pageView(page)
 			data["total_changes"] = page.Total
-			if operation == application.OperationEntityHistory {
-				data["entity_type"], data["entity_id"] = filter.EntityType, filter.EntityID
-			} else {
-				data["form_slug"], data["record_id"] = filter.FormSlug, filter.EntityID
-				data["timeline"] = data["changes"]
-			}
+			data["entity_type"], data["entity_id"] = filter.EntityType, filter.EntityID
 			handler.writeSuccess(response, request, data)
 			return
 		}

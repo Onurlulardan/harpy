@@ -14,14 +14,6 @@ type WorkerAuthorizationRuntime struct {
 	authorizer iamauthorization.Authorizer
 }
 
-func NewAnalyticsWorkerAuthorizationRuntime() (*WorkerAuthorizationRuntime, error) {
-	evidence, err := authorizationpostgres.NewAnalyticsAuthorizer()
-	if err != nil {
-		return nil, fmt.Errorf("build Analytics IAM worker evidence: %w", err)
-	}
-	return newWorkerAuthorizationRuntime(evidence)
-}
-
 func NewIAMWorkerAuthorizationRuntime() (*WorkerAuthorizationRuntime, error) {
 	evidence, err := authorizationpostgres.NewAuthorizer()
 	if err != nil {

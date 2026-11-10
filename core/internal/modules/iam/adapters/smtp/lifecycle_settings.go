@@ -38,7 +38,7 @@ func NewLifecycleSettings(host string, port int, username, password, from,
 		fromErr != nil || parsedFrom.Name != "" || parsedFrom.Address != from ||
 		fromName == "" || strings.ContainsAny(fromName, "\r\n") ||
 		!strings.HasPrefix(baseURL, "http") || strings.HasSuffix(baseURL, "/") ||
-		timeout < time.Second || timeout > 30*time.Second || len(inputs) != 4 {
+		timeout < time.Second || timeout > 30*time.Second || len(inputs) != 3 {
 		return LifecycleSettings{}, ErrContract
 	}
 	settings := LifecycleSettings{host: host, port: port, username: username,
@@ -61,5 +61,5 @@ func NewLifecycleSettings(host string, port int, username, password, from,
 
 func validLifecycleRoute(route string) bool {
 	return route == "/verify-email/" || route == "/reset-password/" ||
-		route == "/portal/setup/" || route == "/initial-admin/setup/"
+		route == "/initial-admin/setup/"
 }

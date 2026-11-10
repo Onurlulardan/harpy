@@ -20,14 +20,6 @@ func TestIdentityHTTPRequiresVerifiedOperatorAndMatchingTenant(t *testing.T) {
 			request.Header.Add("X-Tenant-ID", fixture.auth.claims.Tenant().String())
 			request.Header.Add("X-Tenant-ID", fixture.auth.claims.Tenant().String())
 		},
-		"portal bearer": func(fixture *identityHTTPTestFixture, request *http.Request, t *testing.T) {
-			claims := fixture.auth.newClaims(t, true)
-			access, err := fixture.auth.security.accessSigner.Sign(claims)
-			if err != nil {
-				t.Fatal(err)
-			}
-			request.Header.Set("Authorization", "Bearer "+access)
-		},
 	}
 	for name, mutate := range tests {
 		t.Run(name, func(t *testing.T) {

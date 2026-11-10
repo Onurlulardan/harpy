@@ -30,22 +30,11 @@ type SnapshotPayload struct {
 	GrantValidUntil        string       `json:"grant_valid_until"`
 	GraceUntil             string       `json:"grace_until"`
 	CommercialExpiresAt    string       `json:"commercial_expires_at"`
-	Features               Features     `json:"features"`
 	Limits                 Limits       `json:"limits"`
 	ReleaseChannel         string       `json:"release_channel"`
 }
 
-type Features struct {
-	FormBuilder     bool `json:"formBuilder"`
-	WorkflowBuilder bool `json:"workflowBuilder"`
-	APIBuilder      bool `json:"apiBuilder"`
-	AIAssistant     bool `json:"aiAssistant"`
-}
-
 type Limits struct {
-	MaxUsers        int64 `json:"maxUsers"`
-	MaxForms        int64 `json:"maxForms"`
-	MaxWorkflows    int64 `json:"maxWorkflows"`
-	MaxAPIEndpoints int64 `json:"maxApiEndpoints"`
-	MaxTenants      int64 `json:"maxTenants"`
+	MaxUsers   int64 `json:"maxUsers"`
+	MaxTenants int64 `json:"maxTenants"`
 }

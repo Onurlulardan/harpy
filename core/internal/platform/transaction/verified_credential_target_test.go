@@ -16,7 +16,6 @@ func TestCredentialTargetIssuerSealsExactPurposeAndAuthority(t *testing.T) {
 		{CredentialPasswordReset, CredentialTenantRoute},
 		{CredentialInitialPassword, CredentialTenantRoute},
 		{CredentialEmailVerification, CredentialTenantRoute},
-		{CredentialPortalSetup, CredentialTenantRoute},
 		{CredentialInvitation, CredentialTenantRoute},
 		{CredentialReauthentication, CredentialSessionLocator},
 	}
@@ -83,7 +82,7 @@ func TestCredentialTargetExactSourceCannotCrossLocatorKinds(t *testing.T) {
 	}
 	refresh := validCredentialEvidenceFor(CredentialRefresh, CredentialRefreshLocator)
 	refresh.SourceUserID, refresh.SourceIdentifierID = uuid.New(), uuid.New()
-	refresh.SourceIdentifierKind = CredentialPortalIdentifier
+	refresh.SourceIdentifierKind = CredentialEmailIdentifier
 	if _, err := issueCredentialTarget(refresh); err == nil {
 		t.Fatal("refresh evidence carrying login identity was accepted")
 	}

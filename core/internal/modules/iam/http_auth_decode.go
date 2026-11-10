@@ -17,12 +17,6 @@ type authHTTPOperatorLoginDocument struct {
 	Password   json.RawMessage `json:"password"`
 }
 
-type authHTTPPortalLoginDocument struct {
-	TenantSlug string          `json:"tenant_slug"`
-	Identifier string          `json:"identifier"`
-	Password   json.RawMessage `json:"password"`
-}
-
 func decodeOperatorLogin(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -41,27 +35,6 @@ func decodeOperatorLogin(
 	return AuthHTTPLoginInput{
 		Mode: AuthHTTPLoginOperator, TenantSlug: document.TenantSlug,
 		Identifier: document.Email, Password: password,
-	}, nil
-}
-
-func decodePortalLogin(
-	w http.ResponseWriter,
-	r *http.Request,
-) (AuthHTTPLoginInput, error) {
-	var document authHTTPPortalLoginDocument
-	if err := httpinput.DecodeJSON(w, r, authLoginBodyLimit, &document); err != nil {
-		return AuthHTTPLoginInput{}, err
-	}
-	password, err := decodeLoginPassword(document.Password)
-	clear(document.Password)
-	if err != nil || !validLoginText(document.TenantSlug, 128) ||
-		!validLoginText(document.Identifier, 512) {
-		clear(password)
-		return AuthHTTPLoginInput{}, httpinput.ErrInvalid
-	}
-	return AuthHTTPLoginInput{
-		Mode: AuthHTTPLoginPortal, TenantSlug: document.TenantSlug,
-		Identifier: document.Identifier, Password: password,
 	}, nil
 }
 

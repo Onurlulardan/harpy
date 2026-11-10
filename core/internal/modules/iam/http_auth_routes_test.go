@@ -11,13 +11,12 @@ import (
 func TestAuthHTTPRoutesPublishExactPhaseFourteenSurface(t *testing.T) {
 	fixture := newAuthHTTPTestFixture(t)
 	routes := fixture.handler.Routes()
-	if len(routes) != 10 {
+	if len(routes) != 9 {
 		t.Fatalf("auth route count=%d", len(routes))
 	}
 	want := map[string]string{
 		"POST /api/auth/login":                     "",
 		"POST /api/auth/initial-password":          "",
-		"POST /api/auth/portal/login":              "",
 		"POST /api/auth/refresh":                   "",
 		"POST /api/auth/logout":                    "",
 		"GET /api/auth/csrf":                       "",

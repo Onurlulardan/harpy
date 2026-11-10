@@ -65,8 +65,6 @@ func lifecycleCredentialPurpose(
 		return credentialPasswordReset, true
 	case lifecycle.PurposeInitialAdminSetup:
 		return credentialInitialAdminSetup, true
-	case lifecycle.PurposePortalSetup:
-		return credentialPortalSetup, true
 	default:
 		return "", false
 	}

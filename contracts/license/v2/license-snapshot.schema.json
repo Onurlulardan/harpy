@@ -19,7 +19,7 @@
     "payload": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema", "issuer", "audience", "product", "license_id", "licensee_organization_id", "environment_id", "deployment_mode", "delivery_kind", "sequence", "status", "issued_at", "not_before", "refresh_after", "grant_valid_until", "grace_until", "commercial_expires_at", "features", "limits", "release_channel"],
+      "required": ["schema", "issuer", "audience", "product", "license_id", "licensee_organization_id", "environment_id", "deployment_mode", "delivery_kind", "sequence", "status", "issued_at", "not_before", "refresh_after", "grant_valid_until", "grace_until", "commercial_expires_at", "limits", "release_channel"],
       "properties": {
         "schema": {"const": "harpy-license-snapshot.v2"},
         "issuer": {"type": "string", "minLength": 1, "maxLength": 256},
@@ -39,20 +39,11 @@
         "grace_until": {"$ref": "#/$defs/instant"},
         "commercial_expires_at": {"$ref": "#/$defs/instant"},
         "release_channel": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
-        "features": {
-          "type": "object", "additionalProperties": false,
-          "required": ["formBuilder", "workflowBuilder", "apiBuilder", "aiAssistant"],
-          "properties": {
-            "formBuilder": {"type": "boolean"}, "workflowBuilder": {"type": "boolean"},
-            "apiBuilder": {"type": "boolean"}, "aiAssistant": {"type": "boolean"}
-          }
-        },
         "limits": {
           "type": "object", "additionalProperties": false,
-          "required": ["maxUsers", "maxForms", "maxWorkflows", "maxApiEndpoints", "maxTenants"],
+          "required": ["maxUsers", "maxTenants"],
           "properties": {
-            "maxUsers": {"$ref": "#/$defs/limit"}, "maxForms": {"$ref": "#/$defs/limit"},
-            "maxWorkflows": {"$ref": "#/$defs/limit"}, "maxApiEndpoints": {"$ref": "#/$defs/limit"},
+            "maxUsers": {"$ref": "#/$defs/limit"},
             "maxTenants": {"$ref": "#/$defs/limit"}
           }
         }

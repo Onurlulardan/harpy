@@ -10,9 +10,6 @@
     "securitySchemes": {
       "bearerAuth": {
         "$ref": "core-api-v1.components.json#/securitySchemes/bearerAuth"
-      },
-      "capabilityAuth": {
-        "$ref": "analytics-common-v2.schemas.json#/$defs/CapabilityAuthScheme"
       }
     },
     "schemas": {
@@ -73,7 +70,6 @@
       }
     }
   },
-  "x-harpy-phase": "phase-8-analytics",
   "x-harpy-handler-errors": {
     "unmatched": {
       "status": 404,

@@ -12,7 +12,5 @@ func (handler *Handler) Routes() []Route {
 		{http.MethodGet, "/api/changelog/{id}", http.HandlerFunc(handler.get)},
 		{http.MethodGet, "/api/changelog/history/{entity_type}/{entity_id}",
 			http.HandlerFunc(handler.entityHistory)},
-		{http.MethodGet, "/api/changelog/forms/{form_slug}/records/{record_id}/history",
-			http.HandlerFunc(handler.formRecordHistory)},
 	}
 }

@@ -11,9 +11,6 @@ var emailDeliveryTargetSQL string
 //go:embed sql/tenant/password_delivery_target.sql
 var passwordDeliveryTargetSQL string
 
-//go:embed sql/tenant/portal_delivery_target.sql
-var portalDeliveryTargetSQL string
-
 //go:embed sql/tenant/identifier_add.sql
 var identifierAddSQL string
 
@@ -37,18 +34,6 @@ var passwordResetCompleteSQL string
 
 //go:embed sql/tenant/initial_admin_setup_accept.sql
 var initialAdminSetupAcceptSQL string
-
-//go:embed sql/tenant/portal_setup_start.sql
-var portalSetupStartSQL string
-
-//go:embed sql/tenant/portal_setup_complete.sql
-var portalSetupCompleteSQL string
-
-//go:embed sql/tenant/portal_setup_read.sql
-var portalSetupReadSQL string
-
-//go:embed sql/tenant/portal_approval_decide.sql
-var portalApprovalDecideSQL string
 
 //go:embed sql/tenant/password_credential_read.sql
 var passwordCredentialReadSQL string

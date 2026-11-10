@@ -17,9 +17,7 @@ func ReauthenticationBindingSHA256(
 ) ([32]byte, error) {
 	if tenantID == uuid.Nil || userID == uuid.Nil || sessionID == uuid.Nil ||
 		tokenVersion <= 0 || authorizationVersion <= 0 ||
-		(mode != AccessModeOperator && mode != AccessModePortal) ||
-		(mode == AccessModeOperator && portalBindingID != uuid.Nil) ||
-		(mode == AccessModePortal && portalBindingID == uuid.Nil) {
+		mode != AccessModeOperator || portalBindingID != uuid.Nil {
 		return [32]byte{}, ErrAuthenticationContract
 	}
 	hash := sha256.New()

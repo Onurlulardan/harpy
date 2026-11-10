@@ -5,11 +5,9 @@ import "github.com/google/uuid"
 func (credential ReauthenticationCredential) baseInvalid(
 	lookup ReauthenticationLookup,
 ) bool {
-	portalInvalid := credential.AccessMode == AccessModeOperator &&
-		(credential.PortalBindingID != uuid.Nil || credential.PortalBindingRevision != 0) ||
-		credential.AccessMode == AccessModePortal &&
-			(credential.PortalBindingID != lookup.PortalBindingID ||
-				credential.PortalBindingState != "active" || credential.PortalBindingRevision <= 0)
+	portalInvalid := credential.AccessMode != AccessModeOperator ||
+		credential.PortalBindingID != uuid.Nil || credential.PortalBindingRevision != 0 ||
+		credential.PortalBindingState != ""
 	return credential.UserRevision <= 0 || credential.TokenVersion != lookup.ExpectedTokenVersion ||
 		credential.AuthorizationVersion != lookup.ExpectedAuthorizationVersion ||
 		credential.PlatformAuthorizationClock < 0 ||

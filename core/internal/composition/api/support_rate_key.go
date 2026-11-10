@@ -4,16 +4,14 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"net/http"
-
-	analyticsmodule "github.com/Onurlulardan/harpy/core/internal/modules/analytics"
 )
 
 type supportRateKeyResolver struct {
-	clientIP analyticsmodule.HTTPTrustedClientIPResolver
+	clientIP clientIPResolver
 }
 
 func newSupportRateKeyResolver(
-	clientIP analyticsmodule.HTTPTrustedClientIPResolver,
+	clientIP clientIPResolver,
 ) (*supportRateKeyResolver, error) {
 	if clientIP == nil {
 		return nil, fmt.Errorf("support client IP resolver is required")

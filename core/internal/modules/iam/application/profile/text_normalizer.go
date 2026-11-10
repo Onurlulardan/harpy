@@ -2,7 +2,6 @@ package profile
 
 type TextNormalizer interface {
 	NormalizeEmailV1(string) (string, error)
-	NormalizePortalV1(string) (string, error)
 }
 
 func normalizeProfileText(
@@ -16,11 +15,6 @@ func normalizeProfileText(
 			return "", ErrValidationInvalid
 		}
 		return normalizer.NormalizeEmailV1(value)
-	case NormalizationPortalV1:
-		if normalizer == nil {
-			return "", ErrValidationInvalid
-		}
-		return normalizer.NormalizePortalV1(value)
 	default:
 		return "", ErrValidationInvalid
 	}

@@ -58,7 +58,6 @@ func TestCoreOpenAPIInventoryCoversEveryComposedIAMAuthRoute(t *testing.T) {
 	}{
 		{"auth", (&AuthHTTP{}).Routes()},
 		{"lifecycle", (&LifecycleHTTP{}).Routes()},
-		{"portal-user", (&PortalUserHTTP{}).Routes()},
 	}
 	documents := make(map[string]iamOpenAPIPathDocument)
 	seen := make(map[string]string)

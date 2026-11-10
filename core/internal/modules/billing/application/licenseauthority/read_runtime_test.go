@@ -33,8 +33,7 @@ func TestReadCarriesDatabaseDecisionWithoutRecomputing(t *testing.T) {
 		t.Context(), environmentID.String(),
 	)
 	if err != nil || result.State != RuntimeBuildOff ||
-		result.Projection.Boolean["workflow.enabled"] != true ||
-		result.Projection.Boolean["api.builder.enabled"] != false ||
+		len(result.Projection.Boolean) != 0 ||
 		result.Projection.Limits["iam.active_users"].Value != 0 ||
 		result.Projection.Limits["iam.active_users"].Unlimited {
 		t.Fatalf("runtime projection=%+v err=%v", result, err)
@@ -65,18 +64,8 @@ func runtimeGrantFixture(
 ) []RuntimeGrant {
 	licenseID := uuid.New()
 	now := time.Date(2026, 7, 22, 12, 0, 0, 0, time.UTC)
-	booleans := []string{"analytics.dashboard_builder.enabled", "api.access",
-		"api.builder.enabled", "workflow.builder.enabled", "workflow.enabled"}
-	limits := []string{"analytics.active_dashboards", "api.active_endpoints",
-		"documents.storage_bytes",
-		"iam.active_users", "workflow.active_definitions"}
-	grants := make([]RuntimeGrant, 0, 10)
-	for _, key := range booleans {
-		value := key == "workflow.enabled" || key == "api.access"
-		grants = append(grants, runtimeGrantHead(
-			licenseID, environmentID, state, now, key, "boolean", &value, nil, false,
-		))
-	}
+	limits := []string{"documents.storage_bytes", "iam.active_users"}
+	grants := make([]RuntimeGrant, 0, len(limits))
 	for _, key := range limits {
 		value := int64(0)
 		grants = append(grants, runtimeGrantHead(

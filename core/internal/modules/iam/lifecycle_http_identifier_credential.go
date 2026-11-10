@@ -127,8 +127,6 @@ func purposeForScope(value lifecycle.CredentialPurpose) (platformtx.CredentialPu
 		return platformtx.CredentialPasswordReset, true
 	case lifecycle.PurposeInitialAdminSetup:
 		return platformtx.CredentialInitialAdminSetup, true
-	case lifecycle.PurposePortalSetup:
-		return platformtx.CredentialPortalSetup, true
 	default:
 		return "", false
 	}

@@ -17,15 +17,15 @@ Komut, kod veya dokuman degisikliginden once bu tabloyu kullan.
 | SQL, repository, migration, tenant | `data-tenancy`, `testing-quality` |
 | DB diagnostics veya environment recovery set/restore | `platform-runtime`, `data-tenancy`, `documents`, `iam-system-resources`, `events-jobs`, `impact-analysis` |
 | Users, roles, organizations, auth, RBAC | `iam-system-resources`, `data-tenancy` |
-| Form config, field, publish, record CRUD | `rest-query`, `data-tenancy` |
+| Form config, field, publish, record CRUD | Harpy urunu degil; ekleme |
 | Filter, search, sort, include, aggregate | `rest-query`, ilgili domain skill'i |
-| Workflow definition, node veya runtime | `events-jobs` |
-| Workflow form verisini etkiliyorsa | `events-jobs` |
+| Workflow definition, node veya runtime | Harpy urunu degil; ekleme |
+| Workflow form verisini etkiliyorsa | Harpy urunu degil; ekleme |
 | Outbox, job, worker, RabbitMQ | `events-jobs`, `data-tenancy` |
-| Board, task, comment, calendar | `work`, `rest-query`, `events-jobs` |
+| Board, task, comment, calendar | Harpy urunu degil; `work` skill yalnizca dislama notudur |
 | Document, upload, blob, archive | `documents`, `events-jobs`, `data-tenancy` |
 | Billing, entitlement, usage, provider | `billing`, `events-jobs`, `data-tenancy` |
-| Saved query, dashboard, publication | `analytics`, `rest-query`, `data-tenancy` |
+| Saved query, dashboard, publication | Harpy urunu degil; `analytics` skill yalnizca dislama notudur |
 | Notification, inbox, provider, realtime | `notifications`, `events-jobs` |
 | Test, CI veya guard | `testing-quality`, `code-organization` |
 

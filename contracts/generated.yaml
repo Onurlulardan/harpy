@@ -2,10 +2,10 @@
   "version": 1,
   "files": [
     {
-      "path": "contracts/http/core-api-v1.openapi.yaml",
       "generator": "go run ./tools/coreopenapi",
-      "input_sha256": "c3f49cfaaab9d21435d7133638c6ba4cb2ce7ab193b021799d34b9020754ee4d",
-      "output_sha256": "c3f49cfaaab9d21435d7133638c6ba4cb2ce7ab193b021799d34b9020754ee4d"
+      "input_sha256": "b6d42204f429a64b1759a2367aed3070ebe5e7cff78a1969a2714eb07e1a7784",
+      "output_sha256": "b6d42204f429a64b1759a2367aed3070ebe5e7cff78a1969a2714eb07e1a7784",
+      "path": "contracts/http/core-api-v1.openapi.yaml"
     },
     {
       "path": "core/internal/modules/billing/domain/money/currency_registry_gen.go",

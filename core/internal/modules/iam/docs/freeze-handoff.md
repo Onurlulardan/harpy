@@ -125,7 +125,7 @@ Historical migration documents were not rewritten during strict freeze.
 
 ## Verification evidence
 
-All commands were run from the `backend-v2` repository root after the final
+All commands were run from the `harpy` repository root after the final
 module-local fixes.
 
 | Check | Result |

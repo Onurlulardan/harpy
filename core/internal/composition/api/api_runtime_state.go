@@ -19,12 +19,10 @@ type apiRuntime struct {
 	telemetryRuntime     *telemetry.Runtime
 	deploymentPolicy     *tenancymodule.DeploymentPolicyRuntime
 	asyncWriteCatalogs   platformasync.WriteCatalogs
-	analytics            analyticsHTTPRuntime
 	documents            *documentsmodule.HTTPHandler
 	documentsProduction  *documentsmodule.Production
 	platformOps          *platformOpsHTTPRuntime
 	notifications        notificationsHTTPRuntime
-	work                 workHTTPRuntime
 	secondary            secondaryHTTPRuntime
 	systemLayouts        *systemResourceLayoutHTTPHandler
 	customerProvisioning *customerProvisioningRuntime

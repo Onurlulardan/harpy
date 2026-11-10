@@ -119,7 +119,7 @@ provider use before reading a body.
 
 ## Verification evidence
 
-All commands were run from the `backend-v2` repository root.
+All commands were run from the `harpy` repository root.
 
 | Check | Result |
 | --- | --- |

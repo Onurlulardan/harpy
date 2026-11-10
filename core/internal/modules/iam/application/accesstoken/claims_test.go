@@ -14,12 +14,12 @@ func TestClaimsRejectInvalidSecurityShapes(t *testing.T) {
 		"non-v4 jti": func(input *ClaimsInput) {
 			input.JTI = uuid.MustParse("40000000-0000-1000-8000-000000000001")
 		},
-		"future auth":                 func(input *ClaimsInput) { input.AuthenticationTime = input.IssuedAt.Add(time.Second) },
-		"zero token version":          func(input *ClaimsInput) { input.TokenVersion = 0 },
-		"negative platform clock":     func(input *ClaimsInput) { input.PlatformAuthorizationClock = -1 },
-		"zero security epoch":         func(input *ClaimsInput) { input.SecurityEpoch = [32]byte{} },
-		"portal client operator mode": func(input *ClaimsInput) { input.Client = ClientPortal },
-		"operator portal binding":     func(input *ClaimsInput) { input.PortalBinding = &input.Session },
+		"future auth":             func(input *ClaimsInput) { input.AuthenticationTime = input.IssuedAt.Add(time.Second) },
+		"zero token version":      func(input *ClaimsInput) { input.TokenVersion = 0 },
+		"negative platform clock": func(input *ClaimsInput) { input.PlatformAuthorizationClock = -1 },
+		"zero security epoch":     func(input *ClaimsInput) { input.SecurityEpoch = [32]byte{} },
+		"retired portal client":   func(input *ClaimsInput) { input.Client = "harpy-portal-v1" },
+		"operator portal binding": func(input *ClaimsInput) { input.PortalBinding = &input.Session },
 		"unordered amr": func(input *ClaimsInput) {
 			input.Methods = []AuthMethod{AuthMethodTOTP, AuthMethodPassword}
 		},

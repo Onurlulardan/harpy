@@ -23,13 +23,9 @@ type iamAPIRuntime struct {
 	tenantSettingsAccess       *iammodule.TenantSettingsAccessRuntime
 	platformAccess             *iammodule.PlatformAccessRuntime
 	customerProvisioningAccess *iammodule.CustomerProvisioningAccessRuntime
-	portalAccess               *iammodule.PortalAccessRuntime
-	analyticsAccess            *iammodule.AnalyticsAccessRuntime
 	documentsAccess            *iammodule.DocumentsAccessRuntime
 	documentsArchiveAccess     *iammodule.DocumentsArchiveAccessRuntime
 	notificationsAccess        *iammodule.NotificationsAccessRuntime
-	workAccess                 *iammodule.WorkAccessRuntime
-	analyticsPrincipals        *iammodule.AnalyticsPrincipalPermissionRuntime
 	servicePrincipals          *iammodule.ServicePrincipalRuntime
 	systemLayoutAccess         *iammodule.SystemLayoutAccessRuntime
 	authApplication            iammodule.AuthHTTPApplication

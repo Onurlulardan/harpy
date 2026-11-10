@@ -20,13 +20,8 @@ func validSnapshotContract() map[string]any {
 			"refresh_after": fixtureInstant, "grant_valid_until": fixtureInstant,
 			"grace_until": fixtureInstant, "commercial_expires_at": fixtureInstant,
 			"release_channel": "stable",
-			"features": map[string]any{
-				"formBuilder": true, "workflowBuilder": true, "apiBuilder": true,
-				"aiAssistant": true,
-			},
 			"limits": map[string]any{
-				"maxUsers": 0, "maxForms": 0, "maxWorkflows": 0,
-				"maxApiEndpoints": 0, "maxTenants": 1,
+				"maxUsers": 0, "maxTenants": 1,
 			},
 		},
 	}
@@ -76,15 +71,9 @@ func fixtureUUID(last int) string {
 }
 
 func validDerivedOfferingContract() map[string]any {
-	booleanKeys := []string{
-		"analytics.dashboard_builder.enabled", "api.access",
-		"api.builder.enabled", "workflow.builder.enabled",
-		"workflow.enabled",
-	}
+	booleanKeys := []string{}
 	limitKeys := []string{
-		"analytics.active_dashboards", "api.active_endpoints", "documents.storage_bytes",
-		"iam.active_users",
-		"workflow.active_definitions",
+		"documents.storage_bytes", "iam.active_users",
 	}
 	booleans := make([]any, len(booleanKeys))
 	limits := make([]any, len(limitKeys))

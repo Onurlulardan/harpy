@@ -5,7 +5,6 @@ import (
 
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/accesstoken"
 	"github.com/Onurlulardan/harpy/core/internal/modules/iam/application/lifecycle"
-	"github.com/google/uuid"
 )
 
 type lifecycleHTTPTestApplication struct {
@@ -13,9 +12,6 @@ type lifecycleHTTPTestApplication struct {
 	listAuthenticatorCalls int
 	sessions               []lifecycle.Session
 	listSessionCalls       int
-	portalSetup            lifecycle.PortalSetup
-	readPortalSetupCalls   int
-	readPortalSetupID      uuid.UUID
 }
 
 func (app *lifecycleHTTPTestApplication) AddIdentifier(
@@ -68,32 +64,6 @@ func (app *lifecycleHTTPTestApplication) CompleteInitialAdminSetup(
 
 func (app *lifecycleHTTPTestApplication) ChangePassword(
 	context.Context, accesstoken.Claims, LifecyclePasswordChangeInput,
-) error {
-	return app.err
-}
-
-func (app *lifecycleHTTPTestApplication) StartPortalSetup(
-	context.Context, accesstoken.Claims, LifecycleResourceInput,
-) error {
-	return app.err
-}
-
-func (app *lifecycleHTTPTestApplication) CompletePortalSetup(
-	context.Context, LifecyclePasswordResetCompleteInput,
-) error {
-	return app.err
-}
-
-func (app *lifecycleHTTPTestApplication) ReadPortalSetup(
-	_ context.Context, _ accesstoken.Claims, bindingID uuid.UUID,
-) (lifecycle.PortalSetup, error) {
-	app.readPortalSetupCalls++
-	app.readPortalSetupID = bindingID
-	return app.portalSetup, app.err
-}
-
-func (app *lifecycleHTTPTestApplication) DecidePortalSetup(
-	context.Context, accesstoken.Claims, LifecyclePortalDecisionInput,
 ) error {
 	return app.err
 }

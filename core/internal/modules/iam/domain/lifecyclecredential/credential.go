@@ -13,7 +13,6 @@ type Purpose string
 const (
 	PurposeEmailVerification Purpose = "email_verification_v1"
 	PurposePasswordReset     Purpose = "password_reset_v1"
-	PurposePortalSetup       Purpose = "portal_setup_v1"
 	PurposeInitialAdminSetup Purpose = "initial_admin_setup.v1"
 	WireBytes                        = 66
 )
@@ -46,7 +45,7 @@ func (issue TokenIssue) Validate() error {
 
 func (purpose Purpose) Valid() bool {
 	return purpose == PurposeEmailVerification || purpose == PurposePasswordReset ||
-		purpose == PurposePortalSetup || purpose == PurposeInitialAdminSetup
+		purpose == PurposeInitialAdminSetup
 }
 
 func Digest(key [32]byte, tenantID ID, purpose Purpose,

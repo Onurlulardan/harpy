@@ -33,25 +33,6 @@ func NewAuthorizer() (authorization.EvidencePort, error) {
 	return newAuthorizer("iam", authorizeSQL, false, "")
 }
 
-// NewWorkAuthorizer reads current IAM-owned permission evidence while remaining
-// inside the caller's Work-owned tenant command transaction.
-func NewWorkAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer("work", authorizeWorkSQL, true, platformtx.Command)
-}
-
-// NewPortalAuthorizer restricts evidence to roles owned by the active portal binding.
-func NewPortalAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer(
-		"iam", authorizePortalSQL, true, platformtx.SnapshotQuery,
-	)
-}
-
-// NewAnalyticsAuthorizer reads current IAM-owned user evidence through the
-// exact V2 routine while remaining inside an Analytics-owned tenant scope.
-func NewAnalyticsAuthorizer() (authorization.EvidencePort, error) {
-	return newAuthorizer("analytics", authorizeAnalyticsSQL, true, "")
-}
-
 // NewDocumentsAuthorizer reads current actor evidence inside a Documents-owned
 // snapshot used by long-running archive authorization refresh gates.
 func NewDocumentsAuthorizer() (authorization.EvidencePort, error) {

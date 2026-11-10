@@ -42,24 +42,17 @@ func (fixture *authHTTPTestFixture) successfulLogin(
 	portal bool,
 ) (*httptest.ResponseRecorder, *http.Cookie, *http.Cookie) {
 	t.Helper()
-	claims := fixture.claims
-	path := "/api/auth/login"
-	body := `{"tenant_slug":"tenant-a","email":"admin@example.com","password":"valid-password"}`
 	if portal {
-		claims = fixture.newClaims(t, true)
-		path = "/api/auth/portal/login"
-		body = `{"tenant_slug":"tenant-a","identifier":"P-100","password":"valid-password"}`
+		t.Fatal("portal login is not an operator authentication surface")
 	}
+	claims := fixture.claims
+	body := `{"tenant_slug":"tenant-a","email":"admin@example.com","password":"valid-password"}`
 	fixture.app.loginGrant = fixture.newGrant(t, claims)
-	request := httptest.NewRequest(http.MethodPost, path, bytes.NewBufferString(body))
+	request := httptest.NewRequest(http.MethodPost, "/api/auth/login", bytes.NewBufferString(body))
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Origin", fixture.origin)
 	response := httptest.NewRecorder()
-	if portal {
-		fixture.handler.portalLogin(response, request)
-	} else {
-		fixture.handler.login(response, request)
-	}
+	fixture.handler.login(response, request)
 	if response.Code != http.StatusOK {
 		t.Fatalf("login status=%d body=%s", response.Code, response.Body.String())
 	}

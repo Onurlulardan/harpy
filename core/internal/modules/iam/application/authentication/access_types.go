@@ -8,17 +8,11 @@ import (
 
 type ClientID string
 
-const (
-	ClientOperatorConsole ClientID = "harpy-operator-console-v1"
-	ClientPortal          ClientID = "harpy-portal-v1"
-)
+const ClientOperatorConsole ClientID = "harpy-operator-console-v1"
 
 type AccessMode string
 
-const (
-	AccessModeOperator AccessMode = "operator_console"
-	AccessModePortal   AccessMode = "portal"
-)
+const AccessModeOperator AccessMode = "operator_console"
 
 type Assurance string
 
@@ -50,12 +44,5 @@ type AccessClaims struct {
 }
 
 func clientMatchesMode(client ClientID, mode AccessMode) bool {
-	switch mode {
-	case AccessModeOperator:
-		return client == ClientOperatorConsole
-	case AccessModePortal:
-		return client == ClientPortal
-	default:
-		return false
-	}
+	return mode == AccessModeOperator && client == ClientOperatorConsole
 }

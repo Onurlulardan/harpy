@@ -29,10 +29,6 @@ type LifecycleHTTPApplication interface {
 	CompletePasswordReset(context.Context, LifecyclePasswordResetCompleteInput) error
 	CompleteInitialAdminSetup(context.Context, LifecyclePasswordResetCompleteInput) error
 	ChangePassword(context.Context, accesstoken.Claims, LifecyclePasswordChangeInput) error
-	StartPortalSetup(context.Context, accesstoken.Claims, LifecycleResourceInput) error
-	CompletePortalSetup(context.Context, LifecyclePasswordResetCompleteInput) error
-	ReadPortalSetup(context.Context, accesstoken.Claims, uuid.UUID) (lifecycle.PortalSetup, error)
-	DecidePortalSetup(context.Context, accesstoken.Claims, LifecyclePortalDecisionInput) error
 	StartWebAuthn(context.Context, accesstoken.Claims, LifecycleEnrollmentStartInput) (LifecycleChallengeView, error)
 	CompleteWebAuthn(context.Context, accesstoken.Claims, LifecycleWebAuthnCompleteInput) error
 	StartTOTP(context.Context, accesstoken.Claims, LifecycleEnrollmentStartInput) (LifecycleTOTPStartView, error)
@@ -72,10 +68,6 @@ type LifecyclePasswordChangeInput struct {
 	IdempotencyKey               string
 	ExpectedRevision             int64
 	CurrentPassword, NewPassword []byte
-}
-type LifecyclePortalDecisionInput struct {
-	LifecycleRevisionInput
-	Decision string
 }
 type LifecycleEnrollmentStartInput struct{ IdempotencyKey, DisplayLabel string }
 type LifecycleWebAuthnCompleteInput struct {

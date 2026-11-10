@@ -6,13 +6,14 @@ import (
 	"net/http"
 	"strings"
 
-	analyticsmodule "github.com/Onurlulardan/harpy/core/internal/modules/analytics"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 )
 
+type clientIPResolver func(*http.Request) (string, error)
+
 func newAnalyticsClientIPResolver(
 	proxies config.AnalyticsTrustedProxies,
-) analyticsmodule.HTTPTrustedClientIPResolver {
+) clientIPResolver {
 	return func(request *http.Request) (string, error) {
 		if request == nil || request.Header == nil || forwardedHeaderConflict(request.Header) {
 			return "", fmt.Errorf("Analytics client IP evidence is invalid")

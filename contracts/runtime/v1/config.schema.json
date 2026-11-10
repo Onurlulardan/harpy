@@ -11,7 +11,7 @@
     "profiles": {"type": "array", "minItems": 8, "maxItems": 8, "prefixItems": [{"const": "api"}, {"const": "worker"}, {"const": "migrator_deploy"}, {"const": "schema_executor"}, {"const": "cluster_bootstrap"}, {"const": "extension_admin"}, {"const": "cutover_adoption"}, {"const": "cutover_finalization"}], "items": false},
     "unknown_harpy_key": {"const": "reject_per_profile"},
     "secret_file": {"$ref": "#/$defs/secretFilePolicy"},
-    "variables": {"type": "array", "minItems": 164, "maxItems": 164, "uniqueItems": true, "items": {"$ref": "#/$defs/catalogVariable"}}
+    "variables": {"type": "array", "minItems": 153, "maxItems": 153, "uniqueItems": true, "items": {"$ref": "#/$defs/catalogVariable"}}
   },
   "$defs": {
     "profile": {"enum": ["api", "worker", "migrator_deploy", "schema_executor", "cluster_bootstrap", "extension_admin", "cutover_adoption", "cutover_finalization"]},

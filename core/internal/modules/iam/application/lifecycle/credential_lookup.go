@@ -37,7 +37,7 @@ func (record CredentialRecord) Validate() error {
 	purpose := CredentialPurpose(record.Purpose)
 	if record.TokenID == uuid.Nil || record.UserID == uuid.Nil ||
 		record.IdentifierID == uuid.Nil || !purpose.Valid() ||
-		(record.IdentifierKind != "email_v1" && record.IdentifierKind != "portal_v1") ||
+		record.IdentifierKind != "email_v1" ||
 		record.IdentifierRevision < 1 || record.Selector == [16]byte{} ||
 		record.HashKeyID == "" || len(record.HashKeyID) > 128 ||
 		record.SecretHMAC == [32]byte{} || record.BindingSHA256 == [32]byte{} ||
@@ -45,12 +45,7 @@ func (record CredentialRecord) Validate() error {
 		record.ExpiresAt.IsZero() {
 		return ErrInvalid
 	}
-	if purpose == PurposePortalSetup {
-		if record.IdentifierKind != "portal_v1" || record.PortalBindingID == uuid.Nil ||
-			record.PortalRevision < 1 {
-			return ErrInvalid
-		}
-	} else if record.PortalBindingID != uuid.Nil || record.PortalRevision != 0 {
+	if record.PortalBindingID != uuid.Nil || record.PortalRevision != 0 {
 		return ErrInvalid
 	}
 	if purpose == PurposeEmailVerification && record.IdentifierKind != "email_v1" {
@@ -87,8 +82,6 @@ func (purpose CredentialPurpose) transactionPurpose() (platformtx.CredentialPurp
 		return platformtx.CredentialPasswordReset, true
 	case PurposeInitialAdminSetup:
 		return platformtx.CredentialInitialAdminSetup, true
-	case PurposePortalSetup:
-		return platformtx.CredentialPortalSetup, true
 	default:
 		return "", false
 	}

@@ -62,9 +62,6 @@
       "securitySchemes": {
         "bearerAuth": {
           "$ref": "core-api-v1.components.json#/securitySchemes/bearerAuth"
-        },
-        "capabilityAuth": {
-          "$ref": "analytics-common-v2.schemas.json#/$defs/CapabilityAuthScheme"
         }
       }
     },
@@ -116,69 +113,6 @@
             "Application"
           ]
         }
-      },
-      "/api/analytics/dashboard-defaults/{surface}": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboard-defaults~1{surface}"
-      },
-      "/api/analytics/dashboards": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboards"
-      },
-      "/api/analytics/dashboards/{dashboard_id}": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboards~1{dashboard_id}"
-      },
-      "/api/analytics/dashboards/{dashboard_id}/acl-grants": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboards~1{dashboard_id}~1acl-grants"
-      },
-      "/api/analytics/dashboards/{dashboard_id}/acl-revocations": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboards~1{dashboard_id}~1acl-revocations"
-      },
-      "/api/analytics/dashboards/{dashboard_id}/defaults/{surface}": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboards~1{dashboard_id}~1defaults~1{surface}"
-      },
-      "/api/analytics/dashboards/{dashboard_id}/publications": {
-        "$ref": "analytics-dashboard-v2.paths.json#/paths/~1api~1analytics~1dashboards~1{dashboard_id}~1publications"
-      },
-      "/api/analytics/execute/{slug}": {
-        "$ref": "analytics-v1-compat.paths.json#/paths/~1api~1analytics~1execute~1{slug}"
-      },
-      "/api/analytics/publications": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1analytics~1publications"
-      },
-      "/api/analytics/publications/{release_id}": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1analytics~1publications~1{release_id}"
-      },
-      "/api/analytics/publications/{release_id}/activations": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1analytics~1publications~1{release_id}~1activations"
-      },
-      "/api/analytics/publications/{release_id}/approvals": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1analytics~1publications~1{release_id}~1approvals"
-      },
-      "/api/analytics/publications/{release_id}/revocations": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1analytics~1publications~1{release_id}~1revocations"
-      },
-      "/api/analytics/publications/{release_id}/submissions": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1analytics~1publications~1{release_id}~1submissions"
-      },
-      "/api/analytics/queries": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1queries"
-      },
-      "/api/analytics/queries/{query_id}": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1queries~1{query_id}"
-      },
-      "/api/analytics/queries/{query_id}/executions": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1queries~1{query_id}~1executions"
-      },
-      "/api/analytics/queries/{query_id}/publications": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1queries~1{query_id}~1publications"
-      },
-      "/api/analytics/queries/{query_id}/revalidations": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1queries~1{query_id}~1revalidations"
-      },
-      "/api/analytics/queries/{query_id}/versions/latest-published": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1queries~1{query_id}~1versions~1latest-published"
-      },
-      "/api/analytics/query-executions": {
-        "$ref": "analytics-query-v2.paths.json#/paths/~1api~1analytics~1query-executions"
       },
       "/api/app/config": {
         "get": {
@@ -337,24 +271,6 @@
       },
       "/api/auth/password/reset/complete": {
         "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePasswordReset"
-      },
-      "/api/auth/portal-users": {
-        "$ref": "iam-portal-users-v1.paths.json#/pathItems/collection"
-      },
-      "/api/auth/portal-users/{id}/console-access": {
-        "$ref": "iam-portal-users-v1.paths.json#/pathItems/consoleAccess"
-      },
-      "/api/auth/portal-users/{id}/invite": {
-        "$ref": "iam-portal-users-v1.paths.json#/pathItems/invite"
-      },
-      "/api/auth/portal-users/{id}/status": {
-        "$ref": "iam-portal-users-v1.paths.json#/pathItems/status"
-      },
-      "/api/auth/portal/login": {
-        "$ref": "iam-auth-v1.paths.json#/pathItems/portalLogin"
-      },
-      "/api/auth/portal/setup/complete": {
-        "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePortalSetup"
       },
       "/api/auth/post-restore/challenge": {
         "$ref": "iam-post-restore-v1.paths.json#/pathItems/challenge"
@@ -515,15 +431,6 @@
       "/api/iam/password/change": {
         "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/passwordChange"
       },
-      "/api/iam/portal-setups/{binding_id}": {
-        "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetup"
-      },
-      "/api/iam/portal-setups/{binding_id}/decision": {
-        "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetupDecision"
-      },
-      "/api/iam/portal-setups/{binding_id}/token": {
-        "$ref": "iam-lifecycle-account-v1.paths.json#/pathItems/portalSetupToken"
-      },
       "/api/iam/profile-schemas/{resource}/active": {
         "$ref": "iam-profile-v1.paths.json#/pathItems/active"
       },
@@ -598,9 +505,6 @@
       },
       "/api/notifications/{notification_id}/read": {
         "$ref": "notifications-v1.paths.json#/pathItems/read"
-      },
-      "/api/openapi/execute/{slug}": {
-        "$ref": "analytics-v1-compat.paths.json#/paths/~1api~1openapi~1execute~1{slug}"
       },
       "/api/organizations": {
         "$ref": "iam-organizations-v1.paths.json#/pathItems/collection"
@@ -854,12 +758,6 @@
       "/api/profile": {
         "$ref": "iam-profile-v1.paths.json#/pathItems/self"
       },
-      "/api/published/dashboards/{public_id}/{slug}": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1published~1dashboards~1{public_id}~1{slug}"
-      },
-      "/api/published/queries/{public_id}/{slug}": {
-        "$ref": "analytics-publication-v2.paths.json#/paths/~1api~1published~1queries~1{public_id}~1{slug}"
-      },
       "/api/roles": {
         "$ref": "iam-roles-v1.paths.json#/pathItems/collection"
       },
@@ -902,108 +800,6 @@
       "/api/users/{id}/state": {
         "$ref": "iam-users-v1.paths.json#/pathItems/state"
       },
-      "/api/work/boards": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1boards"
-      },
-      "/api/work/boards/{board_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1boards~1{board_id}"
-      },
-      "/api/work/boards/{board_id}/archive": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1boards~1{board_id}~1archive"
-      },
-      "/api/work/boards/{board_id}/columns": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1boards~1{board_id}~1columns"
-      },
-      "/api/work/boards/{board_id}/memberships": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1boards~1{board_id}~1memberships"
-      },
-      "/api/work/boards/{board_id}/restore": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1boards~1{board_id}~1restore"
-      },
-      "/api/work/calendar-events": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1calendar-events"
-      },
-      "/api/work/calendar-events/{event_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1calendar-events~1{event_id}"
-      },
-      "/api/work/checklist-items/{checklist_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1checklist-items~1{checklist_id}"
-      },
-      "/api/work/columns/{column_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1columns~1{column_id}"
-      },
-      "/api/work/comments/{comment_id}/redactions": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1comments~1{comment_id}~1redactions"
-      },
-      "/api/work/inbox": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1inbox"
-      },
-      "/api/work/labels": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1labels"
-      },
-      "/api/work/labels/{label_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1labels~1{label_id}"
-      },
-      "/api/work/recurrence-rules": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1recurrence-rules"
-      },
-      "/api/work/recurrence-rules/{rule_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1recurrence-rules~1{rule_id}"
-      },
-      "/api/work/tasks": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks"
-      },
-      "/api/work/tasks/{task_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}"
-      },
-      "/api/work/tasks/{task_id}/archive": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1archive"
-      },
-      "/api/work/tasks/{task_id}/assignments": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1assignments"
-      },
-      "/api/work/tasks/{task_id}/cancellations": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1cancellations"
-      },
-      "/api/work/tasks/{task_id}/checklist-items": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1checklist-items"
-      },
-      "/api/work/tasks/{task_id}/comments": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1comments"
-      },
-      "/api/work/tasks/{task_id}/completions": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1completions"
-      },
-      "/api/work/tasks/{task_id}/labels/{label_id}": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1labels~1{label_id}"
-      },
-      "/api/work/tasks/{task_id}/moves": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1moves"
-      },
-      "/api/work/tasks/{task_id}/reopens": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1reopens"
-      },
-      "/api/work/tasks/{task_id}/restore": {
-        "$ref": "work-v2.paths.json#/paths/~1api~1work~1tasks~1{task_id}~1restore"
-      },
-      "/api/workflow-service/board-tasks": {
-        "$ref": "work-v1-compat.paths.json#/paths/~1api~1workflow-service~1board-tasks"
-      },
-      "/api/workflow-service/board-tasks/{task_id}": {
-        "$ref": "work-v1-compat.paths.json#/paths/~1api~1workflow-service~1board-tasks~1{task_id}"
-      },
-      "/api/workflow-service/boards": {
-        "$ref": "work-v1-compat.paths.json#/paths/~1api~1workflow-service~1boards"
-      },
-      "/api/workflow-service/boards/{board_id}": {
-        "$ref": "work-v1-compat.paths.json#/paths/~1api~1workflow-service~1boards~1{board_id}"
-      },
-      "/api/workflow-service/calendar-events": {
-        "$ref": "work-v1-compat.paths.json#/paths/~1api~1workflow-service~1calendar-events"
-      },
-      "/api/workflow-service/calendar-events/{event_id}": {
-        "$ref": "work-v1-compat.paths.json#/paths/~1api~1workflow-service~1calendar-events~1{event_id}"
-      },
       "/webhooks/billing/{provider}": {
         "$ref": "billing-webhook-v2.paths.json#/pathItems/ingress"
       },
@@ -1025,7 +821,6 @@
         "status": 404
       }
     },
-    "x-harpy-phase": "phase-8-analytics",
     "x-harpy-transport-error-exclusion": [
       "malformed-request",
       "header-limit",
@@ -1058,18 +853,6 @@
         "name": "Notifications",
         "tags": [
           "Notifications"
-        ]
-      },
-      {
-        "name": "Analytics",
-        "tags": [
-          "Analytics"
-        ]
-      },
-      {
-        "name": "Work",
-        "tags": [
-          "Work"
         ]
       },
       {

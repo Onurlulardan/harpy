@@ -27,9 +27,7 @@ func TestIAMLifecycleOpenAPISecurityMatchesHandlerContract(t *testing.T) {
 		t.Fatal(err)
 	}
 	documents := make(map[string]iamOpenAPIPathDocument)
-	routes := append(append(
-		(&AuthHTTP{}).Routes(), (&LifecycleHTTP{}).Routes()...,
-	), (&PortalUserHTTP{}).Routes()...)
+	routes := append((&AuthHTTP{}).Routes(), (&LifecycleHTTP{}).Routes()...)
 	cas := iamOpenAPICASRoutes()
 	for _, route := range routes {
 		reference, found := fragment[route.Pattern]

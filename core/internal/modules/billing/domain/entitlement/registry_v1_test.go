@@ -14,8 +14,6 @@ func TestRegistryV1ExactShape(t *testing.T) {
 	}{
 		{"iam.active_users", Integer, Gauge, Never, Hard, UnitCount, "iam"},
 		{"documents.storage_bytes", Integer, Gauge, Never, Hard, UnitByte, "documents"},
-		{"workflow.enabled", Boolean, NoMeter, Never, NoEnforcement, UnitBoolean, "workflow"},
-		{"api.access", Boolean, NoMeter, Never, NoEnforcement, UnitBoolean, "platform"},
 	}
 	entries := RegistryV1()
 	if len(entries) != len(want) {

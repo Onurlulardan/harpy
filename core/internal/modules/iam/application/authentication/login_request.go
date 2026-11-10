@@ -8,8 +8,7 @@ type IssueRequest struct {
 
 func (request IssueRequest) validate() error {
 	if nilInterface(request.Secret) || request.Device.validate() != nil ||
-		(request.Client != ClientOperatorConsole &&
-			request.Client != ClientPortal) {
+		request.Client != ClientOperatorConsole {
 		return ErrAuthenticationContract
 	}
 	return nil

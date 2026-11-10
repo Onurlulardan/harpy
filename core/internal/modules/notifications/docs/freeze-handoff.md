@@ -33,7 +33,7 @@ reject delete, another owner and another resource without reaching the alias.
 
 ## Recorded gates
 
-Run from `backend-v2`:
+Run from `harpy`:
 
 ```text
 go test ./core/internal/modules/notifications/... -count=1

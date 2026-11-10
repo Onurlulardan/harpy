@@ -25,12 +25,12 @@ func buildAuditHTTP(
 	}
 	handler, err := auditmodule.NewHTTPHandler(auditmodule.HTTPHandlerDependencies{
 		Access: access, Application: runtime, Report: auditmodule.HTTPErrorSink(report),
-		Correlation: auditmodule.HTTPCorrelationResolver(analyticsCorrelationResolver()),
+		Correlation: auditmodule.HTTPCorrelationResolver(requestCorrelationResolver()),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("build Audit HTTP: %w", err)
 	}
-	if !handler.Ready() || len(handler.Routes()) != 5 {
+	if !handler.Ready() || len(handler.Routes()) != 4 {
 		return nil, fmt.Errorf("Audit HTTP route contract is incomplete")
 	}
 	return handler, nil

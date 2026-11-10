@@ -73,12 +73,8 @@ func (bound *boundStore) loginCredential(
 func loginAccessMode(
 	scope authentication.CredentialScope,
 ) (authentication.AccessMode, bool) {
-	switch string(scope.SourceIdentifierKind()) {
-	case "email_v1":
-		return authentication.AccessModeOperator, true
-	case "portal_v1":
-		return authentication.AccessModePortal, true
-	default:
+	if string(scope.SourceIdentifierKind()) != "email_v1" {
 		return "", false
 	}
+	return authentication.AccessModeOperator, true
 }

@@ -42,6 +42,5 @@ func (credential RefreshCredential) activeAt(now time.Time) bool {
 		!now.Before(credential.AbsoluteExpiresAt) {
 		return false
 	}
-	return credential.AccessMode != AccessModePortal ||
-		credential.PortalBindingState == "active"
+	return credential.AccessMode == AccessModeOperator
 }

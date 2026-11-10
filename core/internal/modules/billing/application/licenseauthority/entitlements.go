@@ -7,22 +7,12 @@ type Limit = billingapi.LicenseLimit
 type EntitlementProjection = billingapi.LicenseEntitlementProjection
 
 func ProjectEntitlements(snapshot VerifiedSnapshot) EntitlementProjection {
-	features := snapshot.Features()
 	limits := snapshot.Limits()
 	return EntitlementProjection{
-		Boolean: map[string]bool{
-			"workflow.builder.enabled":            features.WorkflowBuilder,
-			"api.builder.enabled":                 features.APIBuilder,
-			"analytics.dashboard_builder.enabled": true,
-			"workflow.enabled":                    true,
-			"api.access":                          true,
-		},
+		Boolean: map[string]bool{},
 		Limits: map[string]Limit{
-			"iam.active_users":            projectLimit(limits.MaxUsers),
-			"workflow.active_definitions": projectLimit(limits.MaxWorkflows),
-			"api.active_endpoints":        projectLimit(limits.MaxAPIEndpoints),
-			"analytics.active_dashboards": {Unlimited: true},
-			"documents.storage_bytes":     {Unlimited: true},
+			"iam.active_users":        projectLimit(limits.MaxUsers),
+			"documents.storage_bytes": {Unlimited: true},
 		},
 		Channel: snapshot.Channel(),
 	}

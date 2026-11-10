@@ -100,7 +100,7 @@ test-only registry, signer or store is required by these constructors.
 
 ## Verification evidence
 
-Executed from the `backend-v2` repository root:
+Executed from the `harpy` repository root:
 
 ```text
 go test ./core/internal/modules/platformauthority/...                     PASS

@@ -40,7 +40,6 @@ func buildCoreJobProcessors(
 		) {
 			return buildNotificationsRetentionProcessors(release, store)
 		},
-		buildWorkJobProcessors,
 	}
 	for _, build := range builders {
 		built, err := build(release, store)
@@ -55,10 +54,5 @@ func buildCoreJobProcessors(
 		return nil, err
 	}
 	processors = append(processors, deliveryProcessors...)
-	analyticsProcessors, err := buildAnalyticsJobProcessors(release, store)
-	if err != nil {
-		return nil, err
-	}
-	processors = append(processors, analyticsProcessors...)
 	return processors, nil
 }

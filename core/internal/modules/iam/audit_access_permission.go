@@ -3,11 +3,10 @@ package iam
 type auditAccessTarget struct{ resource, action string }
 
 var auditAccessOperations = map[string]struct{}{
-	"changelog.list":                {},
-	"changelog.stats":               {},
-	"changelog.get":                 {},
-	"changelog.entity_history":      {},
-	"changelog.form_record_history": {},
+	"changelog.list":           {},
+	"changelog.stats":          {},
+	"changelog.get":            {},
+	"changelog.entity_history": {},
 }
 
 func resolveAuditAccess(permission, operation string) (auditAccessTarget, bool) {

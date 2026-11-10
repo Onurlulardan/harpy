@@ -29,15 +29,8 @@ func TestAuthorizerConstructorsSealExactTransactionOwner(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	analyticsPort, err := NewAnalyticsAuthorizer()
-	if err != nil {
-		t.Fatal(err)
-	}
 	iam, iamOK := iamPort.(*authorizer)
-	analytics, analyticsOK := analyticsPort.(*authorizer)
-	if !iamOK || iam.binder.Owner() != "iam" ||
-		!analyticsOK || analytics.binder.Owner() != "analytics" ||
-		analytics.mode != "" {
+	if !iamOK || iam.binder.Owner() != "iam" {
 		t.Fatal("authorization ports do not seal their exact transaction owners")
 	}
 }

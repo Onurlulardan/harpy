@@ -74,12 +74,11 @@ yoldur.
 
 Portlar `.env.local` icindeki `LOCAL_*_PORT` degerleriyle degistirilebilir.
 Frontend tarayicida ayni origin `/api` ve `/ws` yollarini kullanir; Vite bunlari
-`LOCAL_API_PORT` uzerindeki Backend V2 API'sine proxy eder. Kalici ikinci bir
+`LOCAL_API_PORT` uzerindeki Harpy API'sine proxy eder. Kalici ikinci bir
 frontend API URL ayari yoktur.
 
-Forms Engine ve Workflow Engine ayri container veya microservice degildir;
-`core-worker` icindeki modullerdir. Isleri RabbitMQ ve PostgreSQL uzerinden
-ayni modular-monolith authority sinirlariyla yuruturler.
+Forms Engine, Workflow Engine, MCP server ve AI modulu Harpy urunu degildir.
+Ayri container, microservice veya `core-worker` modulu olarak eklenmezler.
 
 ## Log, durdurma ve sifirlama
 

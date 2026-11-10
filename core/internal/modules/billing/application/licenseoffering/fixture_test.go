@@ -42,8 +42,7 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 		NotBefore: instant(now, -time.Hour), RefreshAfter: instant(now, time.Hour),
 		GrantValidUntil: instant(now, 2*time.Hour), GraceUntil: instant(now, 3*time.Hour),
 		CommercialExpiresAt: instant(now, 24*time.Hour), ReleaseChannel: "stable",
-		Features: licensev2.Features{FormBuilder: true, WorkflowBuilder: true, APIBuilder: true},
-		Limits:   licensev2.Limits{MaxUsers: 10, MaxForms: 0, MaxTenants: 1},
+		Limits: licensev2.Limits{MaxUsers: 10, MaxTenants: 1},
 	}
 	fixture.document = canonicalValue(t, payload)
 	digest := sha256.Sum256(fixture.document)
@@ -55,15 +54,9 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 		},
 		issuer: "harpy", sequence: 5, digest: hex.EncodeToString(digest[:]), channel: "stable",
 		projection: billingapi.LicenseEntitlementProjection{
-			Boolean: map[string]bool{
-				"workflow.builder.enabled": true,
-				"api.builder.enabled": true, "analytics.dashboard_builder.enabled": true,
-				"workflow.enabled": true, "api.access": true,
-			},
+			Boolean: map[string]bool{},
 			Limits: map[string]billingapi.LicenseLimit{
-				"iam.active_users": {Value: 10},
-				"workflow.active_definitions": {}, "api.active_endpoints": {},
-				"analytics.active_dashboards": {Unlimited: true},
+				"iam.active_users":        {Value: 10},
 				"documents.storage_bytes": {Unlimited: true},
 			}, Channel: "stable",
 		},
