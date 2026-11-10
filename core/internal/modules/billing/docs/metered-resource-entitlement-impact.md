@@ -22,8 +22,8 @@
   releases one. `update`, `publish` and `revalidate` require only the builder
   boolean.
 - Query mapping is `api.builder.enabled` plus `api.active_endpoints`.
-- Dashboard mapping is `analytics.dashboard_builder.enabled` plus
-  `analytics.active_dashboards`.
+- Analytics dashboards are enabled and unlimited while the license is valid.
+  The license payload does not carry a dashboard claim.
 
 ## Affected data and migrations
 
@@ -56,8 +56,8 @@
 
 ## V1 compatibility
 
-- V1 `maxApiEndpoints`, `maxDashboards`, `apiBuilder` and `dashboardBuilder`
-  map to the exact ADR-0120 keys above.
+- V1 `maxApiEndpoints` and `apiBuilder` map to the API endpoint keys above.
+  Dashboard count and builder claims are not license inputs.
 - Opening/adopted counts require evidence-bound resource registration; missing
   resource identity is not assumed to be zero and delete cannot decrement an
   unknown resource.

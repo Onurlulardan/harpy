@@ -1,6 +1,6 @@
 ---
 name: iam-system-resources
-description: Build backend-v2 identity, authentication, sessions, RBAC, users, roles, organizations, and their Form Engine system-resource facade without duplicate sources of truth. Use for any IAM or protected system-form behavior.
+description: Build Harpy identity, authentication, sessions, RBAC, users, roles, organizations, and their system-resource records without duplicate sources of truth. Use for any IAM or protected system-resource behavior.
 ---
 
 # IAM System Resources
@@ -16,8 +16,8 @@ SaaS customer first-admin setup icin ADR-0119'u oku.
 ## Temel karar
 
 IAM bir paralel tablo kopyasi degil, business ownership siniridir. Users, roles
-ve organizations icin tek canonical record bulunur. Form Engine bu kaynaklari
-form gibi sunar fakat command/query davranisini IAM'e delege eder.
+ve organizations icin tek canonical record bulunur. Bu kayitlarin command ve
+query davranisinin tek sahibi IAM'dir.
 
 ## Alan siniflari
 
@@ -37,13 +37,13 @@ CUSTOM: tenant tarafindan eklenen guvenli profil alanlari
 Tum girisleri IAM application command'larina bagla:
 
 ```text
-login/register/invitation/portal/form CRUD/MCP
+login/register/invitation/portal
   -> IAM command/query
   -> one transaction
   -> canonical record + audit + projection intent
 ```
 
-Form hook, auth handler veya seed tarafinda ayni business kuralini kopyalama.
+Auth handler veya seed tarafinda ayni business kuralini kopyalama.
 Custom-field mutation'i system-resource orchestrator disindan acma. Direct table
 mutation'i yalniz controlled migration/seed adapter'inda kullan.
 

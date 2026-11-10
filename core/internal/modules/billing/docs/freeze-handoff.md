@@ -36,10 +36,11 @@ final integration work.
 - `billing/api.MeteredResourceMutationDecider` now admits API endpoint and
   Analytics dashboard mutations inside the caller's existing `TenantScope`.
   It never opens a second transaction and never calls an owner module.
-- Exact mappings are `api.builder.enabled` with `api.active_endpoints`, and
-  `analytics.dashboard_builder.enabled` with
-  `analytics.active_dashboards`. Create/restore are builder-and-gauge bound;
-  delete is builder-independent; update/publish/revalidate are boolean-only.
+- API endpoints map to `api.builder.enabled` and `api.active_endpoints`.
+  Analytics dashboards stay enabled and unlimited while the license is valid;
+  the license payload does not carry a dashboard claim. Create/restore for API
+  endpoints are builder-and-gauge bound; delete is builder-independent;
+  update/publish/revalidate are boolean-only.
 - Canonical operation/resource identity, request digest, counted projection,
   gauge evidence and reconciliation evidence are durable and replay-pinned.
 

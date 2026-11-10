@@ -1,6 +1,6 @@
 ---
 name: api-contract
-description: Design and change backend-v2 HTTP, streaming, WebSocket, webhook, and published REST contracts with stable DTOs, auth, tenant, permission, idempotency, errors, OpenAPI, and V1 compatibility. Use for every route or wire-format change.
+description: Design and change Harpy HTTP, streaming, WebSocket, webhook, and published REST contracts with stable DTOs, auth, tenant, permission, idempotency, errors, OpenAPI, and V1 compatibility. Use for every route or wire-format change.
 ---
 
 # API Contract
@@ -78,7 +78,7 @@ List, filter, search, sort, include veya aggregate icin yeni ad-hoc parser yazma
 
 ## V1 compatibility
 
-- `backend-v2` adi otomatik `/api/v2` path'i gerektirmez.
+- Repository adi otomatik `/api/v2` path'i gerektirmez.
 - Mevcut consumer'i ayni anda rewrite etme.
 - Eski syntax'i edge adapter'da canonical command/query'ye cevir.
 - Breaking degisikligi ADR, migration ve contract test olmadan yapma.
@@ -90,5 +90,5 @@ List, filter, search, sort, include veya aggregate icin yeni ad-hoc parser yazma
 - Decoder ve presenter unit testleri.
 - Auth, tenant, permission ve idempotency integration testleri.
 - Success ve her stable error icin contract test.
-- V1 differential fixture, gerekiyorsa frontend-v3/MCP E2E.
+- V1 differential fixture.
 - Streaming/binary icin protokole ozel test.

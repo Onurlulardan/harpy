@@ -54,9 +54,6 @@ Local stack README'sinde belirtilen gereksinimler:
 - Go Task (task)
 - İlk build için internet erişimi
 - ClamAV signature yüklemesi için Docker'a en az 4 GB RAM
-- Sibling frontend-v3 çalıştırılacaksa Node.js 22+ ve Yarn 1
-
-Backend tek başına geliştirilirken frontend toolchain'i zorunlu değildir.
 
 ## 6. Local giriş komutları
 

@@ -1,6 +1,6 @@
 ---
 name: code-organization
-description: Enforce backend-v2 file-size, naming, CRUD separation, readability, and source layout rules. Use for every handwritten source, test, migration, configuration, skill, or documentation change in backend-v2.
+description: Enforce Harpy file-size, naming, CRUD separation, readability, and source layout rules. Use for every handwritten source, test, migration, configuration, skill, or documentation change in Harpy.
 ---
 
 # Code Organization

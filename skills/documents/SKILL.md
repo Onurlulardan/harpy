@@ -1,6 +1,6 @@
 ---
 name: documents
-description: Build backend-v2 document folders, immutable versions, upload and malware-scan flows, encrypted blob storage, links, downloads, archives, trash, retention, legal hold, purge, quota, and V1 document migration. Use for every document metadata or binary lifecycle change.
+description: Build Harpy document folders, immutable versions, upload and malware-scan flows, encrypted blob storage, links, downloads, archives, trash, retention, legal hold, purge, quota, and V1 document migration. Use for every document metadata or binary lifecycle change.
 ---
 
 # Documents

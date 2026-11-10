@@ -1,6 +1,6 @@
 ---
 name: notifications
-description: Build backend-v2 durable in-app notifications, preferences, templates, realtime hints, email and Telegram delivery, provider secrets, receipts, retries, suppression, retention, and V1 notification migration. Use for every notification intent, inbox, WebSocket, or provider-delivery change.
+description: Build Harpy durable in-app notifications, preferences, templates, realtime hints, email and Telegram delivery, provider secrets, receipts, retries, suppression, retention, and V1 notification migration. Use for every notification intent, inbox, WebSocket, or provider-delivery change.
 ---
 
 # Notifications

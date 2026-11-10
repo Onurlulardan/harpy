@@ -13,7 +13,7 @@ func ProjectEntitlements(snapshot VerifiedSnapshot) EntitlementProjection {
 		Boolean: map[string]bool{
 			"workflow.builder.enabled":            features.WorkflowBuilder,
 			"api.builder.enabled":                 features.APIBuilder,
-			"analytics.dashboard_builder.enabled": features.DashboardBuilder,
+			"analytics.dashboard_builder.enabled": true,
 			"workflow.enabled":                    true,
 			"api.access":                          true,
 		},
@@ -21,7 +21,7 @@ func ProjectEntitlements(snapshot VerifiedSnapshot) EntitlementProjection {
 			"iam.active_users":            projectLimit(limits.MaxUsers),
 			"workflow.active_definitions": projectLimit(limits.MaxWorkflows),
 			"api.active_endpoints":        projectLimit(limits.MaxAPIEndpoints),
-			"analytics.active_dashboards": projectLimit(limits.MaxDashboards),
+			"analytics.active_dashboards": {Unlimited: true},
 			"documents.storage_bytes":     {Unlimited: true},
 		},
 		Channel: snapshot.Channel(),

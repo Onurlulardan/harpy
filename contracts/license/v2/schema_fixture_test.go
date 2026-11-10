@@ -22,11 +22,11 @@ func validSnapshotContract() map[string]any {
 			"release_channel": "stable",
 			"features": map[string]any{
 				"formBuilder": true, "workflowBuilder": true, "apiBuilder": true,
-				"dashboardBuilder": true, "aiAssistant": true,
+				"aiAssistant": true,
 			},
 			"limits": map[string]any{
 				"maxUsers": 0, "maxForms": 0, "maxWorkflows": 0,
-				"maxApiEndpoints": 0, "maxDashboards": 0, "maxTenants": 1,
+				"maxApiEndpoints": 0, "maxTenants": 1,
 			},
 		},
 	}

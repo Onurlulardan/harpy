@@ -57,13 +57,13 @@ func newOfferingFixture(t *testing.T) offeringFixture {
 		projection: billingapi.LicenseEntitlementProjection{
 			Boolean: map[string]bool{
 				"workflow.builder.enabled": true,
-				"api.builder.enabled": true, "analytics.dashboard_builder.enabled": false,
+				"api.builder.enabled": true, "analytics.dashboard_builder.enabled": true,
 				"workflow.enabled": true, "api.access": true,
 			},
 			Limits: map[string]billingapi.LicenseLimit{
 				"iam.active_users": {Value: 10},
 				"workflow.active_definitions": {}, "api.active_endpoints": {},
-				"analytics.active_dashboards": {},
+				"analytics.active_dashboards": {Unlimited: true},
 				"documents.storage_bytes": {Unlimited: true},
 			}, Channel: "stable",
 		},

@@ -1,6 +1,6 @@
 ---
 name: billing
-description: Build and change backend-v2 billing plans, immutable offerings and prices, subscriptions, discounts, invoices, provider webhooks, entitlements, metered usage, limits, and V1 cutover. Use for every billing-owned table, API, event, job, provider, permission, or migration change.
+description: Build and change Harpy billing plans, immutable offerings and prices, subscriptions, discounts, invoices, provider webhooks, entitlements, metered usage, limits, and V1 cutover. Use for every billing-owned table, API, event, job, provider, permission, or migration change.
 ---
 
 # Billing
@@ -55,7 +55,7 @@ receive_webhook.go, reconcile_provider.go
 5. State, decision audit, outbox ve gerekiyorsa job'u ayni commit'e kat.
 6. Commit basarili olmadan success veya entitlement grant dondurme.
 
-HTTP, MCP, workflow, import ve worker mutation'lari ayni billing application
+HTTP, import ve worker mutation'lari ayni billing application
 guard'ini kullanir. Handler status yazmaz; provider network cagrisi, event publish
 ve secret erisimi acik DB transaction'i icinde calismaz.
 

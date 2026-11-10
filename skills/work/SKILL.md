@@ -1,6 +1,6 @@
 ---
 name: work
-description: Build backend-v2 boards, columns, memberships, tasks, labels, checklists, comments, calendar events, recurrence, unified inbox/calendar projections, and Work V1 adoption. Use for task-manager, board, comment, assignment, ordering, reminder, recurrence, or calendar behavior.
+description: Build Harpy boards, columns, memberships, tasks, labels, checklists, comments, calendar events, recurrence, unified inbox/calendar projections, and Work V1 adoption. Use for task-manager, board, comment, assignment, ordering, reminder, recurrence, or calendar behavior.
 ---
 
 # Work

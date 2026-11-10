@@ -36,11 +36,10 @@ type SnapshotPayload struct {
 }
 
 type Features struct {
-	FormBuilder      bool `json:"formBuilder"`
-	WorkflowBuilder  bool `json:"workflowBuilder"`
-	APIBuilder       bool `json:"apiBuilder"`
-	DashboardBuilder bool `json:"dashboardBuilder"`
-	AIAssistant      bool `json:"aiAssistant"`
+	FormBuilder     bool `json:"formBuilder"`
+	WorkflowBuilder bool `json:"workflowBuilder"`
+	APIBuilder      bool `json:"apiBuilder"`
+	AIAssistant     bool `json:"aiAssistant"`
 }
 
 type Limits struct {
@@ -48,6 +47,5 @@ type Limits struct {
 	MaxForms        int64 `json:"maxForms"`
 	MaxWorkflows    int64 `json:"maxWorkflows"`
 	MaxAPIEndpoints int64 `json:"maxApiEndpoints"`
-	MaxDashboards   int64 `json:"maxDashboards"`
 	MaxTenants      int64 `json:"maxTenants"`
 }

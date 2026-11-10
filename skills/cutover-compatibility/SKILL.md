@@ -1,6 +1,6 @@
 ---
 name: cutover-compatibility
-description: Design or implement backend-v2 V1 compatibility, shadow reads, logical adoption, writer fencing, cohort rollout, reverse reconciliation, contract retirement, or mixed-domain cutover. Use for every migration edge and production authority switch.
+description: Design or implement Harpy V1 compatibility, shadow reads, logical adoption, writer fencing, cohort rollout, reverse reconciliation, contract retirement, or mixed-domain cutover. Use for every migration edge and production authority switch.
 ---
 
 # Cutover Compatibility
@@ -52,5 +52,5 @@ V1 writer ile olusmaz.
 - Direct-DML, missing-row, lock race ve stale-generation negative testleri var.
 - Snapshot/delta crash-resume, checksum ve failover-slot rehearsal'i var.
 - Future job/event/blob inventory'si sifirlanmadan switch testi gecmiyor.
-- Frontend/MCP consumer capability ve intentional-difference sonucu kayitli.
+- Consumer capability ve intentional-difference sonucu kayitli.
 - Reverse reconcile, rollback SLO ve contract-retirement testi var.

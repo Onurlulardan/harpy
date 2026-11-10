@@ -1,6 +1,6 @@
 ---
 name: impact-analysis
-description: Trace backend-v2 changes across modules, APIs, tenancy, data, events, jobs, frontend-v3, MCP, compatibility, and rollout before implementation. Use for every cross-module or public-contract change and any change with uncertain ownership.
+description: Trace Harpy changes across modules, APIs, tenancy, data, events, jobs, compatibility, and rollout before implementation. Use for every cross-module or public-contract change and any change with uncertain ownership.
 ---
 
 # Impact Analysis
@@ -18,7 +18,7 @@ Kod yazmadan once tek sayfalik etki notu olustur.
 ### 2. HTTP ve consumer
 
 - Method, path, auth, permission ve idempotency'yi izle.
-- frontend-v3, MCP, webhook ve external consumer'lari bul.
+- Webhook ve external consumer'lari bul.
 - Envelope, cookie, header, SSE, WS, binary ve pagination etkisini yaz.
 
 ### 3. Tenant ve veri
@@ -28,20 +28,13 @@ Kod yazmadan once tek sayfalik etki notu olustur.
 - Cross-tenant negative senaryoyu tanimla.
 - Transaction icindeki state, audit, outbox ve job etkisini yaz.
 
-### 4. No-code kontrati
-
-- Etkilenen form field, relation, validation veya query capability'sini bul.
-- Etkilenen workflow node, expression, checkpoint veya side effect'i bul.
-- Published eski version ve in-flight instance davranisini tanimla.
-- Unknown config ve downgrade davranisini belirt.
-
-### 5. Async ve projection
+### 4. Async ve projection
 
 - Event producer/consumer ve event version etkisini listele.
 - Retry, duplicate, ordering ve DLQ davranisini yaz.
 - Projection rebuild veya repair gereksinimini belirt.
 
-### 6. Compatibility ve rollout
+### 5. Compatibility ve rollout
 
 - V1 wire/data davranisi korunuyor mu belirt.
 - Expand/backfill/switch/contract adimlarini yaz.
@@ -53,7 +46,6 @@ Kod yazmadan once tek sayfalik etki notu olustur.
 High:
 
 - Tenant isolation, auth/RBAC, schema evolution, money, destructive data.
-- Published form/workflow semantic degisikligi.
 - Public API veya event breaking change.
 
 Medium:

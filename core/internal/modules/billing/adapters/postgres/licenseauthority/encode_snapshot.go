@@ -23,8 +23,7 @@ func encodeSnapshot(snapshot licenseapp.VerifiedSnapshot) (snapshotDocuments, er
 	features := snapshot.Features()
 	featureDocument, err := json.Marshal(map[string]bool{
 		"formBuilder": features.FormBuilder, "workflowBuilder": features.WorkflowBuilder,
-		"apiBuilder": features.APIBuilder, "dashboardBuilder": features.DashboardBuilder,
-		"aiAssistant": features.AIAssistant,
+		"apiBuilder": features.APIBuilder, "aiAssistant": features.AIAssistant,
 	})
 	if err != nil {
 		return snapshotDocuments{}, err
@@ -33,7 +32,7 @@ func encodeSnapshot(snapshot licenseapp.VerifiedSnapshot) (snapshotDocuments, er
 	limitDocument, err := json.Marshal(map[string]int64{
 		"maxUsers": limits.MaxUsers, "maxForms": limits.MaxForms,
 		"maxWorkflows": limits.MaxWorkflows, "maxApiEndpoints": limits.MaxAPIEndpoints,
-		"maxDashboards": limits.MaxDashboards, "maxTenants": limits.MaxTenants,
+		"maxTenants": limits.MaxTenants,
 	})
 	if err != nil {
 		return snapshotDocuments{}, err
