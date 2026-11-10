@@ -16,6 +16,8 @@ route registration
 
 Route dosyası method/path/middleware bağlar. Decoder wire format'ı doğrular. Application use-case business kararı ve transaction'ı yönetir. Presenter domain entity veya DB row'u doğrudan dışarı vermek yerine stable response DTO üretir.
 
+Yayındaki method ve path listesi [API endpoint kataloğu](../api-endpoints.md) dosyasındadır.
+
 ## 2. Public ve management HTTP
 
 API composition public ve management sunucularını ayrı kurar:
