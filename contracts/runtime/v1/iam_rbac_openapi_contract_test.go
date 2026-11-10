@@ -20,10 +20,7 @@ func TestIAMRBACOpenAPIContractIsExactAndFailClosed(t *testing.T) {
 		"actionItem":         {"get", "put", "delete"},
 		"check":              {"post"}, "batchCheck": {"post"},
 		"userEffective": {"get"}, "roleEffective": {"get"},
-		"organizationEffective": {"get"}, "cacheStats": {"get"},
-		"cacheInvalidateUser": {"post"}, "cacheInvalidateRole": {"post"},
-		"cacheInvalidateOrganization": {"post"},
-		"cacheInvalidateTenant":       {"post"}, "cacheInvalidateAll": {"post"},
+		"organizationEffective": {"get"},
 	}
 	if len(items) != len(want) {
 		t.Fatalf("RBAC path item count=%d want=%d", len(items), len(want))
@@ -40,11 +37,10 @@ func TestIAMRBACOpenAPIContractIsExactAndFailClosed(t *testing.T) {
 			assertRBACBearer(t, name, method, operation)
 		}
 	}
-	if operations != 26 {
-		t.Fatalf("RBAC operation count=%d want=26", operations)
+	if operations != 20 {
+		t.Fatalf("RBAC operation count=%d want=20", operations)
 	}
 	assertRBACNoBodyAuthority(t, directory)
-	assertRBACCacheRetirement(t, items)
 }
 
 func assertRBACBearer(
@@ -74,23 +70,6 @@ func assertRBACNoBodyAuthority(t *testing.T, directory string) {
 		for _, forbidden := range []string{"user_id", "tenant_id", "super_admin", "all"} {
 			if strings.Contains(lower, forbidden) {
 				t.Fatalf("RBAC decision request %s contains body authority %s", name, forbidden)
-			}
-		}
-	}
-}
-
-func assertRBACCacheRetirement(t *testing.T, items map[string]any) {
-	t.Helper()
-	for _, name := range []string{
-		"cacheStats", "cacheInvalidateUser", "cacheInvalidateRole",
-		"cacheInvalidateOrganization", "cacheInvalidateTenant", "cacheInvalidateAll",
-	} {
-		item := items[name].(map[string]any)
-		for _, raw := range item {
-			operation := raw.(map[string]any)
-			responses := operation["responses"].(map[string]any)
-			if operation["deprecated"] != true || responses["410"] == nil || responses["200"] != nil {
-				t.Fatalf("RBAC cache route %s is not explicit 410: %v", name, operation)
 			}
 		}
 	}

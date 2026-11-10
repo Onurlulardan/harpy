@@ -37,5 +37,5 @@ func (handler *SystemTransferHTTP) Routes() []httpedge.Route {
 		{Method: http.MethodGet, Pattern: systemImportMember + "/report",
 			Handler: http.HandlerFunc(handler.reportSystemImport)},
 	}
-	return append(routes, handler.systemTransferV1Routes()...)
+	return routes
 }

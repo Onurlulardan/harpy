@@ -60,7 +60,6 @@ func TestCoreOpenAPIInventoryCoversEveryComposedIAMAuthRoute(t *testing.T) {
 		{"lifecycle", (&LifecycleHTTP{}).Routes()},
 		{"portal-user", (&PortalUserHTTP{}).Routes()},
 	}
-	retired := iamRouteSet((&LifecycleHTTP{}).retiredRoutes())
 	documents := make(map[string]iamOpenAPIPathDocument)
 	seen := make(map[string]string)
 	documented := 0
@@ -104,15 +103,9 @@ func TestCoreOpenAPIInventoryCoversEveryComposedIAMAuthRoute(t *testing.T) {
 				t.Errorf("decode core OpenAPI operation for %s: %v", wire, err)
 				continue
 			}
-			if _, isRetired := retired[wire]; isRetired {
-				if !operation.Deprecated {
-					t.Errorf("retired runtime route is not deprecated in OpenAPI: %s", wire)
-					continue
-				}
-				if _, found = operation.Responses["410"]; !found {
-					t.Errorf("retired runtime route has no 410 response in OpenAPI: %s", wire)
-					continue
-				}
+			if operation.Deprecated {
+				t.Errorf("composed IAM route is deprecated: %s", wire)
+				continue
 			}
 			aggregateReference, found := aggregate.Paths[route.Pattern]
 			if !found {
@@ -153,14 +146,6 @@ func iamReadOpenAPIPathDocument(
 		t.Fatal(err)
 	}
 	return document
-}
-
-func iamRouteSet(routes []httpedge.Route) map[string]struct{} {
-	result := make(map[string]struct{}, len(routes))
-	for _, route := range routes {
-		result[route.Method+" "+route.Pattern] = struct{}{}
-	}
-	return result
 }
 
 func iamRepositoryRoot(t *testing.T) string {

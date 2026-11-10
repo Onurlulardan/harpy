@@ -11,7 +11,7 @@ func TestRoutesAreClosedAndUnambiguous(t *testing.T) {
 		return Response{Status: 200, Data: map[string]bool{"ok": true}}, nil
 	}))
 	routes := handler.Routes()
-	if len(routes) != 32 {
+	if len(routes) != 30 {
 		t.Fatalf("route count = %d, want 32", len(routes))
 	}
 	seen := make(map[string]struct{}, len(routes))

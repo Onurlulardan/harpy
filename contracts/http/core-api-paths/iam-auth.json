@@ -1,24 +1,6 @@
 {
-  "/api/auth/admin/sessions": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/adminSessions"
-  },
-  "/api/auth/admin/sessions/terminate-all": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/adminTerminateAll"
-  },
-  "/api/auth/admin/sessions/{id}": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/adminSession"
-  },
-  "/api/auth/change-password": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/authChangePassword"
-  },
-  "/api/auth/create-verification-token": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/createVerificationToken"
-  },
   "/api/auth/csrf": {
     "$ref": "iam-auth-v1.paths.json#/pathItems/csrf"
-  },
-  "/api/auth/forgot-password": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/forgotPassword"
   },
   "/api/auth/identifiers/verify": {
     "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/verifyIdentifier"
@@ -32,9 +14,6 @@
   "/api/auth/login": {
     "$ref": "iam-auth-v1.paths.json#/pathItems/operatorLogin"
   },
-  "/api/auth/login-history": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/loginHistory"
-  },
   "/api/auth/logout": {
     "$ref": "iam-auth-v1.paths.json#/pathItems/logout"
   },
@@ -44,17 +23,8 @@
   "/api/auth/password/reset/complete": {
     "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePasswordReset"
   },
-  "/api/auth/portal/forgot-password": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalForgotPassword"
-  },
   "/api/auth/portal/login": {
     "$ref": "iam-auth-v1.paths.json#/pathItems/portalLogin"
-  },
-  "/api/auth/portal/lookup": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalLookup"
-  },
-  "/api/auth/portal/setup-password": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalSetupPassword"
   },
   "/api/auth/portal/setup/complete": {
     "$ref": "iam-lifecycle-public-v1.paths.json#/pathItems/completePortalSetup"
@@ -67,9 +37,6 @@
   },
   "/api/auth/portal-users/{id}/invite": {
     "$ref": "iam-portal-users-v1.paths.json#/pathItems/invite"
-  },
-  "/api/auth/portal-users/{id}/link": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/portalUserUnlink"
   },
   "/api/auth/portal-users/{id}/status": {
     "$ref": "iam-portal-users-v1.paths.json#/pathItems/status"
@@ -89,32 +56,8 @@
   "/api/auth/refresh": {
     "$ref": "iam-auth-v1.paths.json#/pathItems/refresh"
   },
-  "/api/auth/register": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/register"
-  },
-  "/api/auth/register-tenant": {
-    "$ref": "tenant-provisioning-v1.paths.json#/pathItems/legacyAnonymousRegistration"
-  },
-  "/api/auth/reset-password": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/resetPassword"
-  },
   "/api/auth/session": {
     "$ref": "iam-auth-v1.paths.json#/pathItems/currentSession"
-  },
-  "/api/auth/sessions": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/authSessions"
-  },
-  "/api/auth/sessions/terminate-all": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/terminateAll"
-  },
-  "/api/auth/sessions/{id}": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/authSession"
-  },
-  "/api/auth/validate": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/validate"
-  },
-  "/api/auth/verify-email/{token}": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/verifyEmail"
   },
   "/api/iam/authenticators": {
     "$ref": "iam-lifecycle-authenticators-v1.paths.json#/pathItems/authenticators"
@@ -172,8 +115,5 @@
   },
   "/api/profile": {
     "$ref": "iam-profile-v1.paths.json#/pathItems/self"
-  },
-  "/api/profile/change-password": {
-    "$ref": "iam-lifecycle-retired-v1.paths.json#/pathItems/profileChangePassword"
   }
 }

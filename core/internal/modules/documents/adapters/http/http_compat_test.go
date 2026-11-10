@@ -15,11 +15,6 @@ func TestLegacyByteFlowsRecordHitAndRequireUpgrade(t *testing.T) {
 		{"folder archive", http.MethodGet,
 			"/api/folders/" + testDocumentID + "/download",
 			operationLegacyArchive, testDocumentID},
-		{"document upload", http.MethodPost, "/api/documents",
-			operationLegacyUpload, ""},
-		{"version upload", http.MethodPost,
-			"/api/documents/" + testDocumentID + "/versions",
-			operationLegacyUpload, testDocumentID},
 	} {
 		t.Run(fixture.name, func(t *testing.T) {
 			called := false

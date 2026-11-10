@@ -60,7 +60,7 @@ func NewHTTPHandler(dependencies HTTPHandlerDependencies) (*HTTPHandler, error) 
 }
 
 func (handler *HTTPHandler) Ready() bool {
-	return handler != nil && handler.adapter != nil && len(handler.adapter.Routes()) == 32
+	return handler != nil && handler.adapter != nil && len(handler.adapter.Routes()) == 30
 }
 
 func (handler *HTTPHandler) Routes() []httpedge.Route {

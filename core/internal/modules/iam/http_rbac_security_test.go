@@ -3,7 +3,6 @@ package iam
 import (
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 	"time"
 
@@ -96,29 +95,5 @@ func TestRBACHTTPRejectsPortalBearer(t *testing.T) {
 	handler.listPermissions(response, request)
 	if response.Code != http.StatusUnauthorized || len(app.calls) != 0 {
 		t.Fatalf("portal bearer=%d calls=%d", response.Code, len(app.calls))
-	}
-}
-
-func TestRBACCacheEndpointsAreExplicitlyGone(t *testing.T) {
-	fixture := newRBACHTTPTestFixture(t)
-	response := httptest.NewRecorder()
-	fixture.handler.cacheRetired(
-		response, fixture.request(http.MethodGet, "/api/permissions/cache/stats", ""),
-	)
-	if response.Code != http.StatusGone ||
-		!strings.Contains(response.Body.String(), "PERMISSION_CACHE_RETIRED") ||
-		len(fixture.app.calls) != 0 {
-		t.Fatalf("cache response = %d / %s", response.Code, response.Body.String())
-	}
-}
-
-func TestRBACCacheRetirementStillRequiresAuthentication(t *testing.T) {
-	fixture := newRBACHTTPTestFixture(t)
-	request := httptest.NewRequest(http.MethodGet, "/api/permissions/cache/stats", nil)
-	response := httptest.NewRecorder()
-	fixture.handler.cacheRetired(response, request)
-	if response.Code != http.StatusUnauthorized ||
-		strings.Contains(response.Body.String(), "PERMISSION_CACHE_RETIRED") {
-		t.Fatalf("unauthenticated cache response=%d body=%s", response.Code, response.Body.String())
 	}
 }

@@ -65,23 +65,3 @@ func (handler *RBACHTTP) writeFailure(
 		handler.report(fmt.Errorf("write IAM RBAC failure: %w", err))
 	}
 }
-
-func (handler *RBACHTTP) cacheRetired(w http.ResponseWriter, r *http.Request) {
-	if _, valid := handler.claims(r); !valid {
-		handler.writeFailure(w, r, identityFailureAuthentication)
-		return
-	}
-	envelope, err := runtimev1.NewErrorEnvelope(
-		"PERMISSION_CACHE_RETIRED",
-		"Permission cache endpoints were retired; authorization is versioned and transactional",
-		authHTTPCorrelationID(r).String(), nil,
-	)
-	if err == nil {
-		err = httpwire.WriteJSON(
-			w, http.StatusGone, authHTTPCorrelationID(r), envelope, false,
-		)
-	}
-	if err != nil {
-		handler.report(fmt.Errorf("write IAM RBAC cache retirement: %w", err))
-	}
-}

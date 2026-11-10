@@ -17,7 +17,7 @@ func TestRoutesExposeFinalAndOnlyRealLegacyCompatibilitySurface(t *testing.T) {
 	access, _ := NewAccess(httpTestUser, httpTestTenant, 1, 1,
 		PermissionInboxRead, OperationInboxList, "", false, false)
 	routes := newHTTPTestHandler(access, &httpApplicationFake{}).Routes()
-	if len(routes) != 11 {
+	if len(routes) != 10 {
 		t.Fatalf("route count=%d", len(routes))
 	}
 	for _, route := range routes {
@@ -56,43 +56,6 @@ func TestMalformedUpgradeCannotBurnTicket(t *testing.T) {
 	handler.connect(recorder, request)
 	if app.consumeCalls != 0 || recorder.Code != 422 {
 		t.Fatalf("malformed handshake consumed=%d status=%d", app.consumeCalls, recorder.Code)
-	}
-}
-
-func TestLegacyUpgradeRequiresSignedConsumerManifest(t *testing.T) {
-	unsigned, err := NewAccess(httpTestUser, httpTestTenant, 1, 7,
-		PermissionInboxRead, OperationLegacyConnect, "https://app.harpy.test", true, false)
-	if err == nil || unsigned.ValidFor(PermissionInboxRead, OperationLegacyConnect) {
-		t.Fatal("unsigned legacy consumer was admitted")
-	}
-	manifest := [32]byte{1}
-	signed, err := NewLegacyAccess(httpTestUser, httpTestTenant, 1, 7,
-		"https://app.harpy.test", manifest, true)
-	if err != nil || !signed.ValidFor(PermissionInboxRead, OperationLegacyConnect) ||
-		signed.ConsumerManifestDigest() != manifest {
-		t.Fatalf("signed legacy access=%+v err=%v", signed, err)
-	}
-	verifier := &accessVerifierFake{access: signed}
-	handler, _ := NewHandler(HandlerDependencies{Access: verifier,
-		Application: &httpApplicationFake{}, Realtime: &realtimeFake{}, Report: func(error) {},
-		Correlation: func(*http.Request) string { return "10000000-0000-4000-8000-000000000099" }})
-	request := httptest.NewRequest(http.MethodGet,
-		"/ws/notifications/"+httpTestUser.String(), nil)
-	request.Header.Set("X-Harpy-Consumer-Manifest", "manifest")
-	request.Header.Set("X-Harpy-Consumer-Signature", "signature")
-	request.Header.Set("Origin", "https://app.harpy.test")
-	request.Header.Set("Connection", "Upgrade")
-	request.Header.Set("Upgrade", "websocket")
-	request.Header.Set("Sec-WebSocket-Version", "13")
-	request.Header.Set("Sec-WebSocket-Key", base64.StdEncoding.EncodeToString([]byte("0123456789abcdef")))
-	request.Header.Set("Sec-WebSocket-Protocol", "harpy.notifications.v1, fc-ticket."+
-		base64.RawURLEncoding.EncodeToString(make([]byte, 32)))
-	recorder := httptest.NewRecorder()
-	handler.connectLegacy(recorder, request)
-	if !verifier.request.RequireSignedConsumer ||
-		len(verifier.request.ConsumerManifestValues) != 1 ||
-		len(verifier.request.ConsumerSignatureValues) != 1 {
-		t.Fatalf("legacy access request=%+v", verifier.request)
 	}
 }
 

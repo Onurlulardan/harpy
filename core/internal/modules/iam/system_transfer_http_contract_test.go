@@ -37,8 +37,8 @@ func TestSystemTransferHTTPRoutesMatchADR0103(t *testing.T) {
 		t.Fatal("IAM transfer path fragment is invalid")
 	}
 	routes := new(SystemTransferHTTP).Routes()
-	if len(routes) != len(expected)+30 {
-		t.Fatalf("routes=%d want=%d", len(routes), len(expected)+30)
+	if len(routes) != len(expected) {
+		t.Fatalf("routes=%d want=%d", len(routes), len(expected))
 	}
 	for _, route := range routes[:len(expected)] {
 		want, found := expected[route.Method+" "+route.Pattern]
