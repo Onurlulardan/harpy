@@ -14,8 +14,7 @@ Kaynak kök: core/internal/capabilities/
 | artifactobject | S3-compatible object read/write/delete/reconciliation API |
 | artifactspool | Geçici artifact üretimi için allocation, lease, writer ve janitor |
 | credentialdelivery | Credential delivery artifact ve envelope kontratı |
-| licensebootstrap | License bootstrap grant/binding capability |
-| restoredlicense | Environment restore sonrası license binding capability |
+| restoredlicense | Restore receipt binding capability; local boot bunu çağırmaz |
 | tenantactivation | Tenant activation grant ve activation scope |
 | tabularmapping | Tabular file mapping ve schema/field mapping |
 | tabulartransfer | Tabular import/export operation contract ve transfer |
@@ -61,7 +60,7 @@ Spool kalıcı business storage değildir. Lease süresi, disk sınırı ve clea
 
 credentialdelivery credential artifact, encrypted payload ve delivery reference contract'larını içerir. Bu capability secret'ın public API response veya normal event payload'ında taşınması yerine kontrollü delivery kanalına aktarılmasını sağlar.
 
-licensebootstrap ilk runtime license authority bağlantısında grant/binding operasyonlarını sınırlar. restoredlicense belirli restore/rehydration sonrasında license authority'yi tekrar bağlayan dar kontratı sağlar.
+restoredlicense, restore receipt binding için duran bir capability paketidir. Local boot, API ve worker bu paketi çağırmaz ve imzalı lisans snapshot'ı istemez.
 
 Bu paketler billing/tenancy/platform owner implementasyonlarının yerine geçmez; o owner'ların kullanabileceği typed capability sınırlarını sağlar.
 

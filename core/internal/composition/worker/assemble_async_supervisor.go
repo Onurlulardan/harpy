@@ -30,12 +30,6 @@ func assembleWorkerAsyncSupervisor(
 	if enabled {
 		workloads = append(workloads, customerProvisioning)
 	}
-	workloads, err = appendLicenseRefreshWorkload(
-		ctx, pool, workerSettings, version, workloads,
-	)
-	if err != nil {
-		return nil, err
-	}
 	workloads, err = appendAuthorityDeliveryWorkload(ctx, pool, workerSettings, workloads)
 	if err != nil {
 		return nil, err

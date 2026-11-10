@@ -5,7 +5,6 @@ var recoveryArtifactNames = []string{
 	"database-rehydrate.env",
 	"database-restore.env",
 	"operator-restore-identity.env",
-	"operator-restore-license.env",
 	"postgres-backup-dsn.txt",
 	"postgres-backup-password.txt",
 	"postgres-restore-dsn.txt",

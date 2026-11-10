@@ -11,7 +11,6 @@ func TestPhase14ProfilesRejectCrossProfileKeys(t *testing.T) {
 	}{
 		{"initialize backup DSN", validOperatorInitializeEnvironment(DeploymentOnPrem), operatorInitializeError, "HARPY_BACKUP_POSTGRES_DSN_FILE=/foreign"},
 		{"identity license", validOperatorIdentityEnvironment(), operatorIdentityError, licenseSnapshotKey + "=/foreign"},
-		{"license IAM custody", validOperatorLicenseEnvironment(), operatorLicenseError, "HARPY_IAM_KEY_CUSTODY_MANIFEST_PATH=/foreign"},
 		{"backup runtime DSN", validDatabaseBackupEnvironment(), databaseBackupError, "HARPY_POSTGRES_DSN=secret"},
 		{"restore license", validDatabaseRestoreEnvironment(), databaseRestoreError, licenseSnapshotKey + "=/foreign"},
 	}
@@ -30,9 +29,9 @@ func TestPhase14ProfilesRejectBlankAndDuplicateKeys(t *testing.T) {
 	if _, err := loadOperatorIdentityReconcile(blank); err == nil {
 		t.Fatal("blank specialized key was accepted")
 	}
-	duplicate := append(validOperatorLicenseEnvironment(),
-		licenseSnapshotKey+"=/must-not-leak")
-	if _, err := loadOperatorLicenseReconcile(duplicate); err == nil {
+	duplicate := append(validOperatorIdentityEnvironment(),
+		"HARPY_RESTORE_RECEIPT_PATH=/must-not-leak")
+	if _, err := loadOperatorIdentityReconcile(duplicate); err == nil {
 		t.Fatal("duplicate specialized key was accepted")
 	}
 }
@@ -43,10 +42,6 @@ func operatorInitializeError(entries []string) error {
 }
 func operatorIdentityError(entries []string) error {
 	_, err := loadOperatorIdentityReconcile(entries)
-	return err
-}
-func operatorLicenseError(entries []string) error {
-	_, err := loadOperatorLicenseReconcile(entries)
 	return err
 }
 func databaseBackupError(entries []string) error {

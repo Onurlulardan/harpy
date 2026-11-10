@@ -56,7 +56,7 @@ Harpy'nin business yetenekleri, veri ve iş kuralı sahipliği belirlenmiş mod�
 | --- | --- |
 | **IAM — Identity & Access Management** | Identity, authentication, credentials, sessions, organizations, RBAC, permissions, invitations, profiles, service principals ve erişim yönetimi |
 | **Tenancy** | Tenant yaşam döngüsü, provisioning, onboarding, deployment policy, tenant settings ve tenant activation |
-| **Billing** | Offerings, pricing, subscriptions, invoices, entitlements, usage, retention ve license authority |
+| **Billing** | Offerings, pricing, subscriptions, invoices, entitlements, usage ve retention |
 | **Work Management** | Boards, columns, memberships, tasks, labels, checklists, comments, calendars ve recurrence |
 | **Documents** | Folders, items, versions, uploads, downloads, links, archives, recovery, encryption ve scanning entegrasyonları |
 | **Notifications** | Messages, preferences, templates, provider configuration ve delivery süreçleri |
@@ -169,7 +169,6 @@ flowchart TB
 | **Artifact Object** | S3-compatible object read/write/delete, digest ve reconciliation arayüzleri |
 | **Artifact Spool** | Geçici artifact üretimi için bounded workspace, lease ve cleanup |
 | **Credential Delivery** | Credential artifact ve kontrollü delivery contract'ları |
-| **License Bootstrap / Restored License** | License authority bootstrap ve restore sonrası binding yetenekleri |
 | **Tenant Activation** | Doğrulanmış activation grant ve activation scope |
 | **Tabular Mapping / Transfer** | Tabular data mapping, import/export ve transfer contract'ları |
 
@@ -322,7 +321,7 @@ task dev
 4. PostgreSQL, RabbitMQ ve diğer altyapı servislerini başlatır ve health kontrollerini yapar.
 5. Local cluster bootstrap ve release kanıtı adımlarını yürütür.
 6. Migration ve runtime grant işlemlerini uygular.
-7. Gerekli installation/license ve tenant executor adımlarını tamamlar.
+7. Installation manifest ve tenant executor adımlarını tamamlar.
 8. API, worker ve schema executor servislerini başlatır.
 9. Runtime readiness kontrollerini yürütür.
 10. Local workflow yapılandırmasına bağlı olarak sibling frontend development server'ını başlatır.

@@ -23,7 +23,6 @@ func TestLocalUpPreservesInstallationAdmissionOrder(t *testing.T) {
 		"initialize",
 		"local-release-artifact",
 		"installation:artifacts",
-		"license",
 		"installation:deliver",
 		"services",
 		"verify",

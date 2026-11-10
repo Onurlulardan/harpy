@@ -20,12 +20,12 @@ func finishAPIRuntime(
 	policyRuntime *tenancymodule.DeploymentPolicyRuntime,
 	telemetryRuntime *telemetry.Runtime, writeCatalogs platformasync.WriteCatalogs,
 	iamRuntime iamAPIRuntime, platformOpsHTTP *platformOpsHTTPRuntime,
-	billingGroups [][]httpedge.Route, billingLicense []httpedge.Route,
+	billingGroups [][]httpedge.Route,
 	domains apiDomainRuntimes, deployment deploymentHTTPFoundation,
 ) (apiRuntime, error) {
 	groups := joinAPIRouteGroups(
 		[][]httpedge.Route{deployment.routes}, iamRuntime.routes,
-		[][]httpedge.Route{platformOpsHTTP.Routes(), billingLicense},
+		[][]httpedge.Route{platformOpsHTTP.Routes()},
 		billingGroups,
 	)
 	groups = joinAPIRouteGroups(

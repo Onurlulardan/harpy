@@ -21,8 +21,7 @@ func apiPhase14Keys() []string {
 
 func workerPhase14Keys() []string {
 	return []string{
-		licenseCredentialKey, licenseIssuerURLKey, licenseSnapshotKey,
-		licenseTrustBundleKey, recoveryTrustBundleKey, ackTrustBundleKey,
+		recoveryTrustBundleKey, ackTrustBundleKey,
 		"HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH",
 		"HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE",
 		saasRegistryURLKey, saasWorkloadIdentityKey,
@@ -39,8 +38,7 @@ func operatorInitializeCommonKeys() []string {
 		deploymentModeEnvironmentKey, "HARPY_INSTALLATION_MANIFEST_PATH",
 		"HARPY_INITIAL_ADMIN_PASSWORD_FILE", "HARPY_RECOVERY_SIGNING_DIRECTORY",
 		iamDirectoryKeyringEnvironmentKey, iamDirectoryKeyringEnvironmentKey + "_FILE",
-		licenseCredentialKey, licenseIssuerURLKey, licenseSnapshotKey,
-		licenseTrustBundleKey, saasKMSKeyIDKey, saasRegistryURLKey,
+		saasKMSKeyIDKey, saasRegistryURLKey,
 		saasWorkloadIdentityKey,
 	}
 }
@@ -65,14 +63,6 @@ func operatorIdentityReconcileKeys() []string {
 		"HARPY_RESTORE_RECEIPT_PATH", "HARPY_RESTORE_SECURITY_EVIDENCE_PATH",
 		"HARPY_IAM_KEY_CUSTODY_MANIFEST_PATH", recoveryTrustBundleKey,
 		ackTrustBundleKey,
-	}
-}
-
-func operatorLicenseReconcileKeys() []string {
-	return []string{
-		deploymentModeEnvironmentKey, "HARPY_RESTORE_RECEIPT_PATH",
-		recoveryTrustBundleKey, licenseTrustBundleKey, licenseCredentialKey,
-		licenseIssuerURLKey, licenseSnapshotKey,
 	}
 }
 

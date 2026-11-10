@@ -45,8 +45,6 @@ func phase14WorkerEntries(fixture ArtifactFixture) []entry {
 	fixture.Helper()
 	directory := fixture.TempDir()
 	return []entry{
-		{"HARPY_LICENSE_SNAPSHOT_FILE", phase14Artifact(fixture, directory, "license.json")},
-		{"HARPY_LICENSE_TRUST_BUNDLE_PATH", phase14Artifact(fixture, directory, "license-trust.json")},
 		{"HARPY_RECOVERY_TRUST_BUNDLE_PATH", phase14Artifact(fixture, directory, "recovery-trust.json")},
 		{"HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH", phase14Artifact(fixture, directory, "authority-ack-trust.json")},
 		{"HARPY_RELEASE_TRUST_ROOT_PATH", phase14Artifact(fixture, directory, "release-trust.json")},

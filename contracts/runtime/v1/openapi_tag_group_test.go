@@ -68,8 +68,8 @@ func openAPIFileTags() map[string]string {
 		"billing-public-tenant-v2.paths.json": "Billing", "billing-webhook-v2.paths.json": "Billing",
 		"documents-v2.paths.json": "Documents", "documents-v1-compat.paths.json": "Documents",
 		"notifications-v1.paths.json": "Notifications", "platform-database-v1.paths.json": "Platform",
-		"platform-license-v1.paths.json": "Platform", "platform-operations-v1.paths.json": "Platform",
-		"platform-recovery-v1.paths.json": "Platform", "tenant-provisioning-v1.paths.json": "Tenancy",
+		"platform-operations-v1.paths.json": "Platform",
+		"platform-recovery-v1.paths.json":   "Platform", "tenant-provisioning-v1.paths.json": "Tenancy",
 		"tenant-settings-v1.paths.json": "Tenancy",
 	}
 }

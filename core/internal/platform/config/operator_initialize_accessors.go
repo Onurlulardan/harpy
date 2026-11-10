@@ -20,12 +20,6 @@ func (config OperatorInitialize) DirectoryKeyring() (IAMDirectoryKeyring, error)
 func (config OperatorInitialize) RecoverySigningDirectory() ArtifactPath {
 	return config.recoveryDirectory
 }
-func (config OperatorInitialize) LicenseSource() LicenseSource {
-	return config.licenseSource
-}
-func (config OperatorInitialize) LicenseTrustBundle() ArtifactPath {
-	return config.licenseTrust
-}
 func (config OperatorInitialize) ProposerKMSKeyID() AuthorityKMSKeyID {
 	return config.proposerKMSKey
 }

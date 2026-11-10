@@ -34,9 +34,6 @@ func run(
 	if len(arguments) == 1 && arguments[0] == "local-artifacts" {
 		return runLocalAction(stderr, "local_artifacts", runLocalArtifacts())
 	}
-	if len(arguments) == 1 && arguments[0] == "local-license" {
-		return runLocalAction(stderr, "local_license", runLocalLicense(ctx))
-	}
 	if len(arguments) == 1 && arguments[0] == "publish-local-authority" {
 		return runLocalAction(
 			stderr, "publish_local_authority", runLocalAuthorityPublication(ctx),
@@ -48,9 +45,6 @@ func run(
 	}
 	if len(arguments) == 1 && arguments[0] == "reconcile-restored-identity" {
 		return runRestoredIdentityCommand(ctx, stdout, stderr)
-	}
-	if len(arguments) == 1 && arguments[0] == "reconcile-restored-license" {
-		return runRestoredLicenseCommand(ctx, stdout, stderr)
 	}
 	if len(arguments) == 1 && arguments[0] == "await-restored-reactivation" {
 		return runPostRestoreObserver(ctx, stdout, stderr)

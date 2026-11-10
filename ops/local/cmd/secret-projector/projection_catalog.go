@@ -56,7 +56,7 @@ func secretTargets() []targetSpec {
 			"recovery-restore-read-credential.json",
 			"recovery-documents-rehydrate-write-credential.json"),
 		runtimeTarget("recovery-operator",
-			"operator-restore-identity.env", "operator-restore-license.env",
+			"operator-restore-identity.env",
 			"postgres-runtime-dsn.txt"),
 		runtimeTarget("kms", "kms-master-key.bin", "kms-server.crt", "kms-server.key"),
 		runtimeTarget("mailpit", "mailpit-server.crt", "mailpit-server.key", "smtp-auth.txt"),

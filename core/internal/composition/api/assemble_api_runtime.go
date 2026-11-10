@@ -27,8 +27,8 @@ func assembleAPIRuntime(
 	if err != nil {
 		return apiRuntime{}, err
 	}
-	billingGroups, billingLicense, err := buildAPIBilling(
-		ctx, settings, pool, writeCatalogs, policyRuntime, deployment, iamRuntime, report,
+	billingGroups, err := buildAPIBilling(
+		settings, pool, writeCatalogs, iamRuntime, report,
 	)
 	if err != nil {
 		return apiRuntime{}, err
@@ -45,7 +45,7 @@ func assembleAPIRuntime(
 	}
 	return finishAPIRuntime(
 		settings, monitor, info, logger, report, pool, policyRuntime, telemetryRuntime,
-		writeCatalogs, iamRuntime, platformOpsHTTP, billingGroups, billingLicense,
+		writeCatalogs, iamRuntime, platformOpsHTTP, billingGroups,
 		domains, deployment,
 	)
 }

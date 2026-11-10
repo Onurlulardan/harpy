@@ -10,7 +10,6 @@
 	"contracts/authority/billing_entitlement.json",
 	"contracts/authority/billing_invoice.json",
     "contracts/authority/billing_legalhold.json",
-    "contracts/authority/billing_license.json",
     "contracts/authority/billing_offering.json",
 	"contracts/authority/billing_provider.json",
 	"contracts/authority/billing_report.json",

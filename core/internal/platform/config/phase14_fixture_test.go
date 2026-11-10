@@ -29,8 +29,6 @@ func validAPIOnPremAuthorityEnvironment() []string {
 func validWorkerDevelopmentAuthorityEnvironment() []string {
 	directory := phase14FixtureDirectory("worker-development")
 	return []string{
-		licenseSnapshotKey + "=" + phase14FixtureFile(directory, "license.json", false),
-		licenseTrustBundleKey + "=" + phase14FixtureFile(directory, "license-trust.json", false),
 		recoveryTrustBundleKey + "=" + phase14FixtureFile(directory, "recovery-trust.json", false),
 		ackTrustBundleKey + "=" + phase14FixtureFile(directory, "ack-trust.json", false),
 		"HARPY_RELEASE_TRUST_ROOT_PATH=" +

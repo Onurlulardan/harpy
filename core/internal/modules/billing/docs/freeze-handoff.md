@@ -25,9 +25,9 @@ final integration work.
 - Public and platform state uses sealed global scope. Tenant state requires the
   exact `billing` group and ordered domains `billing,forms`.
 - API composition already builds the global, tenant and platform-report Billing
-  runtimes, mounts canonical and V1 routes, and separately builds the platform
-  license handler. The migrator consumes Billing migration documents and the
-  worker builds provider, retention and subscription processors.
+  runtimes and mounts canonical and V1 routes. The migrator consumes Billing
+  migration documents and the worker builds provider, retention and subscription
+  processors. Signed license routes are not part of this runtime.
 - HTTP handlers call Billing application ports; PostgreSQL adapters call typed,
   owner-qualified routines. Runtime roles do not acquire direct table DML.
 - Mutations, idempotency evidence, audit and outbox/job intent commit together.
@@ -37,10 +37,10 @@ final integration work.
   Analytics dashboard mutations inside the caller's existing `TenantScope`.
   It never opens a second transaction and never calls an owner module.
 - API endpoints map to `api.builder.enabled` and `api.active_endpoints`.
-  Analytics dashboards stay enabled and unlimited while the license is valid;
-  the license payload does not carry a dashboard claim. Create/restore for API
-  endpoints are builder-and-gauge bound; delete is builder-independent;
-  update/publish/revalidate are boolean-only.
+  Entitlement keys such as `iam.active_users` and `documents.storage_bytes`
+  stay in the billing registry. They are not a signed-license gate.
+  Create/restore for API endpoints are builder-and-gauge bound; delete is
+  builder-independent; update/publish/revalidate are boolean-only.
 - Canonical operation/resource identity, request digest, counted projection,
   gauge evidence and reconciliation evidence are durable and replay-pinned.
 
@@ -52,10 +52,9 @@ final integration work.
 | Canonical tenant | 7 | `TenantRoutes()` and exact route test |
 | Canonical platform | 24 | `PlatformRoutes()` and exact route test |
 | Canonical webhook | 1 | `WebhookRoutes()` and exact route test |
-| Platform license | 3 | read, refresh and refresh-operation tests |
 | V1 compatibility | 26 | characterized method/path pairs and bindings |
 
-The 34 canonical routes, 3 license routes and 26 V1 mappings are transport
+The 34 canonical routes and 26 V1 mappings are transport
 entries, not 63 independent product features. V1 evidence additionally covers
 8 database observers, 8 Redis behaviours, 21 fixtures and 10 consumers; these
 are contract evidence categories and must not be converted into a route-based
@@ -75,9 +74,7 @@ then canonical operation.
 - The IAM Billing resolver currently proves exactly 54 declared
   permission-operation pairs and rejects wildcard, wrong-operation and
   tenant/global substitutions.
-- Platform license access remains environment-mode and capability bound; SaaS
-  rejection occurs before IAM, while on-premise reads require the exact license
-  capability.
+- On-premise and SaaS billing reads do not require a signed license capability.
 
 IAM mappings are already present. They were verified read-only and were not
 edited during this module freeze.
@@ -192,7 +189,7 @@ the one-time integration pass and are not a reason to reopen this module.
    apply migrations to a clean real PostgreSQL instance, and start the complete
    local stack.
 10. Through Gateway port 8000, live-test login, tenant selection, Billing catalog
-   and subscription reads/writes, usage enforcement, platform reports/license,
+   and subscription reads/writes, usage enforcement, platform reports,
    provider processing and the V1 retirement/compatibility paths. Unit and PG18
    package success alone is not product runtime acceptance.
 

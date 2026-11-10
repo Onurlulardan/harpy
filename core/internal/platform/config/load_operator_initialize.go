@@ -11,8 +11,6 @@ type OperatorInitialize struct {
 	installationManifest ArtifactPath
 	initialPassword      ArtifactPath
 	recoveryDirectory    ArtifactPath
-	licenseSource        LicenseSource
-	licenseTrust         ArtifactPath
 	proposerKMSKey       AuthorityKMSKeyID
 	registryURL          ServiceURL
 	ackTrust             ArtifactPath
@@ -82,17 +80,7 @@ func loadOnPremOperatorInitialize(
 	if err != nil {
 		return OperatorInitialize{}, err
 	}
-	source, err := loadLicenseSource(values, config.runtime.Environment())
-	if err != nil {
-		return OperatorInitialize{}, err
-	}
-	trust, err := loadLicenseTrust(values)
-	if err != nil {
-		return OperatorInitialize{}, err
-	}
 	config.recoveryDirectory = directory
-	config.licenseSource = source
-	config.licenseTrust = trust
 	return config, nil
 }
 
@@ -101,8 +89,7 @@ func loadSaaSOperatorInitialize(
 	config OperatorInitialize,
 ) (OperatorInitialize, error) {
 	if err := rejectConfigured(values,
-		"HARPY_RECOVERY_SIGNING_DIRECTORY", licenseCredentialKey,
-		licenseIssuerURLKey, licenseSnapshotKey, licenseTrustBundleKey); err != nil {
+		"HARPY_RECOVERY_SIGNING_DIRECTORY"); err != nil {
 		return OperatorInitialize{}, err
 	}
 	kmsKey, err := loadAuthorityKMSKeyID(values, config.runtime.Environment())

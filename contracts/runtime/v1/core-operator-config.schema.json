@@ -5,7 +5,6 @@
   "oneOf": [
     {"$ref": "#/$defs/initialize"},
     {"$ref": "#/$defs/identityReconcile"},
-    {"$ref": "#/$defs/licenseReconcile"},
     {"$ref": "#/$defs/postRestoreObserver"}
   ],
   "$defs": {
@@ -16,10 +15,6 @@
     "identityReconcile": {
       "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
       "properties": {"profile": {"const": "operator_identity_reconcile"}, "variables": {"$ref": "phase14-operator-profile-defs.schema.json#/$defs/identityReconcileVariables"}}
-    },
-    "licenseReconcile": {
-      "type": "object", "additionalProperties": false, "required": ["profile", "variables"],
-      "properties": {"profile": {"const": "operator_license_reconcile"}, "variables": {"$ref": "phase14-operator-profile-defs.schema.json#/$defs/licenseReconcileVariables"}}
     },
     "postRestoreObserver": {
       "type": "object", "additionalProperties": false, "required": ["profile", "variables"],

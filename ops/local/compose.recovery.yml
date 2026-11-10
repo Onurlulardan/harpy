@@ -158,20 +158,6 @@ services:
         condition: service_healthy
     networks: [local]
 
-  restore-license-reconcile:
-    image: harpy/backend-v2-local:dev
-    entrypoint: ["/app/core-operator", "reconcile-restored-license"]
-    env_file: ./state/secrets/operator-restore-license.env
-    volumes:
-      - local-secret-recovery-operator:/run/secrets:ro
-      - local-restore-state:/run/restore-state:ro
-      - local-recovery-signing:/run/recovery-signing:ro
-      - local-dev-authority:/run/dev-authority:ro
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks: [local]
-
   volume-catalog:
     volumes:
       - recovery-minio-data:/catalog/recovery-minio:ro

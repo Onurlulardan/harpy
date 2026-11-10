@@ -66,13 +66,9 @@ tasks:
     cmds:
       - "{{.COMPOSE}} run --rm --no-deps local-release-artifact"
   installation:artifacts:
-    desc: Reconcile the immutable local manifest and signed development license
+    desc: Reconcile the immutable local installation manifest and development authority
     cmds:
       - "{{.COMPOSE}} run --rm installation-artifacts"
-  license:
-    desc: Verify and publish the environment-bound development license offering
-    cmds:
-      - "{{.COMPOSE}} run --rm dev-license"
   installation:deliver:
     desc: Prepare and deliver installation credentials after the database lifecycle
     cmds:
@@ -122,7 +118,6 @@ tasks:
       - task: initialize
       - task: local-release-artifact
       - task: installation:artifacts
-      - task: license
       - task: installation:deliver
       - task: services
       - task: verify

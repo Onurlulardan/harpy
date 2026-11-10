@@ -91,7 +91,7 @@ Provider adapter dış servis wire protocol'ünü domain modelinden ayırır. Co
 ## 9. HTTP ve platform API
 
 Billing route grupları:
-- Public tenant subscription/license ve metered usage
+- Public tenant subscription ve metered usage
 - Platform offering/catalog/campaign/discount/reporting
 - Invoice ve provider/webhook
 - Retention/legal hold ve audit read surface'leri
@@ -104,7 +104,6 @@ Exact paths ve schema için contracts/http/billing* dosyaları, route registrati
 - Application: core/internal/modules/billing/application/
 - Postgres/provider/crypto adapters: core/internal/modules/billing/adapters/
 - Metered resource API: core/internal/modules/billing/api/
-- License runtime composition: core/internal/composition/api/
 - Worker: core/internal/composition/worker/build_billing_*.go
 - Contracts: contracts/authority/billing_*.json, contracts/http/billing*
 - Skill: skills/billing/SKILL.md

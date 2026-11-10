@@ -96,7 +96,7 @@ Worker; DB job processor'ları, outbox publisher, RabbitMQ event consumer, reten
 
 Giriş: `core/cmd/operator/main.go` → `composition/operator.Run`.
 
-Operator uzun yaşayan API route sunucusu olarak tasarlanmamıştır. Kurulum veya belirli yönetim işlemleri için composition/operator altındaki dar, one-shot process flow'larını bir araya getirir. Operator composition; environment authority, installation delivery, billing/platform finalization ve identity/license gibi owner akışlarını uygun adapter'larla bağlar.
+Operator uzun yaşayan API route sunucusu olarak tasarlanmamıştır. Kurulum veya belirli yönetim işlemleri için composition/operator altındaki dar, one-shot process flow'larını bir araya getirir. Operator composition; environment authority, installation delivery, billing/platform finalization ve identity akışlarını uygun adapter'larla bağlar. İmzalı lisans veya lisans issuer bu akışın parçası değildir.
 
 ## 8. Lifecycle ve hata davranışı
 

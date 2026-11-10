@@ -28,8 +28,8 @@ description: Build Harpy composition, HTTP runtime, configuration, telemetry, te
 - `core-api`, `core-worker` ve `core-initialize` ayni modular core'u compose eder.
 - `core-initialize` foundation ve goose asamasini sirayla calistirir; API ve worker
   bu giris basarili olmadan baslamaz ve restart sirasinda onu tekrar calistirmaz.
-- `core-operator` yalniz kurulum, `reconcile-restored-identity` ve
-  `reconcile-restored-license` exact one-shot ABI'laridir.
+- `core-operator` yalniz kurulum ve `reconcile-restored-identity` exact
+  one-shot ABI'laridir. Imzali lisans reconcile komutu yoktur.
 - Surekli sema isi yoktur. Bu is kaldirildi.
 - Recovery backup/restore migration lifecycle'indan ayri kalir.
 - Forms/Workflow servis degil module'dur; async processor'lari worker'da calisir.

@@ -75,7 +75,7 @@ func TestWorkerAuthorityRejectsSourceAndModeLeakage(t *testing.T) {
 		licenseIssuerURLKey+"=https://issuer.invalid",
 	)
 	if _, err := loadWorker(entries); err == nil || !strings.Contains(err.Error(), "LICENSE") {
-		t.Fatalf("combined worker license sources accepted: %v", err)
+		t.Fatalf("worker license source accepted: %v", err)
 	}
 	saasLeak := withEnvironment(validWorkerEnvironment(), deploymentModeEnvironmentKey+"=saas")
 	if _, err := loadWorker(saasLeak); err == nil {

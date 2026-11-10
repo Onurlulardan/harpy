@@ -49,14 +49,6 @@ func writeOnPremAuthority(dir string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	license, err := writeDurableFile(dir, "license.json", []byte("{}\n"))
-	if err != nil {
-		return nil, err
-	}
-	licenseTrust, err := writeDurableFile(dir, "license-trust.json", []byte("{}\n"))
-	if err != nil {
-		return nil, err
-	}
 	release, err := writeDurableFile(dir, "release-trust.json", []byte("{}\n"))
 	if err != nil {
 		return nil, err
@@ -77,8 +69,6 @@ func writeOnPremAuthority(dir string) ([]string, error) {
 		runtimeLine("HARPY_RECOVERY_TRUST_BUNDLE_PATH", recovery),
 		runtimeLine("HARPY_RECOVERY_CONTROL_SIGNING_KEY_FILE", control),
 		runtimeLine("HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH", ack),
-		runtimeLine("HARPY_LICENSE_SNAPSHOT_FILE", license),
-		runtimeLine("HARPY_LICENSE_TRUST_BUNDLE_PATH", licenseTrust),
 		runtimeLine("HARPY_RELEASE_TRUST_ROOT_PATH", release),
 		runtimeLine("HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH", journal),
 		runtimeLine("HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE", ackKey),

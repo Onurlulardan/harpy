@@ -18,10 +18,6 @@ func localAPIAuthorityEnvironment() profileEnvironment {
 
 func localWorkerAuthorityEnvironment() profileEnvironment {
 	return profileEnvironment{
-		"HARPY_LICENSE_SNAPSHOT_FILE": "/run/dev-authority/current/" +
-			"license-snapshot.json",
-		"HARPY_LICENSE_TRUST_BUNDLE_PATH": "/run/dev-authority/current/" +
-			"license-trust.json",
 		"HARPY_RECOVERY_TRUST_BUNDLE_PATH": "/run/dev-authority/current/" +
 			"recovery-trust-bundle.v1.json",
 		"HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH": "/run/dev-authority/" +

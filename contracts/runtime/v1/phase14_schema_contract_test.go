@@ -16,7 +16,6 @@ func TestPhase14ProfileSchemasAcceptExactSnapshots(t *testing.T) {
 	}{
 		{"core-operator-config.schema.json", "operator_initialize"},
 		{"core-operator-config.schema.json", "operator_identity_reconcile"},
-		{"core-operator-config.schema.json", "operator_license_reconcile"},
 		{"core-operator-config.schema.json", "operator_post_restore_reactivation_observer"},
 	}
 	for _, test := range tests {
@@ -42,15 +41,15 @@ func TestPhase14ProfileSchemasRejectModeAndSourceLeakage(t *testing.T) {
 			}),
 		},
 		{
-			"worker both license sources", "core-worker-config.schema.json",
+			"worker license snapshot", "core-worker-config.schema.json",
 			snapshotWith("worker", map[string]any{
-				"HARPY_LICENSE_CREDENTIAL_FILE": "/license/credential",
-				"HARPY_LICENSE_ISSUER_URL":      "https://issuer.invalid",
+				"HARPY_LICENSE_SNAPSHOT_FILE": "/license/snapshot.json",
 			}),
 		},
 		{
-			"initialize without license source", "core-operator-config.schema.json",
-			withoutSnapshotKey(phase14ProfileSnapshot("operator_initialize"), "HARPY_LICENSE_SNAPSHOT_FILE"),
+			"initialize with license snapshot", "core-operator-config.schema.json",
+			withPhase14Variable(phase14ProfileSnapshot("operator_initialize"),
+				"HARPY_LICENSE_SNAPSHOT_FILE", "/license/snapshot.json"),
 		},
 		{
 			"identity with license source", "core-operator-config.schema.json",
@@ -75,15 +74,8 @@ func phase14ProfileSnapshot(profile string) map[string]any {
 		variables["HARPY_INITIAL_ADMIN_PASSWORD_FILE"] = "/installation/password"
 		variables["HARPY_IAM_LOGIN_DIRECTORY_KEYRING_FILE"] = "/iam/directory-keyring.json"
 		variables["HARPY_RECOVERY_SIGNING_DIRECTORY"] = "/recovery/signing"
-		variables["HARPY_LICENSE_TRUST_BUNDLE_PATH"] = "/license/trust.json"
-		variables["HARPY_LICENSE_SNAPSHOT_FILE"] = "/license/snapshot.json"
 	case "operator_identity_reconcile":
 		addIdentityReconcileSnapshot(variables)
-	case "operator_license_reconcile":
-		variables["HARPY_RESTORE_RECEIPT_PATH"] = "/restore/receipt.json"
-		variables["HARPY_RECOVERY_TRUST_BUNDLE_PATH"] = "/recovery/trust.json"
-		variables["HARPY_LICENSE_TRUST_BUNDLE_PATH"] = "/license/trust.json"
-		variables["HARPY_LICENSE_SNAPSHOT_FILE"] = "/license/snapshot.json"
 	case "operator_post_restore_reactivation_observer":
 		variables = phase14DedicatedRuntime()
 		addReleaseInputsSnapshot(variables)

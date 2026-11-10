@@ -30,10 +30,9 @@ Application:
 - Commercial catalogue: offering, catalogquery, campaign, discount, discountcatalog
 - Subscription and entitlement: subscription, entitlement, resourceentitlement
 - Invoicing/provider: invoice, provider
-- Platform license: licenseauthority, licenseoffering, licenseclock, platformlicense
 - Metering and reporting: usage, platformreports, retention, legalhold, restquery, httpapi
 
-Adapters: cryptography, licenseauthoritysource, postgres, provider, resourceusage.
+Adapters: cryptography, postgres, provider, resourceusage.
 
 ## 4. Work
 

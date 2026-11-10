@@ -20,9 +20,5 @@ func operatorEnvironment(set *artifactSet) profileEnvironment {
 	values["HARPY_INITIAL_ADMIN_PASSWORD_FILE"] =
 		"/run/installation/initial-admin-password"
 	values["HARPY_RECOVERY_SIGNING_DIRECTORY"] = "/run/recovery-signing/current"
-	values["HARPY_LICENSE_SNAPSHOT_FILE"] =
-		"/run/dev-authority/current/license-snapshot.json"
-	values["HARPY_LICENSE_TRUST_BUNDLE_PATH"] =
-		"/run/dev-authority/current/license-trust.json"
 	return values
 }

@@ -9,8 +9,8 @@ import (
 type authorityWorkloadRoute string
 
 const (
-	authorityRouteLicenseRefresh authorityWorkloadRoute = "billing_license_refresh"
-	authorityRouteSaaSRegistry   authorityWorkloadRoute = "platformauthority_registry"
+	authorityRouteOnPrem       authorityWorkloadRoute = "on_prem"
+	authorityRouteSaaSRegistry authorityWorkloadRoute = "platformauthority_registry"
 )
 
 func routeAuthorityWorkload(
@@ -20,7 +20,7 @@ func routeAuthorityWorkload(
 	case config.WorkerAuthorityConnected,
 		config.WorkerAuthorityAirGap,
 		config.WorkerAuthorityDevelopment:
-		return authorityRouteLicenseRefresh, nil
+		return authorityRouteOnPrem, nil
 	case config.WorkerAuthoritySaaS:
 		return authorityRouteSaaSRegistry, nil
 	default:

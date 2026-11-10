@@ -69,8 +69,6 @@ func stableAfterRotation(path string) bool {
 		"runtime/installation.json",
 		"runtime/recovery-trust.json",
 		"runtime/ack-trust.json",
-		"runtime/license.json",
-		"runtime/license-trust.json",
 		"runtime/release-trust.json",
 		"runtime/authority-head.jsonl",
 		"release/authority-manifest.json",
