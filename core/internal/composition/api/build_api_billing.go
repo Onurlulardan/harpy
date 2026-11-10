@@ -1,9 +1,6 @@
 package api
 
 import (
-	"context"
-
-	tenancymodule "github.com/Onurlulardan/harpy/core/internal/modules/tenancy"
 	platformasync "github.com/Onurlulardan/harpy/core/internal/platform/async"
 	"github.com/Onurlulardan/harpy/core/internal/platform/config"
 	"github.com/Onurlulardan/harpy/core/internal/platform/httpedge"
@@ -11,24 +8,14 @@ import (
 )
 
 func buildAPIBilling(
-	ctx context.Context, settings config.API, pool *postgres.Pool,
-	catalogs platformasync.WriteCatalogs, policyRuntime *tenancymodule.DeploymentPolicyRuntime,
-	deployment deploymentHTTPFoundation, iamRuntime iamAPIRuntime, report httpedge.ErrorSink,
-) ([][]httpedge.Route, []httpedge.Route, error) {
+	settings config.API, pool *postgres.Pool,
+	catalogs platformasync.WriteCatalogs, iamRuntime iamAPIRuntime, report httpedge.ErrorSink,
+) ([][]httpedge.Route, error) {
 	billingHTTP, err := buildBillingHTTP(
 		settings, pool, catalogs, iamRuntime.billingAccess, report,
 	)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	billingLicenseHTTP, err := buildBillingLicenseHTTP(
-		pool, policyRuntime, iamRuntime.platformAccess, report)
-	if err != nil {
-		return nil, nil, err
-	}
-	billingGroups, err := buildBillingRouteGroups(billingHTTP)
-	if err != nil {
-		return nil, nil, err
-	}
-	return billingGroups, billingLicenseHTTP.Routes(), nil
+	return buildBillingRouteGroups(billingHTTP)
 }

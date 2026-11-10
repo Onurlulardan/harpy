@@ -8,9 +8,9 @@ import (
 
 func TestAuthorityModesRouteToExactlyOnePurposeSeparatedWorkload(t *testing.T) {
 	tests := map[config.WorkerAuthorityMode]authorityWorkloadRoute{
-		config.WorkerAuthorityConnected:   authorityRouteLicenseRefresh,
-		config.WorkerAuthorityAirGap:      authorityRouteLicenseRefresh,
-		config.WorkerAuthorityDevelopment: authorityRouteLicenseRefresh,
+		config.WorkerAuthorityConnected:   authorityRouteOnPrem,
+		config.WorkerAuthorityAirGap:      authorityRouteOnPrem,
+		config.WorkerAuthorityDevelopment: authorityRouteOnPrem,
 		config.WorkerAuthoritySaaS:        authorityRouteSaaSRegistry,
 	}
 	for mode, wanted := range tests {

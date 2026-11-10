@@ -12,7 +12,6 @@ const (
 	profileExtensionAdmin            profile = "extension_admin"
 	profileOperatorIdentityReconcile profile = "operator_identity_reconcile"
 	profileOperatorInitialize        profile = "operator_initialize"
-	profileOperatorLicenseReconcile  profile = "operator_license_reconcile"
 	profilePostRestoreObserver       profile = "operator_post_restore_reactivation_observer"
 	profileWorker                    profile = "worker"
 )
@@ -66,8 +65,6 @@ func allowedKeys(current profile) map[string]bool {
 		groups = [][]string{runtimeKeys(), operatorInitializeKeys()}
 	case profileOperatorIdentityReconcile:
 		groups = [][]string{runtimeKeys(), operatorIdentityReconcileKeys()}
-	case profileOperatorLicenseReconcile:
-		groups = [][]string{runtimeKeys(), operatorLicenseReconcileKeys()}
 	case profilePostRestoreObserver:
 		groups = [][]string{postRestoreObserverKeys()}
 	case profileDatabaseBackupExecutor:

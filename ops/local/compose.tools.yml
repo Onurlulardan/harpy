@@ -108,20 +108,6 @@ services:
       - local-dev-authority:/run/dev-authority
     networks: [local]
 
-  dev-license:
-    image: harpy/backend-v2-local:dev
-    entrypoint: ["/app/core-operator", "local-license"]
-    env_file: ./state/secrets/operator.env
-    volumes:
-      - local-secret-operator:/run/secrets:ro
-      - local-installation-state:/run/installation:ro
-      - local-dev-authority:/run/dev-authority:ro
-      - local-recovery-signing:/run/recovery-signing
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks: [local]
-
   core-operator:
     image: harpy/backend-v2-local:dev
     entrypoint: ["/app/core-operator"]

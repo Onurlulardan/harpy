@@ -9,7 +9,7 @@
     "version": {"const": 1},
     "contract_version": {"const": "phase14-runtime-profile-config.v1"},
     "profiles": {
-      "type": "array", "minItems": 9, "maxItems": 9, "uniqueItems": true,
+      "type": "array", "minItems": 8, "maxItems": 8, "uniqueItems": true,
       "items": {"$ref": "#/$defs/profile"}
     },
     "variables": {
@@ -20,7 +20,7 @@
   "$defs": {
     "profile": {"enum": [
       "api", "worker", "operator_initialize", "operator_identity_reconcile",
-      "operator_license_reconcile", "operator_post_restore_reactivation_observer",
+      "operator_post_restore_reactivation_observer",
       "tenant_migration_executor",
       "database_backup_executor", "database_restore"
     ]},

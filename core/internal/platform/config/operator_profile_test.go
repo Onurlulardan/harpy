@@ -24,13 +24,6 @@ func TestOperatorProfilesLoadExactArtifacts(t *testing.T) {
 	if identity.IAMCustodyManifest().Access() != ArtifactReadOnly {
 		t.Fatal("identity reconciler custody mount is not read-only")
 	}
-	license, err := loadOperatorLicenseReconcile(validOperatorLicenseEnvironment())
-	if err != nil {
-		t.Fatal(err)
-	}
-	if license.LicenseSource().Kind() != LicenseSourceSnapshot {
-		t.Fatal("license reconciler source branch drifted")
-	}
 }
 
 func TestOperatorProfilesRejectCrossProfileAndModeKeys(t *testing.T) {
@@ -38,10 +31,6 @@ func TestOperatorProfilesRejectCrossProfileAndModeKeys(t *testing.T) {
 		licenseSnapshotKey+"=/must-not-be-visible")
 	if _, err := loadOperatorIdentityReconcile(identity); err == nil {
 		t.Fatal("identity reconciler accepted license source")
-	}
-	license := append(validOperatorLicenseEnvironment(), deploymentModeEnvironmentKey+"=saas")
-	if _, err := loadOperatorLicenseReconcile(license); err == nil {
-		t.Fatal("SaaS license reconciler branch was accepted")
 	}
 	onPrem := append(validOperatorInitializeEnvironment(DeploymentOnPrem),
 		saasRegistryURLKey+"=https://authority.invalid")

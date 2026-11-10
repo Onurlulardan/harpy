@@ -14,7 +14,7 @@
 ## Contracts and consumers
 
 - Canonical HTTP surfaces include public catalog, tenant billing, platform
-  catalog/reports/license operations and provider webhook ingress.
+  catalog/reports operations and provider webhook ingress.
 - The 26 characterized V1 method/path pairs remain compatibility-edge mappings
   into final Billing application ports; they are not 26 new domain features.
 - Tenant reads require `billing.read`, usage reads `billing.usage.read`, tenant

@@ -11,8 +11,6 @@ const (
 
 type WorkerAuthority struct {
 	mode                WorkerAuthorityMode
-	licenseSource       LicenseSource
-	licenseTrust        ArtifactPath
 	recoveryTrust       ArtifactPath
 	ackTrust            ArtifactPath
 	releaseTrust        ArtifactPath
@@ -38,14 +36,6 @@ func loadWorkerAuthority(
 	if err := rejectConfigured(values, saasRegistryURLKey, saasWorkloadIdentityKey); err != nil {
 		return WorkerAuthority{}, err
 	}
-	licenseSource, err := loadLicenseSource(values, environment)
-	if err != nil {
-		return WorkerAuthority{}, err
-	}
-	licenseTrust, err := loadLicenseTrust(values)
-	if err != nil {
-		return WorkerAuthority{}, err
-	}
 	recoveryTrust, err := loadRecoveryTrust(values)
 	if err != nil {
 		return WorkerAuthority{}, err
@@ -57,7 +47,6 @@ func loadWorkerAuthority(
 		return WorkerAuthority{}, err
 	}
 	base := WorkerAuthority{
-		licenseSource: licenseSource, licenseTrust: licenseTrust,
 		recoveryTrust: recoveryTrust, ackTrust: ackTrust, releaseTrust: releaseTrust,
 	}
 	if environment == EnvironmentDevelopment {
@@ -68,11 +57,7 @@ func loadWorkerAuthority(
 		"HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE"); err != nil {
 		return WorkerAuthority{}, err
 	}
-	if licenseSource.Kind() == LicenseSourceConnected {
-		base.mode = WorkerAuthorityConnected
-	} else {
-		base.mode = WorkerAuthorityAirGap
-	}
+	base.mode = WorkerAuthorityAirGap
 	return base, nil
 }
 
@@ -80,9 +65,6 @@ func loadDevelopmentWorkerAuthority(
 	values environmentValues,
 	base WorkerAuthority,
 ) (WorkerAuthority, error) {
-	if base.licenseSource.Kind() != LicenseSourceSnapshot {
-		return WorkerAuthority{}, configError(licenseCredentialKey, "is forbidden in development")
-	}
 	journal, err := loadArtifactPath(values,
 		"HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH", ArtifactReadWrite, false, true)
 	if err != nil {
@@ -106,8 +88,7 @@ func loadSaaSWorkerAuthority(
 	ackTrust ArtifactPath,
 ) (WorkerAuthority, error) {
 	if err := rejectConfigured(values,
-		licenseCredentialKey, licenseIssuerURLKey, licenseSnapshotKey,
-		licenseTrustBundleKey, recoveryTrustBundleKey,
+		recoveryTrustBundleKey,
 		"HARPY_LOCAL_AUTHORITY_HEAD_JOURNAL_PATH",
 		"HARPY_LOCAL_AUTHORITY_ACK_SIGNING_KEY_FILE"); err != nil {
 		return WorkerAuthority{}, err

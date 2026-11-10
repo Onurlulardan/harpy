@@ -55,7 +55,6 @@ tasks:
         go run ./ops/local/cmd/recovery-state record-reactivation
         -target-directory "{{.HANDOFF}}"
         -frontend-base-url "{{.FRONTEND_BASE_URL}}"
-      - "{{.COMPOSE}} run --rm restore-license-reconcile"
       - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api"
       - task: :local:frontend:if-present
       - >-
@@ -90,7 +89,6 @@ tasks:
         go run ./ops/local/cmd/recovery-state record-reactivation
         -target-directory "{{.HANDOFF}}"
         -frontend-base-url "{{.FRONTEND_BASE_URL}}"
-      - "{{.COMPOSE}} run --rm restore-license-reconcile"
       - "{{.COMPOSE}} up -d --wait --wait-timeout 180 core-api"
       - task: :local:frontend:if-present
       - >-

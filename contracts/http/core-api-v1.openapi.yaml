@@ -650,15 +650,6 @@
       "/api/platform/database/stats": {
         "$ref": "platform-database-v1.paths.json#/pathItems/stats"
       },
-      "/api/platform/license": {
-        "$ref": "platform-license-v1.paths.json#/pathItems/license"
-      },
-      "/api/platform/license/refresh": {
-        "$ref": "platform-license-v1.paths.json#/pathItems/refresh"
-      },
-      "/api/platform/license/refresh-operations/{operation_id}": {
-        "$ref": "platform-license-v1.paths.json#/pathItems/refreshOperation"
-      },
       "/api/platform/operations/alert-events": {
         "$ref": "platform-operations-v1.paths.json#/pathItems/events"
       },

@@ -27,8 +27,6 @@ func validOperatorInitializeEnvironment(mode DeploymentMode) []string {
 	}
 	return append(entries,
 		"HARPY_RECOVERY_SIGNING_DIRECTORY="+recoveryDirectory,
-		licenseTrustBundleKey+"="+phase14FixtureFile(directory, "license-trust.json", false),
-		licenseSnapshotKey+"="+phase14FixtureFile(directory, "license.json", false),
 	)
 }
 
@@ -40,16 +38,6 @@ func validOperatorIdentityEnvironment() []string {
 		"HARPY_IAM_KEY_CUSTODY_MANIFEST_PATH="+phase14FixtureFile(directory, "custody.json", false),
 		recoveryTrustBundleKey+"="+phase14FixtureFile(directory, "recovery-trust.json", false),
 		ackTrustBundleKey+"="+phase14FixtureFile(directory, "ack-trust.json", false),
-	)
-}
-
-func validOperatorLicenseEnvironment() []string {
-	directory := phase14FixtureDirectory("operator-license")
-	return append(validEnvironment(),
-		"HARPY_RESTORE_RECEIPT_PATH="+phase14FixtureFile(directory, "receipt.json", false),
-		recoveryTrustBundleKey+"="+phase14FixtureFile(directory, "recovery-trust.json", false),
-		licenseTrustBundleKey+"="+phase14FixtureFile(directory, "license-trust.json", false),
-		licenseSnapshotKey+"="+phase14FixtureFile(directory, "license.json", false),
 	)
 }
 

@@ -7,7 +7,7 @@
 - The Billing public API admits owner mutations inside the caller's existing
   `TenantScope`; it does not open a second transaction or call Analytics SQL.
 - The implementation extends the existing Billing usage gauge engine. It does
-  not introduce a second limit resolver, counter, cache or license decision.
+  not introduce a second limit resolver, counter or cache.
 
 ## Affected contracts
 
@@ -22,8 +22,8 @@
   releases one. `update`, `publish` and `revalidate` require only the builder
   boolean.
 - Query mapping is `api.builder.enabled` plus `api.active_endpoints`.
-- Analytics dashboards are enabled and unlimited while the license is valid.
-  The license payload does not carry a dashboard claim.
+- `iam.active_users` and `documents.storage_bytes` remain entitlement registry
+  keys. They are not granted or denied by a signed license snapshot.
 
 ## Affected data and migrations
 
@@ -41,7 +41,7 @@
 
 - The API accepts only a live command `TenantScope`; tenant and actor must match
   the scope exactly. Missing scope, authority, entitlement, meter period,
-  offering, license runtime state or database row fails closed.
+  offering or database row fails closed.
 - Billing does not add an IAM permission. The Analytics application must perform
   its existing operation permission first and call Billing before its owner
   mutation in the same transaction.
@@ -57,7 +57,7 @@
 ## V1 compatibility
 
 - V1 `maxApiEndpoints` and `apiBuilder` map to the API endpoint keys above.
-  Dashboard count and builder claims are not license inputs.
+  Dashboard count and builder claims are not signed-license inputs.
 - Opening/adopted counts require evidence-bound resource registration; missing
   resource identity is not assumed to be zero and delete cannot decrement an
   unknown resource.

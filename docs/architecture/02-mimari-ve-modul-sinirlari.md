@@ -78,7 +78,7 @@ Yeni bir deployable yalnız ekip/klasör büyüklüğü nedeniyle oluşturulmaz.
 `core/internal/capabilities` daha üst seviyeli, modüller tarafından kullanılan teknik capability'leri barındırır. Önemli örnekler:
 - `restquery`: typed query AST, authorization, planning ve execution.
 - `artifactobject`: S3 tabanlı artifact/object API.
-- `credentialdelivery`, `licensebootstrap`, `restoredlicense`: sınırlandırılmış credential/license capability'leri.
+- `credentialdelivery`, `restoredlicense`: sınırlandırılmış credential ve restore-receipt capability'leri. restoredlicense local boot tarafından çağrılmaz.
 - `tenantactivation`: tenant aktivasyonu için doğrulanmış activation grant.
 
 Bir business policy yalnızca teknik olarak ortak diye platforma taşınmaz; ilgili iş modülünde kalır.

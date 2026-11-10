@@ -1,12 +1,6 @@
 package config
 
 func (config WorkerAuthority) Mode() WorkerAuthorityMode { return config.mode }
-func (config WorkerAuthority) LicenseSource() LicenseSource {
-	return config.licenseSource
-}
-func (config WorkerAuthority) LicenseTrustBundle() ArtifactPath {
-	return config.licenseTrust
-}
 func (config WorkerAuthority) RecoveryTrustBundle() ArtifactPath {
 	return config.recoveryTrust
 }

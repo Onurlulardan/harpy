@@ -6,7 +6,6 @@ func addRecoveryProfileArtifacts(set *artifactSet) error {
 		"database-restore.env":          recoveryRestoreEnvironment(false),
 		"database-rehydrate.env":        recoveryRestoreEnvironment(true),
 		"operator-restore-identity.env": recoveryIdentityEnvironment(),
-		"operator-restore-license.env":  recoveryLicenseEnvironment(),
 	}
 	for name, values := range profiles {
 		content, err := renderProfileEnvironment(values)
@@ -31,19 +30,6 @@ func recoveryIdentityEnvironment() profileEnvironment {
 		"/run/recovery-signing/current/recovery-trust-bundle.v1.json"
 	values["HARPY_PROTECTED_AUTHORITY_ACK_TRUST_BUNDLE_PATH"] =
 		"/run/restore-state/protected-authority-ack-trust-bundle.v1.json"
-	return values
-}
-
-func recoveryLicenseEnvironment() profileEnvironment {
-	values := baseRuntimeEnvironment(secretRoot + "postgres-runtime-dsn.txt")
-	values["HARPY_DEPLOYMENT_MODE"] = "onpremise"
-	values["HARPY_RESTORE_RECEIPT_PATH"] = "/run/restore-state/receipt.json"
-	values["HARPY_RECOVERY_TRUST_BUNDLE_PATH"] =
-		"/run/recovery-signing/current/recovery-trust-bundle.v1.json"
-	values["HARPY_LICENSE_TRUST_BUNDLE_PATH"] =
-		"/run/dev-authority/current/license-trust.json"
-	values["HARPY_LICENSE_SNAPSHOT_FILE"] =
-		"/run/dev-authority/current/license-snapshot.json"
 	return values
 }
 

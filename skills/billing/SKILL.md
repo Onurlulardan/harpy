@@ -9,8 +9,8 @@ Para, period, state, entitlement, usage, provider, retention ve cutover
 semantigi icin ADR-0019, ADR-0022 ve ADR-0028 authoritative'dir;
 uygulamadan once tamamini oku. Endpoint icin `api-contract`, SQL ve tenant icin
 `data-tenancy`, provider/job/outbox icin `events-jobs` skill'ini de oku.
-Installation/license base offering'i etkileniyorsa ADR-0079, ADR-0082,
-ADR-0118..0120, ADR-0122 ve restore/head ayrimi icin ADR-0124..0127'yi oku.
+On-prem runtime imzali lisans, lisans issuer veya `billing_license_heads`
+satiri istemez. Offering ve entitlement kayitlari bu kapinin yerine gecmez.
 
 ## Sahiplik siniri
 

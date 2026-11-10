@@ -58,7 +58,7 @@ func (workload *authorityDeliveryWorkload) run(ctx context.Context) {
 			}
 			return
 		}
-		timer := time.NewTimer(boundedLicenseDelay(delay))
+		timer := time.NewTimer(boundedAuthorityDelay(delay))
 		select {
 		case <-ctx.Done():
 			if !timer.Stop() {
@@ -68,6 +68,16 @@ func (workload *authorityDeliveryWorkload) run(ctx context.Context) {
 		case <-timer.C:
 		}
 	}
+}
+
+func boundedAuthorityDelay(value time.Duration) time.Duration {
+	if value < time.Second {
+		return time.Second
+	}
+	if value > 5*time.Minute {
+		return 5 * time.Minute
+	}
+	return value
 }
 
 func (workload *authorityDeliveryWorkload) BeginDrain() { workload.stop() }

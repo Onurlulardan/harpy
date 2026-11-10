@@ -43,8 +43,7 @@ func TestPhase14CatalogPublishesExactArtifactAccess(t *testing.T) {
 	}
 	receiptAccess := variables["HARPY_RESTORE_RECEIPT_PATH"].ProfileAccess
 	if receiptAccess["database_restore"] != "atomic_write" ||
-		receiptAccess["operator_identity_reconcile"] != "read_only" ||
-		receiptAccess["operator_license_reconcile"] != "read_only" {
+		receiptAccess["operator_identity_reconcile"] != "read_only" {
 		t.Fatalf("restore receipt writer/reader split drifted: %#v", receiptAccess)
 	}
 }
