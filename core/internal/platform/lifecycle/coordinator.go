@@ -46,7 +46,7 @@ func (coordinator *Coordinator) Run(
 	interrupts <-chan os.Signal,
 	serveFailures <-chan error,
 ) Outcome {
-	baseCode, initialReason := awaitTrigger(ctx, interrupts, serveFailures)
+	baseCode, initialReason, cause := awaitTrigger(ctx, interrupts, serveFailures)
 	coordinator.plan.BeginDrain()
 	drainContext, cancel := context.WithTimeout(context.Background(), coordinator.plan.AbsoluteDeadline)
 	defer cancel()
@@ -64,7 +64,7 @@ func (coordinator *Coordinator) Run(
 			coordinator.force()
 			return newOutcome(runtimev1.ExitCodeDrainForced, ReasonDrainFailure)
 		}
-		return newOutcome(baseCode, initialReason)
+		return newOutcome(baseCode, initialReason).WithCause(cause)
 	case <-interrupts:
 		coordinator.force()
 		return newOutcome(runtimev1.ExitCodeDrainForced, ReasonSecondSignal)
@@ -96,13 +96,13 @@ func awaitTrigger(
 	ctx context.Context,
 	interrupts <-chan os.Signal,
 	serveFailures <-chan error,
-) (runtimev1.ExitCode, Reason) {
+) (runtimev1.ExitCode, Reason, error) {
 	select {
 	case <-ctx.Done():
-		return runtimev1.ExitCodeClean, ReasonContext
+		return runtimev1.ExitCodeClean, ReasonContext, nil
 	case <-interrupts:
-		return runtimev1.ExitCodeClean, ReasonSignal
-	case <-serveFailures:
-		return runtimev1.ExitCodeServeFailure, ReasonServeFailure
+		return runtimev1.ExitCodeClean, ReasonSignal, nil
+	case err := <-serveFailures:
+		return runtimev1.ExitCodeServeFailure, ReasonServeFailure, err
 	}
 }

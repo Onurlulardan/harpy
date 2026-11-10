@@ -16,11 +16,18 @@ const (
 type Outcome struct {
 	exitCode runtimev1.ExitCode
 	reason   Reason
+	cause    error
 }
 
 func newOutcome(exitCode runtimev1.ExitCode, reason Reason) Outcome {
 	return Outcome{exitCode: exitCode, reason: reason}
 }
 
+func (outcome Outcome) WithCause(cause error) Outcome {
+	outcome.cause = cause
+	return outcome
+}
+
 func (outcome Outcome) ExitCode() runtimev1.ExitCode { return outcome.exitCode }
 func (outcome Outcome) Reason() Reason               { return outcome.reason }
+func (outcome Outcome) Cause() error                 { return outcome.cause }

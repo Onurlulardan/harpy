@@ -31,8 +31,15 @@ func (store *Store) ClaimDelivery(
 		return ports.DeliveryClaim{}, false,
 			fmt.Errorf("claim platform authority delivery: %w", err)
 	}
+	if !usableDeliveryClaim(claim) {
+		return ports.DeliveryClaim{}, false, nil
+	}
 	claim.LeaseOwnerID = leaseOwnerID
 	return claim, true, nil
+}
+
+func usableDeliveryClaim(claim ports.DeliveryClaim) bool {
+	return claim.OperationID != "" && claim.LeaseGeneration >= 1
 }
 
 var _ ports.DeliveryStore = (*Store)(nil)
