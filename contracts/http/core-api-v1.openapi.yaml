@@ -768,44 +768,6 @@
       "malformed-request",
       "header-limit",
       "read-header-timeout"
-    ],
-    "x-tagGroups": [
-      {
-        "name": "Identity",
-        "tags": [
-          "Auth",
-          "Profile",
-          "Invitations",
-          "Permissions",
-          "Directory"
-        ]
-      },
-      {
-        "name": "Billing",
-        "tags": [
-          "Billing"
-        ]
-      },
-      {
-        "name": "Documents",
-        "tags": [
-          "Documents"
-        ]
-      },
-      {
-        "name": "Notifications",
-        "tags": [
-          "Notifications"
-        ]
-      },
-      {
-        "name": "Platform",
-        "tags": [
-          "Platform",
-          "Tenancy",
-          "Application"
-        ]
-      }
     ]
   
 }

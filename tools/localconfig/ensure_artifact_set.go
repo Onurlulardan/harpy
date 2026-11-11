@@ -64,6 +64,13 @@ func ensureArtifactSet(output string, now time.Time) (ensureResult, error) {
 		} else if upgraded {
 			return result, nil
 		}
+		if result, upgraded, upgradeErr := upgradeDocsOriginArtifactSet(
+			resolved, now, localGenerationOptions(),
+		); upgradeErr != nil {
+			return ensureResult{}, upgradeErr
+		} else if upgraded {
+			return result, nil
+		}
 		if result, upgraded, upgradeErr := upgradeFoundationCredentialArtifactSet(
 			resolved, now,
 		); upgradeErr != nil {

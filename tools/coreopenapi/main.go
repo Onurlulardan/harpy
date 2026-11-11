@@ -90,25 +90,30 @@ func updateOpenAPIManifest(root, inputSHA, outputSHA string) error {
 		return err
 	}
 	var manifest struct {
-		Version int                 `json:"version"`
-		Files   []map[string]string `json:"files"`
+		Files []map[string]string `json:"files"`
 	}
 	if err = json.Unmarshal(data, &manifest); err != nil {
 		return err
 	}
+	updated := data
 	for _, file := range manifest.Files {
 		if file["path"] != openAPIPath {
 			continue
 		}
-		file["generator"] = "go run ./tools/coreopenapi"
-		file["input_sha256"] = inputSHA
-		file["output_sha256"] = outputSHA
+		updated = replaceHash(updated, file["input_sha256"], inputSHA)
+		updated = replaceHash(updated, file["output_sha256"], outputSHA)
 	}
-	encoded, err := json.MarshalIndent(manifest, "", "  ")
-	if err != nil {
-		return err
+	if bytes.Equal(data, updated) {
+		return nil
 	}
-	return os.WriteFile(path, append(encoded, '\n'), 0o644)
+	return os.WriteFile(path, updated, 0o644)
+}
+
+func replaceHash(data []byte, current, next string) []byte {
+	if current == "" || current == next {
+		return data
+	}
+	return bytes.ReplaceAll(data, []byte(current), []byte(next))
 }
 
 func exit(err error) {

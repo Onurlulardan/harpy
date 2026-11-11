@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestOpenAPIOperationsUseSidebarTagGroups(t *testing.T) {
+func TestOpenAPIOperationsUseOneCategoryTag(t *testing.T) {
 	directory := filepath.Join("..", "..", "http")
 	for name, tag := range openAPIFileTags() {
 		document := readOpenAPIDocument(t, filepath.Join(directory, name))
@@ -13,23 +13,8 @@ func TestOpenAPIOperationsUseSidebarTagGroups(t *testing.T) {
 	}
 	core := readOpenAPIDocument(t, filepath.Join(directory, "core-api-v1.openapi.yaml"))
 	assertOperationTags(t, "core-api-v1.openapi.yaml", core, "Application")
-	grouped := map[string]struct{}{}
-	for _, raw := range core["x-tagGroups"].([]any) {
-		group := raw.(map[string]any)
-		if group["name"] == "" {
-			t.Fatal("OpenAPI tag group has no name")
-		}
-		for _, tag := range group["tags"].([]any) {
-			grouped[tag.(string)] = struct{}{}
-		}
-	}
-	for _, tag := range openAPIFileTags() {
-		if _, found := grouped[tag]; !found {
-			t.Fatalf("tag %s is not in a sidebar group", tag)
-		}
-	}
-	if _, found := grouped["Application"]; !found {
-		t.Fatal("Application tag is not in a sidebar group")
+	if _, found := core["x-tagGroups"]; found {
+		t.Fatal("core API nests categories under another sidebar group")
 	}
 }
 

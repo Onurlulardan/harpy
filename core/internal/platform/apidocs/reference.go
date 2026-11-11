@@ -30,6 +30,15 @@ func (referenceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			},
 		),
 		scalargo.WithMetaDataOpts(scalargo.WithTitle("Harpy API")),
+		scalargo.WithPersistAuth(true),
+		scalargo.WithHideModels(),
+		scalargo.WithAuthenticationOpts(
+			scalargo.WithPreferredSecurityScheme("bearerAuth"),
+			scalargo.WithSecurityScheme("bearerAuth", scalargo.BearerScheme("")),
+		),
+		scalargo.WithOverrideCSS(referenceSignInCSS),
+		scalargo.WithCustomHeadJS(referenceSignInHeadJS),
+		scalargo.WithCustomBodyJS(referenceSignInBodyJS),
 	)
 	if err != nil {
 		http.Error(w, "API reference is unavailable", http.StatusInternalServerError)
