@@ -16,22 +16,18 @@ func (referenceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid request", http.StatusBadRequest)
 		return
 	}
-	base := origin + specPrefix
-	core := base + "http/core-api-v1.openapi.yaml"
-	management := base + "http/management-v1.openapi.yaml"
+	sources, err := referenceSources(origin)
+	if err != nil {
+		http.Error(w, "API reference is unavailable", http.StatusInternalServerError)
+		return
+	}
 	html, err := scalargo.NewV2(
-		scalargo.WithSpecURL(core),
-		scalargo.WithMultipleSources(
-			scalargo.DocumentSource{
-				Title: "Core API", Slug: "core", URL: core, Default: true,
-			},
-			scalargo.DocumentSource{
-				Title: "Management", Slug: "management", URL: management,
-			},
-		),
+		scalargo.WithSpecURL(sources[0].URL),
+		scalargo.WithMultipleSources(sources...),
 		scalargo.WithMetaDataOpts(scalargo.WithTitle("Harpy API")),
 		scalargo.WithPersistAuth(true),
 		scalargo.WithHideModels(),
+		scalargo.WithHideAllClients(),
 		scalargo.WithAuthenticationOpts(
 			scalargo.WithPreferredSecurityScheme("bearerAuth"),
 			scalargo.WithSecurityScheme("bearerAuth", scalargo.BearerScheme("")),

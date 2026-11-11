@@ -13,6 +13,10 @@ type specHandler struct{}
 
 func (specHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	name := strings.TrimPrefix(r.URL.Path, specPrefix)
+	if tag, found := categoryTagFromName(name); found {
+		writeCategorySpec(w, r, tag)
+		return
+	}
 	if !specName(name) {
 		http.NotFound(w, r)
 		return
@@ -34,6 +38,18 @@ func (specHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.ServeContent(w, r, info.Name(), time.Time{}, seeker)
+}
+
+func writeCategorySpec(w http.ResponseWriter, r *http.Request, tag string) {
+	document, found, err := categoryDocument(tag)
+	if err != nil || !found {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-store")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(document)
 }
 
 func specName(name string) bool {
