@@ -3,15 +3,15 @@
   "files": [
     {
       "generator": "go run ./tools/coreopenapi",
-      "input_sha256": "70bfc2d58861c04d13875f976d328ad413cf37bb8859599fc0bccf2f3a4adc25",
-      "output_sha256": "70bfc2d58861c04d13875f976d328ad413cf37bb8859599fc0bccf2f3a4adc25",
+      "input_sha256": "4e04b6b7080e737ad1280304aab39e799ad9e7bf8afe10581b0abc2c8ca964de",
+      "output_sha256": "8edd84558f1570e325e2e1584fac5713ff25b8ca00fd9aaa738c4695f818a666",
       "path": "contracts/http/core-api-v1.openapi.yaml"
     },
     {
-      "path": "core/internal/modules/billing/domain/money/currency_registry_gen.go",
       "generator": "go run ./tools/currencyregistry",
       "input_sha256": "894f71b85f203d76ef7dacb379caf4340638d7ce7c2a2ffafd0b5f65c1b6714f",
-      "output_sha256": "8f7d46dc1f12881cedaccdfe6d1906a73dba59d6d19fa76c8b1eede2ba24417d"
+      "output_sha256": "8f7d46dc1f12881cedaccdfe6d1906a73dba59d6d19fa76c8b1eede2ba24417d",
+      "path": "core/internal/modules/billing/domain/money/currency_registry_gen.go"
     }
   ]
 }

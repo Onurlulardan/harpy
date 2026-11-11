@@ -25,6 +25,13 @@ func TestAPIReferenceIsServedBesideThePublicAPI(t *testing.T) {
 	if pageResponse.Code != http.StatusOK ||
 		!strings.Contains(pageResponse.Header().Get("Content-Type"), "text/html") ||
 		!strings.Contains(body, "Scalar.createApiReference") ||
+		!strings.Contains(body, `"title":"Core API"`) ||
+		!strings.Contains(body, `"title":"Management"`) ||
+		!strings.Contains(body, `"persistAuth":true`) ||
+		!strings.Contains(body, `"hideModels":true`) ||
+		!strings.Contains(body, "harpy-docs-access-token") ||
+		!strings.Contains(body, "/api/auth/login") ||
+		!strings.Contains(body, "/api/auth/initial-password") ||
 		!strings.Contains(body, "http://127.0.0.1:8000/docs/spec/http/core-api-v1.openapi.yaml") ||
 		!strings.Contains(body, "http://127.0.0.1:8000/docs/spec/http/management-v1.openapi.yaml") {
 		t.Fatalf("reference status=%d body=%s", pageResponse.Code, body)

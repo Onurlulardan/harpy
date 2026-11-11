@@ -15,8 +15,7 @@ var (
 		"HARPY_IAM_ALLOWED_ORIGINS=[\"http://localhost:5173\"]\n",
 	)
 	currentLocalBrowserOrigins = []byte(
-		"HARPY_IAM_ALLOWED_ORIGINS=" +
-			"[\"http://localhost:5173\",\"http://127.0.0.1:5173\"]\n",
+		"HARPY_IAM_ALLOWED_ORIGINS=" + localAllowedOrigins + "\n",
 	)
 )
 
@@ -26,7 +25,9 @@ func upgradeBrowserOriginArtifactSet(
 	options generationOptions,
 ) (ensureResult, bool, error) {
 	legacy, intact, err := inspectManifestBackedSet(output, func(value setManifest) error {
-		return validateBrowserOriginUpgradeManifest(value, now, options)
+		return validateBrowserOriginUpgradeManifest(
+			value, now, options, browserOriginUpgradeSourceRevision,
+		)
 	})
 	if err != nil || !intact {
 		return ensureResult{}, false, err
@@ -69,8 +70,9 @@ func validateBrowserOriginUpgradeManifest(
 	value setManifest,
 	now time.Time,
 	options generationOptions,
+	sourceRevision int,
 ) error {
-	if value.ArtifactContractRevision != browserOriginUpgradeSourceRevision {
+	if value.ArtifactContractRevision != sourceRevision {
 		return fmt.Errorf("manifest is not eligible for browser origin upgrade")
 	}
 	if err := validateManifestLifecycle(value, now, false); err != nil {

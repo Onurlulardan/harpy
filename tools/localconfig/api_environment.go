@@ -5,6 +5,8 @@ const (
 		"keyRings/iam/cryptoKeys/totp/cryptoKeyVersions/1"
 	localDeliveryKMSKeyID = "gcp-kms://projects/harpy-local/locations/global/" +
 		"keyRings/iam/cryptoKeys/delivery/cryptoKeyVersions/1"
+	localAllowedOrigins = `["http://localhost:5173","http://127.0.0.1:5173",` +
+		`"http://localhost:8000","http://127.0.0.1:8000"]`
 )
 
 func apiEnvironment(set *artifactSet) profileEnvironment {
@@ -12,7 +14,7 @@ func apiEnvironment(set *artifactSet) profileEnvironment {
 	addSharedStorageEnvironment(values)
 	addSharedKeyringEnvironment(values)
 	issuer := "http://localhost:8000"
-	origins := `["http://localhost:5173","http://127.0.0.1:5173"]`
+	origins := localAllowedOrigins
 	for key, value := range (profileEnvironment{
 		"HARPY_DOCUMENTS_CLAMAV_ADDRESS":              "clamav:3310",
 		"HARPY_NOTIFICATIONS_CONSUMER_KEYRING_FILE":   secretRoot + "notifications-consumer-keyring.json",
