@@ -1,4 +1,5 @@
 #!/bin/sh
+# Linux container entrypoint. Checkout keeps LF line endings.
 set -eu
 
 root_access_key="$(cat /run/secrets/minio-root-access-key.txt)"
